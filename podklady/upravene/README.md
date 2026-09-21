@@ -1,6 +1,8 @@
 # Úpravy obrázkov (zadanie pre Photoshop alebo online nástroj)
 
-Upravené súbory ukladať do tohto priečinka pod uvedeným názvom. Formát: PNG s priehľadnosťou (24-bit
+Stav 21. 9. 2026: body 1, 2 a 3 sú hotové (Juraj): `podklady/watts/banner/hero-rez-duo.png` (1517 × 1037, priehľadné), `podklady/watts/fotky-katalog/rodina-potrubi.png` (1633 × 963, priehľadné), `podklady/watts/piktogramy/hd/rad-*.png` (1200 px). Web ich už používa. **Bod 4 a 5:** zdrojové rendery sú pripravené v `podklady/upravene/rady/`, upravené PNG ukladať tam s rovnakým názvom (pokyny v `rady/POKYNY.md`).
+
+Upravené súbory ukladať pod uvedeným názvom. Formát: PNG s priehľadnosťou (24-bit
 + alfa), farebný profil sRGB, orezané na obsah s okrajom asi 2 %, bez zapečeného tieňa, ak nie je uvedené inak.
 Upscale: Photoshop „Super Zoom“ / „Preserve Details 2.0“ alebo Topaz Gigapixel, bez umelého doostrenia.
 

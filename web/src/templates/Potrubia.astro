@@ -12,7 +12,7 @@ const { lang } = Astro.props;
 const ui = t(lang);
 const potrubia = (await kategorie()).filter((k) => k.typ === 'potrubie');
 const rady = (await getCollection('rady')).map((r) => r.data);
-const rodina = fotka('rodina-potrubi.jpg')!;
+const rodina = fotka('rodina-potrubi.png')!;
 ---
 <Base lang={lang} alternates={staticAlternates('potrubia')} title={ui.potrubia.title} description={ui.potrubia.description} aktivna="potrubia" drobceky={[{ text: ui.nav.potrubia }]}>
   <section class="wrap head">
@@ -26,7 +26,7 @@ const rodina = fotka('rodina-potrubi.jpg')!;
     <div class="list">
       {potrubia.map((k) => { const p = piktogram(k.piktogram); const r = rady.filter((x) => x.kategoria === k.id).sort((a, b) => a.poradie - b.poradie); return (
         <a class="row" href={cestaKategorie(k, lang)}>
-          {p && <Image src={p} alt="" width={224} height={168} class="pikto" />}
+          {p && <Image src={p} alt="" width={224} height={168} densities={[1, 2]} class="pikto" />}
           <div class="txt">
             <h2>{kNazov(k, lang)}</h2>
             <p class="muted">{kPopis(k, lang)}</p>

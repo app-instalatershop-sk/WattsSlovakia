@@ -232,7 +232,18 @@ FOTKA_NAHRADA = {  # rady bez vlastnej fotky u výrobcu použijú fotku príbuzn
 
 
 def fotka_pre(watts_slug, our_slug):
-    """Skopíruje najlepšiu fotku radu z podkladov do web/src/assets/rady a vráti jej názov."""
+    """Skopíruje najlepšiu fotku radu do web/src/assets/rady a vráti jej názov.
+    Prednosť má upravená verzia s priehľadným pozadím v podklady/upravene/rady/<náš slug>.png."""
+    upravena = os.path.join(ROOT, 'podklady', 'upravene', 'rady', our_slug + '.png')
+    if os.path.exists(upravena):
+        dst = os.path.join(ASSETS, 'rady', our_slug + '.png')
+        os.makedirs(os.path.dirname(dst), exist_ok=True)
+        shutil.copyfile(upravena, dst)
+        for ext in ('.jpg', '.jpeg'):  # stará verzia s bielym pozadím nech nezostane vedľa
+            s = os.path.join(ASSETS, 'rady', our_slug + ext)
+            if os.path.exists(s):
+                os.remove(s)
+        return our_slug + '.png'
     kandidati = [f'rad-{watts_slug}-hlavna.jpg', f'rad-{watts_slug}-hlavna.png', f'rad-{watts_slug}.jpg', f'rad-{watts_slug}.png']
     n = FOTKA_NAHRADA.get(watts_slug)
     if n:
@@ -385,11 +396,13 @@ def main():
         r['suvisiace'] = [prod_by_href[h] for h in r.pop('_suvisiace_href') if h in prod_by_href]
         r['suvisiace'] = list(dict.fromkeys(r['suvisiace']))
 
-    # piktogramy
+    # piktogramy: verzia 1200 px z podklady/watts/piktogramy/hd má prednosť pred pôvodnými 250–350 px
     os.makedirs(os.path.join(ASSETS, 'piktogramy'), exist_ok=True)
     for f in os.listdir(os.path.join(PODKLADY, 'piktogramy')):
         if f.endswith('.png'):
-            shutil.copyfile(os.path.join(PODKLADY, 'piktogramy', f), os.path.join(ASSETS, 'piktogramy', f))
+            hd = os.path.join(PODKLADY, 'piktogramy', 'hd', f)
+            src = hd if os.path.exists(hd) else os.path.join(PODKLADY, 'piktogramy', f)
+            shutil.copyfile(src, os.path.join(ASSETS, 'piktogramy', f))
 
     def dump(name, rows):
         io.open(os.path.join(OUT, name), 'w', encoding='utf-8', newline='\n').write(json.dumps(rows, ensure_ascii=False, indent=1))

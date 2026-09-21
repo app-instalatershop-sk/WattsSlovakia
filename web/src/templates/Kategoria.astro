@@ -42,7 +42,7 @@ const kratkeNazvy = rady.map((r) => rNazov(r, lang).replace(/^Microflex /, '').r
         <h1>{kNazov(k, lang)}</h1>
         <p class="lead">{kPopis(k, lang)}</p>
       </div>
-      {pikto && <Image src={pikto} alt={ui.kategoria.piktoAlt(kKratky(k, lang))} width={400} height={300} class="cat-pikto" />}
+      {pikto && <Image src={pikto} alt={ui.kategoria.piktoAlt(kKratky(k, lang))} width={400} height={300} densities={[1, 2]} class="cat-pikto" />}
     </div>
 
     <dl class="spec spec-row">

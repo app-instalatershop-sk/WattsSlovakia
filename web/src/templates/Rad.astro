@@ -41,7 +41,7 @@ const productLd = [{
       </figure>
     </div>
     <div class="summary">
-      <span class="series-tag">{pikto && <Image src={pikto} alt="" width={64} height={48} />}{kKratky(k, lang)}{ruryText ? `, ${ruryText}` : ''}</span>
+      <span class="series-tag">{pikto && <Image src={pikto} alt="" width={64} height={48} densities={[1, 2]} />}{kKratky(k, lang)}{ruryText ? `, ${ruryText}` : ''}</span>
       <h1>{nazov}</h1>
       {kratky && <p class="lead">{kratky}</p>}
       <dl class="spec spec-3">

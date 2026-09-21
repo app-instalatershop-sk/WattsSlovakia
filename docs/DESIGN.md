@@ -440,7 +440,83 @@ kód. Makety vieme robiť ako artefakty v Claude, takže ich Juraj otvorí v pre
 
 ---
 
-## 16. Ďalší krok
+## 16. Čo z webu urobí profesionálny web: pohyb, hĺbka, detaily
+
+Stav 21. 9. 2026: makety v3 sú čistý HTML a CSS bez knižníc (len ikony Lucide a písma). Ukazujú
+rozloženie, farby a typografiu, ale nie správanie. Pocit profesionality vzniká až z vecí nižšie,
+zoradených podľa toho, koľko pridajú za koľko práce. Všetky sa dajú urobiť nezávisle od stacku.
+
+### 16.1 Pohyb (najväčší rozdiel)
+
+Pravidlo z kapitoly 8 platí: jeden orchestrovaný moment pri načítaní, všetko ostatné je odpoveď
+na akciu človeka. Pohyb má trvať 150 až 250 ms, dlhšie len hero (do 900 ms), krivka „rýchly
+začiatok, mäkký dojazd“ (`cubic-bezier(.2,.7,.2,1)`), vždy s `prefers-reduced-motion`.
+
+| Kde | Čo sa deje | Prečo to pôsobí profesionálne |
+|---|---|---|
+| Hero pri načítaní | fotka sa zmenší z 104 % na 100 %, nadpis, odsek a tlačidlá vystúpia postupne o 12 px, popisky prierezu prídu po nich | jediný „vstup“ webu, ukazuje, že je živý a premyslený |
+| Karty, dlaždice | pri prejdení myšou sa zdvihnú o 2 px, orámovanie zmodrie, tieň sa jemne objaví; kliknutie stlačí na 98 % | odozva na každý dotyk, ale bez zväčšovania obsahu |
+| Tlačidlá, čipy, polia | prechod farby 150 ms, viditeľný fokus, stav stlačenia | základ, ktorý bežné weby vynechajú |
+| Filter variantov | riadky, čo zostávajú, sa presunú na nové miesto (FLIP), čo odchádza, zmizne, počet sa prepočíta | človek vidí, čo filter urobil, nič „neblikne“ |
+| Podnavigácia radu | podčiarknutie aktívnej položky sa plynulo presúva (layout animácia), kotvy rolujú hladko | orientácia na dlhej stránke |
+| Hlavička pri rolovaní | z 72 px na 60 px, objaví sa tieň, nápis sa zmenší | viac miesta na obsah, stále po ruke |
+| Galéria radu | prekrytie fotiek krížovým prelínaním 200 ms, náhľad sa posunie do stredu | žiadne skoky obrázkov |
+| Otázky a odpovede | výška sa rozbalí plynulo, znak + sa otočí na × | detail, ktorý si každý všimne, keď chýba |
+| Výsledky hľadania | panel sa objaví s posunom 8 px a tieňom, výsledky prídu odstupňovane po 20 ms, zhoda je zvýraznená | okamžitá odozva je hlavný „wow“ moment webu |
+| Prechod medzi stránkami | krížové prelínanie stránky, fotka radu „doletí“ z karty kategórie na stránku radu (View Transitions API, natívne) | web pôsobí ako aplikácia, nie ako sled načítaní |
+| Sekcia „Prečo Microflex“ | tri fakty prídu odstupňovane pri prvom zjavení v okne (jediná reveal animácia na webe) | výnimka, ktorá potvrdzuje pravidlo |
+
+**Knižnica:** **Motion** (motion.dev, 5 kB v jadre, funguje s čistým JS aj Reactom, má `animate`,
+`inView`, `stagger`, layout animácie). **GSAP** so ScrollTriggerom len keby sme chceli choreografiu
+pri rolovaní, čo zatiaľ nechceme. Prechody stránok riešime natívnym View Transitions API bez knižnice.
+
+### 16.2 Hĺbka a povrchy
+
+- Fotky s jemným tmavým presahom zospodu, aby text a popisky vždy čitateľne sedeli.
+- Produktové plochy nie sú plochá sivá: jemný radiálny prechod (svetlejší stred) pôsobí ako
+  fotoštúdio, rendery dostanú mäkký tieň pod sebou. Všetky rendery v rovnakej mierke a orientácii.
+- Plávajúce vrstvy (výsledky hľadania, menu, dialógy) majú jediný definovaný tieň
+  `--shadow-float`. Nič iné tieň nemá, kým sa nezdvihne pri prejdení myšou.
+- Načítavanie obrázkov: rozmazaný náhľad, ktorý sa preostrí (thumbhash alebo LQIP) namiesto
+  prázdneho miesta a skoku.
+
+### 16.3 Typografia do detailu
+
+- Archivo má os šírky: nadpisy na počítači 112,5 %, na mobile 100 %. Jedna plynulá zmena podľa
+  šírky okna, ktorú nikto iný nemá.
+- Nadpisy nad 40 px s medzerami znakov −0,02 em, odseky s `text-wrap: pretty`, nadpisy `balance`.
+- Čísla v páse parametrov a v porovnaní radov v Archive 600, 24 až 31 px: „6 bar“, „25 až 125 mm“
+  sa stanú podpisom webu. Tabuľky ostávajú v Plex Sans s tabulkovými číslicami.
+- Farba označenia textu `--blue-100`, jednotné podčiarknutia odkazov v texte (2 px, odsadené).
+
+### 16.4 Správanie, ktoré ľudia očakávajú
+
+- Hľadanie ako príkazová paleta (Ctrl + K aj klik): okamžité výsledky, klávesnica, zvýraznenie
+  zhody, skupiny Rady / Varianty / Články. Knižnica **cmdk** cez **shadcn/ui** (Radix), alebo
+  vlastné nad **MiniSearch**.
+- Dialógy, popovery, akordeón, taby: **Radix** primitíva cez shadcn/ui, lebo majú hotovú
+  klávesnicu, fokus a ARIA. Vlastné `<details>` ostáva len tam, kde netreba animáciu.
+- Kliknutie na obj. číslo ho skopíruje a ukáže krátku správu „Skopírované M7525C“. Inštalatéri to
+  používajú denne.
+- Prázdne a načítavacie stavy: kostry (skeletony) v tvare obsahu, nie točiace sa kolieska.
+- Tlačidlá do e-shopu vždy s ikonou externého odkazu a s uvedením, kam vedú.
+
+### 16.5 Drobnosti, ktoré si ľudia všimnú podvedome
+
+- Favicon a ikony aplikácie (M v Archive na modrej), obrázok pre zdieľanie (OG) s renderom radu.
+- Tlačová šablóna tabuľky variantov (inštalatéri si tlačia obj. čísla).
+- Vlastný posuvník v širokých tabuľkách, jemné oddelenie zamrznutého stĺpca tieňom.
+- Stránka 404 v našom dizajne s hľadaním a odkazmi na kategórie.
+- Konzistentné 4 px raster medzier, dve zaoblenia, jeden tieň, jedna krivka pohybu. Žiadne výnimky.
+
+### 16.6 Čo z toho vieme ukázať v maketách a čo až v stavbe
+
+V maketách (artefakty) vieme načítať Motion z CDN, takže 16.1 okrem prechodov medzi stránkami,
+16.2 a 16.3 sa dajú predviesť hneď. Hľadanie ako paleta, Radix diely, thumbhash, tlač a prechody
+stránok patria do stavby, lebo potrebujú build. Preto rozhodnutie o stacku (Astro + Tailwind v4 +
+shadcn/ui ako ostrovy Reactu + Motion je navrhovaná kombinácia) odomyká väčšinu profesionality.
+
+## 17. Ďalší krok
 
 1. Vytiahnuť z PDF katalógu (MICROFLEX_SK_PDF.pdf) zoznam radov a variantov do dát v repe
    (`data/`), aby makety aj hľadanie pracovali s reálnym obsahom.

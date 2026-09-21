@@ -1,0 +1,39 @@
+<header class="hdr">
+  <div class="wrap hdr-in">
+    <a class="brand" href="{{link:domov}}" aria-label="Microflex Slovensko, domov">
+      <svg class="glyph" aria-hidden="true"><use href="#g2"/></svg>
+      <span class="brand-name">Microflex</span>
+      <span class="brand-sub">Slovensko</span>
+    </a>
+    <nav class="nav" aria-label="Hlavná navigácia">
+      <a href="{{link:kategoria}}" data-nav="potrubia">Potrubia</a>
+      <a href="#" data-nav="vyber">Výber potrubia</a>
+      <a href="#" data-nav="stiahnut">Na stiahnutie</a>
+      <a href="#" data-nav="firmy">Pre firmy</a>
+      <a href="#" data-nav="poradna">Poradňa</a>
+    </nav>
+    <form class="search" role="search" onsubmit="return false">
+      <input id="q" type="search" placeholder="Obj. číslo, rad, dimenzia" aria-label="Hľadať v katalógu" autocomplete="off">
+      <button type="submit"><svg aria-hidden="true"><use href="#i-search"/></svg>Hľadať</button>
+    </form>
+    <a class="eshop" href="https://www.instalatershop.sk/predizolovane-potrubie-microflex/" target="_blank" rel="noopener">E-shop <svg aria-hidden="true"><use href="#i-ext"/></svg></a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav" id="menu-btn">Menu</button>
+  </div>
+  <nav id="mobile-nav" class="mnav" hidden aria-label="Navigácia (mobil)">
+    <a href="{{link:kategoria}}">Potrubia</a>
+    <a href="#">Výber potrubia</a>
+    <a href="#">Na stiahnutie</a>
+    <a href="#">Pre firmy</a>
+    <a href="#">Poradňa</a>
+    <a href="https://www.instalatershop.sk/predizolovane-potrubie-microflex/">E-shop instalatershop.sk</a>
+  </nav>
+</header>
+<script>
+  (function () {
+    var b = document.getElementById('menu-btn'), n = document.getElementById('mobile-nav');
+    if (!b || !n) return;
+    b.addEventListener('click', function () {
+      var open = n.hidden; n.hidden = !open; b.setAttribute('aria-expanded', String(open)); b.textContent = open ? 'Zavrieť' : 'Menu';
+    });
+  })();
+</script>

@@ -1,0 +1,24 @@
+<div class="mock" role="region" aria-label="Nastavenie makety">
+  <b>Maketa</b>
+  <button type="button" data-font="a" aria-pressed="true" title="Nadpisy písmom Archivo">A Archivo</button>
+  <button type="button" data-font="b" aria-pressed="false" title="Nadpisy písmom Schibsted Grotesk">B Schibsted</button>
+  <span class="sep" aria-hidden="true"></span>
+  <span class="mock-links">
+    <a href="{{link:domov}}">Domov</a>
+    <a href="{{link:kategoria}}">Kategória</a>
+    <a href="{{link:rad}}">Rad UNO</a>
+  </span>
+</div>
+<script>
+  (function () {
+    var key = 'mf-font', root = document.documentElement;
+    function set(v) {
+      root.setAttribute('data-font', v);
+      document.querySelectorAll('.mock [data-font]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.font === v)); });
+      try { localStorage.setItem(key, v); } catch (e) {}
+    }
+    var v = 'a'; try { v = localStorage.getItem(key) || 'a'; } catch (e) {}
+    set(v);
+    document.querySelectorAll('.mock [data-font]').forEach(function (b) { b.addEventListener('click', function () { set(b.dataset.font); }); });
+  })();
+</script>

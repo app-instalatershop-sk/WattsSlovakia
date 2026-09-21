@@ -1,0 +1,209 @@
+/* Microflex Slovensko – tokeny a spoločné diely makiet (v1, 21. 9. 2026)
+   Zdroj hodnôt: docs/DESIGN.md kap. 4–6. Jedna téma (svetlá), zámerne. */
+
+:root {
+  color-scheme: light;
+  --blue-700: #005DB9;
+  --blue-800: #00468B;
+  --blue-900: #0A2A5E;
+  --blue-100: #D9E7F5;
+  --blue-50: #EEF4FB;
+  --yellow-500: #F2C400;
+  --grey-300: #C8CDD4;
+  --grey-100: #F3F4F6;
+  --ink: #0B1B33;
+  --ink-soft: #4A5568;
+  --white: #FFFFFF;
+  --ok: #1B8A5A;
+  --error: #C8353A;
+
+  --font-display: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --font-text: 'IBM Plex Sans', 'Segoe UI', Arial, sans-serif;
+  --display-stretch: 112.5%;
+
+  --r-s: 4px;
+  --r-l: 12px;
+  --shadow-float: 0 8px 24px rgba(11, 27, 51, .12);
+  --line: 1px solid var(--grey-300);
+
+  --container: 1320px;
+  --gutter: clamp(16px, 3vw, 48px);
+  --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 48px; --s8: 64px; --s9: 96px;
+}
+:root[data-font="b"] {
+  --font-display: 'Schibsted Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  --display-stretch: 100%;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--white);
+  color: var(--ink);
+  font: 400 16px/1.55 var(--font-text);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+img { max-width: 100%; display: block; }
+a { color: var(--blue-700); text-decoration: none; }
+a:hover { color: var(--blue-800); }
+p { margin: 0; }
+ul { margin: 0; padding: 0; list-style: none; }
+:focus-visible { outline: 2px solid var(--blue-700); outline-offset: 2px; border-radius: 2px; }
+button { font: inherit; }
+
+h1, h2, h3, .display {
+  font-family: var(--font-display);
+  font-stretch: var(--display-stretch);
+  letter-spacing: -0.01em;
+  margin: 0;
+  text-wrap: balance;
+  color: var(--ink);
+}
+h1 { font-size: clamp(31px, 2.6vw + 18px, 49px); line-height: 1.08; font-weight: 700; }
+h2 { font-size: clamp(25px, 1.4vw + 16px, 31px); line-height: 1.15; font-weight: 600; }
+h3 { font-size: 20px; line-height: 1.25; font-weight: 600; }
+.lead { font-size: 18px; line-height: 1.5; color: var(--ink-soft); max-width: 34em; }
+.muted { color: var(--ink-soft); }
+.small { font-size: 13px; line-height: 1.45; }
+.num { font-variant-numeric: tabular-nums; }
+
+.wrap { max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
+.g12 { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--s5); }
+.section { padding-block: var(--s8); }
+.section-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--s3) var(--s5); margin-bottom: var(--s6); }
+.section-head p { max-width: 44em; }
+
+/* Tlačidlá */
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  height: 48px; padding: 0 22px; border-radius: var(--r-s);
+  font: 500 16px/1 var(--font-text); text-decoration: none; cursor: pointer;
+  border: 1px solid transparent; white-space: nowrap; transition: background-color .15s, border-color .15s, color .15s;
+}
+.btn svg { width: 18px; height: 18px; flex: none; }
+.btn-primary { background: var(--blue-700); color: #fff; }
+.btn-primary:hover { background: var(--blue-800); color: #fff; }
+.btn-secondary { background: var(--white); color: var(--blue-700); border-color: var(--blue-700); }
+.btn-secondary:hover { background: var(--blue-50); color: var(--blue-800); }
+.btn-inverse { background: var(--white); color: var(--blue-900); }
+.btn-inverse:hover { background: var(--blue-100); color: var(--blue-900); }
+.btn-sm { height: 36px; padding: 0 14px; font-size: 14px; }
+
+/* Hlavička */
+.hdr { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--white); border-bottom: var(--line); }
+.hdr-in { display: flex; align-items: center; gap: var(--s6); min-height: 72px; }
+.brand { display: inline-flex; align-items: center; gap: 12px; color: var(--ink); }
+.brand .glyph { width: 34px; height: 34px; }
+.brand-name { font-family: var(--font-display); font-stretch: var(--display-stretch); font-weight: 700; font-size: 22px; letter-spacing: -0.01em; line-height: 1; }
+.brand-sub { font-size: 13px; color: var(--ink-soft); border-left: var(--line); padding-left: 12px; line-height: 1; }
+.nav { display: flex; gap: var(--s5); margin-left: var(--s2); flex: none; }
+.nav a { color: var(--ink); font-weight: 500; padding: 6px 0; border-bottom: 2px solid transparent; white-space: nowrap; }
+.nav a:hover, .nav a[aria-current] { border-bottom-color: var(--blue-700); color: var(--ink); }
+.search { margin-left: auto; display: flex; align-items: stretch; height: 44px; border: var(--line); border-radius: var(--r-s); overflow: hidden; background: var(--white); min-width: 0; }
+.search:focus-within { border-color: var(--blue-700); box-shadow: 0 0 0 2px var(--blue-100); }
+.search input { border: 0; padding: 0 14px; width: 280px; max-width: 40vw; font: inherit; font-size: 15px; color: var(--ink); outline: none; min-width: 0; background: transparent; }
+.search input::placeholder { color: #7A8494; }
+.search button { border: 0; background: var(--blue-700); color: #fff; padding: 0 16px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+.search button:hover { background: var(--blue-800); }
+.search button svg { width: 18px; height: 18px; }
+.eshop { display: inline-flex; align-items: center; gap: 8px; font-weight: 500; color: var(--blue-700); white-space: nowrap; }
+.eshop svg { width: 16px; height: 16px; }
+.menu-btn { display: none; margin-left: auto; height: 44px; padding: 0 14px; border: var(--line); border-radius: var(--r-s); background: var(--white); color: var(--ink); font-weight: 500; cursor: pointer; }
+.mnav { display: flex; flex-direction: column; border-top: var(--line); padding: 4px var(--gutter) 12px; }
+.mnav a { padding: 14px 0; color: var(--ink); font-weight: 500; border-bottom: var(--line); }
+.mnav a:last-child { border-bottom: 0; color: var(--blue-700); }
+
+/* Drobčeky */
+.crumbs { display: flex; flex-wrap: wrap; gap: 8px; font-size: 14px; color: var(--ink-soft); padding-block: var(--s4); }
+.crumbs a { color: var(--ink-soft); }
+.crumbs a:hover { color: var(--blue-700); }
+.crumbs li + li::before { content: "/"; margin-right: 8px; color: var(--grey-300); }
+
+/* Piktogram prierezu */
+.glyph { width: 40px; height: 40px; color: var(--blue-700); flex: none; }
+.glyph-lg { width: 64px; height: 64px; }
+.glyph-sm { width: 24px; height: 24px; }
+
+/* Karty */
+.card { background: var(--white); border: var(--line); border-radius: var(--r-l); overflow: hidden; display: flex; flex-direction: column; transition: border-color .15s; color: var(--ink); }
+.card:hover { border-color: var(--blue-700); color: var(--ink); }
+.card .plate { background: var(--grey-100); aspect-ratio: 4 / 3; position: relative; overflow: hidden; }
+.card .plate img { position: absolute; left: 12%; top: 12%; width: 76%; height: 76%; object-fit: contain; mix-blend-mode: multiply; }
+.card .plate .glyph { position: absolute; left: 16px; top: 16px; width: 32px; height: 32px; }
+.card .body { padding: var(--s4) var(--s5) var(--s5); display: flex; flex-direction: column; gap: 8px; flex: 1; }
+.card .body h3 { font-size: 20px; }
+.card .body p { color: var(--ink-soft); }
+.card .meta { margin-top: auto; font-size: 14px; color: var(--ink-soft); display: flex; justify-content: space-between; align-items: center; gap: 8px; padding-top: 8px; }
+.card .meta strong { color: var(--blue-700); font-weight: 500; display: inline-flex; align-items: center; gap: 6px; }
+.card .meta svg { width: 16px; height: 16px; }
+
+/* Pásy */
+.band { background: var(--blue-50); }
+.band-dark { background: var(--blue-900); color: #fff; }
+.band-dark h2, .band-dark h3 { color: #fff; }
+.band-dark a { color: #fff; }
+.band-dark a.btn-inverse, .band-dark a.btn-inverse:hover { color: var(--blue-900); }
+.band-dark .muted { color: #B8C7DE; }
+.ribs { background-image: repeating-linear-gradient(90deg, var(--blue-800) 0 2px, transparent 2px 8px); }
+
+/* Tabuľky */
+.table-wrap { overflow-x: auto; border: var(--line); border-radius: var(--r-s); }
+table.data { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+table.data th, table.data td { text-align: left; padding: 12px 14px; border-bottom: var(--line); white-space: nowrap; }
+table.data th { font-weight: 500; color: var(--ink-soft); background: var(--white); position: sticky; top: 0; font-size: 13px; }
+table.data th small { display: block; font-weight: 400; color: #7A8494; }
+table.data tbody tr:hover { background: var(--blue-50); }
+table.data tbody tr:last-child td { border-bottom: 0; }
+table.data td.code { font-weight: 600; color: var(--ink); }
+table.data td.right, table.data th.right { text-align: right; }
+.source { font-size: 13px; color: var(--ink-soft); margin-top: var(--s3); }
+
+/* Formulárové prvky, filtre */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { height: 34px; padding: 0 12px; border-radius: var(--r-s); border: var(--line); background: var(--white); color: var(--ink); font: 500 14px/1 var(--font-text); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.chip:hover { border-color: var(--blue-700); }
+.chip[aria-pressed="true"] { background: var(--blue-700); border-color: var(--blue-700); color: #fff; }
+.chip-yellow[aria-pressed="true"] { background: var(--yellow-500); border-color: var(--yellow-500); color: var(--ink); }
+
+/* Pätička */
+.ftr { background: var(--blue-900); color: #fff; margin-top: var(--s9); }
+.ftr-ribs { height: 14px; background-image: repeating-linear-gradient(90deg, var(--blue-800) 0 2px, transparent 2px 8px); }
+.ftr-in { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1.2fr; gap: var(--s6); padding-block: var(--s7); }
+.ftr h3 { color: #fff; font-size: 15px; font-family: var(--font-text); font-stretch: 100%; font-weight: 600; margin-bottom: 12px; letter-spacing: 0; }
+.ftr a { color: #fff; }
+.ftr a:hover { color: var(--yellow-500); }
+.ftr li { padding: 4px 0; font-size: 15px; }
+.ftr .brand { color: #fff; margin-bottom: 12px; }
+.ftr .brand .glyph { color: #fff; }
+.ftr .brand-sub { color: #B8C7DE; border-left-color: rgba(255,255,255,.3); }
+.ftr .muted { color: #B8C7DE; }
+.ftr-bottom { border-top: 1px solid rgba(255,255,255,.18); padding-block: var(--s4); font-size: 13px; color: #B8C7DE; display: flex; flex-wrap: wrap; gap: 8px var(--s5); justify-content: space-between; }
+
+/* Lišta makety */
+.mock { position: fixed; left: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 50; display: flex; align-items: center; gap: 6px; background: var(--ink); color: #fff; border-radius: 999px; padding: 6px 8px 6px 14px; font-size: 13px; box-shadow: var(--shadow-float); }
+.mock b { font-weight: 600; margin-right: 6px; }
+.mock button, .mock a { border: 0; background: rgba(255,255,255,.12); color: #fff; height: 28px; padding: 0 10px; border-radius: 999px; font: 500 13px/1 var(--font-text); cursor: pointer; display: inline-flex; align-items: center; text-decoration: none; }
+.mock button[aria-pressed="true"] { background: var(--yellow-500); color: var(--ink); }
+.mock a:hover, .mock button:hover { background: rgba(255,255,255,.25); }
+.mock .sep { width: 1px; height: 18px; background: rgba(255,255,255,.25); margin: 0 4px; }
+
+/* Responzivita */
+@media (max-width: 1100px) {
+  .nav { display: none; }
+  .search input { width: 200px; }
+  .ftr-in { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 760px) {
+  .g12 > * { grid-column: 1 / -1 !important; }
+  .hdr-in { gap: var(--s4); }
+  .search { display: none; }
+  .eshop { display: none; }
+  .menu-btn { display: inline-flex; align-items: center; }
+  .section { padding-block: var(--s7); }
+  .ftr-in { grid-template-columns: 1fr; }
+  .mock .mock-links { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

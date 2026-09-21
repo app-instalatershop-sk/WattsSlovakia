@@ -9,3 +9,5 @@ node_modules/
 .playwright-mcp/
 *.jpeg
 *.jpg
+data/_*
+makety/out/

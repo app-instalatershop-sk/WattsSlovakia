@@ -1,0 +1,273 @@
+<title>Microflex UNO 6 bar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..800&family=IBM+Plex+Sans:wght@400;500;600&family=Schibsted+Grotesk:wght@500;600;700&display=swap">
+<style>
+{{css}}
+
+/* Produktový rad */
+.top { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--s6) var(--s5); align-items: start; padding-bottom: var(--s7); }
+.gallery { grid-column: 1 / 7; display: flex; flex-direction: column; gap: 12px; }
+.gallery .main { background: var(--grey-100); border-radius: var(--r-l); aspect-ratio: 1; display: grid; place-items: center; padding: 6%; position: relative; overflow: hidden; }
+.gallery .main img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
+.gallery .main .glyph { position: absolute; left: 20px; top: 20px; width: 44px; height: 44px; }
+.gallery .main figcaption { position: absolute; right: 16px; bottom: 12px; font-size: 12px; color: var(--ink-soft); }
+.thumbs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.thumbs button { border: var(--line); background: var(--grey-100); border-radius: var(--r-s); aspect-ratio: 1; padding: 6px; cursor: pointer; overflow: hidden; }
+.thumbs button[aria-pressed="true"] { border-color: var(--blue-700); box-shadow: inset 0 0 0 1px var(--blue-700); }
+.thumbs img { width: 100%; height: 100%; object-fit: cover; border-radius: 2px; }
+.summary { grid-column: 7 / 13; display: flex; flex-direction: column; gap: var(--s5); }
+.summary h1 { font-size: clamp(31px, 2vw + 16px, 44px); }
+.summary .series-tag { display: inline-flex; align-items: center; gap: 8px; color: var(--ink-soft); font-size: 14px; }
+.summary .series-tag .glyph { width: 22px; height: 22px; }
+.spec { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); background: var(--blue-100); border-radius: var(--r-s); overflow: hidden; margin: 0; }
+.spec div { padding: 14px 18px; border-right: 1px solid rgba(0,93,185,.16); border-bottom: 1px solid rgba(0,93,185,.16); display: flex; flex-direction: column; gap: 2px; }
+.spec div:nth-child(3n) { border-right: 0; }
+.spec div:nth-last-child(-n + 3) { border-bottom: 0; }
+.spec dt { font-size: 12.5px; color: var(--ink-soft); }
+.spec dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+.summary .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.summary .note { font-size: 14px; color: var(--ink-soft); }
+
+.subnav { position: sticky; top: calc(72px + env(safe-area-inset-top, 0px)); z-index: 10; background: var(--white); border-top: var(--line); border-bottom: var(--line); }
+.subnav ul { display: flex; gap: var(--s6); overflow-x: auto; }
+.subnav a { display: inline-block; padding: 14px 0; color: var(--ink); font-weight: 500; border-bottom: 2px solid transparent; white-space: nowrap; }
+.subnav a:hover, .subnav a.is-active { border-bottom-color: var(--blue-700); color: var(--ink); }
+.block { padding-block: var(--s7); border-bottom: var(--line); scroll-margin-top: 140px; }
+.block:last-child { border-bottom: 0; }
+.block-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s3) var(--s5); margin-bottom: var(--s5); }
+.block-head p { color: var(--ink-soft); }
+.vfilter { display: flex; flex-wrap: wrap; align-items: center; gap: 10px var(--s4); margin-bottom: var(--s4); }
+.vfilter .lbl { font-size: 14px; color: var(--ink-soft); }
+table.variants td .shop { display: inline-flex; align-items: center; gap: 6px; color: var(--blue-700); font-weight: 500; }
+table.variants td .shop svg { width: 14px; height: 14px; }
+table.variants tr[hidden] { display: none; }
+table.variants .ins { display: inline-flex; align-items: center; gap: 6px; }
+table.variants .ins::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--grey-300); }
+table.variants .ins.adv::before { background: var(--blue-700); }
+.count { font-size: 14px; color: var(--ink-soft); }
+.tech { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s5) var(--s7); }
+.tech dl { margin: 0; }
+.tech div { display: grid; grid-template-columns: 200px 1fr; gap: 12px; padding: 12px 0; border-top: var(--line); font-size: 15px; }
+.tech div:last-child { border-bottom: var(--line); }
+.tech dt { color: var(--ink-soft); }
+.tech dd { margin: 0; }
+.files { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px var(--s5); }
+.file { display: grid; grid-template-columns: 44px 1fr auto; gap: 14px; align-items: center; padding: 12px 14px; border: var(--line); border-radius: var(--r-s); color: var(--ink); }
+.file:hover { border-color: var(--blue-700); color: var(--ink); }
+.file .type { width: 44px; height: 44px; border-radius: var(--r-s); background: var(--blue-50); color: var(--blue-700); display: grid; place-items: center; font-size: 11px; font-weight: 600; letter-spacing: .02em; }
+.file .name { font-weight: 500; }
+.file .meta { font-size: 13px; color: var(--ink-soft); }
+.file svg { width: 20px; height: 20px; color: var(--blue-700); }
+.refs2 { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--s5); }
+.ref { display: flex; flex-direction: column; gap: 10px; color: var(--ink); }
+.ref img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--r-l); background: var(--grey-100); }
+.ref strong { font-weight: 600; }
+.related { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s5); }
+.related .card .plate { aspect-ratio: 4 / 3; padding: 10%; }
+.related .card .body h3 { font-size: 17px; }
+@media (max-width: 1000px) {
+  .gallery { grid-column: 1 / 6; }
+  .summary { grid-column: 6 / 13; }
+  .related { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  .top > * { grid-column: 1 / -1 !important; }
+  .spec { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .spec div:nth-child(3n) { border-right: 1px solid rgba(0,93,185,.16); }
+  .spec div:nth-child(2n) { border-right: 0; }
+  .tech, .files, .related { grid-template-columns: 1fr; }
+  .tech div { grid-template-columns: 1fr; gap: 2px; }
+  .refs2 > * { grid-column: 1 / -1 !important; }
+  .block { scroll-margin-top: 120px; }
+}
+</style>
+
+{{partial:sprite}}
+{{partial:header}}
+
+<main>
+  <div class="wrap">
+    <ul class="crumbs" aria-label="Kde ste">
+      <li><a href="{{link:domov}}">Domov</a></li>
+      <li><a href="{{link:kategoria}}">Potrubia</a></li>
+      <li><a href="{{link:kategoria}}">Pre vykurovanie</a></li>
+      <li aria-current="page">Microflex UNO 6 bar</li>
+    </ul>
+
+    <div class="top">
+      <div class="gallery">
+        <figure class="main">
+          <img id="gal-main" src="{{img:i34}}" alt="Potrubie Microflex UNO: modrý zvlnený plášť, sivá izolácia a žltá rúra PE-Xa">
+          <svg class="glyph" aria-hidden="true"><use href="#g1"/></svg>
+          <figcaption>Fotky výrobcu, dočasné</figcaption>
+        </figure>
+        <div class="thumbs" role="group" aria-label="Ďalšie fotky">
+          <button type="button" aria-pressed="true" data-src="{{img:i34}}"><img src="{{img:i34}}" alt="Rez potrubím"></button>
+          <button type="button" aria-pressed="false" data-src="{{img:i33}}"><img src="{{img:i33}}" alt="Potrubie zboku"></button>
+          <button type="button" aria-pressed="false" data-src="{{img:i35}}"><img src="{{img:i35}}" alt="Detail zvlneného plášťa"></button>
+          <button type="button" aria-pressed="false" data-src="{{img:i19}}"><img src="{{img:i19}}" alt="Potrubie vo výkope"></button>
+        </div>
+      </div>
+
+      <div class="summary">
+        <span class="series-tag"><svg class="glyph" aria-hidden="true"><use href="#g1"/></svg>Potrubia pre vykurovanie, jedna rúra</span>
+        <h1>Microflex UNO, vykurovanie 6 bar</h1>
+        <p class="lead">Jednoduché ohybné predizolované potrubie, ktoré sa v zemi samo kompenzuje. Určené na rozvod vykurovacej vody, vhodné aj na teplú pitnú vodu, odpadovú vodu a iné kvapaliny. Nosná rúra zo zosieťovaného polyetylénu PE-Xa s kyslíkovou bariérou, izolácia z PE-X peny s uzavretými bunkami, plášť z HDPE.</p>
+        <dl class="spec">
+          <div><dt>Médium</dt><dd>vykurovacia voda</dd></div>
+          <div><dt>Prevádzkový tlak</dt><dd>6 bar</dd></div>
+          <div><dt>Počet rúr</dt><dd>1</dd></div>
+          <div><dt>Nosná rúra PE-Xa</dt><dd>25 až 125 mm</dd></div>
+          <div><dt>Plášť HDPE</dt><dd>75 až 200 mm</dd></div>
+          <div><dt>Polomer ohybu</dt><dd>od 0,20 m</dd></div>
+        </dl>
+        <div class="actions">
+          <a class="btn btn-primary" href="#varianty">Vybrať dimenziu</a>
+          <a class="btn btn-secondary" href="https://www.instalatershop.sk/jednoduche-predizolovane-potrubie-microflex-uno/" target="_blank" rel="noopener">Kúpiť v e-shope <svg aria-hidden="true"><use href="#i-ext"/></svg></a>
+        </div>
+        <p class="note">16 dimenzií, z toho 7 so zosilnenou izoláciou. Cenu a dostupnosť každého variantu nájdete v e-shope instalatershop.sk.</p>
+      </div>
+    </div>
+  </div>
+
+  <nav class="subnav" aria-label="Časti stránky">
+    <div class="wrap">
+      <ul>
+        <li><a href="#varianty" class="is-active">Varianty a obj. čísla</a></li>
+        <li><a href="#technicke">Technické údaje</a></li>
+        <li><a href="#stiahnut">Na stiahnutie</a></li>
+        <li><a href="#referencie">Referencie</a></li>
+        <li><a href="#suvisiace">Súvisiace produkty</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="wrap">
+    <section class="block" id="varianty" aria-labelledby="h-var">
+      <div class="block-head">
+        <h2 id="h-var">Varianty a obj. čísla</h2>
+        <p>Obj. číslo vedie priamo na produkt v e-shope.</p>
+      </div>
+      <div class="vfilter">
+        <span class="lbl">Nosná rúra</span>
+        <div class="chips" id="f-pipe">
+          <button class="chip" type="button" data-v="" aria-pressed="true">Všetky</button>
+          <button class="chip" type="button" data-v="25" aria-pressed="false">25</button>
+          <button class="chip" type="button" data-v="32" aria-pressed="false">32</button>
+          <button class="chip" type="button" data-v="40" aria-pressed="false">40</button>
+          <button class="chip" type="button" data-v="50" aria-pressed="false">50</button>
+          <button class="chip" type="button" data-v="63" aria-pressed="false">63</button>
+          <button class="chip" type="button" data-v="75" aria-pressed="false">75</button>
+          <button class="chip" type="button" data-v="90" aria-pressed="false">90</button>
+          <button class="chip" type="button" data-v="110" aria-pressed="false">110</button>
+          <button class="chip" type="button" data-v="125" aria-pressed="false">125</button>
+        </div>
+        <span class="lbl">Izolácia</span>
+        <div class="chips" id="f-ins">
+          <button class="chip" type="button" data-v="" aria-pressed="true">Obe</button>
+          <button class="chip" type="button" data-v="std" aria-pressed="false">Štandardná</button>
+          <button class="chip chip-yellow" type="button" data-v="adv" aria-pressed="false">Zosilnená</button>
+        </div>
+        <span class="count" id="count">16 variantov</span>
+      </div>
+      <div class="table-wrap">
+        {{table:uno}}
+      </div>
+      <p class="source">Zdroj: katalóg Watts Microflex, slovenské vydanie, stav k 21. 9. 2026. Hmotnosť je uvedená na meter potrubia, kotúč ako priemer a šírka.</p>
+    </section>
+
+    <section class="block" id="technicke" aria-labelledby="h-tech">
+      <div class="block-head"><h2 id="h-tech">Technické údaje</h2><p>Materiály a normy podľa popisu výrobcu.</p></div>
+      <div class="tech">
+        <dl>
+          <div><dt>Nosná rúra</dt><dd>Zosieťovaný polyetylén PE-Xa podľa EN ISO 15875, odolný proti korózii</dd></div>
+          <div><dt>Kyslíková bariéra</dt><dd>Žltá vrstva proti difúzii kyslíka podľa DIN 4726</dd></div>
+          <div><dt>Izolácia</dt><dd>Elastická pena zo zosieťovaného PE-X s uzavretými bunkami, bez CFC</dd></div>
+        </dl>
+        <dl>
+          <div><dt>Nasiakavosť izolácie</dt><dd>Pod 1 % podľa ISO 2896</dd></div>
+          <div><dt>Plášť</dt><dd>Zvlnený HDPE vyrábaný ako uzavreté komory</dd></div>
+          <div><dt>Uloženie</dt><dd>Podzemné, samokompenzujúce potrubie, dodáva sa v kotúčoch</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="block" id="stiahnut" aria-labelledby="h-dl">
+      <div class="block-head"><h2 id="h-dl">Na stiahnutie</h2><p>Podklady výrobcu k radu UNO. Otvoria sa na watts.eu.</p></div>
+      <div class="files">
+        <a class="file" href="https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"><span class="type">PDF</span><span><span class="name">Katalóg Microflex</span><br><span class="meta">slovensky, 19 MB</span></span><svg aria-hidden="true"><use href="#i-dl"/></svg></a>
+        <a class="file" href="https://www.watts.eu/sk/technical-support/brochures/microflex/10181"><span class="type">PDF</span><span><span class="name">Brožúra Predizolované ohybné potrubia Microflex</span><br><span class="meta">anglicky</span></span><svg aria-hidden="true"><use href="#i-dl"/></svg></a>
+        <a class="file" href="https://www.watts.eu/sk/technical-support/download-dwg-drawings/microflex/31000"><span class="type">DWG</span><span><span class="name">Výkres UNO a UNO PRIMO, vykurovanie a chladenie</span><br><span class="meta">CAD</span></span><svg aria-hidden="true"><use href="#i-dl"/></svg></a>
+        <a class="file" href="https://www.watts.eu/sk/technical-support/download-dwg-drawings/microflex/30999"><span class="type">DXF</span><span><span class="name">Výkres UNO a UNO PRIMO, vykurovanie a chladenie</span><br><span class="meta">CAD</span></span><svg aria-hidden="true"><use href="#i-dl"/></svg></a>
+        <a class="file" href="https://www.watts.eu/sk/technical-support/approvals/microflex/28702"><span class="type">PDF</span><span><span class="name">Vyhlásenie o zhode, predizolované potrubie Microflex</span><br><span class="meta">anglicky</span></span><svg aria-hidden="true"><use href="#i-dl"/></svg></a>
+        <a class="file" href="https://www.watts.eu/sk/technical-support/approvals/microflex/epd-microflex"><span class="type">EPD</span><span><span class="name">Environmentálna deklarácia výrobku Smart EPD</span><br><span class="meta">platná do 29. 5. 2031</span></span><svg aria-hidden="true"><use href="#i-dl"/></svg></a>
+      </div>
+    </section>
+
+    <section class="block" id="referencie" aria-labelledby="h-ref">
+      <div class="block-head"><h2 id="h-ref">Kde už UNO leží</h2><a href="#">Všetky referencie</a></div>
+      <div class="refs2">
+        <a class="ref" href="#" style="grid-column: span 7"><img src="{{img:i40}}" alt=""><span><strong>Microflex obnovil vykurovanie školy</strong><br><span class="muted small">Výmena starého rozvodu bez zásahu do budovy</span></span></a>
+        <a class="ref" href="#" style="grid-column: span 5"><img src="{{img:i41}}" alt=""><span><strong>Bytové domy, Považská Bystrica</strong><br><span class="muted small">Veľký projekt na Slovensku</span></span></a>
+      </div>
+    </section>
+
+    <section class="block" id="suvisiace" aria-labelledby="h-rel">
+      <div class="block-head"><h2 id="h-rel">Čo budete potrebovať k potrubiu</h2><p>Spojky a príslušenstvo, ktoré výrobca odporúča k radu UNO.</p></div>
+      <div class="related">
+        <a class="card" href="#"><div class="plate"><img src="{{img:i42}}" alt=""></div><div class="body"><h3>T-spojka PE-X, vykurovanie</h3><p class="small">Odbočka na tri rúry</p></div></a>
+        <a class="card" href="#"><div class="plate"><img src="{{img:i44}}" alt=""></div><div class="body"><h3>Spojka PE-X, vykurovanie a COOL</h3><p class="small">Priame spojenie dvoch rúr, 6 a 16 bar</p></div></a>
+        <a class="card" href="#"><div class="plate"><img src="{{img:i45}}" alt=""></div><div class="body"><h3>Tesnenie prestupu stenou Micro Press</h3><p class="small">Pre tlakovú vodu</p></div></a>
+        <a class="card" href="#"><div class="plate"><img src="{{img:i48}}" alt=""></div><div class="body"><h3>Fixný bod</h3><p class="small">Ukotvenie potrubia pri vstupe do budovy</p></div></a>
+      </div>
+    </section>
+  </div>
+</main>
+
+{{partial:footer}}
+{{partial:mock}}
+<script>
+  (function () {
+    var a = document.querySelector('.nav a[data-nav="potrubia"]'); if (a) a.setAttribute('aria-current', 'page');
+    // galéria
+    var main = document.getElementById('gal-main');
+    document.querySelectorAll('.thumbs button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        main.src = b.dataset.src; main.alt = b.querySelector('img').alt;
+        document.querySelectorAll('.thumbs button').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+      });
+    });
+    // filter variantov
+    var pipe = '', ins = '';
+    function apply() {
+      var n = 0;
+      document.querySelectorAll('table.variants tbody tr').forEach(function (tr) {
+        var ok = (!pipe || tr.dataset.pipe === pipe) && (!ins || tr.dataset.ins === ins);
+        tr.hidden = !ok; if (ok) n++;
+      });
+      var c = document.getElementById('count');
+      c.textContent = n === 1 ? '1 variant' : (n >= 2 && n <= 4 ? n + ' varianty' : n + ' variantov');
+    }
+    function wire(id, set) {
+      var g = document.getElementById(id);
+      g.querySelectorAll('.chip').forEach(function (c) {
+        c.addEventListener('click', function () {
+          g.querySelectorAll('.chip').forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
+          c.setAttribute('aria-pressed', 'true'); set(c.dataset.v); apply();
+        });
+      });
+    }
+    wire('f-pipe', function (v) { pipe = v; });
+    wire('f-ins', function (v) { ins = v; });
+    // podnavigácia
+    var links = document.querySelectorAll('.subnav a');
+    var blocks = Array.prototype.map.call(links, function (l) { return document.querySelector(l.getAttribute('href')); });
+    function onScroll() {
+      var y = window.scrollY + 160, idx = 0;
+      blocks.forEach(function (b, i) { if (b && b.offsetTop <= y) idx = i; });
+      links.forEach(function (l, i) { l.classList.toggle('is-active', i === idx); });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+  })();
+</script>

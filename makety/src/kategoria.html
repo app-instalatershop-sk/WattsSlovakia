@@ -1,0 +1,203 @@
+<title>Potrubia pre vykurovanie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..800&family=IBM+Plex+Sans:wght@400;500;600&family=Schibsted+Grotesk:wght@500;600;700&display=swap">
+<style>
+{{css}}
+
+/* Kategória */
+.cat-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--s5) var(--s7); align-items: start; padding-block: var(--s3) var(--s6); }
+.cat-head h1 { max-width: 16ch; }
+.cat-head .lead { margin-top: var(--s4); }
+.cat-glyph { color: var(--blue-700); width: 96px; height: 96px; }
+.specs { display: flex; flex-wrap: wrap; gap: 0; background: var(--blue-100); border-radius: var(--r-s); margin-bottom: var(--s6); }
+.specs div { padding: 12px 20px; display: flex; flex-direction: column; gap: 2px; border-right: 1px solid rgba(0,93,185,.18); }
+.specs div:last-child { border-right: 0; }
+.specs dt { font-size: 12.5px; color: var(--ink-soft); }
+.specs dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+.layout { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: var(--s7); align-items: start; }
+.filters { position: sticky; top: calc(72px + env(safe-area-inset-top, 0px) + var(--s4)); display: flex; flex-direction: column; gap: var(--s5); }
+.filters h2 { font-size: 16px; font-family: var(--font-text); font-stretch: 100%; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.filters h2 svg { width: 18px; height: 18px; }
+.filter { display: flex; flex-direction: column; gap: 10px; padding-top: var(--s4); border-top: var(--line); }
+.filter h3 { font-size: 14px; font-family: var(--font-text); font-stretch: 100%; font-weight: 500; color: var(--ink-soft); }
+.filter .chips .chip { height: 32px; }
+.filters .reset { font-size: 14px; }
+.series { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s5); }
+.series .card .plate { aspect-ratio: 3 / 2; }
+.series .kv { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; font-size: 14px; margin-top: 4px; }
+.series .kv dt { color: var(--ink-soft); }
+.series .kv dd { margin: 0; font-weight: 500; font-variant-numeric: tabular-nums; }
+.series .body .btn { align-self: flex-start; margin-top: var(--s3); }
+.list-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--s3); margin-bottom: var(--s5); }
+.list-head p { color: var(--ink-soft); }
+.compare th:first-child, .compare td:first-child { color: var(--ink-soft); font-weight: 400; position: sticky; left: 0; background: var(--white); }
+.compare thead th { color: var(--ink); font-weight: 600; font-size: 14px; }
+.faq details { border-top: var(--line); }
+.faq details:last-child { border-bottom: var(--line); }
+.faq summary { cursor: pointer; padding: var(--s4) 0; font-weight: 600; font-size: 17px; list-style: none; display: flex; justify-content: space-between; gap: var(--s4); }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; color: var(--blue-700); font-weight: 400; font-size: 22px; line-height: 1; }
+.faq details[open] summary::after { content: "–"; }
+.faq details p { padding-bottom: var(--s4); color: var(--ink-soft); max-width: 62ch; }
+@media (max-width: 1000px) {
+  .layout { grid-template-columns: 1fr; gap: var(--s5); }
+  .filters { position: static; }
+  .filters .filter { border-top: 0; padding-top: 0; }
+  .filters { flex-direction: row; flex-wrap: wrap; gap: var(--s4) var(--s6); }
+}
+@media (max-width: 760px) {
+  .cat-head { grid-template-columns: 1fr; }
+  .cat-glyph { width: 64px; height: 64px; order: -1; }
+  .series { grid-template-columns: 1fr; }
+  .specs div { flex: 1 1 45%; border-right: 0; }
+}
+</style>
+
+{{partial:sprite}}
+{{partial:header}}
+
+<main>
+  <div class="wrap">
+    <ul class="crumbs" aria-label="Kde ste">
+      <li><a href="{{link:domov}}">Domov</a></li>
+      <li><a href="{{link:kategoria}}">Potrubia</a></li>
+      <li aria-current="page">Pre vykurovanie</li>
+    </ul>
+
+    <div class="cat-head">
+      <div>
+        <h1>Predizolované potrubia pre vykurovanie</h1>
+        <p class="lead">Ohybné potrubie na rozvod tepla medzi budovami alebo od kotolne, kotla na biomasu či tepelného čerpadla k domu. Vyberte UNO, ak vediete jednu rúru, alebo DUO, keď chcete prívod a spiatočku v jednom plášti.</p>
+      </div>
+      <svg class="cat-glyph" aria-hidden="true"><use href="#g2"/></svg>
+    </div>
+
+    <dl class="specs">
+      <div><dt>Prevádzkový tlak</dt><dd>6 bar</dd></div>
+      <div><dt>Nosná rúra PE-Xa</dt><dd>25 až 125 mm</dd></div>
+      <div><dt>Plášť</dt><dd>75 až 200 mm</dd></div>
+      <div><dt>Polomer ohybu</dt><dd>od 0,20 m</dd></div>
+      <div><dt>Rady</dt><dd>UNO, DUO, UNO PRIMO, PRIMO DUO</dd></div>
+    </dl>
+
+    <div class="layout">
+      <aside class="filters" aria-label="Filtre">
+        <h2><svg aria-hidden="true"><use href="#i-filter"/></svg>Zúžiť výber</h2>
+        <div class="filter">
+          <h3>Počet rúr v plášti</h3>
+          <div class="chips">
+            <button class="chip" type="button" aria-pressed="true">Všetky</button>
+            <button class="chip" type="button" aria-pressed="false"><svg class="glyph-sm" style="width:16px;height:16px" aria-hidden="true"><use href="#g1"/></svg>Jedna</button>
+            <button class="chip" type="button" aria-pressed="false"><svg class="glyph-sm" style="width:16px;height:16px" aria-hidden="true"><use href="#g2"/></svg>Dve</button>
+          </div>
+        </div>
+        <div class="filter">
+          <h3>Nosná rúra</h3>
+          <div class="chips">
+            <button class="chip" type="button" aria-pressed="false">25</button>
+            <button class="chip" type="button" aria-pressed="false">32</button>
+            <button class="chip" type="button" aria-pressed="true">40</button>
+            <button class="chip" type="button" aria-pressed="false">50</button>
+            <button class="chip" type="button" aria-pressed="false">63</button>
+            <button class="chip" type="button" aria-pressed="false">75</button>
+            <button class="chip" type="button" aria-pressed="false">90</button>
+            <button class="chip" type="button" aria-pressed="false">110</button>
+            <button class="chip" type="button" aria-pressed="false">125</button>
+          </div>
+        </div>
+        <div class="filter">
+          <h3>Izolácia</h3>
+          <div class="chips">
+            <button class="chip" type="button" aria-pressed="false">Štandardná</button>
+            <button class="chip" type="button" aria-pressed="false">Zosilnená</button>
+          </div>
+        </div>
+        <a class="reset" href="#">Zrušiť filtre</a>
+      </aside>
+
+      <div>
+        <div class="list-head">
+          <p>4 rady, 24 dimenzií s obj. číslom podľa katalógu</p>
+          <a class="btn btn-secondary btn-sm" href="#">Všetky varianty ako tabuľku</a>
+        </div>
+        <div class="series">
+          <a class="card" href="{{link:rad}}">
+            <div class="plate"><img src="{{img:i06}}" alt=""><svg class="glyph" aria-hidden="true"><use href="#g1"/></svg></div>
+            <div class="body">
+              <h3>Microflex UNO, vykurovanie 6 bar</h3>
+              <p>Jedna rúra PE-Xa v plášti. Prívod alebo spiatočka, teplá voda k vzdialenému odberu.</p>
+              <dl class="kv"><dt>Rúra</dt><dd>25 až 125 mm</dd><dt>Plášť</dt><dd>75 až 200 mm</dd><dt>Dimenzie</dt><dd>16, z toho 7 so zosilnenou izoláciou</dd></dl>
+              <span class="btn btn-primary btn-sm">Zobraziť varianty</span>
+            </div>
+          </a>
+          <a class="card" href="#">
+            <div class="plate"><img src="{{img:i07}}" alt=""><svg class="glyph" aria-hidden="true"><use href="#g2"/></svg></div>
+            <div class="body">
+              <h3>Microflex DUO, vykurovanie 6 bar</h3>
+              <p>Prívod a spiatočka v jednom plášti. Najčastejšia voľba pre prípojku domu alebo tepelného čerpadla.</p>
+              <dl class="kv"><dt>Rúra</dt><dd>2 × 25 až 2 × 63 mm</dd><dt>Plášť</dt><dd>125 až 200 mm</dd><dt>Dimenzie</dt><dd>8</dd></dl>
+              <span class="btn btn-primary btn-sm">Zobraziť varianty</span>
+            </div>
+          </a>
+          <a class="card" href="#">
+            <div class="plate"><img src="{{img:i08}}" alt=""><svg class="glyph" aria-hidden="true"><use href="#g1"/></svg></div>
+            <div class="body">
+              <h3>Microflex UNO PRIMO, vykurovanie 6 bar</h3>
+              <p>Jedna rúra s ešte ohybnejším plášťom pre trasy s mnohými zmenami smeru.</p>
+              <dl class="kv"><dt>Rúra</dt><dd>podľa katalógu</dd><dt>Plášť</dt><dd>podľa katalógu</dd><dt>Dimenzie</dt><dd>doplníme</dd></dl>
+              <span class="btn btn-primary btn-sm">Zobraziť varianty</span>
+            </div>
+          </a>
+          <a class="card" href="#">
+            <div class="plate"><img src="{{img:i62}}" alt=""><svg class="glyph" aria-hidden="true"><use href="#g2"/></svg></div>
+            <div class="body">
+              <h3>Microflex PRIMO DUO, vykurovanie 6 bar</h3>
+              <p>Dve rúry v ohybnejšom plášti PRIMO. Pre stiesnené výkopy a krátke prípojky.</p>
+              <dl class="kv"><dt>Rúra</dt><dd>podľa katalógu</dd><dt>Plášť</dt><dd>podľa katalógu</dd><dt>Dimenzie</dt><dd>doplníme</dd></dl>
+              <span class="btn btn-primary btn-sm">Zobraziť varianty</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="section" aria-labelledby="h-cmp">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="h-cmp">Ktorý rad zvoliť</h2>
+        <p class="muted">Porovnanie radov v kategórii podľa katalógu výrobcu.</p>
+      </div>
+      <div class="table-wrap">
+        {{compare:heating}}
+      </div>
+      <p class="source">Zdroj: katalóg Watts Microflex, slovenské vydanie, stav k 21. 9. 2026. Rady PRIMO doplníme z PDF katalógu.</p>
+    </div>
+  </section>
+
+  <section class="section band" aria-labelledby="h-faq">
+    <div class="wrap g12">
+      <div style="grid-column: 1 / 5">
+        <h2 id="h-faq">Otázky pred výberom</h2>
+        <p class="muted" style="margin-top: var(--s3)">Čo sa nás pýtajú najčastejšie. Ak vám odpoveď chýba, napíšte nám.</p>
+      </div>
+      <div class="faq" style="grid-column: 5 / 13">
+        <details><summary>UNO alebo DUO: kedy sa oplatia dve rúry v jednom plášti?</summary><p>Keď potrebujete prívod aj spiatočku na jednej trase, napríklad od tepelného čerpadla alebo kotolne k domu. DUO znamená jeden výkop a jednu pokládku. UNO použijete, keď vediete len jednu vetvu, alebo pri väčších dimenziách, ktoré sa v DUO nevyrábajú.</p></details>
+        <details><summary>Akú dimenziu potrubia zvoliť?</summary><p>Podľa výkonu a prietoku. Orientačne pre rodinný dom s tepelným čerpadlom postačia rúry 32 alebo 40 mm. Presný výpočet urobí projektant, alebo použite výpočtový nástroj výrobcu, na ktorý odkazujeme pri každom rade.</p></details>
+        <details><summary>Ako hlboko sa potrubie ukladá a ako sa spája?</summary><p>Ukladá sa do pieskového lôžka podľa montážneho návodu výrobcu. Spája sa svorno-lisovacími spojkami PE-X, koniec plášťa sa uzatvára teplom zmrštiteľnou koncovkou a prestup stenou tesnením Micro Press alebo Micro Seal.</p></details>
+        <details><summary>Čo znamená štandardná a zosilnená izolácia?</summary><p>Pri zosilnenej izolácii je rovnaká nosná rúra v hrubšom plášti, takže tepelná strata trasy je menšia. Oplatí sa pri dlhších trasách a vyšších teplotách. V tabuľke variantov ju označujeme pri každom obj. čísle.</p></details>
+      </div>
+    </div>
+  </section>
+</main>
+
+{{partial:footer}}
+{{partial:mock}}
+<script>
+  (function () { var a = document.querySelector('.nav a[data-nav="potrubia"]'); if (a) a.setAttribute('aria-current', 'page'); })();
+  // filtre v makete len prepínajú vzhľad
+  document.querySelectorAll('.filter .chips').forEach(function (g) {
+    g.querySelectorAll('.chip').forEach(function (c) { c.addEventListener('click', function () { c.setAttribute('aria-pressed', c.getAttribute('aria-pressed') !== 'true'); }); });
+  });
+</script>

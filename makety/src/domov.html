@@ -1,0 +1,305 @@
+<title>Microflex Slovensko</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..800&family=IBM+Plex+Sans:wght@400;500;600&family=Schibsted+Grotesk:wght@500;600;700&display=swap">
+<style>
+{{css}}
+
+/* Domov */
+.hero { padding-top: var(--s5); overflow: hidden; }
+.hero-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: auto auto; column-gap: var(--s5); }
+.hero-text { grid-column: 1 / 6; grid-row: 1; padding-block: var(--s7) 132px; display: flex; flex-direction: column; gap: var(--s5); align-self: start; }
+.hero-text h1 { font-size: clamp(36px, 3.3vw + 12px, 60px); line-height: 1.02; letter-spacing: -0.02em; max-width: 12ch; }
+.hero-text .lead { max-width: 30em; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.hero-note { font-size: 14px; color: var(--ink-soft); display: flex; gap: 8px; align-items: center; }
+.hero-note svg { width: 16px; height: 16px; }
+.hero-photo { grid-column: 6 / 13; grid-row: 1 / 3; position: relative; min-height: 560px; background: var(--blue-900); border-radius: var(--r-l) 0 0 var(--r-l); overflow: hidden; margin-right: min(calc(-1 * var(--gutter)), calc((var(--container) - 100vw) / 2)); }
+.hero-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 62% 55%; }
+.hero-photo .edge { position: absolute; left: 0; top: 0; bottom: 0; width: 12px; background-color: var(--blue-900); background-image: repeating-linear-gradient(180deg, var(--blue-800) 0 2px, transparent 2px 8px); }
+.hero-photo figcaption { position: absolute; right: var(--s5); bottom: var(--s4); font-size: 12px; color: rgba(255,255,255,.75); background: rgba(10,42,94,.55); padding: 4px 8px; border-radius: var(--r-s); }
+.hero-xsec { grid-column: 2 / 8; grid-row: 2; margin-top: -104px; z-index: 2; }
+.xsec-plate { background: var(--white); border-radius: var(--r-l); box-shadow: var(--shadow-float); padding: 18px 22px 14px; }
+.xsec-plate svg { width: 100%; height: auto; display: block; overflow: visible; }
+.xsec-cap { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; color: var(--ink-soft); padding-top: 8px; border-top: var(--line); margin-top: 6px; }
+.xsec-cap strong { color: var(--ink); font-weight: 600; }
+#xsec text { font-family: var(--font-text); }
+#xsec .lbl { font-size: 15px; font-weight: 600; fill: var(--ink); }
+#xsec .sub { font-size: 12.5px; fill: var(--ink-soft); }
+#xsec .lead-line { fill: none; stroke: var(--ink-soft); stroke-width: 1; }
+.xs-g { transform-box: view-box; transform-origin: 190px 190px; animation: xsPop .55s cubic-bezier(.2, .7, .2, 1) both; }
+.xs-foam { animation-delay: .12s; }
+.xs-cores { animation-delay: .26s; }
+.xs-labels { animation: xsFade .4s .6s both; }
+@keyframes xsPop { from { opacity: 0; transform: scale(.72); } to { opacity: 1; transform: scale(1); } }
+@keyframes xsFade { from { opacity: 0; } to { opacity: 1; } }
+
+.uses { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s5); }
+.use { background: var(--white); border: var(--line); border-radius: var(--r-l); padding: var(--s5); display: flex; flex-direction: column; gap: 12px; color: var(--ink); transition: border-color .15s; }
+.use:hover { border-color: var(--blue-700); color: var(--ink); }
+.use p { color: var(--ink-soft); font-size: 15px; }
+.use .more { margin-top: auto; color: var(--blue-700); font-weight: 500; display: inline-flex; gap: 6px; align-items: center; padding-top: 6px; }
+.use .more svg { width: 16px; height: 16px; }
+
+.cat-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--s5); }
+.cat-grid .c3 { grid-column: span 3; }
+.cat-grid .c4 { grid-column: span 4; }
+.cat-grid .c4 .plate { aspect-ratio: 16 / 9; }
+
+.why { align-items: center; }
+.why-text { grid-column: 1 / 6; display: flex; flex-direction: column; gap: var(--s5); }
+.facts { margin: 0; }
+.facts div { padding: var(--s4) 0; border-top: var(--line); }
+.facts div:last-child { border-bottom: var(--line); }
+.facts dt { font-weight: 600; font-size: 18px; }
+.facts dd { margin: 4px 0 0; color: var(--ink-soft); }
+.why-photo { grid-column: 6 / 13; margin: 0; }
+.why-photo img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: 50% 45%; border-radius: var(--r-l); background: var(--blue-900); }
+.why-photo figcaption { font-size: 13px; color: var(--ink-soft); margin-top: 8px; }
+
+.refs { align-items: start; }
+.ref { display: flex; flex-direction: column; gap: 12px; color: var(--ink); }
+.ref img { width: 100%; height: 300px; object-fit: cover; border-radius: var(--r-l); background: var(--grey-100); }
+.ref strong { display: block; font-weight: 600; }
+.ref span.muted { font-size: 14px; }
+.ref:hover strong { color: var(--blue-700); }
+
+.b2b { position: relative; overflow: hidden; }
+.b2b::after { content: ""; position: absolute; right: 0; top: 0; bottom: 0; width: min(14vw, 180px); background-image: repeating-linear-gradient(90deg, var(--blue-800) 0 2px, transparent 2px 8px); opacity: .9; }
+.b2b .wrap { position: relative; z-index: 1; }
+.b2b-text { grid-column: 1 / 7; display: flex; flex-direction: column; gap: var(--s5); }
+.b2b-text .lead { color: #B8C7DE; }
+.b2b-list { grid-column: 8 / 13; }
+.b2b-list li { padding: 14px 0; border-top: 1px solid rgba(255,255,255,.18); display: flex; flex-direction: column; gap: 2px; }
+.b2b-list li:last-child { border-bottom: 1px solid rgba(255,255,255,.18); }
+.b2b-list strong { font-weight: 600; }
+.b2b-list span { color: #B8C7DE; font-size: 14px; }
+.btn-ghost-light { background: transparent; color: #fff; border-color: rgba(255,255,255,.6); }
+.btn-ghost-light:hover { background: rgba(255,255,255,.1); color: #fff; }
+
+@media (max-width: 1100px) {
+  .uses { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cat-grid .c3 { grid-column: span 6; }
+  .cat-grid .c4 { grid-column: span 4; }
+  .hero-text { grid-column: 1 / 7; }
+  .hero-photo { grid-column: 7 / 13; min-height: 480px; }
+  .hero-xsec { grid-column: 1 / 8; }
+}
+@media (max-width: 760px) {
+  .hero-grid > * { grid-column: 1 / -1 !important; grid-row: auto !important; }
+  .hero-text { padding-block: var(--s6) var(--s5); }
+  .hero-photo { min-height: 0; aspect-ratio: 4 / 3; margin-inline: calc(-1 * var(--gutter)); border-radius: 0; }
+  .hero-xsec { margin-top: -40px; padding-inline: 8px; }
+  #xsec .sub { display: none; }
+  #xsec .lbl { font-size: 23px; }
+  .ref img { height: auto; aspect-ratio: 4 / 3; }
+  .uses { grid-template-columns: 1fr; }
+  .cat-grid .c3, .cat-grid .c4 { grid-column: 1 / -1; }
+  .b2b::after { display: none; }
+}
+</style>
+
+{{partial:sprite}}
+{{partial:header}}
+
+<main>
+  <!-- Hero -->
+  <section class="hero" aria-labelledby="h-hero">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div class="hero-text">
+          <h1 id="h-hero">Predizolované potrubie, ktoré sa ohne okolo prekážky.</h1>
+          <p class="lead">Microflex vedie teplo, teplú aj studenú vodu a chlad pod zemou. Od kotolne alebo tepelného čerpadla až k domu v jednom kuse z kotúča, bez spojov vo výkope.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#">Vybrať potrubie</a>
+            <a class="btn btn-secondary" href="#"><svg aria-hidden="true"><use href="#i-dl"/></svg>Katalóg PDF, 19 MB</a>
+          </div>
+          <p class="hero-note"><svg aria-hidden="true"><use href="#i-check"/></svg>Skladom a predaj cez instalatershop.sk</p>
+        </div>
+
+        <figure class="hero-photo">
+          <img src="{{img:i46}}" alt="Výkop s uloženým potrubím Microflex: modré zvlnené rúry v piesku, napojené na spojky">
+          <span class="edge" aria-hidden="true"></span>
+          <figcaption>Fotka výrobcu, dočasná</figcaption>
+        </figure>
+
+        <div class="hero-xsec">
+          <div class="xsec-plate">
+            <svg id="xsec" viewBox="0 0 640 380" role="img" aria-label="Prierez potrubím Microflex DUO 125 s dvoma rúrami PE-Xa 32 mm">
+              <defs>
+                <pattern id="foamdots" width="7" height="7" patternUnits="userSpaceOnUse"><circle cx="3.5" cy="3.5" r="1.1" fill="#AEB5BF"/></pattern>
+              </defs>
+              <g class="xs-g xs-casing"><path id="xs-casing-path" fill="#005DB9" fill-rule="evenodd"/></g>
+              <g class="xs-g xs-foam"><circle cx="190" cy="190" r="131" fill="#C8CDD4"/><circle cx="190" cy="190" r="131" fill="url(#foamdots)"/></g>
+              <g class="xs-g xs-cores">
+                <circle cx="142" cy="190" r="38.5" fill="#F2C400"/><circle cx="142" cy="190" r="31.5" fill="#FFFFFF"/>
+                <circle cx="238" cy="190" r="38.5" fill="#F2C400"/><circle cx="238" cy="190" r="31.5" fill="#FFFFFF"/>
+              </g>
+              <g class="xs-labels">
+                <polyline class="lead-line" points="286,75 372,75 384,75"/><circle cx="286" cy="75" r="2.5" fill="#4A5568"/>
+                <text class="lbl" x="392" y="71">Zvlnený plášť HDPE</text><text class="sub" x="392" y="89">Ø 125 mm, uzavreté komory</text>
+                <polyline class="lead-line" points="304,170 372,170 384,170"/><circle cx="304" cy="170" r="2.5" fill="#4A5568"/>
+                <text class="lbl" x="392" y="166">Izolácia z PE-X peny</text><text class="sub" x="392" y="184">uzavreté bunky, nasiakavosť pod 1 %</text>
+                <polyline class="lead-line" points="267,214 330,300 384,300"/><circle cx="267" cy="214" r="2.5" fill="#4A5568"/>
+                <text class="lbl" x="392" y="296">2 × nosná rúra PE-Xa</text><text class="sub" x="392" y="314">32 × 2,9 mm, kyslíková bariéra</text>
+              </g>
+            </svg>
+            <div class="xsec-cap"><span><strong>Microflex DUO 125/2×32</strong>, prierez v mierke</span><span>Zdroj rozmerov: katalóg Watts</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Na čo -->
+  <section class="band section" aria-labelledby="h-uses">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="h-uses">Na čo potrubie potrebujete?</h2>
+        <p class="muted">Vyberte použitie. Ukážeme len rady a dimenzie, ktoré sa naň hodia.</p>
+      </div>
+      <div class="uses">
+        <a class="use" href="#">
+          <svg class="glyph glyph-lg" aria-hidden="true"><use href="#g2"/></svg>
+          <h3>Vykurovanie</h3>
+          <p>Rozvod tepla od kotolne, kotla na biomasu alebo tepelného čerpadla k domu. Rady UNO a DUO, 6 bar.</p>
+          <span class="more">Zobraziť rady <svg aria-hidden="true"><use href="#i-chev"/></svg></span>
+        </a>
+        <a class="use" href="#">
+          <svg class="glyph glyph-lg" aria-hidden="true"><use href="#g2s"/></svg>
+          <h3>Teplá a studená voda</h3>
+          <p>Pitná voda medzi budovami a k vzdialeným odberom. Rady UNO a DUO v sanitárnom vyhotovení, 10 bar.</p>
+          <span class="more">Zobraziť rady <svg aria-hidden="true"><use href="#i-chev"/></svg></span>
+        </a>
+        <a class="use" href="#">
+          <svg class="glyph glyph-lg" aria-hidden="true"><use href="#gc"/></svg>
+          <h3>Chladenie a studená voda</h3>
+          <p>Chladená a studená voda, aj odpadová voda. Rad COOL, na želanie s vyhrievacím káblom proti zamrznutiu.</p>
+          <span class="more">Zobraziť rady <svg aria-hidden="true"><use href="#i-chev"/></svg></span>
+        </a>
+        <a class="use" href="#">
+          <svg class="glyph glyph-lg" aria-hidden="true"><use href="#g2"/></svg>
+          <h3>Tepelné čerpadlo</h3>
+          <p>Prepojenie vonkajšej jednotky s domom v jednom plášti, prívod aj spiatočka. Rad Microflex HP.</p>
+          <span class="more">Zobraziť rad <svg aria-hidden="true"><use href="#i-chev"/></svg></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Katalóg -->
+  <section class="section" aria-labelledby="h-cat">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="h-cat">Katalóg Microflex</h2>
+        <p class="muted">Päť potrubných systémov podľa média a k nim spojky a príslušenstvo. Všetko, čo treba na jeden výkop.</p>
+      </div>
+      <div class="cat-grid">
+        <a class="card c3" href="{{link:kategoria}}">
+          <div class="plate"><img src="{{img:i02}}" alt=""><svg class="glyph" aria-hidden="true"><use href="#g2"/></svg></div>
+          <div class="body"><h3>Potrubia pre vykurovanie</h3><p>Jedna alebo dve rúry PE-Xa v jednom plášti, 6 bar. UNO, DUO, UNO PRIMO a PRIMO DUO.</p><div class="meta"><span>4 rady</span><strong>Zobraziť <svg aria-hidden="true"><use href="#i-chev"/></svg></strong></div></div>
+        </a>
+        <a class="card c3" href="#">
+          <div class="plate"><img src="{{img:i00}}" alt=""><svg class="glyph" aria-hidden="true"><use href="#g2s"/></svg></div>
+          <div class="body"><h3>Potrubia pre teplú a studenú vodu</h3><p>Pitná voda, 10 bar. UNO, DUO a PRIMO DUO v sanitárnom vyhotovení.</p><div class="meta"><span>3 rady</span><strong>Zobraziť <svg aria-hidden="true"><use href="#i-chev"/></svg></strong></div></div>
+        </a>
+        <a class="card c3" href="#">
+          <div class="plate"><img src="{{img:i01}}" alt=""><svg class="glyph" aria-hidden="true"><use href="#g4"/></svg></div>
+          <div class="body"><h3>Vykurovanie a sanita v jednom</h3><p>Štyri rúry v jednom plášti: prívod, spiatočka, teplá a studená voda. Rad QUADRO.</p><div class="meta"><span>1 rad</span><strong>Zobraziť <svg aria-hidden="true"><use href="#i-chev"/></svg></strong></div></div>
+        </a>
+        <a class="card c3" href="#">
+          <div class="plate"><img src="{{img:i03}}" alt=""><svg class="glyph" aria-hidden="true"><use href="#gc"/></svg></div>
+          <div class="body"><h3>Studená a chladená voda</h3><p>Chladená a studená pitná voda, odpadová voda. COOL, COOL s vyhrievacím káblom a COOL DUO.</p><div class="meta"><span>3 rady</span><strong>Zobraziť <svg aria-hidden="true"><use href="#i-chev"/></svg></strong></div></div>
+        </a>
+        <a class="card c4" href="#">
+          <div class="plate"><img src="{{img:i07}}" alt=""><svg class="glyph" aria-hidden="true"><use href="#g2"/></svg></div>
+          <div class="body"><h3>Tepelné čerpadlá</h3><p>Prepojenie vonkajšej jednotky tepelného čerpadla s domom. Rad Microflex HP.</p><div class="meta"><span>1 rad</span><strong>Zobraziť <svg aria-hidden="true"><use href="#i-chev"/></svg></strong></div></div>
+        </a>
+        <a class="card c4" href="#">
+          <div class="plate"><img src="{{img:i04}}" alt=""><svg class="glyph" aria-hidden="true"><use href="#gf"/></svg></div>
+          <div class="body"><h3>Spojky</h3><p>PE-X spojky, kolená, T-kusy a závitové pripojenia pre vykurovanie, COOL aj sanitu.</p><div class="meta"><span>19 produktov</span><strong>Zobraziť <svg aria-hidden="true"><use href="#i-chev"/></svg></strong></div></div>
+        </a>
+        <a class="card c4" href="#">
+          <div class="plate"><img src="{{img:i05}}" alt=""><svg class="glyph" aria-hidden="true"><use href="#gf"/></svg></div>
+          <div class="body"><h3>Príslušenstvo</h3><p>Koncovky, izolačné sady, prestupy stenou, opravné a výstražné pásky, revízne šachty.</p><div class="meta"><span>23 produktov</span><strong>Zobraziť <svg aria-hidden="true"><use href="#i-chev"/></svg></strong></div></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Prečo -->
+  <section class="section" aria-labelledby="h-why">
+    <div class="wrap g12 why">
+      <div class="why-text">
+        <h2 id="h-why">Prečo práve Microflex</h2>
+        <dl class="facts">
+          <div><dt>Polomer ohybu od 0,20 m</dt><dd>Potrubie kopíruje výkop, obíde základy aj strom. Menej kolien, menej spojov a menej miest, kde môže niečo tiecť.</dd></div>
+          <div><dt>Jeden plášť, dve alebo štyri rúry</dt><dd>DUO a QUADRO vedú prívod aj spiatočku, teplú aj studenú vodu v jednej trase. Užší výkop a rýchlejšia pokládka.</dd></div>
+          <div><dt>Rúra PE-Xa, pena PE-X, plášť HDPE</dt><dd>Nosná rúra podľa EN ISO 15875 s kyslíkovou bariérou podľa DIN 4726, izolácia s uzavretými bunkami, plášť z HDPE vyrábaný ako uzavreté komory.</dd></div>
+        </dl>
+        <div><a class="btn btn-secondary" href="#">Technické údaje radov</a></div>
+      </div>
+      <figure class="why-photo">
+        <img src="{{img:i61}}" alt="Rez potrubím Microflex: modrý zvlnený plášť, sivá izolácia a žlté rúry PE-Xa">
+        <figcaption>Render výrobcu, dočasný. Nahradíme vlastnou makro fotkou odrezku.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- Referencie -->
+  <section class="section band" aria-labelledby="h-refs">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="h-refs">Kde už Microflex leží</h2>
+        <a href="#" class="more-link">Všetky referencie</a>
+      </div>
+      <div class="refs g12">
+        <a class="ref" href="#" style="grid-column: span 5"><img src="{{img:i19}}" alt=""><span><strong>Systém Microflex na vojenskej základni</strong><span class="muted">Rozvod tepla medzi budovami areálu</span></span></a>
+        <a class="ref" href="#" style="grid-column: span 4"><img src="{{img:i40}}" alt=""><span><strong>Microflex obnovil vykurovanie školy</strong><span class="muted">Výmena starého rozvodu bez zásahu do budovy</span></span></a>
+        <a class="ref" href="#" style="grid-column: span 3"><img src="{{img:i41}}" alt=""><span><strong>Bytové domy, Považská Bystrica</strong><span class="muted">Veľký projekt na Slovensku</span></span></a>
+      </div>
+      <p class="small muted" style="margin-top: var(--s5)">Fotky z referencií výrobcu, dočasné.</p>
+    </div>
+  </section>
+
+  <!-- Pre firmy -->
+  <section class="section band-dark b2b" aria-labelledby="h-b2b">
+    <div class="wrap g12">
+      <div class="b2b-text">
+        <h2 id="h-b2b">Pre projektantov, montážne firmy a veľkoobchod</h2>
+        <p class="lead">Technické listy, výkresy DWG a DXF, vyhlásenia o zhode a environmentálna deklarácia na jednom mieste. Na projekt pošlite dopyt, ozveme sa s ponukou a dostupnosťou.</p>
+        <div class="hero-actions">
+          <a class="btn btn-inverse" href="#">Poslať dopyt na projekt</a>
+          <a class="btn btn-ghost-light" href="#"><svg aria-hidden="true"><use href="#i-dl"/></svg>Podklady na stiahnutie</a>
+        </div>
+      </div>
+      <ul class="b2b-list">
+        <li><strong>Technické listy a katalóg</strong><span>PDF pre každý rad, katalóg Microflex 19 MB</span></li>
+        <li><strong>BIM a CAD</strong><span>DWG a DXF pre UNO, DUO, QUADRO a COOL</span></li>
+        <li><strong>Vyhlásenia a deklarácie</strong><span>Vyhlásenie o zhode, environmentálna deklarácia EPD platná do 29. 5. 2031</span></li>
+        <li><strong>Veľkoobchodný kontakt</strong><span>Obchodné oddelenie, telefón a e-mail doplníme</span></li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+{{partial:footer}}
+{{partial:mock}}
+
+<script>
+  // Prierez v hero: zvlnený plášť sa kreslí kódom, nie ručne písanou cestou.
+  (function () {
+    var path = document.getElementById('xs-casing-path');
+    if (!path) return;
+    var cx = 190, cy = 190, R = 150, amp = 4.5, ribs = 44, wall = 14;
+    function ring(r0) {
+      var d = '';
+      for (var i = 0; i <= 360; i++) {
+        var th = i * Math.PI / 180, r = r0 + amp * Math.sin(ribs * th);
+        d += (i ? 'L' : 'M') + (cx + r * Math.cos(th)).toFixed(1) + ' ' + (cy + r * Math.sin(th)).toFixed(1);
+      }
+      return d + 'Z';
+    }
+    path.setAttribute('d', ring(R) + ' ' + ring(R - wall));
+  })();
+</script>

@@ -110,6 +110,9 @@
   .btn-inverse:hover { background: var(--color-blue-100); color: var(--color-blue-900); }
   .btn-ghost-light { background: transparent; color: #fff; border-color: rgb(255 255 255 / 0.6); }
   .btn-ghost-light:hover { background: rgb(255 255 255 / 0.1); color: #fff; }
+  /* Žltá = farba jadra rúry. Jediné miesto, kde je akciou: hlavné tlačidlo na tmavom hero. */
+  .btn-yellow { background: var(--color-yellow-500); color: var(--color-ink); }
+  .btn-yellow:hover { background: #e3b800; color: var(--color-ink); }
   .btn-sm { height: 36px; padding: 0 14px; font-size: 14px; }
 
   /* Karty a plochy */

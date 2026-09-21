@@ -38,7 +38,6 @@ const productLd = [{
     <div class="gallery">
       <figure class="plate main" transition:name={`rad-${r.id}`}>
         {img && <Image src={img} alt={ui.rad.fotoAlt(nazov)} widths={[480, 720, 1000]} sizes="(max-width: 760px) 100vw, 45vw" loading="eager" />}
-        <figcaption>{ui.common.fotkaVyrobcu}</figcaption>
       </figure>
     </div>
     <div class="summary">
@@ -117,7 +116,6 @@ const productLd = [{
   .gallery { grid-column: 1 / 7; }
   .main { aspect-ratio: 1; border-radius: var(--radius-l); margin: 0; }
   .main :global(img) { position: absolute; left: 8%; top: 8%; width: 84%; height: 84%; object-fit: contain; mix-blend-mode: multiply; }
-  .main figcaption { position: absolute; right: 16px; bottom: 12px; font-size: 12px; color: var(--color-ink-soft); }
   .summary { grid-column: 7 / 13; display: flex; flex-direction: column; gap: 24px; }
   .summary h1 { font-size: clamp(31px, 2vw + 16px, 44px); }
   .series-tag { display: inline-flex; align-items: center; gap: 10px; color: var(--color-ink-soft); font-size: 14px; }

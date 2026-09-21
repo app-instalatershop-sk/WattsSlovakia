@@ -227,7 +227,7 @@ const refFotky = [fotka('prierez-duo.jpg')!, fotka('referencia-skola.png')!, fot
   .ref:hover strong { color: var(--color-blue-700); }
 
   /* Šikmá horná hrana tmavého bloku: odkaz na diagonálny motív Watts, zároveň prechod z referencií. */
-  .b2b { position: relative; overflow: hidden; clip-path: polygon(0 4vw, 100% 0, 100% 100%, 0 100%); margin-top: -4vw; padding-top: calc(64px + 4vw); }
+  .b2b { position: relative; overflow: hidden; clip-path: polygon(0 4vw, 100% 0, 100% 100%, 0 100%); margin-top: -4vw; padding-top: calc(64px + 4vw); margin-bottom: -96px; padding-bottom: 96px; }
   .b2b :global(.b2b-bg) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% 50%; opacity: .55; mix-blend-mode: luminosity; filter: saturate(0) contrast(1.15); pointer-events: none; }
   .b2b::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--color-blue-900) 0%, rgb(10 42 94 / 0.92) 45%, rgb(10 42 94 / 0.45) 100%); pointer-events: none; }
   .b2b-grid { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 24px; }

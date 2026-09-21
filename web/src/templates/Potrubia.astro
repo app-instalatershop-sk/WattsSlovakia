@@ -1,0 +1,60 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Ikona from '../components/Ikona.astro';
+import { kategorie, cestaKategorie, kNazov, kPopis, rNazov } from '../lib/katalog';
+import { piktogram, fotka } from '../lib/obrazky';
+import { type Lang, t, staticAlternates } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const ui = t(lang);
+const potrubia = (await kategorie()).filter((k) => k.typ === 'potrubie');
+const rady = (await getCollection('rady')).map((r) => r.data);
+const rodina = fotka('rodina-potrubi.jpg')!;
+---
+<Base lang={lang} alternates={staticAlternates('potrubia')} title={ui.potrubia.title} description={ui.potrubia.description} aktivna="potrubia" drobceky={[{ text: ui.nav.potrubia }]}>
+  <section class="wrap head">
+    <div>
+      <h1>{ui.potrubia.title}</h1>
+      <p class="lead">{ui.potrubia.lead}</p>
+    </div>
+    <Image src={rodina} alt={ui.potrubia.rodinaAlt} widths={[600, 900, 1216]} sizes="(max-width: 760px) 100vw, 45vw" class="rodina" />
+  </section>
+  <section class="wrap section" style="padding-top: 24px">
+    <div class="list">
+      {potrubia.map((k) => { const p = piktogram(k.piktogram); const r = rady.filter((x) => x.kategoria === k.id).sort((a, b) => a.poradie - b.poradie); return (
+        <a class="row" href={cestaKategorie(k, lang)}>
+          {p && <Image src={p} alt="" width={224} height={168} class="pikto" />}
+          <div class="txt">
+            <h2>{kNazov(k, lang)}</h2>
+            <p class="muted">{kPopis(k, lang)}</p>
+            <p class="rady">{r.map((x) => rNazov(x, lang)).join(', ')}</p>
+          </div>
+          <span class="go">{ui.sklonovanie.radov(r.length)} <Ikona nazov="chevron-right" velkost={18} /></span>
+        </a>
+      ); })}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px 48px; align-items: center; padding-block: 8px 16px; }
+  .head .lead { margin-top: 16px; }
+  .head :global(.rodina) { width: 100%; height: auto; border-radius: var(--radius-l); }
+  .list { display: flex; flex-direction: column; }
+  .row { display: grid; grid-template-columns: 140px minmax(0, 1fr) auto; gap: 24px; align-items: center; padding: 24px 0; border-top: var(--line); color: var(--color-ink); transition: background-color 150ms var(--ease-soft); }
+  .row:last-child { border-bottom: var(--line); }
+  .row:hover { background: var(--color-blue-50); color: var(--color-ink); }
+  .row :global(.pikto) { width: 140px; height: 105px; object-fit: contain; }
+  .row h2 { font-size: 22px; }
+  .txt { display: flex; flex-direction: column; gap: 6px; }
+  .rady { font-size: 14px; color: var(--color-ink-soft); }
+  .go { display: inline-flex; align-items: center; gap: 6px; color: var(--color-blue-700); font-weight: 500; white-space: nowrap; }
+  @media (max-width: 760px) {
+    .head { grid-template-columns: 1fr; }
+    .row { grid-template-columns: 1fr; gap: 12px; }
+    .row :global(.pikto) { width: 112px; height: 84px; }
+  }
+</style>

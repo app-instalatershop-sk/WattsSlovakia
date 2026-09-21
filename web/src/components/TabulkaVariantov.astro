@@ -1,49 +1,50 @@
 ---
 import Ikona from './Ikona.astro';
-import { cislo, type Variant } from '../lib/katalog';
+import { cislo, datum, type Variant } from '../lib/katalog';
+import { type Lang, t } from '../i18n/ui';
 
-interface Props { varianty: Variant[]; zdroj: string; stiahnute: string }
-const { varianty, zdroj, stiahnute } = Astro.props;
-const maSlpec = (k: keyof Variant) => varianty.some((v) => v[k] !== null && v[k] !== undefined);
-const maRuru = maSlpec('rura') || maSlpec('rura_text');
+interface Props { varianty: Variant[]; zdroj: string; stiahnute: string; lang: Lang }
+const { varianty, zdroj, stiahnute, lang } = Astro.props;
+const ui = t(lang);
+const ma = (k: keyof Variant) => varianty.some((v) => v[k] !== null && v[k] !== undefined);
+const maRuru = ma('rura') || ma('rura_text');
 const ruraText = (v: Variant) => (v.rura ? `${cislo(v.rura.d)} × ${cislo(v.rura.s, 1)}` : (v.rura_text ?? '').replace(/x/g, '×'));
-const datum = new Date(stiahnute).toLocaleDateString('sk-SK', { day: 'numeric', month: 'numeric', year: 'numeric' });
 ---
 <div class="table-wrap">
   <table class="data variants">
     <thead>
       <tr>
-        <th>Obj. číslo</th>
-        {maSlpec('plast_mm') && <th class="right">Plášť Ø<small>mm</small></th>}
-        {maRuru && <th class="right">Rúra Ø × hrúbka<small>mm</small></th>}
-        {maSlpec('dn') && <th>DN</th>}
-        {maSlpec('tlak_bar') && <th class="right">Tlak<small>bar</small></th>}
-        {maSlpec('hmotnost_kg_m') && <th class="right">Hmotnosť<small>kg/m</small></th>}
-        {maSlpec('izolacia') && <th>Izolácia</th>}
-        {maSlpec('polomer_ohybu_m') && <th class="right">Polomer ohybu<small>m</small></th>}
-        {maSlpec('kotuc') && <th class="right">Kotúč Ø / šírka<small>m</small></th>}
-        <th><span class="sr-only">E-shop</span></th>
+        <th>{ui.tabulka.obj}</th>
+        {ma('plast_mm') && <th class="right">{ui.tabulka.plast}<small>mm</small></th>}
+        {maRuru && <th class="right">{ui.tabulka.rura}<small>mm</small></th>}
+        {ma('dn') && <th>{ui.tabulka.dn}</th>}
+        {ma('tlak_bar') && <th class="right">{ui.tabulka.tlak}<small>bar</small></th>}
+        {ma('hmotnost_kg_m') && <th class="right">{ui.tabulka.hmotnost}<small>kg/m</small></th>}
+        {ma('izolacia') && <th>{ui.tabulka.izolacia}</th>}
+        {ma('polomer_ohybu_m') && <th class="right">{ui.tabulka.polomer}<small>m</small></th>}
+        {ma('kotuc') && <th class="right">{ui.tabulka.kotuc}<small>m</small></th>}
+        <th><span class="sr-only">{ui.tabulka.eshop}</span></th>
       </tr>
     </thead>
     <tbody>
       {varianty.map((v) => (
         <tr data-pipe={v.rura?.d ?? ''} data-ins={v.izolacia ?? ''}>
           <td class="code">{v.obj_cislo}</td>
-          {maSlpec('plast_mm') && <td class="right">{cislo(v.plast_mm)}</td>}
+          {ma('plast_mm') && <td class="right">{cislo(v.plast_mm)}</td>}
           {maRuru && <td class="right">{ruraText(v)}</td>}
-          {maSlpec('dn') && <td>{v.dn ?? ''}</td>}
-          {maSlpec('tlak_bar') && <td class="right">{cislo(v.tlak_bar)}</td>}
-          {maSlpec('hmotnost_kg_m') && <td class="right">{cislo(v.hmotnost_kg_m, 2)}</td>}
-          {maSlpec('izolacia') && <td><span class:list={['ins', { adv: v.izolacia === 'zosilnena' }]}>{v.izolacia === 'zosilnena' ? 'zosilnená' : 'štandardná'}</span></td>}
-          {maSlpec('polomer_ohybu_m') && <td class="right">{cislo(v.polomer_ohybu_m, 2)}</td>}
-          {maSlpec('kotuc') && <td class="right">{v.kotuc ? `${cislo(v.kotuc.d, 2)} / ${cislo(v.kotuc.sirka, 2)}` : ''}</td>}
-          <td><a class="shop" href={v.eshop_url} target="_blank" rel="noopener">Do e-shopu <Ikona nazov="external-link" velkost={14} /></a></td>
+          {ma('dn') && <td>{v.dn ?? ''}</td>}
+          {ma('tlak_bar') && <td class="right">{cislo(v.tlak_bar)}</td>}
+          {ma('hmotnost_kg_m') && <td class="right">{cislo(v.hmotnost_kg_m, 2)}</td>}
+          {ma('izolacia') && <td><span class:list={['ins', { adv: v.izolacia === 'zosilnena' }]}>{v.izolacia === 'zosilnena' ? ui.tabulka.zosilnena : ui.tabulka.standard}</span></td>}
+          {ma('polomer_ohybu_m') && <td class="right">{cislo(v.polomer_ohybu_m, 2)}</td>}
+          {ma('kotuc') && <td class="right">{v.kotuc ? `${cislo(v.kotuc.d, 2)} / ${cislo(v.kotuc.sirka, 2)}` : ''}</td>}
+          <td><a class="shop" href={v.eshop_url} target="_blank" rel="noopener">{ui.common.doEshopu} <Ikona nazov="external-link" velkost={14} /></a></td>
         </tr>
       ))}
     </tbody>
   </table>
 </div>
-<p class="source">Zdroj: katalóg Watts Microflex, slovenské vydanie, stav k {datum}. Hmotnosť je na meter potrubia, kotúč ako priemer a šírka. <a href={zdroj} target="_blank" rel="noopener">Stránka výrobcu</a>.</p>
+<p class="source">{ui.common.zdroj} {datum(stiahnute, lang)}. {ui.tabulka.zdrojPozn} <a href={zdroj} target="_blank" rel="noopener">{ui.common.strankaVyrobcu}</a>.</p>
 
 <style>
   .shop { display: inline-flex; align-items: center; gap: 6px; color: var(--color-blue-700); font-weight: 500; }

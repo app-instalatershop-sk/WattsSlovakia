@@ -2,32 +2,35 @@
 import { Image } from 'astro:assets';
 import Ikona from './Ikona.astro';
 import { fotkaRadu } from '../lib/obrazky';
-import { cislo, rozsah, skloňujDimenzie, type Rad, type Variant } from '../lib/katalog';
+import { rozsah, rNazov, rKratky, type Rad, type Variant } from '../lib/katalog';
+import { type Lang, t } from '../i18n/ui';
 
-interface Props { rad: Rad; href: string; varianty: Variant[] }
-const { rad, href, varianty } = Astro.props;
+interface Props { rad: Rad; href: string; varianty: Variant[]; lang: Lang }
+const { rad, href, varianty, lang } = Astro.props;
+const ui = t(lang);
 const img = fotkaRadu(rad.fotka);
-const rura = rozsah(varianty.map((v) => v.rura?.d), 'mm');
-const plast = rozsah(varianty.map((v) => v.plast_mm), 'mm');
+const rura = rozsah(varianty.map((v) => v.rura?.d), 'mm', lang);
+const plast = rozsah(varianty.map((v) => v.plast_mm), 'mm', lang);
 const zosilnene = varianty.filter((v) => v.izolacia === 'zosilnena').length;
+const kratky = rKratky(rad, lang);
 ---
 <a class="card" href={href}>
   <div class="plate" style="aspect-ratio: 3 / 2" transition:name={`rad-${rad.id}`}>
     {img ? <Image src={img} alt="" widths={[320, 480, 640]} sizes="(max-width: 760px) 90vw, 30vw" /> : null}
   </div>
   <div class="body">
-    <h3>{rad.nazov}</h3>
-    {rad.kratky_popis && <p>{rad.kratky_popis}</p>}
+    <h3>{rNazov(rad, lang)}</h3>
+    {kratky && <p>{kratky}</p>}
     {varianty.length > 0 && (
       <dl class="kv">
-        <dt>Rúra</dt><dd>{rad.pocet_rur && rad.pocet_rur > 1 ? `${rad.pocet_rur} × ` : ''}{rura}</dd>
-        <dt>Plášť</dt><dd>{plast}</dd>
-        <dt>Dimenzie</dt><dd>{skloňujDimenzie(varianty.length)}{zosilnene ? `, z toho ${zosilnene} so zosilnenou izoláciou` : ''}</dd>
+        <dt>{ui.karta.rura}</dt><dd>{rad.pocet_rur && rad.pocet_rur > 1 ? `${rad.pocet_rur} × ` : ''}{rura}</dd>
+        <dt>{ui.karta.plast}</dt><dd>{plast}</dd>
+        <dt>{ui.karta.dimenzie}</dt><dd>{ui.sklonovanie.dimenzii(varianty.length)}{zosilnene ? ui.karta.zosilnena(zosilnene) : ''}</dd>
       </dl>
     )}
     <div class="meta">
-      <span>{varianty.length ? `${varianty.length} obj. čísel` : 'Rozmery v katalógu'}</span>
-      <strong>Zobraziť varianty <Ikona nazov="chevron-right" velkost={16} /></strong>
+      <span>{varianty.length ? ui.common.objCisel(varianty.length) : ui.common.rozmeryVKatalogu}</span>
+      <strong>{ui.common.zobrazitVarianty} <Ikona nazov="chevron-right" velkost={16} /></strong>
     </div>
   </div>
 </a>

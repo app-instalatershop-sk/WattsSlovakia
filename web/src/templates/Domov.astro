@@ -1,0 +1,266 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Ikona from '../components/Ikona.astro';
+import { kategorie, cestaKategorie, kNazov, kKratky, kPopis, type Kategoria, type Rad } from '../lib/katalog';
+import { fotka, fotkaRadu, piktogram } from '../lib/obrazky';
+import { type Lang, t, route, staticAlternates } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const ui = t(lang);
+const d = ui.domov;
+
+const kats = await kategorie();
+const rady = (await getCollection('rady')).map((r) => r.data);
+const produkty = (await getCollection('produkty')).map((p) => p.data);
+
+function obrazokKategorie(k: Kategoria) {
+  const r = rady.find((x: Rad) => x.kategoria === k.id && x.fotka);
+  return fotkaRadu(r?.fotka);
+}
+function pocetKategorie(k: Kategoria) {
+  if (k.typ === 'potrubie') return ui.sklonovanie.radov(k.rady.length);
+  return d.produktov(produkty.filter((p) => p.kategoria === k.id).length);
+}
+const potrubia = kats.filter((k) => k.typ === 'potrubie');
+const prveStyri = potrubia.slice(0, 4);
+const zvysok = [...potrubia.slice(4), ...kats.filter((k) => k.typ !== 'potrubie')];
+
+const heroFoto = fotka('vykop-spojky.jpg')!;
+const prierez = fotka('prierez-duo.jpg')!;
+const rezRender = fotka('rez-render.jpg')!;
+const refFotky = [fotka('prierez-duo.jpg')!, fotka('referencia-skola.png')!, fotka('referencia-povazska-bystrica.jpg')!];
+const tagPos = [{ x: '61%', y: '21%', len: '44px' }, { x: '46%', y: '44%', len: '56px' }, { x: '57%', y: '60%', len: '44px' }];
+---
+<Base lang={lang} alternates={staticAlternates('domov')} title={d.title} description={d.description}>
+  <section class="hero" aria-labelledby="h-hero">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div class="hero-text">
+          <h1 id="h-hero">{d.h1}</h1>
+          <p class="lead">{d.lead}</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href={route(lang, 'vyber')}>{d.vybrat}</a>
+            <a class="btn btn-secondary" href={route(lang, 'stiahnut')}><Ikona nazov="download" velkost={18} />{d.katalogPdf}</a>
+          </div>
+          <p class="hero-note"><Ikona nazov="check" velkost={16} />{d.skladom}</p>
+        </div>
+
+        <figure class="hero-photo">
+          <Image src={heroFoto} alt={d.heroAlt} widths={[720, 1080, 1600]} sizes="(max-width: 760px) 100vw, 60vw" loading="eager" fetchpriority="high" />
+          <span class="edge ribs-y" aria-hidden="true"></span>
+          <figcaption>{ui.common.fotkaVyrobcu}</figcaption>
+        </figure>
+
+        <div class="hero-xsec">
+          <figure class="xsec-plate">
+            <div class="xsec-stage">
+              <div class="xsec-img">
+                <Image src={prierez} alt={d.prierezAlt} widths={[400, 500]} sizes="(max-width: 760px) 90vw, 400px" loading="eager" />
+                {d.tagy.map(([b, s], i) => (
+                  <span class={`tag t${i + 1}`} style={`--x: ${tagPos[i].x}; --y: ${tagPos[i].y}; --len: ${tagPos[i].len}`}><i>{i + 1}</i><u></u><span class="txt"><b>{b}</b><small>{s}</small></span></span>
+                ))}
+              </div>
+              <div aria-hidden="true"></div>
+            </div>
+            <ul class="xsec-list" aria-label={d.popiskyLabel}>
+              {d.tagy.map(([b, s], i) => <li><i>{i + 1}</i><span>{b} <small>{s}</small></span></li>)}
+            </ul>
+            <figcaption class="xsec-cap"><span><strong>Microflex DUO</strong>, {d.prierezCap}</span><span>{ui.common.fotkaVyrobcu}</span></figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band section" aria-labelledby="h-uses">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="h-uses">{d.pouzitieH2}</h2>
+        <p class="muted">{d.pouzitieP}</p>
+      </div>
+      <div class="uses">
+        {d.pouzitia.map((p) => {
+          const img = piktogram(p.pikto);
+          const k = kats.find((x) => x.slug === p.slug || x.slug_cs === p.slug);
+          return (
+            <a class="use" href={k ? cestaKategorie(k, lang) : route(lang, 'potrubia')}>
+              {img && <Image src={img} alt="" width={224} height={168} class="pikto" />}
+              <h3>{p.nazov}</h3>
+              <p>{p.text}</p>
+              <span class="more">{ui.common.zobrazitRady} <Ikona nazov="chevron-right" velkost={16} /></span>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="h-cat">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="h-cat">{d.katalogH2}</h2>
+        <p class="muted">{d.katalogP}</p>
+      </div>
+      <div class="cat-grid">
+        {prveStyri.map((k) => { const img = obrazokKategorie(k); return (
+          <a class="card c3" href={cestaKategorie(k, lang)}>
+            <div class="plate">{img && <Image src={img} alt="" widths={[320, 480]} sizes="(max-width: 760px) 90vw, 25vw" />}</div>
+            <div class="body"><h3>{kNazov(k, lang)}</h3><p>{kPopis(k, lang)}</p><div class="meta"><span>{pocetKategorie(k)}</span><strong>{ui.common.zobrazit} <Ikona nazov="chevron-right" velkost={16} /></strong></div></div>
+          </a>
+        ); })}
+        {zvysok.map((k) => { const img = obrazokKategorie(k); return (
+          <a class="card c4" href={cestaKategorie(k, lang)}>
+            <div class="plate" style="aspect-ratio: 16 / 9">{img && <Image src={img} alt="" widths={[320, 480, 640]} sizes="(max-width: 760px) 90vw, 33vw" />}</div>
+            <div class="body"><h3>{kKratky(k, lang)}</h3><p>{kPopis(k, lang)}</p><div class="meta"><span>{pocetKategorie(k)}</span><strong>{ui.common.zobrazit} <Ikona nazov="chevron-right" velkost={16} /></strong></div></div>
+          </a>
+        ); })}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="h-why">
+    <div class="wrap why">
+      <div class="why-text">
+        <h2 id="h-why">{d.precoH2}</h2>
+        <dl class="facts">
+          {d.fakty.map(([dt, dd]) => <div><dt>{dt}</dt><dd>{dd}</dd></div>)}
+        </dl>
+        <div><a class="btn btn-secondary" href={route(lang, 'potrubia')}>{d.technickeUdaje}</a></div>
+      </div>
+      <figure class="why-photo">
+        <Image src={rezRender} alt={d.rezAlt} widths={[720, 1080, 1600]} sizes="(max-width: 760px) 100vw, 58vw" />
+        <figcaption>{ui.common.renderVyrobcu}</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section band" aria-labelledby="h-refs">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="h-refs">{d.refH2}</h2>
+        <a href={route(lang, 'referencie')}>{d.refVsetky}</a>
+      </div>
+      <div class="refs">
+        {d.refs.map(([b, s], i) => (
+          <a class={`ref r${[5, 4, 3][i]}`} href={route(lang, 'referencie')}><Image src={refFotky[i]} alt="" widths={[300, 500]} sizes="(max-width: 760px) 90vw, 40vw" /><span><strong>{b}</strong><span class="muted">{s}</span></span></a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-dark b2b" aria-labelledby="h-b2b">
+    <div class="wrap b2b-grid">
+      <div class="b2b-text">
+        <h2 id="h-b2b">{d.b2bH2}</h2>
+        <p class="lead">{d.b2bP}</p>
+        <div class="hero-actions">
+          <a class="btn btn-inverse" href={route(lang, 'firmy')}>{d.b2bDopyt}</a>
+          <a class="btn btn-ghost-light" href={route(lang, 'stiahnut')}><Ikona nazov="download" velkost={18} />{d.b2bPodklady}</a>
+        </div>
+      </div>
+      <ul class="b2b-list">
+        {d.b2bList.map(([b, s]) => <li><strong>{b}</strong><span>{s}</span></li>)}
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero { padding-top: 24px; overflow: hidden; }
+  .hero-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: auto auto; column-gap: 24px; }
+  .hero-text { grid-column: 1 / 6; grid-row: 1; padding-block: 48px 132px; display: flex; flex-direction: column; gap: 24px; align-self: start; }
+  .hero-text h1 { font-size: clamp(36px, 3.3vw + 12px, 60px); line-height: 1.02; letter-spacing: -0.02em; max-width: 12ch; }
+  .hero-text .lead { max-width: 30em; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+  .hero-note { font-size: 14px; color: var(--color-ink-soft); display: flex; gap: 8px; align-items: center; }
+  .hero-photo { grid-column: 6 / 13; grid-row: 1 / 3; position: relative; min-height: 560px; background: var(--color-blue-900); border-radius: var(--radius-l) 0 0 var(--radius-l); overflow: hidden; margin: 0; margin-right: min(calc(-1 * var(--gutter)), calc((var(--container-site) - 100vw) / 2)); }
+  .hero-photo :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 62% 55%; }
+  .hero-photo::after { content: ""; position: absolute; inset: auto 0 0 0; height: 40%; background: linear-gradient(to top, rgb(10 42 94 / 0.45), transparent); pointer-events: none; }
+  .hero-photo .edge { position: absolute; left: 0; top: 0; bottom: 0; width: 12px; background-color: var(--color-blue-900); }
+  .hero-photo figcaption { position: absolute; right: 24px; bottom: 16px; font-size: 12px; color: rgb(255 255 255 / 0.85); z-index: 1; }
+  .hero-xsec { grid-column: 2 / 8; grid-row: 2; margin-top: -104px; z-index: 2; }
+  .xsec-plate { background: var(--color-white); border-radius: var(--radius-l); box-shadow: var(--shadow-float); padding: 16px 16px 12px; margin: 0; }
+  .xsec-stage { display: grid; grid-template-columns: minmax(0, 1fr) 190px; }
+  .xsec-img { position: relative; }
+  .xsec-img :global(img) { width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; border-radius: 8px; display: block; }
+  .tag { position: absolute; left: var(--x); top: var(--y); display: flex; align-items: center; transform: translateY(-50%); animation: tagIn 450ms var(--ease-soft) both; }
+  .tag i { width: 16px; height: 16px; border-radius: 50%; background: var(--color-white); border: 3px solid var(--color-blue-700); box-shadow: 0 0 0 3px rgb(255 255 255 / 0.5); flex: none; font-size: 0; display: grid; place-items: center; font-style: normal; font-weight: 600; color: var(--color-ink); }
+  .tag u { display: block; width: var(--len, 44px); height: 2px; background: var(--color-white); box-shadow: 0 0 0 1px rgb(11 27 51 / 0.12); text-decoration: none; }
+  .tag .txt { background: rgb(255 255 255 / 0.96); border-radius: var(--radius-s); padding: 7px 11px; box-shadow: 0 2px 8px rgb(11 27 51 / 0.16); white-space: nowrap; }
+  .tag .txt b { display: block; font-weight: 600; font-size: 14px; line-height: 1.2; color: var(--color-ink); }
+  .tag .txt small { display: block; font-size: 12px; color: var(--color-ink-soft); line-height: 1.3; }
+  .tag.t1 { animation-delay: 150ms; } .tag.t2 { animation-delay: 400ms; } .tag.t3 { animation-delay: 650ms; }
+  @keyframes tagIn { from { opacity: 0; transform: translateY(calc(-50% + 8px)); } to { opacity: 1; transform: translateY(-50%); } }
+  .xsec-list { display: none; }
+  .xsec-cap { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; color: var(--color-ink-soft); padding-top: 10px; border-top: var(--line); margin-top: 12px; }
+  .xsec-cap strong { color: var(--color-ink); font-weight: 600; }
+
+  .uses { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
+  .use { background: var(--color-white); border: var(--line); border-radius: var(--radius-l); padding: 24px; display: flex; flex-direction: column; gap: 12px; color: var(--color-ink); transition: border-color 150ms var(--ease-soft), transform 200ms var(--ease-soft), box-shadow 200ms var(--ease-soft); }
+  .use:hover { border-color: var(--color-blue-700); color: var(--color-ink); transform: translateY(-2px); box-shadow: var(--shadow-lift); }
+  .use :global(.pikto) { width: 112px; height: 84px; object-fit: contain; object-position: left center; margin-bottom: 4px; }
+  .use p { color: var(--color-ink-soft); font-size: 15px; }
+  .use .more { margin-top: auto; color: var(--color-blue-700); font-weight: 500; display: inline-flex; gap: 6px; align-items: center; padding-top: 6px; }
+
+  .cat-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 24px; }
+  .c3 { grid-column: span 3; } .c4 { grid-column: span 4; }
+
+  .why { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 24px; align-items: center; }
+  .why-text { grid-column: 1 / 6; display: flex; flex-direction: column; gap: 24px; }
+  .facts { margin: 0; }
+  .facts div { padding: 16px 0; border-top: var(--line); }
+  .facts div:last-child { border-bottom: var(--line); }
+  .facts dt { font-weight: 600; font-size: 18px; }
+  .facts dd { margin: 4px 0 0; color: var(--color-ink-soft); }
+  .why-photo { grid-column: 6 / 13; margin: 0; }
+  .why-photo :global(img) { width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: 50% 45%; border-radius: var(--radius-l); background: var(--color-blue-900); }
+  .why-photo figcaption { font-size: 13px; color: var(--color-ink-soft); margin-top: 8px; }
+
+  .refs { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 24px; align-items: start; }
+  .r5 { grid-column: span 5; } .r4 { grid-column: span 4; } .r3 { grid-column: span 3; }
+  .ref { display: flex; flex-direction: column; gap: 12px; color: var(--color-ink); }
+  .ref :global(img) { width: 100%; height: 300px; object-fit: cover; border-radius: var(--radius-l); background: var(--color-grey-100); }
+  .ref strong { display: block; font-weight: 600; }
+  .ref .muted { font-size: 14px; }
+  .ref:hover strong { color: var(--color-blue-700); }
+
+  .b2b { position: relative; overflow: hidden; }
+  .b2b::after { content: ""; position: absolute; right: 0; top: 0; bottom: 0; width: min(14vw, 180px); background-image: repeating-linear-gradient(90deg, var(--color-blue-800) 0 2px, transparent 2px 8px); opacity: .9; }
+  .b2b-grid { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 24px; }
+  .b2b-text { grid-column: 1 / 7; display: flex; flex-direction: column; gap: 24px; }
+  .b2b-text .lead { color: var(--color-on-dark-muted); }
+  .b2b-list { grid-column: 8 / 13; }
+  .b2b-list li { padding: 14px 0; border-top: 1px solid rgb(255 255 255 / 0.18); display: flex; flex-direction: column; gap: 2px; }
+  .b2b-list li:last-child { border-bottom: 1px solid rgb(255 255 255 / 0.18); }
+  .b2b-list strong { font-weight: 600; }
+  .b2b-list span { color: var(--color-on-dark-muted); font-size: 14px; }
+
+  @media (max-width: 1100px) {
+    .uses { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .c3 { grid-column: span 6; } .c4 { grid-column: span 4; }
+    .hero-text { grid-column: 1 / 7; }
+    .hero-photo { grid-column: 7 / 13; min-height: 480px; }
+    .hero-xsec { grid-column: 1 / 8; }
+  }
+  @media (max-width: 760px) {
+    .hero-grid > * { grid-column: 1 / -1 !important; grid-row: auto !important; }
+    .hero-text { padding-block: 32px 24px; }
+    .hero-photo { min-height: 0; aspect-ratio: 4 / 3; margin-inline: calc(-1 * var(--gutter)); border-radius: 0; }
+    .hero-xsec { margin-top: -40px; padding-inline: 8px; }
+    .xsec-stage { grid-template-columns: 1fr; }
+    .tag .txt, .tag u { display: none; }
+    .tag i { width: 22px; height: 22px; font-size: 12px; }
+    .xsec-list { display: grid; gap: 6px; padding-top: 12px; font-size: 14px; }
+    .xsec-list li { display: flex; gap: 10px; align-items: baseline; }
+    .xsec-list i { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--color-blue-700); font-size: 11px; font-style: normal; font-weight: 600; display: grid; place-items: center; flex: none; transform: translateY(4px); }
+    .xsec-list small { color: var(--color-ink-soft); }
+    .uses { grid-template-columns: 1fr; }
+    .c3, .c4 { grid-column: 1 / -1; }
+    .why > *, .refs > *, .b2b-grid > * { grid-column: 1 / -1; }
+    .ref :global(img) { height: auto; aspect-ratio: 4 / 3; }
+    .b2b::after { display: none; }
+  }
+</style>

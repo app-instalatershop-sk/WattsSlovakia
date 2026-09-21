@@ -1,0 +1,39 @@
+---
+import Base from '../layouts/Base.astro';
+import { type Lang, t, route, staticAlternates, ROUTES } from '../i18n/ui';
+
+type Kluc = 'vyber' | 'stiahnut' | 'firmy' | 'poradna' | 'kontakt' | 'referencie' | 'hladat';
+interface Props { lang: Lang; kluc: Kluc }
+const { lang, kluc } = Astro.props;
+const ui = t(lang);
+
+const texty: Record<Lang, Record<Kluc, { title: string; text: string }>> = {
+  sk: {
+    vyber: { title: 'Výber potrubia', text: 'Sprievodca výberom v troch krokoch pripravujeme. Zatiaľ vyberte kategóriu podľa toho, čo potrubím chcete viesť.' },
+    stiahnut: { title: 'Na stiahnutie', text: 'Katalóg, technické listy, výkresy DWG a DXF a vyhlásenia o zhode na jednom mieste pripravujeme. Podklady k jednotlivým radom nájdete na ich stránkach.' },
+    firmy: { title: 'Pre firmy', text: 'Stránku pre projektantov, montážne firmy a veľkoobchod s dopytovým formulárom pripravujeme.' },
+    poradna: { title: 'Poradňa', text: 'Články o výbere, pokládke a spájaní predizolovaného potrubia pripravujeme.' },
+    kontakt: { title: 'Kontakt', text: 'Kontaktné údaje prevádzkovateľa doplníme.' },
+    referencie: { title: 'Referencie', text: 'Referencie z montáží na Slovensku pripravujeme.' },
+    hladat: { title: 'Hľadanie', text: 'Hľadanie podľa obj. čísla, radu a dimenzie pripravujeme.' },
+  },
+  cs: {
+    vyber: { title: 'Výběr potrubí', text: 'Průvodce výběrem ve třech krocích připravujeme. Zatím vyberte kategorii podle toho, co potrubím chcete vést.' },
+    stiahnut: { title: 'Ke stažení', text: 'Katalog, technické listy, výkresy DWG a DXF a prohlášení o shodě na jednom místě připravujeme. Podklady k jednotlivým řadám najdete na jejich stránkách.' },
+    firmy: { title: 'Pro firmy', text: 'Stránku pro projektanty, montážní firmy a velkoobchod s poptávkovým formulářem připravujeme.' },
+    poradna: { title: 'Poradna', text: 'Články o výběru, pokládce a spojování předizolovaného potrubí připravujeme.' },
+    kontakt: { title: 'Kontakt', text: 'Kontaktní údaje provozovatele doplníme.' },
+    referencie: { title: 'Reference', text: 'Reference z montáží připravujeme.' },
+    hladat: { title: 'Hledání', text: 'Hledání podle obj. čísla, řady a dimenze připravujeme.' },
+  },
+};
+const aktivna = (['vyber', 'stiahnut', 'firmy', 'poradna'] as const).includes(kluc as never) ? (kluc as 'vyber' | 'stiahnut' | 'firmy' | 'poradna') : undefined;
+const tx = texty[lang][kluc];
+---
+<Base lang={lang} alternates={staticAlternates(kluc as keyof typeof ROUTES['sk'])} title={tx.title} description={tx.text} aktivna={aktivna} drobceky={[{ text: tx.title }]}>
+  <section class="wrap section">
+    <h1>{tx.title}</h1>
+    <p class="lead" style="margin-top: 16px">{tx.text}</p>
+    <p style="margin-top: 24px"><a class="btn btn-primary" href={route(lang, 'potrubia')}>{ui.stub.prejst}</a></p>
+  </section>
+</Base>

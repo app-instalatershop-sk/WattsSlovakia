@@ -1,41 +1,71 @@
 ---
 import Ikona from './Ikona.astro';
-interface Props { aktivna?: 'potrubia' | 'vyber' | 'stiahnut' | 'firmy' | 'poradna' }
-const { aktivna } = Astro.props;
+import WattsLogo from './WattsLogo.astro';
+import { type Lang, type Alternates, ESHOP, t, route, LANGS } from '../i18n/ui';
+
+interface Props { lang: Lang; alternates: Alternates; aktivna?: 'potrubia' | 'vyber' | 'stiahnut' | 'firmy' | 'poradna' }
+const { lang, alternates, aktivna } = Astro.props;
+const ui = t(lang);
 const polozky = [
-  { id: 'potrubia', text: 'Potrubia', href: '/potrubia/' },
-  { id: 'vyber', text: 'Výber potrubia', href: '/vyber/' },
-  { id: 'stiahnut', text: 'Na stiahnutie', href: '/na-stiahnutie/' },
-  { id: 'firmy', text: 'Pre firmy', href: '/pre-firmy/' },
-  { id: 'poradna', text: 'Poradňa', href: '/poradna/' },
+  { id: 'potrubia', text: ui.nav.potrubia, href: route(lang, 'potrubia') },
+  { id: 'vyber', text: ui.nav.vyber, href: route(lang, 'vyber') },
+  { id: 'stiahnut', text: ui.nav.stiahnut, href: route(lang, 'stiahnut') },
+  { id: 'firmy', text: ui.nav.firmy, href: route(lang, 'firmy') },
+  { id: 'poradna', text: ui.nav.poradna, href: route(lang, 'poradna') },
 ] as const;
-const ESHOP = 'https://www.instalatershop.sk/predizolovane-potrubie-microflex/';
 ---
 <header class="hdr" id="hdr">
+  <div class="topbar">
+    <div class="wrap topbar-in">
+      <a class="partner" href={route(lang, 'kontakt')} aria-label={ui.partner.veta}>
+        <span>{ui.partner.veta}</span>
+        <WattsLogo height={14} farba="biela" />
+      </a>
+      <nav class="langs" aria-label={ui.jazyk.prepnut}>
+        {LANGS.map((l, i) => (
+          <>
+            {i > 0 && <span class="sep" aria-hidden="true"></span>}
+            <a href={alternates[l]} hreflang={l} lang={l} aria-current={l === lang ? 'page' : undefined} title={ui.jazyk[l]}>{l.toUpperCase()}</a>
+          </>
+        ))}
+      </nav>
+    </div>
+  </div>
   <div class="wrap hdr-in">
-    <a class="brand" href="/" aria-label="Microflex Slovensko, domov">
+    <a class="brand" href={route(lang, 'domov')} aria-label={ui.site.name}>
       <span class="brand-name">Microflex</span>
-      <span class="brand-sub">Slovensko</span>
+      <span class="brand-sub">{ui.site.sub}</span>
     </a>
-    <nav class="nav" aria-label="Hlavná navigácia">
+    <nav class="nav" aria-label={ui.nav.hlavna}>
       {polozky.map((p) => <a href={p.href} aria-current={aktivna === p.id ? 'page' : undefined}>{p.text}</a>)}
     </nav>
-    <form class="search" role="search" action="/hladat/" method="get">
-      <input id="q" name="q" type="search" placeholder="Obj. číslo, rad, dimenzia" aria-label="Hľadať v katalógu" autocomplete="off" />
-      <button type="submit"><Ikona nazov="search" velkost={18} />Hľadať</button>
+    <form class="search" role="search" action={route(lang, 'hladat')} method="get">
+      <input id="q" name="q" type="search" placeholder={ui.search.placeholder} aria-label={ui.search.label} autocomplete="off" />
+      <button type="submit"><Ikona nazov="search" velkost={18} />{ui.search.button}</button>
     </form>
-    <a class="eshop" href={ESHOP} target="_blank" rel="noopener">E-shop <Ikona nazov="external-link" velkost={16} /></a>
-    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav" id="menu-btn">Menu</button>
+    <a class="eshop" href={ESHOP} target="_blank" rel="noopener">{ui.nav.eshop} <Ikona nazov="external-link" velkost={16} /></a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav" id="menu-btn" data-open={ui.nav.menu} data-close={ui.nav.zavriet}>{ui.nav.menu}</button>
   </div>
-  <nav id="mobile-nav" class="mnav" hidden aria-label="Navigácia">
+  <nav id="mobile-nav" class="mnav" hidden aria-label={ui.nav.hlavna}>
     {polozky.map((p) => <a href={p.href}>{p.text}</a>)}
-    <a href={ESHOP}>E-shop instalatershop.sk</a>
+    <a href={ESHOP}>{ui.nav.eshop} instalatershop.sk</a>
+    <div class="mnav-langs">{LANGS.map((l) => <a href={alternates[l]} hreflang={l} lang={l} aria-current={l === lang ? 'page' : undefined}>{ui.jazyk[l]}</a>)}</div>
   </nav>
 </header>
 
 <style>
   .hdr { position: sticky; top: 0; z-index: 20; background: var(--color-white); border-bottom: var(--line); transition: box-shadow 200ms var(--ease-soft); }
   .hdr.is-scrolled { box-shadow: 0 2px 12px rgb(11 27 51 / 0.08); }
+  .topbar { background: var(--color-blue-900); color: #fff; font-size: 13px; }
+  .topbar-in { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 34px; }
+  .partner { display: inline-flex; align-items: center; gap: 12px; color: #fff; white-space: nowrap; }
+  .partner:hover { color: var(--color-yellow-500); }
+  .partner :global(svg) { display: block; }
+  .langs { display: inline-flex; align-items: center; gap: 10px; }
+  .langs a { color: var(--color-on-dark-muted); font-weight: 500; letter-spacing: .04em; padding: 2px 0; border-bottom: 1px solid transparent; }
+  .langs a:hover { color: #fff; }
+  .langs a[aria-current] { color: #fff; border-bottom-color: var(--color-yellow-500); }
+  .langs .sep { width: 1px; height: 12px; background: rgb(255 255 255 / 0.3); }
   .hdr-in { display: flex; align-items: center; gap: 32px; min-height: var(--hdr-h); transition: min-height 200ms var(--ease-soft); }
   .hdr.is-scrolled .hdr-in { min-height: 60px; }
   .brand { display: inline-flex; align-items: center; gap: 12px; color: var(--color-ink); }
@@ -46,7 +76,7 @@ const ESHOP = 'https://www.instalatershop.sk/predizolovane-potrubie-microflex/';
   .nav a:hover, .nav a[aria-current] { border-bottom-color: var(--color-blue-700); color: var(--color-ink); }
   .search { margin-left: auto; display: flex; align-items: stretch; height: 44px; border: var(--line); border-radius: var(--radius-s); overflow: hidden; background: var(--color-white); min-width: 0; transition: border-color 150ms var(--ease-soft), box-shadow 150ms var(--ease-soft); }
   .search:focus-within { border-color: var(--color-blue-700); box-shadow: 0 0 0 2px var(--color-blue-100); }
-  .search input { border: 0; padding: 0 14px; width: 280px; max-width: 40vw; font: inherit; font-size: 15px; color: var(--color-ink); outline: none; min-width: 0; background: transparent; }
+  .search input { border: 0; padding: 0 14px; width: 260px; max-width: 36vw; font: inherit; font-size: 15px; color: var(--color-ink); outline: none; min-width: 0; background: transparent; }
   .search input::placeholder { color: #7a8494; }
   .search button { border: 0; background: var(--color-blue-700); color: #fff; padding: 0 16px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: background-color 150ms var(--ease-soft); }
   .search button:hover { background: var(--color-blue-800); }
@@ -54,9 +84,16 @@ const ESHOP = 'https://www.instalatershop.sk/predizolovane-potrubie-microflex/';
   .menu-btn { display: none; margin-left: auto; height: 44px; padding: 0 14px; border: var(--line); border-radius: var(--radius-s); background: var(--color-white); color: var(--color-ink); font-weight: 500; cursor: pointer; }
   .mnav { display: flex; flex-direction: column; border-top: var(--line); padding: 4px var(--gutter) 12px; }
   .mnav a { padding: 14px 0; color: var(--color-ink); font-weight: 500; border-bottom: var(--line); }
-  .mnav a:last-child { border-bottom: 0; color: var(--color-blue-700); }
+  .mnav-langs { display: flex; gap: 24px; padding-top: 8px; }
+  .mnav-langs a { border-bottom: 0; color: var(--color-ink-soft); }
+  .mnav-langs a[aria-current] { color: var(--color-blue-700); }
   @media (max-width: 1100px) { .nav { display: none; } .search input { width: 200px; } }
-  @media (max-width: 760px) { .hdr-in { gap: 16px; } .search, .eshop { display: none; } .menu-btn { display: inline-flex; align-items: center; } }
+  @media (max-width: 760px) {
+    .hdr-in { gap: 16px; }
+    .search, .eshop { display: none; }
+    .menu-btn { display: inline-flex; align-items: center; }
+    .partner span { display: none; }
+  }
 </style>
 
 <script>
@@ -73,7 +110,7 @@ const ESHOP = 'https://www.instalatershop.sk/predizolovane-potrubie-microflex/';
         const open = nav.hidden;
         nav.hidden = !open;
         btn.setAttribute('aria-expanded', String(open));
-        btn.textContent = open ? 'Zavrieť' : 'Menu';
+        btn.textContent = open ? (btn.dataset.close ?? 'Zavrieť') : (btn.dataset.open ?? 'Menu');
       });
     }
   }

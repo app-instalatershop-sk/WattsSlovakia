@@ -1,0 +1,9 @@
+---
+import Kategoria from '../../../../templates/Kategoria.astro';
+import { kategorie } from '../../../../lib/katalog';
+export async function getStaticPaths() {
+  return (await kategorie()).filter((k) => k.typ === 'potrubie').map((k) => ({ params: { kategoria: k.slug_cs }, props: { k } }));
+}
+const { k } = Astro.props;
+---
+<Kategoria lang="cs" k={k} />

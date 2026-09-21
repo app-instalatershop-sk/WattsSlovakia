@@ -1,0 +1,13 @@
+---
+import Rad from '../../../../templates/Rad.astro';
+import { kategorie, radyKategorie } from '../../../../lib/katalog';
+export async function getStaticPaths() {
+  const out = [];
+  for (const k of (await kategorie()).filter((x) => x.typ === 'potrubie')) {
+    for (const r of await radyKategorie(k.id)) out.push({ params: { kategoria: k.slug_cs, rad: r.slug }, props: { k, r } });
+  }
+  return out;
+}
+const { k, r } = Astro.props;
+---
+<Rad lang="cs" k={k} r={r} />

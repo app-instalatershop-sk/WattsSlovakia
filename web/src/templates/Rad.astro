@@ -1,0 +1,153 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Ikona from '../components/Ikona.astro';
+import TabulkaVariantov from '../components/TabulkaVariantov.astro';
+import Subory from '../components/Subory.astro';
+import { kategorie, variantyRadu, produktyPodlaId, cestaKategorie, cestaRadu, alternatyRadu, kKratky, rNazov, rKratky, rPopis, rMedium, rOznacenie, pNazov, cislo, rozsah, type Kategoria, type Rad } from '../lib/katalog';
+import { fotkaRadu, piktogram } from '../lib/obrazky';
+import { type Lang, t, route, ESHOP_SEARCH } from '../i18n/ui';
+
+interface Props { lang: Lang; k: Kategoria; r: Rad }
+const { lang, k, r } = Astro.props;
+const ui = t(lang);
+const varianty = await variantyRadu(r.id);
+const suvisiace = await produktyPodlaId(r.suvisiace);
+const vsetky = await kategorie();
+const kategoriaProduktu = (kid: string) => vsetky.find((x) => x.id === kid);
+const img = fotkaRadu(r.fotka);
+const pikto = piktogram(r.piktogram);
+const polomery = varianty.map((v) => v.polomer_ohybu_m).filter((x): x is number => typeof x === 'number');
+const zosilnene = varianty.filter((v) => v.izolacia === 'zosilnena').length;
+const nazov = rNazov(r, lang);
+const model = nazov.replace(/,.*$/, '');
+const eshop = ESHOP_SEARCH + encodeURIComponent(model);
+const popis = rPopis(r, lang) ?? '';
+const kratky = rKratky(r, lang);
+const meta = (kratky ?? popis).slice(0, 155);
+const ruryText = r.pocet_rur === 1 ? ui.rad.jednaRura : r.pocet_rur === 2 ? ui.rad.dveRury : r.pocet_rur ? ui.rad.rury(r.pocet_rur) : '';
+const ruraRozsah = varianty.some((v) => v.rura) ? rozsah(varianty.map((v) => v.rura?.d), 'mm', lang) : [...new Set(varianty.map((v) => v.rura_text).filter(Boolean))].join(', ').replace(/x/g, '×');
+const productLd = [{
+  '@context': 'https://schema.org', '@type': 'Product', name: nazov, alternateName: rOznacenie(r, lang), description: meta,
+  brand: { '@type': 'Brand', name: 'Microflex' }, manufacturer: { '@type': 'Organization', name: 'Watts' },
+  url: new URL(cestaRadu(k, r, lang), Astro.site).href,
+}];
+---
+<Base lang={lang} alternates={alternatyRadu(k, r)} title={nazov} description={meta} aktivna="potrubia" drobceky={[{ text: ui.nav.potrubia, href: route(lang, 'potrubia') }, { text: kKratky(k, lang), href: cestaKategorie(k, lang) }, { text: nazov }]} jsonLd={productLd}>
+  <div class="wrap top">
+    <div class="gallery">
+      <figure class="plate main" transition:name={`rad-${r.id}`}>
+        {img && <Image src={img} alt={ui.rad.fotoAlt(nazov)} widths={[480, 720, 1000]} sizes="(max-width: 760px) 100vw, 45vw" loading="eager" />}
+        <figcaption>{ui.common.fotkaVyrobcu}</figcaption>
+      </figure>
+    </div>
+    <div class="summary">
+      <span class="series-tag">{pikto && <Image src={pikto} alt="" width={64} height={48} />}{kKratky(k, lang)}{ruryText ? `, ${ruryText}` : ''}</span>
+      <h1>{nazov}</h1>
+      {kratky && <p class="lead">{kratky}</p>}
+      <dl class="spec spec-3">
+        {rMedium(r, lang) && <div><dt>{ui.rad.medium}</dt><dd>{rMedium(r, lang)}</dd></div>}
+        {r.tlak_bar && <div><dt>{ui.rad.tlak}</dt><dd>{r.tlak_bar} bar</dd></div>}
+        {r.pocet_rur && <div><dt>{ui.rad.pocetRur}</dt><dd>{r.pocet_rur}</dd></div>}
+        {varianty.length > 0 && ruraRozsah && <div><dt>{ui.rad.rura}</dt><dd>{ruraRozsah}</dd></div>}
+        {varianty.length > 0 && <div><dt>{ui.rad.plast}</dt><dd>{rozsah(varianty.map((v) => v.plast_mm), 'mm', lang)}</dd></div>}
+        {polomery.length > 0 && <div><dt>{ui.rad.polomer}</dt><dd>{ui.common.od} {cislo(Math.min(...polomery), 2)} m</dd></div>}
+      </dl>
+      <div class="actions">
+        {varianty.length > 0 && <a class="btn btn-primary" href="#varianty">{ui.common.vybratDimenziu}</a>}
+        <a class="btn btn-secondary" href={eshop} target="_blank" rel="noopener">{ui.common.kupit} <Ikona nazov="external-link" velkost={18} /></a>
+      </div>
+      <p class="note">{varianty.length ? `${ui.sklonovanie.dimenzii(varianty.length)}${zosilnene ? ui.karta.zosilnena(zosilnene) : ''}. ` : ''}{ui.rad.note}</p>
+      <p class="oznacenie"><span class="muted">{ui.rad.oznacenie}:</span> {rOznacenie(r, lang)}</p>
+    </div>
+  </div>
+
+  <nav class="subnav" aria-label={ui.rad.castiStranky}>
+    <div class="wrap"><ul>
+      {varianty.length > 0 && <li><a href="#varianty">{ui.rad.variantyH2}</a></li>}
+      {popis && <li><a href="#popis">{ui.rad.popisH2}</a></li>}
+      {r.subory.length > 0 && <li><a href="#stiahnut">{ui.rad.dlH2}</a></li>}
+      {suvisiace.length > 0 && <li><a href="#suvisiace">{ui.rad.relH2}</a></li>}
+    </ul></div>
+  </nav>
+
+  <div class="wrap">
+    {varianty.length > 0 ? (
+      <section class="block" id="varianty" aria-labelledby="h-var">
+        <div class="block-head"><h2 id="h-var">{ui.rad.variantyH2}</h2><p>{ui.rad.variantyP}</p></div>
+        <TabulkaVariantov varianty={varianty} zdroj={r.zdroj_url} stiahnute={r.stiahnute} lang={lang} />
+      </section>
+    ) : (
+      <section class="block" aria-labelledby="h-var">
+        <div class="block-head"><h2 id="h-var">{ui.rad.variantyH2}</h2></div>
+        <p class="muted">{ui.rad.variantyChybaju} <a href={route(lang, 'stiahnut')}>{ui.rad.katalogPdf}</a>.</p>
+      </section>
+    )}
+
+    {popis && (
+      <section class="block" id="popis" aria-labelledby="h-popis">
+        <div class="block-head"><h2 id="h-popis">{ui.rad.popisH2}</h2><p>{ui.rad.popisP}</p></div>
+        <p class="popis">{popis}</p>
+      </section>
+    )}
+
+    {r.subory.length > 0 && (
+      <section class="block" id="stiahnut" aria-labelledby="h-dl">
+        <div class="block-head"><h2 id="h-dl">{ui.rad.dlH2}</h2><p>{ui.rad.dlP}</p></div>
+        <Subory subory={r.subory} lang={lang} />
+      </section>
+    )}
+
+    {suvisiace.length > 0 && (
+      <section class="block" id="suvisiace" aria-labelledby="h-rel">
+        <div class="block-head"><h2 id="h-rel">{ui.rad.relH2}</h2><p>{ui.rad.relP}</p></div>
+        <ul class="related">
+          {suvisiace.map((p) => { const kp = kategoriaProduktu(p.kategoria); return (
+            <li><a href={kp ? cestaKategorie(kp, lang) : route(lang, 'spojky')}><strong>{pNazov(p, lang)}</strong><span class="muted">{kp ? kKratky(kp, lang) : ''}{p.pocet_variantov ? `, ${ui.sklonovanie.dimenzii(p.pocet_variantov)}` : ''}</span></a></li>
+          ); })}
+        </ul>
+      </section>
+    )}
+  </div>
+</Base>
+
+<style>
+  .top { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 32px 24px; align-items: start; padding-block: 8px 48px; }
+  .gallery { grid-column: 1 / 7; }
+  .main { aspect-ratio: 1; border-radius: var(--radius-l); margin: 0; }
+  .main :global(img) { position: absolute; left: 8%; top: 8%; width: 84%; height: 84%; object-fit: contain; mix-blend-mode: multiply; }
+  .main figcaption { position: absolute; right: 16px; bottom: 12px; font-size: 12px; color: var(--color-ink-soft); }
+  .summary { grid-column: 7 / 13; display: flex; flex-direction: column; gap: 24px; }
+  .summary h1 { font-size: clamp(31px, 2vw + 16px, 44px); }
+  .series-tag { display: inline-flex; align-items: center; gap: 10px; color: var(--color-ink-soft); font-size: 14px; }
+  .series-tag :global(img) { width: 48px; height: 36px; object-fit: contain; }
+  .spec-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .spec-3 > div:nth-child(3n) { border-right: 0; }
+  .spec-3 > div:nth-last-child(-n + 3) { border-bottom: 0; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+  .note { font-size: 14px; color: var(--color-ink-soft); }
+  .oznacenie { font-size: 13px; color: var(--color-ink); padding-top: 12px; border-top: var(--line); }
+  .subnav { position: sticky; top: 60px; z-index: 10; background: var(--color-white); border-top: var(--line); border-bottom: var(--line); }
+  .subnav ul { display: flex; gap: 32px; overflow-x: auto; }
+  .subnav a { display: inline-block; padding: 14px 0; color: var(--color-ink); font-weight: 500; border-bottom: 2px solid transparent; white-space: nowrap; transition: border-color 150ms var(--ease-soft); }
+  .subnav a:hover { border-bottom-color: var(--color-blue-700); color: var(--color-ink); }
+  .block { padding-block: 48px; border-bottom: var(--line); scroll-margin-top: 130px; }
+  .block:last-child { border-bottom: 0; }
+  .block-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; margin-bottom: 24px; }
+  .block-head p { color: var(--color-ink-soft); }
+  .popis { max-width: 70ch; font-size: 17px; line-height: 1.6; }
+  .related { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
+  .related a { display: flex; flex-direction: column; gap: 4px; padding: 16px 18px; border: var(--line); border-radius: var(--radius-s); color: var(--color-ink); transition: border-color 150ms var(--ease-soft); }
+  .related a:hover { border-color: var(--color-blue-700); color: var(--color-ink); }
+  .related strong { font-weight: 600; }
+  .related .muted { font-size: 14px; }
+  @media (max-width: 1000px) { .related { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 760px) {
+    .top > * { grid-column: 1 / -1; }
+    .spec-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .spec-3 > div:nth-child(3n) { border-right: 1px solid rgb(0 93 185 / 0.16); }
+    .spec-3 > div:nth-child(2n) { border-right: 0; }
+    .related { grid-template-columns: 1fr; }
+    .block { scroll-margin-top: 120px; }
+  }
+</style>

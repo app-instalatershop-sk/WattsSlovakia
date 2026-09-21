@@ -3,9 +3,12 @@ import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
 import Hlavicka from '../components/Hlavicka.astro';
 import Paticka from '../components/Paticka.astro';
+import { type Lang, type Alternates, LOCALE, t, route } from '../i18n/ui';
 
 interface Drobcek { text: string; href?: string }
 interface Props {
+  lang: Lang;
+  alternates: Alternates;
   title: string;
   description: string;
   aktivna?: 'potrubia' | 'vyber' | 'stiahnut' | 'firmy' | 'poradna';
@@ -13,23 +16,24 @@ interface Props {
   jsonLd?: Record<string, unknown>[];
   ogImage?: string;
 }
-const { title, description, aktivna, drobceky = [], jsonLd = [], ogImage } = Astro.props;
+const { lang, alternates, title, description, aktivna, drobceky = [], jsonLd = [], ogImage } = Astro.props;
+const ui = t(lang);
 const site = Astro.site ?? new URL('https://microflex.sk');
 const canonical = new URL(Astro.url.pathname, site).href;
-const fullTitle = title === 'Microflex Slovensko' ? title : `${title} | Microflex Slovensko`;
+const fullTitle = title === ui.site.name ? title : `${title} | ${ui.site.name}`;
 
 const organizacia = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'Microflex Slovensko',
+  name: ui.site.name,
   url: site.href,
-  description: 'Prezentačný web predizolovaného potrubia Microflex pre Slovensko. Predaj zabezpečuje instalatershop.sk.',
+  description: ui.site.tagline,
 };
 const breadcrumbs = drobceky.length
   ? {
       '@context': 'https://schema.org',
       '@type': 'BreadcrumbList',
-      itemListElement: [{ text: 'Domov', href: '/' }, ...drobceky].map((d, i) => ({
+      itemListElement: [{ text: ui.nav.domov, href: route(lang, 'domov') }, ...drobceky].map((d, i) => ({
         '@type': 'ListItem', position: i + 1, name: d.text, ...(d.href ? { item: new URL(d.href, site).href } : {}),
       })),
     }
@@ -37,31 +41,35 @@ const breadcrumbs = drobceky.length
 const ld = [organizacia, ...(breadcrumbs ? [breadcrumbs] : []), ...jsonLd];
 ---
 <!doctype html>
-<html lang="sk">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="sk" href={new URL(alternates.sk, site).href} />
+    <link rel="alternate" hreflang="cs" href={new URL(alternates.cs, site).href} />
+    <link rel="alternate" hreflang="x-default" href={new URL(alternates.sk, site).href} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:locale" content="sk_SK" />
+    <meta property="og:locale" content={LOCALE[lang].replace('-', '_')} />
+    <meta property="og:site_name" content={ui.site.name} />
     {ogImage && <meta property="og:image" content={new URL(ogImage, site).href} />}
     <meta name="generator" content={Astro.generator} />
     <script type="application/ld+json" set:html={JSON.stringify(ld)} />
     <ClientRouter />
   </head>
   <body>
-    <Hlavicka aktivna={aktivna} />
+    <Hlavicka lang={lang} aktivna={aktivna} alternates={alternates} />
     {drobceky.length > 0 && (
       <div class="wrap">
-        <ol class="crumbs" aria-label="Kde ste">
-          <li><a href="/">Domov</a></li>
+        <ol class="crumbs" aria-label={ui.crumbs.label}>
+          <li><a href={route(lang, 'domov')}>{ui.nav.domov}</a></li>
           {drobceky.map((d) => (d.href ? <li><a href={d.href}>{d.text}</a></li> : <li aria-current="page">{d.text}</li>))}
         </ol>
       </div>
@@ -69,6 +77,6 @@ const ld = [organizacia, ...(breadcrumbs ? [breadcrumbs] : []), ...jsonLd];
     <main id="obsah">
       <slot />
     </main>
-    <Paticka />
+    <Paticka lang={lang} />
   </body>
 </html>

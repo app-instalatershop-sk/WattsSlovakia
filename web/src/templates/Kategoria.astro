@@ -1,0 +1,127 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import KartaRadu from '../components/KartaRadu.astro';
+import { radyKategorie, cestaRadu, alternatyKategorie, kNazov, kKratky, kPopis, rNazov, cislo, rozsah, datum, type Kategoria, type Rad, type Variant } from '../lib/katalog';
+import { piktogram } from '../lib/obrazky';
+import { faq } from '../content/faq';
+import { type Lang, t, route } from '../i18n/ui';
+
+interface Props { lang: Lang; k: Kategoria }
+const { lang, k } = Astro.props;
+const ui = t(lang);
+const rady = await radyKategorie(k.id);
+const vsetkyVarianty = (await getCollection('varianty')).map((v) => v.data);
+const variantyRadu = (id: string): Variant[] => vsetkyVarianty.filter((v) => v.rad === id).sort((a, b) => a.poradie - b.poradie);
+const varianty = rady.flatMap((r) => variantyRadu(r.id));
+const tlaky = [...new Set(rady.map((r) => r.tlak_bar).filter((x): x is number => typeof x === 'number'))].sort((a, b) => a - b);
+const polomery = varianty.map((v) => v.polomer_ohybu_m).filter((x): x is number => typeof x === 'number');
+const pikto = piktogram(k.piktogram);
+const otazky = faq(k.id, lang);
+const faqLd = otazky.length ? [{
+  '@context': 'https://schema.org', '@type': 'FAQPage',
+  mainEntity: otazky.map((o) => ({ '@type': 'Question', name: o.q, acceptedAnswer: { '@type': 'Answer', text: o.a } })),
+}] : [];
+const pk = ui.common.podlaKatalogu;
+const riadky: Array<[string, (r: Rad, vs: Variant[]) => string]> = [
+  [ui.kategoria.cmpRows.rury, (r) => (r.pocet_rur ? String(r.pocet_rur) : pk)],
+  [ui.kategoria.cmpRows.tlak, (r) => (r.tlak_bar ? `${r.tlak_bar} bar` : pk)],
+  [ui.kategoria.cmpRows.rura, (_r, vs) => rozsah(vs.map((v) => v.rura?.d), 'mm', lang)],
+  [ui.kategoria.cmpRows.plast, (_r, vs) => rozsah(vs.map((v) => v.plast_mm), 'mm', lang)],
+  [ui.kategoria.cmpRows.polomer, (_r, vs) => { const p = vs.map((v) => v.polomer_ohybu_m).filter((x): x is number => typeof x === 'number'); return p.length ? `${ui.common.od} ${cislo(Math.min(...p), 2)} m` : pk; }],
+  [ui.kategoria.cmpRows.zosilnena, (_r, vs) => { const n = vs.filter((v) => v.izolacia === 'zosilnena').length; return vs.length ? (n ? ui.sklonovanie.dimenzii(n) : ui.common.nie) : pk; }],
+  [ui.kategoria.cmpRows.dimenzii, (_r, vs) => (vs.length ? String(vs.length) : pk)],
+];
+const kratkeNazvy = rady.map((r) => rNazov(r, lang).replace(/^Microflex /, '').replace(/,.*$/, '')).join(', ');
+---
+<Base lang={lang} alternates={alternatyKategorie(k)} title={kNazov(k, lang)} description={kPopis(k, lang)} aktivna="potrubia" drobceky={[{ text: ui.nav.potrubia, href: route(lang, 'potrubia') }, { text: kKratky(k, lang) }]} jsonLd={faqLd}>
+  <div class="wrap">
+    <div class="cat-head">
+      <div>
+        <h1>{kNazov(k, lang)}</h1>
+        <p class="lead">{kPopis(k, lang)}</p>
+      </div>
+      {pikto && <Image src={pikto} alt={ui.kategoria.piktoAlt(kKratky(k, lang))} width={400} height={300} class="cat-pikto" />}
+    </div>
+
+    <dl class="spec spec-row">
+      {tlaky.length > 0 && <div><dt>{ui.kategoria.tlak}</dt><dd>{tlaky.map((x) => `${x} bar`).join(' / ')}</dd></div>}
+      {varianty.length > 0 && <div><dt>{ui.kategoria.rura}</dt><dd>{rozsah(varianty.map((v) => v.rura?.d), 'mm', lang)}</dd></div>}
+      {varianty.length > 0 && <div><dt>{ui.kategoria.plast}</dt><dd>{rozsah(varianty.map((v) => v.plast_mm), 'mm', lang)}</dd></div>}
+      {polomery.length > 0 && <div><dt>{ui.kategoria.polomer}</dt><dd>{ui.common.od} {cislo(Math.min(...polomery), 2)} m</dd></div>}
+      <div><dt>{ui.kategoria.rady}</dt><dd class="rady-dd">{kratkeNazvy}</dd></div>
+    </dl>
+
+    <div class="list-head">
+      <p class="muted">{ui.kategoria.pocet(ui.sklonovanie.radov(rady.length), ui.sklonovanie.dimenzii(varianty.length))}</p>
+    </div>
+    <div class="series">
+      {rady.map((r) => <KartaRadu rad={r} href={cestaRadu(k, r, lang)} varianty={variantyRadu(r.id)} lang={lang} />)}
+    </div>
+  </div>
+
+  {rady.length > 1 && (
+    <section class="section" aria-labelledby="h-cmp">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 id="h-cmp">{ui.kategoria.cmpH2}</h2>
+          <p class="muted">{ui.kategoria.cmpP}</p>
+        </div>
+        <div class="table-wrap">
+          <table class="data compare">
+            <thead><tr><th></th>{rady.map((r) => <th>{rNazov(r, lang)}</th>)}</tr></thead>
+            <tbody>
+              {riadky.map(([label, fn]) => <tr><td>{label}</td>{rady.map((r) => <td>{fn(r, variantyRadu(r.id))}</td>)}</tr>)}
+            </tbody>
+          </table>
+        </div>
+        <p class="source">{ui.common.zdroj} {datum(k.stiahnute, lang)}. {ui.kategoria.cmpZdroj}</p>
+      </div>
+    </section>
+  )}
+
+  {otazky.length > 0 && (
+    <section class="section band" aria-labelledby="h-faq">
+      <div class="wrap faq-grid">
+        <div>
+          <h2 id="h-faq">{ui.kategoria.faqH2}</h2>
+          <p class="muted" style="margin-top: 12px">{ui.kategoria.faqP} <a href={route(lang, 'kontakt')}>{ui.kategoria.faqNapisat}</a>.</p>
+        </div>
+        <div class="faq">
+          {otazky.map((o) => <details><summary>{o.q}</summary><p>{o.a}</p></details>)}
+        </div>
+      </div>
+    </section>
+  )}
+</Base>
+
+<style>
+  .cat-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px 48px; align-items: start; padding-block: 12px 32px; }
+  .cat-head h1 { max-width: 16ch; }
+  .cat-head .lead { margin-top: 16px; }
+  .cat-head :global(.cat-pikto) { width: 200px; height: 150px; object-fit: contain; }
+  .spec-row { grid-template-columns: repeat(5, auto); justify-content: start; margin-bottom: 32px; }
+  .spec-row > div { border-bottom: 0; }
+  .spec-row > div:last-child { border-right: 0; }
+  .rady-dd { font-size: 16px !important; font-family: var(--font-text) !important; font-stretch: 100% !important; }
+  .list-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 24px; }
+  .series { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .compare th:first-child, .compare td:first-child { color: var(--color-ink-soft); font-weight: 400; position: sticky; left: 0; background: var(--color-white); }
+  .compare thead th { color: var(--color-ink); font-weight: 600; font-size: 14px; }
+  .faq-grid { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 24px 48px; }
+  .faq details { border-top: var(--line); }
+  .faq details:last-child { border-bottom: var(--line); }
+  .faq summary { cursor: pointer; padding: 16px 0; font-weight: 600; font-size: 17px; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "+"; color: var(--color-blue-700); font-weight: 400; font-size: 22px; line-height: 1; transition: transform 200ms var(--ease-soft); }
+  .faq details[open] summary::after { transform: rotate(45deg); }
+  .faq details p { padding-bottom: 16px; color: var(--color-ink-soft); max-width: 62ch; }
+  @media (max-width: 1000px) { .spec-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } .spec-row > div { border-bottom: 1px solid rgb(0 93 185 / 0.16); } }
+  @media (max-width: 760px) {
+    .cat-head { grid-template-columns: 1fr; }
+    .cat-head :global(.cat-pikto) { width: 120px; height: 90px; order: -1; }
+    .series { grid-template-columns: 1fr; }
+    .faq-grid { grid-template-columns: 1fr; }
+  }
+</style>

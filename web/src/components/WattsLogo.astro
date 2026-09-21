@@ -1,0 +1,15 @@
+---
+/** Logo Watts ako vektor: cesty vytiahnuté z oficiálneho katalógu (podklady/watts/loga/watts-logo.svg), použitie so súhlasom Watts. */
+import logo from '../assets/loga/watts.svg?raw';
+interface Props { height?: number; class?: string; farba?: 'original' | 'biela' }
+const { height = 16, class: cls = '', farba = 'original' } = Astro.props;
+const pomer = 168.4 / 28.9;
+let svg = logo.replace(/<title>.*?<\/title>/s, '').replace(/ width="[^"]*" height="[^"]*"/, ` width="${Math.round(height * pomer)}" height="${height}"`);
+if (farba === 'biela') svg = svg.replace(/fill="#0079C1"/g, 'fill="#FFFFFF"').replace(/fill="#231F20"/g, 'fill="#FFFFFF"');
+---
+<span class={`watts ${cls}`} set:html={svg} />
+
+<style>
+  .watts { display: inline-flex; line-height: 0; }
+  .watts :global(svg) { display: block; height: auto; }
+</style>

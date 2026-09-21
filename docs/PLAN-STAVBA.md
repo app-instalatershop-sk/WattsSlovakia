@@ -161,10 +161,28 @@ F0 začína 21. 9. 2026.
 
 ---
 
-## 9. Rozhodnutia, ktoré ešte ovplyvnia dizajn
+## 9. Rozhodnutia (Juraj, 21. 9. 2026)
 
-Zoradené podľa toho, ako skoro ich potrebujeme. Pri každom je moje odporúčanie, aby sa dalo
-rozhodnúť jednou vetou.
+Všetkých desať bodov je rozhodnutých. Pôvodné odporúčania ostávajú nižšie ako kontext, rozhodnutie
+je pri každom bode tučne.
+
+| # | Rozhodnutie |
+|---|---|
+| 1 | **„Microflex Slovensko“, doména microflex.sk** (overiť dostupnosť a zaregistrovať). |
+| 2 | **Fáza 1 bez ceny.** Tlačidlá vedú do e-shopu. |
+| 3 | **Všetko odkazuje na e-shop**, dostupnosť si človek zistí tam. Žiadne rozlišovanie Kúpiť / Na dopyt. Neskôr sa možno zmení. |
+| 4 | **Partnerstvo s Watts viditeľne**: logo Watts a veta o partnerstve tak, aby to každý videl (hlavička alebo pás pod ňou, pätička, stránka O webe). |
+| 5 | **Dopyty na vlastnú firemnú e-mailovú schránku, riešenie zadarmo**: statický formulár + odoslanie cez bezplatnú službu (Cloudflare Pages Function + Resend, záložne Web3Forms), ochrana Turnstile. |
+| 6 | **Search Console + bezplatné meranie bez cookies ako bonus** (Cloudflare Web Analytics alebo Umami). Bez lišty na cookies. |
+| 7 | **B2B fáza 1 = formulár a podklady**, prihlásenie a cenník až po štarte. |
+| 8 | **Označenie modelu sa nesmie zmeniť.** Značka a model jednotne ako u výrobcu (Microflex UNO, DUO, UNO PRIMO, PRIMO DUO, QUADRO, COOL, HP), aby si ho človek našiel aj na zahraničných stránkach. Náš doplnok (použitie, tlak) ide až za čiarku. Na stránke radu je aj presné označenie výrobcu a obj. čísla bez zmeny. |
+| 9 | **Česká verzia od začiatku**: prepínač jazyka, adresy `/cs/…` s českými slugmi, hreflang, sitemap pre oba jazyky, české texty prednostne z watts.eu/cz (originál výrobcu), nie strojový preklad. |
+| 10 | **Fotky Watts áno**, vždy najkvalitnejšie a najpresnejšie k produktu, ktorý prezentujeme a predávame. Z fotiek urobiť aj vlastnú grafiku (výrezy, kompozície, podtón značky), aby web mal jasný vizuálny rukopis. |
+
+**Zásada pre celý front-end (Juraj):** grafika prepracovaná do každého detailu, nič, čo by
+prezrádzalo generovaný dizajn. Každý prvok má dôvod, všetko ladí dokopy, profesionalita je vidieť.
+
+### Pôvodné odporúčania (kontext)
 
 1. **Názov webu a doména** (F0, ovplyvní nápis v hlavičke, adresy, e-maily). Odporúčam značkový
    názov „Microflex Slovensko“ a doménu microflex.sk, ak je voľná; inak microflex-potrubie.sk.

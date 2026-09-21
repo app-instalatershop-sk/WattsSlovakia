@@ -1,6 +1,6 @@
 ---
-import SkupinyKategorie from '../../components/SkupinyKategorie.astro';
+import Skupiny from '../../templates/Skupiny.astro';
 import { kategoriaPodlaSlugu } from '../../lib/katalog';
 const k = (await kategoriaPodlaSlugu('prislusenstvo'))!;
 ---
-<SkupinyKategorie k={k} />
+<Skupiny lang="sk" k={k} />

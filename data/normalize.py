@@ -82,6 +82,69 @@ RADY = {
     'wall-feed-throughs': dict(slug='prestupy-stenou', nazov='Prestupy stenou'),
 }
 
+# --- čeština: naše názvy (model radu sa nemení), dlhé popisy berieme z watts.eu/cz (data/_cz.json) ---
+
+KATEGORIE_CS = {
+    'pipes-for-heating': dict(slug='vytapeni', nazov='Předizolované potrubí pro vytápění', kratky_nazov='Vytápění',
+        popis='Ohebné potrubí pro rozvod tepla mezi budovami nebo od kotelny, kotle na biomasu či tepelného čerpadla k domu. UNO vede jednu trubku, DUO má přívod a zpátečku v jednom plášti.'),
+    'pipes-for-sanitary': dict(slug='sanita', nazov='Předizolované potrubí pro teplou a studenou vodu', kratky_nazov='Teplá a studená voda',
+        popis='Pitná voda mezi budovami a ke vzdáleným odběrům, 10 bar. UNO, DUO a PRIMO DUO v sanitárním provedení.'),
+    'central-heating-and-sanitary': dict(slug='vytapeni-a-sanita', nazov='Vytápění a sanita v jednom plášti', kratky_nazov='Vytápění a sanita',
+        popis='Čtyři trubky v jednom plášti: přívod, zpátečka, teplá a studená voda. Řada QUADRO.'),
+    'cold-cold-drinking-water': dict(slug='studena-a-chlazena-voda', nazov='Předizolované potrubí pro studenou a chlazenou vodu', kratky_nazov='Studená a chlazená voda',
+        popis='Chlazená a studená pitná voda, odpadní voda. COOL, COOL s topným kabelem a COOL DUO.'),
+    'heating-pumps': dict(slug='tepelna-cerpadla', nazov='Předizolované potrubí pro tepelná čerpadla', kratky_nazov='Tepelná čerpadla',
+        popis='Propojení venkovní jednotky tepelného čerpadla s domem v jednom plášti, přívod i zpátečka. Řada Microflex HP.'),
+    'couplings': dict(slug='spojky', nazov='Spojky', kratky_nazov='Spojky',
+        popis='PE-X spojky, kolena, T-kusy a závitová připojení pro vytápění, COOL i sanitu.'),
+    'accessories': dict(slug='prislusenstvi', nazov='Příslušenství pro Microflex', kratky_nazov='Příslušenství',
+        popis='Koncovky, izolační sady, prostupy stěnou, opravné a výstražné pásky, revizní šachty.'),
+}
+
+RADY_CS = {
+    '1-microflex-uno-6-bar': dict(nazov='Microflex UNO, vytápění 6 bar', medium='topná voda', kratky_popis='Jedna trubka PE-Xa v plášti. Přívod nebo zpátečka, teplá voda ke vzdálenému odběru.'),
+    '2-microflex-duo-6-bar': dict(nazov='Microflex DUO, vytápění 6 bar', medium='topná voda', kratky_popis='Přívod a zpátečka v jednom plášti. Nejčastější volba pro přípojku domu nebo tepelného čerpadla.'),
+    '2-single-microflex-uno-primo-6-bar': dict(nazov='Microflex UNO PRIMO, vytápění 6 bar', medium='topná voda', kratky_popis='Jedna trubka s ještě ohebnějším pláštěm pro trasy s mnoha změnami směru.'),
+    '3-microflex-primo-duo-6-bar': dict(nazov='Microflex PRIMO DUO, vytápění 6 bar', medium='topná voda', kratky_popis='Dvě trubky v ohebnějším plášti PRIMO. Pro stísněné výkopy a krátké přípojky.'),
+    '1-microflex-uno-10-bar': dict(nazov='Microflex UNO, sanita 10 bar', medium='pitná voda', kratky_popis='Jedna trubka na pitnou vodu, 10 bar. Teplá nebo studená voda ke vzdálenému odběru.'),
+    '2-microflex-duo-10-bar': dict(nazov='Microflex DUO, sanita 10 bar', medium='pitná voda', kratky_popis='Teplá a studená pitná voda v jednom plášti, 10 bar.'),
+    '3-microflex-primo-duo-s-10-bar': dict(nazov='Microflex PRIMO DUO, sanita 10 bar', medium='pitná voda', kratky_popis='Dvě trubky na pitnou vodu v ohebnějším plášti PRIMO.'),
+    '4-microflex-quadro': dict(nazov='Microflex QUADRO, vytápění a sanita', medium='topná a pitná voda', kratky_popis='Čtyři trubky v jednom plášti: přívod, zpátečka, teplá a studená voda. Jeden výkop pro všechno.'),
+    '1-pipe-system-microflex-cool': dict(nazov='Microflex COOL', medium='studená a chlazená voda', kratky_popis='Jedna trubka PE na studenou pitnou vodu, chlazenou vodu a odpadní vodu.'),
+    '2-pipe-system-microflex-cool-ht': dict(nazov='Microflex COOL s topným kabelem', medium='studená a chlazená voda', kratky_popis='COOL se samoregulačním topným kabelem proti zamrznutí při malé hloubce uložení.'),
+    'microflex-cool-duo': dict(nazov='Microflex COOL DUO', medium='studená a chlazená voda', kratky_popis='Dvě trubky PE na studenou a chlazenou vodu v jednom plášti.'),
+    'microflex-hp': dict(nazov='Microflex HP, tepelná čerpadla', medium='topná nebo chladicí voda', kratky_popis='Přívod a zpátečka k venkovní jednotce tepelného čerpadla v jednom plášti, s chráničkami na napájecí a ovládací kabel.'),
+    'pe-x-couplings-for-heating-and-cool-pipes': dict(nazov='Spojky PE-X pro vytápění a COOL'),
+    'pe-x-couplings-for-sanitary-pipes': dict(nazov='Spojky PE-X pro sanitu'),
+    'accessories': dict(nazov='Příslušenství pro spojky PE-X'),
+    'caps-and-reduction-kits': dict(nazov='Koncovky a redukční sady'),
+    'pipe-insulation-sets': dict(nazov='Izolační sady'),
+    'repair-and-warning-tapes': dict(nazov='Opravné a výstražné pásky'),
+    'wall-feed-throughs': dict(nazov='Prostupy stěnou'),
+}
+
+
+def nacitaj_cz():
+    """Texty z watts.eu/cz (data/_cz.json) podľa slovenského href."""
+    p = os.path.join(ROOT, 'data', '_cz.json')
+    if not os.path.exists(p):
+        return {}, {}, {}
+    raw = json.load(io.open(p, encoding='utf-8'))
+    d = json.loads(raw) if isinstance(raw, str) else raw
+    sk = lambda h: h.replace('/cz/', '/sk/')
+    kat = {sk(h): v for h, v in d.get('categories', {}).items()}
+    ser = {sk(h): v for h, v in d.get('series', {}).items()}
+    prod = {sk(h): v for h, v in d.get('products', {}).items()}
+    return kat, ser, prod
+
+
+def popis_cz(rec):
+    paras = (rec or {}).get('popis') or []
+    text = ' '.join(paras).strip()
+    text = re.sub(r'\.(?=[A-ZÁ-Ž])', '. ', text)  # chýbajúce medzery za bodkou v texte výrobcu
+    return text or None
+
+
 # --- pomocné ------------------------------------------------------------------------------------
 
 def slugify(s):
@@ -258,6 +321,7 @@ def main():
     stiahnute = d['fetched'][:10]
     os.makedirs(OUT, exist_ok=True)
     kategorie, rady, varianty, produkty, navrh = [], [], [], [], []
+    cz_kat, cz_ser, cz_prod = nacitaj_cz()
 
     cat_by_href = {}
     for c in d['categories']:
@@ -268,8 +332,11 @@ def main():
             continue
         kid = m['slug']
         cat_by_href[c['href']] = kid
-        kategorie.append({'id': kid, 'slug': m['slug'], 'nazov': m['nazov'], 'kratky_nazov': m['kratky_nazov'], 'popis': m['popis'],
+        mcs = KATEGORIE_CS[ws]
+        kategorie.append({'id': kid, 'slug': m['slug'], 'slug_cs': mcs['slug'], 'nazov': m['nazov'], 'nazov_cs': mcs['nazov'],
+                          'kratky_nazov': m['kratky_nazov'], 'kratky_nazov_cs': mcs['kratky_nazov'], 'popis': m['popis'], 'popis_cs': mcs['popis'],
                           'typ': m['typ'], 'piktogram': m['piktogram'], 'poradie': m['poradie'], 'nazov_watts': c['h1'] or c['name'],
+                          'nazov_watts_cs': (cz_kat.get(c['href']) or {}).get('h1') or None,
                           'rady': [], 'zdroj_url': WATTS + c['href'], 'stiahnute': stiahnute})
         for poradie, s in enumerate(c['series'], start=1):
             rec = d['series'].get(s['href'], {})
@@ -277,8 +344,12 @@ def main():
             mm = RADY.get(wslug) or {'slug': slugify(re.sub(r'^\d+-', '', wslug)), 'nazov': rec.get('h1') or s['name']}
             rid = mm['slug']
             fotka = fotka_pre(wslug, rid)
-            rad = {'id': rid, 'slug': rid, 'kategoria': kid, 'poradie': poradie, 'nazov': mm['nazov'], 'nazov_watts': rec.get('h1') or s['name'],
-                   'popis': popis(rec), 'kratky_popis': mm.get('kratky_popis'), 'medium': mm.get('medium'), 'tlak_bar': mm.get('tlak_bar'), 'pocet_rur': mm.get('pocet_rur'),
+            cs = RADY_CS.get(wslug, {})
+            czr = cz_ser.get(s['href']) or {}
+            rad = {'id': rid, 'slug': rid, 'kategoria': kid, 'poradie': poradie, 'nazov': mm['nazov'], 'nazov_cs': cs.get('nazov') or mm['nazov'],
+                   'nazov_watts': rec.get('h1') or s['name'], 'nazov_watts_cs': czr.get('h1') or None,
+                   'popis': popis(rec), 'popis_cs': popis_cz(czr), 'kratky_popis': mm.get('kratky_popis'), 'kratky_popis_cs': cs.get('kratky_popis'),
+                   'medium': mm.get('medium'), 'medium_cs': cs.get('medium'), 'tlak_bar': mm.get('tlak_bar'), 'pocet_rur': mm.get('pocet_rur'),
                    'piktogram': mm.get('piktogram'), 'fotka': fotka, 'subory': subory(rec),
                    'je_skupina': bool(rec.get('sublisting')), 'produkty': [], 'suvisiace': [],
                    'zdroj_url': WATTS + s['href'], 'stiahnute': stiahnute}
@@ -301,8 +372,10 @@ def main():
         pid = slugify(p.get('h1') or p['listName'])
         prod_by_href[href] = pid
         vs = parse_variants(p, pid)
+        czp = cz_prod.get(href) or {}
         prod = {'id': pid, 'slug': pid, 'skupina': parent['id'], 'kategoria': parent['kategoria'], 'nazov': p.get('h1') or p['listName'],
-                'nazov_watts': p.get('h1') or p['listName'], 'popis': popis(p), 'subory': subory(p), 'pocet_variantov': len(vs),
+                'nazov_cs': czp.get('h1') or None, 'nazov_watts': p.get('h1') or p['listName'], 'popis': popis(p), 'popis_cs': popis_cz(czp),
+                'subory': subory(p), 'pocet_variantov': len(vs),
                 'tabulky': p.get('tables') or [], 'zdroj_url': WATTS + href, 'stiahnute': stiahnute}
         produkty.append(prod)
         parent['produkty'].append(pid)

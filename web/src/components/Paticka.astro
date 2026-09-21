@@ -1,40 +1,49 @@
 ---
-import { kategorie, cestaKategorie } from '../lib/katalog';
+import WattsLogo from './WattsLogo.astro';
+import { kategorie, cestaKategorie, kKratky } from '../lib/katalog';
+import { type Lang, t, route } from '../i18n/ui';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const ui = t(lang);
 const kats = await kategorie();
 ---
 <footer class="ftr">
   <div class="ftr-ribs ribs-x" aria-hidden="true"></div>
   <div class="wrap ftr-in">
     <div>
-      <a class="brand" href="/"><span class="brand-name">Microflex</span><span class="brand-sub">Slovensko</span></a>
-      <p class="muted" style="max-width:32em">Prezentačný web predizolovaného potrubia Microflex pre Slovensko. Predaj a sklad zabezpečuje <a href="https://www.instalatershop.sk/">instalatershop.sk</a>.</p>
+      <a class="brand" href={route(lang, 'domov')}><span class="brand-name">Microflex</span><span class="brand-sub">{ui.site.sub}</span></a>
+      <p class="muted" style="max-width:32em">{ui.footer.popis} <a href="https://www.instalatershop.sk/">instalatershop.sk</a>.</p>
+      <div class="vyrobca">
+        <WattsLogo height={20} farba="biela" />
+        <span class="muted">{ui.footer.vyrobcaText}</span>
+      </div>
     </div>
     <div>
-      <h3>Potrubia a diely</h3>
-      <ul>{kats.map((k) => <li><a href={cestaKategorie(k)}>{k.kratky_nazov}</a></li>)}</ul>
+      <h3>{ui.footer.potrubia}</h3>
+      <ul>{kats.map((k) => <li><a href={cestaKategorie(k, lang)}>{kKratky(k, lang)}</a></li>)}</ul>
     </div>
     <div>
-      <h3>Podklady</h3>
+      <h3>{ui.footer.podklady}</h3>
       <ul>
-        <li><a href="/na-stiahnutie/">Katalóg Microflex (PDF, 19 MB)</a></li>
-        <li><a href="/na-stiahnutie/">Technické listy</a></li>
-        <li><a href="/na-stiahnutie/">BIM a CAD</a></li>
-        <li><a href="/na-stiahnutie/">Vyhlásenia o zhode a EPD</a></li>
-        <li><a href="/poradna/">Poradňa</a></li>
+        <li><a href={route(lang, 'stiahnut')}>{ui.footer.katalog}</a></li>
+        <li><a href={route(lang, 'stiahnut')}>{ui.footer.technicke}</a></li>
+        <li><a href={route(lang, 'stiahnut')}>{ui.footer.bim}</a></li>
+        <li><a href={route(lang, 'stiahnut')}>{ui.footer.vyhlasenia}</a></li>
+        <li><a href={route(lang, 'poradna')}>{ui.footer.poradna}</a></li>
       </ul>
     </div>
     <div>
-      <h3>Prevádzkovateľ</h3>
+      <h3>{ui.footer.prevadzkovatel}</h3>
       <ul>
-        <li>Inštalatérshop, Staškov 200</li>
-        <li class="muted">IČO a DIČ doplníme</li>
-        <li><a href="/kontakt/">Kontakt</a></li>
+        <li>{ui.footer.firma}</li>
+        <li class="muted">{ui.footer.ico}</li>
+        <li><a href={route(lang, 'kontakt')}>{ui.footer.kontakt}</a></li>
       </ul>
     </div>
   </div>
   <div class="wrap ftr-bottom">
-    <span>Microflex je ochranná známka skupiny Watts. Tento web prevádzkuje predajca, nie výrobca.</span>
-    <span>© {new Date().getFullYear()} Microflex Slovensko</span>
+    <span>{ui.footer.znamka}</span>
+    <span>© {new Date().getFullYear()} {ui.site.name}</span>
   </div>
 </footer>
 
@@ -50,6 +59,7 @@ const kats = await kategorie();
   .brand-name { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 700; font-size: 22px; letter-spacing: -0.01em; line-height: 1; }
   .brand-sub { font-size: 13px; color: var(--color-on-dark-muted); border-left: 1px solid rgb(255 255 255 / 0.3); padding-left: 12px; line-height: 1; }
   .ftr .muted { color: var(--color-on-dark-muted); }
+  .vyrobca { display: flex; align-items: center; gap: 16px; margin-top: 24px; padding-top: 20px; border-top: 1px solid rgb(255 255 255 / 0.18); font-size: 14px; max-width: 32em; }
   .ftr-bottom { border-top: 1px solid rgb(255 255 255 / 0.18); padding-block: 16px; font-size: 13px; color: var(--color-on-dark-muted); display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
   @media (max-width: 1100px) { .ftr-in { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 760px) { .ftr-in { grid-template-columns: 1fr; } }

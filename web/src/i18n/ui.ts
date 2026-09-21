@@ -1,0 +1,243 @@
+/** Texty rozhrania v slovenčine a češtine. Obsah katalógu (názvy, popisy) je v dátach, tu je len rozhranie. */
+export type Lang = 'sk' | 'cs';
+export const LANGS: Lang[] = ['sk', 'cs'];
+export const DEFAULT_LANG: Lang = 'sk';
+export const LOCALE: Record<Lang, string> = { sk: 'sk-SK', cs: 'cs-CZ' };
+export const ESHOP = 'https://www.instalatershop.sk/predizolovane-potrubie-microflex/';
+export const ESHOP_SEARCH = 'https://www.instalatershop.sk/vyhledavani/?string=';
+
+const sk = {
+  site: { name: 'Microflex Slovensko', sub: 'Slovensko', tagline: 'Predizolované ohybné potrubie Microflex pre Slovensko' },
+  nav: { potrubia: 'Potrubia', vyber: 'Výber potrubia', stiahnut: 'Na stiahnutie', firmy: 'Pre firmy', poradna: 'Poradňa', eshop: 'E-shop', menu: 'Menu', zavriet: 'Zavrieť', hlavna: 'Hlavná navigácia', domov: 'Domov' },
+  search: { placeholder: 'Obj. číslo, rad, dimenzia', label: 'Hľadať v katalógu', button: 'Hľadať' },
+  partner: { kratke: 'Oficiálny partner', veta: 'Oficiálny partner Watts pre Microflex na Slovensku', vyrobca: 'Výrobca' },
+  jazyk: { prepnut: 'Jazyk', sk: 'Slovensky', cs: 'Česky' },
+  crumbs: { label: 'Kde ste' },
+  common: {
+    zobrazit: 'Zobraziť', zobrazitRady: 'Zobraziť rady', zobrazitRad: 'Zobraziť rad', zobrazitVarianty: 'Zobraziť varianty',
+    podlaKatalogu: 'podľa katalógu', rozmeryVKatalogu: 'Rozmery v katalógu', doEshopu: 'Do e-shopu', kupit: 'Kúpiť v e-shope',
+    vybratDimenziu: 'Vybrať dimenziu', od: 'od', az: 'až', fotkaVyrobcu: 'Fotka výrobcu', renderVyrobcu: 'Render výrobcu.',
+    zdroj: 'Zdroj: katalóg Watts Microflex, slovenské vydanie, stav k', strankaVyrobcu: 'Stránka výrobcu', nie: 'nie',
+    objCisel: (n: number) => `${n} obj. čísel`,
+  },
+  domov: {
+    title: 'Microflex Slovensko',
+    description: 'Predizolované ohybné potrubie Microflex pre vykurovanie, teplú a studenú vodu, chladenie a tepelné čerpadlá. Katalóg, obj. čísla, podklady a predaj cez instalatershop.sk.',
+    h1: 'Predizolované potrubie, ktoré sa ohne okolo prekážky.',
+    lead: 'Microflex vedie teplo, teplú aj studenú vodu a chlad pod zemou. Od kotolne alebo tepelného čerpadla až k domu v jednom kuse z kotúča, bez spojov vo výkope.',
+    vybrat: 'Vybrať potrubie', katalogPdf: 'Katalóg PDF, 19 MB', skladom: 'Skladom a predaj cez instalatershop.sk',
+    heroAlt: 'Výkop s uloženým potrubím Microflex: modré zvlnené rúry v piesku, napojené na spojky',
+    prierezAlt: 'Skutočný rez potrubím Microflex DUO na kotúči: modrý zvlnený plášť, tmavosivá izolácia a dve žlté rúry PE-Xa',
+    tagy: [
+      ['Zvlnený plášť HDPE', 'uzavreté komory, chráni izoláciu'],
+      ['2 × nosná rúra PE-Xa', 'kyslíková bariéra podľa DIN 4726'],
+      ['Izolácia z PE-X peny', 'uzavreté bunky, nasiakavosť pod 1 %'],
+    ] as [string, string][],
+    prierezCap: 'skutočný rez na kotúči', popiskyLabel: 'Popisky k fotke',
+    pouzitieH2: 'Na čo potrubie potrebujete?', pouzitieP: 'Vyberte použitie. Ukážeme len rady a dimenzie, ktoré sa naň hodia.',
+    pouzitia: [
+      { slug: 'vykurovanie', nazov: 'Vykurovanie', text: 'Rozvod tepla od kotolne, kotla na biomasu alebo tepelného čerpadla k domu. Rady UNO a DUO, 6 bar.', pikto: 'rad-duo-kurenie.png' },
+      { slug: 'sanita', nazov: 'Teplá a studená voda', text: 'Pitná voda medzi budovami a k vzdialeným odberom. Rady UNO a DUO v sanitárnom vyhotovení, 10 bar.', pikto: 'rad-duo-sanita.png' },
+      { slug: 'studena-a-chladena-voda', nazov: 'Chladenie a studená voda', text: 'Chladená a studená voda, aj odpadová voda. Rad COOL, na želanie s vyhrievacím káblom proti zamrznutiu.', pikto: 'rad-cool-uno.png' },
+      { slug: 'tepelne-cerpadla', nazov: 'Tepelné čerpadlo', text: 'Prepojenie vonkajšej jednotky s domom v jednom plášti, prívod aj spiatočka. Rad Microflex HP.', pikto: 'rad-hp-tepelne-cerpadlo.png' },
+    ],
+    katalogH2: 'Katalóg Microflex', katalogP: 'Päť potrubných systémov podľa média a k nim spojky a príslušenstvo. Všetko, čo treba na jeden výkop.',
+    precoH2: 'Prečo práve Microflex',
+    fakty: [
+      ['Polomer ohybu od 0,20 m', 'Potrubie kopíruje výkop, obíde základy aj strom. Menej kolien, menej spojov a menej miest, kde môže niečo tiecť.'],
+      ['Jeden plášť, dve alebo štyri rúry', 'DUO a QUADRO vedú prívod aj spiatočku, teplú aj studenú vodu v jednej trase. Užší výkop a rýchlejšia pokládka.'],
+      ['Rúra PE-Xa, pena PE-X, plášť HDPE', 'Nosná rúra podľa EN ISO 15875 s kyslíkovou bariérou podľa DIN 4726, izolácia s uzavretými bunkami, plášť z HDPE vyrábaný ako uzavreté komory.'],
+    ] as [string, string][],
+    technickeUdaje: 'Technické údaje radov', rezAlt: 'Rez potrubím Microflex: modrý zvlnený plášť, sivá izolácia a žlté rúry PE-Xa',
+    refH2: 'Kde už Microflex leží', refVsetky: 'Všetky referencie',
+    refs: [
+      ['Systém Microflex na vojenskej základni', 'Rozvod tepla medzi budovami areálu'],
+      ['Microflex obnovil vykurovanie školy', 'Výmena starého rozvodu bez zásahu do budovy'],
+      ['Bytové domy, Považská Bystrica', 'Veľký projekt na Slovensku'],
+    ] as [string, string][],
+    b2bH2: 'Pre projektantov, montážne firmy a veľkoobchod',
+    b2bP: 'Technické listy, výkresy DWG a DXF, vyhlásenia o zhode a environmentálna deklarácia na jednom mieste. Na projekt pošlite dopyt, ozveme sa s ponukou a dostupnosťou.',
+    b2bDopyt: 'Poslať dopyt na projekt', b2bPodklady: 'Podklady na stiahnutie',
+    b2bList: [
+      ['Technické listy a katalóg', 'PDF pre každý rad, katalóg Microflex 19 MB'],
+      ['BIM a CAD', 'DWG a DXF pre UNO, DUO, QUADRO a COOL'],
+      ['Vyhlásenia a deklarácie', 'Vyhlásenie o zhode, environmentálna deklarácia EPD platná do 29. 5. 2031'],
+      ['Veľkoobchodný kontakt', 'Obchodné oddelenie, telefón a e-mail doplníme'],
+    ] as [string, string][],
+    produktov: (n: number) => (n === 1 ? '1 produkt' : n >= 2 && n <= 4 ? `${n} produkty` : `${n} produktov`),
+  },
+  potrubia: {
+    title: 'Predizolované potrubia Microflex',
+    description: 'Päť potrubných systémov Microflex podľa média: vykurovanie, teplá a studená voda, vykurovanie a sanita v jednom plášti, studená a chladená voda, tepelné čerpadlá.',
+    lead: 'Ohybné potrubie v jednom kuse z kotúča. Vyberte podľa toho, čo ním chcete viesť: teplo, pitnú vodu, chlad alebo prepojenie tepelného čerpadla.',
+    rodinaAlt: 'Rodina potrubí Microflex: UNO, DUO, QUADRO a COOL vedľa seba',
+  },
+  kategoria: {
+    tlak: 'Prevádzkový tlak', rura: 'Nosná rúra', plast: 'Plášť', polomer: 'Polomer ohybu', rady: 'Rady',
+    pocet: (rady: string, dim: string) => `${rady}, ${dim} s obj. číslom podľa katalógu`,
+    cmpH2: 'Ktorý rad zvoliť', cmpP: 'Porovnanie radov v kategórii podľa katalógu výrobcu.',
+    cmpRows: { rury: 'Počet rúr v plášti', tlak: 'Prevádzkový tlak', rura: 'Nosná rúra', plast: 'Plášť HDPE', polomer: 'Polomer ohybu', zosilnena: 'Zosilnená izolácia', dimenzii: 'Dimenzií s obj. číslom' },
+    cmpZdroj: 'Rady bez tabuľky doplníme z PDF katalógu.',
+    faqH2: 'Otázky pred výberom', faqP: 'Čo sa nás pýtajú najčastejšie. Ak vám odpoveď chýba,', faqNapisat: 'napíšte nám',
+    piktoAlt: (k: string) => `${k}, rez potrubím`,
+  },
+  karta: { rura: 'Rúra', plast: 'Plášť', dimenzie: 'Dimenzie', zosilnena: (n: number) => `, z toho ${n} so zosilnenou izoláciou` },
+  rad: {
+    jednaRura: 'jedna rúra', dveRury: 'dve rúry', rury: (n: number) => `${n} rúry`,
+    medium: 'Médium', tlak: 'Prevádzkový tlak', pocetRur: 'Počet rúr', rura: 'Nosná rúra', plast: 'Plášť HDPE', polomer: 'Polomer ohybu',
+    note: 'Cenu a dostupnosť každého variantu nájdete v e-shope instalatershop.sk.',
+    oznacenie: 'Označenie výrobcu', castiStranky: 'Časti stránky',
+    variantyH2: 'Varianty a obj. čísla', variantyP: 'Obj. číslo vedie priamo na hľadanie v e-shope.',
+    variantyChybaju: 'Rozmery a obj. čísla tohto radu sú v katalógu výrobcu, do webu ich doplníme.', katalogPdf: 'Katalóg Microflex (PDF)',
+    popisH2: 'Popis a materiály', popisP: 'Podľa popisu výrobcu.',
+    dlH2: 'Na stiahnutie', dlP: 'Podklady výrobcu k tomuto radu. Otvoria sa na watts.eu.',
+    relH2: 'Čo budete potrebovať k potrubiu', relP: 'Spojky a príslušenstvo, ktoré výrobca odporúča k tomuto radu.',
+    fotoAlt: (n: string) => `${n}: rez potrubím, plášť, izolácia a nosná rúra`,
+  },
+  tabulka: {
+    obj: 'Obj. číslo', plast: 'Plášť Ø', rura: 'Rúra Ø × hrúbka', hmotnost: 'Hmotnosť', izolacia: 'Izolácia', polomer: 'Polomer ohybu', kotuc: 'Kotúč Ø / šírka', dn: 'DN', tlak: 'Tlak', eshop: 'E-shop',
+    standard: 'štandardná', zosilnena: 'zosilnená',
+    zdrojPozn: 'Hmotnosť je na meter potrubia, kotúč ako priemer a šírka.',
+  },
+  subory: { slovensky: 'slovensky', anglicky: 'anglicky', cesky: 'česky' },
+  skupiny: { pripravujeme: 'Stránky jednotlivých produktov s tabuľkami obj. čísel pripravujeme. Zatiaľ', naWatts: 'na watts.eu' },
+  footer: {
+    popis: 'Prezentačný web predizolovaného potrubia Microflex pre Slovensko. Predaj a sklad zabezpečuje',
+    potrubia: 'Potrubia a diely', podklady: 'Podklady', prevadzkovatel: 'Prevádzkovateľ', vyrobca: 'Výrobca',
+    katalog: 'Katalóg Microflex (PDF, 19 MB)', technicke: 'Technické listy', bim: 'BIM a CAD', vyhlasenia: 'Vyhlásenia o zhode a EPD', poradna: 'Poradňa',
+    firma: 'Inštalatérshop, Staškov 200', ico: 'IČO a DIČ doplníme', kontakt: 'Kontakt',
+    znamka: 'Microflex je ochranná známka skupiny Watts. Web prevádzkuje oficiálny partner, nie výrobca.',
+    vyrobcaText: 'Microflex vyrába Watts. Sme oficiálny partner pre Slovensko.',
+  },
+  stub: { prejst: 'Prejsť na potrubia' },
+  sklonovanie: {
+    variantov: (n: number) => (n === 1 ? '1 variant' : n >= 2 && n <= 4 ? `${n} varianty` : `${n} variantov`),
+    dimenzii: (n: number) => (n === 1 ? '1 dimenzia' : n >= 2 && n <= 4 ? `${n} dimenzie` : `${n} dimenzií`),
+    radov: (n: number) => (n === 1 ? '1 rad' : n >= 2 && n <= 4 ? `${n} rady` : `${n} radov`),
+  },
+};
+
+const cs: typeof sk = {
+  site: { name: 'Microflex Slovensko', sub: 'Slovensko', tagline: 'Předizolované ohebné potrubí Microflex' },
+  nav: { potrubia: 'Potrubí', vyber: 'Výběr potrubí', stiahnut: 'Ke stažení', firmy: 'Pro firmy', poradna: 'Poradna', eshop: 'E-shop', menu: 'Menu', zavriet: 'Zavřít', hlavna: 'Hlavní navigace', domov: 'Domů' },
+  search: { placeholder: 'Obj. číslo, řada, dimenze', label: 'Hledat v katalogu', button: 'Hledat' },
+  partner: { kratke: 'Oficiální partner', veta: 'Oficiální partner Watts pro Microflex na Slovensku', vyrobca: 'Výrobce' },
+  jazyk: { prepnut: 'Jazyk', sk: 'Slovensky', cs: 'Česky' },
+  crumbs: { label: 'Kde jste' },
+  common: {
+    zobrazit: 'Zobrazit', zobrazitRady: 'Zobrazit řady', zobrazitRad: 'Zobrazit řadu', zobrazitVarianty: 'Zobrazit varianty',
+    podlaKatalogu: 'podle katalogu', rozmeryVKatalogu: 'Rozměry v katalogu', doEshopu: 'Do e-shopu', kupit: 'Koupit v e-shopu',
+    vybratDimenziu: 'Vybrat dimenzi', od: 'od', az: 'až', fotkaVyrobcu: 'Foto výrobce', renderVyrobcu: 'Render výrobce.',
+    zdroj: 'Zdroj: katalog Watts Microflex, stav k', strankaVyrobcu: 'Stránka výrobce', nie: 'ne',
+    objCisel: (n: number) => `${n} obj. čísel`,
+  },
+  domov: {
+    title: 'Microflex Slovensko',
+    description: 'Předizolované ohebné potrubí Microflex pro vytápění, teplou a studenou vodu, chlazení a tepelná čerpadla. Katalog, obj. čísla, podklady a prodej přes instalatershop.sk.',
+    h1: 'Předizolované potrubí, které se ohne kolem překážky.',
+    lead: 'Microflex vede teplo, teplou i studenou vodu a chlad pod zemí. Od kotelny nebo tepelného čerpadla až k domu v jednom kuse z kotouče, bez spojů ve výkopu.',
+    vybrat: 'Vybrat potrubí', katalogPdf: 'Katalog PDF, 19 MB', skladom: 'Skladem a prodej přes instalatershop.sk',
+    heroAlt: 'Výkop s uloženým potrubím Microflex: modré zvlněné trubky v písku, napojené na spojky',
+    prierezAlt: 'Skutečný řez potrubím Microflex DUO na kotouči: modrý zvlněný plášť, tmavě šedá izolace a dvě žluté trubky PE-Xa',
+    tagy: [
+      ['Zvlněný plášť HDPE', 'uzavřené komory, chrání izolaci'],
+      ['2 × nosná trubka PE-Xa', 'kyslíková bariéra podle DIN 4726'],
+      ['Izolace z PE-X pěny', 'uzavřené buňky, nasákavost pod 1 %'],
+    ],
+    prierezCap: 'skutečný řez na kotouči', popiskyLabel: 'Popisky k fotce',
+    pouzitieH2: 'Na co potrubí potřebujete?', pouzitieP: 'Vyberte použití. Ukážeme jen řady a dimenze, které se na něj hodí.',
+    pouzitia: [
+      { slug: 'vytapeni', nazov: 'Vytápění', text: 'Rozvod tepla od kotelny, kotle na biomasu nebo tepelného čerpadla k domu. Řady UNO a DUO, 6 bar.', pikto: 'rad-duo-kurenie.png' },
+      { slug: 'sanita', nazov: 'Teplá a studená voda', text: 'Pitná voda mezi budovami a ke vzdáleným odběrům. Řady UNO a DUO v sanitárním provedení, 10 bar.', pikto: 'rad-duo-sanita.png' },
+      { slug: 'studena-a-chlazena-voda', nazov: 'Chlazení a studená voda', text: 'Chlazená a studená voda, i odpadní voda. Řada COOL, na přání s topným kabelem proti zamrznutí.', pikto: 'rad-cool-uno.png' },
+      { slug: 'tepelna-cerpadla', nazov: 'Tepelné čerpadlo', text: 'Propojení venkovní jednotky s domem v jednom plášti, přívod i zpátečka. Řada Microflex HP.', pikto: 'rad-hp-tepelne-cerpadlo.png' },
+    ],
+    katalogH2: 'Katalog Microflex', katalogP: 'Pět potrubních systémů podle média a k nim spojky a příslušenství. Všechno, co je třeba na jeden výkop.',
+    precoH2: 'Proč právě Microflex',
+    fakty: [
+      ['Poloměr ohybu od 0,20 m', 'Potrubí kopíruje výkop, obejde základy i strom. Méně kolen, méně spojů a méně míst, kde může něco téct.'],
+      ['Jeden plášť, dvě nebo čtyři trubky', 'DUO a QUADRO vedou přívod i zpátečku, teplou i studenou vodu v jedné trase. Užší výkop a rychlejší pokládka.'],
+      ['Trubka PE-Xa, pěna PE-X, plášť HDPE', 'Nosná trubka podle EN ISO 15875 s kyslíkovou bariérou podle DIN 4726, izolace s uzavřenými buňkami, plášť z HDPE vyráběný jako uzavřené komory.'],
+    ],
+    technickeUdaje: 'Technické údaje řad', rezAlt: 'Řez potrubím Microflex: modrý zvlněný plášť, šedá izolace a žluté trubky PE-Xa',
+    refH2: 'Kde už Microflex leží', refVsetky: 'Všechny reference',
+    refs: [
+      ['Systém Microflex na vojenské základně', 'Rozvod tepla mezi budovami areálu'],
+      ['Microflex obnovil vytápění školy', 'Výměna starého rozvodu bez zásahu do budovy'],
+      ['Bytové domy, Považská Bystrica', 'Velký projekt na Slovensku'],
+    ],
+    b2bH2: 'Pro projektanty, montážní firmy a velkoobchod',
+    b2bP: 'Technické listy, výkresy DWG a DXF, prohlášení o shodě a environmentální deklarace na jednom místě. Na projekt pošlete poptávku, ozveme se s nabídkou a dostupností.',
+    b2bDopyt: 'Poslat poptávku na projekt', b2bPodklady: 'Podklady ke stažení',
+    b2bList: [
+      ['Technické listy a katalog', 'PDF pro každou řadu, katalog Microflex 19 MB'],
+      ['BIM a CAD', 'DWG a DXF pro UNO, DUO, QUADRO a COOL'],
+      ['Prohlášení a deklarace', 'Prohlášení o shodě, environmentální deklarace EPD platná do 29. 5. 2031'],
+      ['Velkoobchodní kontakt', 'Obchodní oddělení, telefon a e-mail doplníme'],
+    ],
+    produktov: (n: number) => (n === 1 ? '1 produkt' : n >= 2 && n <= 4 ? `${n} produkty` : `${n} produktů`),
+  },
+  potrubia: {
+    title: 'Předizolované potrubí Microflex',
+    description: 'Pět potrubních systémů Microflex podle média: vytápění, teplá a studená voda, vytápění a sanita v jednom plášti, studená a chlazená voda, tepelná čerpadla.',
+    lead: 'Ohebné potrubí v jednom kuse z kotouče. Vyberte podle toho, co jím chcete vést: teplo, pitnou vodu, chlad nebo propojení tepelného čerpadla.',
+    rodinaAlt: 'Rodina potrubí Microflex: UNO, DUO, QUADRO a COOL vedle sebe',
+  },
+  kategoria: {
+    tlak: 'Provozní tlak', rura: 'Nosná trubka', plast: 'Plášť', polomer: 'Poloměr ohybu', rady: 'Řady',
+    pocet: (rady: string, dim: string) => `${rady}, ${dim} s obj. číslem podle katalogu`,
+    cmpH2: 'Kterou řadu zvolit', cmpP: 'Porovnání řad v kategorii podle katalogu výrobce.',
+    cmpRows: { rury: 'Počet trubek v plášti', tlak: 'Provozní tlak', rura: 'Nosná trubka', plast: 'Plášť HDPE', polomer: 'Poloměr ohybu', zosilnena: 'Zesílená izolace', dimenzii: 'Dimenzí s obj. číslem' },
+    cmpZdroj: 'Řady bez tabulky doplníme z PDF katalogu.',
+    faqH2: 'Otázky před výběrem', faqP: 'Na co se nás ptají nejčastěji. Pokud vám odpověď chybí,', faqNapisat: 'napište nám',
+    piktoAlt: (k: string) => `${k}, řez potrubím`,
+  },
+  karta: { rura: 'Trubka', plast: 'Plášť', dimenzie: 'Dimenze', zosilnena: (n: number) => `, z toho ${n} se zesílenou izolací` },
+  rad: {
+    jednaRura: 'jedna trubka', dveRury: 'dvě trubky', rury: (n: number) => `${n} trubky`,
+    medium: 'Médium', tlak: 'Provozní tlak', pocetRur: 'Počet trubek', rura: 'Nosná trubka', plast: 'Plášť HDPE', polomer: 'Poloměr ohybu',
+    note: 'Cenu a dostupnost každé varianty najdete v e-shopu instalatershop.sk.',
+    oznacenie: 'Označení výrobce', castiStranky: 'Části stránky',
+    variantyH2: 'Varianty a obj. čísla', variantyP: 'Obj. číslo vede přímo na hledání v e-shopu.',
+    variantyChybaju: 'Rozměry a obj. čísla této řady jsou v katalogu výrobce, do webu je doplníme.', katalogPdf: 'Katalog Microflex (PDF)',
+    popisH2: 'Popis a materiály', popisP: 'Podle popisu výrobce.',
+    dlH2: 'Ke stažení', dlP: 'Podklady výrobce k této řadě. Otevřou se na watts.eu.',
+    relH2: 'Co budete potřebovat k potrubí', relP: 'Spojky a příslušenství, které výrobce doporučuje k této řadě.',
+    fotoAlt: (n: string) => `${n}: řez potrubím, plášť, izolace a nosná trubka`,
+  },
+  tabulka: {
+    obj: 'Obj. číslo', plast: 'Plášť Ø', rura: 'Trubka Ø × tloušťka', hmotnost: 'Hmotnost', izolacia: 'Izolace', polomer: 'Poloměr ohybu', kotuc: 'Kotouč Ø / šířka', dn: 'DN', tlak: 'Tlak', eshop: 'E-shop',
+    standard: 'standardní', zosilnena: 'zesílená',
+    zdrojPozn: 'Hmotnost je na metr potrubí, kotouč jako průměr a šířka.',
+  },
+  subory: { slovensky: 'slovensky', anglicky: 'anglicky', cesky: 'česky' },
+  skupiny: { pripravujeme: 'Stránky jednotlivých produktů s tabulkami obj. čísel připravujeme. Zatím', naWatts: 'na watts.eu' },
+  footer: {
+    popis: 'Prezentační web předizolovaného potrubí Microflex. Prodej a sklad zajišťuje',
+    potrubia: 'Potrubí a díly', podklady: 'Podklady', prevadzkovatel: 'Provozovatel', vyrobca: 'Výrobce',
+    katalog: 'Katalog Microflex (PDF, 19 MB)', technicke: 'Technické listy', bim: 'BIM a CAD', vyhlasenia: 'Prohlášení o shodě a EPD', poradna: 'Poradna',
+    firma: 'Inštalatérshop, Staškov 200, Slovensko', ico: 'IČO a DIČ doplníme', kontakt: 'Kontakt',
+    znamka: 'Microflex je ochranná známka skupiny Watts. Web provozuje oficiální partner, nikoli výrobce.',
+    vyrobcaText: 'Microflex vyrábí Watts. Jsme oficiální partner pro Slovensko.',
+  },
+  stub: { prejst: 'Přejít na potrubí' },
+  sklonovanie: {
+    variantov: (n: number) => (n === 1 ? '1 varianta' : n >= 2 && n <= 4 ? `${n} varianty` : `${n} variant`),
+    dimenzii: (n: number) => (n === 1 ? '1 dimenze' : n >= 2 && n <= 4 ? `${n} dimenze` : `${n} dimenzí`),
+    radov: (n: number) => (n === 1 ? '1 řada' : n >= 2 && n <= 4 ? `${n} řady` : `${n} řad`),
+  },
+};
+
+export const ui: Record<Lang, typeof sk> = { sk, cs };
+export const t = (lang: Lang) => ui[lang];
+
+/** Statické cesty rozhrania podľa jazyka (adresy mimo katalógu). */
+export const ROUTES: Record<Lang, Record<string, string>> = {
+  sk: { domov: '/', potrubia: '/potrubia/', vyber: '/vyber/', stiahnut: '/na-stiahnutie/', firmy: '/pre-firmy/', poradna: '/poradna/', kontakt: '/kontakt/', referencie: '/referencie/', hladat: '/hladat/', spojky: '/spojky/', prislusenstvo: '/prislusenstvo/' },
+  cs: { domov: '/cs/', potrubia: '/cs/potrubi/', vyber: '/cs/vyber/', stiahnut: '/cs/ke-stazeni/', firmy: '/cs/pro-firmy/', poradna: '/cs/poradna/', kontakt: '/cs/kontakt/', referencie: '/cs/reference/', hladat: '/cs/hledat/', spojky: '/cs/spojky/', prislusenstvo: '/cs/prislusenstvi/' },
+};
+export const route = (lang: Lang, key: keyof typeof ROUTES['sk']) => ROUTES[lang][key];
+
+/** Alternatívne adresy tej istej stránky v oboch jazykoch (pre hreflang a prepínač). */
+export type Alternates = Record<Lang, string>;
+export const staticAlternates = (key: keyof typeof ROUTES['sk']): Alternates => ({ sk: ROUTES.sk[key], cs: ROUTES.cs[key] });

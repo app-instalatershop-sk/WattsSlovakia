@@ -1,9 +1,11 @@
 ---
 import Ikona from './Ikona.astro';
+import { type Lang, t } from '../i18n/ui';
 interface Subor { nazov: string; typ: string; jazyk: string | null; url: string }
-interface Props { subory: Subor[] }
-const { subory } = Astro.props;
-const jazyk = (j: string | null) => (j === 'sk' ? 'slovensky' : j === 'en' ? 'anglicky' : null);
+interface Props { subory: Subor[]; lang: Lang }
+const { subory, lang } = Astro.props;
+const ui = t(lang);
+const jazyk = (j: string | null) => (j === 'sk' ? ui.subory.slovensky : j === 'en' ? ui.subory.anglicky : j === 'cs' ? ui.subory.cesky : null);
 ---
 <div class="files">
   {subory.map((s) => (

@@ -62,12 +62,13 @@ const productLd = [{
     </div>
   </div>
 
-  <nav class="subnav" aria-label={ui.rad.castiStranky}>
+  <nav class="subnav" aria-label={ui.rad.castiStranky} id="subnav">
     <div class="wrap"><ul>
       {varianty.length > 0 && <li><a href="#varianty">{ui.rad.variantyH2}</a></li>}
       {popis && <li><a href="#popis">{ui.rad.popisH2}</a></li>}
       {r.subory.length > 0 && <li><a href="#stiahnut">{ui.rad.dlH2}</a></li>}
       {suvisiace.length > 0 && <li><a href="#suvisiace">{ui.rad.relH2}</a></li>}
+      <span class="indicator" aria-hidden="true"></span>
     </ul></div>
   </nav>
 
@@ -128,9 +129,11 @@ const productLd = [{
   .note { font-size: 14px; color: var(--color-ink-soft); }
   .oznacenie { font-size: 13px; color: var(--color-ink); padding-top: 12px; border-top: var(--line); }
   .subnav { position: sticky; top: 60px; z-index: 10; background: var(--color-white); border-top: var(--line); border-bottom: var(--line); }
-  .subnav ul { display: flex; gap: 32px; overflow-x: auto; }
-  .subnav a { display: inline-block; padding: 14px 0; color: var(--color-ink); font-weight: 500; border-bottom: 2px solid transparent; white-space: nowrap; transition: border-color 150ms var(--ease-soft); }
-  .subnav a:hover { border-bottom-color: var(--color-blue-700); color: var(--color-ink); }
+  .subnav ul { display: flex; gap: 32px; overflow-x: auto; position: relative; }
+  .subnav a { display: inline-block; padding: 14px 0; color: var(--color-ink-soft); font-weight: 500; white-space: nowrap; transition: color 150ms var(--ease-soft); }
+  .subnav a:hover, .subnav a.is-active { color: var(--color-ink); }
+  /* Jedno podčiarknutie, ktoré sa presúva medzi položkami (layout animácia bez knižnice). */
+  .subnav .indicator { position: absolute; left: 0; bottom: 0; height: 2px; width: 0; background: var(--color-blue-700); transition: transform 250ms var(--ease-soft), width 250ms var(--ease-soft); transform: translateX(var(--x, 0)); }
   .block { padding-block: 48px; border-bottom: var(--line); scroll-margin-top: 130px; }
   .block:last-child { border-bottom: 0; }
   .block-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; margin-bottom: 24px; }
@@ -151,3 +154,34 @@ const productLd = [{
     .block { scroll-margin-top: 120px; }
   }
 </style>
+
+<script>
+  function initSubnav() {
+    const nav = document.getElementById('subnav');
+    if (!nav) return;
+    const links = [...nav.querySelectorAll<HTMLAnchorElement>('a[href^="#"]')];
+    const indicator = nav.querySelector<HTMLElement>('.indicator');
+    const list = nav.querySelector<HTMLElement>('ul');
+    if (!links.length || !indicator || !list) return;
+    const blocks = links.map((l) => document.querySelector<HTMLElement>(l.getAttribute('href')!)).filter((b): b is HTMLElement => Boolean(b));
+    function activate(link: HTMLAnchorElement) {
+      links.forEach((l) => l.classList.toggle('is-active', l === link));
+      const left = link.offsetLeft - list!.scrollLeft;
+      indicator!.style.width = `${link.offsetWidth}px`;
+      indicator!.style.setProperty('--x', `${left}px`);
+    }
+    function onScroll() {
+      const y = window.scrollY + 150;
+      let current = blocks[0];
+      for (const b of blocks) if (b.offsetTop <= y) current = b;
+      const link = links.find((l) => l.getAttribute('href') === `#${current?.id}`);
+      if (link) activate(link);
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    links.forEach((l) => l.addEventListener('click', () => activate(l)));
+    onScroll();
+  }
+  initSubnav();
+  document.addEventListener('astro:page-load', initSubnav);
+</script>

@@ -39,7 +39,11 @@
     --gutter: clamp(16px, 3vw, 48px);
     --line: 1px solid var(--color-grey-300);
     --hdr-h: 72px;
+    interpolate-size: allow-keywords;
   }
+  /* Rozbaľovanie <details> plynulo tam, kde to prehliadač vie; inde sa otvorí hneď. */
+  details::details-content { height: 0; overflow: clip; transition: height 250ms var(--ease-soft), content-visibility 250ms allow-discrete; }
+  details[open]::details-content { height: auto; }
   html { scroll-behavior: smooth; }
   body {
     margin: 0;

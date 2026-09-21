@@ -31,6 +31,7 @@ const zvysok = [...potrubia.slice(4), ...kats.filter((k) => k.typ !== 'potrubie'
 const heroFoto = fotka('vykop-spojky.jpg')!;
 const prierez = fotka('prierez-duo.jpg')!;
 const rezRender = fotka('rez-render.jpg')!;
+const kotuc = fotka('kotuc.jpg')!;
 const refFotky = [fotka('prierez-duo.jpg')!, fotka('referencia-skola.png')!, fotka('referencia-povazska-bystrica.jpg')!];
 const tagPos = [{ x: '61%', y: '21%', len: '44px' }, { x: '46%', y: '44%', len: '56px' }, { x: '57%', y: '60%', len: '44px' }];
 ---
@@ -152,6 +153,7 @@ const tagPos = [{ x: '61%', y: '21%', len: '44px' }, { x: '46%', y: '44%', len: 
   </section>
 
   <section class="section band-dark b2b" aria-labelledby="h-b2b">
+    <Image src={kotuc} alt="" class="b2b-bg" widths={[960, 1600]} sizes="100vw" aria-hidden="true" />
     <div class="wrap b2b-grid">
       <div class="b2b-text">
         <h2 id="h-b2b">{d.b2bH2}</h2>
@@ -172,6 +174,16 @@ const tagPos = [{ x: '61%', y: '21%', len: '44px' }, { x: '46%', y: '44%', len: 
   .hero { padding-top: 24px; overflow: hidden; }
   .hero-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: auto auto; column-gap: 24px; }
   .hero-text { grid-column: 1 / 6; grid-row: 1; padding-block: 48px 132px; display: flex; flex-direction: column; gap: 24px; align-self: start; }
+  /* Jediný orchestrovaný vstup webu (DESIGN.md kap. 16.1): text vystúpi po častiach, fotka sa usadí, popisky prídu nakoniec. */
+  .hero-text > * { animation: rise 600ms var(--ease-soft) both; }
+  .hero-text > :nth-child(1) { animation-delay: 40ms; }
+  .hero-text > :nth-child(2) { animation-delay: 120ms; }
+  .hero-text > :nth-child(3) { animation-delay: 200ms; }
+  .hero-text > :nth-child(4) { animation-delay: 280ms; }
+  .hero-photo :global(img) { animation: settle 1100ms var(--ease-soft) both; }
+  .hero-xsec { animation: rise 600ms 350ms var(--ease-soft) both; }
+  @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  @keyframes settle { from { opacity: 0; transform: scale(1.04); } to { opacity: 1; transform: none; } }
   .hero-text h1 { font-size: clamp(36px, 3.3vw + 12px, 60px); line-height: 1.02; letter-spacing: -0.02em; max-width: 12ch; }
   .hero-text .lead { max-width: 30em; }
   .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
@@ -228,7 +240,9 @@ const tagPos = [{ x: '61%', y: '21%', len: '44px' }, { x: '46%', y: '44%', len: 
   .ref:hover strong { color: var(--color-blue-700); }
 
   .b2b { position: relative; overflow: hidden; }
-  .b2b::after { content: ""; position: absolute; right: 0; top: 0; bottom: 0; width: min(14vw, 180px); background-image: repeating-linear-gradient(90deg, var(--color-blue-800) 0 2px, transparent 2px 8px); opacity: .9; }
+  /* Podtón značky: skutočná fotka kotúča Microflex ako jemná textúra pod tmavou plochou, nie ilustrácia. */
+  .b2b :global(.b2b-bg) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% 50%; opacity: .55; mix-blend-mode: luminosity; filter: saturate(0) contrast(1.15); pointer-events: none; }
+  .b2b::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--color-blue-900) 0%, rgb(10 42 94 / 0.92) 45%, rgb(10 42 94 / 0.45) 100%); pointer-events: none; }
   .b2b-grid { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 24px; }
   .b2b-text { grid-column: 1 / 7; display: flex; flex-direction: column; gap: 24px; }
   .b2b-text .lead { color: var(--color-on-dark-muted); }
@@ -261,6 +275,6 @@ const tagPos = [{ x: '61%', y: '21%', len: '44px' }, { x: '46%', y: '44%', len: 
     .c3, .c4 { grid-column: 1 / -1; }
     .why > *, .refs > *, .b2b-grid > * { grid-column: 1 / -1; }
     .ref :global(img) { height: auto; aspect-ratio: 4 / 3; }
-    .b2b::after { display: none; }
+    .b2b::after { background: rgb(10 42 94 / 0.82); }
   }
 </style>

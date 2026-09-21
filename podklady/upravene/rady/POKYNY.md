@@ -8,3 +8,9 @@ V tomto priečinku sú zdrojové rendery radov s bielym pozadím. Pri každom:
 - pôvodný súbor s bielym pozadím môže ostať, web si vezme verziu `.png`, ak existuje.
 
 Web ich načíta pri ďalšom `python data/normalize.py`.
+
+## Navyše: dva obrázky kategórií dielov
+
+`spojky-kategoria.png` (T-kus, 200 px) a `prislusenstvo-kategoria.png` (revízna šachta, 500 px): odstrániť
+pozadie, upscale na aspoň 800 px, uložiť pod rovnakým názvom. Idú do riadkov „Spojky“ a „Príslušenstvo“
+na domove, dnes majú viditeľné svetlé pozadie.

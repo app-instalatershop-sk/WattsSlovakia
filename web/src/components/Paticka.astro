@@ -8,7 +8,6 @@ const ui = t(lang);
 const kats = await kategorie();
 ---
 <footer class="ftr">
-  <div class="ftr-ribs ribs-x" aria-hidden="true"></div>
   <div class="wrap ftr-in">
     <div>
       <a class="brand" href={route(lang, 'domov')}><span class="brand-name">Microflex</span><span class="brand-sub">{ui.site.sub}</span></a>
@@ -49,7 +48,6 @@ const kats = await kategorie();
 
 <style>
   .ftr { background: var(--color-blue-900); color: #fff; margin-top: 96px; }
-  .ftr-ribs { height: 14px; }
   .ftr-in { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1.2fr; gap: 32px; padding-block: 48px; }
   .ftr h3 { color: #fff; font-size: 15px; font-family: var(--font-text); font-stretch: 100%; font-weight: 600; margin-bottom: 12px; letter-spacing: 0; }
   .ftr a { color: #fff; }

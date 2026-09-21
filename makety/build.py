@@ -7,6 +7,7 @@ Vstup:     makety/src/*.html, makety/src/partials/*.html, makety/src/tokens.css,
            data/_img-cache.json (lokálna keš fotiek, nekomituje sa), makety/links.json (voliteľné)
 Výstup:    makety/out/*.html (publikujú sa ako artefakty; nekomitujú sa)
 """
+import base64
 import html as H
 import io
 import json
@@ -123,12 +124,23 @@ def main():
             raise SystemExit('obrázok i%s nemá dáta: %s' % (m.group(1), rec))
         return rec['dataUri']
 
+    mimes = {'.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.webp': 'image/webp', '.svg': 'image/svg+xml'}
+
+    def asset(m):
+        """{{asset:fotky/x.jpg}} -> data URI zo súboru v podklady/watts/"""
+        path = os.path.join(ROOT, '..', 'podklady', 'watts', m.group(1))
+        if not os.path.exists(path):
+            raise SystemExit('podklad chýba: %s' % path)
+        mime = mimes.get(os.path.splitext(path)[1].lower(), 'application/octet-stream')
+        return 'data:%s;base64,%s' % (mime, base64.b64encode(open(path, 'rb').read()).decode('ascii'))
+
     for page in PAGES:
         html = read(os.path.join(SRC, page + '.html'))
         html = re.sub(r'\{\{partial:(\w+)\}\}', lambda m: partials[m.group(1)], html)
         html = html.replace('{{css}}', css)
         html = re.sub(r'\{\{(table:\w+|compare:\w+)\}\}', lambda m: generated[m.group(1)], html)
         html = re.sub(r'\{\{img:i(\d+)\}\}', img, html)
+        html = re.sub(r'\{\{asset:([\w./-]+)\}\}', asset, html)
         html = re.sub(r'\{\{link:([\w-]+)\}\}', lambda m: links.get(m.group(1), '#'), html)
         left = re.findall(r'\{\{[^}]+\}\}', html)
         io.open(os.path.join(OUT, page + '.html'), 'w', encoding='utf-8', newline='\n').write(html)

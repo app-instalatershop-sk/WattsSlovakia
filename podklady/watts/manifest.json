@@ -1,0 +1,267 @@
+{
+ "stiahnute": "2026-09-21T14:01:17.775Z",
+ "poznamka": "Podklady výrobcu Watts (watts.eu, slovenská verzia). Použitie so súhlasom Watts, potvrdil Juraj 21. 9. 2026.",
+ "subory": [
+  {
+   "subor": "podklady/watts/loga/watts-logo.png",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/659385-source/638791958780000000",
+   "original": "659385_source.png",
+   "typ": "image/png",
+   "bajty": 16401,
+   "sirka": 571,
+   "vyska": 108
+  },
+  {
+   "subor": "podklady/watts/loga/watts-logo-4c.eps",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/17615-source/639252739090000000",
+   "original": "watts_logo_4C.eps",
+   "typ": "application/postscript",
+   "bajty": 349994,
+   "sirka": null,
+   "vyska": null
+  },
+  {
+   "subor": "podklady/watts/fotky/microflex-prierez-vykop.jpg",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/664525-source/638944104770000000",
+   "original": "664525_source.jpg",
+   "typ": "image/jpeg",
+   "bajty": 232906,
+   "sirka": 500,
+   "vyska": 500
+  },
+  {
+   "subor": "podklady/watts/banner/microflex-banner-2025-09.jpg",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/664062-source/639110977510000000/banniere-microflex-09-2025",
+   "original": "664062_source.jpg",
+   "typ": "image/jpeg",
+   "bajty": 719175,
+   "sirka": 8000,
+   "vyska": 3025
+  },
+  {
+   "subor": "podklady/watts/fotky/microflex-vykop-spojky.jpg",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/634538-source/638349590790000000",
+   "original": "634538_source.jpg",
+   "typ": "image/jpeg",
+   "bajty": 1086072,
+   "sirka": 1600,
+   "vyska": 1066
+  },
+  {
+   "subor": "podklady/watts/fotky-kategorie/kategoria-pipes-for-sanitary.png",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/641368-source/638532761770000000",
+   "original": "641368_source.png",
+   "typ": "image/png",
+   "bajty": 50057,
+   "sirka": 200,
+   "vyska": 200
+  },
+  {
+   "subor": "podklady/watts/fotky-kategorie/kategoria-pipes-for-heating.png",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/634607-source/638532761680000000",
+   "original": "634607_source.png",
+   "typ": "image/png",
+   "bajty": 52838,
+   "sirka": 200,
+   "vyska": 200
+  },
+  {
+   "subor": "podklady/watts/fotky-referencie/referencia-povazska-bystrica.jpg",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/634190-source/638779027690000000",
+   "original": "634190_source.jpg",
+   "typ": "image/jpeg",
+   "bajty": 32202,
+   "sirka": 268,
+   "vyska": 150
+  },
+  {
+   "subor": "podklady/watts/fotky-referencie/referencia-skola.png",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/643091-source/638544867300000000",
+   "original": "643091_source.png",
+   "typ": "image/png",
+   "bajty": 84650,
+   "sirka": 300,
+   "vyska": 169
+  },
+  {
+   "subor": "podklady/watts/fotky-kategorie/kategoria-central-heating-and-sanitary.png",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/641357-source/638532761770000000",
+   "original": "641357_source.png",
+   "typ": "image/png",
+   "bajty": 47571,
+   "sirka": 200,
+   "vyska": 200
+  },
+  {
+   "subor": "podklady/watts/fotky-rady/rad-1-microflex-uno-6-bar.jpg",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636687-source/638386906090000000",
+   "original": "636687_source.jpg",
+   "typ": "image/jpeg",
+   "bajty": 63942,
+   "sirka": 1000,
+   "vyska": 1000
+  },
+  {
+   "subor": "podklady/watts/fotky-rady/rad-2-microflex-duo-6-bar.jpg",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636670-source/638542227000000000",
+   "original": "636670_source.jpg",
+   "typ": "image/jpeg",
+   "bajty": 48600,
+   "sirka": 1000,
+   "vyska": 1000
+  },
+  {
+   "subor": "podklady/watts/fotky-kategorie/kategoria-couplings.png",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/641361-source/638532761770000000",
+   "original": "641361_source.png",
+   "typ": "image/png",
+   "bajty": 34350,
+   "sirka": 200,
+   "vyska": 200
+  },
+  {
+   "subor": "podklady/watts/fotky-kategorie/kategoria-cold-cold-drinking-water.png",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/641356-source/638532762240000000",
+   "original": "641356_source.png",
+   "typ": "image/png",
+   "bajty": 53794,
+   "sirka": 200,
+   "vyska": 200
+  },
+  {
+   "subor": "podklady/watts/fotky-kategorie/kategoria-accessories.png",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/642912-source/638532761930000000",
+   "original": "642912_source.png",
+   "typ": "image/png",
+   "bajty": 43595,
+   "sirka": 500,
+   "vyska": 357
+  },
+  {
+   "subor": "podklady/watts/fotky-rady/rad-4-microflex-quadro.png",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636686-source/638787510140000000",
+   "original": "636686_source.png",
+   "typ": "image/png",
+   "bajty": 39045,
+   "sirka": 500,
+   "vyska": 500
+  },
+  {
+   "subor": "podklady/watts/fotky-rady/rad-2-single-microflex-uno-primo-6-bar.jpg",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636688-source/638386969760000000",
+   "original": "636688_source.jpg",
+   "typ": "image/jpeg",
+   "bajty": 49711,
+   "sirka": 1000,
+   "vyska": 1000
+  },
+  {
+   "subor": "podklady/watts/fotky-rady/rad-2-microflex-duo-10-bar.jpg",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636671-source/638386906070000000",
+   "original": "636671_source.jpg",
+   "typ": "image/jpeg",
+   "bajty": 51056,
+   "sirka": 1000,
+   "vyska": 1000
+  },
+  {
+   "subor": "podklady/watts/fotky-rady/rad-3-microflex-primo-duo-s-10-bar.jpg",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/637367-source/638386906110000000",
+   "original": "637367_source.jpg",
+   "typ": "image/jpeg",
+   "bajty": 33501,
+   "sirka": 280,
+   "vyska": 280
+  },
+  {
+   "subor": "podklady/watts/fotky-rady/rad-1-microflex-uno-10-bar.jpg",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636689-source/638386906090000000",
+   "original": "636689_source.jpg",
+   "typ": "image/jpeg",
+   "bajty": 47186,
+   "sirka": 1000,
+   "vyska": 1000
+  },
+  {
+   "subor": "podklady/watts/fotky-rady/rad-pe-x-couplings-for-sanitary-pipes.png",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/643523-source/638532762010000000",
+   "original": "643523_source.png",
+   "typ": "image/png",
+   "bajty": 37780,
+   "sirka": 200,
+   "vyska": 200
+  },
+  {
+   "subor": "podklady/watts/fotky-rady/rad-pe-x-couplings-for-heating-and-cool-pipes.png",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/643521-source/638532762010000000",
+   "original": "643521_source.png",
+   "typ": "image/png",
+   "bajty": 26008,
+   "sirka": 200,
+   "vyska": 200
+  },
+  {
+   "subor": "podklady/watts/fotky-rady/rad-2-pipe-system-microflex-cool-ht.png",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/637643-source/638702986690000000",
+   "original": "637643_source.png",
+   "typ": "image/png",
+   "bajty": 454447,
+   "sirka": 1000,
+   "vyska": 795
+  },
+  {
+   "subor": "podklady/watts/fotky-rady/rad-1-pipe-system-microflex-cool.png",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/637640-source/638702986630000000",
+   "original": "637640_source.png",
+   "typ": "image/png",
+   "bajty": 524244,
+   "sirka": 1000,
+   "vyska": 729
+  },
+  {
+   "subor": "podklady/watts/fotky-rady/rad-microflex-cool-duo.png",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/637635-source/638702986520000000",
+   "original": "637635_source.png",
+   "typ": "image/png",
+   "bajty": 585204,
+   "sirka": 1000,
+   "vyska": 729
+  },
+  {
+   "subor": "podklady/watts/fotky-rady/rad-caps-and-reduction-kits.jpg",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/642849-source/638532761860000000",
+   "original": "642849_source.jpg",
+   "typ": "image/jpeg",
+   "bajty": 13922,
+   "sirka": 280,
+   "vyska": 210
+  },
+  {
+   "subor": "podklady/watts/fotky-rady/rad-repair-and-warning-tapes.jpg",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/642846-source/638532761860000000",
+   "original": "642846_source.jpg",
+   "typ": "image/jpeg",
+   "bajty": 20442,
+   "sirka": 280,
+   "vyska": 210
+  },
+  {
+   "subor": "podklady/watts/fotky-rady/rad-accessories.png",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/641384-source/638532761810000000",
+   "original": "641384_source.png",
+   "typ": "image/png",
+   "bajty": 21086,
+   "sirka": 200,
+   "vyska": 200
+  },
+  {
+   "subor": "podklady/watts/fotky-rady/rad-wall-feed-throughs.png",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/642911-source/638532761930000000",
+   "original": "642911_source.png",
+   "typ": "image/png",
+   "bajty": 39241,
+   "sirka": 500,
+   "vyska": 357
+  }
+ ]
+}

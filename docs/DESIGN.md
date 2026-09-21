@@ -117,8 +117,8 @@ s vlastným charakterom a otvorenou licenciou.
 | Nadpisy H1–H3 | **Archivo** (variabilné, os šírky), šírka SemiExpanded | 600, 700 | grotesk ako Helvetica, ale širší; pôsobí ako technický štítok na výrobku. Plná slovenská diakritika (ľ ť ď ô ä ŕ). Licencia OFL. |
 | Text, tabuľky, formuláre, H4 | **IBM Plex Sans** | 400, 500, 600 | navrhnutý pre technickú komunikáciu, čitateľný v 14–16 px, má tabulkové číslice (`font-variant-numeric: tabular-nums`) pre tabuľky variantov. Licencia OFL. |
 
-Alternatíva pre nadpisy, ak Archivo na maketách zapôsobí príliš hranato: Schibsted Grotesk
-alebo Instrument Sans. Rozhodneme pri porovnaní dvoch variantov makety. ❔
+Rozhodnuté 21. 9. 2026 na maketách: nadpisy **Archivo** (variant A). Alternatíva Schibsted Grotesk
+sa už nepoužíva.
 
 **Škála** (pomer 1,25, základ 16 px): 13 · 14 · 16 · 20 · 25 · 31 · 39 · 49 · 61.
 
@@ -200,8 +200,10 @@ externý odkaz (pri odkazoch do e-shopu), telefón, e-mail.
 
 ## 8. Pohyb
 
-- **Jeden orchestrovaný moment:** pri otvorení domova sa prierez v hero poskladá: plášť, pena,
-  jadro (spolu 900 ms, spomalený dojazd). Pri `prefers-reduced-motion` je statický.
+- **Jeden orchestrovaný moment:** pri otvorení domova sa nad skutočnou fotkou prierezu postupne
+  objavia tri popisky (plášť, izolácia, nosné rúry), spolu do 900 ms. Kreslený prierez sa
+  nepoužíva, prierez je vždy fotka odrezku s prekryvom popiskov (rozhodnutie Juraja 21. 9. 2026).
+  Pri `prefers-reduced-motion` sú popisky hneď viditeľné.
 - Všetok ostatný pohyb je odpoveď na akciu človeka: rozbalenie filtra, prepnutie kroku sprievodcu
   (posun 150–200 ms), zobrazenie výsledkov hľadania, potvrdenie formulára.
 - Žiadne postupné zjavovanie sekcií pri rolovaní, žiadne zväčšovanie kariet pri prejdení myšou,
@@ -407,14 +409,15 @@ kód. Makety vieme robiť ako artefakty v Claude, takže ich Juraj otvorí v pre
 
 ## 14. Značka a právo
 
-- **Watts a Microflex sú ochranné známky Watts.** Použitie loga Watts, ich fotiek a katalógových
-  textov si vyžaduje súhlas (distribútorská zmluva alebo marketingové podklady). Do dohody:
-  vlastné fotky, vlastné texty, názvy radov len ako označenie tovaru, ktorý predávame.
+- **Watts a Microflex sú ochranné známky Watts. Súhlas na použitie loga, fotiek a podkladov
+  máme** (dlhodobá spolupráca, sme popredný e-shop pre ich produkty; potvrdil Juraj 21. 9. 2026).
+  Logá, fotky a PDF od výrobcu zbierame v `podklady/watts/` (zdroj a licenčná poznámka v README
+  priečinka). Vlastné makro fotky odrezkov ostávajú cieľom, lebo ich nemá nikto iný.
 - **Web musí byť na prvý pohľad náš, nie web Watts.** V hlavičke je náš názov (pracovne
-  „Microflex Slovensko“, ❔ definitívny názov), nie logo Watts. Logo Watts len v sekcii
-  „Výrobca“ so súhlasom. V pätičke prevádzkovateľ s úplnými údajmi (firma za instalatershop.sk,
-  sídlo, IČO), kontakt a veta „Predaj zabezpečuje instalatershop.sk“.
-- Označenie „autorizovaný predajca“ použijeme, len ak ho Watts potvrdí. ❔
+  „Microflex Slovensko“, ❔ definitívny názov), logo Watts ako výrobca v sekcii „Výrobca“ a v pätičke.
+  V pätičke prevádzkovateľ s úplnými údajmi (firma za instalatershop.sk, sídlo, IČO), kontakt
+  a veta „Predaj zabezpečuje instalatershop.sk“.
+- Označenie „autorizovaný predajca“ alebo „oficiálny partner“: presné znenie dohodnúť s Watts. ❔
 - Cookies a meranie: bez súhlasu len nevyhnutné; lišta v našom dizajne (nie cudzí widget).
 
 ---
@@ -423,7 +426,7 @@ kód. Makety vieme robiť ako artefakty v Claude, takže ich Juraj otvorí v pre
 
 1. **Názov webu a doména.** Značkový (napr. microflex.sk, ak je voľná) alebo generický
    (predizolovane-potrubie.sk) alebo kombinácia. Ovplyvní hlavičku, logo aj SEO stratégiu.
-2. **Súhlas Watts** s logom, fotkami a označením „autorizovaný predajca“. Kto ich osloví a kedy.
+2. ~~Súhlas Watts~~ máme (21. 9. 2026). Zostáva len presné znenie označenia partnerstva.
 3. **Cena na webe:** fáza 1 bez ceny (odporúčam), alebo hneď živá cena z e-shopu.
 4. **Vlastné fotky odrezkov:** kto nafotí, aké rady máme fyzicky k dispozícii.
 5. **Rozsah sortimentu:** všetkých 42 radov z katalógu Watts, alebo len to, čo e-shop reálne
@@ -431,7 +434,7 @@ kód. Makety vieme robiť ako artefakty v Claude, takže ich Juraj otvorí v pre
 6. **B2B hĺbka:** len dopytový formulár a kontakt (fáza 1), alebo aj prihlásenie a veľkoobchodný
    cenník (to už je funkcia, patrí do fázy stacku).
 7. **Druhý jazyk (čeština) v budúcnosti:** áno alebo nie. Ovplyvní štruktúru adres od začiatku.
-8. **Písmo nadpisov:** Archivo alebo alternatíva, rozhodneme na maketách.
+8. ~~Písmo nadpisov~~ rozhodnuté: Archivo (21. 9. 2026).
 
 ---
 

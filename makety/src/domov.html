@@ -1,7 +1,7 @@
 <title>Microflex Slovensko</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..800&family=IBM+Plex+Sans:wght@400;500;600&family=Schibsted+Grotesk:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..800&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
 {{css}}
 
@@ -19,20 +19,23 @@
 .hero-photo .edge { position: absolute; left: 0; top: 0; bottom: 0; width: 12px; background-color: var(--blue-900); background-image: repeating-linear-gradient(180deg, var(--blue-800) 0 2px, transparent 2px 8px); }
 .hero-photo figcaption { position: absolute; right: var(--s5); bottom: var(--s4); font-size: 12px; color: rgba(255,255,255,.75); background: rgba(10,42,94,.55); padding: 4px 8px; border-radius: var(--r-s); }
 .hero-xsec { grid-column: 2 / 8; grid-row: 2; margin-top: -104px; z-index: 2; }
-.xsec-plate { background: var(--white); border-radius: var(--r-l); box-shadow: var(--shadow-float); padding: 18px 22px 14px; }
-.xsec-plate svg { width: 100%; height: auto; display: block; overflow: visible; }
-.xsec-cap { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; color: var(--ink-soft); padding-top: 8px; border-top: var(--line); margin-top: 6px; }
+.xsec-plate { background: var(--white); border-radius: var(--r-l); box-shadow: var(--shadow-float); padding: 16px 16px 12px; margin: 0; }
+.xsec-stage { display: grid; grid-template-columns: minmax(0, 1fr) 190px; }
+.xsec-img { position: relative; }
+.xsec-img > img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; display: block; }
+.tag { position: absolute; left: var(--x); top: var(--y); display: flex; align-items: center; transform: translateY(-50%); animation: tagIn .45s cubic-bezier(.2, .7, .2, 1) both; }
+.tag i { width: 16px; height: 16px; border-radius: 50%; background: var(--white); border: 3px solid var(--blue-700); box-shadow: 0 0 0 3px rgba(255,255,255,.5); flex: none; font-size: 0; display: grid; place-items: center; font-style: normal; font-weight: 600; color: var(--ink); }
+.tag u { display: block; width: var(--len, 44px); height: 2px; background: var(--white); box-shadow: 0 0 0 1px rgba(11,27,51,.12); text-decoration: none; }
+.tag .txt { background: rgba(255,255,255,.96); border-radius: var(--r-s); padding: 7px 11px; box-shadow: 0 2px 8px rgba(11,27,51,.16); white-space: nowrap; }
+.tag .txt b { display: block; font-weight: 600; font-size: 14px; line-height: 1.2; color: var(--ink); }
+.tag .txt small { display: block; font-size: 12px; color: var(--ink-soft); line-height: 1.3; }
+.tag.t1 { animation-delay: .15s; }
+.tag.t2 { animation-delay: .4s; }
+.tag.t3 { animation-delay: .65s; }
+@keyframes tagIn { from { opacity: 0; transform: translateY(calc(-50% + 8px)); } to { opacity: 1; transform: translateY(-50%); } }
+.xsec-list { display: none; }
+.xsec-cap { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; color: var(--ink-soft); padding-top: 10px; border-top: var(--line); margin-top: 12px; }
 .xsec-cap strong { color: var(--ink); font-weight: 600; }
-#xsec text { font-family: var(--font-text); }
-#xsec .lbl { font-size: 15px; font-weight: 600; fill: var(--ink); }
-#xsec .sub { font-size: 12.5px; fill: var(--ink-soft); }
-#xsec .lead-line { fill: none; stroke: var(--ink-soft); stroke-width: 1; }
-.xs-g { transform-box: view-box; transform-origin: 190px 190px; animation: xsPop .55s cubic-bezier(.2, .7, .2, 1) both; }
-.xs-foam { animation-delay: .12s; }
-.xs-cores { animation-delay: .26s; }
-.xs-labels { animation: xsFade .4s .6s both; }
-@keyframes xsPop { from { opacity: 0; transform: scale(.72); } to { opacity: 1; transform: scale(1); } }
-@keyframes xsFade { from { opacity: 0; } to { opacity: 1; } }
 
 .uses { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s5); }
 .use { background: var(--white); border: var(--line); border-radius: var(--r-l); padding: var(--s5); display: flex; flex-direction: column; gap: 12px; color: var(--ink); transition: border-color .15s; }
@@ -90,8 +93,13 @@
   .hero-text { padding-block: var(--s6) var(--s5); }
   .hero-photo { min-height: 0; aspect-ratio: 4 / 3; margin-inline: calc(-1 * var(--gutter)); border-radius: 0; }
   .hero-xsec { margin-top: -40px; padding-inline: 8px; }
-  #xsec .sub { display: none; }
-  #xsec .lbl { font-size: 23px; }
+  .xsec-stage { grid-template-columns: 1fr; }
+  .tag .txt, .tag u { display: none; }
+  .tag i { width: 22px; height: 22px; font-size: 12px; }
+  .xsec-list { display: grid; gap: 6px; padding-top: 12px; font-size: 14px; }
+  .xsec-list li { display: flex; gap: 10px; align-items: baseline; }
+  .xsec-list i { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--blue-700); font-size: 11px; font-style: normal; font-weight: 600; display: grid; place-items: center; flex: none; transform: translateY(4px); }
+  .xsec-list small { color: var(--ink-soft); }
   .ref img { height: auto; aspect-ratio: 4 / 3; }
   .uses { grid-template-columns: 1fr; }
   .cat-grid .c3, .cat-grid .c4 { grid-column: 1 / -1; }
@@ -124,28 +132,23 @@
         </figure>
 
         <div class="hero-xsec">
-          <div class="xsec-plate">
-            <svg id="xsec" viewBox="0 0 640 380" role="img" aria-label="Prierez potrubím Microflex DUO 125 s dvoma rúrami PE-Xa 32 mm">
-              <defs>
-                <pattern id="foamdots" width="7" height="7" patternUnits="userSpaceOnUse"><circle cx="3.5" cy="3.5" r="1.1" fill="#AEB5BF"/></pattern>
-              </defs>
-              <g class="xs-g xs-casing"><path id="xs-casing-path" fill="#005DB9" fill-rule="evenodd"/></g>
-              <g class="xs-g xs-foam"><circle cx="190" cy="190" r="131" fill="#C8CDD4"/><circle cx="190" cy="190" r="131" fill="url(#foamdots)"/></g>
-              <g class="xs-g xs-cores">
-                <circle cx="142" cy="190" r="38.5" fill="#F2C400"/><circle cx="142" cy="190" r="31.5" fill="#FFFFFF"/>
-                <circle cx="238" cy="190" r="38.5" fill="#F2C400"/><circle cx="238" cy="190" r="31.5" fill="#FFFFFF"/>
-              </g>
-              <g class="xs-labels">
-                <polyline class="lead-line" points="286,75 372,75 384,75"/><circle cx="286" cy="75" r="2.5" fill="#4A5568"/>
-                <text class="lbl" x="392" y="71">Zvlnený plášť HDPE</text><text class="sub" x="392" y="89">Ø 125 mm, uzavreté komory</text>
-                <polyline class="lead-line" points="304,170 372,170 384,170"/><circle cx="304" cy="170" r="2.5" fill="#4A5568"/>
-                <text class="lbl" x="392" y="166">Izolácia z PE-X peny</text><text class="sub" x="392" y="184">uzavreté bunky, nasiakavosť pod 1 %</text>
-                <polyline class="lead-line" points="267,214 330,300 384,300"/><circle cx="267" cy="214" r="2.5" fill="#4A5568"/>
-                <text class="lbl" x="392" y="296">2 × nosná rúra PE-Xa</text><text class="sub" x="392" y="314">32 × 2,9 mm, kyslíková bariéra</text>
-              </g>
-            </svg>
-            <div class="xsec-cap"><span><strong>Microflex DUO 125/2×32</strong>, prierez v mierke</span><span>Zdroj rozmerov: katalóg Watts</span></div>
-          </div>
+          <figure class="xsec-plate">
+            <div class="xsec-stage">
+              <div class="xsec-img">
+                <img src="{{asset:fotky/microflex-prierez-vykop.jpg}}" alt="Skutočný rez potrubím Microflex DUO na kotúči: modrý zvlnený plášť, tmavosivá izolácia a dve žlté rúry PE-Xa">
+                <span class="tag t1" style="--x: 61%; --y: 21%"><i>1</i><u></u><span class="txt"><b>Zvlnený plášť HDPE</b><small>uzavreté komory, chráni izoláciu</small></span></span>
+                <span class="tag t2" style="--x: 46%; --y: 44%; --len: 56px"><i>2</i><u></u><span class="txt"><b>2 × nosná rúra PE-Xa</b><small>kyslíková bariéra podľa DIN 4726</small></span></span>
+                <span class="tag t3" style="--x: 57%; --y: 60%"><i>3</i><u></u><span class="txt"><b>Izolácia z PE-X peny</b><small>uzavreté bunky, nasiakavosť pod 1 %</small></span></span>
+              </div>
+              <div aria-hidden="true"></div>
+            </div>
+            <ul class="xsec-list" aria-label="Popisky k fotke">
+              <li><i>1</i><span>Zvlnený plášť HDPE <small>uzavreté komory</small></span></li>
+              <li><i>2</i><span>2 × nosná rúra PE-Xa <small>kyslíková bariéra</small></span></li>
+              <li><i>3</i><span>Izolácia z PE-X peny <small>nasiakavosť pod 1 %</small></span></li>
+            </ul>
+            <figcaption class="xsec-cap"><span><strong>Microflex DUO</strong>, skutočný rez na kotúči</span><span>Fotka výrobcu, dočasná</span></figcaption>
+          </figure>
         </div>
       </div>
     </div>
@@ -286,20 +289,3 @@
 {{partial:footer}}
 {{partial:mock}}
 
-<script>
-  // Prierez v hero: zvlnený plášť sa kreslí kódom, nie ručne písanou cestou.
-  (function () {
-    var path = document.getElementById('xs-casing-path');
-    if (!path) return;
-    var cx = 190, cy = 190, R = 150, amp = 4.5, ribs = 44, wall = 14;
-    function ring(r0) {
-      var d = '';
-      for (var i = 0; i <= 360; i++) {
-        var th = i * Math.PI / 180, r = r0 + amp * Math.sin(ribs * th);
-        d += (i ? 'L' : 'M') + (cx + r * Math.cos(th)).toFixed(1) + ' ' + (cy + r * Math.sin(th)).toFixed(1);
-      }
-      return d + 'Z';
-    }
-    path.setAttribute('d', ring(R) + ' ' + ring(R - wall));
-  })();
-</script>

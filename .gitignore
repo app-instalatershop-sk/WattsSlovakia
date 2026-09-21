@@ -11,3 +11,4 @@ node_modules/
 /*.jpg
 data/_*
 makety/out/
+.astro/

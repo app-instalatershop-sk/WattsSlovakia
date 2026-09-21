@@ -237,18 +237,18 @@ hero fotka ide pod text.
 +-----------------------------------+----------------------------------------+
 | Pás faktov z dát: polomer ohybu, nosná rúra, tlak, počet radov (60 % šírky) |
 +----------------------------------------------------------------------------+
-| Katalóg: 5 systémov, render kategórie leží NAD kartou s názvom a počtom     |
-| radov; pod tým 2 riadky Spojky a Príslušenstvo (fotka, veta, počet produktov)|
+| Katalóg Microflex: JEDNA tabuľka bez obrázkov. Riadok = systém (kategória)  |
+| s médiom a tlakom z dát, stĺpec = 1 / 2 / 4 rúry v plášti, bunka = štítky    |
+| radov (MICROFLEX + model, počet dimenzií). Pod tým skupina Spojky a         |
+| príslušenstvo: riadok = kategória, bunka cez šírku = skupiny s počtom kusov |
 +-----------------------------------+----------------------------------------+
 | Päť systémov, jedna rodina.       |   render rodiny potrubí cez švík pásu  |
 | 3 fakty s vetou: ohyb, viac rúr,  |   (presah vpravo, doznenie koncov rúr) |
 | materiály podľa noriem            |                                        |
 +-----------------------------------+----------------------------------------+
-| Výber podľa použitia: tabuľka, riadok = médium (kategória), stĺpec = 1/2/4  |
-| rúry v plášti, bunka = štítky radov (MICROFLEX + model, počet dimenzií)     |
-+----------------------------------------------------------------------------+
-| Referencie: 3 fotky rôznej šírky (5 / 4 / 3 stĺpce), 2 riadky textu          |
-+----------------------------------------------------------------------------+
+| Referencie: zoznam 3 referencií   |   fotka z výkopu (7 stĺpcov), jediná   |
+| s malými náhľadmi + odkaz         |   fotka zo stavby na domove            |
++-----------------------------------+----------------------------------------+
 | Pre firmy (tmavý blok blue-900): technické listy, BIM/CAD, dopyt, veľkoobchod|
 +----------------------------------------------------------------------------+
 | Pätička (modrý gradient, logo Watts): prevádzkovateľ, kontakt, e-shop, dokumenty|
@@ -258,7 +258,12 @@ hero fotka ide pod text.
 Zásada domova (Juraj 21. 9. 2026, po duplicite dlaždíc použitia a katalógu): každá sekcia má inú
 úlohu aj inú formu. Rendery kategórií sú len v katalógu, výber je typografická tabuľka, rodina je
 jeden veľký render, referencie sú fotky, B2B je tmavý blok. Dve sekcie s rovnakými obrázkami a
-inými popiskami pôsobia ako duplicita.
+inými popiskami pôsobia ako duplicita. Rozpočet obrázkov domova (audit 21. 9. 2026,
+`docs/AUDIT-DOMOV.md`): najviac tri veľké obrázky, každý iného druhu – render rezu v hero, render
+rodiny, fotka zo stavby. Drobné náhľady referencií sa nerátajú. Ten istý motív (modrá rúra v reze)
+sa na stránke neopakuje. Pravidlá, podľa ktorých hodnotíme: Vignelli (disciplína, jedno ohnisko),
+Müller-Brockmann (mriežka 12 stĺpcov, delenie 5 / 7, 6 / 6, 3 × 4), Tufte (dátový atrament),
+Refactoring UI (popis k nadpisu, nekvalitná fotka len ako náhľad).
 
 ### Kategória (napr. Potrubia pre vykurovanie)
 
@@ -360,7 +365,7 @@ a „Poslať dopyt“ (B2B). Stav sprievodcu je v adrese, aby sa dal poslať kol
 
 ## 11. Komponenty
 
-Hlavička s hľadaním, pás faktov, výberová matica (médium × počet rúr), karta kategórie, karta radu, prierezový
+Hlavička s hľadaním, pás faktov, katalógová tabuľka (systém × počet rúr, skupiny dielov), karta kategórie, karta radu, prierezový
 piktogram, pás parametrov, tabuľka variantov (lepkavá hlavička, filter, riadok do e-shopu),
 sprievodca (kroky), zoznam súborov na stiahnutie, referencia (fotka + 2 riadky), porovnávacia
 tabuľka radov, otázky a odpovede, dopytový formulár, oznam („Predaj zabezpečuje Inštalatérshop“),

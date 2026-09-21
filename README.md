@@ -14,3 +14,16 @@ poslúžia ako plán stavby stránky. Technické riešenie (stack, hosting) sa r
 
 Kód sa verziuje na dvoch GitHuboch naraz: `Jurajj8/WattsSlovakia` a firemný
 `app-instalatershop-sk/WattsSlovakia`.
+
+## Zdroje kategórií a produktov
+
+Dve hlavné stránky, z ktorých preberáme štruktúru kategórií a produkty (slovenská verzia watts.eu):
+
+- [Katalóg Microflex](https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127) –
+  PDF katalóg (cca 18 MB, po slovensky) a zoznam 42 súvisiacich produktov
+  (potrubia UNO / DUO / PRIMO / QUADRO / COOL / HP, spojky a tvarovky, príslušenstvo).
+- [Prehľad Microflex predizolovaných potrubí](https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping) –
+  šesť kategórií: vykurovanie, sanita, ústredné vykurovanie a sanita, studená a chladná pitná voda,
+  spojky, príslušenstvo.
+
+Slovenské názvy na watts.eu sú strojový preklad; na našom webe ich píšeme spisovne, nekopírujeme.

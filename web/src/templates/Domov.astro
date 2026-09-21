@@ -77,7 +77,7 @@ const refFotky = [fotka('prierez-duo.jpg')!, fotka('referencia-skola.png')!, fot
           const k = kats.find((x) => x.slug === p.slug || x.slug_cs === p.slug);
           return (
             <a class="use" href={k ? cestaKategorie(k, lang) : route(lang, 'potrubia')}>
-              {img && <Image src={img} alt="" width={280} height={210} densities={[1, 2]} class="pikto" />}
+              {img && <span class="pikto-wrap"><Image src={img} alt="" width={280} height={210} densities={[1, 2]} class="pikto" /></span>}
               <h3>{p.nazov}</h3>
               <p>{p.text}</p>
               <Ikona nazov="arrow-up-right" velkost={20} class="go" />
@@ -97,7 +97,7 @@ const refFotky = [fotka('prierez-duo.jpg')!, fotka('referencia-skola.png')!, fot
       <div class="systems" data-reveal-group>
         {potrubia.map((k) => { const img = piktogram(k.piktogram); return (
           <a class="card system" href={cestaKategorie(k, lang)}>
-            {img && <Image src={img} alt="" width={420} height={340} densities={[1, 2]} class="pikto" />}
+            {img && <span class="pikto-wrap"><Image src={img} alt="" width={420} height={340} densities={[1, 2]} class="pikto" /></span>}
             <div class="body"><h3>{kKratky(k, lang)}</h3><span class="count">{ui.sklonovanie.radov(k.rady.length)}</span></div>
           </a>
         ); })}
@@ -122,7 +122,7 @@ const refFotky = [fotka('prierez-duo.jpg')!, fotka('referencia-skola.png')!, fot
           <h2 id="h-rodina">{h.rodinaH2}</h2>
           <p class="lead">{h.rodinaP}</p>
         </div>
-        <Image src={rodina} alt={h.rodinaAlt} widths={[800, 1200, 1633]} sizes="(max-width: 760px) 100vw, 60vw" class="rodina-img" data-parallax="0.06" />
+        <div class="rodina-wrap"><Image src={rodina} alt={h.rodinaAlt} widths={[800, 1200, 1633]} sizes="(max-width: 760px) 100vw, 60vw" class="rodina-img" data-parallax="0.06" /></div>
       </div>
       <div class="fakty" data-reveal-group>
         {h.fakty.map(([dt, dd]) => <div><h3>{dt}</h3><p>{dd}</p></div>)}
@@ -197,8 +197,9 @@ const refFotky = [fotka('prierez-duo.jpg')!, fotka('referencia-skola.png')!, fot
   .uses { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
   .use { position: relative; background: linear-gradient(180deg, var(--color-white) 0%, #f6f9fd 100%); border: var(--line); border-radius: var(--radius-l); padding: 96px 28px 30px; display: flex; flex-direction: column; gap: 10px; color: var(--color-ink); overflow: visible; transition: border-color 150ms var(--ease-soft), transform 200ms var(--ease-soft), box-shadow 200ms var(--ease-soft); }
   .use:hover { border-color: var(--color-blue-700); color: var(--color-ink); transform: translateY(-2px); box-shadow: var(--shadow-lift); }
-  .use :global(.pikto) { position: absolute; left: 16px; top: -46px; width: 196px; height: 147px; object-fit: contain; object-position: left bottom; filter: drop-shadow(0 18px 22px rgb(11 27 51 / 0.22)); transition: transform 350ms var(--ease-soft); -webkit-mask-image: linear-gradient(to top left, #000 60%, transparent 96%); mask-image: linear-gradient(to top left, #000 60%, transparent 96%); }
-  .use:hover :global(.pikto) { transform: translateY(-4px) rotate(-1deg); }
+  .use .pikto-wrap { position: absolute; left: 16px; top: -46px; width: 196px; height: 147px; filter: drop-shadow(0 18px 22px rgb(11 27 51 / 0.22)); transition: transform 350ms var(--ease-soft); }
+  .use .pikto-wrap :global(.pikto) { width: 100%; height: 100%; object-fit: contain; object-position: left bottom; -webkit-mask-image: linear-gradient(to top left, #000 60%, transparent 96%); mask-image: linear-gradient(to top left, #000 60%, transparent 96%); }
+  .use:hover .pikto-wrap { transform: translateY(-4px) rotate(-1deg); }
   .use h3 { font-size: 21px; }
   .use p { color: var(--color-ink-soft); font-size: 15px; }
   .use :global(.go) { position: absolute; right: 22px; top: 22px; color: var(--color-blue-700); transition: transform 200ms var(--ease-soft); }
@@ -207,8 +208,9 @@ const refFotky = [fotka('prierez-duo.jpg')!, fotka('referencia-skola.png')!, fot
   /* Karta katalógu: ohraničený je len popis; render leží nad ním a prekrýva jeho horný okraj. */
   .systems { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 20px; margin-top: 176px; }
   .system { overflow: visible; position: relative; }
-  .system :global(.pikto) { position: absolute; left: 2%; bottom: calc(100% - 44px); width: 104%; height: auto; max-width: none; filter: drop-shadow(0 22px 26px rgb(11 27 51 / 0.24)); -webkit-mask-image: linear-gradient(to top left, #000 64%, transparent 97%); mask-image: linear-gradient(to top left, #000 64%, transparent 97%); transition: transform 350ms var(--ease-soft); }
-  .system:hover :global(.pikto) { transform: translateY(-5px); }
+  .system .pikto-wrap { position: absolute; left: 2%; bottom: calc(100% - 44px); width: 104%; filter: drop-shadow(0 22px 26px rgb(11 27 51 / 0.24)); transition: transform 350ms var(--ease-soft); }
+  .system .pikto-wrap :global(.pikto) { display: block; width: 100%; height: auto; max-width: none; -webkit-mask-image: linear-gradient(to top left, #000 64%, transparent 97%); mask-image: linear-gradient(to top left, #000 64%, transparent 97%); }
+  .system:hover .pikto-wrap { transform: translateY(-5px); }
   .system .body { padding: 56px 18px 18px; gap: 2px; }
   .system h3 { font-size: 17px; }
   .system .count { font-size: 13.5px; color: var(--color-ink-soft); }
@@ -229,7 +231,8 @@ const refFotky = [fotka('prierez-duo.jpg')!, fotka('referencia-skola.png')!, fot
   .rodina-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px; align-items: start; }
   .rodina-head { display: flex; flex-direction: column; gap: 16px; padding-top: 56px; }
   .rodina-head .lead { max-width: none; }
-  .rodina :global(.rodina-img) { width: 128%; max-width: none; height: auto; display: block; margin: -230px 0 0; margin-right: min(calc(-1 * var(--gutter)), calc((var(--container-site) - 100vw) / 2)); position: relative; z-index: 2; filter: drop-shadow(0 28px 36px rgb(11 27 51 / 0.2)); -webkit-mask-image: linear-gradient(to top right, #000 66%, transparent 97%); mask-image: linear-gradient(to top right, #000 66%, transparent 97%); }
+  .rodina-wrap { width: 128%; max-width: none; margin: -230px 0 0; margin-right: min(calc(-1 * var(--gutter)), calc((var(--container-site) - 100vw) / 2)); position: relative; z-index: 2; filter: drop-shadow(0 28px 36px rgb(11 27 51 / 0.2)); }
+  .rodina-wrap :global(.rodina-img) { width: 100%; height: auto; display: block; -webkit-mask-image: linear-gradient(to top right, #000 66%, transparent 97%); mask-image: linear-gradient(to top right, #000 66%, transparent 97%); }
   .fakty { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 48px; margin-top: 24px; padding-top: 32px; border-top: var(--line); }
   .fakty h3 { font-size: 19px; margin-bottom: 8px; }
   .fakty p { color: var(--color-ink-soft); max-width: 36em; }
@@ -260,7 +263,7 @@ const refFotky = [fotka('prierez-duo.jpg')!, fotka('referencia-skola.png')!, fot
     .systems { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 150px; }
     .uses-section { padding-top: 64px; }
     .rodina-grid { grid-template-columns: 1fr; }
-    .rodina :global(.rodina-img) { width: 100%; margin: -120px 0 0; }
+    .rodina-wrap { width: 100%; margin: -120px 0 0; }
     .band-soft { padding-bottom: 140px; }
     .uses { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 64px; }
     .facts-bar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -275,7 +278,7 @@ const refFotky = [fotka('prierez-duo.jpg')!, fotka('referencia-skola.png')!, fot
     .uses-section { padding-top: 48px; }
     .h2-quiet { margin-bottom: 56px; }
     .uses { row-gap: 64px; }
-    .rodina :global(.rodina-img) { margin-top: -80px; }
+    .rodina-wrap { margin-top: -80px; }
     .band-soft { padding-bottom: 100px; }
     .facts-bar { margin-top: -40px; }
     .facts-bar > div { padding: 18px 20px; }

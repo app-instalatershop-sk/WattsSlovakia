@@ -396,13 +396,24 @@ def main():
         r['suvisiace'] = [prod_by_href[h] for h in r.pop('_suvisiace_href') if h in prod_by_href]
         r['suvisiace'] = list(dict.fromkeys(r['suvisiace']))
 
-    # piktogramy: verzia 1200 px z podklady/watts/piktogramy/hd má prednosť pred pôvodnými 250–350 px
+    # piktogramy: verzia 1200 px z podklady/watts/piktogramy/hd má prednosť pred pôvodnými 250–350 px.
+    # Každý sa oreže na obsah s rovnakým okrajom (jednotné rámovanie); HP je u výrobca zrkadlovo, otočíme ho.
+    from PIL import Image
     os.makedirs(os.path.join(ASSETS, 'piktogramy'), exist_ok=True)
+    ZRKADLIT = {'rad-hp-tepelne-cerpadlo.png'}
     for f in os.listdir(os.path.join(PODKLADY, 'piktogramy')):
-        if f.endswith('.png'):
-            hd = os.path.join(PODKLADY, 'piktogramy', 'hd', f)
-            src = hd if os.path.exists(hd) else os.path.join(PODKLADY, 'piktogramy', f)
-            shutil.copyfile(src, os.path.join(ASSETS, 'piktogramy', f))
+        if not f.endswith('.png'):
+            continue
+        hd = os.path.join(PODKLADY, 'piktogramy', 'hd', f)
+        src = hd if os.path.exists(hd) else os.path.join(PODKLADY, 'piktogramy', f)
+        im = Image.open(src).convert('RGBA')
+        bbox = im.getchannel('A').getbbox()
+        if bbox:
+            pad = int(max(im.size) * 0.02)
+            im = im.crop((max(0, bbox[0] - pad), max(0, bbox[1] - pad), min(im.width, bbox[2] + pad), min(im.height, bbox[3] + pad)))
+        if f in ZRKADLIT:
+            im = im.transpose(Image.FLIP_LEFT_RIGHT)
+        im.save(os.path.join(ASSETS, 'piktogramy', f), optimize=True)
 
     def dump(name, rows):
         io.open(os.path.join(OUT, name), 'w', encoding='utf-8', newline='\n').write(json.dumps(rows, ensure_ascii=False, indent=1))

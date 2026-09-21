@@ -162,8 +162,9 @@ Rozhodnutie Juraja 21. 9. 2026: žiadne ručne kreslené ikony, len profesionál
 piktogramy radov používame **oficiálne 3D rendery Watts** (rez potrubím pod uhlom, priehľadné
 pozadie), ktoré máme so súhlasom z brožúry 2026 pre všetkých deväť radov: UNO a DUO vykurovanie,
 UNO a DUO sanita, QUADRO, HP, COOL, COOL s vyhrievacím káblom, COOL DUO. Súbory
-`podklady/watts/piktogramy/rad-*.png` (250 až 350 px). Používajú sa v dlaždiciach použitia,
-v hlavičke kategórie a všade, kde treba rad rozoznať na pohľad. V tabuľkách a čipoch
+`podklady/watts/piktogramy/rad-*.png` (od Juraja v HD 1200 px). Používajú sa v kartách katalógu
+na domove, v hlavičke kategórie a všade, kde treba rad rozoznať na pohľad. Na jednej stránke sa
+rendery kategórií ukážu len raz, aby dve sekcie nevyzerali ako tá istá. V tabuľkách a čipoch
 piktogram nie je, stačí text.
 
 Ak budeme neskôr chcieť jednotnú kreslenú sadu (napr. pre favicon a veľmi malé veľkosti),
@@ -234,22 +235,30 @@ hero fotka ide pod text.
 |                                   |                                        |
 | [Vybrať potrubie] [Katalóg PDF]   |                                        |
 +-----------------------------------+----------------------------------------+
-| Na čo potrubie potrebujete?                                                 |
-| [(o) Vykurovanie] [(o) Teplá a studená voda] [(o) Chladenie] [(o) Tep. čerp.]|
+| Pás faktov z dát: polomer ohybu, nosná rúra, tlak, počet radov (60 % šírky) |
 +----------------------------------------------------------------------------+
-| Šesť kategórií, mriežka 3 × 2, každá: piktogram, názov, 1 veta, počet radov  |
-+----------------------------------------------------------------------------+
-| Prečo Microflex                   |   fotka z výkopu (7 stĺpcov)            |
-| 3 čísla s vetou: polomer ohybu,   |                                        |
-| max. teplota, roky v zemi         |                                        |
+| Katalóg: 5 systémov, render kategórie leží NAD kartou s názvom a počtom     |
+| radov; pod tým 2 riadky Spojky a Príslušenstvo (fotka, veta, počet produktov)|
 +-----------------------------------+----------------------------------------+
+| Päť systémov, jedna rodina.       |   render rodiny potrubí cez švík pásu  |
+| 3 fakty s vetou: ohyb, viac rúr,  |   (presah vpravo, doznenie koncov rúr) |
+| materiály podľa noriem            |                                        |
++-----------------------------------+----------------------------------------+
+| Výber podľa použitia: tabuľka, riadok = médium (kategória), stĺpec = 1/2/4  |
+| rúry v plášti, bunka = štítky radov (MICROFLEX + model, počet dimenzií)     |
++----------------------------------------------------------------------------+
 | Referencie: 3 fotky rôznej šírky (5 / 4 / 3 stĺpce), 2 riadky textu          |
 +----------------------------------------------------------------------------+
 | Pre firmy (tmavý blok blue-900): technické listy, BIM/CAD, dopyt, veľkoobchod|
 +----------------------------------------------------------------------------+
-| Pätička (rebrovaná modrá): prevádzkovateľ, kontakt, e-shop, dokumenty        |
+| Pätička (modrý gradient, logo Watts): prevádzkovateľ, kontakt, e-shop, dokumenty|
 +----------------------------------------------------------------------------+
 ```
+
+Zásada domova (Juraj 21. 9. 2026, po duplicite dlaždíc použitia a katalógu): každá sekcia má inú
+úlohu aj inú formu. Rendery kategórií sú len v katalógu, výber je typografická tabuľka, rodina je
+jeden veľký render, referencie sú fotky, B2B je tmavý blok. Dve sekcie s rovnakými obrázkami a
+inými popiskami pôsobia ako duplicita.
 
 ### Kategória (napr. Potrubia pre vykurovanie)
 
@@ -351,7 +360,7 @@ a „Poslať dopyt“ (B2B). Stav sprievodcu je v adrese, aby sa dal poslať kol
 
 ## 11. Komponenty
 
-Hlavička s hľadaním, pás „Na čo potrubie potrebujete“, karta kategórie, karta radu, prierezový
+Hlavička s hľadaním, pás faktov, výberová matica (médium × počet rúr), karta kategórie, karta radu, prierezový
 piktogram, pás parametrov, tabuľka variantov (lepkavá hlavička, filter, riadok do e-shopu),
 sprievodca (kroky), zoznam súborov na stiahnutie, referencia (fotka + 2 riadky), porovnávacia
 tabuľka radov, otázky a odpovede, dopytový formulár, oznam („Predaj zabezpečuje Inštalatérshop“),

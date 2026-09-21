@@ -211,7 +211,7 @@ const refFotky = [fotka('prierez-duo.jpg')!, fotka('referencia-skola.png')!, fot
 
   .rodina-head { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px 48px; align-items: end; margin-bottom: 40px; }
   .rodina-head .lead { max-width: none; }
-  .rodina :global(.rodina-img) { width: 100%; max-width: 1100px; height: auto; margin: 0 auto; display: block; }
+  .rodina :global(.rodina-img) { width: 100%; max-width: 1100px; height: auto; margin: 0 auto; display: block; -webkit-mask-image: linear-gradient(to bottom, #000 80%, transparent 100%); mask-image: linear-gradient(to bottom, #000 80%, transparent 100%); }
   .fakty { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 48px; margin-top: 48px; padding-top: 32px; border-top: var(--line); }
   .fakty h3 { font-size: 19px; margin-bottom: 8px; }
   .fakty p { color: var(--color-ink-soft); max-width: 36em; }

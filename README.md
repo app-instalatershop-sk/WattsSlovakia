@@ -27,3 +27,9 @@ Dve hlavné stránky, z ktorých preberáme štruktúru kategórií a produkty (
   spojky, príslušenstvo.
 
 Slovenské názvy na watts.eu sú strojový preklad; na našom webe ich píšeme spisovne, nekopírujeme.
+
+## Dokumenty
+
+- [docs/DESIGN.md](docs/DESIGN.md) – dizajnový brief: čo preberáme z watts.eu a čo robíme lepšie,
+  farby, písmo, mriežka, prierezový piktogram, drôtené modely stránok, vyhľadávanie a sprievodca
+  výberom, odporúčané knižnice, otvorené rozhodnutia.

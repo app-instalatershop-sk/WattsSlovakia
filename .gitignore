@@ -6,3 +6,6 @@ Thumbs.db
 node_modules/
 .env
 .env.*
+.playwright-mcp/
+*.jpeg
+*.jpg

@@ -44,7 +44,7 @@
   /* Rozbaľovanie <details> plynulo tam, kde to prehliadač vie; inde sa otvorí hneď. */
   details::details-content { height: 0; overflow: clip; transition: height 250ms var(--ease-soft), content-visibility 250ms allow-discrete; }
   details[open]::details-content { height: auto; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; overflow-anchor: none; }
   body {
     margin: 0;
     background: var(--color-white);
@@ -124,7 +124,8 @@
   .card:hover { border-color: var(--color-blue-700); color: var(--color-ink); transform: translateY(-2px); box-shadow: var(--shadow-lift); }
   .card:active { transform: translateY(0); }
   .plate { background: radial-gradient(ellipse at 50% 40%, #fafbfc 0%, var(--color-grey-100) 70%); aspect-ratio: 4 / 3; position: relative; overflow: hidden; }
-  .plate img { position: absolute; left: 12%; top: 12%; width: 76%; height: 76%; object-fit: contain; mix-blend-mode: multiply; }
+  .plate img { position: absolute; left: 12%; top: 12%; width: 76%; height: 76%; object-fit: contain; mix-blend-mode: multiply; transition: transform 500ms var(--ease-soft); }
+  .card:hover .plate img { transform: scale(1.04); }
   .card .body { padding: 16px 24px 24px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
   .card .body p { color: var(--color-ink-soft); }
   .card .meta { margin-top: auto; font-size: 14px; color: var(--color-ink-soft); display: flex; justify-content: space-between; align-items: center; gap: 8px; padding-top: 8px; }

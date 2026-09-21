@@ -56,7 +56,7 @@ const kratkeNazvy = rady.map((r) => rNazov(r, lang).replace(/^Microflex /, '').r
     <div class="list-head">
       <p class="muted">{ui.kategoria.pocet(ui.sklonovanie.radov(rady.length), ui.sklonovanie.dimenzii(varianty.length))}</p>
     </div>
-    <div class="series">
+    <div class="series" data-reveal-group>
       {rady.map((r) => <KartaRadu rad={r} href={cestaRadu(k, r, lang)} varianty={variantyRadu(r.id)} lang={lang} />)}
     </div>
   </div>

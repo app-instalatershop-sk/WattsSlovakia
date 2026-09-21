@@ -68,8 +68,8 @@ const refFotky = [fotka('prierez-duo.jpg')!, fotka('referencia-skola.png')!, fot
 
   <section class="section" aria-labelledby="h-uses">
     <div class="wrap">
-      <h2 id="h-uses" class="h2-quiet">{h.pouzitieH2}</h2>
-      <div class="uses">
+      <h2 id="h-uses" class="h2-quiet" data-reveal>{h.pouzitieH2}</h2>
+      <div class="uses" data-reveal-group>
         {h.pouzitia.map((p) => {
           const img = piktogram(p.pikto);
           const k = kats.find((x) => x.slug === p.slug || x.slug_cs === p.slug);
@@ -86,13 +86,13 @@ const refFotky = [fotka('prierez-duo.jpg')!, fotka('referencia-skola.png')!, fot
     </div>
   </section>
 
-  <section class="section band" aria-labelledby="h-cat">
+  <section class="section band-soft" aria-labelledby="h-cat">
     <div class="wrap">
-      <div class="section-head">
+      <div class="section-head" data-reveal>
         <h2 id="h-cat">{h.katalogH2}</h2>
         <p class="muted">{h.katalogP}</p>
       </div>
-      <div class="systems">
+      <div class="systems" data-reveal-group>
         {potrubia.map((k) => { const img = obrazokKategorie(k); return (
           <a class="card system" href={cestaKategorie(k, lang)}>
             <div class="plate">{img && <Image src={img} alt="" widths={[320, 480]} sizes="(max-width: 760px) 45vw, 20vw" />}</div>
@@ -100,8 +100,8 @@ const refFotky = [fotka('prierez-duo.jpg')!, fotka('referencia-skola.png')!, fot
           </a>
         ); })}
       </div>
-      <h3 class="diely-h">{h.dielyH3}</h3>
-      <div class="parts">
+      <h3 class="diely-h" data-reveal>{h.dielyH3}</h3>
+      <div class="parts" data-reveal-group>
         {diely.map((k) => { const img = obrazokKategorie(k); return (
           <a class="part" href={cestaKategorie(k, lang)}>
             <span class="part-img">{img && <Image src={img} alt="" widths={[160, 320]} sizes="120px" />}</span>
@@ -115,12 +115,12 @@ const refFotky = [fotka('prierez-duo.jpg')!, fotka('referencia-skola.png')!, fot
 
   <section class="section rodina" aria-labelledby="h-rodina">
     <div class="wrap">
-      <div class="rodina-head">
+      <div class="rodina-head" data-reveal>
         <h2 id="h-rodina">{h.rodinaH2}</h2>
         <p class="lead">{h.rodinaP}</p>
       </div>
-      <Image src={rodina} alt={h.rodinaAlt} widths={[800, 1216]} sizes="(max-width: 760px) 100vw, 1100px" class="rodina-img" />
-      <div class="fakty">
+      <Image src={rodina} alt={h.rodinaAlt} widths={[800, 1216]} sizes="(max-width: 760px) 100vw, 1100px" class="rodina-img" data-parallax="0.08" />
+      <div class="fakty" data-reveal-group>
         {h.fakty.map(([dt, dd]) => <div><h3>{dt}</h3><p>{dd}</p></div>)}
       </div>
     </div>
@@ -128,11 +128,11 @@ const refFotky = [fotka('prierez-duo.jpg')!, fotka('referencia-skola.png')!, fot
 
   <section class="section band" aria-labelledby="h-refs">
     <div class="wrap">
-      <div class="section-head">
+      <div class="section-head" data-reveal>
         <h2 id="h-refs">{h.refH2}</h2>
         <a href={route(lang, 'referencie')}>{h.refVsetky}</a>
       </div>
-      <div class="refs">
+      <div class="refs" data-reveal-group>
         {h.refs.map(([b, s], i) => (
           <a class="ref" href={route(lang, 'referencie')}><Image src={refFotky[i]} alt="" widths={[420, 640]} sizes="(max-width: 760px) 90vw, 30vw" /><span><strong>{b}</strong><span class="muted">{s}</span></span></a>
         ))}
@@ -141,9 +141,9 @@ const refFotky = [fotka('prierez-duo.jpg')!, fotka('referencia-skola.png')!, fot
   </section>
 
   <section class="section band-dark b2b" aria-labelledby="h-b2b">
-    <Image src={kotuc} alt="" class="b2b-bg" widths={[960, 1600]} sizes="100vw" aria-hidden="true" />
+    <Image src={kotuc} alt="" class="b2b-bg" widths={[960, 1600]} sizes="100vw" aria-hidden="true" data-parallax="0.1" />
     <div class="wrap b2b-grid">
-      <div class="b2b-text">
+      <div class="b2b-text" data-reveal>
         <h2 id="h-b2b">{h.b2bH2}</h2>
         <p class="lead">{h.b2bP}</p>
         <div class="hero-actions">
@@ -151,7 +151,7 @@ const refFotky = [fotka('prierez-duo.jpg')!, fotka('referencia-skola.png')!, fot
           <a class="btn btn-ghost-light" href={route(lang, 'stiahnut')}><Ikona nazov="download" velkost={18} />{h.b2bPodklady}</a>
         </div>
       </div>
-      <ul class="b2b-list">
+      <ul class="b2b-list" data-reveal-group>
         {h.b2bList.map(([b, s]) => <li><strong>{b}</strong><span>{s}</span></li>)}
       </ul>
     </div>
@@ -209,6 +209,9 @@ const refFotky = [fotka('prierez-duo.jpg')!, fotka('referencia-skola.png')!, fot
   .part-txt .muted { font-size: 14px; }
   .part-meta { display: inline-flex; align-items: center; gap: 6px; color: var(--color-blue-700); font-weight: 500; font-size: 14px; white-space: nowrap; }
 
+  /* Prelínanie sekcií: farby plôch do seba prechádzajú, nie sú nastavené vedľa seba. */
+  .band-soft { background: linear-gradient(180deg, var(--color-white) 0, var(--color-blue-50) 140px, var(--color-blue-50) 100%); padding-top: 96px; }
+  .rodina { background: linear-gradient(180deg, var(--color-blue-50) 0, var(--color-white) 240px); padding-top: 80px; overflow: hidden; }
   .rodina-head { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px 48px; align-items: end; margin-bottom: 40px; }
   .rodina-head .lead { max-width: none; }
   .rodina :global(.rodina-img) { width: 100%; max-width: 1100px; height: auto; margin: 0 auto; display: block; -webkit-mask-image: linear-gradient(to bottom, #000 80%, transparent 100%); mask-image: linear-gradient(to bottom, #000 80%, transparent 100%); }
@@ -223,7 +226,8 @@ const refFotky = [fotka('prierez-duo.jpg')!, fotka('referencia-skola.png')!, fot
   .ref .muted { font-size: 14px; }
   .ref:hover strong { color: var(--color-blue-700); }
 
-  .b2b { position: relative; overflow: hidden; }
+  /* Šikmá horná hrana tmavého bloku: odkaz na diagonálny motív Watts, zároveň prechod z referencií. */
+  .b2b { position: relative; overflow: hidden; clip-path: polygon(0 4vw, 100% 0, 100% 100%, 0 100%); margin-top: -4vw; padding-top: calc(64px + 4vw); }
   .b2b :global(.b2b-bg) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% 50%; opacity: .55; mix-blend-mode: luminosity; filter: saturate(0) contrast(1.15); pointer-events: none; }
   .b2b::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--color-blue-900) 0%, rgb(10 42 94 / 0.92) 45%, rgb(10 42 94 / 0.45) 100%); pointer-events: none; }
   .b2b-grid { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 24px; }
@@ -254,5 +258,8 @@ const refFotky = [fotka('prierez-duo.jpg')!, fotka('referencia-skola.png')!, fot
     .rodina-head { grid-template-columns: 1fr; }
     .b2b-grid > * { grid-column: 1 / -1; }
     .b2b::after { background: rgb(10 42 94 / 0.82); }
+    .b2b { clip-path: polygon(0 24px, 100% 0, 100% 100%, 0 100%); margin-top: -24px; padding-top: calc(48px + 24px); }
+    .band-soft { padding-top: 64px; }
+    .rodina { padding-top: 56px; }
   }
 </style>

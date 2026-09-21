@@ -14,23 +14,24 @@ const polozky = [
   { id: 'poradna', text: ui.nav.poradna, href: route(lang, 'poradna') },
 ] as const;
 ---
-<header class="hdr" id="hdr">
-  <div class="topbar">
-    <div class="wrap topbar-in">
-      <a class="partner" href={route(lang, 'kontakt')} aria-label={ui.partner.veta}>
-        <span>{ui.partner.veta}</span>
-        <WattsLogo height={14} farba="biela" />
-      </a>
-      <nav class="langs" aria-label={ui.jazyk.prepnut}>
-        {LANGS.map((l, i) => (
-          <>
-            {i > 0 && <span class="sep" aria-hidden="true"></span>}
-            <a href={alternates[l]} hreflang={l} lang={l} aria-current={l === lang ? 'page' : undefined} title={ui.jazyk[l]}>{l.toUpperCase()}</a>
-          </>
-        ))}
-      </nav>
-    </div>
+<!-- Horný pás nie je prilepený: odroluje prirodzene, hlavička pod ním ostáva. -->
+<div class="topbar">
+  <div class="wrap topbar-in">
+    <a class="partner" href={route(lang, 'kontakt')} aria-label={ui.partner.veta}>
+      <span>{ui.partner.veta}</span>
+      <WattsLogo height={14} farba="biela" />
+    </a>
+    <nav class="langs" aria-label={ui.jazyk.prepnut}>
+      {LANGS.map((l, i) => (
+        <>
+          {i > 0 && <span class="sep" aria-hidden="true"></span>}
+          <a href={alternates[l]} hreflang={l} lang={l} aria-current={l === lang ? 'page' : undefined} title={ui.jazyk[l]}>{l.toUpperCase()}</a>
+        </>
+      ))}
+    </nav>
   </div>
+</div>
+<header class="hdr" id="hdr">
   <div class="wrap hdr-in">
     <a class="brand" href={route(lang, 'domov')} aria-label={ui.site.name}>
       <span class="brand-name">Microflex</span>
@@ -54,11 +55,8 @@ const polozky = [
 </header>
 
 <style>
-  .hdr { position: sticky; top: 0; z-index: 20; background: var(--color-white); border-bottom: var(--line); transition: box-shadow 200ms var(--ease-soft); }
-  .hdr.is-scrolled { box-shadow: 0 2px 12px rgb(11 27 51 / 0.08); }
-  .topbar { background: var(--color-blue-900); color: #fff; font-size: 13px; max-height: 40px; overflow: hidden; transition: max-height 200ms var(--ease-soft); }
-  .hdr.is-scrolled .topbar { max-height: 0; }
-  .topbar-in { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 34px; }
+  .topbar { background: var(--color-blue-900); color: #fff; font-size: 13px; }
+  .topbar-in { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 36px; }
   .partner { display: inline-flex; align-items: center; gap: 12px; color: #fff; white-space: nowrap; }
   .partner:hover { color: var(--color-yellow-500); }
   .partner :global(svg) { display: block; }
@@ -67,7 +65,10 @@ const polozky = [
   .langs a:hover { color: #fff; }
   .langs a[aria-current] { color: #fff; border-bottom-color: var(--color-yellow-500); }
   .langs .sep { width: 1px; height: 12px; background: rgb(255 255 255 / 0.3); }
-  .hdr-in { display: flex; align-items: center; gap: 32px; min-height: var(--hdr-h); transition: min-height 200ms var(--ease-soft); }
+
+  .hdr { position: sticky; top: 0; z-index: 20; background: rgb(255 255 255 / 0.92); backdrop-filter: saturate(1.4) blur(10px); -webkit-backdrop-filter: saturate(1.4) blur(10px); border-bottom: var(--line); transition: box-shadow 250ms var(--ease-soft); }
+  .hdr.is-scrolled { box-shadow: 0 2px 14px rgb(11 27 51 / 0.08); }
+  .hdr-in { display: flex; align-items: center; gap: 32px; min-height: var(--hdr-h); transition: min-height 250ms var(--ease-soft); }
   .hdr.is-scrolled .hdr-in { min-height: 60px; }
   .brand { display: inline-flex; align-items: center; gap: 12px; color: var(--color-ink); }
   .brand-name { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 700; font-size: 22px; letter-spacing: -0.01em; line-height: 1; }
@@ -83,7 +84,7 @@ const polozky = [
   .search button:hover { background: var(--color-blue-800); }
   .eshop { display: inline-flex; align-items: center; gap: 8px; font-weight: 500; color: var(--color-blue-700); white-space: nowrap; }
   .menu-btn { display: none; margin-left: auto; height: 44px; padding: 0 14px; border: var(--line); border-radius: var(--radius-s); background: var(--color-white); color: var(--color-ink); font-weight: 500; cursor: pointer; }
-  .mnav { display: flex; flex-direction: column; border-top: var(--line); padding: 4px var(--gutter) 12px; }
+  .mnav { display: flex; flex-direction: column; border-top: var(--line); padding: 4px var(--gutter) 12px; background: var(--color-white); }
   .mnav a { padding: 14px 0; color: var(--color-ink); font-weight: 500; border-bottom: var(--line); }
   .mnav-langs { display: flex; gap: 24px; padding-top: 8px; }
   .mnav-langs a { border-bottom: 0; color: var(--color-ink-soft); }
@@ -103,7 +104,13 @@ const polozky = [
     const btn = document.getElementById('menu-btn');
     const nav = document.getElementById('mobile-nav');
     if (!hdr) return;
-    const onScroll = () => hdr.classList.toggle('is-scrolled', window.scrollY > 8);
+    // Hysteréza: zmenšiť až po 72 px, vrátiť až pod 12 px. Zmena výšky tak nikdy neprekročí vlastnú hranicu.
+    let scrolled = false;
+    const onScroll = () => {
+      const y = window.scrollY;
+      if (!scrolled && y > 72) { scrolled = true; hdr.classList.add('is-scrolled'); }
+      else if (scrolled && y < 12) { scrolled = false; hdr.classList.remove('is-scrolled'); }
+    };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     if (btn && nav) {

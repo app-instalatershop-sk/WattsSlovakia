@@ -1,0 +1,126 @@
+[
+ {
+  "id": "vykurovanie",
+  "slug": "vykurovanie",
+  "nazov": "Predizolované potrubia pre vykurovanie",
+  "kratky_nazov": "Vykurovanie",
+  "popis": "Ohybné potrubie na rozvod tepla medzi budovami alebo od kotolne, kotla na biomasu či tepelného čerpadla k domu. UNO vedie jednu rúru, DUO má prívod a spiatočku v jednom plášti.",
+  "typ": "potrubie",
+  "piktogram": "rad-duo-kurenie.png",
+  "poradie": 1,
+  "nazov_watts": "Predizolované potrubia pre vykurovanie",
+  "rady": [
+   "microflex-uno-6-bar",
+   "microflex-duo-6-bar",
+   "microflex-uno-primo-6-bar",
+   "microflex-primo-duo-6-bar"
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/pipes-for-heating",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "sanita",
+  "slug": "sanita",
+  "nazov": "Predizolované potrubia pre teplú a studenú vodu",
+  "kratky_nazov": "Teplá a studená voda",
+  "popis": "Pitná voda medzi budovami a k vzdialeným odberom, 10 bar. UNO, DUO a PRIMO DUO v sanitárnom vyhotovení.",
+  "typ": "potrubie",
+  "piktogram": "rad-duo-sanita.png",
+  "poradie": 2,
+  "nazov_watts": "Predizolované potrubia pre sanitárne zariadenia",
+  "rady": [
+   "microflex-uno-10-bar",
+   "microflex-duo-10-bar",
+   "microflex-primo-duo-10-bar"
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/pipes-for-sanitary",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "vykurovanie-a-sanita",
+  "slug": "vykurovanie-a-sanita",
+  "nazov": "Vykurovanie a sanita v jednom plášti",
+  "kratky_nazov": "Vykurovanie a sanita",
+  "popis": "Štyri rúry v jednom plášti: prívod, spiatočka, teplá a studená voda. Rad QUADRO.",
+  "typ": "potrubie",
+  "piktogram": "rad-quadro.png",
+  "poradie": 3,
+  "nazov_watts": "Predizolované potrubia pre ústredné vykurovanie a sanitu",
+  "rady": [
+   "microflex-quadro"
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/central-heating-and-sanitary",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "studena-a-chladena-voda",
+  "slug": "studena-a-chladena-voda",
+  "nazov": "Predizolované potrubia pre studenú a chladenú vodu",
+  "kratky_nazov": "Studená a chladená voda",
+  "popis": "Chladená a studená pitná voda, odpadová voda. COOL, COOL s vyhrievacím káblom a COOL DUO.",
+  "typ": "potrubie",
+  "piktogram": "rad-cool-uno.png",
+  "poradie": 4,
+  "nazov_watts": "Predizolované potrubia pre studenú & chladnú pitnú vodu",
+  "rady": [
+   "microflex-cool",
+   "microflex-cool-s-vyhrievacim-kablom",
+   "microflex-cool-duo"
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/cold-cold-drinking-water",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "spojky",
+  "slug": "spojky",
+  "nazov": "Spojky",
+  "kratky_nazov": "Spojky",
+  "popis": "PE-X spojky, kolená, T-kusy a závitové pripojenia pre vykurovanie, COOL aj sanitu.",
+  "typ": "spojky",
+  "piktogram": null,
+  "poradie": 6,
+  "nazov_watts": "Spojky",
+  "rady": [
+   "pe-x-spojky-vykurovanie-a-cool",
+   "pe-x-spojky-sanita",
+   "prislusenstvo-spojok"
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "prislusenstvo",
+  "slug": "prislusenstvo",
+  "nazov": "Príslušenstvo pre Microflex",
+  "kratky_nazov": "Príslušenstvo",
+  "popis": "Koncovky, izolačné sady, prestupy stenou, opravné a výstražné pásky, revízne šachty.",
+  "typ": "prislusenstvo",
+  "piktogram": null,
+  "poradie": 7,
+  "nazov_watts": "Príslušenstvo pre Microflex",
+  "rady": [
+   "koncovky-a-redukcie",
+   "izolacne-sady",
+   "opravne-a-vystrazne-pasky",
+   "prestupy-stenou"
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "tepelne-cerpadla",
+  "slug": "tepelne-cerpadla",
+  "nazov": "Predizolované potrubia pre tepelné čerpadlá",
+  "kratky_nazov": "Tepelné čerpadlá",
+  "popis": "Prepojenie vonkajšej jednotky tepelného čerpadla s domom v jednom plášti, prívod aj spiatočka. Rad Microflex HP.",
+  "typ": "potrubie",
+  "piktogram": "rad-hp-tepelne-cerpadlo.png",
+  "poradie": 5,
+  "nazov_watts": "Microflex HP pre pripojenie tepelného čerpadla",
+  "rady": [
+   "microflex-hp"
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/heating-pumps",
+  "stiahnute": "2026-09-21"
+ }
+]

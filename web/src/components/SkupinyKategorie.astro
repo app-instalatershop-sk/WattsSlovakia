@@ -1,0 +1,43 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { radyKategorie, skloňujDimenzie, type Kategoria } from '../lib/katalog';
+import { fotkaRadu } from '../lib/obrazky';
+
+interface Props { k: Kategoria }
+const { k } = Astro.props;
+const skupiny = await radyKategorie(k.id);
+const produkty = (await getCollection('produkty')).map((p) => p.data).filter((p) => p.kategoria === k.id);
+---
+<Base title={k.nazov} description={k.popis} aktivna="potrubia" drobceky={[{ text: k.kratky_nazov }]}>
+  <div class="wrap">
+    <div class="head"><h1>{k.nazov}</h1><p class="lead">{k.popis}</p></div>
+    <div class="groups">
+      {skupiny.map((s) => { const img = fotkaRadu(s.fotka); const ps = produkty.filter((p) => p.skupina === s.id); return (
+        <section class="group" aria-labelledby={`h-${s.id}`}>
+          <div class="plate">{img && <Image src={img} alt="" widths={[240, 480]} sizes="200px" />}</div>
+          <div>
+            <h2 id={`h-${s.id}`}>{s.nazov}</h2>
+            <ul class="products">
+              {ps.map((p) => <li><span>{p.nazov}</span>{p.pocet_variantov > 0 && <span class="muted">{skloňujDimenzie(p.pocet_variantov)}</span>}</li>)}
+            </ul>
+            <p class="small muted">Stránky jednotlivých produktov s tabuľkami obj. čísel pripravujeme. Zatiaľ <a href={s.zdroj_url} target="_blank" rel="noopener">na watts.eu</a>.</p>
+          </div>
+        </section>
+      ); })}
+    </div>
+  </div>
+</Base>
+
+<style>
+  .head { padding-block: 12px 32px; display: flex; flex-direction: column; gap: 16px; }
+  .groups { display: flex; flex-direction: column; gap: 24px; padding-bottom: 48px; }
+  .group { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 32px; padding: 24px 0; border-top: var(--line); align-items: start; }
+  .group .plate { aspect-ratio: 1; border-radius: var(--radius-l); }
+  .group h2 { font-size: 22px; margin-bottom: 12px; }
+  .products li { display: flex; justify-content: space-between; gap: 16px; padding: 10px 0; border-bottom: var(--line); font-size: 15px; }
+  .products li:last-child { border-bottom: 0; }
+  .small { font-size: 13px; margin-top: 12px; }
+  @media (max-width: 760px) { .group { grid-template-columns: 1fr; } .group .plate { max-width: 200px; } }
+</style>

@@ -1,0 +1,54 @@
+---
+import Ikona from './Ikona.astro';
+import { cislo, type Variant } from '../lib/katalog';
+
+interface Props { varianty: Variant[]; zdroj: string; stiahnute: string }
+const { varianty, zdroj, stiahnute } = Astro.props;
+const maSlpec = (k: keyof Variant) => varianty.some((v) => v[k] !== null && v[k] !== undefined);
+const maRuru = maSlpec('rura') || maSlpec('rura_text');
+const ruraText = (v: Variant) => (v.rura ? `${cislo(v.rura.d)} × ${cislo(v.rura.s, 1)}` : (v.rura_text ?? '').replace(/x/g, '×'));
+const datum = new Date(stiahnute).toLocaleDateString('sk-SK', { day: 'numeric', month: 'numeric', year: 'numeric' });
+---
+<div class="table-wrap">
+  <table class="data variants">
+    <thead>
+      <tr>
+        <th>Obj. číslo</th>
+        {maSlpec('plast_mm') && <th class="right">Plášť Ø<small>mm</small></th>}
+        {maRuru && <th class="right">Rúra Ø × hrúbka<small>mm</small></th>}
+        {maSlpec('dn') && <th>DN</th>}
+        {maSlpec('tlak_bar') && <th class="right">Tlak<small>bar</small></th>}
+        {maSlpec('hmotnost_kg_m') && <th class="right">Hmotnosť<small>kg/m</small></th>}
+        {maSlpec('izolacia') && <th>Izolácia</th>}
+        {maSlpec('polomer_ohybu_m') && <th class="right">Polomer ohybu<small>m</small></th>}
+        {maSlpec('kotuc') && <th class="right">Kotúč Ø / šírka<small>m</small></th>}
+        <th><span class="sr-only">E-shop</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      {varianty.map((v) => (
+        <tr data-pipe={v.rura?.d ?? ''} data-ins={v.izolacia ?? ''}>
+          <td class="code">{v.obj_cislo}</td>
+          {maSlpec('plast_mm') && <td class="right">{cislo(v.plast_mm)}</td>}
+          {maRuru && <td class="right">{ruraText(v)}</td>}
+          {maSlpec('dn') && <td>{v.dn ?? ''}</td>}
+          {maSlpec('tlak_bar') && <td class="right">{cislo(v.tlak_bar)}</td>}
+          {maSlpec('hmotnost_kg_m') && <td class="right">{cislo(v.hmotnost_kg_m, 2)}</td>}
+          {maSlpec('izolacia') && <td><span class:list={['ins', { adv: v.izolacia === 'zosilnena' }]}>{v.izolacia === 'zosilnena' ? 'zosilnená' : 'štandardná'}</span></td>}
+          {maSlpec('polomer_ohybu_m') && <td class="right">{cislo(v.polomer_ohybu_m, 2)}</td>}
+          {maSlpec('kotuc') && <td class="right">{v.kotuc ? `${cislo(v.kotuc.d, 2)} / ${cislo(v.kotuc.sirka, 2)}` : ''}</td>}
+          <td><a class="shop" href={v.eshop_url} target="_blank" rel="noopener">Do e-shopu <Ikona nazov="external-link" velkost={14} /></a></td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+<p class="source">Zdroj: katalóg Watts Microflex, slovenské vydanie, stav k {datum}. Hmotnosť je na meter potrubia, kotúč ako priemer a šírka. <a href={zdroj} target="_blank" rel="noopener">Stránka výrobcu</a>.</p>
+
+<style>
+  .shop { display: inline-flex; align-items: center; gap: 6px; color: var(--color-blue-700); font-weight: 500; }
+  .ins { display: inline-flex; align-items: center; gap: 6px; }
+  .ins::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--color-grey-300); }
+  .ins.adv::before { background: var(--color-blue-700); }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>

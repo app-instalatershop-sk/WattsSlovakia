@@ -1,0 +1,6 @@
+---
+import SkupinyKategorie from '../../components/SkupinyKategorie.astro';
+import { kategoriaPodlaSlugu } from '../../lib/katalog';
+const k = (await kategoriaPodlaSlugu('spojky'))!;
+---
+<SkupinyKategorie k={k} />

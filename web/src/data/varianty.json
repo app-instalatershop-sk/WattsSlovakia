@@ -1,0 +1,5247 @@
+[
+ {
+  "rad": "microflex-uno-6-bar",
+  "poradie": 1,
+  "raw": {
+   "Art. No.": "M7525C",
+   "Ø Outside casing dout (mm)": "75",
+   "Ø PE-Xa d OUT/S (mm)": "25 х 2,3",
+   "Váha (kg/m)": "0,68",
+   "Insulation": "standard",
+   "Bending radius (m)": "0,20",
+   "Ø / thickness of coil": "1,90 / 0,30"
+  },
+  "obj_cislo": "M7525C",
+  "plast_mm": 75,
+  "rura": {
+   "d": 25,
+   "s": 2.3
+  },
+  "hmotnost_kg_m": 0.68,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 0.2,
+  "kotuc": {
+   "d": 1.9,
+   "sirka": 0.3
+  },
+  "id": "M7525C",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M7525C"
+ },
+ {
+  "rad": "microflex-uno-6-bar",
+  "poradie": 2,
+  "raw": {
+   "Art. No.": "M9032C",
+   "Ø Outside casing dout (mm)": "90",
+   "Ø PE-Xa d OUT/S (mm)": "32 х 2,9",
+   "Váha (kg/m)": "1,00",
+   "Insulation": "standard",
+   "Bending radius (m)": "0,25",
+   "Ø / thickness of coil": "2,00 / 0,45"
+  },
+  "obj_cislo": "M9032C",
+  "plast_mm": 90,
+  "rura": {
+   "d": 32,
+   "s": 2.9
+  },
+  "hmotnost_kg_m": 1.0,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 0.25,
+  "kotuc": {
+   "d": 2.0,
+   "sirka": 0.45
+  },
+  "id": "M9032C",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M9032C"
+ },
+ {
+  "rad": "microflex-uno-6-bar",
+  "poradie": 3,
+  "raw": {
+   "Art. No.": "M9040C",
+   "Ø Outside casing dout (mm)": "90",
+   "Ø PE-Xa d OUT/S (mm)": "40 х 3,7",
+   "Váha (kg/m)": "1,11",
+   "Insulation": "standard",
+   "Bending radius (m)": "0,30",
+   "Ø / thickness of coil": "2,00 / 0,45"
+  },
+  "obj_cislo": "M9040C",
+  "plast_mm": 90,
+  "rura": {
+   "d": 40,
+   "s": 3.7
+  },
+  "hmotnost_kg_m": 1.11,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 0.3,
+  "kotuc": {
+   "d": 2.0,
+   "sirka": 0.45
+  },
+  "id": "M9040C",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M9040C"
+ },
+ {
+  "rad": "microflex-uno-6-bar",
+  "poradie": 4,
+  "raw": {
+   "Art. No.": "M12550C",
+   "Ø Outside casing dout (mm)": "125",
+   "Ø PE-Xa d OUT/S (mm)": "50 х 4,6",
+   "Váha (kg/m)": "1,92",
+   "Insulation": "standard",
+   "Bending radius (m)": "0,40",
+   "Ø / thickness of coil": "2,10 / 0,70"
+  },
+  "obj_cislo": "M12550C",
+  "plast_mm": 125,
+  "rura": {
+   "d": 50,
+   "s": 4.6
+  },
+  "hmotnost_kg_m": 1.92,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 0.4,
+  "kotuc": {
+   "d": 2.1,
+   "sirka": 0.7
+  },
+  "id": "M12550C",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M12550C"
+ },
+ {
+  "rad": "microflex-uno-6-bar",
+  "poradie": 5,
+  "raw": {
+   "Art. No.": "M12563C",
+   "Ø Outside casing dout (mm)": "125",
+   "Ø PE-Xa d OUT/S (mm)": "63 х 5,8",
+   "Váha (kg/m)": "2,16",
+   "Insulation": "standard",
+   "Bending radius (m)": "0,50",
+   "Ø / thickness of coil": "2,10 / 0,70"
+  },
+  "obj_cislo": "M12563C",
+  "plast_mm": 125,
+  "rura": {
+   "d": 63,
+   "s": 5.8
+  },
+  "hmotnost_kg_m": 2.16,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 0.5,
+  "kotuc": {
+   "d": 2.1,
+   "sirka": 0.7
+  },
+  "id": "M12563C",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M12563C"
+ },
+ {
+  "rad": "microflex-uno-6-bar",
+  "poradie": 6,
+  "raw": {
+   "Art. No.": "M16075C",
+   "Ø Outside casing dout (mm)": "160",
+   "Ø PE-Xa d OUT/S (mm)": "75 х 6,8",
+   "Váha (kg/m)": "3,20",
+   "Insulation": "standard",
+   "Bending radius (m)": "0,75",
+   "Ø / thickness of coil": "2,30 / 0,85"
+  },
+  "obj_cislo": "M16075C",
+  "plast_mm": 160,
+  "rura": {
+   "d": 75,
+   "s": 6.8
+  },
+  "hmotnost_kg_m": 3.2,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 0.75,
+  "kotuc": {
+   "d": 2.3,
+   "sirka": 0.85
+  },
+  "id": "M16075C",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M16075C"
+ },
+ {
+  "rad": "microflex-uno-6-bar",
+  "poradie": 7,
+  "raw": {
+   "Art. No.": "M16090C",
+   "Ø Outside casing dout (mm)": "160",
+   "Ø PE-Xa d OUT/S (mm)": "90 х 8,2",
+   "Váha (kg/m)": "3,85",
+   "Insulation": "standard",
+   "Bending radius (m)": "1,00",
+   "Ø / thickness of coil": "2,30 / 0,85"
+  },
+  "obj_cislo": "M16090C",
+  "plast_mm": 160,
+  "rura": {
+   "d": 90,
+   "s": 8.2
+  },
+  "hmotnost_kg_m": 3.85,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 1.0,
+  "kotuc": {
+   "d": 2.3,
+   "sirka": 0.85
+  },
+  "id": "M16090C",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M16090C"
+ },
+ {
+  "rad": "microflex-uno-6-bar",
+  "poradie": 8,
+  "raw": {
+   "Art. No.": "M200110C",
+   "Ø Outside casing dout (mm)": "200",
+   "Ø PE-Xa d OUT/S (mm)": "110 х 10,0",
+   "Váha (kg/m)": "5,64",
+   "Insulation": "standard",
+   "Bending radius (m)": "1,20",
+   "Ø / thickness of coil": "2,30 / 1,40"
+  },
+  "obj_cislo": "M200110C",
+  "plast_mm": 200,
+  "rura": {
+   "d": 110,
+   "s": 10.0
+  },
+  "hmotnost_kg_m": 5.64,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 1.2,
+  "kotuc": {
+   "d": 2.3,
+   "sirka": 1.4
+  },
+  "id": "M200110C",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M200110C"
+ },
+ {
+  "rad": "microflex-uno-6-bar",
+  "poradie": 9,
+  "raw": {
+   "Art. No.": "M200125C",
+   "Ø Outside casing dout (mm)": "200",
+   "Ø PE-Xa d OUT/S (mm)": "125 х 11,4",
+   "Váha (kg/m)": "6,64",
+   "Insulation": "standard",
+   "Bending radius (m)": "1,20",
+   "Ø / thickness of coil": "2,30 / 1,40"
+  },
+  "obj_cislo": "M200125C",
+  "plast_mm": 200,
+  "rura": {
+   "d": 125,
+   "s": 11.4
+  },
+  "hmotnost_kg_m": 6.64,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 1.2,
+  "kotuc": {
+   "d": 2.3,
+   "sirka": 1.4
+  },
+  "id": "M200125C",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M200125C"
+ },
+ {
+  "rad": "microflex-uno-6-bar",
+  "poradie": 10,
+  "raw": {
+   "Art. No.": "M12525C",
+   "Ø Outside casing dout (mm)": "125",
+   "Ø PE-Xa d OUT/S (mm)": "25 х 2,3",
+   "Váha (kg/m)": "1,62",
+   "Insulation": "advanced",
+   "Bending radius (m)": "0,30",
+   "Ø / thickness of coil": "2,10 / 0,70"
+  },
+  "obj_cislo": "M12525C",
+  "plast_mm": 125,
+  "rura": {
+   "d": 25,
+   "s": 2.3
+  },
+  "hmotnost_kg_m": 1.62,
+  "izolacia": "zosilnena",
+  "polomer_ohybu_m": 0.3,
+  "kotuc": {
+   "d": 2.1,
+   "sirka": 0.7
+  },
+  "id": "M12525C",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M12525C"
+ },
+ {
+  "rad": "microflex-uno-6-bar",
+  "poradie": 11,
+  "raw": {
+   "Art. No.": "M12532C",
+   "Ø Outside casing dout (mm)": "125",
+   "Ø PE-Xa d OUT/S (mm)": "32 х 2,9",
+   "Váha (kg/m)": "1,82",
+   "Insulation": "advanced",
+   "Bending radius (m)": "0,30",
+   "Ø / thickness of coil": "2,10 / 0,70"
+  },
+  "obj_cislo": "M12532C",
+  "plast_mm": 125,
+  "rura": {
+   "d": 32,
+   "s": 2.9
+  },
+  "hmotnost_kg_m": 1.82,
+  "izolacia": "zosilnena",
+  "polomer_ohybu_m": 0.3,
+  "kotuc": {
+   "d": 2.1,
+   "sirka": 0.7
+  },
+  "id": "M12532C",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M12532C"
+ },
+ {
+  "rad": "microflex-uno-6-bar",
+  "poradie": 12,
+  "raw": {
+   "Art. No.": "M16040C",
+   "Ø Outside casing dout (mm)": "160",
+   "Ø PE-Xa d OUT/S (mm)": "40 х 3,7",
+   "Váha (kg/m)": "2,32",
+   "Insulation": "advanced",
+   "Bending radius (m)": "0,30",
+   "Ø / thickness of coil": "2,30 / 0,85"
+  },
+  "obj_cislo": "M16040C",
+  "plast_mm": 160,
+  "rura": {
+   "d": 40,
+   "s": 3.7
+  },
+  "hmotnost_kg_m": 2.32,
+  "izolacia": "zosilnena",
+  "polomer_ohybu_m": 0.3,
+  "kotuc": {
+   "d": 2.3,
+   "sirka": 0.85
+  },
+  "id": "M16040C",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M16040C"
+ },
+ {
+  "rad": "microflex-uno-6-bar",
+  "poradie": 13,
+  "raw": {
+   "Art. No.": "M16050C",
+   "Ø Outside casing dout (mm)": "160",
+   "Ø PE-Xa d OUT/S (mm)": "50 х 4,6",
+   "Váha (kg/m)": "2,48",
+   "Insulation": "advanced",
+   "Bending radius (m)": "0,45",
+   "Ø / thickness of coil": "2,30 / 0,85"
+  },
+  "obj_cislo": "M16050C",
+  "plast_mm": 160,
+  "rura": {
+   "d": 50,
+   "s": 4.6
+  },
+  "hmotnost_kg_m": 2.48,
+  "izolacia": "zosilnena",
+  "polomer_ohybu_m": 0.45,
+  "kotuc": {
+   "d": 2.3,
+   "sirka": 0.85
+  },
+  "id": "M16050C",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M16050C"
+ },
+ {
+  "rad": "microflex-uno-6-bar",
+  "poradie": 14,
+  "raw": {
+   "Art. No.": "M16063C",
+   "Ø Outside casing dout (mm)": "160",
+   "Ø PE-Xa d OUT/S (mm)": "63 х 5,8",
+   "Váha (kg/m)": "2,78",
+   "Insulation": "advanced",
+   "Bending radius (m)": "0,55",
+   "Ø / thickness of coil": "2,30 / 0,85"
+  },
+  "obj_cislo": "M16063C",
+  "plast_mm": 160,
+  "rura": {
+   "d": 63,
+   "s": 5.8
+  },
+  "hmotnost_kg_m": 2.78,
+  "izolacia": "zosilnena",
+  "polomer_ohybu_m": 0.55,
+  "kotuc": {
+   "d": 2.3,
+   "sirka": 0.85
+  },
+  "id": "M16063C",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M16063C"
+ },
+ {
+  "rad": "microflex-uno-6-bar",
+  "poradie": 15,
+  "raw": {
+   "Art. No.": "M20075C",
+   "Ø Outside casing dout (mm)": "200",
+   "Ø PE-Xa d OUT/S (mm)": "75 х 6,8",
+   "Váha (kg/m)": "4,16",
+   "Insulation": "advanced",
+   "Bending radius (m)": "0,80",
+   "Ø / thickness of coil": "2,30 / 1,40"
+  },
+  "obj_cislo": "M20075C",
+  "plast_mm": 200,
+  "rura": {
+   "d": 75,
+   "s": 6.8
+  },
+  "hmotnost_kg_m": 4.16,
+  "izolacia": "zosilnena",
+  "polomer_ohybu_m": 0.8,
+  "kotuc": {
+   "d": 2.3,
+   "sirka": 1.4
+  },
+  "id": "M20075C",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M20075C"
+ },
+ {
+  "rad": "microflex-uno-6-bar",
+  "poradie": 16,
+  "raw": {
+   "Art. No.": "M20090C",
+   "Ø Outside casing dout (mm)": "200",
+   "Ø PE-Xa d OUT/S (mm)": "90 х 8,2",
+   "Váha (kg/m)": "4,73",
+   "Insulation": "advanced",
+   "Bending radius (m)": "1,10",
+   "Ø / thickness of coil": "2,30 / 1,40"
+  },
+  "obj_cislo": "M20090C",
+  "plast_mm": 200,
+  "rura": {
+   "d": 90,
+   "s": 8.2
+  },
+  "hmotnost_kg_m": 4.73,
+  "izolacia": "zosilnena",
+  "polomer_ohybu_m": 1.1,
+  "kotuc": {
+   "d": 2.3,
+   "sirka": 1.4
+  },
+  "id": "M20090C",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M20090C"
+ },
+ {
+  "rad": "microflex-duo-6-bar",
+  "poradie": 1,
+  "raw": {
+   "Art. No.": "MD12525C",
+   "Ø out. housing": "125",
+   "Ø pressure pipe (ext.)": "25 х 2,3",
+   "Váha": "1,62",
+   "Insulation": "standard",
+   "bend Radius": "0,30",
+   "Ø / thickness of coil": "2,10 / 0,70"
+  },
+  "obj_cislo": "MD12525C",
+  "plast_mm": 125,
+  "rura": {
+   "d": 25,
+   "s": 2.3
+  },
+  "hmotnost_kg_m": 1.62,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 0.3,
+  "kotuc": {
+   "d": 2.1,
+   "sirka": 0.7
+  },
+  "id": "MD12525C",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD12525C"
+ },
+ {
+  "rad": "microflex-duo-6-bar",
+  "poradie": 2,
+  "raw": {
+   "Art. No.": "MD12532C",
+   "Ø out. housing": "125",
+   "Ø pressure pipe (ext.)": "32 х 2,9",
+   "Váha": "1,82",
+   "Insulation": "standard",
+   "bend Radius": "0,30",
+   "Ø / thickness of coil": "2,10 / 0,70"
+  },
+  "obj_cislo": "MD12532C",
+  "plast_mm": 125,
+  "rura": {
+   "d": 32,
+   "s": 2.9
+  },
+  "hmotnost_kg_m": 1.82,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 0.3,
+  "kotuc": {
+   "d": 2.1,
+   "sirka": 0.7
+  },
+  "id": "MD12532C",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD12532C"
+ },
+ {
+  "rad": "microflex-duo-6-bar",
+  "poradie": 3,
+  "raw": {
+   "Art. No.": "MD16040C",
+   "Ø out. housing": "160",
+   "Ø pressure pipe (ext.)": "40 х 3,7",
+   "Váha": "2,63",
+   "Insulation": "standard",
+   "bend Radius": "0,60",
+   "Ø / thickness of coil": "2,30 / 0,85"
+  },
+  "obj_cislo": "MD16040C",
+  "plast_mm": 160,
+  "rura": {
+   "d": 40,
+   "s": 3.7
+  },
+  "hmotnost_kg_m": 2.63,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 0.6,
+  "kotuc": {
+   "d": 2.3,
+   "sirka": 0.85
+  },
+  "id": "MD16040C",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD16040C"
+ },
+ {
+  "rad": "microflex-duo-6-bar",
+  "poradie": 4,
+  "raw": {
+   "Art. No.": "MD16050C",
+   "Ø out. housing": "160",
+   "Ø pressure pipe (ext.)": "50 х 4,6",
+   "Váha": "3,10",
+   "Insulation": "standard",
+   "bend Radius": "0,60",
+   "Ø / thickness of coil": "2,30 / 0,85"
+  },
+  "obj_cislo": "MD16050C",
+  "plast_mm": 160,
+  "rura": {
+   "d": 50,
+   "s": 4.6
+  },
+  "hmotnost_kg_m": 3.1,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 0.6,
+  "kotuc": {
+   "d": 2.3,
+   "sirka": 0.85
+  },
+  "id": "MD16050C",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD16050C"
+ },
+ {
+  "rad": "microflex-duo-6-bar",
+  "poradie": 5,
+  "raw": {
+   "Art. No.": "MD20063C",
+   "Ø out. housing": "200",
+   "Ø pressure pipe (ext.)": "63 х 5,8",
+   "Váha": "4,64",
+   "Insulation": "standard",
+   "bend Radius": "1,20",
+   "Ø / thickness of coil": "2,30 / 1,40"
+  },
+  "obj_cislo": "MD20063C",
+  "plast_mm": 200,
+  "rura": {
+   "d": 63,
+   "s": 5.8
+  },
+  "hmotnost_kg_m": 4.64,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 1.2,
+  "kotuc": {
+   "d": 2.3,
+   "sirka": 1.4
+  },
+  "id": "MD20063C",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD20063C"
+ },
+ {
+  "rad": "microflex-duo-6-bar",
+  "poradie": 6,
+  "raw": {
+   "Art. No.": "MD16025C",
+   "Ø out. housing": "160",
+   "Ø pressure pipe (ext.)": "25 х 2,3",
+   "Váha": "2,21",
+   "Insulation": "advanced",
+   "bend Radius": "0,60",
+   "Ø / thickness of coil": "2,30 / 0,85"
+  },
+  "obj_cislo": "MD16025C",
+  "plast_mm": 160,
+  "rura": {
+   "d": 25,
+   "s": 2.3
+  },
+  "hmotnost_kg_m": 2.21,
+  "izolacia": "zosilnena",
+  "polomer_ohybu_m": 0.6,
+  "kotuc": {
+   "d": 2.3,
+   "sirka": 0.85
+  },
+  "id": "MD16025C",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD16025C"
+ },
+ {
+  "rad": "microflex-duo-6-bar",
+  "poradie": 7,
+  "raw": {
+   "Art. No.": "MD16032C",
+   "Ø out. housing": "160",
+   "Ø pressure pipe (ext.)": "32 х 2,9",
+   "Váha": "2,42",
+   "Insulation": "advanced",
+   "bend Radius": "0,60",
+   "Ø / thickness of coil": "2,30 / 0,83"
+  },
+  "obj_cislo": "MD16032C",
+  "plast_mm": 160,
+  "rura": {
+   "d": 32,
+   "s": 2.9
+  },
+  "hmotnost_kg_m": 2.42,
+  "izolacia": "zosilnena",
+  "polomer_ohybu_m": 0.6,
+  "kotuc": {
+   "d": 2.3,
+   "sirka": 0.83
+  },
+  "id": "MD16032C",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD16032C"
+ },
+ {
+  "rad": "microflex-duo-6-bar",
+  "poradie": 8,
+  "raw": {
+   "Art. No.": "MD20050C",
+   "Ø out. housing": "200",
+   "Ø pressure pipe (ext.)": "50 х 4,6",
+   "Váha": "4,03",
+   "Insulation": "advanced",
+   "bend Radius": "0,80",
+   "Ø / thickness of coil": "2,30 / 1,40"
+  },
+  "obj_cislo": "MD20050C",
+  "plast_mm": 200,
+  "rura": {
+   "d": 50,
+   "s": 4.6
+  },
+  "hmotnost_kg_m": 4.03,
+  "izolacia": "zosilnena",
+  "polomer_ohybu_m": 0.8,
+  "kotuc": {
+   "d": 2.3,
+   "sirka": 1.4
+  },
+  "id": "MD20050C",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD20050C"
+ },
+ {
+  "rad": "microflex-uno-10-bar",
+  "poradie": 1,
+  "raw": {
+   "Kód": "M7525S",
+   "Ø Buitenmantel dout (mm)": "75",
+   "Ø PE-Xa d OUT/S (mm)": "25 х 3,5",
+   "Váha (kg/m)": "0,75",
+   "Insulation": "standard",
+   "Bending radius (m)": "0,20",
+   "Ø / thickness of coil": "1,90 / 0,30"
+  },
+  "obj_cislo": "M7525S",
+  "plast_mm": 75,
+  "rura": {
+   "d": 25,
+   "s": 3.5
+  },
+  "hmotnost_kg_m": 0.75,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 0.2,
+  "kotuc": {
+   "d": 1.9,
+   "sirka": 0.3
+  },
+  "id": "M7525S",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M7525S"
+ },
+ {
+  "rad": "microflex-uno-10-bar",
+  "poradie": 2,
+  "raw": {
+   "Kód": "M9032S",
+   "Ø Buitenmantel dout (mm)": "90",
+   "Ø PE-Xa d OUT/S (mm)": "32 х 4,4",
+   "Váha (kg/m)": "1,12",
+   "Insulation": "standard",
+   "Bending radius (m)": "0,25",
+   "Ø / thickness of coil": "2,00 / 0,45"
+  },
+  "obj_cislo": "M9032S",
+  "plast_mm": 90,
+  "rura": {
+   "d": 32,
+   "s": 4.4
+  },
+  "hmotnost_kg_m": 1.12,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 0.25,
+  "kotuc": {
+   "d": 2.0,
+   "sirka": 0.45
+  },
+  "id": "M9032S",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M9032S"
+ },
+ {
+  "rad": "microflex-uno-10-bar",
+  "poradie": 3,
+  "raw": {
+   "Kód": "M9040S",
+   "Ø Buitenmantel dout (mm)": "90",
+   "Ø PE-Xa d OUT/S (mm)": "40 х 5,5",
+   "Váha (kg/m)": "1,89",
+   "Insulation": "standard",
+   "Bending radius (m)": "0,30",
+   "Ø / thickness of coil": "2,00 / 0,45"
+  },
+  "obj_cislo": "M9040S",
+  "plast_mm": 90,
+  "rura": {
+   "d": 40,
+   "s": 5.5
+  },
+  "hmotnost_kg_m": 1.89,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 0.3,
+  "kotuc": {
+   "d": 2.0,
+   "sirka": 0.45
+  },
+  "id": "M9040S",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M9040S"
+ },
+ {
+  "rad": "microflex-uno-10-bar",
+  "poradie": 4,
+  "raw": {
+   "Kód": "M12550S",
+   "Ø Buitenmantel dout (mm)": "125",
+   "Ø PE-Xa d OUT/S (mm)": "50 х 6,9",
+   "Váha (kg/m)": "2,19",
+   "Insulation": "standard",
+   "Bending radius (m)": "0,50",
+   "Ø / thickness of coil": "2,10 / 0,70"
+  },
+  "obj_cislo": "M12550S",
+  "plast_mm": 125,
+  "rura": {
+   "d": 50,
+   "s": 6.9
+  },
+  "hmotnost_kg_m": 2.19,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 0.5,
+  "kotuc": {
+   "d": 2.1,
+   "sirka": 0.7
+  },
+  "id": "M12550S",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M12550S"
+ },
+ {
+  "rad": "microflex-uno-10-bar",
+  "poradie": 5,
+  "raw": {
+   "Kód": "M12563S",
+   "Ø Buitenmantel dout (mm)": "125",
+   "Ø PE-Xa d OUT/S (mm)": "63 х 8,7",
+   "Váha (kg/m)": "2,59",
+   "Insulation": "standard",
+   "Bending radius (m)": "0,60",
+   "Ø / thickness of coil": "2,10 / 0,70"
+  },
+  "obj_cislo": "M12563S",
+  "plast_mm": 125,
+  "rura": {
+   "d": 63,
+   "s": 8.7
+  },
+  "hmotnost_kg_m": 2.59,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 0.6,
+  "kotuc": {
+   "d": 2.1,
+   "sirka": 0.7
+  },
+  "id": "M12563S",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M12563S"
+ },
+ {
+  "rad": "microflex-uno-10-bar",
+  "poradie": 6,
+  "raw": {
+   "Kód": "M16075S",
+   "Ø Buitenmantel dout (mm)": "160",
+   "Ø PE-Xa d OUT/S (mm)": "75 х 10,3",
+   "Váha (kg/m)": "4,16",
+   "Insulation": "standard",
+   "Bending radius (m)": "0,90",
+   "Ø / thickness of coil": "2,30 / 0,85"
+  },
+  "obj_cislo": "M16075S",
+  "plast_mm": 160,
+  "rura": {
+   "d": 75,
+   "s": 10.3
+  },
+  "hmotnost_kg_m": 4.16,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 0.9,
+  "kotuc": {
+   "d": 2.3,
+   "sirka": 0.85
+  },
+  "id": "M16075S",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M16075S"
+ },
+ {
+  "rad": "microflex-uno-10-bar",
+  "poradie": 7,
+  "raw": {
+   "Kód": "M16090S",
+   "Ø Buitenmantel dout (mm)": "160",
+   "Ø PE-Xa d OUT/S (mm)": "90 х 12,3",
+   "Váha (kg/m)": "4,73",
+   "Insulation": "standard",
+   "Bending radius (m)": "1,10",
+   "Ø / thickness of coil": "2,30 / 0,85"
+  },
+  "obj_cislo": "M16090S",
+  "plast_mm": 160,
+  "rura": {
+   "d": 90,
+   "s": 12.3
+  },
+  "hmotnost_kg_m": 4.73,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 1.1,
+  "kotuc": {
+   "d": 2.3,
+   "sirka": 0.85
+  },
+  "id": "M16090S",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M16090S"
+ },
+ {
+  "rad": "microflex-uno-10-bar",
+  "poradie": 8,
+  "raw": {
+   "Kód": "M200110S",
+   "Ø Buitenmantel dout (mm)": "200",
+   "Ø PE-Xa d OUT/S (mm)": "110 х 15,4",
+   "Váha (kg/m)": "6,64",
+   "Insulation": "standard",
+   "Bending radius (m)": "1,40",
+   "Ø / thickness of coil": "2,30 / 1,40"
+  },
+  "obj_cislo": "M200110S",
+  "plast_mm": 200,
+  "rura": {
+   "d": 110,
+   "s": 15.4
+  },
+  "hmotnost_kg_m": 6.64,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 1.4,
+  "kotuc": {
+   "d": 2.3,
+   "sirka": 1.4
+  },
+  "id": "M200110S",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M200110S"
+ },
+ {
+  "rad": "microflex-duo-10-bar",
+  "poradie": 1,
+  "raw": {
+   "Kód": "MD1252818SWI",
+   "Pipe PEX -a Ø external thickness mm": "1x28/4.01x18/2.5",
+   "DN": "20-13",
+   "Ø outside casing mm": "125",
+   "Váha kg/m": "1,67",
+   "Bending radius cm": "0,3",
+   "PN": "10",
+   "€/m": "51,00"
+  },
+  "obj_cislo": "MD1252818SWI",
+  "rura_text": "1x28/4.01x18/2.5",
+  "dn": "20-13",
+  "plast_mm": 125,
+  "hmotnost_kg_m": 1.67,
+  "polomer_ohybu_m": 0.3,
+  "tlak_bar": 10,
+  "id": "MD1252818SWI",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD1252818SWI"
+ },
+ {
+  "rad": "microflex-duo-10-bar",
+  "poradie": 2,
+  "raw": {
+   "Kód": "MD1253222SWI",
+   "Pipe PEX -a Ø external thickness mm": "1x32/4.41x22/3.0",
+   "DN": "23-16",
+   "Ø outside casing mm": "125",
+   "Váha kg/m": "1,86",
+   "Bending radius cm": "0,3",
+   "PN": "10",
+   "€/m": "60,30"
+  },
+  "obj_cislo": "MD1253222SWI",
+  "rura_text": "1x32/4.41x22/3.0",
+  "dn": "23-16",
+  "plast_mm": 125,
+  "hmotnost_kg_m": 1.86,
+  "polomer_ohybu_m": 0.3,
+  "tlak_bar": 10,
+  "id": "MD1253222SWI",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD1253222SWI"
+ },
+ {
+  "rad": "microflex-duo-10-bar",
+  "poradie": 3,
+  "raw": {
+   "Kód": "MD16025SWI",
+   "Pipe PEX -a Ø external thickness mm": "2x25/3.5",
+   "DN": "20",
+   "Ø outside casing mm": "160",
+   "Váha kg/m": "2,35",
+   "Bending radius cm": "50",
+   "PN": "10",
+   "€/m": "65,50"
+  },
+  "obj_cislo": "MD16025SWI",
+  "rura_text": "2x25/3.5",
+  "dn": "20",
+  "plast_mm": 160,
+  "hmotnost_kg_m": 2.35,
+  "polomer_ohybu_m": 0.5,
+  "tlak_bar": 10,
+  "id": "MD16025SWI",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD16025SWI"
+ },
+ {
+  "rad": "microflex-duo-10-bar",
+  "poradie": 4,
+  "raw": {
+   "Kód": "MD1603218SWI",
+   "Pipe PEX -a Ø external thickness mm": "1x32/4.41x18/2.5",
+   "DN": "23-13",
+   "Ø outside casing mm": "160",
+   "Váha kg/m": "2,42",
+   "Bending radius cm": "0,5",
+   "PN": "10",
+   "€/m": "66,60"
+  },
+  "obj_cislo": "MD1603218SWI",
+  "rura_text": "1x32/4.41x18/2.5",
+  "dn": "23-13",
+  "plast_mm": 160,
+  "hmotnost_kg_m": 2.42,
+  "polomer_ohybu_m": 0.5,
+  "tlak_bar": 10,
+  "id": "MD1603218SWI",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD1603218SWI"
+ },
+ {
+  "rad": "microflex-duo-10-bar",
+  "poradie": 5,
+  "raw": {
+   "Kód": "MD1603225SWI",
+   "Pipe PEX -a Ø external thickness mm": "1x32/4.41x25/3.5",
+   "DN": "2320",
+   "Ø outside casing mm": "160",
+   "Váha kg/m": "5,50",
+   "Bending radius cm": "50",
+   "PN": "10",
+   "€/m": "77,00"
+  },
+  "obj_cislo": "MD1603225SWI",
+  "rura_text": "1x32/4.41x25/3.5",
+  "dn": "2320",
+  "plast_mm": 160,
+  "hmotnost_kg_m": 5.5,
+  "polomer_ohybu_m": 0.5,
+  "tlak_bar": 10,
+  "id": "MD1603225SWI",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD1603225SWI"
+ },
+ {
+  "rad": "microflex-duo-10-bar",
+  "poradie": 6,
+  "raw": {
+   "Kód": "MD1603228SWI",
+   "Pipe PEX -a Ø external thickness mm": "1x32/4.41x28/4.0",
+   "DN": "23-20",
+   "Ø outside casing mm": "160",
+   "Váha kg/m": "2,6",
+   "Bending radius cm": "0,6",
+   "PN": "10",
+   "€/m": "79,00"
+  },
+  "obj_cislo": "MD1603228SWI",
+  "rura_text": "1x32/4.41x28/4.0",
+  "dn": "23-20",
+  "plast_mm": 160,
+  "hmotnost_kg_m": 2.6,
+  "polomer_ohybu_m": 0.6,
+  "tlak_bar": 10,
+  "id": "MD1603228SWI",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD1603228SWI"
+ },
+ {
+  "rad": "microflex-duo-10-bar",
+  "poradie": 7,
+  "raw": {
+   "Kód": "MD1604025SWI",
+   "Pipe PEX -a Ø external thickness mm": "1x40/5.51x25/3.5",
+   "DN": "3220",
+   "Ø outside casing mm": "160",
+   "Váha kg/m": "2,71",
+   "Bending radius cm": "60",
+   "PN": "10",
+   "€/m": "83,20"
+  },
+  "obj_cislo": "MD1604025SWI",
+  "rura_text": "1x40/5.51x25/3.5",
+  "dn": "3220",
+  "plast_mm": 160,
+  "hmotnost_kg_m": 2.71,
+  "polomer_ohybu_m": 0.6,
+  "tlak_bar": 10,
+  "id": "MD1604025SWI",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD1604025SWI"
+ },
+ {
+  "rad": "microflex-duo-10-bar",
+  "poradie": 8,
+  "raw": {
+   "Kód": "MD1604028SWI",
+   "Pipe PEX -a Ø external thickness mm": "1x40/5.51x28/4.0",
+   "DN": "32-20",
+   "Ø outside casing mm": "160",
+   "Váha kg/m": "2,78",
+   "Bending radius cm": "0,6",
+   "PN": "10",
+   "€/m": "85,30"
+  },
+  "obj_cislo": "MD1604028SWI",
+  "rura_text": "1x40/5.51x28/4.0",
+  "dn": "32-20",
+  "plast_mm": 160,
+  "hmotnost_kg_m": 2.78,
+  "polomer_ohybu_m": 0.6,
+  "tlak_bar": 10,
+  "id": "MD1604028SWI",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD1604028SWI"
+ },
+ {
+  "rad": "microflex-duo-10-bar",
+  "poradie": 9,
+  "raw": {
+   "Kód": "MD1604032SWI",
+   "Pipe PEX -a Ø external thickness mm": "1x40/5.51x32/4.4",
+   "DN": "32-23",
+   "Ø outside casing mm": "160",
+   "Váha kg/m": "2,88",
+   "Bending radius cm": "0,6",
+   "PN": "10",
+   "€/m": "87,40"
+  },
+  "obj_cislo": "MD1604032SWI",
+  "rura_text": "1x40/5.51x32/4.4",
+  "dn": "32-23",
+  "plast_mm": 160,
+  "hmotnost_kg_m": 2.88,
+  "polomer_ohybu_m": 0.6,
+  "tlak_bar": 10,
+  "id": "MD1604032SWI",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD1604032SWI"
+ },
+ {
+  "rad": "microflex-duo-10-bar",
+  "poradie": 10,
+  "raw": {
+   "Kód": "MD1605025SWI",
+   "Pipe PEX -a Ø external thickness mm": "1x50/6,91x25/3,5",
+   "DN": "4020",
+   "Ø outside casing mm": "160",
+   "Váha kg/m": "2,89",
+   "Bending radius cm": "60",
+   "PN": "10",
+   "€/m": "91,50"
+  },
+  "obj_cislo": "MD1605025SWI",
+  "rura_text": "1x50/6,91x25/3,5",
+  "dn": "4020",
+  "plast_mm": 160,
+  "hmotnost_kg_m": 2.89,
+  "polomer_ohybu_m": 0.6,
+  "tlak_bar": 10,
+  "id": "MD1605025SWI",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD1605025SWI"
+ },
+ {
+  "rad": "microflex-duo-10-bar",
+  "poradie": 11,
+  "raw": {
+   "Kód": "MD1605032SWI",
+   "Pipe PEX -a Ø external thickness mm": "1x50/6.91x32/4.4",
+   "DN": "40-32",
+   "Ø outside casing mm": "160",
+   "Váha kg/m": "3,04",
+   "Bending radius cm": "60",
+   "PN": "10",
+   "€/m": "97,80"
+  },
+  "obj_cislo": "MD1605032SWI",
+  "rura_text": "1x50/6.91x32/4.4",
+  "dn": "40-32",
+  "plast_mm": 160,
+  "hmotnost_kg_m": 3.04,
+  "polomer_ohybu_m": 0.6,
+  "tlak_bar": 10,
+  "id": "MD1605032SWI",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD1605032SWI"
+ },
+ {
+  "rad": "microflex-duo-10-bar",
+  "poradie": 12,
+  "raw": {
+   "Kód": "MD1605040SWI",
+   "Pipe PEX -a Ø external thickness mm": "1x50/6.91x40/5.5",
+   "DN": "40-32",
+   "Ø outside casing mm": "160",
+   "Váha kg/m": "3,18",
+   "Bending radius cm": "0,70",
+   "PN": "10",
+   "€/m": "99,80"
+  },
+  "obj_cislo": "MD1605040SWI",
+  "rura_text": "1x50/6.91x40/5.5",
+  "dn": "40-32",
+  "plast_mm": 160,
+  "hmotnost_kg_m": 3.18,
+  "polomer_ohybu_m": 0.7,
+  "tlak_bar": 10,
+  "id": "MD1605040SWI",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD1605040SWI"
+ },
+ {
+  "rad": "microflex-duo-10-bar",
+  "poradie": 13,
+  "raw": {
+   "Kód": "MD20063SWI",
+   "Pipe PEX -a Ø external thickness mm": "2x63/8.7",
+   "DN": "45",
+   "Ø outside casing mm": "200",
+   "Váha kg/m": "4,96",
+   "Bending radius cm": "1,20",
+   "PN": "10",
+   "€/m": "157,00"
+  },
+  "obj_cislo": "MD20063SWI",
+  "rura_text": "2x63/8.7",
+  "dn": "45",
+  "plast_mm": 200,
+  "hmotnost_kg_m": 4.96,
+  "polomer_ohybu_m": 1.2,
+  "tlak_bar": 10,
+  "id": "MD20063SWI",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD20063SWI"
+ },
+ {
+  "rad": "microflex-quadro",
+  "poradie": 1,
+  "raw": {
+   "Kód": "MQ16025C2520S",
+   "Ø Buitenmantel dout (mm)": "160",
+   "Ø PE-Xa d OUT/S (mm)": "2 x 25/2,3 1 x 25/3,5 1 x 20/2,8",
+   "Váha (kg/m)": "2,40",
+   "Bending radius (m)": "0,60",
+   "Ø / thickness of coil": "2,30 / 0,85"
+  },
+  "obj_cislo": "MQ16025C2520S",
+  "plast_mm": 160,
+  "rura_text": "2 x 25/2,3 1 x 25/3,5 1 x 20/2,8",
+  "hmotnost_kg_m": 2.4,
+  "polomer_ohybu_m": 0.6,
+  "kotuc": {
+   "d": 2.3,
+   "sirka": 0.85
+  },
+  "id": "MQ16025C2520S",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MQ16025C2520S"
+ },
+ {
+  "rad": "microflex-quadro",
+  "poradie": 2,
+  "raw": {
+   "Kód": "MQ16032C2520S",
+   "Ø Buitenmantel dout (mm)": "160",
+   "Ø PE-Xa d OUT/S (mm)": "2 x 32/2,9 1 x 25/3,5 1 x 20/2,8",
+   "Váha (kg/m)": "2,60",
+   "Bending radius (m)": "0,60",
+   "Ø / thickness of coil": "2,30 / 0,85"
+  },
+  "obj_cislo": "MQ16032C2520S",
+  "plast_mm": 160,
+  "rura_text": "2 x 32/2,9 1 x 25/3,5 1 x 20/2,8",
+  "hmotnost_kg_m": 2.6,
+  "polomer_ohybu_m": 0.6,
+  "kotuc": {
+   "d": 2.3,
+   "sirka": 0.85
+  },
+  "id": "MQ16032C2520S",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MQ16032C2520S"
+ },
+ {
+  "rad": "microflex-quadro",
+  "poradie": 3,
+  "raw": {
+   "Kód": "MQ16032C3225S",
+   "Ø Buitenmantel dout (mm)": "160",
+   "Ø PE-Xa d OUT/S (mm)": "2 x 32/2,9 1 x 32/4,4 1 x 25/3,5",
+   "Váha (kg/m)": "2,70",
+   "Bending radius (m)": "0,60",
+   "Ø / thickness of coil": "2,30 / 0,85"
+  },
+  "obj_cislo": "MQ16032C3225S",
+  "plast_mm": 160,
+  "rura_text": "2 x 32/2,9 1 x 32/4,4 1 x 25/3,5",
+  "hmotnost_kg_m": 2.7,
+  "polomer_ohybu_m": 0.6,
+  "kotuc": {
+   "d": 2.3,
+   "sirka": 0.85
+  },
+  "id": "MQ16032C3225S",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MQ16032C3225S"
+ },
+ {
+  "rad": "microflex-quadro",
+  "poradie": 4,
+  "raw": {
+   "Kód": "MQ20040C4028S",
+   "Ø Buitenmantel dout (mm)": "200",
+   "Ø PE-Xa d OUT/S (mm)": "2 x 40/3,7 1 x 40/5,5 1 x 28/4,0",
+   "Váha (kg/m)": "1,92",
+   "Bending radius (m)": "5,00",
+   "Ø / thickness of coil": "2,30 / 1,40"
+  },
+  "obj_cislo": "MQ20040C4028S",
+  "plast_mm": 200,
+  "rura_text": "2 x 40/3,7 1 x 40/5,5 1 x 28/4,0",
+  "hmotnost_kg_m": 1.92,
+  "polomer_ohybu_m": 5.0,
+  "kotuc": {
+   "d": 2.3,
+   "sirka": 1.4
+  },
+  "id": "MQ20040C4028S",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MQ20040C4028S"
+ },
+ {
+  "rad": "microflex-cool",
+  "poradie": 1,
+  "raw": {
+   "Art. No.": "M9032PE",
+   "Ø Buitenmantel dout (mm)": "90",
+   "Ø PE dout/S (mm)": "32 х 2,9",
+   "Weight (kg/m)": "1,00",
+   "Insulation": "standard",
+   "Bending radius (m)": "0,25",
+   "Ø / thickness of coil": "2,00 / 0,45"
+  },
+  "obj_cislo": "M9032PE",
+  "plast_mm": 90,
+  "rura": {
+   "d": 32,
+   "s": 2.9
+  },
+  "hmotnost_kg_m": 1.0,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 0.25,
+  "kotuc": {
+   "d": 2.0,
+   "sirka": 0.45
+  },
+  "id": "M9032PE",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M9032PE"
+ },
+ {
+  "rad": "microflex-cool",
+  "poradie": 2,
+  "raw": {
+   "Art. No.": "M9040PE",
+   "Ø Buitenmantel dout (mm)": "90",
+   "Ø PE dout/S (mm)": "40 х 3,7",
+   "Weight (kg/m)": "1,11",
+   "Insulation": "standard",
+   "Bending radius (m)": "0,30",
+   "Ø / thickness of coil": "2,10 / 0,70"
+  },
+  "obj_cislo": "M9040PE",
+  "plast_mm": 90,
+  "rura": {
+   "d": 40,
+   "s": 3.7
+  },
+  "hmotnost_kg_m": 1.11,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 0.3,
+  "kotuc": {
+   "d": 2.1,
+   "sirka": 0.7
+  },
+  "id": "M9040PE",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M9040PE"
+ },
+ {
+  "rad": "microflex-cool",
+  "poradie": 3,
+  "raw": {
+   "Art. No.": "M12550PE",
+   "Ø Buitenmantel dout (mm)": "125",
+   "Ø PE dout/S (mm)": "50 х 4,6",
+   "Weight (kg/m)": "1,92",
+   "Insulation": "standard",
+   "Bending radius (m)": "0,40",
+   "Ø / thickness of coil": "2,10 / 0,70"
+  },
+  "obj_cislo": "M12550PE",
+  "plast_mm": 125,
+  "rura": {
+   "d": 50,
+   "s": 4.6
+  },
+  "hmotnost_kg_m": 1.92,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 0.4,
+  "kotuc": {
+   "d": 2.1,
+   "sirka": 0.7
+  },
+  "id": "M12550PE",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M12550PE"
+ },
+ {
+  "rad": "microflex-cool",
+  "poradie": 4,
+  "raw": {
+   "Art. No.": "M12563PE",
+   "Ø Buitenmantel dout (mm)": "125",
+   "Ø PE dout/S (mm)": "63 х 5,8",
+   "Weight (kg/m)": "2,16",
+   "Insulation": "standard",
+   "Bending radius (m)": "0,50",
+   "Ø / thickness of coil": "2,10 / 0,70"
+  },
+  "obj_cislo": "M12563PE",
+  "plast_mm": 125,
+  "rura": {
+   "d": 63,
+   "s": 5.8
+  },
+  "hmotnost_kg_m": 2.16,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 0.5,
+  "kotuc": {
+   "d": 2.1,
+   "sirka": 0.7
+  },
+  "id": "M12563PE",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M12563PE"
+ },
+ {
+  "rad": "microflex-cool",
+  "poradie": 5,
+  "raw": {
+   "Art. No.": "M16075PE",
+   "Ø Buitenmantel dout (mm)": "160",
+   "Ø PE dout/S (mm)": "75 х 6,8",
+   "Weight (kg/m)": "3,20",
+   "Insulation": "standard",
+   "Bending radius (m)": "0,75",
+   "Ø / thickness of coil": "2,30 / 0,85"
+  },
+  "obj_cislo": "M16075PE",
+  "plast_mm": 160,
+  "rura": {
+   "d": 75,
+   "s": 6.8
+  },
+  "hmotnost_kg_m": 3.2,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 0.75,
+  "kotuc": {
+   "d": 2.3,
+   "sirka": 0.85
+  },
+  "id": "M16075PE",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M16075PE"
+ },
+ {
+  "rad": "microflex-cool",
+  "poradie": 6,
+  "raw": {
+   "Art. No.": "M16090PE",
+   "Ø Buitenmantel dout (mm)": "160",
+   "Ø PE dout/S (mm)": "90 х 8,2",
+   "Weight (kg/m)": "3,85",
+   "Insulation": "standard",
+   "Bending radius (m)": "1,00",
+   "Ø / thickness of coil": "2,30 / 0,85"
+  },
+  "obj_cislo": "M16090PE",
+  "plast_mm": 160,
+  "rura": {
+   "d": 90,
+   "s": 8.2
+  },
+  "hmotnost_kg_m": 3.85,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 1.0,
+  "kotuc": {
+   "d": 2.3,
+   "sirka": 0.85
+  },
+  "id": "M16090PE",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M16090PE"
+ },
+ {
+  "rad": "microflex-cool",
+  "poradie": 7,
+  "raw": {
+   "Art. No.": "M200110PE",
+   "Ø Buitenmantel dout (mm)": "200",
+   "Ø PE dout/S (mm)": "110 х 10,0",
+   "Weight (kg/m)": "5,74",
+   "Insulation": "standard",
+   "Bending radius (m)": "1,20",
+   "Ø / thickness of coil": "2,30 / 1,40"
+  },
+  "obj_cislo": "M200110PE",
+  "plast_mm": 200,
+  "rura": {
+   "d": 110,
+   "s": 10.0
+  },
+  "hmotnost_kg_m": 5.74,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 1.2,
+  "kotuc": {
+   "d": 2.3,
+   "sirka": 1.4
+  },
+  "id": "M200110PE",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M200110PE"
+ },
+ {
+  "rad": "microflex-cool-s-vyhrievacim-kablom",
+  "poradie": 1,
+  "raw": {
+   "Kód": "MV7532PE",
+   "Ø Buitenmantel dout (mm)": "75",
+   "Ø PE dout/S (mm)": "32 х 2,9",
+   "Váha (kg/m)": "0,84",
+   "Insulation": "Standard",
+   "Bending radius (m)": "0,25",
+   "Ø / thickness of coil": "1,90 / 0,30"
+  },
+  "obj_cislo": "MV7532PE",
+  "plast_mm": 75,
+  "rura": {
+   "d": 32,
+   "s": 2.9
+  },
+  "hmotnost_kg_m": 0.84,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 0.25,
+  "kotuc": {
+   "d": 1.9,
+   "sirka": 0.3
+  },
+  "id": "MV7532PE",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MV7532PE"
+ },
+ {
+  "rad": "microflex-cool-s-vyhrievacim-kablom",
+  "poradie": 2,
+  "raw": {
+   "Kód": "MV9032PE",
+   "Ø Buitenmantel dout (mm)": "90",
+   "Ø PE dout/S (mm)": "32 х 2,9",
+   "Váha (kg/m)": "1,00",
+   "Insulation": "Standard",
+   "Bending radius (m)": "0,25",
+   "Ø / thickness of coil": "2,00 / 0,45"
+  },
+  "obj_cislo": "MV9032PE",
+  "plast_mm": 90,
+  "rura": {
+   "d": 32,
+   "s": 2.9
+  },
+  "hmotnost_kg_m": 1.0,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 0.25,
+  "kotuc": {
+   "d": 2.0,
+   "sirka": 0.45
+  },
+  "id": "MV9032PE",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MV9032PE"
+ },
+ {
+  "rad": "microflex-cool-s-vyhrievacim-kablom",
+  "poradie": 3,
+  "raw": {
+   "Kód": "MV9040PE",
+   "Ø Buitenmantel dout (mm)": "90",
+   "Ø PE dout/S (mm)": "40 х 3,7",
+   "Váha (kg/m)": "1,20",
+   "Insulation": "Standard",
+   "Bending radius (m)": "0,30",
+   "Ø / thickness of coil": "2,10 / 0,70"
+  },
+  "obj_cislo": "MV9040PE",
+  "plast_mm": 90,
+  "rura": {
+   "d": 40,
+   "s": 3.7
+  },
+  "hmotnost_kg_m": 1.2,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 0.3,
+  "kotuc": {
+   "d": 2.1,
+   "sirka": 0.7
+  },
+  "id": "MV9040PE",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MV9040PE"
+ },
+ {
+  "rad": "microflex-cool-s-vyhrievacim-kablom",
+  "poradie": 4,
+  "raw": {
+   "Kód": "MV12550PE",
+   "Ø Buitenmantel dout (mm)": "125",
+   "Ø PE dout/S (mm)": "50 х 4,6",
+   "Váha (kg/m)": "2,00",
+   "Insulation": "Standard",
+   "Bending radius (m)": "0,40",
+   "Ø / thickness of coil": "2,10 / 0,70"
+  },
+  "obj_cislo": "MV12550PE",
+  "plast_mm": 125,
+  "rura": {
+   "d": 50,
+   "s": 4.6
+  },
+  "hmotnost_kg_m": 2.0,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 0.4,
+  "kotuc": {
+   "d": 2.1,
+   "sirka": 0.7
+  },
+  "id": "MV12550PE",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MV12550PE"
+ },
+ {
+  "rad": "microflex-cool-s-vyhrievacim-kablom",
+  "poradie": 5,
+  "raw": {
+   "Kód": "MV12563PE",
+   "Ø Buitenmantel dout (mm)": "125",
+   "Ø PE dout/S (mm)": "63 х 5,8",
+   "Váha (kg/m)": "2,25",
+   "Insulation": "Standard",
+   "Bending radius (m)": "0,50",
+   "Ø / thickness of coil": "2,10 / 0,70"
+  },
+  "obj_cislo": "MV12563PE",
+  "plast_mm": 125,
+  "rura": {
+   "d": 63,
+   "s": 5.8
+  },
+  "hmotnost_kg_m": 2.25,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 0.5,
+  "kotuc": {
+   "d": 2.1,
+   "sirka": 0.7
+  },
+  "id": "MV12563PE",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MV12563PE"
+ },
+ {
+  "rad": "microflex-cool-s-vyhrievacim-kablom",
+  "poradie": 6,
+  "raw": {
+   "Kód": "MV16075PE",
+   "Ø Buitenmantel dout (mm)": "160",
+   "Ø PE dout/S (mm)": "75 х 6,8",
+   "Váha (kg/m)": "3,30",
+   "Insulation": "Standard",
+   "Bending radius (m)": "0,75",
+   "Ø / thickness of coil": "2,30 / 0,85"
+  },
+  "obj_cislo": "MV16075PE",
+  "plast_mm": 160,
+  "rura": {
+   "d": 75,
+   "s": 6.8
+  },
+  "hmotnost_kg_m": 3.3,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 0.75,
+  "kotuc": {
+   "d": 2.3,
+   "sirka": 0.85
+  },
+  "id": "MV16075PE",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MV16075PE"
+ },
+ {
+  "rad": "microflex-cool-s-vyhrievacim-kablom",
+  "poradie": 7,
+  "raw": {
+   "Kód": "MV16090PE",
+   "Ø Buitenmantel dout (mm)": "160",
+   "Ø PE dout/S (mm)": "90 х 8,2",
+   "Váha (kg/m)": "3,95",
+   "Insulation": "Standard",
+   "Bending radius (m)": "1,00",
+   "Ø / thickness of coil": "2,30 / 0,85"
+  },
+  "obj_cislo": "MV16090PE",
+  "plast_mm": 160,
+  "rura": {
+   "d": 90,
+   "s": 8.2
+  },
+  "hmotnost_kg_m": 3.95,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 1.0,
+  "kotuc": {
+   "d": 2.3,
+   "sirka": 0.85
+  },
+  "id": "MV16090PE",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MV16090PE"
+ },
+ {
+  "rad": "microflex-cool-s-vyhrievacim-kablom",
+  "poradie": 8,
+  "raw": {
+   "Kód": "MV200110PE",
+   "Ø Buitenmantel dout (mm)": "200",
+   "Ø PE dout/S (mm)": "110 х 10,0",
+   "Váha (kg/m)": "5,84",
+   "Insulation": "Standard",
+   "Bending radius (m)": "1,20",
+   "Ø / thickness of coil": "2,30 / 1,40"
+  },
+  "obj_cislo": "MV200110PE",
+  "plast_mm": 200,
+  "rura": {
+   "d": 110,
+   "s": 10.0
+  },
+  "hmotnost_kg_m": 5.84,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 1.2,
+  "kotuc": {
+   "d": 2.3,
+   "sirka": 1.4
+  },
+  "id": "MV200110PE",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MV200110PE"
+ },
+ {
+  "rad": "microflex-cool-s-vyhrievacim-kablom",
+  "poradie": 9,
+  "raw": {
+   "Kód": "MV7532PE18W",
+   "Ø Buitenmantel dout (mm)": "75",
+   "Ø PE dout/S (mm)": "32 х 2,9",
+   "Váha (kg/m)": "0,84",
+   "Insulation": "Standard",
+   "Bending radius (m)": "0,25",
+   "Ø / thickness of coil": "1,90 / 0,30"
+  },
+  "obj_cislo": "MV7532PE18W",
+  "plast_mm": 75,
+  "rura": {
+   "d": 32,
+   "s": 2.9
+  },
+  "hmotnost_kg_m": 0.84,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 0.25,
+  "kotuc": {
+   "d": 1.9,
+   "sirka": 0.3
+  },
+  "id": "MV7532PE18W",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MV7532PE18W"
+ },
+ {
+  "rad": "microflex-cool-s-vyhrievacim-kablom",
+  "poradie": 10,
+  "raw": {
+   "Kód": "MV9032PE18W",
+   "Ø Buitenmantel dout (mm)": "90",
+   "Ø PE dout/S (mm)": "32 х 2,9",
+   "Váha (kg/m)": "1,00",
+   "Insulation": "Standard",
+   "Bending radius (m)": "0,25",
+   "Ø / thickness of coil": "2,00 / 0,45"
+  },
+  "obj_cislo": "MV9032PE18W",
+  "plast_mm": 90,
+  "rura": {
+   "d": 32,
+   "s": 2.9
+  },
+  "hmotnost_kg_m": 1.0,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 0.25,
+  "kotuc": {
+   "d": 2.0,
+   "sirka": 0.45
+  },
+  "id": "MV9032PE18W",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MV9032PE18W"
+ },
+ {
+  "rad": "microflex-cool-s-vyhrievacim-kablom",
+  "poradie": 11,
+  "raw": {
+   "Kód": "MV9040PE18W",
+   "Ø Buitenmantel dout (mm)": "90",
+   "Ø PE dout/S (mm)": "40 х 3,7",
+   "Váha (kg/m)": "1,20",
+   "Insulation": "Standard",
+   "Bending radius (m)": "0,30",
+   "Ø / thickness of coil": "2,10 / 0,70"
+  },
+  "obj_cislo": "MV9040PE18W",
+  "plast_mm": 90,
+  "rura": {
+   "d": 40,
+   "s": 3.7
+  },
+  "hmotnost_kg_m": 1.2,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 0.3,
+  "kotuc": {
+   "d": 2.1,
+   "sirka": 0.7
+  },
+  "id": "MV9040PE18W",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MV9040PE18W"
+ },
+ {
+  "rad": "microflex-cool-s-vyhrievacim-kablom",
+  "poradie": 12,
+  "raw": {
+   "Kód": "MV12550PE18W",
+   "Ø Buitenmantel dout (mm)": "125",
+   "Ø PE dout/S (mm)": "50 х 4,6",
+   "Váha (kg/m)": "2,00",
+   "Insulation": "Standard",
+   "Bending radius (m)": "0,40",
+   "Ø / thickness of coil": "2,10 / 0,70"
+  },
+  "obj_cislo": "MV12550PE18W",
+  "plast_mm": 125,
+  "rura": {
+   "d": 50,
+   "s": 4.6
+  },
+  "hmotnost_kg_m": 2.0,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 0.4,
+  "kotuc": {
+   "d": 2.1,
+   "sirka": 0.7
+  },
+  "id": "MV12550PE18W",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MV12550PE18W"
+ },
+ {
+  "rad": "microflex-cool-s-vyhrievacim-kablom",
+  "poradie": 13,
+  "raw": {
+   "Kód": "MV12563PE18W",
+   "Ø Buitenmantel dout (mm)": "125",
+   "Ø PE dout/S (mm)": "63 х 5,8",
+   "Váha (kg/m)": "2,25",
+   "Insulation": "Standard",
+   "Bending radius (m)": "0,50",
+   "Ø / thickness of coil": "2,10 / 0,70"
+  },
+  "obj_cislo": "MV12563PE18W",
+  "plast_mm": 125,
+  "rura": {
+   "d": 63,
+   "s": 5.8
+  },
+  "hmotnost_kg_m": 2.25,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 0.5,
+  "kotuc": {
+   "d": 2.1,
+   "sirka": 0.7
+  },
+  "id": "MV12563PE18W",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MV12563PE18W"
+ },
+ {
+  "rad": "microflex-cool-s-vyhrievacim-kablom",
+  "poradie": 14,
+  "raw": {
+   "Kód": "MV16075PE18W",
+   "Ø Buitenmantel dout (mm)": "160",
+   "Ø PE dout/S (mm)": "75 х 6,8",
+   "Váha (kg/m)": "3,30",
+   "Insulation": "Standard",
+   "Bending radius (m)": "0,75",
+   "Ø / thickness of coil": "2,30 / 0,85"
+  },
+  "obj_cislo": "MV16075PE18W",
+  "plast_mm": 160,
+  "rura": {
+   "d": 75,
+   "s": 6.8
+  },
+  "hmotnost_kg_m": 3.3,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 0.75,
+  "kotuc": {
+   "d": 2.3,
+   "sirka": 0.85
+  },
+  "id": "MV16075PE18W",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MV16075PE18W"
+ },
+ {
+  "rad": "microflex-cool-s-vyhrievacim-kablom",
+  "poradie": 15,
+  "raw": {
+   "Kód": "M16090PE18W",
+   "Ø Buitenmantel dout (mm)": "160",
+   "Ø PE dout/S (mm)": "90 х 8,2",
+   "Váha (kg/m)": "3,95",
+   "Insulation": "Standard",
+   "Bending radius (m)": "1,00",
+   "Ø / thickness of coil": "2,30 / 0,85"
+  },
+  "obj_cislo": "M16090PE18W",
+  "plast_mm": 160,
+  "rura": {
+   "d": 90,
+   "s": 8.2
+  },
+  "hmotnost_kg_m": 3.95,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 1.0,
+  "kotuc": {
+   "d": 2.3,
+   "sirka": 0.85
+  },
+  "id": "M16090PE18W",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M16090PE18W"
+ },
+ {
+  "rad": "microflex-cool-s-vyhrievacim-kablom",
+  "poradie": 16,
+  "raw": {
+   "Kód": "MV200110PE18W",
+   "Ø Buitenmantel dout (mm)": "200",
+   "Ø PE dout/S (mm)": "110 x 10,0",
+   "Váha (kg/m)": "5,84",
+   "Insulation": "Standard",
+   "Bending radius (m)": "1,20",
+   "Ø / thickness of coil": "2,30 / 1,40"
+  },
+  "obj_cislo": "MV200110PE18W",
+  "plast_mm": 200,
+  "rura": {
+   "d": 110,
+   "s": 10.0
+  },
+  "hmotnost_kg_m": 5.84,
+  "izolacia": "standard",
+  "polomer_ohybu_m": 1.2,
+  "kotuc": {
+   "d": 2.3,
+   "sirka": 1.4
+  },
+  "id": "MV200110PE18W",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MV200110PE18W"
+ },
+ {
+  "rad": "microflex-hp",
+  "poradie": 1,
+  "raw": {
+   "Kód": "MQ12525C3225E",
+   "PE-Xad_out x s (mm)": "2 x 25 x 2.3",
+   "DN": "20-20",
+   "Elektrické vlnité potrubie vonkajšie/vnútornépriemer (mm)": "25/18.832/25",
+   ">Vonkajší obald_out (mm)": "125",
+   "Hmotnosť (Kg/m)": "1,63",
+   "Priem. hrúbka izolácie (mm)": "15",
+   "Vnútorné ohýbaniePolomer(1) (m)": "0,3"
+  },
+  "obj_cislo": "MQ12525C3225E",
+  "rura_text": "2 x 25 x 2.3",
+  "dn": "20-20",
+  "plast_mm": 125,
+  "hmotnost_kg_m": 1.63,
+  "polomer_ohybu_m": 0.3,
+  "id": "MQ12525C3225E",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MQ12525C3225E"
+ },
+ {
+  "rad": "microflex-hp",
+  "poradie": 2,
+  "raw": {
+   "Kód": "MQ12532C3225E",
+   "PE-Xad_out x s (mm)": "2 x 32 x 2.9",
+   "DN": "25-25",
+   "Elektrické vlnité potrubie vonkajšie/vnútornépriemer (mm)": "25/18.832/25",
+   ">Vonkajší obald_out (mm)": "125",
+   "Hmotnosť (Kg/m)": "1,79",
+   "Priem. hrúbka izolácie (mm)": "12",
+   "Vnútorné ohýbaniePolomer(1) (m)": "0,3"
+  },
+  "obj_cislo": "MQ12532C3225E",
+  "rura_text": "2 x 32 x 2.9",
+  "dn": "25-25",
+  "plast_mm": 125,
+  "hmotnost_kg_m": 1.79,
+  "polomer_ohybu_m": 0.3,
+  "id": "MQ12532C3225E",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MQ12532C3225E"
+ },
+ {
+  "rad": "microflex-hp",
+  "poradie": 3,
+  "raw": {
+   "Kód": "MQ16032C3225E",
+   "PE-Xad_out x s (mm)": "2 x 32 x 2.9",
+   "DN": "25-25",
+   "Elektrické vlnité potrubie vonkajšie/vnútornépriemer (mm)": "25/18.832/25",
+   ">Vonkajší obald_out (mm)": "160",
+   "Hmotnosť (Kg/m)": "2,27",
+   "Priem. hrúbka izolácie (mm)": "27",
+   "Vnútorné ohýbaniePolomer(1) (m)": "0,5"
+  },
+  "obj_cislo": "MQ16032C3225E",
+  "rura_text": "2 x 32 x 2.9",
+  "dn": "25-25",
+  "plast_mm": 160,
+  "hmotnost_kg_m": 2.27,
+  "polomer_ohybu_m": 0.5,
+  "id": "MQ16032C3225E",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MQ16032C3225E"
+ },
+ {
+  "rad": "microflex-hp",
+  "poradie": 4,
+  "raw": {
+   "Kód": "MQ16040C32E",
+   "PE-Xad_out x s (mm)": "2 x 40 x 3.7",
+   "DN": "32-32",
+   "Elektrické vlnité potrubie vonkajšie/vnútornépriemer (mm)": "2 x 32/25",
+   ">Vonkajší obald_out (mm)": "160",
+   "Hmotnosť (Kg/m)": "2,60",
+   "Priem. hrúbka izolácie (mm)": "15",
+   "Vnútorné ohýbaniePolomer(1) (m)": "0,6"
+  },
+  "obj_cislo": "MQ16040C32E",
+  "rura_text": "2 x 40 x 3.7",
+  "dn": "32-32",
+  "plast_mm": 160,
+  "hmotnost_kg_m": 2.6,
+  "polomer_ohybu_m": 0.6,
+  "id": "MQ16040C32E",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MQ16040C32E"
+ },
+ {
+  "rad": "3-x-ohrev-spojky-pe-x-t",
+  "poradie": 1,
+  "raw": {
+   "Art. No.": "MJ13025/23",
+   "PE-X dout/S (mm)": "25/2.3",
+   "Thread (inch)": "3 x 3/4\"",
+   "ø Outer Diameter of Pipe (mm)": "25 x 25 x 25"
+  },
+  "obj_cislo": "MJ13025/23",
+  "rura_text": "25/2.3",
+  "id": "MJ13025/23",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ13025/23"
+ },
+ {
+  "rad": "3-x-ohrev-spojky-pe-x-t",
+  "poradie": 2,
+  "raw": {
+   "Art. No.": "MJ13032/29",
+   "PE-X dout/S (mm)": "32/2.9",
+   "Thread (inch)": "3 x 1\"",
+   "ø Outer Diameter of Pipe (mm)": "32 x 32 x 32"
+  },
+  "obj_cislo": "MJ13032/29",
+  "rura_text": "32/2.9",
+  "id": "MJ13032/29",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ13032/29"
+ },
+ {
+  "rad": "3-x-ohrev-spojky-pe-x-t",
+  "poradie": 3,
+  "raw": {
+   "Art. No.": "MJ1304032/37",
+   "PE-X dout/S (mm)": "40/3.7 + 32/2.9",
+   "Thread (inch)": "2 x 1 1/4\" + 1 x 1\"",
+   "ø Outer Diameter of Pipe (mm)": "40 x 32 x 40"
+  },
+  "obj_cislo": "MJ1304032/37",
+  "rura_text": "40/3.7 + 32/2.9",
+  "id": "MJ1304032/37",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ1304032/37"
+ },
+ {
+  "rad": "3-x-ohrev-spojky-pe-x-t",
+  "poradie": 4,
+  "raw": {
+   "Art. No.": "MJ13040/37",
+   "PE-X dout/S (mm)": "40/3.7",
+   "Thread (inch)": "3 x 1 1/4\"",
+   "ø Outer Diameter of Pipe (mm)": "40 x 40 x 40"
+  },
+  "obj_cislo": "MJ13040/37",
+  "rura_text": "40/3.7",
+  "id": "MJ13040/37",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ13040/37"
+ },
+ {
+  "rad": "3-x-ohrev-spojky-pe-x-t",
+  "poradie": 5,
+  "raw": {
+   "Art. No.": "MJ1305040/46",
+   "PE-X dout/S (mm)": "50/4.6 + 40/3.7",
+   "Thread (inch)": "2 x 1 1/2\" + 1 x 1 1/4\"",
+   "ø Outer Diameter of Pipe (mm)": "50 x 40 x 50"
+  },
+  "obj_cislo": "MJ1305040/46",
+  "rura_text": "50/4.6 + 40/3.7",
+  "id": "MJ1305040/46",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ1305040/46"
+ },
+ {
+  "rad": "3-x-ohrev-spojky-pe-x-t",
+  "poradie": 6,
+  "raw": {
+   "Art. No.": "MJ13050/46",
+   "PE-X dout/S (mm)": "50/4.6",
+   "Thread (inch)": "2 x 1 1/2\"",
+   "ø Outer Diameter of Pipe (mm)": "50 x 50 x 50"
+  },
+  "obj_cislo": "MJ13050/46",
+  "rura_text": "50/4.6",
+  "id": "MJ13050/46",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ13050/46"
+ },
+ {
+  "rad": "3-x-ohrev-spojky-pe-x-t",
+  "poradie": 7,
+  "raw": {
+   "Art. No.": "MJ1306350/58",
+   "PE-X dout/S (mm)": "63/5.8 + 50/4.6",
+   "Thread (inch)": "2 x 2\" + 1 x 1 1/2\"",
+   "ø Outer Diameter of Pipe (mm)": "63 x 50 x 63"
+  },
+  "obj_cislo": "MJ1306350/58",
+  "rura_text": "63/5.8 + 50/4.6",
+  "id": "MJ1306350/58",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ1306350/58"
+ },
+ {
+  "rad": "3-x-ohrev-spojky-pe-x-t",
+  "poradie": 8,
+  "raw": {
+   "Art. No.": "MJ13063/58",
+   "PE-X dout/S (mm)": "63/5.8",
+   "Thread (inch)": "3 x 2\"",
+   "ø Outer Diameter of Pipe (mm)": "63 x 63 x 63"
+  },
+  "obj_cislo": "MJ13063/58",
+  "rura_text": "63/5.8",
+  "id": "MJ13063/58",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ13063/58"
+ },
+ {
+  "rad": "3-x-ohrev-spojky-pe-x-t",
+  "poradie": 9,
+  "raw": {
+   "Art. No.": "MJ13075/68",
+   "PE-X dout/S (mm)": "75/6.8",
+   "Thread (inch)": "3 x 2 1/2\"",
+   "ø Outer Diameter of Pipe (mm)": "75 x 75 x 75"
+  },
+  "obj_cislo": "MJ13075/68",
+  "rura_text": "75/6.8",
+  "id": "MJ13075/68",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ13075/68"
+ },
+ {
+  "rad": "3-x-ohrev-spojky-pe-x-t",
+  "poradie": 10,
+  "raw": {
+   "Art. No.": "MJ13090/82",
+   "PE-X dout/S (mm)": "90/8.2",
+   "Thread (inch)": "3 x 3\"",
+   "ø Outer Diameter of Pipe (mm)": "90 x 90 x 90"
+  },
+  "obj_cislo": "MJ13090/82",
+  "rura_text": "90/8.2",
+  "id": "MJ13090/82",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ13090/82"
+ },
+ {
+  "rad": "3-x-ohrev-spojky-pe-x-t",
+  "poradie": 11,
+  "raw": {
+   "Art. No.": "MJ130110/100",
+   "PE-X dout/S (mm)": "110/10.0",
+   "Thread (inch)": "3 x 4\"",
+   "ø Outer Diameter of Pipe (mm)": "110 x 110 x 110"
+  },
+  "obj_cislo": "MJ130110/100",
+  "rura_text": "110/10.0",
+  "id": "MJ130110/100",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ130110/100"
+ },
+ {
+  "rad": "3-x-ohrev-spojky-pe-x-t",
+  "poradie": 12,
+  "raw": {
+   "Art. No.": "MJ130125/114",
+   "PE-X dout/S (mm)": "125/11.4",
+   "Thread (inch)": "3 x 4\"",
+   "ø Outer Diameter of Pipe (mm)": "125 x 125 x 125"
+  },
+  "obj_cislo": "MJ130125/114",
+  "rura_text": "125/11.4",
+  "id": "MJ130125/114",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ130125/114"
+ },
+ {
+  "rad": "pe-x-x-pe-x-spojka-kurenie",
+  "poradie": 1,
+  "raw": {
+   "Art. No.": "MJ27025/23",
+   "PE-X dout/s (mm)": "25/2.3",
+   "Thread (inch)": "2 x 3/4”",
+   "Ø Outer Diameter of Pipe (mm)": "25x25",
+   "Weight (kg)": "0.35"
+  },
+  "obj_cislo": "MJ27025/23",
+  "rura_text": "25/2.3",
+  "hmotnost_kg_m": 0.35,
+  "id": "MJ27025/23",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ27025/23"
+ },
+ {
+  "rad": "pe-x-x-pe-x-spojka-kurenie",
+  "poradie": 2,
+  "raw": {
+   "Art. No.": "MJ27032/29",
+   "PE-X dout/s (mm)": "32/2.9",
+   "Thread (inch)": "2 x 1”",
+   "Ø Outer Diameter of Pipe (mm)": "32x32",
+   "Weight (kg)": "0.45"
+  },
+  "obj_cislo": "MJ27032/29",
+  "rura_text": "32/2.9",
+  "hmotnost_kg_m": 0.45,
+  "id": "MJ27032/29",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ27032/29"
+ },
+ {
+  "rad": "pe-x-x-pe-x-spojka-kurenie",
+  "poradie": 3,
+  "raw": {
+   "Art. No.": "MJ27040/37",
+   "PE-X dout/s (mm)": "40/3.7",
+   "Thread (inch)": "2 x 1 1/4”",
+   "Ø Outer Diameter of Pipe (mm)": "40x40",
+   "Weight (kg)": "0.80"
+  },
+  "obj_cislo": "MJ27040/37",
+  "rura_text": "40/3.7",
+  "hmotnost_kg_m": 0.8,
+  "id": "MJ27040/37",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ27040/37"
+ },
+ {
+  "rad": "pe-x-x-pe-x-spojka-kurenie",
+  "poradie": 4,
+  "raw": {
+   "Art. No.": "MJ27050/46",
+   "PE-X dout/s (mm)": "50/4.6",
+   "Thread (inch)": "2 x 1 1/2”",
+   "Ø Outer Diameter of Pipe (mm)": "50x50",
+   "Weight (kg)": "1.35"
+  },
+  "obj_cislo": "MJ27050/46",
+  "rura_text": "50/4.6",
+  "hmotnost_kg_m": 1.35,
+  "id": "MJ27050/46",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ27050/46"
+ },
+ {
+  "rad": "pe-x-x-pe-x-spojka-kurenie",
+  "poradie": 5,
+  "raw": {
+   "Art. No.": "MJ27063/58",
+   "PE-X dout/s (mm)": "63/5.8",
+   "Thread (inch)": "2 x 2”",
+   "Ø Outer Diameter of Pipe (mm)": "63x63",
+   "Weight (kg)": "2.10"
+  },
+  "obj_cislo": "MJ27063/58",
+  "rura_text": "63/5.8",
+  "hmotnost_kg_m": 2.1,
+  "id": "MJ27063/58",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ27063/58"
+ },
+ {
+  "rad": "pe-x-x-pe-x-spojka-kurenie",
+  "poradie": 6,
+  "raw": {
+   "Art. No.": "MJ27075/68",
+   "PE-X dout/s (mm)": "75/6.8",
+   "Thread (inch)": "2 x 2 1/2”",
+   "Ø Outer Diameter of Pipe (mm)": "75x75",
+   "Weight (kg)": "2.90"
+  },
+  "obj_cislo": "MJ27075/68",
+  "rura_text": "75/6.8",
+  "hmotnost_kg_m": 2.9,
+  "id": "MJ27075/68",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ27075/68"
+ },
+ {
+  "rad": "pe-x-x-pe-x-spojka-kurenie",
+  "poradie": 7,
+  "raw": {
+   "Art. No.": "MJ27090/82",
+   "PE-X dout/s (mm)": "90/8.2",
+   "Thread (inch)": "2 x 3”",
+   "Ø Outer Diameter of Pipe (mm)": "90x90",
+   "Weight (kg)": "5.10"
+  },
+  "obj_cislo": "MJ27090/82",
+  "rura_text": "90/8.2",
+  "hmotnost_kg_m": 5.1,
+  "id": "MJ27090/82",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ27090/82"
+ },
+ {
+  "rad": "pe-x-x-pe-x-spojka-kurenie",
+  "poradie": 8,
+  "raw": {
+   "Art. No.": "MJ270110/10",
+   "PE-X dout/s (mm)": "110/10.0",
+   "Thread (inch)": "2 x 4”",
+   "Ø Outer Diameter of Pipe (mm)": "110x110",
+   "Weight (kg)": "6.90"
+  },
+  "obj_cislo": "MJ270110/10",
+  "rura_text": "110/10.0",
+  "hmotnost_kg_m": 6.9,
+  "id": "MJ270110/10",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ270110/10"
+ },
+ {
+  "rad": "pe-x-x-pe-x-spojka-kurenie",
+  "poradie": 9,
+  "raw": {
+   "Art. No.": "MJ270125/114",
+   "PE-X dout/s (mm)": "125/11.4",
+   "Thread (inch)": "2 x 4”",
+   "Ø Outer Diameter of Pipe (mm)": "125x125",
+   "Weight (kg)": "9.95"
+  },
+  "obj_cislo": "MJ270125/114",
+  "rura_text": "125/11.4",
+  "hmotnost_kg_m": 9.95,
+  "id": "MJ270125/114",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ270125/114"
+ },
+ {
+  "rad": "pe-x-x-pe-x-koleno-spojky-vykurovanie",
+  "poradie": 1,
+  "raw": {
+   "Art. No.": "MJ9025/23",
+   "PE-X dout/s (mm)": "25/2.3",
+   "Thread (inch)": "2 x 3/4\"",
+   "ø Outer Diameter of Pipe (mm)": "25 x 25"
+  },
+  "obj_cislo": "MJ9025/23",
+  "rura_text": "25/2.3",
+  "id": "MJ9025/23",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ9025/23"
+ },
+ {
+  "rad": "pe-x-x-pe-x-koleno-spojky-vykurovanie",
+  "poradie": 2,
+  "raw": {
+   "Art. No.": "MJ9032/29",
+   "PE-X dout/s (mm)": "32/2.9",
+   "Thread (inch)": "2 x 1\"",
+   "ø Outer Diameter of Pipe (mm)": "32 x 32"
+  },
+  "obj_cislo": "MJ9032/29",
+  "rura_text": "32/2.9",
+  "id": "MJ9032/29",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ9032/29"
+ },
+ {
+  "rad": "pe-x-x-pe-x-koleno-spojky-vykurovanie",
+  "poradie": 3,
+  "raw": {
+   "Art. No.": "MJ9040/37",
+   "PE-X dout/s (mm)": "40/3.7",
+   "Thread (inch)": "2 x 1 1/4\"",
+   "ø Outer Diameter of Pipe (mm)": "40 x 40"
+  },
+  "obj_cislo": "MJ9040/37",
+  "rura_text": "40/3.7",
+  "id": "MJ9040/37",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ9040/37"
+ },
+ {
+  "rad": "pe-x-x-pe-x-koleno-spojky-vykurovanie",
+  "poradie": 4,
+  "raw": {
+   "Art. No.": "MJ9050/46",
+   "PE-X dout/s (mm)": "50/4.6",
+   "Thread (inch)": "2 x 1 1/2\"",
+   "ø Outer Diameter of Pipe (mm)": "50 x 50"
+  },
+  "obj_cislo": "MJ9050/46",
+  "rura_text": "50/4.6",
+  "id": "MJ9050/46",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ9050/46"
+ },
+ {
+  "rad": "pe-x-x-pe-x-koleno-spojky-vykurovanie",
+  "poradie": 5,
+  "raw": {
+   "Art. No.": "MJ9063/58",
+   "PE-X dout/s (mm)": "63/5.8",
+   "Thread (inch)": "2 x 2\"",
+   "ø Outer Diameter of Pipe (mm)": "63 x 63"
+  },
+  "obj_cislo": "MJ9063/58",
+  "rura_text": "63/5.8",
+  "id": "MJ9063/58",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ9063/58"
+ },
+ {
+  "rad": "pe-x-x-pe-x-koleno-spojky-vykurovanie",
+  "poradie": 6,
+  "raw": {
+   "Art. No.": "MJ9075/68",
+   "PE-X dout/s (mm)": "75/6.8",
+   "Thread (inch)": "2 x 2 1/2\"",
+   "ø Outer Diameter of Pipe (mm)": "75 x 75"
+  },
+  "obj_cislo": "MJ9075/68",
+  "rura_text": "75/6.8",
+  "id": "MJ9075/68",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ9075/68"
+ },
+ {
+  "rad": "pe-x-x-pe-x-koleno-spojky-vykurovanie",
+  "poradie": 7,
+  "raw": {
+   "Art. No.": "MJ9090/82",
+   "PE-X dout/s (mm)": "90/8.2",
+   "Thread (inch)": "2 x 3\"",
+   "ø Outer Diameter of Pipe (mm)": "90 x 90"
+  },
+  "obj_cislo": "MJ9090/82",
+  "rura_text": "90/8.2",
+  "id": "MJ9090/82",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ9090/82"
+ },
+ {
+  "rad": "pe-x-x-pe-x-koleno-spojky-vykurovanie",
+  "poradie": 8,
+  "raw": {
+   "Art. No.": "MJ90110/100",
+   "PE-X dout/s (mm)": "110/10.0",
+   "Thread (inch)": "2 x 4\"",
+   "ø Outer Diameter of Pipe (mm)": "110 x 110"
+  },
+  "obj_cislo": "MJ90110/100",
+  "rura_text": "110/10.0",
+  "id": "MJ90110/100",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ90110/100"
+ },
+ {
+  "rad": "pe-x-x-pe-x-koleno-spojky-vykurovanie",
+  "poradie": 9,
+  "raw": {
+   "Art. No.": "MJ90125/114",
+   "PE-X dout/s (mm)": "125/11.4",
+   "Thread (inch)": "2 x 4\"",
+   "ø Outer Diameter of Pipe (mm)": "125 x 125"
+  },
+  "obj_cislo": "MJ90125/114",
+  "rura_text": "125/11.4",
+  "id": "MJ90125/114",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ90125/114"
+ },
+ {
+  "rad": "pe-x-spojka-kurenie-cool-6-16bar",
+  "poradie": 1,
+  "raw": {
+   "Art. No.": "MJ3413425/23",
+   "PE-X dout/s (mm)": "25/2.3",
+   "Thread (inch)": "3/4”M",
+   "Ø Outer Diameter of Pipe (mm)": "25",
+   "Weight (kg)": "0.22"
+  },
+  "obj_cislo": "MJ3413425/23",
+  "rura_text": "25/2.3",
+  "hmotnost_kg_m": 0.22,
+  "id": "MJ3413425/23",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ3413425/23"
+ },
+ {
+  "rad": "pe-x-spojka-kurenie-cool-6-16bar",
+  "poradie": 2,
+  "raw": {
+   "Art. No.": "MJ3414432/29",
+   "PE-X dout/s (mm)": "32/2.9",
+   "Thread (inch)": "1”M",
+   "Ø Outer Diameter of Pipe (mm)": "32",
+   "Weight (kg)": "0.35"
+  },
+  "obj_cislo": "MJ3414432/29",
+  "rura_text": "32/2.9",
+  "hmotnost_kg_m": 0.35,
+  "id": "MJ3414432/29",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ3414432/29"
+ },
+ {
+  "rad": "pe-x-spojka-kurenie-cool-6-16bar",
+  "poradie": 3,
+  "raw": {
+   "Art. No.": "MJ3415440/37",
+   "PE-X dout/s (mm)": "40/3.7",
+   "Thread (inch)": "1 1/4”M",
+   "Ø Outer Diameter of Pipe (mm)": "40",
+   "Weight (kg)": "0.61"
+  },
+  "obj_cislo": "MJ3415440/37",
+  "rura_text": "40/3.7",
+  "hmotnost_kg_m": 0.61,
+  "id": "MJ3415440/37",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ3415440/37"
+ },
+ {
+  "rad": "pe-x-spojka-kurenie-cool-6-16bar",
+  "poradie": 4,
+  "raw": {
+   "Art. No.": "MJ3416450/46",
+   "PE-X dout/s (mm)": "50/4.6",
+   "Thread (inch)": "1 1/2”M",
+   "Ø Outer Diameter of Pipe (mm)": "50",
+   "Weight (kg)": "0.82"
+  },
+  "obj_cislo": "MJ3416450/46",
+  "rura_text": "50/4.6",
+  "hmotnost_kg_m": 0.82,
+  "id": "MJ3416450/46",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ3416450/46"
+ },
+ {
+  "rad": "pe-x-spojka-kurenie-cool-6-16bar",
+  "poradie": 5,
+  "raw": {
+   "Art. No.": "MJ341263/5",
+   "PE-X dout/s (mm)": "63/5.8",
+   "Thread (inch)": "2”M",
+   "Ø Outer Diameter of Pipe (mm)": "63",
+   "Weight (kg)": "1.39"
+  },
+  "obj_cislo": "MJ341263/5",
+  "rura_text": "63/5.8",
+  "hmotnost_kg_m": 1.39,
+  "id": "MJ341263/5",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ341263/5"
+ },
+ {
+  "rad": "pe-x-spojka-kurenie-cool-6-16bar",
+  "poradie": 6,
+  "raw": {
+   "Art. No.": "MJ34121275/68",
+   "PE-X dout/s (mm)": "75/6.8",
+   "Thread (inch)": "2 1/2”M",
+   "Ø Outer Diameter of Pipe (mm)": "75",
+   "Weight (kg)": "1.80"
+  },
+  "obj_cislo": "MJ34121275/68",
+  "rura_text": "75/6.8",
+  "hmotnost_kg_m": 1.8,
+  "id": "MJ34121275/68",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ34121275/68"
+ },
+ {
+  "rad": "pe-x-spojka-kurenie-cool-6-16bar",
+  "poradie": 7,
+  "raw": {
+   "Art. No.": "MJ341390/82",
+   "PE-X dout/s (mm)": "90/8.2",
+   "Thread (inch)": "3”M",
+   "Ø Outer Diameter of Pipe (mm)": "90",
+   "Weight (kg)": "2.98"
+  },
+  "obj_cislo": "MJ341390/82",
+  "rura_text": "90/8.2",
+  "hmotnost_kg_m": 2.98,
+  "id": "MJ341390/82",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ341390/82"
+ },
+ {
+  "rad": "pe-x-spojka-kurenie-cool-6-16bar",
+  "poradie": 8,
+  "raw": {
+   "Art. No.": "MJ3414110/10",
+   "PE-X dout/s (mm)": "110/10.0",
+   "Thread (inch)": "4”M",
+   "Ø Outer Diameter of Pipe (mm)": "110",
+   "Weight (kg)": "3.77"
+  },
+  "obj_cislo": "MJ3414110/10",
+  "rura_text": "110/10.0",
+  "hmotnost_kg_m": 3.77,
+  "id": "MJ3414110/10",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ3414110/10"
+ },
+ {
+  "rad": "pe-x-spojka-kurenie-cool-6-16bar",
+  "poradie": 9,
+  "raw": {
+   "Art. No.": "MJ3414125/114",
+   "PE-X dout/s (mm)": "125/11.4",
+   "Thread (inch)": "4”M",
+   "Ø Outer Diameter of Pipe (mm)": "125",
+   "Weight (kg)": "4.75"
+  },
+  "obj_cislo": "MJ3414125/114",
+  "rura_text": "125/11.4",
+  "hmotnost_kg_m": 4.75,
+  "id": "MJ3414125/114",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ3414125/114"
+ },
+ {
+  "rad": "zvarove-koncovky-spojky-a-cool-6-16bar-s6",
+  "poradie": 1,
+  "raw": {
+   "Art. No.": "MJ3412725/23L",
+   "PE-X dext/s (mm)": "25/2.3",
+   "Weld-end dext (mm)": "26.90",
+   "Weld-end dint (mm)< /td>": "21.50"
+  },
+  "obj_cislo": "MJ3412725/23L",
+  "rura_text": "25/2.3",
+  "id": "MJ3412725/23L",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ3412725/23L"
+ },
+ {
+  "rad": "zvarove-koncovky-spojky-a-cool-6-16bar-s6",
+  "poradie": 2,
+  "raw": {
+   "Art. No.": "MJ3413332/29L",
+   "PE-X dext/s (mm)": "32/2.9",
+   "Weld-end dext (mm)": "33.70",
+   "Weld-end dint (mm)< /td>": "27.00"
+  },
+  "obj_cislo": "MJ3413332/29L",
+  "rura_text": "32/2.9",
+  "id": "MJ3413332/29L",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ3413332/29L"
+ },
+ {
+  "rad": "zvarove-koncovky-spojky-a-cool-6-16bar-s6",
+  "poradie": 3,
+  "raw": {
+   "Art. No.": "MJ3414240/37L",
+   "PE-X dext/s (mm)": "40/3.7",
+   "Weld-end dext (mm)": "42.40",
+   "Weld-end dint (mm)< /td>": "36.00"
+  },
+  "obj_cislo": "MJ3414240/37L",
+  "rura_text": "40/3.7",
+  "id": "MJ3414240/37L",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ3414240/37L"
+ },
+ {
+  "rad": "zvarove-koncovky-spojky-a-cool-6-16bar-s6",
+  "poradie": 4,
+  "raw": {
+   "Art. No.": "MJ3414550/46L",
+   "PE-X dext/s (mm)": "50/4.6",
+   "Weld-end dext (mm)": "48.30",
+   "Weld-end dint (mm)< /td>": "42.00"
+  },
+  "obj_cislo": "MJ3414550/46L",
+  "rura_text": "50/4.6",
+  "id": "MJ3414550/46L",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ3414550/46L"
+ },
+ {
+  "rad": "zvarove-koncovky-spojky-a-cool-6-16bar-s6",
+  "poradie": 5,
+  "raw": {
+   "Art. No.": "MJ3415763/58L",
+   "PE-X dext/s (mm)": "63/5.8",
+   "Weld-end dext (mm)": "60.30",
+   "Weld-end dint (mm)< /td>": "53.00"
+  },
+  "obj_cislo": "MJ3415763/58L",
+  "rura_text": "63/5.8",
+  "id": "MJ3415763/58L",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ3415763/58L"
+ },
+ {
+  "rad": "zvarove-koncovky-spojky-a-cool-6-16bar-s6",
+  "poradie": 6,
+  "raw": {
+   "Art. No.": "MJ3417675/68L",
+   "PE-X dext/s (mm)": "75/6.8",
+   "Weld-end dext (mm)": "76.10",
+   "Weld-end dint (mm)< /td>": "68.00"
+  },
+  "obj_cislo": "MJ3417675/68L",
+  "rura_text": "75/6.8",
+  "id": "MJ3417675/68L",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ3417675/68L"
+ },
+ {
+  "rad": "zvarove-koncovky-spojky-a-cool-6-16bar-s6",
+  "poradie": 7,
+  "raw": {
+   "Art. No.": "MJ3418990/82L",
+   "PE-X dext/s (mm)": "90/8.2",
+   "Weld-end dext (mm)": "88.90",
+   "Weld-end dint (mm)< /td>": "80.00"
+  },
+  "obj_cislo": "MJ3418990/82L",
+  "rura_text": "90/8.2",
+  "id": "MJ3418990/82L",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ3418990/82L"
+ },
+ {
+  "rad": "zvarove-koncovky-spojky-a-cool-6-16bar-s6",
+  "poradie": 8,
+  "raw": {
+   "Art. No.": "MJ341110110/10L",
+   "PE-X dext/s (mm)": "110/10.0",
+   "Weld-end dext (mm)": "114.30",
+   "Weld-end dint (mm)< /td>": "105.00"
+  },
+  "obj_cislo": "MJ341110110/10L",
+  "rura_text": "110/10.0",
+  "id": "MJ341110110/10L",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ341110110/10L"
+ },
+ {
+  "rad": "zvarove-koncovky-spojky-a-cool-6-16bar-s6",
+  "poradie": 9,
+  "raw": {
+   "Art. No.": "MJ341114125/114L",
+   "PE-X dext/s (mm)": "125/11.4",
+   "Weld-end dext (mm)": "114.30",
+   "Weld-end dint (mm)< /td>": "105.00"
+  },
+  "obj_cislo": "MJ341114125/114L",
+  "rura_text": "125/11.4",
+  "id": "MJ341114125/114L",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ341114125/114L"
+ },
+ {
+  "rad": "microflex-pe-x-spojky-vykurovanie",
+  "poradie": 1,
+  "raw": {
+   "Art. No.": "MJ3413425/23",
+   "PE-X dout/S (mm)": "25/2.3",
+   "Rozmer (inch)": "3/4\" M",
+   "Váha(kg)": "0.22"
+  },
+  "obj_cislo": "MJ3413425/23",
+  "rura_text": "25/2.3",
+  "hmotnost_kg_m": 0.22,
+  "id": "MJ3413425/23",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ3413425/23"
+ },
+ {
+  "rad": "microflex-pe-x-spojky-vykurovanie",
+  "poradie": 2,
+  "raw": {
+   "Art. No.": "MJ3414432/29",
+   "PE-X dout/S (mm)": "32/2.9",
+   "Rozmer (inch)": "1\" M",
+   "Váha(kg)": "0.35"
+  },
+  "obj_cislo": "MJ3414432/29",
+  "rura_text": "32/2.9",
+  "hmotnost_kg_m": 0.35,
+  "id": "MJ3414432/29",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ3414432/29"
+ },
+ {
+  "rad": "microflex-pe-x-spojky-vykurovanie",
+  "poradie": 3,
+  "raw": {
+   "Art. No.": "MJ3415440/37",
+   "PE-X dout/S (mm)": "40/3.7",
+   "Rozmer (inch)": "1 1/4\" M",
+   "Váha(kg)": "0.61"
+  },
+  "obj_cislo": "MJ3415440/37",
+  "rura_text": "40/3.7",
+  "hmotnost_kg_m": 0.61,
+  "id": "MJ3415440/37",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ3415440/37"
+ },
+ {
+  "rad": "microflex-pe-x-spojky-vykurovanie",
+  "poradie": 4,
+  "raw": {
+   "Art. No.": "MJ3416450/46",
+   "PE-X dout/S (mm)": "50/4.6",
+   "Rozmer (inch)": "1 1/2\" M",
+   "Váha(kg)": "0.82"
+  },
+  "obj_cislo": "MJ3416450/46",
+  "rura_text": "50/4.6",
+  "hmotnost_kg_m": 0.82,
+  "id": "MJ3416450/46",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ3416450/46"
+ },
+ {
+  "rad": "microflex-pe-x-spojky-vykurovanie",
+  "poradie": 5,
+  "raw": {
+   "Art. No.": "MJ341263/58",
+   "PE-X dout/S (mm)": "63/5.8",
+   "Rozmer (inch)": "2\" M",
+   "Váha(kg)": "1.39"
+  },
+  "obj_cislo": "MJ341263/58",
+  "rura_text": "63/5.8",
+  "hmotnost_kg_m": 1.39,
+  "id": "MJ341263/58",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ341263/58"
+ },
+ {
+  "rad": "microflex-pe-x-spojky-vykurovanie",
+  "poradie": 6,
+  "raw": {
+   "Art. No.": "MJ34121275/68",
+   "PE-X dout/S (mm)": "75/6.8",
+   "Rozmer (inch)": "2 1/2\" M",
+   "Váha(kg)": "1.80"
+  },
+  "obj_cislo": "MJ34121275/68",
+  "rura_text": "75/6.8",
+  "hmotnost_kg_m": 1.8,
+  "id": "MJ34121275/68",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ34121275/68"
+ },
+ {
+  "rad": "microflex-pe-x-spojky-vykurovanie",
+  "poradie": 7,
+  "raw": {
+   "Art. No.": "MJ341390/82",
+   "PE-X dout/S (mm)": "90/8.2",
+   "Rozmer (inch)": "3\" M",
+   "Váha(kg)": "2.98"
+  },
+  "obj_cislo": "MJ341390/82",
+  "rura_text": "90/8.2",
+  "hmotnost_kg_m": 2.98,
+  "id": "MJ341390/82",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ341390/82"
+ },
+ {
+  "rad": "microflex-pe-x-spojky-vykurovanie",
+  "poradie": 8,
+  "raw": {
+   "Art. No.": "MJ3414110/100",
+   "PE-X dout/S (mm)": "110/10.0",
+   "Rozmer (inch)": "4\" M",
+   "Váha(kg)": "3.77"
+  },
+  "obj_cislo": "MJ3414110/100",
+  "rura_text": "110/10.0",
+  "hmotnost_kg_m": 3.77,
+  "id": "MJ3414110/100",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ3414110/100"
+ },
+ {
+  "rad": "microflex-pe-x-spojky-vykurovanie",
+  "poradie": 9,
+  "raw": {
+   "Art. No.": "MJ3414125/114",
+   "PE-X dout/S (mm)": "125/11.4",
+   "Rozmer (inch)": "4\" M",
+   "Váha(kg)": "4.75"
+  },
+  "obj_cislo": "MJ3414125/114",
+  "rura_text": "125/11.4",
+  "hmotnost_kg_m": 4.75,
+  "id": "MJ3414125/114",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ3414125/114"
+ },
+ {
+  "rad": "sanitarne-spojky-microflex-pe-x",
+  "poradie": 1,
+  "raw": {
+   "Art. No.": "MJ3413420/28",
+   "PE-X dout/s (mm)": "20/2.8",
+   "Thread (inch)": "3/4”M",
+   "Weight (kg)": "0.17"
+  },
+  "obj_cislo": "MJ3413420/28",
+  "rura_text": "20/2.8",
+  "hmotnost_kg_m": 0.17,
+  "id": "MJ3413420/28",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ3413420/28"
+ },
+ {
+  "rad": "sanitarne-spojky-microflex-pe-x",
+  "poradie": 2,
+  "raw": {
+   "Art. No.": "MJ3413425/35",
+   "PE-X dout/s (mm)": "25/3.5",
+   "Thread (inch)": "3/4”M",
+   "Weight (kg)": "0.22"
+  },
+  "obj_cislo": "MJ3413425/35",
+  "rura_text": "25/3.5",
+  "hmotnost_kg_m": 0.22,
+  "id": "MJ3413425/35",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ3413425/35"
+ },
+ {
+  "rad": "sanitarne-spojky-microflex-pe-x",
+  "poradie": 3,
+  "raw": {
+   "Art. No.": "MJ3414432/44",
+   "PE-X dout/s (mm)": "32/4.4",
+   "Thread (inch)": "1”M",
+   "Weight (kg)": "0.35"
+  },
+  "obj_cislo": "MJ3414432/44",
+  "rura_text": "32/4.4",
+  "hmotnost_kg_m": 0.35,
+  "id": "MJ3414432/44",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ3414432/44"
+ },
+ {
+  "rad": "sanitarne-spojky-microflex-pe-x",
+  "poradie": 4,
+  "raw": {
+   "Art. No.": "MJ3415440/55",
+   "PE-X dout/s (mm)": "40/5.5",
+   "Thread (inch)": "11/4”M",
+   "Weight (kg)": "0.59"
+  },
+  "obj_cislo": "MJ3415440/55",
+  "rura_text": "40/5.5",
+  "hmotnost_kg_m": 0.59,
+  "id": "MJ3415440/55",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ3415440/55"
+ },
+ {
+  "rad": "sanitarne-spojky-microflex-pe-x",
+  "poradie": 5,
+  "raw": {
+   "Art. No.": "MJ3416450/69",
+   "PE-X dout/s (mm)": "50/6.9",
+   "Thread (inch)": "11/2”M",
+   "Weight (kg)": "0.90"
+  },
+  "obj_cislo": "MJ3416450/69",
+  "rura_text": "50/6.9",
+  "hmotnost_kg_m": 0.9,
+  "id": "MJ3416450/69",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ3416450/69"
+ },
+ {
+  "rad": "sanitarne-spojky-microflex-pe-x",
+  "poradie": 6,
+  "raw": {
+   "Art. No.": "MJ341263/87",
+   "PE-X dout/s (mm)": "63/8.7",
+   "Thread (inch)": "2”M",
+   "Weight (kg)": "1.47"
+  },
+  "obj_cislo": "MJ341263/87",
+  "rura_text": "63/8.7",
+  "hmotnost_kg_m": 1.47,
+  "id": "MJ341263/87",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ341263/87"
+ },
+ {
+  "rad": "sanitarne-spojky-microflex-pe-x",
+  "poradie": 7,
+  "raw": {
+   "Art. No.": "MJ34121275/103",
+   "PE-X dout/s (mm)": "75/10.3",
+   "Thread (inch)": "21/2”M",
+   "Weight (kg)": "1.80"
+  },
+  "obj_cislo": "MJ34121275/103",
+  "rura_text": "75/10.3",
+  "hmotnost_kg_m": 1.8,
+  "id": "MJ34121275/103",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ34121275/103"
+ },
+ {
+  "rad": "sanitarne-spojky-microflex-pe-x",
+  "poradie": 8,
+  "raw": {
+   "Art. No.": "MJ341390/123",
+   "PE-X dout/s (mm)": "90/12.3",
+   "Thread (inch)": "3”M",
+   "Weight (kg)": "2.98"
+  },
+  "obj_cislo": "MJ341390/123",
+  "rura_text": "90/12.3",
+  "hmotnost_kg_m": 2.98,
+  "id": "MJ341390/123",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ341390/123"
+ },
+ {
+  "rad": "sanitarne-spojky-microflex-pe-x",
+  "poradie": 9,
+  "raw": {
+   "Art. No.": "MJ3414110/151",
+   "PE-X dout/s (mm)": "110/15.1",
+   "Thread (inch)": "4”M",
+   "Weight (kg)": "3.77"
+  },
+  "obj_cislo": "MJ3414110/151",
+  "rura_text": "110/15.1",
+  "hmotnost_kg_m": 3.77,
+  "id": "MJ3414110/151",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ3414110/151"
+ },
+ {
+  "rad": "pe-x-x-pe-x-sanitarne-zariadenie",
+  "poradie": 1,
+  "raw": {
+   "Art. No.": "MJ27025/35",
+   "PE-X dout/s (mm)": "25/3.5",
+   "Thread (inch)": "2x3/4”",
+   "Ø Outer Diameter of Pipe (mm)": "25x25"
+  },
+  "obj_cislo": "MJ27025/35",
+  "rura_text": "25/3.5",
+  "id": "MJ27025/35",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ27025/35"
+ },
+ {
+  "rad": "pe-x-x-pe-x-sanitarne-zariadenie",
+  "poradie": 2,
+  "raw": {
+   "Art. No.": "MJ27032/44",
+   "PE-X dout/s (mm)": "32/4.4",
+   "Thread (inch)": "2x1”",
+   "Ø Outer Diameter of Pipe (mm)": "32x32"
+  },
+  "obj_cislo": "MJ27032/44",
+  "rura_text": "32/4.4",
+  "id": "MJ27032/44",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ27032/44"
+ },
+ {
+  "rad": "pe-x-x-pe-x-sanitarne-zariadenie",
+  "poradie": 3,
+  "raw": {
+   "Art. No.": "MJ27040/55",
+   "PE-X dout/s (mm)": "40/5.5",
+   "Thread (inch)": "2x1 1/4”",
+   "Ø Outer Diameter of Pipe (mm)": "40x40"
+  },
+  "obj_cislo": "MJ27040/55",
+  "rura_text": "40/5.5",
+  "id": "MJ27040/55",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ27040/55"
+ },
+ {
+  "rad": "pe-x-x-pe-x-sanitarne-zariadenie",
+  "poradie": 4,
+  "raw": {
+   "Art. No.": "MJ27050/69",
+   "PE-X dout/s (mm)": "50/6.9",
+   "Thread (inch)": "2x1",
+   "Ø Outer Diameter of Pipe (mm)": "50x50"
+  },
+  "obj_cislo": "MJ27050/69",
+  "rura_text": "50/6.9",
+  "id": "MJ27050/69",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ27050/69"
+ },
+ {
+  "rad": "pe-x-x-pe-x-sanitarne-zariadenie",
+  "poradie": 5,
+  "raw": {
+   "Art. No.": "MJ27063/87",
+   "PE-X dout/s (mm)": "63/8.7",
+   "Thread (inch)": "2x2” 1/2”",
+   "Ø Outer Diameter of Pipe (mm)": "63x63"
+  },
+  "obj_cislo": "MJ27063/87",
+  "rura_text": "63/8.7",
+  "id": "MJ27063/87",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ27063/87"
+ },
+ {
+  "rad": "pe-x-x-pe-x-sanitarne-zariadenie",
+  "poradie": 6,
+  "raw": {
+   "Art. No.": "MJ27075/103",
+   "PE-X dout/s (mm)": "75/10.3",
+   "Thread (inch)": "2x1 1/2”",
+   "Ø Outer Diameter of Pipe (mm)": "75x75"
+  },
+  "obj_cislo": "MJ27075/103",
+  "rura_text": "75/10.3",
+  "id": "MJ27075/103",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ27075/103"
+ },
+ {
+  "rad": "pe-x-x-pe-x-sanitarne-zariadenie",
+  "poradie": 7,
+  "raw": {
+   "Art. No.": "MJ27090/123",
+   "PE-X dout/s (mm)": "90/12.3",
+   "Thread (inch)": "2x3”",
+   "Ø Outer Diameter of Pipe (mm)": "90x90"
+  },
+  "obj_cislo": "MJ27090/123",
+  "rura_text": "90/12.3",
+  "id": "MJ27090/123",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ27090/123"
+ },
+ {
+  "rad": "pe-x-x-pe-x-sanitarne-zariadenie",
+  "poradie": 8,
+  "raw": {
+   "Art. No.": "MJ270110/151",
+   "PE-X dout/s (mm)": "110/15.1",
+   "Thread (inch)": "2x4”",
+   "Ø Outer Diameter of Pipe (mm)": "110x110"
+  },
+  "obj_cislo": "MJ270110/151",
+  "rura_text": "110/15.1",
+  "id": "MJ270110/151",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ270110/151"
+ },
+ {
+  "rad": "sanitarne-kolenne-spojky-pe-x-x-pe-x",
+  "poradie": 1,
+  "raw": {
+   "Art. No.": "MJ9025/35",
+   "PE-X dout/s (mm)": "25/3.5",
+   "Thread (inch)": "2x3/4”",
+   "Ø Outer Diameter of Pipe (mm)": "25x25"
+  },
+  "obj_cislo": "MJ9025/35",
+  "rura_text": "25/3.5",
+  "id": "MJ9025/35",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ9025/35"
+ },
+ {
+  "rad": "sanitarne-kolenne-spojky-pe-x-x-pe-x",
+  "poradie": 2,
+  "raw": {
+   "Art. No.": "MJ9032/44",
+   "PE-X dout/s (mm)": "32/4.4",
+   "Thread (inch)": "2x1”",
+   "Ø Outer Diameter of Pipe (mm)": "32x32"
+  },
+  "obj_cislo": "MJ9032/44",
+  "rura_text": "32/4.4",
+  "id": "MJ9032/44",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ9032/44"
+ },
+ {
+  "rad": "sanitarne-kolenne-spojky-pe-x-x-pe-x",
+  "poradie": 3,
+  "raw": {
+   "Art. No.": "MJ9040/55",
+   "PE-X dout/s (mm)": "40/5.5",
+   "Thread (inch)": "2x1 1/4”",
+   "Ø Outer Diameter of Pipe (mm)": "40x40"
+  },
+  "obj_cislo": "MJ9040/55",
+  "rura_text": "40/5.5",
+  "id": "MJ9040/55",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ9040/55"
+ },
+ {
+  "rad": "sanitarne-kolenne-spojky-pe-x-x-pe-x",
+  "poradie": 4,
+  "raw": {
+   "Art. No.": "MJ9050/69",
+   "PE-X dout/s (mm)": "50/6.9",
+   "Thread (inch)": "2x1 1/2”",
+   "Ø Outer Diameter of Pipe (mm)": "50x50"
+  },
+  "obj_cislo": "MJ9050/69",
+  "rura_text": "50/6.9",
+  "id": "MJ9050/69",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ9050/69"
+ },
+ {
+  "rad": "sanitarne-kolenne-spojky-pe-x-x-pe-x",
+  "poradie": 5,
+  "raw": {
+   "Art. No.": "MJ9063/87",
+   "PE-X dout/s (mm)": "63/8.7",
+   "Thread (inch)": "2x2”",
+   "Ø Outer Diameter of Pipe (mm)": "63x63"
+  },
+  "obj_cislo": "MJ9063/87",
+  "rura_text": "63/8.7",
+  "id": "MJ9063/87",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ9063/87"
+ },
+ {
+  "rad": "sanitarne-kolenne-spojky-pe-x-x-pe-x",
+  "poradie": 6,
+  "raw": {
+   "Art. No.": "MJ9075/103",
+   "PE-X dout/s (mm)": "75/10.3",
+   "Thread (inch)": "2x2 1/2”",
+   "Ø Outer Diameter of Pipe (mm)": "75x75"
+  },
+  "obj_cislo": "MJ9075/103",
+  "rura_text": "75/10.3",
+  "id": "MJ9075/103",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ9075/103"
+ },
+ {
+  "rad": "sanitarne-kolenne-spojky-pe-x-x-pe-x",
+  "poradie": 7,
+  "raw": {
+   "Art. No.": "MJ9090/123",
+   "PE-X dout/s (mm)": "90/12.3",
+   "Thread (inch)": "2x3”",
+   "Ø Outer Diameter of Pipe (mm)": "90x90"
+  },
+  "obj_cislo": "MJ9090/123",
+  "rura_text": "90/12.3",
+  "id": "MJ9090/123",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ9090/123"
+ },
+ {
+  "rad": "sanitarne-kolenne-spojky-pe-x-x-pe-x",
+  "poradie": 8,
+  "raw": {
+   "Art. No.": "MJ90110/151",
+   "PE-X dout/s (mm)": "110/15.1",
+   "Thread (inch)": "2x4”",
+   "Ø Outer Diameter of Pipe (mm)": "110x110"
+  },
+  "obj_cislo": "MJ90110/151",
+  "rura_text": "110/15.1",
+  "id": "MJ90110/151",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ90110/151"
+ },
+ {
+  "rad": "3-x-pe-x-t-spojka-sanitarna",
+  "poradie": 1,
+  "raw": {
+   "Art. No.": "MJ13025/35",
+   "PE-X dout/s (mm)": "25/3.5",
+   "Thread (inch)": "3x3/4”",
+   "ø Outer Diameter of Pipe (mm)": "25x25x25"
+  },
+  "obj_cislo": "MJ13025/35",
+  "rura_text": "25/3.5",
+  "id": "MJ13025/35",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ13025/35"
+ },
+ {
+  "rad": "3-x-pe-x-t-spojka-sanitarna",
+  "poradie": 2,
+  "raw": {
+   "Art. No.": "MJ13032/44",
+   "PE-X dout/s (mm)": "32/4.4",
+   "Thread (inch)": "3x1”",
+   "ø Outer Diameter of Pipe (mm)": "32x32x32"
+  },
+  "obj_cislo": "MJ13032/44",
+  "rura_text": "32/4.4",
+  "id": "MJ13032/44",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ13032/44"
+ },
+ {
+  "rad": "3-x-pe-x-t-spojka-sanitarna",
+  "poradie": 3,
+  "raw": {
+   "Art. No.": "MJ13040/55",
+   "PE-X dout/s (mm)": "40/5.5+32/4.4",
+   "Thread (inch)": "2x11/4”+ 1x1”",
+   "ø Outer Diameter of Pipe (mm)": "40x32x40"
+  },
+  "obj_cislo": "MJ13040/55",
+  "rura_text": "40/5.5+32/4.4",
+  "id": "MJ13040/55",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ13040/55"
+ },
+ {
+  "rad": "3-x-pe-x-t-spojka-sanitarna",
+  "poradie": 4,
+  "raw": {
+   "Art. No.": "MJ1304032/55",
+   "PE-X dout/s (mm)": "40/5.5",
+   "Thread (inch)": "3x11/4”",
+   "ø Outer Diameter of Pipe (mm)": "40x40x40"
+  },
+  "obj_cislo": "MJ1304032/55",
+  "rura_text": "40/5.5",
+  "id": "MJ1304032/55",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ1304032/55"
+ },
+ {
+  "rad": "3-x-pe-x-t-spojka-sanitarna",
+  "poradie": 5,
+  "raw": {
+   "Art. No.": "MJ13050/69",
+   "PE-X dout/s (mm)": "50/6.9+40/5.5",
+   "Thread (inch)": "2x11/2“+1x11/4”",
+   "ø Outer Diameter of Pipe (mm)": "50x40x50"
+  },
+  "obj_cislo": "MJ13050/69",
+  "rura_text": "50/6.9+40/5.5",
+  "id": "MJ13050/69",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ13050/69"
+ },
+ {
+  "rad": "3-x-pe-x-t-spojka-sanitarna",
+  "poradie": 6,
+  "raw": {
+   "Art. No.": "MJ13063/87",
+   "PE-X dout/s (mm)": "50/6.9",
+   "Thread (inch)": "3x11/2”",
+   "ø Outer Diameter of Pipe (mm)": "50x50x50"
+  },
+  "obj_cislo": "MJ13063/87",
+  "rura_text": "50/6.9",
+  "id": "MJ13063/87",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ13063/87"
+ },
+ {
+  "rad": "3-x-pe-x-t-spojka-sanitarna",
+  "poradie": 7,
+  "raw": {
+   "Art. No.": "MJ1306350/87",
+   "PE-X dout/s (mm)": "63/8.7+50/6.9",
+   "Thread (inch)": "2x2”+1x11/2”",
+   "ø Outer Diameter of Pipe (mm)": "63x50x63"
+  },
+  "obj_cislo": "MJ1306350/87",
+  "rura_text": "63/8.7+50/6.9",
+  "id": "MJ1306350/87",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ1306350/87"
+ },
+ {
+  "rad": "3-x-pe-x-t-spojka-sanitarna",
+  "poradie": 8,
+  "raw": {
+   "Art. No.": "MJ1305040/69",
+   "PE-X dout/s (mm)": "63/8.7",
+   "Thread (inch)": "3x2”",
+   "ø Outer Diameter of Pipe (mm)": "63x63x63"
+  },
+  "obj_cislo": "MJ1305040/69",
+  "rura_text": "63/8.7",
+  "id": "MJ1305040/69",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ1305040/69"
+ },
+ {
+  "rad": "3-x-pe-x-t-spojka-sanitarna",
+  "poradie": 9,
+  "raw": {
+   "Art. No.": "MJ13075/103",
+   "PE-X dout/s (mm)": "75/10.3",
+   "Thread (inch)": "3x21/2”",
+   "ø Outer Diameter of Pipe (mm)": "75x75x75"
+  },
+  "obj_cislo": "MJ13075/103",
+  "rura_text": "75/10.3",
+  "id": "MJ13075/103",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ13075/103"
+ },
+ {
+  "rad": "3-x-pe-x-t-spojka-sanitarna",
+  "poradie": 10,
+  "raw": {
+   "Art. No.": "MJ13090/123",
+   "PE-X dout/s (mm)": "90/12.3",
+   "Thread (inch)": "3x3”",
+   "ø Outer Diameter of Pipe (mm)": "90x90x90"
+  },
+  "obj_cislo": "MJ13090/123",
+  "rura_text": "90/12.3",
+  "id": "MJ13090/123",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ13090/123"
+ },
+ {
+  "rad": "3-x-pe-x-t-spojka-sanitarna",
+  "poradie": 11,
+  "raw": {
+   "Art. No.": "MJ130110/151",
+   "PE-X dout/s (mm)": "110/15.1",
+   "Thread (inch)": "3x4”",
+   "ø Outer Diameter of Pipe (mm)": "110x110x110"
+  },
+  "obj_cislo": "MJ130110/151",
+  "rura_text": "110/15.1",
+  "id": "MJ130110/151",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MJ130110/151"
+ },
+ {
+  "rad": "fixny-bod",
+  "poradie": 1,
+  "raw": {
+   "Art. No.": "MFP34",
+   "Závit (DN)": "3/4\" MF"
+  },
+  "obj_cislo": "MFP34",
+  "id": "MFP34",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MFP34"
+ },
+ {
+  "rad": "fixny-bod",
+  "poradie": 2,
+  "raw": {
+   "Art. No.": "MFP44",
+   "Závit (DN)": "1\" MF"
+  },
+  "obj_cislo": "MFP44",
+  "id": "MFP44",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MFP44"
+ },
+ {
+  "rad": "fixny-bod",
+  "poradie": 3,
+  "raw": {
+   "Art. No.": "MFP64",
+   "Závit (DN)": "1 1/2\" MF"
+  },
+  "obj_cislo": "MFP64",
+  "id": "MFP64",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MFP64"
+ },
+ {
+  "rad": "fixny-bod",
+  "poradie": 4,
+  "raw": {
+   "Art. No.": "MFP2",
+   "Závit (DN)": "2\" MF"
+  },
+  "obj_cislo": "MFP2",
+  "id": "MFP2",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MFP2"
+ },
+ {
+  "rad": "fixny-bod",
+  "poradie": 5,
+  "raw": {
+   "Art. No.": "MFP212",
+   "Závit (DN)": "2 1/2\" MF"
+  },
+  "obj_cislo": "MFP212",
+  "id": "MFP212",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MFP212"
+ },
+ {
+  "rad": "fixny-bod",
+  "poradie": 6,
+  "raw": {
+   "Art. No.": "MFP3",
+   "Závit (DN)": "3\" MF"
+  },
+  "obj_cislo": "MFP3",
+  "id": "MFP3",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MFP3"
+ },
+ {
+  "rad": "fixny-bod",
+  "poradie": 7,
+  "raw": {
+   "Art. No.": "MFP4",
+   "Závit (DN)": "4\" MF"
+  },
+  "obj_cislo": "MFP4",
+  "id": "MFP4",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MFP4"
+ },
+ {
+  "rad": "objimka-obal",
+  "poradie": 1,
+  "raw": {
+   "Art. No.": "VW27034",
+   "Závit (DN)": "3/4”FF"
+  },
+  "obj_cislo": "VW27034",
+  "id": "VW27034",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW27034"
+ },
+ {
+  "rad": "objimka-obal",
+  "poradie": 2,
+  "raw": {
+   "Art. No.": "VW27044",
+   "Závit (DN)": "1”FF"
+  },
+  "obj_cislo": "VW27044",
+  "id": "VW27044",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW27044"
+ },
+ {
+  "rad": "objimka-obal",
+  "poradie": 3,
+  "raw": {
+   "Art. No.": "VW27054",
+   "Závit (DN)": "1 1/4”FF"
+  },
+  "obj_cislo": "VW27054",
+  "id": "VW27054",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW27054"
+ },
+ {
+  "rad": "objimka-obal",
+  "poradie": 4,
+  "raw": {
+   "Art. No.": "VW27064",
+   "Závit (DN)": "1 1/2”FF"
+  },
+  "obj_cislo": "VW27064",
+  "id": "VW27064",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW27064"
+ },
+ {
+  "rad": "objimka-obal",
+  "poradie": 5,
+  "raw": {
+   "Art. No.": "VW2702",
+   "Závit (DN)": "2”FF"
+  },
+  "obj_cislo": "VW2702",
+  "id": "VW2702",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW2702"
+ },
+ {
+  "rad": "objimka-obal",
+  "poradie": 6,
+  "raw": {
+   "Art. No.": "VW270212",
+   "Závit (DN)": "2 1/2”FF"
+  },
+  "obj_cislo": "VW270212",
+  "id": "VW270212",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW270212"
+ },
+ {
+  "rad": "objimka-obal",
+  "poradie": 7,
+  "raw": {
+   "Art. No.": "VW2703",
+   "Závit (DN)": "3”FF"
+  },
+  "obj_cislo": "VW2703",
+  "id": "VW2703",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW2703"
+ },
+ {
+  "rad": "objimka-obal",
+  "poradie": 8,
+  "raw": {
+   "Art. No.": "VW2704",
+   "Závit (DN)": "4”FF"
+  },
+  "obj_cislo": "VW2704",
+  "id": "VW2704",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW2704"
+ },
+ {
+  "rad": "koleno-90",
+  "poradie": 1,
+  "raw": {
+   "Art. No.": "VW9034",
+   "Závit (DN)": "3/4”FF"
+  },
+  "obj_cislo": "VW9034",
+  "id": "VW9034",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW9034"
+ },
+ {
+  "rad": "koleno-90",
+  "poradie": 2,
+  "raw": {
+   "Art. No.": "VW9044",
+   "Závit (DN)": "1”FF"
+  },
+  "obj_cislo": "VW9044",
+  "id": "VW9044",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW9044"
+ },
+ {
+  "rad": "koleno-90",
+  "poradie": 3,
+  "raw": {
+   "Art. No.": "VW9054",
+   "Závit (DN)": "1 1/4”FF"
+  },
+  "obj_cislo": "VW9054",
+  "id": "VW9054",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW9054"
+ },
+ {
+  "rad": "koleno-90",
+  "poradie": 4,
+  "raw": {
+   "Art. No.": "VW9064",
+   "Závit (DN)": "1 1/2”FF"
+  },
+  "obj_cislo": "VW9064",
+  "id": "VW9064",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW9064"
+ },
+ {
+  "rad": "koleno-90",
+  "poradie": 5,
+  "raw": {
+   "Art. No.": "VW902",
+   "Závit (DN)": "2”FF"
+  },
+  "obj_cislo": "VW902",
+  "id": "VW902",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW902"
+ },
+ {
+  "rad": "koleno-90",
+  "poradie": 6,
+  "raw": {
+   "Art. No.": "VW90212",
+   "Závit (DN)": "2 1/2”FF"
+  },
+  "obj_cislo": "VW90212",
+  "id": "VW90212",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW90212"
+ },
+ {
+  "rad": "koleno-90",
+  "poradie": 7,
+  "raw": {
+   "Art. No.": "VW903",
+   "Závit (DN)": "3”FF"
+  },
+  "obj_cislo": "VW903",
+  "id": "VW903",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW903"
+ },
+ {
+  "rad": "koleno-90",
+  "poradie": 8,
+  "raw": {
+   "Art. No.": "VW904",
+   "Závit (DN)": "4”FF"
+  },
+  "obj_cislo": "VW904",
+  "id": "VW904",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW904"
+ },
+ {
+  "rad": "t-kus-z-bronzu",
+  "poradie": 1,
+  "raw": {
+   "Art. No.": "VW13034",
+   "Závit (DN)": "3/4”FFF"
+  },
+  "obj_cislo": "VW13034",
+  "id": "VW13034",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW13034"
+ },
+ {
+  "rad": "t-kus-z-bronzu",
+  "poradie": 2,
+  "raw": {
+   "Art. No.": "VW13044",
+   "Závit (DN)": "1”FFF"
+  },
+  "obj_cislo": "VW13044",
+  "id": "VW13044",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW13044"
+ },
+ {
+  "rad": "t-kus-z-bronzu",
+  "poradie": 3,
+  "raw": {
+   "Art. No.": "VW13054",
+   "Závit (DN)": "1 1/4”FFF"
+  },
+  "obj_cislo": "VW13054",
+  "id": "VW13054",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW13054"
+ },
+ {
+  "rad": "t-kus-z-bronzu",
+  "poradie": 4,
+  "raw": {
+   "Art. No.": "VW13064",
+   "Závit (DN)": "1 1/2”FFF"
+  },
+  "obj_cislo": "VW13064",
+  "id": "VW13064",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW13064"
+ },
+ {
+  "rad": "t-kus-z-bronzu",
+  "poradie": 5,
+  "raw": {
+   "Art. No.": "VW1302",
+   "Závit (DN)": "2”FFF"
+  },
+  "obj_cislo": "VW1302",
+  "id": "VW1302",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW1302"
+ },
+ {
+  "rad": "t-kus-z-bronzu",
+  "poradie": 6,
+  "raw": {
+   "Art. No.": "VW130212",
+   "Závit (DN)": "2 1/2”FFF"
+  },
+  "obj_cislo": "VW130212",
+  "id": "VW130212",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW130212"
+ },
+ {
+  "rad": "t-kus-z-bronzu",
+  "poradie": 7,
+  "raw": {
+   "Art. No.": "VW1303",
+   "Závit (DN)": "3”FFF"
+  },
+  "obj_cislo": "VW1303",
+  "id": "VW1303",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW1303"
+ },
+ {
+  "rad": "t-kus-z-bronzu",
+  "poradie": 8,
+  "raw": {
+   "Art. No.": "VW1304",
+   "Závit (DN)": "4”FFF"
+  },
+  "obj_cislo": "VW1304",
+  "id": "VW1304",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW1304"
+ },
+ {
+  "rad": "vsuvka-z-poniklovanej-mosadze",
+  "poradie": 1,
+  "raw": {
+   "Art. No.": "VW28034",
+   "Závit (DN)": "3/4”M"
+  },
+  "obj_cislo": "VW28034",
+  "id": "VW28034",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW28034"
+ },
+ {
+  "rad": "vsuvka-z-poniklovanej-mosadze",
+  "poradie": 2,
+  "raw": {
+   "Art. No.": "VW28044",
+   "Závit (DN)": "1”M"
+  },
+  "obj_cislo": "VW28044",
+  "id": "VW28044",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW28044"
+ },
+ {
+  "rad": "vsuvka-z-poniklovanej-mosadze",
+  "poradie": 3,
+  "raw": {
+   "Art. No.": "VW28054",
+   "Závit (DN)": "1 1/4”M"
+  },
+  "obj_cislo": "VW28054",
+  "id": "VW28054",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW28054"
+ },
+ {
+  "rad": "vsuvka-z-poniklovanej-mosadze",
+  "poradie": 4,
+  "raw": {
+   "Art. No.": "VW28064",
+   "Závit (DN)": "1 1/2”M"
+  },
+  "obj_cislo": "VW28064",
+  "id": "VW28064",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW28064"
+ },
+ {
+  "rad": "vsuvka-z-poniklovanej-mosadze",
+  "poradie": 5,
+  "raw": {
+   "Art. No.": "VW2802",
+   "Závit (DN)": "2”M"
+  },
+  "obj_cislo": "VW2802",
+  "id": "VW2802",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW2802"
+ },
+ {
+  "rad": "vsuvka-z-poniklovanej-mosadze",
+  "poradie": 6,
+  "raw": {
+   "Art. No.": "VW280212",
+   "Závit (DN)": "2 1/2”M"
+  },
+  "obj_cislo": "VW280212",
+  "id": "VW280212",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW280212"
+ },
+ {
+  "rad": "vsuvka-z-poniklovanej-mosadze",
+  "poradie": 7,
+  "raw": {
+   "Art. No.": "VW2803",
+   "Závit (DN)": "3”M"
+  },
+  "obj_cislo": "VW2803",
+  "id": "VW2803",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW2803"
+ },
+ {
+  "rad": "vsuvka-z-poniklovanej-mosadze",
+  "poradie": 8,
+  "raw": {
+   "Art. No.": "VW2804",
+   "Závit (DN)": "4”M"
+  },
+  "obj_cislo": "VW2804",
+  "id": "VW2804",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW2804"
+ },
+ {
+  "rad": "redukcne-puzdro",
+  "poradie": 1,
+  "raw": {
+   "Art. No.": "VW2414434",
+   "Závit (DN)": "1”Mx3/4”F"
+  },
+  "obj_cislo": "VW2414434",
+  "id": "VW2414434",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW2414434"
+ },
+ {
+  "rad": "redukcne-puzdro",
+  "poradie": 2,
+  "raw": {
+   "Art. No.": "VW2415434",
+   "Závit (DN)": "1 1/4”Mx3/4”F"
+  },
+  "obj_cislo": "VW2415434",
+  "id": "VW2415434",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW2415434"
+ },
+ {
+  "rad": "redukcne-puzdro",
+  "poradie": 3,
+  "raw": {
+   "Art. No.": "VW2415444",
+   "Závit (DN)": "1 1/4”Mx1”F"
+  },
+  "obj_cislo": "VW2415444",
+  "id": "VW2415444",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW2415444"
+ },
+ {
+  "rad": "redukcne-puzdro",
+  "poradie": 4,
+  "raw": {
+   "Art. No.": "VW2416434",
+   "Závit (DN)": "1 1/2”Mx3/4”F"
+  },
+  "obj_cislo": "VW2416434",
+  "id": "VW2416434",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW2416434"
+ },
+ {
+  "rad": "redukcne-puzdro",
+  "poradie": 5,
+  "raw": {
+   "Art. No.": "VW2416444",
+   "Závit (DN)": "1 1/2”Mx1”F"
+  },
+  "obj_cislo": "VW2416444",
+  "id": "VW2416444",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW2416444"
+ },
+ {
+  "rad": "redukcne-puzdro",
+  "poradie": 6,
+  "raw": {
+   "Art. No.": "VW2416454",
+   "Závit (DN)": "1 1/2”Mx11/4”F"
+  },
+  "obj_cislo": "VW2416454",
+  "id": "VW2416454",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW2416454"
+ },
+ {
+  "rad": "redukcne-puzdro",
+  "poradie": 7,
+  "raw": {
+   "Art. No.": "VW241234",
+   "Závit (DN)": "2”Mx3/4”F"
+  },
+  "obj_cislo": "VW241234",
+  "id": "VW241234",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW241234"
+ },
+ {
+  "rad": "redukcne-puzdro",
+  "poradie": 8,
+  "raw": {
+   "Art. No.": "VW241244",
+   "Závit (DN)": "2”Mx1”F"
+  },
+  "obj_cislo": "VW241244",
+  "id": "VW241244",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW241244"
+ },
+ {
+  "rad": "redukcne-puzdro",
+  "poradie": 9,
+  "raw": {
+   "Art. No.": "VW241254",
+   "Závit (DN)": "2”Mx11/4”F"
+  },
+  "obj_cislo": "VW241254",
+  "id": "VW241254",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW241254"
+ },
+ {
+  "rad": "redukcne-puzdro",
+  "poradie": 10,
+  "raw": {
+   "Art. No.": "VW241264",
+   "Závit (DN)": "2”Mx11/2”F"
+  },
+  "obj_cislo": "VW241264",
+  "id": "VW241264",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW241264"
+ },
+ {
+  "rad": "redukcne-puzdro",
+  "poradie": 11,
+  "raw": {
+   "Art. No.": "VW24121254",
+   "Závit (DN)": "2 1/2”Mx11/4”F"
+  },
+  "obj_cislo": "VW24121254",
+  "id": "VW24121254",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW24121254"
+ },
+ {
+  "rad": "redukcne-puzdro",
+  "poradie": 12,
+  "raw": {
+   "Art. No.": "VW24121264",
+   "Závit (DN)": "2 1/2”Mx11/2”F"
+  },
+  "obj_cislo": "VW24121264",
+  "id": "VW24121264",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW24121264"
+ },
+ {
+  "rad": "redukcne-puzdro",
+  "poradie": 13,
+  "raw": {
+   "Art. No.": "VW2412122",
+   "Závit (DN)": "2 1/2”Mx2”F"
+  },
+  "obj_cislo": "VW2412122",
+  "id": "VW2412122",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW2412122"
+ },
+ {
+  "rad": "redukcne-puzdro",
+  "poradie": 14,
+  "raw": {
+   "Art. No.": "VW241344",
+   "Závit (DN)": "3”Mx1”F"
+  },
+  "obj_cislo": "VW241344",
+  "id": "VW241344",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW241344"
+ },
+ {
+  "rad": "redukcne-puzdro",
+  "poradie": 15,
+  "raw": {
+   "Art. No.": "VW241354",
+   "Závit (DN)": "3”Mx11/4”F"
+  },
+  "obj_cislo": "VW241354",
+  "id": "VW241354",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW241354"
+ },
+ {
+  "rad": "redukcne-puzdro",
+  "poradie": 16,
+  "raw": {
+   "Art. No.": "VW241364",
+   "Závit (DN)": "3”Mx11/2”F"
+  },
+  "obj_cislo": "VW241364",
+  "id": "VW241364",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW241364"
+ },
+ {
+  "rad": "redukcne-puzdro",
+  "poradie": 17,
+  "raw": {
+   "Art. No.": "VW24132",
+   "Závit (DN)": "3”Mx2”F"
+  },
+  "obj_cislo": "VW24132",
+  "id": "VW24132",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW24132"
+ },
+ {
+  "rad": "redukcne-puzdro",
+  "poradie": 18,
+  "raw": {
+   "Art. No.": "VW2413212",
+   "Závit (DN)": "3”Mx21/2”F"
+  },
+  "obj_cislo": "VW2413212",
+  "id": "VW2413212",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW2413212"
+ },
+ {
+  "rad": "redukcne-puzdro",
+  "poradie": 19,
+  "raw": {
+   "Art. No.": "VW24142",
+   "Závit (DN)": "4”Mx2”F"
+  },
+  "obj_cislo": "VW24142",
+  "id": "VW24142",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW24142"
+ },
+ {
+  "rad": "redukcne-puzdro",
+  "poradie": 20,
+  "raw": {
+   "Art. No.": "VW2414212",
+   "Závit (DN)": "4”Mx21/2”F"
+  },
+  "obj_cislo": "VW2414212",
+  "id": "VW2414212",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW2414212"
+ },
+ {
+  "rad": "redukcne-puzdro",
+  "poradie": 21,
+  "raw": {
+   "Art. No.": "VW24143",
+   "Závit (DN)": "4”Mx3”F"
+  },
+  "obj_cislo": "VW24143",
+  "id": "VW24143",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW24143"
+ },
+ {
+  "rad": "priruba-so-zavitom-z-pozinkovanej-ocele",
+  "poradie": 1,
+  "raw": {
+   "Art. No.": "MDF34",
+   "Závit (DN)": "3/4”F"
+  },
+  "obj_cislo": "MDF34",
+  "id": "MDF34",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MDF34"
+ },
+ {
+  "rad": "priruba-so-zavitom-z-pozinkovanej-ocele",
+  "poradie": 2,
+  "raw": {
+   "Art. No.": "MDF44",
+   "Závit (DN)": "1”F"
+  },
+  "obj_cislo": "MDF44",
+  "id": "MDF44",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MDF44"
+ },
+ {
+  "rad": "priruba-so-zavitom-z-pozinkovanej-ocele",
+  "poradie": 3,
+  "raw": {
+   "Art. No.": "MDF54",
+   "Závit (DN)": "1 1/4”F"
+  },
+  "obj_cislo": "MDF54",
+  "id": "MDF54",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MDF54"
+ },
+ {
+  "rad": "priruba-so-zavitom-z-pozinkovanej-ocele",
+  "poradie": 4,
+  "raw": {
+   "Art. No.": "MDF64",
+   "Závit (DN)": "1 1/2”F"
+  },
+  "obj_cislo": "MDF64",
+  "id": "MDF64",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MDF64"
+ },
+ {
+  "rad": "priruba-so-zavitom-z-pozinkovanej-ocele",
+  "poradie": 5,
+  "raw": {
+   "Art. No.": "MDF2",
+   "Závit (DN)": "2”F"
+  },
+  "obj_cislo": "MDF2",
+  "id": "MDF2",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MDF2"
+ },
+ {
+  "rad": "priruba-so-zavitom-z-pozinkovanej-ocele",
+  "poradie": 6,
+  "raw": {
+   "Art. No.": "MDF212",
+   "Závit (DN)": "2 1/2”F"
+  },
+  "obj_cislo": "MDF212",
+  "id": "MDF212",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MDF212"
+ },
+ {
+  "rad": "priruba-so-zavitom-z-pozinkovanej-ocele",
+  "poradie": 7,
+  "raw": {
+   "Art. No.": "MDF3",
+   "Závit (DN)": "3”F"
+  },
+  "obj_cislo": "MDF3",
+  "id": "MDF3",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MDF3"
+ },
+ {
+  "rad": "priruba-so-zavitom-z-pozinkovanej-ocele",
+  "poradie": 8,
+  "raw": {
+   "Art. No.": "MDF4",
+   "Závit (DN)": "4”F"
+  },
+  "obj_cislo": "MDF4",
+  "id": "MDF4",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MDF4"
+ },
+ {
+  "rad": "zatka",
+  "poradie": 1,
+  "raw": {
+   "Kód": "VW29034",
+   "Závit (inch)": "3/4”M"
+  },
+  "obj_cislo": "VW29034",
+  "id": "VW29034",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW29034"
+ },
+ {
+  "rad": "zatka",
+  "poradie": 2,
+  "raw": {
+   "Kód": "VW29044",
+   "Závit (inch)": "1”M"
+  },
+  "obj_cislo": "VW29044",
+  "id": "VW29044",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW29044"
+ },
+ {
+  "rad": "zatka",
+  "poradie": 3,
+  "raw": {
+   "Kód": "VW29054",
+   "Závit (inch)": "1 1/4”M"
+  },
+  "obj_cislo": "VW29054",
+  "id": "VW29054",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW29054"
+ },
+ {
+  "rad": "zatka",
+  "poradie": 4,
+  "raw": {
+   "Kód": "VW29064",
+   "Závit (inch)": "1 1/2”M"
+  },
+  "obj_cislo": "VW29064",
+  "id": "VW29064",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW29064"
+ },
+ {
+  "rad": "zatka",
+  "poradie": 5,
+  "raw": {
+   "Kód": "VW2902",
+   "Závit (inch)": "2”M"
+  },
+  "obj_cislo": "VW2902",
+  "id": "VW2902",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW2902"
+ },
+ {
+  "rad": "zatka",
+  "poradie": 6,
+  "raw": {
+   "Kód": "VW290212",
+   "Závit (inch)": "2 1/2”M"
+  },
+  "obj_cislo": "VW290212",
+  "id": "VW290212",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW290212"
+ },
+ {
+  "rad": "zatka",
+  "poradie": 7,
+  "raw": {
+   "Kód": "VW2903",
+   "Závit (inch)": "3”M"
+  },
+  "obj_cislo": "VW2903",
+  "id": "VW2903",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW2903"
+ },
+ {
+  "rad": "zatka",
+  "poradie": 8,
+  "raw": {
+   "Kód": "VW2904",
+   "Závit (inch)": "4”M"
+  },
+  "obj_cislo": "VW2904",
+  "id": "VW2904",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW2904"
+ },
+ {
+  "rad": "uzatvaraci-ventil",
+  "poradie": 1,
+  "raw": {
+   "Art. No.": "VW35034",
+   "Závit (DN)": "3/4”M"
+  },
+  "obj_cislo": "VW35034",
+  "id": "VW35034",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW35034"
+ },
+ {
+  "rad": "uzatvaraci-ventil",
+  "poradie": 2,
+  "raw": {
+   "Art. No.": "VW35044",
+   "Závit (DN)": "1”M"
+  },
+  "obj_cislo": "VW35044",
+  "id": "VW35044",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW35044"
+ },
+ {
+  "rad": "uzatvaraci-ventil",
+  "poradie": 3,
+  "raw": {
+   "Art. No.": "VW35054",
+   "Závit (DN)": "1 1/4”M"
+  },
+  "obj_cislo": "VW35054",
+  "id": "VW35054",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW35054"
+ },
+ {
+  "rad": "uzatvaraci-ventil",
+  "poradie": 4,
+  "raw": {
+   "Art. No.": "VW35064",
+   "Závit (DN)": "1 1/2”M"
+  },
+  "obj_cislo": "VW35064",
+  "id": "VW35064",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW35064"
+ },
+ {
+  "rad": "uzatvaraci-ventil",
+  "poradie": 5,
+  "raw": {
+   "Art. No.": "VW3502",
+   "Závit (DN)": "2”M"
+  },
+  "obj_cislo": "VW3502",
+  "id": "VW3502",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW3502"
+ },
+ {
+  "rad": "uzatvaraci-ventil",
+  "poradie": 6,
+  "raw": {
+   "Art. No.": "VW350212",
+   "Závit (DN)": "2 1/2”M"
+  },
+  "obj_cislo": "VW350212",
+  "id": "VW350212",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW350212"
+ },
+ {
+  "rad": "uzatvaraci-ventil",
+  "poradie": 7,
+  "raw": {
+   "Art. No.": "VW3503",
+   "Závit (DN)": "3”M"
+  },
+  "obj_cislo": "VW3503",
+  "id": "VW3503",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW3503"
+ },
+ {
+  "rad": "uzatvaraci-ventil",
+  "poradie": 8,
+  "raw": {
+   "Art. No.": "VW3504",
+   "Závit (DN)": "4”M"
+  },
+  "obj_cislo": "VW3504",
+  "id": "VW3504",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=VW3504"
+ },
+ {
+  "rad": "uzatvara-prach-na-jednom-potrubi",
+  "poradie": 1,
+  "raw": {
+   "Kód": "MS7525",
+   "Popis": "75/25"
+  },
+  "obj_cislo": "MS7525",
+  "id": "MS7525",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MS7525"
+ },
+ {
+  "rad": "uzatvara-prach-na-jednom-potrubi",
+  "poradie": 2,
+  "raw": {
+   "Kód": "MS7532",
+   "Popis": "75/32"
+  },
+  "obj_cislo": "MS7532",
+  "id": "MS7532",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MS7532"
+ },
+ {
+  "rad": "uzatvara-prach-na-jednom-potrubi",
+  "poradie": 3,
+  "raw": {
+   "Kód": "MS9032",
+   "Popis": "90/32"
+  },
+  "obj_cislo": "MS9032",
+  "id": "MS9032",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MS9032"
+ },
+ {
+  "rad": "uzatvara-prach-na-jednom-potrubi",
+  "poradie": 4,
+  "raw": {
+   "Kód": "MS9040",
+   "Popis": "90/40"
+  },
+  "obj_cislo": "MS9040",
+  "id": "MS9040",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MS9040"
+ },
+ {
+  "rad": "uzatvara-prach-na-jednom-potrubi",
+  "poradie": 5,
+  "raw": {
+   "Kód": "MS12540",
+   "Popis": "125/40"
+  },
+  "obj_cislo": "MS12540",
+  "id": "MS12540",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MS12540"
+ },
+ {
+  "rad": "uzatvara-prach-na-jednom-potrubi",
+  "poradie": 6,
+  "raw": {
+   "Kód": "MS12550",
+   "Popis": "125/50"
+  },
+  "obj_cislo": "MS12550",
+  "id": "MS12550",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MS12550"
+ },
+ {
+  "rad": "uzatvara-prach-na-jednom-potrubi",
+  "poradie": 7,
+  "raw": {
+   "Kód": "MS12563",
+   "Popis": "125/63"
+  },
+  "obj_cislo": "MS12563",
+  "id": "MS12563",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MS12563"
+ },
+ {
+  "rad": "uzatvara-prach-na-jednom-potrubi",
+  "poradie": 8,
+  "raw": {
+   "Kód": "MS16040",
+   "Popis": "160/40"
+  },
+  "obj_cislo": "MS16040",
+  "id": "MS16040",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MS16040"
+ },
+ {
+  "rad": "uzatvara-prach-na-jednom-potrubi",
+  "poradie": 9,
+  "raw": {
+   "Kód": "MS16050",
+   "Popis": "160/50"
+  },
+  "obj_cislo": "MS16050",
+  "id": "MS16050",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MS16050"
+ },
+ {
+  "rad": "uzatvara-prach-na-jednom-potrubi",
+  "poradie": 10,
+  "raw": {
+   "Kód": "MS16063",
+   "Popis": "160/63"
+  },
+  "obj_cislo": "MS16063",
+  "id": "MS16063",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MS16063"
+ },
+ {
+  "rad": "uzatvara-prach-na-jednom-potrubi",
+  "poradie": 11,
+  "raw": {
+   "Kód": "MS16075",
+   "Popis": "160/75"
+  },
+  "obj_cislo": "MS16075",
+  "id": "MS16075",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MS16075"
+ },
+ {
+  "rad": "uzatvara-prach-na-jednom-potrubi",
+  "poradie": 12,
+  "raw": {
+   "Kód": "MS16090",
+   "Popis": "160/90"
+  },
+  "obj_cislo": "MS16090",
+  "id": "MS16090",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MS16090"
+ },
+ {
+  "rad": "uzatvara-prach-na-jednom-potrubi",
+  "poradie": 13,
+  "raw": {
+   "Kód": "MS20075",
+   "Popis": "200/75"
+  },
+  "obj_cislo": "MS20075",
+  "id": "MS20075",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MS20075"
+ },
+ {
+  "rad": "uzatvara-prach-na-jednom-potrubi",
+  "poradie": 14,
+  "raw": {
+   "Kód": "MS20090",
+   "Popis": "200/90"
+  },
+  "obj_cislo": "MS20090",
+  "id": "MS20090",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MS20090"
+ },
+ {
+  "rad": "uzatvara-prach-na-jednom-potrubi",
+  "poradie": 15,
+  "raw": {
+   "Kód": "MS200110",
+   "Popis": "200/110"
+  },
+  "obj_cislo": "MS200110",
+  "id": "MS200110",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MS200110"
+ },
+ {
+  "rad": "uzatvara-prach-na-dvojitom-potrubi",
+  "poradie": 1,
+  "raw": {
+   "Kód": "MSD12525",
+   "Popis": "125/2x25"
+  },
+  "obj_cislo": "MSD12525",
+  "id": "MSD12525",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MSD12525"
+ },
+ {
+  "rad": "uzatvara-prach-na-dvojitom-potrubi",
+  "poradie": 2,
+  "raw": {
+   "Kód": "MSD12532",
+   "Popis": "125/2x32"
+  },
+  "obj_cislo": "MSD12532",
+  "id": "MSD12532",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MSD12532"
+ },
+ {
+  "rad": "uzatvara-prach-na-dvojitom-potrubi",
+  "poradie": 3,
+  "raw": {
+   "Kód": "MSD16025",
+   "Popis": "160/2x25"
+  },
+  "obj_cislo": "MSD16025",
+  "id": "MSD16025",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MSD16025"
+ },
+ {
+  "rad": "uzatvara-prach-na-dvojitom-potrubi",
+  "poradie": 4,
+  "raw": {
+   "Kód": "MSD16032",
+   "Popis": "160/2x32"
+  },
+  "obj_cislo": "MSD16032",
+  "id": "MSD16032",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MSD16032"
+ },
+ {
+  "rad": "uzatvara-prach-na-dvojitom-potrubi",
+  "poradie": 5,
+  "raw": {
+   "Kód": "MSD16040",
+   "Popis": "160/2x40"
+  },
+  "obj_cislo": "MSD16040",
+  "id": "MSD16040",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MSD16040"
+ },
+ {
+  "rad": "uzatvara-prach-na-dvojitom-potrubi",
+  "poradie": 6,
+  "raw": {
+   "Kód": "MSD16050",
+   "Popis": "160/2x50"
+  },
+  "obj_cislo": "MSD16050",
+  "id": "MSD16050",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MSD16050"
+ },
+ {
+  "rad": "uzatvara-prach-na-dvojitom-potrubi",
+  "poradie": 7,
+  "raw": {
+   "Kód": "MSD20050",
+   "Popis": "200/2x50"
+  },
+  "obj_cislo": "MSD20050",
+  "id": "MSD20050",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MSD20050"
+ },
+ {
+  "rad": "uzatvara-prach-na-dvojitom-potrubi",
+  "poradie": 8,
+  "raw": {
+   "Kód": "MSD20063",
+   "Popis": "200/2x63"
+  },
+  "obj_cislo": "MSD20063",
+  "id": "MSD20063",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MSD20063"
+ },
+ {
+  "rad": "uzatvara-prach-na-potrubi-quadro",
+  "poradie": 1,
+  "raw": {
+   "Kód": "MSQ160252520",
+   "Popis": "160/2x25+25+20"
+  },
+  "obj_cislo": "MSQ160252520",
+  "id": "MSQ160252520",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MSQ160252520"
+ },
+ {
+  "rad": "uzatvara-prach-na-potrubi-quadro",
+  "poradie": 2,
+  "raw": {
+   "Kód": "MSQ160322520",
+   "Popis": "160/2x32+25+20"
+  },
+  "obj_cislo": "MSQ160322520",
+  "id": "MSQ160322520",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MSQ160322520"
+ },
+ {
+  "rad": "uzatvara-prach-na-potrubi-quadro",
+  "poradie": 3,
+  "raw": {
+   "Kód": "MSQ160323225",
+   "Popis": "160/2x32+32+25"
+  },
+  "obj_cislo": "MSQ160323225",
+  "id": "MSQ160323225",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MSQ160323225"
+ },
+ {
+  "rad": "uzatvara-prach-na-potrubi-quadro",
+  "poradie": 4,
+  "raw": {
+   "Kód": "MSQ200404028",
+   "Popis": "200/2x40+40+28"
+  },
+  "obj_cislo": "MSQ200404028",
+  "id": "MSQ200404028",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MSQ200404028"
+ },
+ {
+  "rad": "teplom-zmrstitelne-hlavice-pre-uno-rurku",
+  "poradie": 1,
+  "raw": {
+   "Kód": "MK2000",
+   "Popis": "MICROFLEX 75/25"
+  },
+  "obj_cislo": "MK2000",
+  "id": "MK2000",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MK2000"
+ },
+ {
+  "rad": "teplom-zmrstitelne-hlavice-pre-uno-rurku",
+  "poradie": 2,
+  "raw": {
+   "Kód": "MK2100",
+   "Popis": "MICROFLEX 75-90/32"
+  },
+  "obj_cislo": "MK2100",
+  "id": "MK2100",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MK2100"
+ },
+ {
+  "rad": "teplom-zmrstitelne-hlavice-pre-uno-rurku",
+  "poradie": 3,
+  "raw": {
+   "Kód": "MK2060",
+   "Popis": "MICROFLEX 125/25"
+  },
+  "obj_cislo": "MK2060",
+  "id": "MK2060",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MK2060"
+ },
+ {
+  "rad": "teplom-zmrstitelne-hlavice-pre-uno-rurku",
+  "poradie": 4,
+  "raw": {
+   "Kód": "MK2200",
+   "Popis": "MICROFLEX 125/32-40"
+  },
+  "obj_cislo": "MK2200",
+  "id": "MK2200",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MK2200"
+ },
+ {
+  "rad": "teplom-zmrstitelne-hlavice-pre-uno-rurku",
+  "poradie": 5,
+  "raw": {
+   "Kód": "MK2400",
+   "Popis": "MICROFLEX 125/50-63"
+  },
+  "obj_cislo": "MK2400",
+  "id": "MK2400",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MK2400"
+ },
+ {
+  "rad": "teplom-zmrstitelne-hlavice-pre-uno-rurku",
+  "poradie": 6,
+  "raw": {
+   "Kód": "MK2340",
+   "Popis": "MICROFLEX 160/32-40-50"
+  },
+  "obj_cislo": "MK2340",
+  "id": "MK2340",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MK2340"
+ },
+ {
+  "rad": "teplom-zmrstitelne-hlavice-pre-uno-rurku",
+  "poradie": 7,
+  "raw": {
+   "Kód": "MK2500",
+   "Popis": "MICROFLEX 160/63-75-90"
+  },
+  "obj_cislo": "MK2500",
+  "id": "MK2500",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MK2500"
+ },
+ {
+  "rad": "teplom-zmrstitelne-hlavice-pre-uno-rurku",
+  "poradie": 8,
+  "raw": {
+   "Kód": "MK2600",
+   "Popis": "MICROFLEX 200/75-90-110"
+  },
+  "obj_cislo": "MK2600",
+  "id": "MK2600",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MK2600"
+ },
+ {
+  "rad": "teplom-zmrstitelne-hlavice-pre-rurku-duo",
+  "poradie": 1,
+  "raw": {
+   "Kód": "MK3250-P604",
+   "Popis": "MICROFLEX 125/25х20-32х25"
+  },
+  "obj_cislo": "MK3250-P604",
+  "id": "MK3250-P604",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MK3250-P604"
+ },
+ {
+  "rad": "teplom-zmrstitelne-hlavice-pre-rurku-duo",
+  "poradie": 2,
+  "raw": {
+   "Kód": "MK3280",
+   "Popis": "MICROFLEX 125/32х32"
+  },
+  "obj_cislo": "MK3280",
+  "id": "MK3280",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MK3280"
+ },
+ {
+  "rad": "teplom-zmrstitelne-hlavice-pre-rurku-duo",
+  "poradie": 3,
+  "raw": {
+   "Kód": "MK3350-01",
+   "Popis": "MICROFLEX 160/2x25-2х32"
+  },
+  "obj_cislo": "MK3350-01",
+  "id": "MK3350-01",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MK3350-01"
+ },
+ {
+  "rad": "teplom-zmrstitelne-hlavice-pre-rurku-duo",
+  "poradie": 4,
+  "raw": {
+   "Kód": "MK3350-02",
+   "Popis": "MICROFLEX 160/2x40"
+  },
+  "obj_cislo": "MK3350-02",
+  "id": "MK3350-02",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MK3350-02"
+ },
+ {
+  "rad": "teplom-zmrstitelne-hlavice-pre-rurku-duo",
+  "poradie": 5,
+  "raw": {
+   "Kód": "MK3350-03",
+   "Popis": "MICROFLEX 160-200/2x50"
+  },
+  "obj_cislo": "MK3350-03",
+  "id": "MK3350-03",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MK3350-03"
+ },
+ {
+  "rad": "teplom-zmrstitelne-hlavice-pre-rurku-duo",
+  "poradie": 6,
+  "raw": {
+   "Kód": "MK3350-05",
+   "Popis": "MICROFLEX 200/2х63"
+  },
+  "obj_cislo": "MK3350-05",
+  "id": "MK3350-05",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MK3350-05"
+ },
+ {
+  "rad": "pripojovacia-sada-pre-microflex-cool-s-vykurovacou-paskou",
+  "poradie": 1,
+  "raw": {
+   "Výrobné číslo": "MVTH",
+   "Popis": "Termostat"
+  },
+  "obj_cislo": "MVTH",
+  "id": "MVTH",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MVTH"
+ },
+ {
+  "rad": "pripojovacia-sada-pre-microflex-cool-s-vykurovacou-paskou",
+  "poradie": 2,
+  "raw": {
+   "Výrobné číslo": "MVBOX",
+   "Popis": "Rozvodná skrinka"
+  },
+  "obj_cislo": "MVBOX",
+  "id": "MVBOX",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MVBOX"
+ },
+ {
+  "rad": "pripojovacia-sada-pre-microflex-cool-s-vykurovacou-paskou",
+  "poradie": 3,
+  "raw": {
+   "Výrobné číslo": "MVKITGR10W",
+   "Popis": "Izolačná sada do 10 W"
+  },
+  "obj_cislo": "MVKITGR10W",
+  "id": "MVKITGR10W",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MVKITGR10W"
+ },
+ {
+  "rad": "pripojovacia-sada-pre-microflex-cool-s-vykurovacou-paskou",
+  "poradie": 4,
+  "raw": {
+   "Výrobné číslo": "MVKITGR18W",
+   "Popis": "Izolačná sada do 18 W"
+  },
+  "obj_cislo": "MVKITGR18W",
+  "id": "MVKITGR18W",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MVKITGR18W"
+ },
+ {
+  "rad": "pripojovacia-sada-pre-microflex-cool-s-vykurovacou-paskou",
+  "poradie": 5,
+  "raw": {
+   "Výrobné číslo": "MVKITM10W",
+   "Popis": "1 x MVBOX + 2 x MVKITGR10W"
+  },
+  "obj_cislo": "MVKITM10W",
+  "id": "MVKITM10W",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MVKITM10W"
+ },
+ {
+  "rad": "pripojovacia-sada-pre-microflex-cool-s-vykurovacou-paskou",
+  "poradie": 6,
+  "raw": {
+   "Výrobné číslo": "MVKITM18W",
+   "Popis": "1 x MVBOX + 2 x MVKITGR18W"
+  },
+  "obj_cislo": "MVKITM18W",
+  "id": "MVKITM18W",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MVKITM18W"
+ },
+ {
+  "rad": "pripojovacia-sada-pre-microflex-cool-s-vykurovacou-paskou",
+  "poradie": 7,
+  "raw": {
+   "Výrobné číslo": "MVKITT10W",
+   "Popis": "1 x MVBOX + 3 x MVKITGR10W"
+  },
+  "obj_cislo": "MVKITT10W",
+  "id": "MVKITT10W",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MVKITT10W"
+ },
+ {
+  "rad": "pripojovacia-sada-pre-microflex-cool-s-vykurovacou-paskou",
+  "poradie": 8,
+  "raw": {
+   "Výrobné číslo": "MVKITT18W",
+   "Popis": "1 x MVBOX + 3 x MVKITGR18W"
+  },
+  "obj_cislo": "MVKITT18W",
+  "id": "MVKITT18W",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MVKITT18W"
+ },
+ {
+  "rad": "redukcia-pre-izolovanu-supravu-t-kusu",
+  "poradie": 1,
+  "raw": {
+   "Kód": "MR24116075",
+   "Popis": "160 to 75/90 reduction",
+   "Váha (kg)": "1,40"
+  },
+  "obj_cislo": "MR24116075",
+  "hmotnost_kg_m": 1.4,
+  "id": "MR24116075",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MR24116075"
+ },
+ {
+  "rad": "izolovana-sada-s-dvojitym-t-kusom",
+  "poradie": 1,
+  "raw": {
+   "Kód": "MDT201612",
+   "Microflex pipe with casing dout (mm)": "200/160/125мм",
+   "L (mm)": "1170",
+   "W (mm)": "1200",
+   "H (mm)": "270",
+   "Váha (kg)": "21,50"
+  },
+  "obj_cislo": "MDT201612",
+  "plast_mm": null,
+  "hmotnost_kg_m": 21.5,
+  "id": "MDT201612",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MDT201612"
+ },
+ {
+  "rad": "izolovana-suprava-i-kus",
+  "poradie": 1,
+  "raw": {
+   "Kód": "MM129075",
+   "Microflex pipe with casing dout (mm)": "125/90/75мм",
+   "L (mm)": "960",
+   "W (mm)": "290",
+   "H (mm)": "200",
+   "Váha(kg)": "5,50"
+  },
+  "obj_cislo": "MM129075",
+  "plast_mm": null,
+  "hmotnost_kg_m": 5.5,
+  "id": "MM129075",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MM129075"
+ },
+ {
+  "rad": "izolovana-suprava-i-kus",
+  "poradie": 2,
+  "raw": {
+   "Kód": "MM201612",
+   "Microflex pipe with casing dout (mm)": "200/160/125мм",
+   "L (mm)": "1170",
+   "W (mm)": "345",
+   "H (mm)": "270",
+   "Váha(kg)": "8,00"
+  },
+  "obj_cislo": "MM201612",
+  "plast_mm": null,
+  "hmotnost_kg_m": 8.0,
+  "id": "MM201612",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MM201612"
+ },
+ {
+  "rad": "izolacna-sada-i-variant",
+  "poradie": 1,
+  "raw": {
+   "Kód": "MM75/90",
+   "Microflex pipe with casing dout (mm)": "75/90мм",
+   "L (mm)": "700",
+   "MM insulation kit dout (mm)": "110",
+   "Váha (kg)": "1,45"
+  },
+  "obj_cislo": "MM75/90",
+  "plast_mm": null,
+  "hmotnost_kg_m": 1.45,
+  "id": "MM75/90",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MM75/90"
+ },
+ {
+  "rad": "izolacna-sada-i-variant",
+  "poradie": 2,
+  "raw": {
+   "Kód": "MM125",
+   "Microflex pipe with casing dout (mm)": "125мм",
+   "L (mm)": "850",
+   "MM insulation kit dout (mm)": "140",
+   "Váha (kg)": "2,50"
+  },
+  "obj_cislo": "MM125",
+  "plast_mm": null,
+  "hmotnost_kg_m": 2.5,
+  "id": "MM125",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MM125"
+ },
+ {
+  "rad": "izolacna-sada-i-variant",
+  "poradie": 3,
+  "raw": {
+   "Kód": "MM160",
+   "Microflex pipe with casing dout (mm)": "160мм",
+   "L (mm)": "1000",
+   "MM insulation kit dout (mm)": "180",
+   "Váha (kg)": "5,45"
+  },
+  "obj_cislo": "MM160",
+  "plast_mm": null,
+  "hmotnost_kg_m": 5.45,
+  "id": "MM160",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MM160"
+ },
+ {
+  "rad": "izolacna-sada-i-variant",
+  "poradie": 4,
+  "raw": {
+   "Kód": "MM200",
+   "Microflex pipe with casing dout (mm)": "200мм",
+   "L (mm)": "1000",
+   "MM insulation kit dout (mm)": "225",
+   "Váha (kg)": "7,15"
+  },
+  "obj_cislo": "MM200",
+  "plast_mm": null,
+  "hmotnost_kg_m": 7.15,
+  "id": "MM200",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MM200"
+ },
+ {
+  "rad": "izolovana-suprava-t-kusu",
+  "poradie": 1,
+  "raw": {
+   "Kód": "MT129075",
+   "Microflex pipe with casing dout (mm)": "125/90/75мм",
+   "L (mm)": "960",
+   "W (mm)": "590",
+   "H (mm)": "200",
+   "Váha (kg)": "7,50"
+  },
+  "obj_cislo": "MT129075",
+  "plast_mm": null,
+  "hmotnost_kg_m": 7.5,
+  "id": "MT129075",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MT129075"
+ },
+ {
+  "rad": "izolovana-suprava-t-kusu",
+  "poradie": 2,
+  "raw": {
+   "Kód": "MT201612",
+   "Microflex pipe with casing dout (mm)": "200/160/125мм",
+   "L (mm)": "1170",
+   "W (mm)": "750",
+   "H (mm)": "270",
+   "Váha (kg)": "11,65"
+  },
+  "obj_cislo": "MT201612",
+  "plast_mm": null,
+  "hmotnost_kg_m": 11.65,
+  "id": "MT201612",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MT201612"
+ },
+ {
+  "rad": "zateplene-koleno-90",
+  "poradie": 1,
+  "raw": {
+   "Kód": "MH201612",
+   "Microflex pipe with casing dout (mm)": "200/160/125",
+   "L (mm)": "740",
+   "W (mm)": "740",
+   "H (mm)": "270",
+   "Váha (kg)": "7,50"
+  },
+  "obj_cislo": "MH201612",
+  "plast_mm": null,
+  "hmotnost_kg_m": 7.5,
+  "id": "MH201612",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MH201612"
+ },
+ {
+  "rad": "izolovana-suprava-na-pripojenie-y",
+  "poradie": 1,
+  "raw": {
+   "Kód": "MBR201612",
+   "Microflex pipe with casing dout (mm)": "200/160/125",
+   "L (mm)": "1170",
+   "W (mm)": "460",
+   "H (mm)": "230",
+   "Váha (kg)": "7,00"
+  },
+  "obj_cislo": "MBR201612",
+  "plast_mm": null,
+  "hmotnost_kg_m": 7.0,
+  "id": "MBR201612",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MBR201612"
+ },
+ {
+  "rad": "mhm-zmrstovacia-buzirka-na-opravu",
+  "poradie": 1,
+  "raw": {
+   "Kód": "MMDV75/90",
+   "Popis": "75/90"
+  },
+  "obj_cislo": "MMDV75/90",
+  "id": "MMDV75/90",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MMDV75/90"
+ },
+ {
+  "rad": "mhm-zmrstovacia-buzirka-na-opravu",
+  "poradie": 2,
+  "raw": {
+   "Kód": "MHM125",
+   "Popis": "125"
+  },
+  "obj_cislo": "MHM125",
+  "id": "MHM125",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MHM125"
+ },
+ {
+  "rad": "mhm-zmrstovacia-buzirka-na-opravu",
+  "poradie": 3,
+  "raw": {
+   "Kód": "MHM160",
+   "Popis": "160"
+  },
+  "obj_cislo": "MHM160",
+  "id": "MHM160",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MHM160"
+ },
+ {
+  "rad": "mhm-zmrstovacia-buzirka-na-opravu",
+  "poradie": 4,
+  "raw": {
+   "Kód": "MHM235",
+   "Popis": "200"
+  },
+  "obj_cislo": "MHM235",
+  "id": "MHM235",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MHM235"
+ },
+ {
+  "rad": "opravna-paska",
+  "poradie": 1,
+  "raw": {
+   "Kód": "MHK150",
+   "Opravna páska": "Páska nanášaná za studena",
+   "L x W (m)": "10 x 0,15"
+  },
+  "obj_cislo": "MHK150",
+  "id": "MHK150",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MHK150"
+ },
+ {
+  "rad": "opravna-paska",
+  "poradie": 2,
+  "raw": {
+   "Kód": "MHB200",
+   "Opravna páska": "Teplom zmrštiteľná páska",
+   "L x W (m)": "10 x 0.20"
+  },
+  "obj_cislo": "MHB200",
+  "id": "MHB200",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MHB200"
+ },
+ {
+  "rad": "vystrazna-paska",
+  "poradie": 1,
+  "raw": {
+   "Kód": "MTRW",
+   "Výstražná páska": "Pozor: vodovodné potrubie (červené)"
+  },
+  "obj_cislo": "MTRW",
+  "id": "MTRW",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MTRW"
+ },
+ {
+  "rad": "vystrazna-paska",
+  "poradie": 2,
+  "raw": {
+   "Kód": "MTRB",
+   "Výstražná páska": "Pozor: vodovodné potrubie s vykurovacím káblom (modré)"
+  },
+  "obj_cislo": "MTRB",
+  "id": "MTRB",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MTRB"
+ },
+ {
+  "rad": "priechodka-steny-mmdv-pre-vodu-bez-tlaku",
+  "poradie": 1,
+  "raw": {
+   "Kód": "MMDV75/90",
+   "Rúrka Microflex s doutom plášťa (mm)": "75/90мм",
+   "Nástenné priechodné potrubie dout (mm)": "110",
+   "Otvor na stenu (mm)": "210"
+  },
+  "obj_cislo": "MMDV75/90",
+  "plast_mm": null,
+  "id": "MMDV75/90",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MMDV75/90"
+ },
+ {
+  "rad": "priechodka-steny-mmdv-pre-vodu-bez-tlaku",
+  "poradie": 2,
+  "raw": {
+   "Kód": "MMDV125",
+   "Rúrka Microflex s doutom plášťa (mm)": "125мм",
+   "Nástenné priechodné potrubie dout (mm)": "160",
+   "Otvor na stenu (mm)": "260"
+  },
+  "obj_cislo": "MMDV125",
+  "plast_mm": null,
+  "id": "MMDV125",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MMDV125"
+ },
+ {
+  "rad": "priechodka-steny-mmdv-pre-vodu-bez-tlaku",
+  "poradie": 3,
+  "raw": {
+   "Kód": "MMDV160",
+   "Rúrka Microflex s doutom plášťa (mm)": "160мм",
+   "Nástenné priechodné potrubie dout (mm)": "200",
+   "Otvor na stenu (mm)": "300"
+  },
+  "obj_cislo": "MMDV160",
+  "plast_mm": null,
+  "id": "MMDV160",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MMDV160"
+ },
+ {
+  "rad": "priechodka-steny-mmdv-pre-vodu-bez-tlaku",
+  "poradie": 4,
+  "raw": {
+   "Kód": "MMDV200",
+   "Rúrka Microflex s doutom plášťa (mm)": "200мм",
+   "Nástenné priechodné potrubie dout (mm)": "235",
+   "Otvor na stenu (mm)": "350"
+  },
+  "obj_cislo": "MMDV200",
+  "plast_mm": null,
+  "id": "MMDV200",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MMDV200"
+ },
+ {
+  "rad": "tesnenie-na-prienik-na-stenu-micro-press",
+  "poradie": 1,
+  "raw": {
+   "Kód": "M10627",
+   "Outer casing Ø out (mm)": "75",
+   "Core hole/ wallsleeve (mm)": "125"
+  },
+  "obj_cislo": "M10627",
+  "plast_mm": 75,
+  "id": "M10627",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M10627"
+ },
+ {
+  "rad": "tesnenie-na-prienik-na-stenu-micro-press",
+  "poradie": 2,
+  "raw": {
+   "Kód": "M10634",
+   "Outer casing Ø out (mm)": "90",
+   "Core hole/ wallsleeve (mm)": "150"
+  },
+  "obj_cislo": "M10634",
+  "plast_mm": 90,
+  "id": "M10634",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M10634"
+ },
+ {
+  "rad": "tesnenie-na-prienik-na-stenu-micro-press",
+  "poradie": 3,
+  "raw": {
+   "Kód": "M10643",
+   "Outer casing Ø out (mm)": "125",
+   "Core hole/ wallsleeve (mm)": "200"
+  },
+  "obj_cislo": "M10643",
+  "plast_mm": 125,
+  "id": "M10643",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M10643"
+ },
+ {
+  "rad": "tesnenie-na-prienik-na-stenu-micro-press",
+  "poradie": 4,
+  "raw": {
+   "Kód": "M10653",
+   "Outer casing Ø out (mm)": "160",
+   "Core hole/ wallsleeve (mm)": "250"
+  },
+  "obj_cislo": "M10653",
+  "plast_mm": 160,
+  "id": "M10653",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M10653"
+ },
+ {
+  "rad": "tesnenie-na-prienik-na-stenu-micro-press",
+  "poradie": 5,
+  "raw": {
+   "Kód": "M10657",
+   "Outer casing Ø out (mm)": "200",
+   "Core hole/ wallsleeve (mm)": "250"
+  },
+  "obj_cislo": "M10657",
+  "plast_mm": 200,
+  "id": "M10657",
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M10657"
+ }
+]

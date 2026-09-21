@@ -1,0 +1,2611 @@
+[
+ {
+  "id": "3-x-ohrev-spojky-pe-x-t",
+  "slug": "3-x-ohrev-spojky-pe-x-t",
+  "skupina": "pe-x-spojky-vykurovanie-a-cool",
+  "kategoria": "spojky",
+  "nazov": "3 x ohrev spojky PE-X T.",
+  "nazov_watts": "3 x ohrev spojky PE-X T.",
+  "popis": "Spojka typu T na použitie v potrubných systémoch vybavených dopravnými rúrami na vykurovanie, studenú alebo chladiacu vodu.Spojka má dlhú nosnú rúrku pre optimálne upnutie, kónické pripojenie vonkajšieho závitu a upínací krúžok so skrutkou z nehrdzavejúcej ocele. Priložený diaľkový ovládač uľahčuje montáž spojky.Pre podzemné prípojky sa odporúča použitie izolačnej súpravy T so zmršťovacími krytmi alebo koncovými krytmi EPDM.Pokyny na montáž: pozri náš inštalačný manuál.",
+  "subory": [
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   }
+  ],
+  "pocet_variantov": 12,
+  "tabulky": [
+   {
+    "head": [
+     "Art. No.",
+     "PE-X dout/S (mm)",
+     "Thread (inch)",
+     "ø Outer Diameter of Pipe (mm)"
+    ],
+    "rows": [
+     [
+      "MJ13025/23",
+      "25/2.3",
+      "3 x 3/4\"",
+      "25 x 25 x 25"
+     ],
+     [
+      "MJ13032/29",
+      "32/2.9",
+      "3 x 1\"",
+      "32 x 32 x 32"
+     ],
+     [
+      "MJ1304032/37",
+      "40/3.7 + 32/2.9",
+      "2 x 1 1/4\" + 1 x 1\"",
+      "40 x 32 x 40"
+     ],
+     [
+      "MJ13040/37",
+      "40/3.7",
+      "3 x 1 1/4\"",
+      "40 x 40 x 40"
+     ],
+     [
+      "MJ1305040/46",
+      "50/4.6 + 40/3.7",
+      "2 x 1 1/2\" + 1 x 1 1/4\"",
+      "50 x 40 x 50"
+     ],
+     [
+      "MJ13050/46",
+      "50/4.6",
+      "2 x 1 1/2\"",
+      "50 x 50 x 50"
+     ],
+     [
+      "MJ1306350/58",
+      "63/5.8 + 50/4.6",
+      "2 x 2\" + 1 x 1 1/2\"",
+      "63 x 50 x 63"
+     ],
+     [
+      "MJ13063/58",
+      "63/5.8",
+      "3 x 2\"",
+      "63 x 63 x 63"
+     ],
+     [
+      "MJ13075/68",
+      "75/6.8",
+      "3 x 2 1/2\"",
+      "75 x 75 x 75"
+     ],
+     [
+      "MJ13090/82",
+      "90/8.2",
+      "3 x 3\"",
+      "90 x 90 x 90"
+     ],
+     [
+      "MJ130110/100",
+      "110/10.0",
+      "3 x 4\"",
+      "110 x 110 x 110"
+     ],
+     [
+      "MJ130125/114",
+      "125/11.4",
+      "3 x 4\"",
+      "125 x 125 x 125"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/pe-x-couplings-for-heating-and-cool-pipes/coupling-heating-mj130",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "pe-x-x-pe-x-spojka-kurenie",
+  "slug": "pe-x-x-pe-x-spojka-kurenie",
+  "skupina": "pe-x-spojky-vykurovanie-a-cool",
+  "kategoria": "spojky",
+  "nazov": "PE-X x PE-X spojka Kúrenie",
+  "nazov_watts": "PE-X x PE-X spojka Kúrenie",
+  "popis": "Pripojovacia spojka PE-X-PE-X na použitie v potrubných systémoch vybavených dopravnými rúrami na vykurovanie, studenú alebo chladiacu vodu.Spojka má dlhú nosnú rúrku pre optimálne upnutie, kónické pripojenie vonkajšieho závitu a upínací krúžok so skrutkou z nehrdzavejúcej ocele. Priložený diaľkový ovládač uľahčuje montáž spojky.Pre podzemné prípojky sa odporúča použitie priamej izolačnej súpravy so zmršťovacími krytmi alebo koncovými krytmi EPDM.Pokyny na montáž: pozri náš inštalačný manuál.",
+  "subory": [
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   }
+  ],
+  "pocet_variantov": 9,
+  "tabulky": [
+   {
+    "head": [
+     "Art. No.",
+     "PE-X dout/s (mm)",
+     "Thread (inch)",
+     "Ø Outer Diameter of Pipe (mm)",
+     "Weight (kg)"
+    ],
+    "rows": [
+     [
+      "MJ27025/23",
+      "25/2.3",
+      "2 x 3/4”",
+      "25x25",
+      "0.35"
+     ],
+     [
+      "MJ27032/29",
+      "32/2.9",
+      "2 x 1”",
+      "32x32",
+      "0.45"
+     ],
+     [
+      "MJ27040/37",
+      "40/3.7",
+      "2 x 1 1/4”",
+      "40x40",
+      "0.80"
+     ],
+     [
+      "MJ27050/46",
+      "50/4.6",
+      "2 x 1 1/2”",
+      "50x50",
+      "1.35"
+     ],
+     [
+      "MJ27063/58",
+      "63/5.8",
+      "2 x 2”",
+      "63x63",
+      "2.10"
+     ],
+     [
+      "MJ27075/68",
+      "75/6.8",
+      "2 x 2 1/2”",
+      "75x75",
+      "2.90"
+     ],
+     [
+      "MJ27090/82",
+      "90/8.2",
+      "2 x 3”",
+      "90x90",
+      "5.10"
+     ],
+     [
+      "MJ270110/10",
+      "110/10.0",
+      "2 x 4”",
+      "110x110",
+      "6.90"
+     ],
+     [
+      "MJ270125/114",
+      "125/11.4",
+      "2 x 4”",
+      "125x125",
+      "9.95"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/pe-x-couplings-for-heating-and-cool-pipes/coupling-heating-mj270",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "pe-x-x-pe-x-koleno-spojky-vykurovanie",
+  "slug": "pe-x-x-pe-x-koleno-spojky-vykurovanie",
+  "skupina": "pe-x-spojky-vykurovanie-a-cool",
+  "kategoria": "spojky",
+  "nazov": "PE-X x PE-X Koleno spojky Vykurovanie",
+  "nazov_watts": "PE-X x PE-X Koleno spojky Vykurovanie",
+  "popis": "Kolenová spojka na použitie v potrubných systémoch vybavených dopravnými rúrami na vykurovanie, studenú alebo chladiacu vodu.Spojka má dlhú nosnú rúrku pre optimálne upnutie, kónické pripojenie vonkajšieho závitu a upínací krúžok so skrutkou z nehrdzavejúcej ocele. Priložený diaľkový ovládač uľahčuje montáž spojky.Pre podzemné prípojky sa odporúča použitie izolačnej súpravy pre kolená so zmršťovacími krytmi alebo koncovkami EPDM.Pokyny na montáž: pozri náš inštalačný manuál.",
+  "subory": [
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   }
+  ],
+  "pocet_variantov": 9,
+  "tabulky": [
+   {
+    "head": [
+     "Art. No.",
+     "PE-X dout/s (mm)",
+     "Thread (inch)",
+     "ø Outer Diameter of Pipe (mm)"
+    ],
+    "rows": [
+     [
+      "MJ9025/23",
+      "25/2.3",
+      "2 x 3/4\"",
+      "25 x 25"
+     ],
+     [
+      "MJ9032/29",
+      "32/2.9",
+      "2 x 1\"",
+      "32 x 32"
+     ],
+     [
+      "MJ9040/37",
+      "40/3.7",
+      "2 x 1 1/4\"",
+      "40 x 40"
+     ],
+     [
+      "MJ9050/46",
+      "50/4.6",
+      "2 x 1 1/2\"",
+      "50 x 50"
+     ],
+     [
+      "MJ9063/58",
+      "63/5.8",
+      "2 x 2\"",
+      "63 x 63"
+     ],
+     [
+      "MJ9075/68",
+      "75/6.8",
+      "2 x 2 1/2\"",
+      "75 x 75"
+     ],
+     [
+      "MJ9090/82",
+      "90/8.2",
+      "2 x 3\"",
+      "90 x 90"
+     ],
+     [
+      "MJ90110/100",
+      "110/10.0",
+      "2 x 4\"",
+      "110 x 110"
+     ],
+     [
+      "MJ90125/114",
+      "125/11.4",
+      "2 x 4\"",
+      "125 x 125"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/pe-x-couplings-for-heating-and-cool-pipes/elbow-mj90",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "pe-x-spojka-kurenie-cool-6-16bar",
+  "slug": "pe-x-spojka-kurenie-cool-6-16bar",
+  "skupina": "pe-x-spojky-vykurovanie-a-cool",
+  "kategoria": "spojky",
+  "nazov": "PE-X spojka kúrenie / COOL - 6 / 16bar",
+  "nazov_watts": "PE-X spojka kúrenie / COOL - 6 / 16bar",
+  "popis": "Priama spojka pre použitie v potrubných systémoch vybavených dopravnými rúrami pre vykurovanie, studenú alebo chladiacu vodu.Spojka má dlhú nosnú rúrku pre optimálne upnutie, kónické pripojenie vonkajšieho závitu a upínací krúžok so skrutkou z nehrdzavejúcej ocele. Priložený diaľkový ovládač uľahčuje montáž spojky.Pokyny na montáž: pozrite si našu príručku na inštaláciu",
+  "subory": [
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   }
+  ],
+  "pocet_variantov": 9,
+  "tabulky": [
+   {
+    "head": [
+     "Art. No.",
+     "PE-X dout/s (mm)",
+     "Thread (inch)",
+     "Ø Outer Diameter of Pipe (mm)",
+     "Weight (kg)"
+    ],
+    "rows": [
+     [
+      "MJ3413425/23",
+      "25/2.3",
+      "3/4”M",
+      "25",
+      "0.22"
+     ],
+     [
+      "MJ3414432/29",
+      "32/2.9",
+      "1”M",
+      "32",
+      "0.35"
+     ],
+     [
+      "MJ3415440/37",
+      "40/3.7",
+      "1 1/4”M",
+      "40",
+      "0.61"
+     ],
+     [
+      "MJ3416450/46",
+      "50/4.6",
+      "1 1/2”M",
+      "50",
+      "0.82"
+     ],
+     [
+      "MJ341263/5",
+      "63/5.8",
+      "2”M",
+      "63",
+      "1.39"
+     ],
+     [
+      "MJ34121275/68",
+      "75/6.8",
+      "2 1/2”M",
+      "75",
+      "1.80"
+     ],
+     [
+      "MJ341390/82",
+      "90/8.2",
+      "3”M",
+      "90",
+      "2.98"
+     ],
+     [
+      "MJ3414110/10",
+      "110/10.0",
+      "4”M",
+      "110",
+      "3.77"
+     ],
+     [
+      "MJ3414125/114",
+      "125/11.4",
+      "4”M",
+      "125",
+      "4.75"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/pe-x-couplings-for-heating-and-cool-pipes/pe-x-coupling-heating-cool-6-16bar-mj341",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "zvarove-koncovky-spojky-a-cool-6-16bar-s6",
+  "slug": "zvarove-koncovky-spojky-a-cool-6-16bar-s6",
+  "skupina": "pe-x-spojky-vykurovanie-a-cool",
+  "kategoria": "spojky",
+  "nazov": "Zvarové koncovky spojky a COOL - 6 / 16bar S6",
+  "nazov_watts": "Zvarové koncovky spojky a COOL - 6 / 16bar S6",
+  "popis": "Priama spojka z mosadze s oceľovým zvarovým koncom pre použitie v potrubných systémoch vybavených dopravou na vykurovanie, studenú alebo chladiacu vodu.Spojka má dlhú nosnú rúrku pre optimálne upnutie, kónické pripojenie vonkajšieho závitu a upínací krúžok so skrutkou z nehrdzavejúcej ocele. Priložený diaľkový ovládač uľahčuje montáž spojky.Z dôvodu zvarového konca je možné spojku spojiť s existujúcou oceľovou rúrkou. Zliatina ocele (st37-2) je vhodná na elektronické zváranie.Pokyny na montáž: pozri náš inštalačný manuál.",
+  "subory": [
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   }
+  ],
+  "pocet_variantov": 9,
+  "tabulky": [
+   {
+    "head": [
+     "Art. No.",
+     "PE-X dext/s (mm)",
+     "Weld-end dext (mm)",
+     "Weld-end dint (mm)< /td>"
+    ],
+    "rows": [
+     [
+      "MJ3412725/23L",
+      "25/2.3",
+      "26.90",
+      "21.50"
+     ],
+     [
+      "MJ3413332/29L",
+      "32/2.9",
+      "33.70",
+      "27.00"
+     ],
+     [
+      "MJ3414240/37L",
+      "40/3.7",
+      "42.40",
+      "36.00"
+     ],
+     [
+      "MJ3414550/46L",
+      "50/4.6",
+      "48.30",
+      "42.00"
+     ],
+     [
+      "MJ3415763/58L",
+      "63/5.8",
+      "60.30",
+      "53.00"
+     ],
+     [
+      "MJ3417675/68L",
+      "75/6.8",
+      "76.10",
+      "68.00"
+     ],
+     [
+      "MJ3418990/82L",
+      "90/8.2",
+      "88.90",
+      "80.00"
+     ],
+     [
+      "MJ341110110/10L",
+      "110/10.0",
+      "114.30",
+      "105.00"
+     ],
+     [
+      "MJ341114125/114L",
+      "125/11.4",
+      "114.30",
+      "105.00"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/pe-x-couplings-for-heating-and-cool-pipes/fitting-for-welding-s6",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "microflex-pe-x-spojky-vykurovanie",
+  "slug": "microflex-pe-x-spojky-vykurovanie",
+  "skupina": "pe-x-spojky-vykurovanie-a-cool",
+  "kategoria": "spojky",
+  "nazov": "Microflex PE-X spojky vykurovanie",
+  "nazov_watts": "Microflex PE-X spojky vykurovanie",
+  "popis": "Priama spojka na použitie v potrubných systémoch vybavených dopravnými rúrami na aplikácie v oblasti vykurovacej, studenej alebo chladiacej vody.Spojka má dlhú nosnú rúrku pre optimálne upnutie, kužeľové pripojenie vonkajšieho závitu a upínací krúžok so skrutkou z nehrdzavejúcej ocele. Priložená diaľková doska uľahčuje montáž spojky.Pokyny na montáž: pozrite si náš technický manuál.",
+  "subory": [
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   }
+  ],
+  "pocet_variantov": 9,
+  "tabulky": [
+   {
+    "head": [
+     "Art. No.",
+     "PE-X dout/S (mm)",
+     "Rozmer (inch)",
+     "Váha(kg)"
+    ],
+    "rows": [
+     [
+      "MJ3413425/23",
+      "25/2.3",
+      "3/4\" M",
+      "0.22"
+     ],
+     [
+      "MJ3414432/29",
+      "32/2.9",
+      "1\" M",
+      "0.35"
+     ],
+     [
+      "MJ3415440/37",
+      "40/3.7",
+      "1 1/4\" M",
+      "0.61"
+     ],
+     [
+      "MJ3416450/46",
+      "50/4.6",
+      "1 1/2\" M",
+      "0.82"
+     ],
+     [
+      "MJ341263/58",
+      "63/5.8",
+      "2\" M",
+      "1.39"
+     ],
+     [
+      "MJ34121275/68",
+      "75/6.8",
+      "2 1/2\" M",
+      "1.80"
+     ],
+     [
+      "MJ341390/82",
+      "90/8.2",
+      "3\" M",
+      "2.98"
+     ],
+     [
+      "MJ3414110/100",
+      "110/10.0",
+      "4\" M",
+      "3.77"
+     ],
+     [
+      "MJ3414125/114",
+      "125/11.4",
+      "4\" M",
+      "4.75"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/pe-x-couplings-for-heating-and-cool-pipes/the-male-fittings",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "sanitarne-spojky-microflex-pe-x",
+  "slug": "sanitarne-spojky-microflex-pe-x",
+  "skupina": "pe-x-spojky-sanita",
+  "kategoria": "spojky",
+  "nazov": "Sanitárne spojky Microflex PE-X",
+  "nazov_watts": "Sanitárne spojky Microflex PE-X",
+  "popis": "Priama spojka pre použitie v potrubných systémoch vybavených dopravnými rúrami pre sanitárne, studené alebo horúce vody.Spojka má dlhú nosnú rúrku pre optimálne upnutie, kónické pripojenie vonkajšieho závitu a upínací krúžok so skrutkou z nehrdzavejúcej ocele. Priložený diaľkový ovládač uľahčuje montáž spojky.Pokyny na montáž: pozri náš inštalačný manuál.",
+  "subory": [
+   {
+    "nazov": "Brožúra Predizolované ohybné potrubia Microflex (EN)",
+    "typ": "PDF",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/brochures/microflex/10181"
+   },
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   }
+  ],
+  "pocet_variantov": 9,
+  "tabulky": [
+   {
+    "head": [
+     "Art. No.",
+     "PE-X dout/s (mm)",
+     "Thread (inch)",
+     "Weight (kg)"
+    ],
+    "rows": [
+     [
+      "MJ3413420/28",
+      "20/2.8",
+      "3/4”M",
+      "0.17"
+     ],
+     [
+      "MJ3413425/35",
+      "25/3.5",
+      "3/4”M",
+      "0.22"
+     ],
+     [
+      "MJ3414432/44",
+      "32/4.4",
+      "1”M",
+      "0.35"
+     ],
+     [
+      "MJ3415440/55",
+      "40/5.5",
+      "11/4”M",
+      "0.59"
+     ],
+     [
+      "MJ3416450/69",
+      "50/6.9",
+      "11/2”M",
+      "0.90"
+     ],
+     [
+      "MJ341263/87",
+      "63/8.7",
+      "2”M",
+      "1.47"
+     ],
+     [
+      "MJ34121275/103",
+      "75/10.3",
+      "21/2”M",
+      "1.80"
+     ],
+     [
+      "MJ341390/123",
+      "90/12.3",
+      "3”M",
+      "2.98"
+     ],
+     [
+      "MJ3414110/151",
+      "110/15.1",
+      "4”M",
+      "3.77"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/pe-x-couplings-for-sanitary-pipes/microflex-pe-x-couplings-sanitary",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "pe-x-x-pe-x-sanitarne-zariadenie",
+  "slug": "pe-x-x-pe-x-sanitarne-zariadenie",
+  "skupina": "pe-x-spojky-sanita",
+  "kategoria": "spojky",
+  "nazov": "PE-X x PE-X sanitárne zariadenie",
+  "nazov_watts": "PE-X x PE-X sanitárne zariadenie",
+  "popis": "Spojka PE-X-PE-X na použitie v potrubných systémoch vybavených dopravnými rúrami pre sanitárne, studené alebo teplovodné aplikácie. Spojka má dlhú nosnú rúrku pre optimálne upnutie, kónické pripojenie vonkajšieho závitu a upínací krúžok so skrutkou z nehrdzavejúcej ocele. Priložený diaľkový ovládač uľahčuje montáž spojky. Pre podzemné prípojky sa odporúča použitie priamej izolačnej súpravy so zmršťovacími krytmi alebo koncovými krytmi EPDM. Pokyny na montáž: pozri náš inštalačný manuál.",
+  "subory": [
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   }
+  ],
+  "pocet_variantov": 8,
+  "tabulky": [
+   {
+    "head": [
+     "Art. No.",
+     "PE-X dout/s (mm)",
+     "Thread (inch)",
+     "Ø Outer Diameter of Pipe (mm)"
+    ],
+    "rows": [
+     [
+      "MJ27025/35",
+      "25/3.5",
+      "2x3/4”",
+      "25x25"
+     ],
+     [
+      "MJ27032/44",
+      "32/4.4",
+      "2x1”",
+      "32x32"
+     ],
+     [
+      "MJ27040/55",
+      "40/5.5",
+      "2x1 1/4”",
+      "40x40"
+     ],
+     [
+      "MJ27050/69",
+      "50/6.9",
+      "2x1",
+      "50x50"
+     ],
+     [
+      "MJ27063/87",
+      "63/8.7",
+      "2x2” 1/2”",
+      "63x63"
+     ],
+     [
+      "MJ27075/103",
+      "75/10.3",
+      "2x1 1/2”",
+      "75x75"
+     ],
+     [
+      "MJ27090/123",
+      "90/12.3",
+      "2x3”",
+      "90x90"
+     ],
+     [
+      "MJ270110/151",
+      "110/15.1",
+      "2x4”",
+      "110x110"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/pe-x-couplings-for-sanitary-pipes/coupling-sanitary-mj270",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "sanitarne-kolenne-spojky-pe-x-x-pe-x",
+  "slug": "sanitarne-kolenne-spojky-pe-x-x-pe-x",
+  "skupina": "pe-x-spojky-sanita",
+  "kategoria": "spojky",
+  "nazov": "Sanitárne kolenné spojky PE-X x PE-X",
+  "nazov_watts": "Sanitárne kolenné spojky PE-X x PE-X",
+  "popis": "Kolenová spojka na použitie v potrubných systémoch vybavených dopravnými rúrami pre aplikácie v sanitárnej, studenej alebo horúcej vode. Spojka má dlhú nosnú rúrku pre optimálne upnutie, kužeľové pripojenie vonkajšieho závitu a upínací krúžok so skrutkou z nehrdzavejúcej ocele. Priložená diaľková doska uľahčuje montáž spojky. Pri podzemných prípojkách sa odporúča použiť súpravu kolennej izolácie so zmršťovacími krytmi alebo koncovkami EPDM. Pokyny na montáž: pozrite si náš inštalačný manuál.",
+  "subory": [],
+  "pocet_variantov": 8,
+  "tabulky": [
+   {
+    "head": [
+     "Art. No.",
+     "PE-X dout/s (mm)",
+     "Thread (inch)",
+     "Ø Outer Diameter of Pipe (mm)"
+    ],
+    "rows": [
+     [
+      "MJ9025/35",
+      "25/3.5",
+      "2x3/4”",
+      "25x25"
+     ],
+     [
+      "MJ9032/44",
+      "32/4.4",
+      "2x1”",
+      "32x32"
+     ],
+     [
+      "MJ9040/55",
+      "40/5.5",
+      "2x1 1/4”",
+      "40x40"
+     ],
+     [
+      "MJ9050/69",
+      "50/6.9",
+      "2x1 1/2”",
+      "50x50"
+     ],
+     [
+      "MJ9063/87",
+      "63/8.7",
+      "2x2”",
+      "63x63"
+     ],
+     [
+      "MJ9075/103",
+      "75/10.3",
+      "2x2 1/2”",
+      "75x75"
+     ],
+     [
+      "MJ9090/123",
+      "90/12.3",
+      "2x3”",
+      "90x90"
+     ],
+     [
+      "MJ90110/151",
+      "110/15.1",
+      "2x4”",
+      "110x110"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/pe-x-couplings-for-sanitary-pipes/pe-x-x-pe-x-elbow-coupling-sanitary",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "3-x-pe-x-t-spojka-sanitarna",
+  "slug": "3-x-pe-x-t-spojka-sanitarna",
+  "skupina": "pe-x-spojky-sanita",
+  "kategoria": "spojky",
+  "nazov": "3 x PE-X T-spojka sanitárna",
+  "nazov_watts": "3 x PE-X T-spojka sanitárna",
+  "popis": "Spojka typu T na použitie v potrubných systémoch vybavených dopravnými rúrami pre sanitárne, studené alebo teplovodné aplikácie.Spojka má dlhú nosnú rúrku pre optimálne upnutie, kónické pripojenie vonkajšieho závitu a upínací krúžok so skrutkou z nehrdzavejúcej ocele. Priložený diaľkový ovládač uľahčuje montáž spojky.Pre podzemné prípojky sa odporúča použitie izolačnej súpravy T so zmršťovacími krytmi alebo koncovými krytmi EPDM.Pokyny na montáž: pozri náš inštalačný manuál.",
+  "subory": [
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   }
+  ],
+  "pocet_variantov": 11,
+  "tabulky": [
+   {
+    "head": [
+     "Art. No.",
+     "PE-X dout/s (mm)",
+     "Thread (inch)",
+     "ø Outer Diameter of Pipe (mm)"
+    ],
+    "rows": [
+     [
+      "MJ13025/35",
+      "25/3.5",
+      "3x3/4”",
+      "25x25x25"
+     ],
+     [
+      "MJ13032/44",
+      "32/4.4",
+      "3x1”",
+      "32x32x32"
+     ],
+     [
+      "MJ13040/55",
+      "40/5.5+32/4.4",
+      "2x11/4”+ 1x1”",
+      "40x32x40"
+     ],
+     [
+      "MJ1304032/55",
+      "40/5.5",
+      "3x11/4”",
+      "40x40x40"
+     ],
+     [
+      "MJ13050/69",
+      "50/6.9+40/5.5",
+      "2x11/2“+1x11/4”",
+      "50x40x50"
+     ],
+     [
+      "MJ13063/87",
+      "50/6.9",
+      "3x11/2”",
+      "50x50x50"
+     ],
+     [
+      "MJ1306350/87",
+      "63/8.7+50/6.9",
+      "2x2”+1x11/2”",
+      "63x50x63"
+     ],
+     [
+      "MJ1305040/69",
+      "63/8.7",
+      "3x2”",
+      "63x63x63"
+     ],
+     [
+      "MJ13075/103",
+      "75/10.3",
+      "3x21/2”",
+      "75x75x75"
+     ],
+     [
+      "MJ13090/123",
+      "90/12.3",
+      "3x3”",
+      "90x90x90"
+     ],
+     [
+      "MJ130110/151",
+      "110/15.1",
+      "3x4”",
+      "110x110x110"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/pe-x-couplings-for-sanitary-pipes/t-coupling-plumbing",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "fixny-bod",
+  "slug": "fixny-bod",
+  "skupina": "prislusenstvo-spojok",
+  "kategoria": "spojky",
+  "nazov": "Fixný bod",
+  "nazov_watts": "Fixný bod",
+  "popis": "Vhodné pre aplikácie, kde je potrebné kotviť konce rúrok. Aby sa absorbovali možné účinky tepelnej rozťažnosti / zmršťovania dopravných potrubí PEX-a, musia byť nainštalované pevné body. Nepoužívanie fixných bodov môže mať za následok vážne poškodenie.",
+  "subory": [
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   }
+  ],
+  "pocet_variantov": 7,
+  "tabulky": [
+   {
+    "head": [
+     "Art. No.",
+     "Závit (DN)"
+    ],
+    "rows": [
+     [
+      "MFP34",
+      "3/4\" MF"
+     ],
+     [
+      "MFP44",
+      "1\" MF"
+     ],
+     [
+      "MFP 54",
+      "1 1/4\" MF"
+     ],
+     [
+      "MFP64",
+      "1 1/2\" MF"
+     ],
+     [
+      "MFP2",
+      "2\" MF"
+     ],
+     [
+      "MFP212",
+      "2 1/2\" MF"
+     ],
+     [
+      "MFP3",
+      "3\" MF"
+     ],
+     [
+      "MFP4",
+      "4\" MF"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/accessories/anchoring-fixing-threaded-couplings",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "objimka-obal",
+  "slug": "objimka-obal",
+  "skupina": "prislusenstvo-spojok",
+  "kategoria": "spojky",
+  "nazov": "Objímka/Obal",
+  "nazov_watts": "Objímka/Obal",
+  "popis": "Objímka z bronzu s paralelným vnútorným závitom podľa ISO 228.",
+  "subory": [
+   {
+    "nazov": "Brožúra Predizolované ohybné potrubia Microflex (EN)",
+    "typ": "PDF",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/brochures/microflex/10181"
+   },
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   }
+  ],
+  "pocet_variantov": 8,
+  "tabulky": [
+   {
+    "head": [
+     "Art. No.",
+     "Závit (DN)"
+    ],
+    "rows": [
+     [
+      "VW27034",
+      "3/4”FF"
+     ],
+     [
+      "VW27044",
+      "1”FF"
+     ],
+     [
+      "VW27054",
+      "1 1/4”FF"
+     ],
+     [
+      "VW27064",
+      "1 1/2”FF"
+     ],
+     [
+      "VW2702",
+      "2”FF"
+     ],
+     [
+      "VW270212",
+      "2 1/2”FF"
+     ],
+     [
+      "VW2703",
+      "3”FF"
+     ],
+     [
+      "VW2704",
+      "4”FF"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/accessories/nipple-ff-microflex",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "koleno-90",
+  "slug": "koleno-90",
+  "skupina": "prislusenstvo-spojok",
+  "kategoria": "spojky",
+  "nazov": "Koleno 90 °",
+  "nazov_watts": "Koleno 90 °",
+  "popis": "Koleno z bronzu s paralelným vnútorným závitom podľa ISO 228.",
+  "subory": [
+   {
+    "nazov": "Brožúra Predizolované ohybné potrubia Microflex (EN)",
+    "typ": "PDF",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/brochures/microflex/10181"
+   },
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   }
+  ],
+  "pocet_variantov": 8,
+  "tabulky": [
+   {
+    "head": [
+     "Art. No.",
+     "Závit (DN)"
+    ],
+    "rows": [
+     [
+      "VW9034",
+      "3/4”FF"
+     ],
+     [
+      "VW9044",
+      "1”FF"
+     ],
+     [
+      "VW9054",
+      "1 1/4”FF"
+     ],
+     [
+      "VW9064",
+      "1 1/2”FF"
+     ],
+     [
+      "VW902",
+      "2”FF"
+     ],
+     [
+      "VW90212",
+      "2 1/2”FF"
+     ],
+     [
+      "VW903",
+      "3”FF"
+     ],
+     [
+      "VW904",
+      "4”FF"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/accessories/elbow-ff-microflex",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "t-kus-z-bronzu",
+  "slug": "t-kus-z-bronzu",
+  "skupina": "prislusenstvo-spojok",
+  "kategoria": "spojky",
+  "nazov": "T-kus z bronzu",
+  "nazov_watts": "T-kus z bronzu",
+  "popis": "T-kus z bronzu s paralelným vnútorným závitom podľa ISO 228.",
+  "subory": [
+   {
+    "nazov": "Brožúra Predizolované ohybné potrubia Microflex (EN)",
+    "typ": "PDF",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/brochures/microflex/10181"
+   },
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   }
+  ],
+  "pocet_variantov": 8,
+  "tabulky": [
+   {
+    "head": [
+     "Art. No.",
+     "Závit (DN)"
+    ],
+    "rows": [
+     [
+      "VW13034",
+      "3/4”FFF"
+     ],
+     [
+      "VW13044",
+      "1”FFF"
+     ],
+     [
+      "VW13054",
+      "1 1/4”FFF"
+     ],
+     [
+      "VW13064",
+      "1 1/2”FFF"
+     ],
+     [
+      "VW1302",
+      "2”FFF"
+     ],
+     [
+      "VW130212",
+      "2 1/2”FFF"
+     ],
+     [
+      "VW1303",
+      "3”FFF"
+     ],
+     [
+      "VW1304",
+      "4”FFF"
+     ]
+    ]
+   },
+   {
+    "head": [
+     ""
+    ],
+    "rows": []
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/accessories/tee-f-f-f-microflex",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "vsuvka-z-poniklovanej-mosadze",
+  "slug": "vsuvka-z-poniklovanej-mosadze",
+  "skupina": "prislusenstvo-spojok",
+  "kategoria": "spojky",
+  "nazov": "Vsuvka z poniklovanej mosadze",
+  "nazov_watts": "Vsuvka z poniklovanej mosadze",
+  "popis": "Vsuvka z poniklovanej mosadze s kónickým závitom podľa ISO 7.",
+  "subory": [
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   }
+  ],
+  "pocet_variantov": 8,
+  "tabulky": [
+   {
+    "head": [
+     "Art. No.",
+     "Závit (DN)"
+    ],
+    "rows": [
+     [
+      "VW28034",
+      "3/4”M"
+     ],
+     [
+      "VW28044",
+      "1”M"
+     ],
+     [
+      "VW28054",
+      "1 1/4”M"
+     ],
+     [
+      "VW28064",
+      "1 1/2”M"
+     ],
+     [
+      "VW2802",
+      "2”M"
+     ],
+     [
+      "VW280212",
+      "2 1/2”M"
+     ],
+     [
+      "VW2803",
+      "3”M"
+     ],
+     [
+      "VW2804",
+      "4”M"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/accessories/nipple-vw280",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "redukcne-puzdro",
+  "slug": "redukcne-puzdro",
+  "skupina": "prislusenstvo-spojok",
+  "kategoria": "spojky",
+  "nazov": "Redukčné puzdro",
+  "nazov_watts": "Redukčné puzdro",
+  "popis": "Redukčné puzdro z mosadze s paralelným vonkajším a vnútorným závitom podľa ISO 228.",
+  "subory": [
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   }
+  ],
+  "pocet_variantov": 21,
+  "tabulky": [
+   {
+    "head": [
+     "Art. No.",
+     "Závit (DN)"
+    ],
+    "rows": [
+     [
+      "VW2414434",
+      "1”Mx3/4”F"
+     ],
+     [
+      "VW2415434",
+      "1 1/4”Mx3/4”F"
+     ],
+     [
+      "VW2415444",
+      "1 1/4”Mx1”F"
+     ],
+     [
+      "VW2416434",
+      "1 1/2”Mx3/4”F"
+     ],
+     [
+      "VW2416444",
+      "1 1/2”Mx1”F"
+     ],
+     [
+      "VW2416454",
+      "1 1/2”Mx11/4”F"
+     ],
+     [
+      "VW241234",
+      "2”Mx3/4”F"
+     ],
+     [
+      "VW241244",
+      "2”Mx1”F"
+     ],
+     [
+      "VW241254",
+      "2”Mx11/4”F"
+     ],
+     [
+      "VW241264",
+      "2”Mx11/2”F"
+     ],
+     [
+      "VW24121254",
+      "2 1/2”Mx11/4”F"
+     ],
+     [
+      "VW24121264",
+      "2 1/2”Mx11/2”F"
+     ],
+     [
+      "VW2412122",
+      "2 1/2”Mx2”F"
+     ],
+     [
+      "VW241344",
+      "3”Mx1”F"
+     ],
+     [
+      "VW241354",
+      "3”Mx11/4”F"
+     ],
+     [
+      "VW241364",
+      "3”Mx11/2”F"
+     ],
+     [
+      "VW24132",
+      "3”Mx2”F"
+     ],
+     [
+      "VW2413212",
+      "3”Mx21/2”F"
+     ],
+     [
+      "VW24142",
+      "4”Mx2”F"
+     ],
+     [
+      "VW2414212",
+      "4”Mx21/2”F"
+     ],
+     [
+      "VW24143",
+      "4”Mx3”F"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/accessories/reducing-bush-vw241",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "priruba-so-zavitom-z-pozinkovanej-ocele",
+  "slug": "priruba-so-zavitom-z-pozinkovanej-ocele",
+  "skupina": "prislusenstvo-spojok",
+  "kategoria": "spojky",
+  "nazov": "Príruba so závitom z pozinkovanej ocele",
+  "nazov_watts": "Príruba so závitom z pozinkovanej ocele",
+  "popis": "Príruba so závitom z pozinkovanej ocele.",
+  "subory": [
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   }
+  ],
+  "pocet_variantov": 8,
+  "tabulky": [
+   {
+    "head": [
+     "Art. No.",
+     "Závit (DN)"
+    ],
+    "rows": [
+     [
+      "MDF34",
+      "3/4”F"
+     ],
+     [
+      "MDF44",
+      "1”F"
+     ],
+     [
+      "MDF54",
+      "1 1/4”F"
+     ],
+     [
+      "MDF64",
+      "1 1/2”F"
+     ],
+     [
+      "MDF2",
+      "2”F"
+     ],
+     [
+      "MDF212",
+      "2 1/2”F"
+     ],
+     [
+      "MDF3",
+      "3”F"
+     ],
+     [
+      "MDF4",
+      "4”F"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/accessories/flange-mdf",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "zatka",
+  "slug": "zatka",
+  "skupina": "prislusenstvo-spojok",
+  "kategoria": "spojky",
+  "nazov": "Zátka",
+  "nazov_watts": "Zátka",
+  "popis": "Mosadzná zátka (M) s priamym závitom podľa ISO 228.",
+  "subory": [
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   }
+  ],
+  "pocet_variantov": 8,
+  "tabulky": [
+   {
+    "head": [
+     "Kód",
+     "Závit (inch)"
+    ],
+    "rows": [
+     [
+      "VW29034",
+      "3/4”M"
+     ],
+     [
+      "VW29044",
+      "1”M"
+     ],
+     [
+      "VW29054",
+      "1 1/4”M"
+     ],
+     [
+      "VW29064",
+      "1 1/2”M"
+     ],
+     [
+      "VW2902",
+      "2”M"
+     ],
+     [
+      "VW290212",
+      "2 1/2”M"
+     ],
+     [
+      "VW2903",
+      "3”M"
+     ],
+     [
+      "VW2904",
+      "4”M"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/accessories/brass-plug-vw290",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "uzatvaraci-ventil",
+  "slug": "uzatvaraci-ventil",
+  "skupina": "prislusenstvo-spojok",
+  "kategoria": "spojky",
+  "nazov": "Uzatvárací ventil",
+  "nazov_watts": "Uzatvárací ventil",
+  "popis": "Vsuvka z poniklovanej mosadze s vonkajším závitom.",
+  "subory": [
+   {
+    "nazov": "Brožúra Predizolované ohybné potrubia Microflex (EN)",
+    "typ": "PDF",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/brochures/microflex/10181"
+   },
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   }
+  ],
+  "pocet_variantov": 8,
+  "tabulky": [
+   {
+    "head": [
+     "Art. No.",
+     "Závit (DN)"
+    ],
+    "rows": [
+     [
+      "VW35034",
+      "3/4”M"
+     ],
+     [
+      "VW35044",
+      "1”M"
+     ],
+     [
+      "VW35054",
+      "1 1/4”M"
+     ],
+     [
+      "VW35064",
+      "1 1/2”M"
+     ],
+     [
+      "VW3502",
+      "2”M"
+     ],
+     [
+      "VW350212",
+      "2 1/2”M"
+     ],
+     [
+      "VW3503",
+      "3”M"
+     ],
+     [
+      "VW3504",
+      "4”M"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/accessories/stop-valve-microflex",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "uzatvara-prach-na-jednom-potrubi",
+  "slug": "uzatvara-prach-na-jednom-potrubi",
+  "skupina": "koncovky-a-redukcie",
+  "kategoria": "prislusenstvo",
+  "nazov": "Uzatvára prach na jednom potrubí",
+  "nazov_watts": "Uzatvára prach na jednom potrubí",
+  "popis": null,
+  "subory": [],
+  "pocet_variantov": 15,
+  "tabulky": [
+   {
+    "head": [
+     "Kód",
+     "Popis"
+    ],
+    "rows": [
+     [
+      "MS7525",
+      "75/25"
+     ],
+     [
+      "MS7532",
+      "75/32"
+     ],
+     [
+      "MS9032",
+      "90/32"
+     ],
+     [
+      "MS9040",
+      "90/40"
+     ],
+     [
+      "MS12540",
+      "125/40"
+     ],
+     [
+      "MS12550",
+      "125/50"
+     ],
+     [
+      "MS12563",
+      "125/63"
+     ],
+     [
+      "MS16040",
+      "160/40"
+     ],
+     [
+      "MS16050",
+      "160/50"
+     ],
+     [
+      "MS16063",
+      "160/63"
+     ],
+     [
+      "MS16075",
+      "160/75"
+     ],
+     [
+      "MS16090",
+      "160/90"
+     ],
+     [
+      "MS20075",
+      "200/75"
+     ],
+     [
+      "MS20090",
+      "200/90"
+     ],
+     [
+      "MS200110",
+      "200/110"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/caps-and-reduction-kits/dust-cap-ms-uno",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "uzatvara-prach-na-dvojitom-potrubi",
+  "slug": "uzatvara-prach-na-dvojitom-potrubi",
+  "skupina": "koncovky-a-redukcie",
+  "kategoria": "prislusenstvo",
+  "nazov": "Uzatvára prach na dvojitom potrubí",
+  "nazov_watts": "Uzatvára prach na dvojitom potrubí",
+  "popis": null,
+  "subory": [],
+  "pocet_variantov": 8,
+  "tabulky": [
+   {
+    "head": [
+     "Kód",
+     "Popis"
+    ],
+    "rows": [
+     [
+      "MSD12525",
+      "125/2x25"
+     ],
+     [
+      "MSD12532",
+      "125/2x32"
+     ],
+     [
+      "MSD16025",
+      "160/2x25"
+     ],
+     [
+      "MSD16032",
+      "160/2x32"
+     ],
+     [
+      "MSD16040",
+      "160/2x40"
+     ],
+     [
+      "MSD16050",
+      "160/2x50"
+     ],
+     [
+      "MSD20050",
+      "200/2x50"
+     ],
+     [
+      "MSD20063",
+      "200/2x63"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/caps-and-reduction-kits/dust-cap-msd-duo",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "uzatvara-prach-na-potrubi-quadro",
+  "slug": "uzatvara-prach-na-potrubi-quadro",
+  "skupina": "koncovky-a-redukcie",
+  "kategoria": "prislusenstvo",
+  "nazov": "Uzatvára prach na potrubí quadro",
+  "nazov_watts": "Uzatvára prach na potrubí quadro",
+  "popis": null,
+  "subory": [],
+  "pocet_variantov": 4,
+  "tabulky": [
+   {
+    "head": [
+     "Kód",
+     "Popis"
+    ],
+    "rows": [
+     [
+      "MSQ160252520",
+      "160/2x25+25+20"
+     ],
+     [
+      "MSQ160322520",
+      "160/2x32+25+20"
+     ],
+     [
+      "MSQ160323225",
+      "160/2x32+32+25"
+     ],
+     [
+      "MSQ200404028",
+      "200/2x40+40+28"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/caps-and-reduction-kits/dust-cap-msq-quadro",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "teplom-zmrstitelne-hlavice-pre-uno-rurku",
+  "slug": "teplom-zmrstitelne-hlavice-pre-uno-rurku",
+  "skupina": "koncovky-a-redukcie",
+  "kategoria": "prislusenstvo",
+  "nazov": "Teplom zmrštiteľné hlavice pre UNO rúrku",
+  "nazov_watts": "Teplom zmrštiteľné hlavice pre UNO rúrku",
+  "popis": "Používajú sa na zabránenie vniknutiu vody medzi vonkajší plášť a izolovanú nosnú rúru.",
+  "subory": [],
+  "pocet_variantov": 8,
+  "tabulky": [
+   {
+    "head": [
+     "Kód",
+     "Popis"
+    ],
+    "rows": [
+     [
+      "MK2000",
+      "MICROFLEX 75/25"
+     ],
+     [
+      "MK2100",
+      "MICROFLEX 75-90/32"
+     ],
+     [
+      "MK2060",
+      "MICROFLEX 125/25"
+     ],
+     [
+      "MK2200",
+      "MICROFLEX 125/32-40"
+     ],
+     [
+      "MK2400",
+      "MICROFLEX 125/50-63"
+     ],
+     [
+      "MK2340",
+      "MICROFLEX 160/32-40-50"
+     ],
+     [
+      "MK2500",
+      "MICROFLEX 160/63-75-90"
+     ],
+     [
+      "MK2600",
+      "MICROFLEX 200/75-90-110"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/caps-and-reduction-kits/heat-shrink-caps-on-single-pipelines",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "teplom-zmrstitelne-hlavice-pre-rurku-duo",
+  "slug": "teplom-zmrstitelne-hlavice-pre-rurku-duo",
+  "skupina": "koncovky-a-redukcie",
+  "kategoria": "prislusenstvo",
+  "nazov": "Teplom zmrštiteľné hlavice pre rúrku DUO",
+  "nazov_watts": "Teplom zmrštiteľné hlavice pre rúrku DUO",
+  "popis": "Používajú sa na zabránenie vniknutiu vody medzi vonkajší plášť a izolované nosné rúry.",
+  "subory": [],
+  "pocet_variantov": 6,
+  "tabulky": [
+   {
+    "head": [
+     "Kód",
+     "Popis"
+    ],
+    "rows": [
+     [
+      "MK3250-P604",
+      "MICROFLEX 125/25х20-32х25"
+     ],
+     [
+      "MK3280",
+      "MICROFLEX 125/32х32"
+     ],
+     [
+      "MK3350-01",
+      "MICROFLEX 160/2x25-2х32"
+     ],
+     [
+      "MK3350-02",
+      "MICROFLEX 160/2x40"
+     ],
+     [
+      "MK3350-03",
+      "MICROFLEX 160-200/2x50"
+     ],
+     [
+      "MK3350-05",
+      "MICROFLEX 200/2х63"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/caps-and-reduction-kits/dust-cap-msq-duo",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach",
+  "slug": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach",
+  "skupina": "koncovky-a-redukcie",
+  "kategoria": "prislusenstvo",
+  "nazov": "Dokončenie uzáverov EPDM na jednotlivých potrubiach",
+  "nazov_watts": "Dokončenie uzáverov EPDM na jednotlivých potrubiach",
+  "popis": null,
+  "subory": [
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   }
+  ],
+  "pocet_variantov": 0,
+  "tabulky": [],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/caps-and-reduction-kits/finishing-epdm-caps-on-single-pipelines",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "dokoncenie-uzaverov-epdm-na-dvojitych-potrubiach",
+  "slug": "dokoncenie-uzaverov-epdm-na-dvojitych-potrubiach",
+  "skupina": "koncovky-a-redukcie",
+  "kategoria": "prislusenstvo",
+  "nazov": "Dokončenie uzáverov EPDM na dvojitých potrubiach",
+  "nazov_watts": "Dokončenie uzáverov EPDM na dvojitých potrubiach",
+  "popis": null,
+  "subory": [
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   }
+  ],
+  "pocet_variantov": 0,
+  "tabulky": [],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/caps-and-reduction-kits/finishing-epdm-caps-on-double-pipelines",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "dokoncenie-uzaverov-epdm-na-potrubiach-quadro",
+  "slug": "dokoncenie-uzaverov-epdm-na-potrubiach-quadro",
+  "skupina": "koncovky-a-redukcie",
+  "kategoria": "prislusenstvo",
+  "nazov": "Dokončenie uzáverov EPDM na potrubiach quadro",
+  "nazov_watts": "Dokončenie uzáverov EPDM na potrubiach quadro",
+  "popis": null,
+  "subory": [
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   }
+  ],
+  "pocet_variantov": 0,
+  "tabulky": [],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/caps-and-reduction-kits/finishing-epdm-caps-on-quado-pipelines",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "pripojovacia-sada-pre-microflex-cool-s-vykurovacou-paskou",
+  "slug": "pripojovacia-sada-pre-microflex-cool-s-vykurovacou-paskou",
+  "skupina": "izolacne-sady",
+  "kategoria": "prislusenstvo",
+  "nazov": "Pripojovacia sada pre MICROFLEX COOL s vykurovacou páskou",
+  "nazov_watts": "Pripojovacia sada pre MICROFLEX COOL s vykurovacou páskou",
+  "popis": null,
+  "subory": [
+   {
+    "nazov": "Brožúra Predizolované ohybné potrubia Microflex (EN)",
+    "typ": "PDF",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/brochures/microflex/10181"
+   },
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   }
+  ],
+  "pocet_variantov": 8,
+  "tabulky": [
+   {
+    "head": [
+     "Výrobné číslo",
+     "Popis"
+    ],
+    "rows": [
+     [
+      "MVTH",
+      "Termostat"
+     ],
+     [
+      "MVBOX",
+      "Rozvodná skrinka"
+     ],
+     [
+      "MVKITGR10W",
+      "Izolačná sada do 10 W"
+     ],
+     [
+      "MVKITGR18W",
+      "Izolačná sada do 18 W"
+     ],
+     [
+      "MVKITM10W",
+      "1 x MVBOX + 2 x MVKITGR10W"
+     ],
+     [
+      "MVKITM18W",
+      "1 x MVBOX + 2 x MVKITGR18W"
+     ],
+     [
+      "MVKITT10W",
+      "1 x MVBOX + 3 x MVKITGR10W"
+     ],
+     [
+      "MVKITT18W",
+      "1 x MVBOX + 3 x MVKITGR18W"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/pipe-insulation-sets/connection-kit-for-microflex-cool-with-heating-tape",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "redukcia-pre-izolovanu-supravu-t-kusu",
+  "slug": "redukcia-pre-izolovanu-supravu-t-kusu",
+  "skupina": "izolacne-sady",
+  "kategoria": "prislusenstvo",
+  "nazov": "Redukcia pre izolovanú súpravu T-kusu",
+  "nazov_watts": "Redukcia pre izolovanú súpravu T-kusu",
+  "popis": "Používa sa tam, kde je rozdiel v priemere pri prechode príliš veľký. Redukcie pozostávajú z vonkajšieho plášťa s vnútornou izoláciou a zmenšovacím puzdrom. Redukcia je vtlačená do izolovanej súpravy T-kusa.",
+  "subory": [],
+  "pocet_variantov": 1,
+  "tabulky": [
+   {
+    "head": [
+     "Kód",
+     "Popis",
+     "Váha (kg)"
+    ],
+    "rows": [
+     [
+      "MR24116075",
+      "160 to 75/90 reduction",
+      "1,40"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/pipe-insulation-sets/coupling-transient-shrinkage",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "inspekcna-komora",
+  "slug": "inspekcna-komora",
+  "skupina": "izolacne-sady",
+  "kategoria": "prislusenstvo",
+  "nazov": "Inšpekčná komora",
+  "nazov_watts": "Inšpekčná komora",
+  "popis": "Používa sa na pripojenie potrubí Uno, Duo a Quadro. Revízna komora HDPE má 6 prípojných miest, umožňuje pripojenie rôznych potrubí a integráciu uzatváracích ventilov. Sada obsahuje kontrolnú komoru, veko, skrutky z nehrdzavejúcej ocele, súpravu tesnenia a montážny návod. Teplom zmrštiteľné čiapky sa objednávajú osobitne!",
+  "subory": [
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   }
+  ],
+  "pocet_variantov": 0,
+  "tabulky": [
+   {
+    "head": [
+     "Kód",
+     "Microflex pipe with casing dout (mm)",
+     "Diameter MIS (mm)",
+     "H (mm)",
+     "Váha (kg)"
+    ],
+    "rows": [
+     [
+      "MIS",
+      "200/160/125мм",
+      "810",
+      "770",
+      "35,00"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/pipe-insulation-sets/inspection-chamber",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "izolovana-sada-s-dvojitym-t-kusom",
+  "slug": "izolovana-sada-s-dvojitym-t-kusom",
+  "skupina": "izolacne-sady",
+  "kategoria": "prislusenstvo",
+  "nazov": "Izolovaná sada s dvojitým T-kusom",
+  "nazov_watts": "Izolovaná sada s dvojitým T-kusom",
+  "popis": "Zaručuje úplnú izoláciu a utesnenie odbočných spojení medzi rúrkami Uno, Duo a Quadro. Sada obsahuje 2 polovice z HDPE, izoláciu z minerálnej vlny, tesniacu sadu, skrutky z nehrdzavejúcej ocele a montážny návod. Teplom zmrštiteľné čiapky sa objednávajú osobitne!",
+  "subory": [
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   }
+  ],
+  "pocet_variantov": 1,
+  "tabulky": [
+   {
+    "head": [
+     "Kód",
+     "Microflex pipe with casing dout (mm)",
+     "L (mm)",
+     "W (mm)",
+     "H (mm)",
+     "Váha (kg)"
+    ],
+    "rows": [
+     [
+      "MDT201612",
+      "200/160/125мм",
+      "1170",
+      "1200",
+      "270",
+      "21,50"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/pipe-insulation-sets/insulated-double-t-piece-kit",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "izolovana-suprava-i-kus",
+  "slug": "izolovana-suprava-i-kus",
+  "skupina": "izolacne-sady",
+  "kategoria": "prislusenstvo",
+  "nazov": "Izolovaná súprava I-kus",
+  "nazov_watts": "Izolovaná súprava I-kus",
+  "popis": "Zaručuje úplnú izoláciu a utesnenie priamych predĺžení rúr Uno, Duo a Quadro. Sada obsahuje 2 polovice z HDPE, izoláciu z minerálnej vlny, tesniacu sadu, skrutky z nehrdzavejúcej ocele a montážny návod. Teplom zmrštiteľné čiapky sa objednávajú osobitne!",
+  "subory": [],
+  "pocet_variantov": 2,
+  "tabulky": [
+   {
+    "head": [
+     "Kód",
+     "Microflex pipe with casing dout (mm)",
+     "L (mm)",
+     "W (mm)",
+     "H (mm)",
+     "Váha(kg)"
+    ],
+    "rows": [
+     [
+      "MM129075",
+      "125/90/75мм",
+      "960",
+      "290",
+      "200",
+      "5,50"
+     ],
+     [
+      "MM201612",
+      "200/160/125мм",
+      "1170",
+      "345",
+      "270",
+      "8,00"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/pipe-insulation-sets/insulated-i-piece-kit",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "izolacna-sada-i-variant",
+  "slug": "izolacna-sada-i-variant",
+  "skupina": "izolacne-sady",
+  "kategoria": "prislusenstvo",
+  "nazov": "Izolačná sada I variant",
+  "nazov_watts": "Izolačná sada I variant",
+  "popis": "Zaručuje úplnú izoláciu a utesnenie priamych predĺžení rúr Uno, Duo a Quadro. Súprava obsahuje hladké čierne HDPE potrubie, izoláciu z minerálnej vlny, 2 zmršťovacie objímky, lepiacu pásku a montážny návod.",
+  "subory": [],
+  "pocet_variantov": 4,
+  "tabulky": [
+   {
+    "head": [
+     "Kód",
+     "Microflex pipe with casing dout (mm)",
+     "L (mm)",
+     "MM insulation kit dout (mm)",
+     "Váha (kg)"
+    ],
+    "rows": [
+     [
+      "MM75/90",
+      "75/90мм",
+      "700",
+      "110",
+      "1,45"
+     ],
+     [
+      "MM125",
+      "125мм",
+      "850",
+      "140",
+      "2,50"
+     ],
+     [
+      "MM160",
+      "160мм",
+      "1000",
+      "180",
+      "5,45"
+     ],
+     [
+      "MM200",
+      "200мм",
+      "1000",
+      "225",
+      "7,15"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/pipe-insulation-sets/insulated-kit-i-variant",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "izolovana-suprava-t-kusu",
+  "slug": "izolovana-suprava-t-kusu",
+  "skupina": "izolacne-sady",
+  "kategoria": "prislusenstvo",
+  "nazov": "Izolovaná súprava T-kusu",
+  "nazov_watts": "Izolovaná súprava T-kusu",
+  "popis": "Zaručuje úplnú izoláciu a utesnenie odbočných spojov medzi rúrkami Uno, Duo a Quadro. Sada obsahuje 2 polovice z HDPE, izoláciu z minerálnej vlny, tesniacu sadu, skrutky z nehrdzavejúcej ocele a montážny návod. Teplom zmrštiteľné čiapky sa objednávajú osobitne!",
+  "subory": [
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   }
+  ],
+  "pocet_variantov": 2,
+  "tabulky": [
+   {
+    "head": [
+     "Kód",
+     "Microflex pipe with casing dout (mm)",
+     "L (mm)",
+     "W (mm)",
+     "H (mm)",
+     "Váha (kg)"
+    ],
+    "rows": [
+     [
+      "MT129075",
+      "125/90/75мм",
+      "960",
+      "590",
+      "200",
+      "7,50"
+     ],
+     [
+      "MT201612",
+      "200/160/125мм",
+      "1170",
+      "750",
+      "270",
+      "11,65"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/pipe-insulation-sets/insulated-t-piece-kit",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "zateplene-koleno-90",
+  "slug": "zateplene-koleno-90",
+  "skupina": "izolacne-sady",
+  "kategoria": "prislusenstvo",
+  "nazov": "Zateplené koleno 90 °",
+  "nazov_watts": "Zateplené koleno 90 °",
+  "popis": "Zaručuje úplnú izoláciu a utesnenie kolmých spojení medzi rúrkami Uno, Duo a Quadro. Sada obsahuje 2 polovice z HDPE, izoláciu z minerálnej vlny, tesniacu sadu, skrutky z nehrdzavejúcej ocele a montážny návod. Teplom zmrštiteľné čiapky sa objednávajú osobitne!",
+  "subory": [
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   }
+  ],
+  "pocet_variantov": 1,
+  "tabulky": [
+   {
+    "head": [
+     "Kód",
+     "Microflex pipe with casing dout (mm)",
+     "L (mm)",
+     "W (mm)",
+     "H (mm)",
+     "Váha (kg)"
+    ],
+    "rows": [
+     [
+      "MH201612",
+      "200/160/125",
+      "740",
+      "740",
+      "270",
+      "7,50"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/pipe-insulation-sets/insulation-kit-for-90-degree-angles",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "izolovana-suprava-na-pripojenie-y",
+  "slug": "izolovana-suprava-na-pripojenie-y",
+  "skupina": "izolacne-sady",
+  "kategoria": "prislusenstvo",
+  "nazov": "Izolovaná súprava na pripojenie Y",
+  "nazov_watts": "Izolovaná súprava na pripojenie Y",
+  "popis": "Zaručuje úplnú izoláciu a utesnenie priamych predĺžení medzi rúrkami 1 Quadro a 2 Duo alebo 1 Duo až 2 Uno. Sada obsahuje 2 polovice z HDPE, izoláciu z minerálnej vlny, tesniacu sadu, skrutky z nehrdzavejúcej ocele a montážny návod.",
+  "subory": [
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   }
+  ],
+  "pocet_variantov": 1,
+  "tabulky": [
+   {
+    "head": [
+     "Kód",
+     "Microflex pipe with casing dout (mm)",
+     "L (mm)",
+     "W (mm)",
+     "H (mm)",
+     "Váha (kg)"
+    ],
+    "rows": [
+     [
+      "MBR201612",
+      "200/160/125",
+      "1170",
+      "460",
+      "230",
+      "7,00"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/pipe-insulation-sets/insulation-kit-for-split-pipelines",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "mhm-zmrstovacia-buzirka-na-opravu",
+  "slug": "mhm-zmrstovacia-buzirka-na-opravu",
+  "skupina": "opravne-a-vystrazne-pasky",
+  "kategoria": "prislusenstvo",
+  "nazov": "MHM Zmršťovacia bužírka na opravu",
+  "nazov_watts": "MHM Zmršťovacia bužírka na opravu",
+  "popis": "Priechodka steny MMDV obsahuje profilovanú HDPE rúrku a zmršťovaciu manžetu. Po zamurovaní potrubia (vyčnievajúceho 10 cm zo steny) sa potrubie Microflex privedie a utesní pomocou zmršťovacej manžety. Minimálna hrúbka steny je 40 cm.",
+  "subory": [],
+  "pocet_variantov": 4,
+  "tabulky": [
+   {
+    "head": [
+     "Kód",
+     "Popis"
+    ],
+    "rows": [
+     [
+      "MMDV75/90",
+      "75/90"
+     ],
+     [
+      "MHM125",
+      "125"
+     ],
+     [
+      "MHM160",
+      "160"
+     ],
+     [
+      "MHM235",
+      "200"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/repair-and-warning-tapes/mhm-heat-shrinkable-repair-sleeve",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "opravna-paska",
+  "slug": "opravna-paska",
+  "skupina": "opravne-a-vystrazne-pasky",
+  "kategoria": "prislusenstvo",
+  "nazov": "Opravna páska",
+  "nazov_watts": "Opravna páska",
+  "popis": "Používa sa na opravu náhodných miestnych poškodení vonkajšieho krytu.",
+  "subory": [],
+  "pocet_variantov": 2,
+  "tabulky": [
+   {
+    "head": [
+     "Kód",
+     "Opravna páska",
+     "L x W (m)"
+    ],
+    "rows": [
+     [
+      "MHK150",
+      "Páska nanášaná za studena",
+      "10 x 0,15"
+     ],
+     [
+      "MHB200",
+      "Teplom zmrštiteľná páska",
+      "10 x 0.20"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/repair-and-warning-tapes/tape-repair",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "vystrazna-paska",
+  "slug": "vystrazna-paska",
+  "skupina": "opravne-a-vystrazne-pasky",
+  "kategoria": "prislusenstvo",
+  "nazov": "Výstražná páska",
+  "nazov_watts": "Výstražná páska",
+  "popis": "Používa sa na zobrazenie umiestnenia podzemných potrubí počas výkopových prác. Páska sa umiestni do zákopov nad predizolovanou rúrou.",
+  "subory": [],
+  "pocet_variantov": 2,
+  "tabulky": [
+   {
+    "head": [
+     "Kód",
+     "Výstražná páska"
+    ],
+    "rows": [
+     [
+      "MTRW",
+      "Pozor: vodovodné potrubie (červené)"
+     ],
+     [
+      "MTRB",
+      "Pozor: vodovodné potrubie s vykurovacím káblom (modré)"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/repair-and-warning-tapes/tape-signal",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "micro-seal-pre-tlakovu-vodu",
+  "slug": "micro-seal-pre-tlakovu-vodu",
+  "skupina": "prestupy-stenou",
+  "kategoria": "prislusenstvo",
+  "nazov": "MICRO SEAL (pre tlakovú vodu)",
+  "nazov_watts": "MICRO SEAL (pre tlakovú vodu)",
+  "popis": "Toto tlakové vodotesné stenové tesnenie je možné nanášať priamo do vyvŕtaných otvorov a zamurovaných, plastových a vláknocementových priechodiek.Reťazec Micro Seal obsahuje množstvo článkov, ktoré sa pri utiahnutí roztiahnu a vytvoria veľmi tesné utesnenie.",
+  "subory": [
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   }
+  ],
+  "pocet_variantov": 0,
+  "tabulky": [
+   {
+    "head": [
+     "Kód",
+     "Otvor v stene (mm)",
+     "Micro seal Size Rubber A (mm)",
+     "Micro Seal size Length bolts B (mm)"
+    ],
+    "rows": [
+     [
+      "9LS200",
+      "100 - 102",
+      "43,00",
+      "75"
+     ],
+     [
+      "7LS300",
+      "110 - 115",
+      "62,00",
+      "100"
+     ],
+     [
+      "8LS300",
+      "128 - 132",
+      "62,00",
+      "100"
+     ],
+     [
+      "9LS315",
+      "134 - 136",
+      "62,00",
+      "100"
+     ],
+     [
+      "7LS475",
+      "194 - 210",
+      "84,00",
+      "135"
+     ],
+     [
+      "6LS325",
+      "175 - 180",
+      "65,00",
+      "125"
+     ],
+     [
+      "7LS400",
+      "240 - 245",
+      "86,00",
+      "135"
+     ],
+     [
+      "13LS300",
+      "200 - 202",
+      "62,00",
+      "100"
+     ],
+     [
+      "9LS325",
+      "250 - 255",
+      "65,00",
+      "125"
+     ],
+     [
+      "8LS400",
+      "275 - 282",
+      "86,00",
+      "135"
+     ],
+     [
+      "10LS575",
+      "301 - 320",
+      "96,00",
+      "145"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/wall-feed-throughs/micro-seal",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "priechodka-steny-mmdv-pre-vodu-bez-tlaku",
+  "slug": "priechodka-steny-mmdv-pre-vodu-bez-tlaku",
+  "skupina": "prestupy-stenou",
+  "kategoria": "prislusenstvo",
+  "nazov": "Priechodka steny MMDV (pre vodu bez tlaku)",
+  "nazov_watts": "Priechodka steny MMDV (pre vodu bez tlaku)",
+  "popis": "Priechodka steny MMDV obsahuje profilovanú HDPE rúrku a zmršťovaciu manžetu. Po zamurovaní potrubia (vyčnievajúceho 10 cm zo steny) sa potrubie Microflex privedie a utesní pomocou zmršťovacej manžety. Minimálna hrúbka steny je 40 cm.",
+  "subory": [
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   }
+  ],
+  "pocet_variantov": 4,
+  "tabulky": [
+   {
+    "head": [
+     "Kód",
+     "Rúrka Microflex s doutom plášťa (mm)",
+     "Nástenné priechodné potrubie dout (mm)",
+     "Otvor na stenu (mm)"
+    ],
+    "rows": [
+     [
+      "MMDV75/90",
+      "75/90мм",
+      "110",
+      "210"
+     ],
+     [
+      "MMDV125",
+      "125мм",
+      "160",
+      "260"
+     ],
+     [
+      "MMDV160",
+      "160мм",
+      "200",
+      "300"
+     ],
+     [
+      "MMDV200",
+      "200мм",
+      "235",
+      "350"
+     ]
+    ]
+   },
+   {
+    "head": [
+     ""
+    ],
+    "rows": []
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/wall-feed-throughs/wall-feed-throuhg-mmvd",
+  "stiahnute": "2026-09-21"
+ },
+ {
+  "id": "tesnenie-na-prienik-na-stenu-micro-press",
+  "slug": "tesnenie-na-prienik-na-stenu-micro-press",
+  "skupina": "prestupy-stenou",
+  "kategoria": "prislusenstvo",
+  "nazov": "Tesnenie na prienik na stenu MICRO PRESS",
+  "nazov_watts": "Tesnenie na prienik na stenu MICRO PRESS",
+  "popis": "Penetrácia steny Tesnenie MICRO PRESS pre predizolovaný potrubný systém s plášťom z PE. Verzie pre všetky veľkosti a priemery rúrok Microflex: 2x40 a 1x40 mm. Extra mäkká guma pre nízky uťahovací moment s malým nebezpečenstvom deformácie rúr. Schválenie MFPA do 5 barov. Ľahká inštalácia umožňujúca pohyb potrubia.",
+  "subory": [
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   }
+  ],
+  "pocet_variantov": 5,
+  "tabulky": [
+   {
+    "head": [
+     "Kód",
+     "Outer casing Ø out (mm)",
+     "Core hole/ wallsleeve (mm)"
+    ],
+    "rows": [
+     [
+      "M10627",
+      "75",
+      "125"
+     ],
+     [
+      "M10634",
+      "90",
+      "150"
+     ],
+     [
+      "M10643",
+      "125",
+      "200"
+     ],
+     [
+      "M10653",
+      "160",
+      "250"
+     ],
+     [
+      "M10657",
+      "200",
+      "250"
+     ]
+    ]
+   }
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/wall-feed-throughs/wall-penetration-water-under-pressure-chain-micropress",
+  "stiahnute": "2026-09-21"
+ }
+]

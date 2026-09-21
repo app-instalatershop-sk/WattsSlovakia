@@ -1,0 +1,56 @@
+---
+import { kategorie, cestaKategorie } from '../lib/katalog';
+const kats = await kategorie();
+---
+<footer class="ftr">
+  <div class="ftr-ribs ribs-x" aria-hidden="true"></div>
+  <div class="wrap ftr-in">
+    <div>
+      <a class="brand" href="/"><span class="brand-name">Microflex</span><span class="brand-sub">Slovensko</span></a>
+      <p class="muted" style="max-width:32em">Prezentačný web predizolovaného potrubia Microflex pre Slovensko. Predaj a sklad zabezpečuje <a href="https://www.instalatershop.sk/">instalatershop.sk</a>.</p>
+    </div>
+    <div>
+      <h3>Potrubia a diely</h3>
+      <ul>{kats.map((k) => <li><a href={cestaKategorie(k)}>{k.kratky_nazov}</a></li>)}</ul>
+    </div>
+    <div>
+      <h3>Podklady</h3>
+      <ul>
+        <li><a href="/na-stiahnutie/">Katalóg Microflex (PDF, 19 MB)</a></li>
+        <li><a href="/na-stiahnutie/">Technické listy</a></li>
+        <li><a href="/na-stiahnutie/">BIM a CAD</a></li>
+        <li><a href="/na-stiahnutie/">Vyhlásenia o zhode a EPD</a></li>
+        <li><a href="/poradna/">Poradňa</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Prevádzkovateľ</h3>
+      <ul>
+        <li>Inštalatérshop, Staškov 200</li>
+        <li class="muted">IČO a DIČ doplníme</li>
+        <li><a href="/kontakt/">Kontakt</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap ftr-bottom">
+    <span>Microflex je ochranná známka skupiny Watts. Tento web prevádzkuje predajca, nie výrobca.</span>
+    <span>© {new Date().getFullYear()} Microflex Slovensko</span>
+  </div>
+</footer>
+
+<style>
+  .ftr { background: var(--color-blue-900); color: #fff; margin-top: 96px; }
+  .ftr-ribs { height: 14px; }
+  .ftr-in { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1.2fr; gap: 32px; padding-block: 48px; }
+  .ftr h3 { color: #fff; font-size: 15px; font-family: var(--font-text); font-stretch: 100%; font-weight: 600; margin-bottom: 12px; letter-spacing: 0; }
+  .ftr a { color: #fff; }
+  .ftr a:hover { color: var(--color-yellow-500); }
+  .ftr li { padding: 4px 0; font-size: 15px; }
+  .brand { display: inline-flex; align-items: center; gap: 12px; color: #fff; margin-bottom: 12px; }
+  .brand-name { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 700; font-size: 22px; letter-spacing: -0.01em; line-height: 1; }
+  .brand-sub { font-size: 13px; color: var(--color-on-dark-muted); border-left: 1px solid rgb(255 255 255 / 0.3); padding-left: 12px; line-height: 1; }
+  .ftr .muted { color: var(--color-on-dark-muted); }
+  .ftr-bottom { border-top: 1px solid rgb(255 255 255 / 0.18); padding-block: 16px; font-size: 13px; color: var(--color-on-dark-muted); display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+  @media (max-width: 1100px) { .ftr-in { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 760px) { .ftr-in { grid-template-columns: 1fr; } }
+</style>

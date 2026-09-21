@@ -174,11 +174,17 @@
    "href": "/sk/products/eu/microflex-pre-insulated-piping/heating-pumps",
    "img": null,
    "status": 200,
-   "h1": "",
-   "title": "WATTS EUROPE – Kúrenie a sanitárne systémy",
-   "meta": "Spoločnosť WATTS je popredným európskym výrobcom a dodávateľom produktov a riešení používaných v oblasti ochrany vôd, kanalizácie, vykurovania, ventilácie a klimatizácie (HVAC), meracej techniky a klimatizačnej elektroniky.",
+   "h1": "Microflex HP pre pripojenie tepelného čerpadla",
+   "title": "Microflex HP pre pripojenie tepelného čerpadla",
+   "meta": "Microflex HP pre pripojenie tepelného čerpadla",
    "tools": [],
-   "series": []
+   "series": [
+    {
+     "name": "Microflex HP pre pripojenie tepelného čerpadla",
+     "href": "/sk/products/eu/microflex-pre-insulated-piping/heating-pumps/microflex-hp",
+     "img": "/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/664525-50061/639255959750000000"
+    }
+   ]
   }
  ],
  "series": {
@@ -4221,6 +4227,338 @@
      "img": "/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636681-50067/638386906090000000"
     }
    ]
+  },
+  "/sk/products/eu/microflex-pre-insulated-piping/heating-pumps/microflex-hp": {
+   "status": 200,
+   "category": "Microflex HP (tepelné čerpadlá)",
+   "listName": "Microflex HP pre pripojenie tepelného čerpadla",
+   "listImg": "/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/664525-50061/639255959750000000",
+   "href": "/sk/products/eu/microflex-pre-insulated-piping/heating-pumps/microflex-hp",
+   "h1": "Microflex HP pre pripojenie tepelného čerpadla",
+   "title": "Microflex HP pre pripojenie tepelného čerpadla",
+   "meta": "Microflex HP pre pripojenie tepelného čerpadla",
+   "sections": {
+    "Popis": {
+     "paras": [
+      "Predizolovaný potrubný systém Microflex sa skladá z tepelnej izolácie okolo nosnej rúrky a je pokrytý „uzavretou komorou“ ochranným vonkajším plášťom odolným voči UV žiareniu.",
+      "Potrubie Microflex HP sa používa na pripojenie externých tepelných čerpadiel, napr. Monoblokové tepelné čerpadlá vzduch-voda. Inteligentný dizajn Microflex HP kombinuje prívodné a vratné potrubie na vykurovanie/chladenie s dvoma vlnitými rúrkami pre hlavné a ovládacie káble v rovnakom vonkajšom plášti. Prázdne vlnité rúry umožňujú bezpečné vedenie káblov.",
+      "Poskytuje významné výhody ako nízka hmotnosť, hyperflexibilita, robustnosť a jednoduché a rýchle pokladanie aj cez prekážky a za rohy.",
+      "Systémové príslušenstvo je možné namontovať bez špeciálnych nástrojov.",
+      "Potrubný systém Microflex HP pozostáva zo štyroch (4) integrovaných komponentov a je vyrobený podľa normy EN 15632: 1-3."
+     ],
+     "subs": [],
+     "links": []
+    },
+    "Technické údaje": {
+     "paras": [
+      "Použitý izolačný materiál pozostáva zo zosieťovanej polyetylénovej peny. Okrem vynikajúcich izolačných vlastností zabezpečuje uzavretá bunková štruktúra materiálu len minimálnu nasiakavosť. Materiál neobsahuje CFC.",
+      "Vonkajší plášť odolný voči UV žiareniu v tmavomodrej farbe je vyrobený z PE-HD podľa princípu „uzavretej komory“, chráni vnútornú rúrku ako aj izolačný materiál pred vonkajšími vplyvmi. Rebrá vlnitého vonkajšieho krytu sú úplne uzavreté; vniknutie vody v dôsledku povrchového poškodenia vonkajšieho krytu je preto nemožné.",
+      "Štandardná dĺžka rolky je 100 m. Dĺžky na mieru je možné strihať. Rolky sú navrhnuté tak, aby vyhovovali štandardným nákladným prívesom a kontajnerom.",
+      "Špecifikácie prepravy a skladovania nájdete v návode na inštaláciu."
+     ],
+     "subs": [],
+     "links": []
+    },
+    "Obj. číslo": {
+     "paras": [
+      "Microflex HP: PN6/SDR11 + elektrické vedenie",
+      "(1) Použiteľné praktické hodnoty bez rizika deformácie alebo poškodenia potrubia"
+     ],
+     "subs": [],
+     "links": []
+    },
+    "Stiahnuť": {
+     "paras": [
+      "Ekologická deklarácia výrobku Smart EPD SmartEPD-2026-134-0878-01 | Predizolované potrubia Microflex®, platná do 29. 5. 2031",
+      "Declaration of Conformity | Pre-insulated pipe Microflex",
+      "Brochure | Pre-insulated flexible pipes Microflex",
+      "Microflex - Katalóg",
+      "Microflex HP - Technický list",
+      "Microflex | DXF | HP",
+      "Microflex | DWG | HP"
+     ],
+     "subs": [
+      "Schválenia",
+      "Brožúry",
+      "Technické listy",
+      "BIM a CAD súbory"
+     ],
+     "links": [
+      {
+       "t": "Ekologická deklarácia výrobku Smart EPD SmartEPD-2026-134-0878-01 | Predizolované potrubia Microflex®, platná do 29. 5. 2031",
+       "h": "https://www.watts.eu/sk/technical-support/approvals/microflex/epd-microflex"
+      },
+      {
+       "t": "Declaration of Conformity | Pre-insulated pipe Microflex",
+       "h": "https://www.watts.eu/sk/technical-support/approvals/microflex/28702"
+      },
+      {
+       "t": "Brochure | Pre-insulated flexible pipes Microflex",
+       "h": "https://www.watts.eu/sk/technical-support/brochures/microflex/10181"
+      },
+      {
+       "t": "Microflex - Katalóg",
+       "h": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+      },
+      {
+       "t": "Microflex HP - Technický list",
+       "h": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/21118"
+      },
+      {
+       "t": "Microflex | DXF | HP",
+       "h": "https://www.watts.eu/sk/technical-support/download-dwg-drawings/microflex/30994"
+      },
+      {
+       "t": "Microflex | DWG | HP",
+       "h": "https://www.watts.eu/sk/technical-support/download-dwg-drawings/microflex/30993"
+      }
+     ]
+    },
+    "": {
+     "paras": [
+      "Video | MICROFLEX HP pipe - YOUR Solution for Heat Pump Connection",
+      "Trvanie : Pozri teraz"
+     ],
+     "subs": [],
+     "links": []
+    },
+    "Referencie": {
+     "paras": [
+      "Aplikácia potrubia Microflex HP na pripojenie tepelného čerpadla"
+     ],
+     "subs": [
+      "Prípadové štúdie"
+     ],
+     "links": [
+      {
+       "t": "References",
+       "h": "/sk/references?Filters=%5B%7B%22Name%22%3A%22Series%22%2C%22Values%22%3A%5B%22microflex-hp%22%5D%7D%5D"
+      },
+      {
+       "t": "Aplikácia potrubia Microflex HP na pripojenie tepelného čerpadla",
+       "h": "/sk/references/application-of-microflex-hp-pipe-for-heat-pump-connection"
+      }
+     ]
+    },
+    "Súvisiace produkty": {
+     "paras": [
+      "Feedback Form",
+      "If you have any questions, please contact us with the form below.",
+      "Thanks. Your message has been sent.",
+      "Katalóg Katalóg",
+      "Naši parteri Naši parteri",
+      "Riešenia Riešenia",
+      "Príklady inštalácií Príklady inštalácií",
+      "Podpora Podpora",
+      "O spoločnosti O spoločnosti",
+      "Kontakty Kontakty",
+      "Právne oznámenia Právne oznámenia",
+      "Všeobecné záväzné podmienky Všeobecné záväzné podmienky",
+      "Vyhlásenie PPWR Vyhlásenie PPWR",
+      "Vulnerability Disclosure Policy and Report Form Vulnerability Disclosure Policy and Report Form",
+      "Podmienky používania Podmienky používania",
+      "Odmietnutie zodpovednosti Odmietnutie zodpovednosti",
+      "Zásady ochrany osobných údajov Zásady ochrany osobných údajov",
+      "TOS & Privacy – Vision+ TOS & Privacy – Vision+",
+      "©2026 Watts EMEA Holding B.V.",
+      "Sitemap Sitemap"
+     ],
+     "subs": [
+      "used in conjunction with",
+      "used in conjunction with",
+      "Spravovať preferencie súhlasu",
+      "Zoznam súborov cookie"
+     ],
+     "links": [
+      {
+       "t": "PE-X x PE-X Koleno spojky Vykurovanie",
+       "h": "/sk/products/eu/microflex-pre-insulated-piping/couplings/pe-x-couplings-for-heating-and-cool-pipes/elbow-mj90"
+      },
+      {
+       "t": "Fixný bod",
+       "h": "/sk/products/eu/microflex-pre-insulated-piping/couplings/accessories/anchoring-fixing-threaded-couplings"
+      },
+      {
+       "t": "Uzatvára prach na potrubí quadro",
+       "h": "/sk/products/eu/microflex-pre-insulated-piping/accessories/caps-and-reduction-kits/dust-cap-msq-quadro"
+      },
+      {
+       "t": "PE-X spojka kúrenie / COOL - 6 / 16bar",
+       "h": "/sk/products/eu/microflex-pre-insulated-piping/couplings/pe-x-couplings-for-heating-and-cool-pipes/pe-x-coupling-heating-cool-6-16bar-mj341"
+      },
+      {
+       "t": "Tesnenie na prienik na stenu MICRO PRESS",
+       "h": "/sk/products/eu/microflex-pre-insulated-piping/accessories/wall-feed-throughs/wall-penetration-water-under-pressure-chain-micropress"
+      },
+      {
+       "t": "Priechodka steny MMDV (pre vodu bez tlaku)",
+       "h": "/sk/products/eu/microflex-pre-insulated-piping/accessories/wall-feed-throughs/wall-feed-throuhg-mmvd"
+      },
+      {
+       "t": "MICRO SEAL (pre tlakovú vodu)",
+       "h": "/sk/products/eu/microflex-pre-insulated-piping/accessories/wall-feed-throughs/micro-seal"
+      },
+      {
+       "t": "3 x ohrev spojky PE-X T.",
+       "h": "/sk/products/eu/microflex-pre-insulated-piping/couplings/pe-x-couplings-for-heating-and-cool-pipes/coupling-heating-mj130"
+      },
+      {
+       "t": "Microflex PE-X spojky vykurovanie",
+       "h": "/sk/products/eu/microflex-pre-insulated-piping/couplings/pe-x-couplings-for-heating-and-cool-pipes/the-male-fittings"
+      },
+      {
+       "t": "Dokončenie uzáverov EPDM na potrubiach quadro",
+       "h": "/sk/products/eu/microflex-pre-insulated-piping/accessories/caps-and-reduction-kits/finishing-epdm-caps-on-quado-pipelines"
+      },
+      {
+       "t": "Katalóg",
+       "h": "/sk/products/eu"
+      },
+      {
+       "t": "Naši parteri",
+       "h": "/sk/partners"
+      },
+      {
+       "t": "Riešenia",
+       "h": "/sk/solutions"
+      },
+      {
+       "t": "Príklady inštalácií",
+       "h": "/sk/references"
+      },
+      {
+       "t": "Podpora",
+       "h": "/sk/technical-support"
+      },
+      {
+       "t": "O spoločnosti",
+       "h": "/sk/company"
+      },
+      {
+       "t": "Kontakty",
+       "h": "/sk/company/contacts"
+      },
+      {
+       "t": "Právne oznámenia",
+       "h": "/sk/legal/imprint?redirectlanguage=en"
+      },
+      {
+       "t": "Všeobecné záväzné podmienky",
+       "h": "/sk/legal/gtc?redirectlanguage=en"
+      },
+      {
+       "t": "Vyhlásenie PPWR",
+       "h": "/sk/packaging-regulation"
+      },
+      {
+       "t": "Vulnerability Disclosure Policy and Report Form",
+       "h": "/sk/legal/vulnerability-disclosure-policy"
+      },
+      {
+       "t": "Podmienky používania",
+       "h": "/sk/legal/terms-of-use?redirectlanguage=en"
+      },
+      {
+       "t": "Odmietnutie zodpovednosti",
+       "h": "/sk/legal/disclaimer"
+      },
+      {
+       "t": "Zásady ochrany osobných údajov",
+       "h": "/sk/data-privacy-policy"
+      },
+      {
+       "t": "Cookie Policy",
+       "h": "/sk/legal/cookie-policy"
+      },
+      {
+       "t": "TOS & Privacy – Vision+",
+       "h": "/sk/legal/vision-plus-legal-information"
+      },
+      {
+       "t": "Sitemap",
+       "h": "/sk/sitemap"
+      },
+      {
+       "t": "Privacy Policy",
+       "h": "https://www.watts.eu/en/data-privacy-policy"
+      }
+     ]
+    }
+   },
+   "tables": [
+    {
+     "head": [
+      "Kód",
+      "PE-Xad_out x s (mm)",
+      "DN",
+      "Elektrické vlnité potrubie vonkajšie/vnútornépriemer (mm)",
+      ">Vonkajší obald_out (mm)",
+      "Hmotnosť (Kg/m)",
+      "Priem. hrúbka izolácie (mm)",
+      "Vnútorné ohýbaniePolomer(1) (m)"
+     ],
+     "rows": [
+      [
+       "MQ12525C3225E",
+       "2 x 25 x 2.3",
+       "20-20",
+       "25/18.832/25",
+       "125",
+       "1,63",
+       "15",
+       "0,3"
+      ],
+      [
+       "MQ12532C3225E",
+       "2 x 32 x 2.9",
+       "25-25",
+       "25/18.832/25",
+       "125",
+       "1,79",
+       "12",
+       "0,3"
+      ],
+      [
+       "MQ16032C3225E",
+       "2 x 32 x 2.9",
+       "25-25",
+       "25/18.832/25",
+       "160",
+       "2,27",
+       "27",
+       "0,5"
+      ],
+      [
+       "MQ16040C32E",
+       "2 x 40 x 3.7",
+       "32-32",
+       "2 x 32/25",
+       "160",
+       "2,60",
+       "15",
+       "0,6"
+      ]
+     ]
+    }
+   ],
+   "gallery": [
+    {
+     "src": "/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/664525-50061/639255959750000000",
+     "alt": "",
+     "cls": ""
+    },
+    {
+     "src": "/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636674-50060/638542202730000000",
+     "alt": "",
+     "cls": ""
+    },
+    {
+     "src": "/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/637654-50060/638702986950000000",
+     "alt": "",
+     "cls": ""
+    }
+   ],
+   "sublisting": []
   }
  },
  "products": {
@@ -13824,7 +14162,7 @@
  },
  "counts": {
   "categories": 7,
-  "series": 18,
+  "series": 19,
   "products": 42,
   "seriesWithTable": 7,
   "productsWithTable": 39

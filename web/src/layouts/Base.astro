@@ -1,0 +1,74 @@
+---
+import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
+import Hlavicka from '../components/Hlavicka.astro';
+import Paticka from '../components/Paticka.astro';
+
+interface Drobcek { text: string; href?: string }
+interface Props {
+  title: string;
+  description: string;
+  aktivna?: 'potrubia' | 'vyber' | 'stiahnut' | 'firmy' | 'poradna';
+  drobceky?: Drobcek[];
+  jsonLd?: Record<string, unknown>[];
+  ogImage?: string;
+}
+const { title, description, aktivna, drobceky = [], jsonLd = [], ogImage } = Astro.props;
+const site = Astro.site ?? new URL('https://microflex.sk');
+const canonical = new URL(Astro.url.pathname, site).href;
+const fullTitle = title === 'Microflex Slovensko' ? title : `${title} | Microflex Slovensko`;
+
+const organizacia = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Microflex Slovensko',
+  url: site.href,
+  description: 'Prezentačný web predizolovaného potrubia Microflex pre Slovensko. Predaj zabezpečuje instalatershop.sk.',
+};
+const breadcrumbs = drobceky.length
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [{ text: 'Domov', href: '/' }, ...drobceky].map((d, i) => ({
+        '@type': 'ListItem', position: i + 1, name: d.text, ...(d.href ? { item: new URL(d.href, site).href } : {}),
+      })),
+    }
+  : null;
+const ld = [organizacia, ...(breadcrumbs ? [breadcrumbs] : []), ...jsonLd];
+---
+<!doctype html>
+<html lang="sk">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="sk_SK" />
+    {ogImage && <meta property="og:image" content={new URL(ogImage, site).href} />}
+    <meta name="generator" content={Astro.generator} />
+    <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+    <ClientRouter />
+  </head>
+  <body>
+    <Hlavicka aktivna={aktivna} />
+    {drobceky.length > 0 && (
+      <div class="wrap">
+        <ol class="crumbs" aria-label="Kde ste">
+          <li><a href="/">Domov</a></li>
+          {drobceky.map((d) => (d.href ? <li><a href={d.href}>{d.text}</a></li> : <li aria-current="page">{d.text}</li>))}
+        </ol>
+      </div>
+    )}
+    <main id="obsah">
+      <slot />
+    </main>
+    <Paticka />
+  </body>
+</html>

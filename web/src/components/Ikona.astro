@@ -1,0 +1,31 @@
+---
+/** Ikony rozhrania: originálne súbory Lucide (lucide-static, ISC). Žiadne vlastné kreslenie. */
+import search from 'lucide-static/icons/search.svg?raw';
+import externalLink from 'lucide-static/icons/external-link.svg?raw';
+import download from 'lucide-static/icons/download.svg?raw';
+import chevronRight from 'lucide-static/icons/chevron-right.svg?raw';
+import chevronDown from 'lucide-static/icons/chevron-down.svg?raw';
+import slidersHorizontal from 'lucide-static/icons/sliders-horizontal.svg?raw';
+import check from 'lucide-static/icons/check.svg?raw';
+import phone from 'lucide-static/icons/phone.svg?raw';
+import mail from 'lucide-static/icons/mail.svg?raw';
+import menu from 'lucide-static/icons/menu.svg?raw';
+import x from 'lucide-static/icons/x.svg?raw';
+import fileText from 'lucide-static/icons/file-text.svg?raw';
+import arrowUpRight from 'lucide-static/icons/arrow-up-right.svg?raw';
+import info from 'lucide-static/icons/info.svg?raw';
+import copy from 'lucide-static/icons/copy.svg?raw';
+
+const ikony = {
+  search, 'external-link': externalLink, download, 'chevron-right': chevronRight, 'chevron-down': chevronDown,
+  'sliders-horizontal': slidersHorizontal, check, phone, mail, menu, x, 'file-text': fileText,
+  'arrow-up-right': arrowUpRight, info, copy,
+} as const;
+
+export type NazovIkony = keyof typeof ikony;
+
+interface Props { nazov: NazovIkony; class?: string; velkost?: number; popis?: string }
+const { nazov, class: cls = '', velkost = 20, popis } = Astro.props;
+const svg = ikony[nazov].replace(/<!--.*?-->/gs, '').replace(/ class="[^"]*"/, '');
+---
+<span class={`icon ${cls}`} style={`width:${velkost}px;height:${velkost}px`} aria-hidden={popis ? undefined : 'true'} role={popis ? 'img' : undefined} aria-label={popis} set:html={svg} />

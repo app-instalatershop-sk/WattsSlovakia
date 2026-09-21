@@ -1,0 +1,82 @@
+---
+import Ikona from './Ikona.astro';
+interface Props { aktivna?: 'potrubia' | 'vyber' | 'stiahnut' | 'firmy' | 'poradna' }
+const { aktivna } = Astro.props;
+const polozky = [
+  { id: 'potrubia', text: 'Potrubia', href: '/potrubia/' },
+  { id: 'vyber', text: 'Výber potrubia', href: '/vyber/' },
+  { id: 'stiahnut', text: 'Na stiahnutie', href: '/na-stiahnutie/' },
+  { id: 'firmy', text: 'Pre firmy', href: '/pre-firmy/' },
+  { id: 'poradna', text: 'Poradňa', href: '/poradna/' },
+] as const;
+const ESHOP = 'https://www.instalatershop.sk/predizolovane-potrubie-microflex/';
+---
+<header class="hdr" id="hdr">
+  <div class="wrap hdr-in">
+    <a class="brand" href="/" aria-label="Microflex Slovensko, domov">
+      <span class="brand-name">Microflex</span>
+      <span class="brand-sub">Slovensko</span>
+    </a>
+    <nav class="nav" aria-label="Hlavná navigácia">
+      {polozky.map((p) => <a href={p.href} aria-current={aktivna === p.id ? 'page' : undefined}>{p.text}</a>)}
+    </nav>
+    <form class="search" role="search" action="/hladat/" method="get">
+      <input id="q" name="q" type="search" placeholder="Obj. číslo, rad, dimenzia" aria-label="Hľadať v katalógu" autocomplete="off" />
+      <button type="submit"><Ikona nazov="search" velkost={18} />Hľadať</button>
+    </form>
+    <a class="eshop" href={ESHOP} target="_blank" rel="noopener">E-shop <Ikona nazov="external-link" velkost={16} /></a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav" id="menu-btn">Menu</button>
+  </div>
+  <nav id="mobile-nav" class="mnav" hidden aria-label="Navigácia">
+    {polozky.map((p) => <a href={p.href}>{p.text}</a>)}
+    <a href={ESHOP}>E-shop instalatershop.sk</a>
+  </nav>
+</header>
+
+<style>
+  .hdr { position: sticky; top: 0; z-index: 20; background: var(--color-white); border-bottom: var(--line); transition: box-shadow 200ms var(--ease-soft); }
+  .hdr.is-scrolled { box-shadow: 0 2px 12px rgb(11 27 51 / 0.08); }
+  .hdr-in { display: flex; align-items: center; gap: 32px; min-height: var(--hdr-h); transition: min-height 200ms var(--ease-soft); }
+  .hdr.is-scrolled .hdr-in { min-height: 60px; }
+  .brand { display: inline-flex; align-items: center; gap: 12px; color: var(--color-ink); }
+  .brand-name { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 700; font-size: 22px; letter-spacing: -0.01em; line-height: 1; }
+  .brand-sub { font-size: 13px; color: var(--color-ink-soft); border-left: var(--line); padding-left: 12px; line-height: 1; }
+  .nav { display: flex; gap: 24px; margin-left: 8px; flex: none; }
+  .nav a { color: var(--color-ink); font-weight: 500; padding: 6px 0; border-bottom: 2px solid transparent; white-space: nowrap; transition: border-color 150ms var(--ease-soft); }
+  .nav a:hover, .nav a[aria-current] { border-bottom-color: var(--color-blue-700); color: var(--color-ink); }
+  .search { margin-left: auto; display: flex; align-items: stretch; height: 44px; border: var(--line); border-radius: var(--radius-s); overflow: hidden; background: var(--color-white); min-width: 0; transition: border-color 150ms var(--ease-soft), box-shadow 150ms var(--ease-soft); }
+  .search:focus-within { border-color: var(--color-blue-700); box-shadow: 0 0 0 2px var(--color-blue-100); }
+  .search input { border: 0; padding: 0 14px; width: 280px; max-width: 40vw; font: inherit; font-size: 15px; color: var(--color-ink); outline: none; min-width: 0; background: transparent; }
+  .search input::placeholder { color: #7a8494; }
+  .search button { border: 0; background: var(--color-blue-700); color: #fff; padding: 0 16px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: background-color 150ms var(--ease-soft); }
+  .search button:hover { background: var(--color-blue-800); }
+  .eshop { display: inline-flex; align-items: center; gap: 8px; font-weight: 500; color: var(--color-blue-700); white-space: nowrap; }
+  .menu-btn { display: none; margin-left: auto; height: 44px; padding: 0 14px; border: var(--line); border-radius: var(--radius-s); background: var(--color-white); color: var(--color-ink); font-weight: 500; cursor: pointer; }
+  .mnav { display: flex; flex-direction: column; border-top: var(--line); padding: 4px var(--gutter) 12px; }
+  .mnav a { padding: 14px 0; color: var(--color-ink); font-weight: 500; border-bottom: var(--line); }
+  .mnav a:last-child { border-bottom: 0; color: var(--color-blue-700); }
+  @media (max-width: 1100px) { .nav { display: none; } .search input { width: 200px; } }
+  @media (max-width: 760px) { .hdr-in { gap: 16px; } .search, .eshop { display: none; } .menu-btn { display: inline-flex; align-items: center; } }
+</style>
+
+<script>
+  function initHlavicka() {
+    const hdr = document.getElementById('hdr');
+    const btn = document.getElementById('menu-btn');
+    const nav = document.getElementById('mobile-nav');
+    if (!hdr) return;
+    const onScroll = () => hdr.classList.toggle('is-scrolled', window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    if (btn && nav) {
+      btn.addEventListener('click', () => {
+        const open = nav.hidden;
+        nav.hidden = !open;
+        btn.setAttribute('aria-expanded', String(open));
+        btn.textContent = open ? 'Zavrieť' : 'Menu';
+      });
+    }
+  }
+  initHlavicka();
+  document.addEventListener('astro:after-swap', initHlavicka);
+</script>

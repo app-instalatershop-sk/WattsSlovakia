@@ -1,0 +1,998 @@
+[
+ {
+  "id": "microflex-uno-6-bar",
+  "slug": "microflex-uno-6-bar",
+  "kategoria": "vykurovanie",
+  "poradie": 1,
+  "nazov": "Microflex UNO, vykurovanie 6 bar",
+  "nazov_watts": "Jednoduché predizolované potrubie MICROFLEX UNO Kúrenie 6 bar",
+  "popis": "Jednoduché ohybné, predizolované, samokompenzujúce podzemné potrubie. Obzvlášť vhodný na ohrev vody, ale aj na (horúcu) pitnú vodu, odpadovú vodu a iné kvapaliny. Transportná rúra odolná proti korózii v zosieťovanom PE-Xa podľa EN ISO 15875, so žltou bariérou proti difúzii kyslíka podľa DIN 4726. Tepelná, elastická penová izolácia bez obsahu CFC zo zosieťovaného PE-X s uzavretou mikrobunkou štruktúra. Minimálna absorpčná kapacita vody <1% podľa ISO 2896. Vonkajší zvlnený plášť z HDPE vyrobený podľa princípu uzavretej komory na zabezpečenie vysokokvalitnej ochrany potrubného systému.",
+  "kratky_popis": "Jedna rúra PE-Xa v plášti. Prívod alebo spiatočka, teplá voda k vzdialenému odberu.",
+  "medium": "vykurovacia voda",
+  "tlak_bar": 6,
+  "pocet_rur": 1,
+  "piktogram": "rad-uno-kurenie.png",
+  "fotka": "microflex-uno-6-bar.jpg",
+  "subory": [
+   {
+    "nazov": "Ekologická deklarácia výrobku Smart EPD SmartEPD-2026-134-0878-01 | Predizolované potrubia Microflex®, platná do 29. 5. 2031",
+    "typ": "EPD",
+    "jazyk": null,
+    "url": "https://www.watts.eu/sk/technical-support/approvals/microflex/epd-microflex"
+   },
+   {
+    "nazov": "Vyhlásenie o zhode, predizolované potrubie Microflex (EN)",
+    "typ": "PDF",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/approvals/microflex/28702"
+   },
+   {
+    "nazov": "Výkres DWG: UNO & UNO PRIMO heating and cooling",
+    "typ": "DWG",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/download-dwg-drawings/microflex/31000"
+   },
+   {
+    "nazov": "Výkres DXF: UNO & UNO PRIMO heating and cooling",
+    "typ": "DWG",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/download-dwg-drawings/microflex/30999"
+   },
+   {
+    "nazov": "Brožúra Predizolované ohybné potrubia Microflex (EN)",
+    "typ": "PDF",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/brochures/microflex/10181"
+   },
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   }
+  ],
+  "je_skupina": false,
+  "produkty": [],
+  "suvisiace": [
+   "3-x-ohrev-spojky-pe-x-t",
+   "microflex-pe-x-spojky-vykurovanie",
+   "tesnenie-na-prienik-na-stenu-micro-press",
+   "fixny-bod",
+   "uzatvara-prach-na-jednom-potrubi",
+   "micro-seal-pre-tlakovu-vodu",
+   "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach",
+   "priechodka-steny-mmdv-pre-vodu-bez-tlaku",
+   "pe-x-x-pe-x-koleno-spojky-vykurovanie",
+   "pe-x-spojka-kurenie-cool-6-16bar"
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/pipes-for-heating/1-microflex-uno-6-bar",
+  "stiahnute": "2026-09-21",
+  "pocet_variantov": 16
+ },
+ {
+  "id": "microflex-duo-6-bar",
+  "slug": "microflex-duo-6-bar",
+  "kategoria": "vykurovanie",
+  "poradie": 2,
+  "nazov": "Microflex DUO, vykurovanie 6 bar",
+  "nazov_watts": "Dvojité predizolované potrubie MICROFLEX DUO Kúrenie 6 bar",
+  "popis": "Dvojité flexibilné, predizolované, samokompenzujúce podzemné potrubie. Obzvlášť vhodný na ohrev vody, ale aj na (horúcu) pitnú vodu, odpadovú vodu a iné kvapaliny. Transportná rúra odolná proti korózii v zosieťovanom PE-Xa podľa EN ISO 15875, so žltou bariérou proti difúzii kyslíka podľa DIN 4726. Tepelná, elastická penová izolácia bez obsahu CFC zo zosieťovaného PE-X s uzavretou mikrobunkou štruktúra. Minimálna absorpčná kapacita vody <1% podľa ISO 2896. Izolačný stredový diel PE zaručuje efektívne oddelenie prívodného a vratného potrubia. Vlnitý vonkajší plášť z HDPE vyrobený v súlade s princípom uzavretej komory na zabezpečenie vysokokvalitnej ochrany potrubného systému.",
+  "kratky_popis": "Prívod a spiatočka v jednom plášti. Najčastejšia voľba pre prípojku domu alebo tepelného čerpadla.",
+  "medium": "vykurovacia voda",
+  "tlak_bar": 6,
+  "pocet_rur": 2,
+  "piktogram": "rad-duo-kurenie.png",
+  "fotka": "microflex-duo-6-bar.jpg",
+  "subory": [
+   {
+    "nazov": "Ekologická deklarácia výrobku Smart EPD SmartEPD-2026-134-0878-01 | Predizolované potrubia Microflex®, platná do 29. 5. 2031",
+    "typ": "EPD",
+    "jazyk": null,
+    "url": "https://www.watts.eu/sk/technical-support/approvals/microflex/epd-microflex"
+   },
+   {
+    "nazov": "Vyhlásenie o zhode, predizolované potrubie Microflex (EN)",
+    "typ": "PDF",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/approvals/microflex/28702"
+   },
+   {
+    "nazov": "Výkres DWG: DUO & DUO PRIMO heating and cooling",
+    "typ": "DWG",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/download-dwg-drawings/microflex/30992"
+   },
+   {
+    "nazov": "Výkres DXF: DUO & DUO PRIMO heating and cooling",
+    "typ": "DWG",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/download-dwg-drawings/microflex/30991"
+   },
+   {
+    "nazov": "Brožúra Predizolované ohybné potrubia Microflex (EN)",
+    "typ": "PDF",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/brochures/microflex/10181"
+   },
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   }
+  ],
+  "je_skupina": false,
+  "produkty": [],
+  "suvisiace": [
+   "pe-x-x-pe-x-koleno-spojky-vykurovanie",
+   "tesnenie-na-prienik-na-stenu-micro-press",
+   "3-x-ohrev-spojky-pe-x-t",
+   "fixny-bod",
+   "uzatvara-prach-na-dvojitom-potrubi",
+   "dokoncenie-uzaverov-epdm-na-dvojitych-potrubiach",
+   "micro-seal-pre-tlakovu-vodu",
+   "pe-x-spojka-kurenie-cool-6-16bar",
+   "priechodka-steny-mmdv-pre-vodu-bez-tlaku",
+   "microflex-pe-x-spojky-vykurovanie"
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/pipes-for-heating/2-microflex-duo-6-bar",
+  "stiahnute": "2026-09-21",
+  "pocet_variantov": 8
+ },
+ {
+  "id": "microflex-uno-primo-6-bar",
+  "slug": "microflex-uno-primo-6-bar",
+  "kategoria": "vykurovanie",
+  "poradie": 3,
+  "nazov": "Microflex UNO PRIMO, vykurovanie 6 bar",
+  "nazov_watts": "Jednoduché predizolované potrubie MICROFLEX UNO PRIMO Kúrenie 6 bar",
+  "popis": null,
+  "kratky_popis": "Jedna rúra s ešte ohybnejším plášťom pre trasy s mnohými zmenami smeru.",
+  "medium": "vykurovacia voda",
+  "tlak_bar": 6,
+  "pocet_rur": 1,
+  "piktogram": "rad-uno-kurenie.png",
+  "fotka": "microflex-uno-primo-6-bar.jpg",
+  "subory": [
+   {
+    "nazov": "Ekologická deklarácia výrobku Smart EPD SmartEPD-2026-134-0878-01 | Predizolované potrubia Microflex®, platná do 29. 5. 2031",
+    "typ": "EPD",
+    "jazyk": null,
+    "url": "https://www.watts.eu/sk/technical-support/approvals/microflex/epd-microflex"
+   },
+   {
+    "nazov": "Vyhlásenie o zhode, predizolované potrubie Microflex (EN)",
+    "typ": "PDF",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/approvals/microflex/28702"
+   },
+   {
+    "nazov": "Výkres DWG: UNO & UNO PRIMO heating and cooling",
+    "typ": "DWG",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/download-dwg-drawings/microflex/31000"
+   },
+   {
+    "nazov": "Výkres DXF: UNO & UNO PRIMO heating and cooling",
+    "typ": "DWG",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/download-dwg-drawings/microflex/30999"
+   },
+   {
+    "nazov": "Brožúra Predizolované ohybné potrubia Microflex (EN)",
+    "typ": "PDF",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/brochures/microflex/10181"
+   },
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   }
+  ],
+  "je_skupina": false,
+  "produkty": [],
+  "suvisiace": [],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/pipes-for-heating/2-single-microflex-uno-primo-6-bar",
+  "stiahnute": "2026-09-21",
+  "pocet_variantov": 0
+ },
+ {
+  "id": "microflex-primo-duo-6-bar",
+  "slug": "microflex-primo-duo-6-bar",
+  "kategoria": "vykurovanie",
+  "poradie": 4,
+  "nazov": "Microflex PRIMO DUO, vykurovanie 6 bar",
+  "nazov_watts": "Dvojité predizolované potrubie MICROFLEX PRIMO DUO Kúrenie 6 bar",
+  "popis": null,
+  "kratky_popis": "Dve rúry v ohybnejšom plášti PRIMO. Pre stiesnené výkopy a krátke prípojky.",
+  "medium": "vykurovacia voda",
+  "tlak_bar": 6,
+  "pocet_rur": 2,
+  "piktogram": "rad-duo-kurenie.png",
+  "fotka": "microflex-primo-duo-6-bar.jpg",
+  "subory": [
+   {
+    "nazov": "Ekologická deklarácia výrobku Smart EPD SmartEPD-2026-134-0878-01 | Predizolované potrubia Microflex®, platná do 29. 5. 2031",
+    "typ": "EPD",
+    "jazyk": null,
+    "url": "https://www.watts.eu/sk/technical-support/approvals/microflex/epd-microflex"
+   },
+   {
+    "nazov": "Vyhlásenie o zhode, predizolované potrubie Microflex (EN)",
+    "typ": "PDF",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/approvals/microflex/28702"
+   },
+   {
+    "nazov": "Brožúra Predizolované ohybné potrubia Microflex (EN)",
+    "typ": "PDF",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/brochures/microflex/10181"
+   },
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   }
+  ],
+  "je_skupina": false,
+  "produkty": [],
+  "suvisiace": [],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/pipes-for-heating/3-microflex-primo-duo-6-bar",
+  "stiahnute": "2026-09-21",
+  "pocet_variantov": 0
+ },
+ {
+  "id": "microflex-uno-10-bar",
+  "slug": "microflex-uno-10-bar",
+  "kategoria": "sanita",
+  "poradie": 1,
+  "nazov": "Microflex UNO, sanita 10 bar",
+  "nazov_watts": "Jednoduché predizolované potrubie MICROFLEX UNO Sanitárne 10 bar",
+  "popis": "Jednoduché ohybné, predizolované, samokompenzujúce podzemné potrubie.Zvlášť vhodné pre teplú a studenú pitnú vodu, ale aj pre odpadové vody a iné tekutiny. Transportná rúra odolná proti korózii zo zosieťovaného PE-Xa podľa EN ISO 15875. Tepelná, elastická penová izolácia bez obsahu CFC vyrobená zo zosieťovaného PE-X s uzavretou mikrocelulárnou štruktúrou. Minimálna absorpčná kapacita vody <1% podľa ISO 2896. Vonkajší zvlnený plášť z HDPE vyrobený podľa princípu uzavretej komory na zabezpečenie vysokokvalitnej ochrany potrubného systému.",
+  "kratky_popis": "Jedna rúra na pitnú vodu, 10 bar. Teplá alebo studená voda k vzdialenému odberu.",
+  "medium": "pitná voda",
+  "tlak_bar": 10,
+  "pocet_rur": 1,
+  "piktogram": "rad-uno-sanita.png",
+  "fotka": "microflex-uno-10-bar.jpg",
+  "subory": [
+   {
+    "nazov": "Ekologická deklarácia výrobku Smart EPD SmartEPD-2026-134-0878-01 | Predizolované potrubia Microflex®, platná do 29. 5. 2031",
+    "typ": "EPD",
+    "jazyk": null,
+    "url": "https://www.watts.eu/sk/technical-support/approvals/microflex/epd-microflex"
+   },
+   {
+    "nazov": "Vyhlásenie o zhode, predizolované potrubie Microflex (EN)",
+    "typ": "PDF",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/approvals/microflex/28702"
+   },
+   {
+    "nazov": "Brožúra Predizolované ohybné potrubia Microflex (EN)",
+    "typ": "PDF",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/brochures/microflex/10181"
+   },
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   },
+   {
+    "nazov": "Výkres DWG: UNO sanitary water",
+    "typ": "DWG",
+    "jazyk": null,
+    "url": "https://www.watts.eu/sk/technical-support/download-dwg-drawings/microflex/30997"
+   },
+   {
+    "nazov": "Výkres DXF: UNO sanitary water",
+    "typ": "DWG",
+    "jazyk": null,
+    "url": "https://www.watts.eu/sk/technical-support/download-dwg-drawings/microflex/30998"
+   }
+  ],
+  "je_skupina": false,
+  "produkty": [],
+  "suvisiace": [
+   "uzatvara-prach-na-jednom-potrubi",
+   "sanitarne-kolenne-spojky-pe-x-x-pe-x",
+   "fixny-bod",
+   "3-x-pe-x-t-spojka-sanitarna",
+   "priechodka-steny-mmdv-pre-vodu-bez-tlaku",
+   "pe-x-x-pe-x-sanitarne-zariadenie",
+   "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach",
+   "micro-seal-pre-tlakovu-vodu",
+   "tesnenie-na-prienik-na-stenu-micro-press",
+   "sanitarne-spojky-microflex-pe-x"
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/pipes-for-sanitary/1-microflex-uno-10-bar",
+  "stiahnute": "2026-09-21",
+  "pocet_variantov": 8
+ },
+ {
+  "id": "microflex-duo-10-bar",
+  "slug": "microflex-duo-10-bar",
+  "kategoria": "sanita",
+  "poradie": 2,
+  "nazov": "Microflex DUO, sanita 10 bar",
+  "nazov_watts": "Dvojité predizolované potrubie MICROFLEX DUO sanitárne 10 bar",
+  "popis": "Dvojité flexibilné, predizolované, samokompenzujúce podzemné potrubie. Zvlášť vhodné pre teplú a studenú pitnú vodu, ale aj pre odpadové vody a iné tekutiny. Transportná rúra odolná proti korózii zo zosieťovaného PE-Xa podľa EN ISO 15875. Tepelná, elastická penová izolácia bez obsahu CFC vyrobená zo zosieťovaného PE-X s uzavretou mikrocelulárnou štruktúrou. Minimálna absorpčná kapacita vody <1% podľa ISO 2896. Izolačný stredový diel PE zaručuje efektívne oddelenie potrubia teplej úžitkovej vody od potrubia pre cirkulačný okruh. Vlnitý vonkajší plášť z HDPE vyrobený v súlade s princípom uzavretej komory na zabezpečenie vysokokvalitnej ochrany potrubného systému.",
+  "kratky_popis": "Teplá a studená pitná voda v jednom plášti, 10 bar.",
+  "medium": "pitná voda",
+  "tlak_bar": 10,
+  "pocet_rur": 2,
+  "piktogram": "rad-duo-sanita.png",
+  "fotka": "microflex-duo-10-bar.jpg",
+  "subory": [
+   {
+    "nazov": "Ekologická deklarácia výrobku Smart EPD SmartEPD-2026-134-0878-01 | Predizolované potrubia Microflex®, platná do 29. 5. 2031",
+    "typ": "EPD",
+    "jazyk": null,
+    "url": "https://www.watts.eu/sk/technical-support/approvals/microflex/epd-microflex"
+   },
+   {
+    "nazov": "Vyhlásenie o zhode, predizolované potrubie Microflex (EN)",
+    "typ": "PDF",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/approvals/microflex/28702"
+   },
+   {
+    "nazov": "Brožúra Predizolované ohybné potrubia Microflex (EN)",
+    "typ": "PDF",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/brochures/microflex/10181"
+   },
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   },
+   {
+    "nazov": "Výkres DXF: DUO & DUO PRIMO sanitary water",
+    "typ": "DWG",
+    "jazyk": null,
+    "url": "https://www.watts.eu/sk/technical-support/download-dwg-drawings/microflex/30990"
+   },
+   {
+    "nazov": "Výkres DWG: DUO & DUO PRIMO sanitary water",
+    "typ": "DWG",
+    "jazyk": null,
+    "url": "https://www.watts.eu/sk/technical-support/download-dwg-drawings/microflex/30989"
+   }
+  ],
+  "je_skupina": false,
+  "produkty": [],
+  "suvisiace": [
+   "sanitarne-spojky-microflex-pe-x",
+   "uzatvara-prach-na-dvojitom-potrubi",
+   "pe-x-x-pe-x-sanitarne-zariadenie",
+   "3-x-pe-x-t-spojka-sanitarna",
+   "fixny-bod",
+   "dokoncenie-uzaverov-epdm-na-dvojitych-potrubiach",
+   "micro-seal-pre-tlakovu-vodu",
+   "tesnenie-na-prienik-na-stenu-micro-press",
+   "priechodka-steny-mmdv-pre-vodu-bez-tlaku",
+   "sanitarne-kolenne-spojky-pe-x-x-pe-x"
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/pipes-for-sanitary/2-microflex-duo-10-bar",
+  "stiahnute": "2026-09-21",
+  "pocet_variantov": 13
+ },
+ {
+  "id": "microflex-primo-duo-10-bar",
+  "slug": "microflex-primo-duo-10-bar",
+  "kategoria": "sanita",
+  "poradie": 3,
+  "nazov": "Microflex PRIMO DUO, sanita 10 bar",
+  "nazov_watts": "Microflex Primo Duo Sanitárne 10 bar",
+  "popis": null,
+  "kratky_popis": "Dve rúry na pitnú vodu v ohybnejšom plášti PRIMO.",
+  "medium": "pitná voda",
+  "tlak_bar": 10,
+  "pocet_rur": 2,
+  "piktogram": "rad-duo-sanita.png",
+  "fotka": "microflex-primo-duo-10-bar.jpg",
+  "subory": [
+   {
+    "nazov": "Ekologická deklarácia výrobku Smart EPD SmartEPD-2026-134-0878-01 | Predizolované potrubia Microflex®, platná do 29. 5. 2031",
+    "typ": "EPD",
+    "jazyk": null,
+    "url": "https://www.watts.eu/sk/technical-support/approvals/microflex/epd-microflex"
+   },
+   {
+    "nazov": "Vyhlásenie o zhode, predizolované potrubie Microflex (EN)",
+    "typ": "PDF",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/approvals/microflex/28702"
+   },
+   {
+    "nazov": "Brožúra Predizolované ohybné potrubia Microflex (EN)",
+    "typ": "PDF",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/brochures/microflex/10181"
+   },
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   },
+   {
+    "nazov": "Výkres DXF: DUO & DUO PRIMO sanitary water",
+    "typ": "DWG",
+    "jazyk": null,
+    "url": "https://www.watts.eu/sk/technical-support/download-dwg-drawings/microflex/30990"
+   },
+   {
+    "nazov": "Výkres DWG: DUO & DUO PRIMO sanitary water",
+    "typ": "DWG",
+    "jazyk": null,
+    "url": "https://www.watts.eu/sk/technical-support/download-dwg-drawings/microflex/30989"
+   }
+  ],
+  "je_skupina": false,
+  "produkty": [],
+  "suvisiace": [],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/pipes-for-sanitary/3-microflex-primo-duo-s-10-bar",
+  "stiahnute": "2026-09-21",
+  "pocet_variantov": 0
+ },
+ {
+  "id": "microflex-quadro",
+  "slug": "microflex-quadro",
+  "kategoria": "vykurovanie-a-sanita",
+  "poradie": 1,
+  "nazov": "Microflex QUADRO, vykurovanie a sanita",
+  "nazov_watts": "MICROFLEX QUADRO Kúrenie, Sanita",
+  "popis": "Flexibilné predizolované, samokompenzačné podzemné potrubie pozostávajúce z dvoch vykurovacích potrubí a dvoch sanitárnych potrubí. Určené na ohrev vody (prietok a spiatočka) a vybavené potrubím na teplú úžitkovú vodu a potrubím pre cirkulačný okruh. Transportné potrubie odolné voči korózii v zosieťovanom PE-Xa podľa EN ISO 15875, so žltou difúznou bariérou pre kyslík podľa DIN 4726 pre potrubia vykurovacej vody. Tepelná, elastická penová izolácia bez CFC vyrobená zo zosieťovaného PE-X s uzavretou mikrocelulárnou štruktúrou. Minimálna absorpčná kapacita vody <1% podľa ISO 2896. Izolačný stredový diel PE zaručuje efektívne oddelenie potrubia pre prívod, spätný tok, horúcu vodu a cirkuláciu. Vlnitý vonkajší plášť z HDPE vyrobený v súlade s princípom uzavretej komory na zabezpečenie vysokokvalitnej ochrany potrubného systému.",
+  "kratky_popis": "Štyri rúry v jednom plášti: prívod, spiatočka, teplá a studená voda. Jeden výkop pre všetko.",
+  "medium": "vykurovacia a pitná voda",
+  "tlak_bar": null,
+  "pocet_rur": 4,
+  "piktogram": "rad-quadro.png",
+  "fotka": "microflex-quadro.png",
+  "subory": [
+   {
+    "nazov": "Ekologická deklarácia výrobku Smart EPD SmartEPD-2026-134-0878-01 | Predizolované potrubia Microflex®, platná do 29. 5. 2031",
+    "typ": "EPD",
+    "jazyk": null,
+    "url": "https://www.watts.eu/sk/technical-support/approvals/microflex/epd-microflex"
+   },
+   {
+    "nazov": "Vyhlásenie o zhode, predizolované potrubie Microflex (EN)",
+    "typ": "PDF",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/approvals/microflex/28702"
+   },
+   {
+    "nazov": "Brožúra Predizolované ohybné potrubia Microflex (EN)",
+    "typ": "PDF",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/brochures/microflex/10181"
+   },
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   },
+   {
+    "nazov": "Výkres DWG: QUADRO",
+    "typ": "DWG",
+    "jazyk": null,
+    "url": "https://www.watts.eu/sk/technical-support/download-dwg-drawings/microflex/30995"
+   },
+   {
+    "nazov": "Výkres DXF: QUADRO",
+    "typ": "DWG",
+    "jazyk": null,
+    "url": "https://www.watts.eu/sk/technical-support/download-dwg-drawings/microflex/30996"
+   }
+  ],
+  "je_skupina": false,
+  "produkty": [],
+  "suvisiace": [
+   "sanitarne-spojky-microflex-pe-x",
+   "pe-x-spojka-kurenie-cool-6-16bar",
+   "uzatvara-prach-na-potrubi-quadro",
+   "dokoncenie-uzaverov-epdm-na-potrubiach-quadro",
+   "priechodka-steny-mmdv-pre-vodu-bez-tlaku",
+   "tesnenie-na-prienik-na-stenu-micro-press",
+   "3-x-ohrev-spojky-pe-x-t",
+   "pe-x-x-pe-x-sanitarne-zariadenie",
+   "micro-seal-pre-tlakovu-vodu",
+   "sanitarne-kolenne-spojky-pe-x-x-pe-x",
+   "pe-x-x-pe-x-koleno-spojky-vykurovanie",
+   "3-x-pe-x-t-spojka-sanitarna",
+   "fixny-bod",
+   "pe-x-x-pe-x-spojka-kurenie"
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/central-heating-and-sanitary/4-microflex-quadro",
+  "stiahnute": "2026-09-21",
+  "pocet_variantov": 4
+ },
+ {
+  "id": "microflex-cool",
+  "slug": "microflex-cool",
+  "kategoria": "studena-a-chladena-voda",
+  "poradie": 1,
+  "nazov": "Microflex COOL",
+  "nazov_watts": "Predizolované potrubie MICROFLEX COOL",
+  "popis": "Jednoduché ohybné, predizolované, samokompenzujúce podzemné potrubie. Vhodný pre studenú pitnú vodu, chladiacu vodu a odpadovú vodu.Transportné potrubie odolné voči korózii v PE 100 podľaEN 12201. Tepelná, elastická penová izolácia bez CFC vyrobená zo zosieťovaného PE-X s uzavretou mikrocelulárnou štruktúrou. Minimálna absorpčná kapacita vody <1% podľa ISO 2896. Vonkajší zvlnený plášť z HDPE vyrobený podľa princípu uzavretej komory na zabezpečenie vysokokvalitnej ochrany potrubného systému.",
+  "kratky_popis": "Jedna rúra PE na studenú pitnú vodu, chladenú vodu a odpadovú vodu.",
+  "medium": "studená a chladená voda",
+  "tlak_bar": null,
+  "pocet_rur": 1,
+  "piktogram": "rad-cool-uno.png",
+  "fotka": "microflex-cool.png",
+  "subory": [
+   {
+    "nazov": "Ekologická deklarácia výrobku Smart EPD SmartEPD-2026-134-0878-01 | Predizolované potrubia Microflex®, platná do 29. 5. 2031",
+    "typ": "EPD",
+    "jazyk": null,
+    "url": "https://www.watts.eu/sk/technical-support/approvals/microflex/epd-microflex"
+   },
+   {
+    "nazov": "Vyhlásenie o zhode, predizolované potrubie Microflex (EN)",
+    "typ": "PDF",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/approvals/microflex/28702"
+   },
+   {
+    "nazov": "Brožúra Predizolované ohybné potrubia Microflex (EN)",
+    "typ": "PDF",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/brochures/microflex/10181"
+   },
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   },
+   {
+    "nazov": "Výkres DWG: COOL UNO",
+    "typ": "DWG",
+    "jazyk": null,
+    "url": "https://www.watts.eu/sk/technical-support/download-dwg-drawings/microflex/30987"
+   },
+   {
+    "nazov": "Výkres DXF: COOL UNO",
+    "typ": "DWG",
+    "jazyk": null,
+    "url": "https://www.watts.eu/sk/technical-support/download-dwg-drawings/microflex/30988"
+   }
+  ],
+  "je_skupina": false,
+  "produkty": [],
+  "suvisiace": [
+   "fixny-bod",
+   "pe-x-spojka-kurenie-cool-6-16bar",
+   "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach",
+   "uzatvara-prach-na-jednom-potrubi",
+   "micro-seal-pre-tlakovu-vodu",
+   "tesnenie-na-prienik-na-stenu-micro-press",
+   "priechodka-steny-mmdv-pre-vodu-bez-tlaku"
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/cold-cold-drinking-water/1-pipe-system-microflex-cool",
+  "stiahnute": "2026-09-21",
+  "pocet_variantov": 7
+ },
+ {
+  "id": "microflex-cool-s-vyhrievacim-kablom",
+  "slug": "microflex-cool-s-vyhrievacim-kablom",
+  "kategoria": "studena-a-chladena-voda",
+  "poradie": 2,
+  "nazov": "Microflex COOL s vyhrievacím káblom",
+  "nazov_watts": "Predizolované potrubie MICROFLEX COOL s vyhrievacou páskou",
+  "popis": "Jednoduché ohybné, predizolované, samokompenzujúce podzemné potrubie. Vhodný pre studenú pitnú vodu, chladiacu vodu a odpadovú vodu.Transportné potrubie odolné voči korózii v PE 100 podľaEN 12201. Dopravné potrubie je v kontakte so samoregulačným vykurovacím káblom. Tepelná, elastická penová izolácia bez CFC vyrobená zo zosieťovaného PE-X s uzavretou mikrocelulárnou štruktúrou. Minimálna absorpčná kapacita vody <1% podľa ISO 2896. Vonkajší zvlnený plášť z HDPE vyrobený podľa princípu uzavretej komory na zabezpečenie vysokokvalitnej ochrany potrubného systému.",
+  "kratky_popis": "COOL so samoregulačným vyhrievacím káblom proti zamrznutiu pri malej hĺbke uloženia.",
+  "medium": "studená a chladená voda",
+  "tlak_bar": null,
+  "pocet_rur": 1,
+  "piktogram": "rad-cool-vyhrievaci-kabel.png",
+  "fotka": "microflex-cool-s-vyhrievacim-kablom.png",
+  "subory": [
+   {
+    "nazov": "Ekologická deklarácia výrobku Smart EPD SmartEPD-2026-134-0878-01 | Predizolované potrubia Microflex®, platná do 29. 5. 2031",
+    "typ": "EPD",
+    "jazyk": null,
+    "url": "https://www.watts.eu/sk/technical-support/approvals/microflex/epd-microflex"
+   },
+   {
+    "nazov": "Vyhlásenie o zhode, predizolované potrubie Microflex (EN)",
+    "typ": "PDF",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/approvals/microflex/28702"
+   },
+   {
+    "nazov": "Výkres DWG: COOL UNO with heating cable",
+    "typ": "DWG",
+    "jazyk": null,
+    "url": "https://www.watts.eu/sk/technical-support/download-dwg-drawings/microflex/30985"
+   },
+   {
+    "nazov": "Výkres DXF: COOL UNO with heating cable",
+    "typ": "DWG",
+    "jazyk": null,
+    "url": "https://www.watts.eu/sk/technical-support/download-dwg-drawings/microflex/30986"
+   },
+   {
+    "nazov": "Brožúra Predizolované ohybné potrubia Microflex (EN)",
+    "typ": "PDF",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/brochures/microflex/10181"
+   },
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   }
+  ],
+  "je_skupina": false,
+  "produkty": [],
+  "suvisiace": [
+   "uzatvara-prach-na-jednom-potrubi",
+   "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach",
+   "priechodka-steny-mmdv-pre-vodu-bez-tlaku",
+   "pe-x-spojka-kurenie-cool-6-16bar",
+   "fixny-bod",
+   "tesnenie-na-prienik-na-stenu-micro-press",
+   "micro-seal-pre-tlakovu-vodu"
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/cold-cold-drinking-water/2-pipe-system-microflex-cool-ht",
+  "stiahnute": "2026-09-21",
+  "pocet_variantov": 16
+ },
+ {
+  "id": "microflex-cool-duo",
+  "slug": "microflex-cool-duo",
+  "kategoria": "studena-a-chladena-voda",
+  "poradie": 3,
+  "nazov": "Microflex COOL DUO",
+  "nazov_watts": "Microflex Cool Duo",
+  "popis": null,
+  "kratky_popis": "Dve rúry PE na studenú a chladenú vodu v jednom plášti.",
+  "medium": "studená a chladená voda",
+  "tlak_bar": null,
+  "pocet_rur": 2,
+  "piktogram": "rad-cool-duo.png",
+  "fotka": "microflex-cool-duo.png",
+  "subory": [
+   {
+    "nazov": "Výkres DXF: COOL DUO",
+    "typ": "DWG",
+    "jazyk": null,
+    "url": "https://www.watts.eu/sk/technical-support/download-dwg-drawings/microflex/30983"
+   },
+   {
+    "nazov": "Výkres DWG: COOL DUO",
+    "typ": "DWG",
+    "jazyk": null,
+    "url": "https://www.watts.eu/sk/technical-support/download-dwg-drawings/microflex/30984"
+   },
+   {
+    "nazov": "Brožúra Predizolované ohybné potrubia Microflex (EN)",
+    "typ": "PDF",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/brochures/microflex/10181"
+   },
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   },
+   {
+    "nazov": "Vyhlásenie o zhode, predizolované potrubie Microflex (EN)",
+    "typ": "PDF",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/approvals/microflex/28702"
+   }
+  ],
+  "je_skupina": false,
+  "produkty": [],
+  "suvisiace": [
+   "dokoncenie-uzaverov-epdm-na-dvojitych-potrubiach",
+   "tesnenie-na-prienik-na-stenu-micro-press",
+   "micro-seal-pre-tlakovu-vodu",
+   "fixny-bod",
+   "pe-x-x-pe-x-koleno-spojky-vykurovanie",
+   "priechodka-steny-mmdv-pre-vodu-bez-tlaku",
+   "pe-x-x-pe-x-spojka-kurenie",
+   "pe-x-spojka-kurenie-cool-6-16bar",
+   "3-x-ohrev-spojky-pe-x-t",
+   "uzatvara-prach-na-dvojitom-potrubi"
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/cold-cold-drinking-water/microflex-cool-duo",
+  "stiahnute": "2026-09-21",
+  "pocet_variantov": 0
+ },
+ {
+  "id": "pe-x-spojky-vykurovanie-a-cool",
+  "slug": "pe-x-spojky-vykurovanie-a-cool",
+  "kategoria": "spojky",
+  "poradie": 1,
+  "nazov": "Spojky PE-X pre vykurovanie a COOL",
+  "nazov_watts": "PE-X spojky pre kúrenie a COOL rúry",
+  "popis": null,
+  "kratky_popis": null,
+  "medium": null,
+  "tlak_bar": null,
+  "pocet_rur": null,
+  "piktogram": null,
+  "fotka": "pe-x-spojky-vykurovanie-a-cool.png",
+  "subory": [],
+  "je_skupina": true,
+  "produkty": [
+   "3-x-ohrev-spojky-pe-x-t",
+   "pe-x-x-pe-x-spojka-kurenie",
+   "pe-x-x-pe-x-koleno-spojky-vykurovanie",
+   "pe-x-spojka-kurenie-cool-6-16bar",
+   "zvarove-koncovky-spojky-a-cool-6-16bar-s6",
+   "microflex-pe-x-spojky-vykurovanie"
+  ],
+  "suvisiace": [],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/pe-x-couplings-for-heating-and-cool-pipes",
+  "stiahnute": "2026-09-21",
+  "pocet_variantov": 0
+ },
+ {
+  "id": "pe-x-spojky-sanita",
+  "slug": "pe-x-spojky-sanita",
+  "kategoria": "spojky",
+  "poradie": 2,
+  "nazov": "Spojky PE-X pre sanitu",
+  "nazov_watts": "PE-X spojky pre sanitárne potrubia",
+  "popis": null,
+  "kratky_popis": null,
+  "medium": null,
+  "tlak_bar": null,
+  "pocet_rur": null,
+  "piktogram": null,
+  "fotka": "pe-x-spojky-sanita.png",
+  "subory": [],
+  "je_skupina": true,
+  "produkty": [
+   "sanitarne-spojky-microflex-pe-x",
+   "pe-x-x-pe-x-sanitarne-zariadenie",
+   "sanitarne-kolenne-spojky-pe-x-x-pe-x",
+   "3-x-pe-x-t-spojka-sanitarna"
+  ],
+  "suvisiace": [],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/pe-x-couplings-for-sanitary-pipes",
+  "stiahnute": "2026-09-21",
+  "pocet_variantov": 0
+ },
+ {
+  "id": "prislusenstvo-spojok",
+  "slug": "prislusenstvo-spojok",
+  "kategoria": "spojky",
+  "poradie": 3,
+  "nazov": "Príslušenstvo pre spojky PE-X",
+  "nazov_watts": "Príslušenstvo pre spojky PE-X",
+  "popis": null,
+  "kratky_popis": null,
+  "medium": null,
+  "tlak_bar": null,
+  "pocet_rur": null,
+  "piktogram": null,
+  "fotka": "prislusenstvo-spojok.png",
+  "subory": [],
+  "je_skupina": true,
+  "produkty": [
+   "fixny-bod",
+   "objimka-obal",
+   "koleno-90",
+   "t-kus-z-bronzu",
+   "vsuvka-z-poniklovanej-mosadze",
+   "redukcne-puzdro",
+   "priruba-so-zavitom-z-pozinkovanej-ocele",
+   "zatka",
+   "uzatvaraci-ventil"
+  ],
+  "suvisiace": [],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/accessories",
+  "stiahnute": "2026-09-21",
+  "pocet_variantov": 0
+ },
+ {
+  "id": "koncovky-a-redukcie",
+  "slug": "koncovky-a-redukcie",
+  "kategoria": "prislusenstvo",
+  "poradie": 1,
+  "nazov": "Koncovky a redukčné sady",
+  "nazov_watts": "Uzávery a redukcné súpravy",
+  "popis": null,
+  "kratky_popis": null,
+  "medium": null,
+  "tlak_bar": null,
+  "pocet_rur": null,
+  "piktogram": null,
+  "fotka": "koncovky-a-redukcie.jpg",
+  "subory": [],
+  "je_skupina": true,
+  "produkty": [
+   "uzatvara-prach-na-jednom-potrubi",
+   "uzatvara-prach-na-dvojitom-potrubi",
+   "uzatvara-prach-na-potrubi-quadro",
+   "teplom-zmrstitelne-hlavice-pre-uno-rurku",
+   "teplom-zmrstitelne-hlavice-pre-rurku-duo",
+   "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach",
+   "dokoncenie-uzaverov-epdm-na-dvojitych-potrubiach",
+   "dokoncenie-uzaverov-epdm-na-potrubiach-quadro"
+  ],
+  "suvisiace": [],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/caps-and-reduction-kits",
+  "stiahnute": "2026-09-21",
+  "pocet_variantov": 0
+ },
+ {
+  "id": "izolacne-sady",
+  "slug": "izolacne-sady",
+  "kategoria": "prislusenstvo",
+  "poradie": 2,
+  "nazov": "Izolačné sady",
+  "nazov_watts": "Sady izolácie potrubí",
+  "popis": null,
+  "kratky_popis": null,
+  "medium": null,
+  "tlak_bar": null,
+  "pocet_rur": null,
+  "piktogram": null,
+  "fotka": "izolacne-sady.jpg",
+  "subory": [],
+  "je_skupina": true,
+  "produkty": [
+   "pripojovacia-sada-pre-microflex-cool-s-vykurovacou-paskou",
+   "redukcia-pre-izolovanu-supravu-t-kusu",
+   "inspekcna-komora",
+   "izolovana-sada-s-dvojitym-t-kusom",
+   "izolovana-suprava-i-kus",
+   "izolacna-sada-i-variant",
+   "izolovana-suprava-t-kusu",
+   "zateplene-koleno-90",
+   "izolovana-suprava-na-pripojenie-y"
+  ],
+  "suvisiace": [],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/pipe-insulation-sets",
+  "stiahnute": "2026-09-21",
+  "pocet_variantov": 0
+ },
+ {
+  "id": "opravne-a-vystrazne-pasky",
+  "slug": "opravne-a-vystrazne-pasky",
+  "kategoria": "prislusenstvo",
+  "poradie": 3,
+  "nazov": "Opravné a výstražné pásky",
+  "nazov_watts": "Opravy a výstražné pásky",
+  "popis": null,
+  "kratky_popis": null,
+  "medium": null,
+  "tlak_bar": null,
+  "pocet_rur": null,
+  "piktogram": null,
+  "fotka": "opravne-a-vystrazne-pasky.jpg",
+  "subory": [],
+  "je_skupina": true,
+  "produkty": [
+   "mhm-zmrstovacia-buzirka-na-opravu",
+   "opravna-paska",
+   "vystrazna-paska"
+  ],
+  "suvisiace": [],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/repair-and-warning-tapes",
+  "stiahnute": "2026-09-21",
+  "pocet_variantov": 0
+ },
+ {
+  "id": "prestupy-stenou",
+  "slug": "prestupy-stenou",
+  "kategoria": "prislusenstvo",
+  "poradie": 4,
+  "nazov": "Prestupy stenou",
+  "nazov_watts": "Nástenné priechodky",
+  "popis": null,
+  "kratky_popis": null,
+  "medium": null,
+  "tlak_bar": null,
+  "pocet_rur": null,
+  "piktogram": null,
+  "fotka": "prestupy-stenou.png",
+  "subory": [],
+  "je_skupina": true,
+  "produkty": [
+   "micro-seal-pre-tlakovu-vodu",
+   "priechodka-steny-mmdv-pre-vodu-bez-tlaku",
+   "tesnenie-na-prienik-na-stenu-micro-press"
+  ],
+  "suvisiace": [],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/wall-feed-throughs",
+  "stiahnute": "2026-09-21",
+  "pocet_variantov": 0
+ },
+ {
+  "id": "microflex-hp",
+  "slug": "microflex-hp",
+  "kategoria": "tepelne-cerpadla",
+  "poradie": 1,
+  "nazov": "Microflex HP, tepelné čerpadlá",
+  "nazov_watts": "Microflex HP pre pripojenie tepelného čerpadla",
+  "popis": "Predizolovaný potrubný systém Microflex sa skladá z tepelnej izolácie okolo nosnej rúrky a je pokrytý „uzavretou komorou“ ochranným vonkajším plášťom odolným voči UV žiareniu. Potrubie Microflex HP sa používa na pripojenie externých tepelných čerpadiel, napr. Monoblokové tepelné čerpadlá vzduch-voda. Inteligentný dizajn Microflex HP kombinuje prívodné a vratné potrubie na vykurovanie/chladenie s dvoma vlnitými rúrkami pre hlavné a ovládacie káble v rovnakom vonkajšom plášti. Prázdne vlnité rúry umožňujú bezpečné vedenie káblov. Poskytuje významné výhody ako nízka hmotnosť, hyperflexibilita, robustnosť a jednoduché a rýchle pokladanie aj cez prekážky a za rohy. Systémové príslušenstvo je možné namontovať bez špeciálnych nástrojov. Potrubný systém Microflex HP pozostáva zo štyroch (4) integrovaných komponentov a je vyrobený podľa normy EN 15632: 1-3.",
+  "kratky_popis": "Prívod a spiatočka k vonkajšej jednotke tepelného čerpadla v jednom plášti, s chráničkami na napájací a ovládací kábel.",
+  "medium": "vykurovacia alebo chladiaca voda",
+  "tlak_bar": null,
+  "pocet_rur": 2,
+  "piktogram": "rad-hp-tepelne-cerpadlo.png",
+  "fotka": "microflex-hp.png",
+  "subory": [
+   {
+    "nazov": "Ekologická deklarácia výrobku Smart EPD SmartEPD-2026-134-0878-01 | Predizolované potrubia Microflex®, platná do 29. 5. 2031",
+    "typ": "EPD",
+    "jazyk": null,
+    "url": "https://www.watts.eu/sk/technical-support/approvals/microflex/epd-microflex"
+   },
+   {
+    "nazov": "Vyhlásenie o zhode, predizolované potrubie Microflex (EN)",
+    "typ": "PDF",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/approvals/microflex/28702"
+   },
+   {
+    "nazov": "Brožúra Predizolované ohybné potrubia Microflex (EN)",
+    "typ": "PDF",
+    "jazyk": "en",
+    "url": "https://www.watts.eu/sk/technical-support/brochures/microflex/10181"
+   },
+   {
+    "nazov": "Katalóg Microflex (SK)",
+    "typ": "PDF",
+    "jazyk": "sk",
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
+   },
+   {
+    "nazov": "Microflex HP - Technický list",
+    "typ": "PDF",
+    "jazyk": null,
+    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/21118"
+   },
+   {
+    "nazov": "Výkres DXF: HP",
+    "typ": "DWG",
+    "jazyk": null,
+    "url": "https://www.watts.eu/sk/technical-support/download-dwg-drawings/microflex/30994"
+   },
+   {
+    "nazov": "Výkres DWG: HP",
+    "typ": "DWG",
+    "jazyk": null,
+    "url": "https://www.watts.eu/sk/technical-support/download-dwg-drawings/microflex/30993"
+   }
+  ],
+  "je_skupina": false,
+  "produkty": [],
+  "suvisiace": [
+   "pe-x-x-pe-x-koleno-spojky-vykurovanie",
+   "fixny-bod",
+   "uzatvara-prach-na-potrubi-quadro",
+   "pe-x-spojka-kurenie-cool-6-16bar",
+   "tesnenie-na-prienik-na-stenu-micro-press",
+   "priechodka-steny-mmdv-pre-vodu-bez-tlaku",
+   "micro-seal-pre-tlakovu-vodu",
+   "3-x-ohrev-spojky-pe-x-t",
+   "microflex-pe-x-spojky-vykurovanie",
+   "dokoncenie-uzaverov-epdm-na-potrubiach-quadro"
+  ],
+  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/heating-pumps/microflex-hp",
+  "stiahnute": "2026-09-21",
+  "pocet_variantov": 4
+ }
+]

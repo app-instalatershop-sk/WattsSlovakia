@@ -1,0 +1,39 @@
+---
+import { Image } from 'astro:assets';
+import Ikona from './Ikona.astro';
+import { fotkaRadu } from '../lib/obrazky';
+import { cislo, rozsah, skloňujDimenzie, type Rad, type Variant } from '../lib/katalog';
+
+interface Props { rad: Rad; href: string; varianty: Variant[] }
+const { rad, href, varianty } = Astro.props;
+const img = fotkaRadu(rad.fotka);
+const rura = rozsah(varianty.map((v) => v.rura?.d), 'mm');
+const plast = rozsah(varianty.map((v) => v.plast_mm), 'mm');
+const zosilnene = varianty.filter((v) => v.izolacia === 'zosilnena').length;
+---
+<a class="card" href={href}>
+  <div class="plate" style="aspect-ratio: 3 / 2" transition:name={`rad-${rad.id}`}>
+    {img ? <Image src={img} alt="" widths={[320, 480, 640]} sizes="(max-width: 760px) 90vw, 30vw" /> : null}
+  </div>
+  <div class="body">
+    <h3>{rad.nazov}</h3>
+    {rad.kratky_popis && <p>{rad.kratky_popis}</p>}
+    {varianty.length > 0 && (
+      <dl class="kv">
+        <dt>Rúra</dt><dd>{rad.pocet_rur && rad.pocet_rur > 1 ? `${rad.pocet_rur} × ` : ''}{rura}</dd>
+        <dt>Plášť</dt><dd>{plast}</dd>
+        <dt>Dimenzie</dt><dd>{skloňujDimenzie(varianty.length)}{zosilnene ? `, z toho ${zosilnene} so zosilnenou izoláciou` : ''}</dd>
+      </dl>
+    )}
+    <div class="meta">
+      <span>{varianty.length ? `${varianty.length} obj. čísel` : 'Rozmery v katalógu'}</span>
+      <strong>Zobraziť varianty <Ikona nazov="chevron-right" velkost={16} /></strong>
+    </div>
+  </div>
+</a>
+
+<style>
+  .kv { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; font-size: 14px; margin: 4px 0 0; }
+  .kv dt { color: var(--color-ink-soft); }
+  .kv dd { margin: 0; font-weight: 500; font-variant-numeric: tabular-nums; }
+</style>

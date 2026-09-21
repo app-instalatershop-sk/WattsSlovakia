@@ -156,20 +156,19 @@ sa už nepoužíva.
 - **Linky** 1 px `--grey-300`; hrubšia linka 2 px `--blue-700` len pod aktívnou položkou
   podnavigácie.
 
-### Prierezový piktogram – náš rozpoznávací prvok
+### Piktogramy radov = rendery výrobcu
 
-Zjednodušený prierez rúry ako kruhový znak: obrys plášťa 2 px `--blue-700`, pena `--grey-300`,
-jadrá podľa radu. Počet jadier hovorí, o aký rad ide, farba jadra hovorí, na čo je:
+Rozhodnutie Juraja 21. 9. 2026: žiadne ručne kreslené ikony, len profesionálne riešenie. Ako
+piktogramy radov používame **oficiálne 3D rendery Watts** (rez potrubím pod uhlom, priehľadné
+pozadie), ktoré máme so súhlasom z brožúry 2026 pre všetkých deväť radov: UNO a DUO vykurovanie,
+UNO a DUO sanita, QUADRO, HP, COOL, COOL s vyhrievacím káblom, COOL DUO. Súbory
+`podklady/watts/piktogramy/rad-*.png` (250 až 350 px). Používajú sa v dlaždiciach použitia,
+v hlavičke kategórie a všade, kde treba rad rozoznať na pohľad. V tabuľkách a čipoch
+piktogram nie je, stačí text.
 
-| Rad | Jadrá | Farba jadra |
-|---|---|---|
-| UNO, UNO PRIMO, HP | 1 | žltá (vykurovanie, teplá voda), modrá pri COOL |
-| DUO, PRIMO DUO, COOL DUO | 2 | žltá / modrá |
-| QUADRO | 4 | 2 žlté + 2 biele s modrým obrysom (vykurovanie + sanita) |
-| Spojky, príslušenstvo | bez jadra | plný modrý kruh s bielym symbolom spojky |
-
-Používa sa ako ikona kategórie, značka radu v tabuľkách a výsledkoch hľadania, favicon,
-načítavací stav. Kreslíme ho ako SVG v troch veľkostiach (20, 32, 64 px).
+Ak budeme neskôr chcieť jednotnú kreslenú sadu (napr. pre favicon a veľmi malé veľkosti),
+zadáme ju grafikovi so zadaním: 9 radov + spojky + príslušenstvo, mriežka 24 px, jeden štýl
+ťahu, testované v 16, 24 a 48 px. Dovtedy favicon = písmeno M v Archive na modrej.
 
 ### Rebrovaný vzor
 
@@ -178,8 +177,11 @@ Zvislé pruhy 2 px / 6 px (`--blue-800` na `--blue-900`) pripomínajú zvlnený 
 
 ### Ikony
 
-Lucide, hrúbka 1,5 px, 20 a 24 px. Iba funkčné: hľadať, filter, stiahnuť, menu, zavrieť,
-externý odkaz (pri odkazoch do e-shopu), telefón, e-mail.
+**Lucide** (balík `lucide-static`, licencia ISC), vždy originálne súbory z balíka, nikdy
+napodobeniny. Hrúbka 2 px v mriežke 24 px, zobrazované v 16 až 24 px. Iba funkčné: hľadať,
+filter (sliders-horizontal), stiahnuť, menu, zavrieť, externý odkaz (pri odkazoch do e-shopu),
+šípka ďalej (chevron-right), telefón, e-mail, dokument, potvrdenie. Do makiet ich skladá
+`makety/build.py` zo súborov v `makety/src/icons/lucide/` ako SVG sprite.
 
 ---
 

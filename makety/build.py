@@ -63,7 +63,7 @@ def table_uno(data):
             '<tr data-pipe="%s" data-ins="%s">'
             '<td class="code">%s</td><td class="right">%s</td><td class="right">%s</td><td class="right">%s</td>'
             '<td><span class="ins%s">%s</span></td><td class="right">%s</td><td class="right">%s</td>'
-            '<td><a class="shop" href="%s%s" target="_blank" rel="noopener">Do e-shopu <svg aria-hidden="true"><use href="#i-ext"/></svg></a></td></tr>'
+            '<td><a class="shop" href="%s%s" target="_blank" rel="noopener">Do e-shopu <svg aria-hidden="true"><use href="#i-external-link"/></svg></a></td></tr>'
             % (pipe_num, 'adv' if adv else 'std', H.escape(code), H.escape(casing), H.escape(pipe_txt), H.escape(weight),
                ' adv' if adv else '', 'zosilnená' if adv else 'štandardná', H.escape(bend), H.escape(coil),
                SHOP_SEARCH, H.escape(code)))
@@ -107,6 +107,27 @@ def compare_heating(data):
     return ''.join(out)
 
 
+def lucide_sprite():
+    """Zo súborov makety/src/icons/lucide/*.svg poskladá SVG sprite so <symbol id="i-<názov>">."""
+    idir = os.path.join(SRC, 'icons', 'lucide')
+    syms, version = [], ''
+    for fn in sorted(os.listdir(idir)):
+        if not fn.endswith('.svg'):
+            continue
+        svg = read(os.path.join(idir, fn))
+        m = re.search(r'lucide-static v([\d.]+)', svg)
+        if m:
+            version = m.group(1)
+        inner = re.sub(r'<!--.*?-->', '', svg, flags=re.S)
+        inner = re.sub(r'^.*?<svg[^>]*>', '', inner, flags=re.S)
+        inner = inner.replace('</svg>', '').strip()
+        inner = re.sub(r'\s+', ' ', inner)
+        syms.append('<symbol id="i-%s" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" '
+                    'stroke-linecap="round" stroke-linejoin="round">%s</symbol>' % (fn[:-4], inner))
+    return ('<!-- Lucide v%s, ISC -->\n<svg width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" '
+            'aria-hidden="true" focusable="false"><defs>\n%s\n</defs></svg>' % (version, '\n'.join(syms)))
+
+
 def main():
     os.makedirs(OUT, exist_ok=True)
     css = read(os.path.join(SRC, 'tokens.css'))
@@ -116,7 +137,7 @@ def main():
     links = json.load(io.open(links_path, encoding='utf-8')) if os.path.exists(links_path) else {}
     pdir = os.path.join(SRC, 'partials')
     partials = {n[:-5]: read(os.path.join(pdir, n)) for n in os.listdir(pdir) if n.endswith('.html')}
-    generated = {'table:uno': table_uno(data), 'compare:heating': compare_heating(data)}
+    generated = {'table:uno': table_uno(data), 'compare:heating': compare_heating(data), 'lucide-sprite': lucide_sprite()}
 
     def img(m):
         rec = images[int(m.group(1))]
@@ -138,7 +159,7 @@ def main():
         html = read(os.path.join(SRC, page + '.html'))
         html = re.sub(r'\{\{partial:(\w+)\}\}', lambda m: partials[m.group(1)], html)
         html = html.replace('{{css}}', css)
-        html = re.sub(r'\{\{(table:\w+|compare:\w+)\}\}', lambda m: generated[m.group(1)], html)
+        html = re.sub(r'\{\{(table:\w+|compare:\w+|lucide-sprite)\}\}', lambda m: generated[m.group(1)], html)
         html = re.sub(r'\{\{img:i(\d+)\}\}', img, html)
         html = re.sub(r'\{\{asset:([\w./-]+)\}\}', asset, html)
         html = re.sub(r'\{\{link:([\w-]+)\}\}', lambda m: links.get(m.group(1), '#'), html)

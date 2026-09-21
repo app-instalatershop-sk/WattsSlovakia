@@ -94,7 +94,6 @@ h3 { font-size: 20px; line-height: 1.25; font-weight: 600; }
 .hdr { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--white); border-bottom: var(--line); }
 .hdr-in { display: flex; align-items: center; gap: var(--s6); min-height: 72px; }
 .brand { display: inline-flex; align-items: center; gap: 12px; color: var(--ink); }
-.brand .glyph { width: 34px; height: 34px; }
 .brand-name { font-family: var(--font-display); font-stretch: var(--display-stretch); font-weight: 700; font-size: 22px; letter-spacing: -0.01em; line-height: 1; }
 .brand-sub { font-size: 13px; color: var(--ink-soft); border-left: var(--line); padding-left: 12px; line-height: 1; }
 .nav { display: flex; gap: var(--s5); margin-left: var(--s2); flex: none; }
@@ -120,17 +119,14 @@ h3 { font-size: 20px; line-height: 1.25; font-weight: 600; }
 .crumbs a:hover { color: var(--blue-700); }
 .crumbs li + li::before { content: "/"; margin-right: 8px; color: var(--grey-300); }
 
-/* Piktogram prierezu */
-.glyph { width: 40px; height: 40px; color: var(--blue-700); flex: none; }
-.glyph-lg { width: 64px; height: 64px; }
-.glyph-sm { width: 24px; height: 24px; }
+/* Piktogramy radov = rendery výrobcu s priehľadným pozadím */
+.pikto { width: 72px; height: 54px; object-fit: contain; flex: none; }
 
 /* Karty */
 .card { background: var(--white); border: var(--line); border-radius: var(--r-l); overflow: hidden; display: flex; flex-direction: column; transition: border-color .15s; color: var(--ink); }
 .card:hover { border-color: var(--blue-700); color: var(--ink); }
 .card .plate { background: var(--grey-100); aspect-ratio: 4 / 3; position: relative; overflow: hidden; }
 .card .plate img { position: absolute; left: 12%; top: 12%; width: 76%; height: 76%; object-fit: contain; mix-blend-mode: multiply; }
-.card .plate .glyph { position: absolute; left: 16px; top: 16px; width: 32px; height: 32px; }
 .card .body { padding: var(--s4) var(--s5) var(--s5); display: flex; flex-direction: column; gap: 8px; flex: 1; }
 .card .body h3 { font-size: 20px; }
 .card .body p { color: var(--ink-soft); }
@@ -175,7 +171,6 @@ table.data td.right, table.data th.right { text-align: right; }
 .ftr a:hover { color: var(--yellow-500); }
 .ftr li { padding: 4px 0; font-size: 15px; }
 .ftr .brand { color: #fff; margin-bottom: 12px; }
-.ftr .brand .glyph { color: #fff; }
 .ftr .brand-sub { color: #B8C7DE; border-left-color: rgba(255,255,255,.3); }
 .ftr .muted { color: #B8C7DE; }
 .ftr-bottom { border-top: 1px solid rgba(255,255,255,.18); padding-block: var(--s4); font-size: 13px; color: #B8C7DE; display: flex; flex-wrap: wrap; gap: 8px var(--s5); justify-content: space-between; }

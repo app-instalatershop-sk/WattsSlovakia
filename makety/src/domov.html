@@ -39,6 +39,7 @@
 
 .uses { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s5); }
 .use { background: var(--white); border: var(--line); border-radius: var(--r-l); padding: var(--s5); display: flex; flex-direction: column; gap: 12px; color: var(--ink); transition: border-color .15s; }
+.use .pikto { width: 112px; height: 84px; object-fit: contain; object-position: left center; margin-bottom: 4px; }
 .use:hover { border-color: var(--blue-700); color: var(--ink); }
 .use p { color: var(--ink-soft); font-size: 15px; }
 .use .more { margin-top: auto; color: var(--blue-700); font-weight: 500; display: inline-flex; gap: 6px; align-items: center; padding-top: 6px; }
@@ -120,7 +121,7 @@
           <p class="lead">Microflex vedie teplo, teplú aj studenú vodu a chlad pod zemou. Od kotolne alebo tepelného čerpadla až k domu v jednom kuse z kotúča, bez spojov vo výkope.</p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="#">Vybrať potrubie</a>
-            <a class="btn btn-secondary" href="#"><svg aria-hidden="true"><use href="#i-dl"/></svg>Katalóg PDF, 19 MB</a>
+            <a class="btn btn-secondary" href="#"><svg aria-hidden="true"><use href="#i-download"/></svg>Katalóg PDF, 19 MB</a>
           </div>
           <p class="hero-note"><svg aria-hidden="true"><use href="#i-check"/></svg>Skladom a predaj cez instalatershop.sk</p>
         </div>
@@ -163,28 +164,28 @@
       </div>
       <div class="uses">
         <a class="use" href="#">
-          <svg class="glyph glyph-lg" aria-hidden="true"><use href="#g2"/></svg>
+          <img class="pikto" src="{{asset:piktogramy/rad-duo-kurenie.png}}" alt="">
           <h3>Vykurovanie</h3>
           <p>Rozvod tepla od kotolne, kotla na biomasu alebo tepelného čerpadla k domu. Rady UNO a DUO, 6 bar.</p>
-          <span class="more">Zobraziť rady <svg aria-hidden="true"><use href="#i-chev"/></svg></span>
+          <span class="more">Zobraziť rady <svg aria-hidden="true"><use href="#i-chevron-right"/></svg></span>
         </a>
         <a class="use" href="#">
-          <svg class="glyph glyph-lg" aria-hidden="true"><use href="#g2s"/></svg>
+          <img class="pikto" src="{{asset:piktogramy/rad-duo-sanita.png}}" alt="">
           <h3>Teplá a studená voda</h3>
           <p>Pitná voda medzi budovami a k vzdialeným odberom. Rady UNO a DUO v sanitárnom vyhotovení, 10 bar.</p>
-          <span class="more">Zobraziť rady <svg aria-hidden="true"><use href="#i-chev"/></svg></span>
+          <span class="more">Zobraziť rady <svg aria-hidden="true"><use href="#i-chevron-right"/></svg></span>
         </a>
         <a class="use" href="#">
-          <svg class="glyph glyph-lg" aria-hidden="true"><use href="#gc"/></svg>
+          <img class="pikto" src="{{asset:piktogramy/rad-cool-uno.png}}" alt="">
           <h3>Chladenie a studená voda</h3>
           <p>Chladená a studená voda, aj odpadová voda. Rad COOL, na želanie s vyhrievacím káblom proti zamrznutiu.</p>
-          <span class="more">Zobraziť rady <svg aria-hidden="true"><use href="#i-chev"/></svg></span>
+          <span class="more">Zobraziť rady <svg aria-hidden="true"><use href="#i-chevron-right"/></svg></span>
         </a>
         <a class="use" href="#">
-          <svg class="glyph glyph-lg" aria-hidden="true"><use href="#g2"/></svg>
+          <img class="pikto" src="{{asset:piktogramy/rad-hp-tepelne-cerpadlo.png}}" alt="">
           <h3>Tepelné čerpadlo</h3>
           <p>Prepojenie vonkajšej jednotky s domom v jednom plášti, prívod aj spiatočka. Rad Microflex HP.</p>
-          <span class="more">Zobraziť rad <svg aria-hidden="true"><use href="#i-chev"/></svg></span>
+          <span class="more">Zobraziť rad <svg aria-hidden="true"><use href="#i-chevron-right"/></svg></span>
         </a>
       </div>
     </div>
@@ -199,32 +200,32 @@
       </div>
       <div class="cat-grid">
         <a class="card c3" href="{{link:kategoria}}">
-          <div class="plate"><img src="{{img:i02}}" alt=""><svg class="glyph" aria-hidden="true"><use href="#g2"/></svg></div>
-          <div class="body"><h3>Potrubia pre vykurovanie</h3><p>Jedna alebo dve rúry PE-Xa v jednom plášti, 6 bar. UNO, DUO, UNO PRIMO a PRIMO DUO.</p><div class="meta"><span>4 rady</span><strong>Zobraziť <svg aria-hidden="true"><use href="#i-chev"/></svg></strong></div></div>
+          <div class="plate"><img src="{{img:i02}}" alt=""></div>
+          <div class="body"><h3>Potrubia pre vykurovanie</h3><p>Jedna alebo dve rúry PE-Xa v jednom plášti, 6 bar. UNO, DUO, UNO PRIMO a PRIMO DUO.</p><div class="meta"><span>4 rady</span><strong>Zobraziť <svg aria-hidden="true"><use href="#i-chevron-right"/></svg></strong></div></div>
         </a>
         <a class="card c3" href="#">
-          <div class="plate"><img src="{{img:i00}}" alt=""><svg class="glyph" aria-hidden="true"><use href="#g2s"/></svg></div>
-          <div class="body"><h3>Potrubia pre teplú a studenú vodu</h3><p>Pitná voda, 10 bar. UNO, DUO a PRIMO DUO v sanitárnom vyhotovení.</p><div class="meta"><span>3 rady</span><strong>Zobraziť <svg aria-hidden="true"><use href="#i-chev"/></svg></strong></div></div>
+          <div class="plate"><img src="{{img:i00}}" alt=""></div>
+          <div class="body"><h3>Potrubia pre teplú a studenú vodu</h3><p>Pitná voda, 10 bar. UNO, DUO a PRIMO DUO v sanitárnom vyhotovení.</p><div class="meta"><span>3 rady</span><strong>Zobraziť <svg aria-hidden="true"><use href="#i-chevron-right"/></svg></strong></div></div>
         </a>
         <a class="card c3" href="#">
-          <div class="plate"><img src="{{img:i01}}" alt=""><svg class="glyph" aria-hidden="true"><use href="#g4"/></svg></div>
-          <div class="body"><h3>Vykurovanie a sanita v jednom</h3><p>Štyri rúry v jednom plášti: prívod, spiatočka, teplá a studená voda. Rad QUADRO.</p><div class="meta"><span>1 rad</span><strong>Zobraziť <svg aria-hidden="true"><use href="#i-chev"/></svg></strong></div></div>
+          <div class="plate"><img src="{{img:i01}}" alt=""></div>
+          <div class="body"><h3>Vykurovanie a sanita v jednom</h3><p>Štyri rúry v jednom plášti: prívod, spiatočka, teplá a studená voda. Rad QUADRO.</p><div class="meta"><span>1 rad</span><strong>Zobraziť <svg aria-hidden="true"><use href="#i-chevron-right"/></svg></strong></div></div>
         </a>
         <a class="card c3" href="#">
-          <div class="plate"><img src="{{img:i03}}" alt=""><svg class="glyph" aria-hidden="true"><use href="#gc"/></svg></div>
-          <div class="body"><h3>Studená a chladená voda</h3><p>Chladená a studená pitná voda, odpadová voda. COOL, COOL s vyhrievacím káblom a COOL DUO.</p><div class="meta"><span>3 rady</span><strong>Zobraziť <svg aria-hidden="true"><use href="#i-chev"/></svg></strong></div></div>
+          <div class="plate"><img src="{{img:i03}}" alt=""></div>
+          <div class="body"><h3>Studená a chladená voda</h3><p>Chladená a studená pitná voda, odpadová voda. COOL, COOL s vyhrievacím káblom a COOL DUO.</p><div class="meta"><span>3 rady</span><strong>Zobraziť <svg aria-hidden="true"><use href="#i-chevron-right"/></svg></strong></div></div>
         </a>
         <a class="card c4" href="#">
-          <div class="plate"><img src="{{img:i07}}" alt=""><svg class="glyph" aria-hidden="true"><use href="#g2"/></svg></div>
-          <div class="body"><h3>Tepelné čerpadlá</h3><p>Prepojenie vonkajšej jednotky tepelného čerpadla s domom. Rad Microflex HP.</p><div class="meta"><span>1 rad</span><strong>Zobraziť <svg aria-hidden="true"><use href="#i-chev"/></svg></strong></div></div>
+          <div class="plate"><img src="{{img:i07}}" alt=""></div>
+          <div class="body"><h3>Tepelné čerpadlá</h3><p>Prepojenie vonkajšej jednotky tepelného čerpadla s domom. Rad Microflex HP.</p><div class="meta"><span>1 rad</span><strong>Zobraziť <svg aria-hidden="true"><use href="#i-chevron-right"/></svg></strong></div></div>
         </a>
         <a class="card c4" href="#">
-          <div class="plate"><img src="{{img:i04}}" alt=""><svg class="glyph" aria-hidden="true"><use href="#gf"/></svg></div>
-          <div class="body"><h3>Spojky</h3><p>PE-X spojky, kolená, T-kusy a závitové pripojenia pre vykurovanie, COOL aj sanitu.</p><div class="meta"><span>19 produktov</span><strong>Zobraziť <svg aria-hidden="true"><use href="#i-chev"/></svg></strong></div></div>
+          <div class="plate"><img src="{{img:i04}}" alt=""></div>
+          <div class="body"><h3>Spojky</h3><p>PE-X spojky, kolená, T-kusy a závitové pripojenia pre vykurovanie, COOL aj sanitu.</p><div class="meta"><span>19 produktov</span><strong>Zobraziť <svg aria-hidden="true"><use href="#i-chevron-right"/></svg></strong></div></div>
         </a>
         <a class="card c4" href="#">
-          <div class="plate"><img src="{{img:i05}}" alt=""><svg class="glyph" aria-hidden="true"><use href="#gf"/></svg></div>
-          <div class="body"><h3>Príslušenstvo</h3><p>Koncovky, izolačné sady, prestupy stenou, opravné a výstražné pásky, revízne šachty.</p><div class="meta"><span>23 produktov</span><strong>Zobraziť <svg aria-hidden="true"><use href="#i-chev"/></svg></strong></div></div>
+          <div class="plate"><img src="{{img:i05}}" alt=""></div>
+          <div class="body"><h3>Príslušenstvo</h3><p>Koncovky, izolačné sady, prestupy stenou, opravné a výstražné pásky, revízne šachty.</p><div class="meta"><span>23 produktov</span><strong>Zobraziť <svg aria-hidden="true"><use href="#i-chevron-right"/></svg></strong></div></div>
         </a>
       </div>
     </div>
@@ -273,7 +274,7 @@
         <p class="lead">Technické listy, výkresy DWG a DXF, vyhlásenia o zhode a environmentálna deklarácia na jednom mieste. Na projekt pošlite dopyt, ozveme sa s ponukou a dostupnosťou.</p>
         <div class="hero-actions">
           <a class="btn btn-inverse" href="#">Poslať dopyt na projekt</a>
-          <a class="btn btn-ghost-light" href="#"><svg aria-hidden="true"><use href="#i-dl"/></svg>Podklady na stiahnutie</a>
+          <a class="btn btn-ghost-light" href="#"><svg aria-hidden="true"><use href="#i-download"/></svg>Podklady na stiahnutie</a>
         </div>
       </div>
       <ul class="b2b-list">

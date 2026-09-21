@@ -9,7 +9,7 @@
 .cat-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--s5) var(--s7); align-items: start; padding-block: var(--s3) var(--s6); }
 .cat-head h1 { max-width: 16ch; }
 .cat-head .lead { margin-top: var(--s4); }
-.cat-glyph { color: var(--blue-700); width: 96px; height: 96px; }
+.cat-pikto { width: 200px; height: 150px; object-fit: contain; }
 .specs { display: flex; flex-wrap: wrap; gap: 0; background: var(--blue-100); border-radius: var(--r-s); margin-bottom: var(--s6); }
 .specs div { padding: 12px 20px; display: flex; flex-direction: column; gap: 2px; border-right: 1px solid rgba(0,93,185,.18); }
 .specs div:last-child { border-right: 0; }
@@ -48,7 +48,7 @@
 }
 @media (max-width: 760px) {
   .cat-head { grid-template-columns: 1fr; }
-  .cat-glyph { width: 64px; height: 64px; order: -1; }
+  .cat-pikto { width: 120px; height: 90px; order: -1; }
   .series { grid-template-columns: 1fr; }
   .specs div { flex: 1 1 45%; border-right: 0; }
 }
@@ -70,7 +70,7 @@
         <h1>Predizolované potrubia pre vykurovanie</h1>
         <p class="lead">Ohybné potrubie na rozvod tepla medzi budovami alebo od kotolne, kotla na biomasu či tepelného čerpadla k domu. Vyberte UNO, ak vediete jednu rúru, alebo DUO, keď chcete prívod a spiatočku v jednom plášti.</p>
       </div>
-      <svg class="cat-glyph" aria-hidden="true"><use href="#g2"/></svg>
+      <img class="cat-pikto" src="{{asset:piktogramy/rad-duo-kurenie.png}}" alt="Microflex DUO, rez potrubím">
     </div>
 
     <dl class="specs">
@@ -83,13 +83,13 @@
 
     <div class="layout">
       <aside class="filters" aria-label="Filtre">
-        <h2><svg aria-hidden="true"><use href="#i-filter"/></svg>Zúžiť výber</h2>
+        <h2><svg aria-hidden="true"><use href="#i-sliders-horizontal"/></svg>Zúžiť výber</h2>
         <div class="filter">
           <h3>Počet rúr v plášti</h3>
           <div class="chips">
             <button class="chip" type="button" aria-pressed="true">Všetky</button>
-            <button class="chip" type="button" aria-pressed="false"><svg class="glyph-sm" style="width:16px;height:16px" aria-hidden="true"><use href="#g1"/></svg>Jedna</button>
-            <button class="chip" type="button" aria-pressed="false"><svg class="glyph-sm" style="width:16px;height:16px" aria-hidden="true"><use href="#g2"/></svg>Dve</button>
+            <button class="chip" type="button" aria-pressed="false">Jedna</button>
+            <button class="chip" type="button" aria-pressed="false">Dve</button>
           </div>
         </div>
         <div class="filter">
@@ -123,7 +123,7 @@
         </div>
         <div class="series">
           <a class="card" href="{{link:rad}}">
-            <div class="plate"><img src="{{img:i06}}" alt=""><svg class="glyph" aria-hidden="true"><use href="#g1"/></svg></div>
+            <div class="plate"><img src="{{img:i06}}" alt=""></div>
             <div class="body">
               <h3>Microflex UNO, vykurovanie 6 bar</h3>
               <p>Jedna rúra PE-Xa v plášti. Prívod alebo spiatočka, teplá voda k vzdialenému odberu.</p>
@@ -132,7 +132,7 @@
             </div>
           </a>
           <a class="card" href="#">
-            <div class="plate"><img src="{{img:i07}}" alt=""><svg class="glyph" aria-hidden="true"><use href="#g2"/></svg></div>
+            <div class="plate"><img src="{{img:i07}}" alt=""></div>
             <div class="body">
               <h3>Microflex DUO, vykurovanie 6 bar</h3>
               <p>Prívod a spiatočka v jednom plášti. Najčastejšia voľba pre prípojku domu alebo tepelného čerpadla.</p>
@@ -141,7 +141,7 @@
             </div>
           </a>
           <a class="card" href="#">
-            <div class="plate"><img src="{{img:i08}}" alt=""><svg class="glyph" aria-hidden="true"><use href="#g1"/></svg></div>
+            <div class="plate"><img src="{{img:i08}}" alt=""></div>
             <div class="body">
               <h3>Microflex UNO PRIMO, vykurovanie 6 bar</h3>
               <p>Jedna rúra s ešte ohybnejším plášťom pre trasy s mnohými zmenami smeru.</p>
@@ -150,7 +150,7 @@
             </div>
           </a>
           <a class="card" href="#">
-            <div class="plate"><img src="{{img:i62}}" alt=""><svg class="glyph" aria-hidden="true"><use href="#g2"/></svg></div>
+            <div class="plate"><img src="{{img:i62}}" alt=""></div>
             <div class="body">
               <h3>Microflex PRIMO DUO, vykurovanie 6 bar</h3>
               <p>Dve rúry v ohybnejšom plášti PRIMO. Pre stiesnené výkopy a krátke prípojky.</p>

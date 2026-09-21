@@ -97,11 +97,12 @@ const kratkeNazvy = rady.map((r) => rNazov(r, lang).replace(/^Microflex /, '').r
 </Base>
 
 <style>
-  .cat-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px 48px; align-items: start; padding-block: 12px 32px; }
+  .cat-head { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 24px 48px; align-items: start; padding-block: 12px 0; }
   .cat-head h1 { max-width: 16ch; }
   .cat-head .lead { margin-top: 16px; }
-  .cat-head :global(.cat-pikto) { width: 200px; height: 150px; object-fit: contain; }
-  .spec-row { grid-template-columns: repeat(5, auto); justify-content: start; margin-bottom: 32px; }
+  /* Priehľadný render leží voľne cez okraj pásu parametrov, nie v rámčeku. */
+  .cat-head :global(.cat-pikto) { width: 100%; max-width: 460px; height: auto; justify-self: end; margin: -24px 0 -110px; position: relative; z-index: 2; filter: drop-shadow(0 26px 30px rgb(11 27 51 / 0.22)); }
+  .spec-row { grid-template-columns: repeat(5, auto); justify-content: start; margin: 32px 0; width: min(100%, 68%); }
   .spec-row > div { border-bottom: 0; }
   .spec-row > div:last-child { border-right: 0; }
   .rady-dd { font-size: 16px !important; font-family: var(--font-text) !important; font-stretch: 100% !important; }
@@ -117,10 +118,11 @@ const kratkeNazvy = rady.map((r) => rNazov(r, lang).replace(/^Microflex /, '').r
   .faq summary::after { content: "+"; color: var(--color-blue-700); font-weight: 400; font-size: 22px; line-height: 1; transition: transform 200ms var(--ease-soft); }
   .faq details[open] summary::after { transform: rotate(45deg); }
   .faq details p { padding-bottom: 16px; color: var(--color-ink-soft); max-width: 62ch; }
-  @media (max-width: 1000px) { .spec-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } .spec-row > div { border-bottom: 1px solid rgb(0 93 185 / 0.16); } }
+  @media (max-width: 1000px) { .spec-row { grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; } .spec-row > div { border-bottom: 1px solid rgb(0 93 185 / 0.16); } .cat-head :global(.cat-pikto) { max-width: 320px; margin-bottom: -40px; } }
   @media (max-width: 760px) {
     .cat-head { grid-template-columns: 1fr; }
-    .cat-head :global(.cat-pikto) { width: 120px; height: 90px; order: -1; }
+    .cat-head :global(.cat-pikto) { max-width: 240px; margin: 0 0 -24px; justify-self: start; }
+    .spec-row { width: 100%; }
     .series { grid-template-columns: 1fr; }
     .faq-grid { grid-template-columns: 1fr; }
   }

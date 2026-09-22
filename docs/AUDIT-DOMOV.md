@@ -89,7 +89,30 @@ motív rezu rúry 2× (bolo 8×).
 - Nadpis a jeho popis sú pri sebe, popis do 44 em.
 - Text vľavo, obrázok vpravo, v celej stránke rovnako.
 
-## 6. Otvorené (potrebujeme od Juraja alebo Watts)
+## 6. Návrhy katalógovej sekcie (22. 9. 2026)
+
+Juraj po prestavbe: „katalóg nie je dobrý“. Tabuľka z kap. 4 má tri vady, ktoré audit nezachytil,
+lebo vznikli až zlúčením: sedem z pätnástich polí je prázdnych, slovo Microflex sa opakuje
+dvanásťkrát a diely majú v tej istej tabuľke iný tvar riadku (bunka cez celú šírku).
+
+Štyri návrhy sú postavené naživo zo skutočných dát na `/navrhy/katalog/` (noindex, mimo sitemap,
+po rozhodnutí sa zmaže). Každý stojí na jednom zo zdrojov z kap. 1:
+
+| Návrh | Zdroj | Podstata | Riziko |
+|---|---|---|---|
+| **A Register** | Müller-Brockmann | Žiadna matica. Rad = riadok na mriežke, stĺpce rúry / nosná rúra / plášť / tlak / dimenzie. Značka raz v nadpise. | Bez obrazu, pôsobí ako cenník. |
+| **B Rezy v mierke** | Tufte | Rez ku každému radu, kreslený z katalógových čísel v jednej mierke: plášť 160 mm je naozaj dvakrát väčší než 80 mm. Farba jadra = médium. Obraz bez fotky a bez opakovania motívu. | Kreslená grafika, hoci nie je ozdoba ale údaj. Treba overiť u Juraja. |
+| **C Médium a rady** | Refactoring UI | Vľavo médiá ako register s počtami, vpravo rady. Hierarchia váhou písma. | Dva zoznamy vedľa seba, na mobile sa rozpadne na jeden. |
+| **D Katalógový index** | tlačený katalóg, Tufte | Vodiace bodky, čísla v stĺpci. Celý sortiment na jednej obrazovke. | Najhustejší, pre laika málo pozývavý. |
+
+Kresba v návrhu B nie je kreslená ikona v zmysle zákazu z DESIGN.md kap. 6. Je to rez odvodený
+z katalógových rozmerov (`plast_mm`, priemer nosnej rúry), spoločná mierka 1 jednotka = 1 mm,
+čiarkovaný obrys pri rade bez stiahnutej tabuľky. Kreslí sa zo základnej (najmenšej) veľkosti radu.
+
+Odporúčanie: **B na domov, A na stránku Potrubia.** D ako doplnok na Na stiahnutie, C až keď
+pribudne filter.
+
+## 7. Otvorené (potrebujeme od Juraja alebo Watts)
 
 - Fotky referencií v pôvodnom rozlíšení (aspoň 1 200 px) a fotka vojenskej základne; dovtedy
   sú referencie len zoznam s náhľadmi.

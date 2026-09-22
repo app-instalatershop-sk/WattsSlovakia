@@ -226,16 +226,18 @@ hero fotka ide pod text.
 | Microflex Slovensko    Potrubia  Výber  Na stiahnutie  Pre firmy  Poradňa   |
 |                                                [ Hľadať obj. číslo, rad… ]  |
 +-----------------------------------+----------------------------------------+
-| Predizolované potrubie,           |                                        |
-| ktoré sa ohne okolo prekážky.     |   makro fotka prierezu rúry,           |
-|                                   |   prechádza cez pravý okraj            |
-| Vykurovanie, voda, chladenie      |   (7 stĺpcov, bez rámu)                |
-| a tepelné čerpadlá. V zemi bez    |                                        |
-| spojov, položené za jeden deň.    |                                        |
+| PREDIZOLOVANÉ POTRUBIA MICROFLEX® |                                        |
+|                                   |   render rezu rúry v plnej veľkosti,   |
+| Flexibilné potrubie.   (tmavá)    |   prekračuje pravý okraj obrazovky,    |
+| Precízne riešenie.     (modrá)    |   bez rámu a bez plochy za sebou       |
 |                                   |                                        |
-| [Vybrať potrubie] [Katalóg PDF]   |                                        |
+| Pre vykurovanie, pitnú vodu,      |                                        |
+| chladenie a tepelné čerpadlá.     |                                        |
+|                                   |                                        |
+| [Vybrať potrubie →]  Stiahnuť ↓   |                                        |
+| Technológia Watts. Podpora na SK. |                                        |
 +-----------------------------------+----------------------------------------+
-| Pás faktov z dát: polomer ohybu, nosná rúra, tlak, počet radov (60 % šírky) |
+| Pás faktov z dát: polomer ohybu, nosná rúra, tlak, počet radov (celá šírka) |
 +----------------------------------------------------------------------------+
 | Výber podľa použitia / Každý projekt má svoje potrubie.                     |
 | [Vykurovanie] [Teplá a studená voda] [Vykur. a sanita] [Chlad] [Tep. čerp.] |
@@ -257,6 +259,15 @@ hero fotka ide pod text.
 | Pätička (modrý gradient, logo Watts): prevádzkovateľ, kontakt, e-shop, dokumenty|
 +----------------------------------------------------------------------------+
 ```
+
+Hero (Juraj 22. 9. 2026, podľa jeho vlastného návrhu): **svetlé pole, nie tmavý panel.** Farbu nesie
+samotný výrobok, pozadie je len biela s jemným teplom vpravo dole a slabou modrou žiarou za rúrou;
+dole dobieha do bielej, aby medzi hero a pásom čísel nebol šev. Nad nadpisom je tichý riadok
+s kľúčovým slovom (ostáva súčasťou H1 kvôli vyhľadávaniu), nadpis má dva riadky a druhý je modrý.
+Akcie sú nerovnocenné zámerne: žlté tlačidlo so šípkou a vedľa neho len podčiarknutý odkaz na katalóg.
+Pod nimi tichá veta o partnerstve s Watts. Render prekračuje pravý okraj obrazovky a má strop 1080 px,
+aby sa na širokej obrazovke nerozťahoval. Tmavý diagonálny panel z predchádzajúcej verzie je zrušený,
+diagonála ostáva motívom len v bloku Pre firmy a v pätičke.
 
 Katalóg na domove (Juraj 22. 9. 2026, podľa jeho vlastného návrhu): záložky = kategórie, v paneli
 veľké rendery radov. Rad dostane dlaždicu len vtedy, keď má vlastný render; vyhotovenia, ktoré

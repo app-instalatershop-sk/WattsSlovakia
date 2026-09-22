@@ -1,0 +1,450 @@
+---
+/**
+ * Pracovná stránka: rozbor hero sekcie na jednotlivé prvky. Nie je súčasťou webu (noindex, mimo
+ * sitemap, bez českej verzie). Slúži na to, aby sme prvky validovali po jednom, nie naraz.
+ * Po rozhodnutí sa zmaže.
+ */
+import '../../styles/global.css';
+import { Image } from 'astro:assets';
+import Hlavicka from '../../components/Hlavicka.astro';
+import Ikona from '../../components/Ikona.astro';
+import WattsLogo from '../../components/WattsLogo.astro';
+import { fotka } from '../../lib/obrazky';
+import { staticAlternates } from '../../i18n/ui';
+
+const lang = 'sk' as const;
+const rez = fotka('hero-rez-duo.png')!;
+const rodina = fotka('rodina-potrubi.png')!;
+const vykop = fotka('vykop-spojky.jpg')!;
+const kotuc = fotka('kotuc.jpg')!;
+
+const KATALOG_PDF = 'https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127';
+---
+<!doctype html>
+<html lang="sk">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Hero: rozbor prvkov | pracovná stránka</title>
+  </head>
+  <body>
+    <Hlavicka lang={lang} alternates={staticAlternates('domov')} />
+
+    <main id="obsah">
+      <section class="uvod">
+        <div class="wrap">
+          <p class="stitok">Pracovná stránka, nie je súčasťou webu</p>
+          <h1>Čo naozaj patrí do hero sekcie</h1>
+          <p class="lead">
+            Namiesto ďalšieho hotového návrhu je tu hero rozobratý na deväť prvkov. Pri každom je
+            otázka, ktorú rieši, možnosti naživo a moja poznámka. Vyberte pri každom prvku písmeno,
+            prípadne napíšte vlastnú verziu. Až potom z toho poskladám dve alebo tri celé zostavy.
+          </p>
+
+          <h2 class="h-podnadpis">Načo tam hero je</h2>
+          <p>
+            Človek sem príde z vyhľadávania výrazu „predizolované potrubie“ alebo „Microflex“. Je to
+            montážnik, projektant alebo majiteľ domu, ktorý rieši rozvod medzi budovami. V prvých
+            sekundách potrebuje štyri veci a hero má dať práve tieto:
+          </p>
+          <ol class="ulohy">
+            <li><span>1</span><div><strong>Som správne?</strong> Toto je Microflex, predizolované potrubie, na Slovensku.</div></li>
+            <li><span>2</span><div><strong>Je to na moju vec?</strong> Vykurovanie, pitná voda, chladenie, tepelné čerpadlo.</div></li>
+            <li><span>3</span><div><strong>Kam ďalej?</strong> Jeden jasný krok, nie tri rovnocenné tlačidlá.</div></li>
+            <li><span>4</span><div><strong>Ako to vyzerá?</strong> Rez ukáže plášť, penu a nosné rúry naraz. To text nedokáže.</div></li>
+          </ol>
+
+          <div class="zistenia">
+            <h2 class="h-podnadpis">Dve veci, ktoré treba vyriešiť bez ohľadu na vzhľad</h2>
+            <div class="zistenie">
+              <strong>Obe akcie v hero vedú na zástupné stránky.</strong>
+              <p>
+                „Vybrať potrubie“ smeruje na <code>/vyber/</code> a „Stiahnuť katalóg“ na
+                <code>/na-stiahnutie/</code>. Obe stránky zatiaľ hlásia „pripravujeme“. Hlavná akcia
+                domovskej stránky teda dnes vedie do prázdna. Kým sprievodca výberom nie je hotový,
+                hlavná akcia by mala viesť na katalóg potrubí, ktorý funguje a je plný dát.
+              </p>
+            </div>
+            <div class="zistenie">
+              <strong>Veta o partnerstve je na stránke dvakrát.</strong>
+              <p>
+                V hornom páse je „Oficiálny partner Watts pre Microflex na Slovensku“ aj s logom.
+                V hero je pod tlačidlami „Technológia Watts. Podpora na Slovensku.“ To isté posolstvo
+                dva riadky pod sebou oslabuje obe.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== 1. NADPIS ===================== -->
+      <section class="prvok">
+        <div class="wrap">
+          <div class="hlava">
+            <p class="cislo">Prvok 1</p>
+            <h2>Nadpis</h2>
+            <p class="otazka">
+              Najdôležitejšie rozhodnutie. Má nadpis predávať pocit, alebo pomenovať vec? Pre
+              vyhľadávanie je najsilnejší ten, ktorý obsahuje to, čo ľudia píšu do Googlu.
+            </p>
+          </div>
+          <div class="moznosti">
+            <div class="m">
+              <p class="z">A <span>teraz na webe</span></p>
+              <div class="ukazka"><p class="uk-h1"><span class="t">Flexibilné potrubie.</span><span class="b">Precízne riešenie.</span></p></div>
+              <p class="pozn">Znie dobre, ale nehovorí nič konkrétne. „Precízne riešenie“ môže byť čokoľvek, od ložísk po softvér. Bez kľúčového slova.</p>
+            </div>
+            <div class="m">
+              <p class="z">B <span>vecný</span></p>
+              <div class="ukazka"><p class="uk-h1"><span class="t">Predizolované potrubie</span><span class="b">Microflex.</span></p></div>
+              <p class="pozn">Presne to, čo človek hľadal. Najsilnejšie pre vyhľadávanie, ale ako nadpis je to len názov kategórie, nie dôvod, prečo zostať.</p>
+            </div>
+            <div class="m">
+              <p class="z">C <span>úžitok</span></p>
+              <div class="ukazka"><p class="uk-h1"><span class="t">Potrubie, ktoré sa ohne</span><span class="t">okolo prekážky.</span></p></div>
+              <p class="pozn">Jediná vlastnosť, ktorou sa Microflex naozaj líši od tuhého potrubia: polomer ohybu od 0,20 m. Konkrétne a zapamätateľné.</p>
+            </div>
+            <div class="m">
+              <p class="z">D <span>úloha</span></p>
+              <div class="ukazka"><p class="uk-h1"><span class="t">Teplo, voda a chlad</span><span class="t">medzi budovami.</span><span class="b">V jednom výkope.</span></p></div>
+              <p class="pozn">Hovorí, na akú úlohu to je. Dobré pre projektanta, ktorý rieši trasu, nie výrobok. Tri riadky sú však už veľa.</p>
+            </div>
+          </div>
+          <p class="odporucam"><strong>Odporúčam C.</strong> Kľúčové slovo vieme udržať v tichom riadku nad nadpisom (prvok 2), takže o vyhľadávanie neprídeme, a nadpis bude niesť skutočný dôvod, prečo Microflex.</p>
+        </div>
+      </section>
+
+      <!-- ===================== 2. NADNADPIS ===================== -->
+      <section class="prvok">
+        <div class="wrap">
+          <div class="hlava">
+            <p class="cislo">Prvok 2</p>
+            <h2>Tichý riadok nad nadpisom</h2>
+            <p class="otazka">Nesie kľúčové slovo a zaradenie. Je súčasťou nadpisu H1, len vyzerá inak, takže o silu pre vyhľadávanie neprídeme.</p>
+          </div>
+          <div class="moznosti">
+            <div class="m">
+              <p class="z">A <span>značka a kategória</span></p>
+              <div class="ukazka"><p class="uk-kicker">Predizolované potrubia Microflex®</p><p class="uk-h1 male"><span class="t">Potrubie, ktoré sa ohne okolo prekážky.</span></p></div>
+              <p class="pozn">Kľúčové slovo aj značka na jednom riadku. Tichý, nekradne pozornosť nadpisu.</p>
+            </div>
+            <div class="m">
+              <p class="z">B <span>bez neho</span></p>
+              <div class="ukazka"><p class="uk-h1 male"><span class="t">Potrubie, ktoré sa ohne okolo prekážky.</span></p></div>
+              <p class="pozn">Čistejšie, ale kľúčové slovo aj značka potom v nadpise chýbajú úplne. Pre náš cieľ vo vyhľadávaní to je strata.</p>
+            </div>
+            <div class="m">
+              <p class="z">C <span>partnerstvo</span></p>
+              <div class="ukazka"><p class="uk-kicker">Oficiálny partner Watts pre Slovensko</p><p class="uk-h1 male"><span class="t">Potrubie, ktoré sa ohne okolo prekážky.</span></p></div>
+              <p class="pozn">Presne to isté je už v hornom páse aj s logom. Opakovanie, a navyše by sme prišli o kľúčové slovo.</p>
+            </div>
+          </div>
+          <p class="odporucam"><strong>Odporúčam A.</strong></p>
+        </div>
+      </section>
+
+      <!-- ===================== 3. POPIS ===================== -->
+      <section class="prvok">
+        <div class="wrap">
+          <div class="hlava">
+            <p class="cislo">Prvok 3</p>
+            <h2>Popis pod nadpisom</h2>
+            <p class="otazka">Toto je miesto na odpoveď „je to na moju vec?“. Buď vymenuje médiá, alebo pridá ešte dôkaz.</p>
+          </div>
+          <div class="moznosti">
+            <div class="m">
+              <p class="z">A <span>len médiá</span></p>
+              <div class="ukazka"><p class="uk-lead">Pre vykurovanie, pitnú vodu, chladenie a tepelné čerpadlá.</p></div>
+              <p class="pozn">Jedna veta, rýchle prečítanie. Pokrýva úlohu 2 z úvodu.</p>
+            </div>
+            <div class="m">
+              <p class="z">B <span>médiá a dôkaz</span></p>
+              <div class="ukazka"><p class="uk-lead">Pre vykurovanie, pitnú vodu, chladenie a tepelné čerpadlá. Jeden kus z kotúča, pod zemou bez spojov.</p></div>
+              <p class="pozn">Druhá veta hovorí, prečo je to iné než bežné potrubie. Dlhšie, ale nesie argument, ktorý inde na domove nie je.</p>
+            </div>
+            <div class="m">
+              <p class="z">C <span>bez popisu</span></p>
+              <div class="ukazka"><p class="uk-prazdne">bez popisu, hneď tlačidlá</p></div>
+              <p class="pozn">Najčistejšie, ale návštevník sa nedozvie, že potrubie je aj na pitnú vodu a chlad. To je veľká časť sortimentu.</p>
+            </div>
+          </div>
+          <p class="odporucam"><strong>Odporúčam A</strong> pri nadpise C, lebo nadpis už dôkaz nesie. Pri nadpise B skôr variant B.</p>
+        </div>
+      </section>
+
+      <!-- ===================== 4. HLAVNÁ AKCIA ===================== -->
+      <section class="prvok">
+        <div class="wrap">
+          <div class="hlava">
+            <p class="cislo">Prvok 4</p>
+            <h2>Hlavná akcia</h2>
+            <p class="otazka">Jedna, žltá, nezameniteľná. Otázka je, kam má viesť dnes, keď sprievodca výberom ešte nie je hotový.</p>
+          </div>
+          <div class="moznosti">
+            <div class="m">
+              <p class="z">A <span>teraz na webe</span></p>
+              <div class="ukazka"><span class="btn btn-yellow">Vybrať potrubie <Ikona nazov="arrow-right" velkost={18} /></span></div>
+              <p class="pozn varovanie">Vedie na zástupnú stránku s textom „pripravujeme“. Hlavná akcia webu dnes končí v prázdne.</p>
+            </div>
+            <div class="m">
+              <p class="z">B <span>na katalóg</span></p>
+              <div class="ukazka"><span class="btn btn-yellow">Katalóg potrubí <Ikona nazov="arrow-right" velkost={18} /></span></div>
+              <p class="pozn">Vedie na funkčnú stránku s piatimi systémami a dvanástimi radmi. Funguje dnes, bez čakania na sprievodcu.</p>
+            </div>
+            <div class="m">
+              <p class="z">C <span>hľadanie priamo v hero</span></p>
+              <div class="ukazka">
+                <form class="uk-search" role="search" onsubmit="return false">
+                  <input type="search" placeholder="Obj. číslo, rad alebo dimenzia" aria-label="Hľadať" />
+                  <button type="submit"><Ikona nazov="search" velkost={18} />Hľadať</button>
+                </form>
+              </div>
+              <p class="pozn">Pre montážnika s objednávacím číslom v ruke je to najrýchlejšia cesta. Hľadanie však zatiaľ tiež nie je hotové a v hlavičke už jedno pole je.</p>
+            </div>
+          </div>
+          <p class="odporucam"><strong>Odporúčam B, kým nie je sprievodca hotový.</strong> Potom sa text vráti na „Vybrať potrubie“. Je to zmena jedného riadku.</p>
+        </div>
+      </section>
+
+      <!-- ===================== 5. DRUHÁ AKCIA ===================== -->
+      <section class="prvok">
+        <div class="wrap">
+          <div class="hlava">
+            <p class="cislo">Prvok 5</p>
+            <h2>Druhá akcia</h2>
+            <p class="otazka">Nesmie súperiť s prvou. Otázka je, či tam vôbec má byť a kam má viesť.</p>
+          </div>
+          <div class="moznosti">
+            <div class="m">
+              <p class="z">A <span>teraz na webe</span></p>
+              <div class="ukazka"><span class="uk-odkaz">Stiahnuť katalóg <Ikona nazov="arrow-down" velkost={16} /></span></div>
+              <p class="pozn varovanie">Vedie na zástupnú stránku. Katalóg pritom existuje ako PDF u výrobcu, vieme naň odkázať priamo.</p>
+            </div>
+            <div class="m">
+              <p class="z">B <span>priamo na PDF</span></p>
+              <div class="ukazka"><a class="uk-odkaz" href={KATALOG_PDF} target="_blank" rel="noopener">Katalóg Microflex, PDF <Ikona nazov="arrow-down" velkost={16} /></a></div>
+              <p class="pozn">Funguje hneď a je to skutočná hodnota pre projektanta. Treba doplniť veľkosť súboru, aby to nebolo prekvapenie.</p>
+            </div>
+            <div class="m">
+              <p class="z">C <span>žiadna</span></p>
+              <div class="ukazka"><p class="uk-prazdne">len jedna akcia</p></div>
+              <p class="pozn">Najsilnejší tlak na jednu cestu. Projektant, ktorý chce podklady, ich však musí hľadať v menu.</p>
+            </div>
+          </div>
+          <p class="odporucam"><strong>Odporúčam B.</strong></p>
+        </div>
+      </section>
+
+      <!-- ===================== 6. DÔVERA ===================== -->
+      <section class="prvok">
+        <div class="wrap">
+          <div class="hlava">
+            <p class="cislo">Prvok 6</p>
+            <h2>Veta o partnerstve</h2>
+            <p class="otazka">Partnerstvo s Watts je naša najsilnejšia karta. Otázka je, či ju hrať v hero, keď je už v hornom páse.</p>
+          </div>
+          <div class="moznosti">
+            <div class="m">
+              <p class="z">A <span>teraz na webe</span></p>
+              <div class="ukazka"><p class="uk-nota">Technológia Watts. Podpora na Slovensku.</p></div>
+              <p class="pozn varovanie">Opakuje horný pás, ktorý je o dva centimetre vyššie a hovorí to isté, navyše s logom.</p>
+            </div>
+            <div class="m">
+              <p class="z">B <span>logo v hero</span></p>
+              <div class="ukazka"><span class="uk-logo"><WattsLogo height={18} /><span>Oficiálny partner pre Slovensko</span></span></div>
+              <p class="pozn">Logo pôsobí silnejšie než veta, ale duplicitu to nerieši, len zvýrazní.</p>
+            </div>
+            <div class="m">
+              <p class="z">C <span>nič, stačí horný pás</span></p>
+              <div class="ukazka"><p class="uk-prazdne">hero končí tlačidlami</p></div>
+              <p class="pozn">Hero ostane pokojné a partnerstvo ostáva prvá vec, ktorú človek na stránke vidí, len v hornom páse.</p>
+            </div>
+          </div>
+          <p class="odporucam"><strong>Odporúčam C.</strong> Ak chcete partnerstvo silnejšie, lepšie je zvýrazniť horný pás než ho opakovať.</p>
+        </div>
+      </section>
+
+      <!-- ===================== 7. OBRAZ ===================== -->
+      <section class="prvok">
+        <div class="wrap">
+          <div class="hlava">
+            <p class="cislo">Prvok 7</p>
+            <h2>Obraz</h2>
+            <p class="otazka">Hero má jeden obraz. Otázka je, ktorý z nich odpovie na „ako to vyzerá“ najlepšie.</p>
+          </div>
+          <div class="obrazy">
+            <div class="o">
+              <p class="z">A <span>rez rúry, teraz na webe</span></p>
+              <div class="ram"><Image src={rez} alt="" widths={[420, 760]} sizes="30vw" /></div>
+              <p class="pozn">Ukáže naraz plášť, penu aj nosné rúry. Vysvetlí výrobok bez jediného slova. Je to render, nie fotka z reality.</p>
+            </div>
+            <div class="o">
+              <p class="z">B <span>rodina potrubí</span></p>
+              <div class="ram"><Image src={rodina} alt="" widths={[420, 760]} sizes="30vw" /></div>
+              <p class="pozn">Ukáže šírku sortimentu naraz. Na domove ju už však používa sekcia o rodine systémov, opakovali by sme sa.</p>
+            </div>
+            <div class="o">
+              <p class="z">C <span>z výkopu</span></p>
+              <div class="ram"><Image src={vykop} alt="" widths={[420, 760]} sizes="30vw" /></div>
+              <p class="pozn">Jediný skutočný dôkaz, že to niekde leží. Nevysvetlí však stavbu rúry a je to jediná fotka zo stavby, ktorú máme.</p>
+            </div>
+            <div class="o">
+              <p class="z">D <span>kotúč</span></p>
+              <div class="ram"><Image src={kotuc} alt="" widths={[420, 760]} sizes="30vw" /></div>
+              <p class="pozn">Ukáže, ako sa potrubie dodáva a prečo je bez spojov. Sám o sebe je málo čitateľný, je to len zvitok modrej rúry.</p>
+            </div>
+          </div>
+          <p class="odporucam"><strong>Odporúčam A.</strong> Rez je jediný obraz, ktorý vysvetľuje výrobok. Fotku z výkopu už používajú referencie nižšie.</p>
+        </div>
+      </section>
+
+      <!-- ===================== 8. POZADIE ===================== -->
+      <section class="prvok">
+        <div class="wrap">
+          <div class="hlava">
+            <p class="cislo">Prvok 8</p>
+            <h2>Pozadie</h2>
+            <p class="otazka">Pozadie rozhoduje o tom, či hero pôsobí draho alebo lacno, a či je text čitateľný.</p>
+          </div>
+          <div class="pozadia">
+            <div class="p">
+              <p class="z">A <span>svetlé, teraz na webe</span></p>
+              <div class="ram-p pa"><span>Nadpis</span></div>
+              <p class="pozn">Farbu nesie výrobok, text je čitateľný vždy. Pokojné a drahé. Hrozí, že bude pôsobiť ticho až nevýrazne.</p>
+            </div>
+            <div class="p">
+              <p class="z">B <span>tmavý modrý panel</span></p>
+              <div class="ram-p pb"><span class="biely">Nadpis</span></div>
+              <p class="pozn">Silné a firemné, rúra na modrom vynikne. Na mobile však pole leží pod textom a text sa s ním bije, museli sme to riešiť.</p>
+            </div>
+            <div class="p">
+              <p class="z">C <span>svetlé s modrým pásom dole</span></p>
+              <div class="ram-p pc"><span>Nadpis</span></div>
+              <p class="pozn">Kompromis: text vždy na svetlom, modrá len ako podstavec pod výrobkom. Drží značku aj čitateľnosť.</p>
+            </div>
+          </div>
+          <p class="odporucam"><strong>Odporúčam A alebo C.</strong> C dá viac značkovej modrej bez rizika pre text.</p>
+        </div>
+      </section>
+
+      <!-- ===================== 9. ČÍSLA ===================== -->
+      <section class="prvok">
+        <div class="wrap">
+          <div class="hlava">
+            <p class="cislo">Prvok 9</p>
+            <h2>Čísla pod hero</h2>
+            <p class="otazka">Polomer ohybu, nosná rúra, tlak a počet radov. Otázka je, či patria do hero, alebo pod neho.</p>
+          </div>
+          <div class="moznosti">
+            <div class="m">
+              <p class="z">A <span>teraz na webe</span></p>
+              <div class="ukazka"><p class="uk-prazdne">pás pod hero, cez celú šírku</p></div>
+              <p class="pozn">Číslo dostane priestor a hero ostane pokojné. Človek ich uvidí, až keď odroluje o kúsok.</p>
+            </div>
+            <div class="m">
+              <p class="z">B <span>v hero pod tlačidlami</span></p>
+              <div class="ukazka uk-cisla"><span><b>od 0,20 m</b>Polomer ohybu</span><span><b>6 / 10 bar</b>Tlak</span></div>
+              <p class="pozn">Dôkaz hneď pri nadpise, bez rolovania. Hero však zhustne a tlačidlá stratia okolo seba ticho.</p>
+            </div>
+            <div class="m">
+              <p class="z">C <span>len jedno číslo v nadpise</span></p>
+              <div class="ukazka"><p class="uk-h1 male"><span class="t">Ohne sa v polomere</span><span class="b">0,20 m.</span></p></div>
+              <p class="pozn">Najsilnejší dôkaz povýšený na nadpis. Pre laika je však 0,20 m bez kontextu prázdne číslo.</p>
+            </div>
+          </div>
+          <p class="odporucam"><strong>Odporúčam A.</strong></p>
+        </div>
+      </section>
+
+      <section class="uvod zaver">
+        <div class="wrap">
+          <h2>Ako ďalej</h2>
+          <p class="lead">
+            Napíšte pri každom prvku písmeno, napríklad „1C, 2A, 3A, 4B, 5B, 6C, 7A, 8C, 9A“. Kde sa
+            Vám nepáči ani jedna možnosť, napíšte to vlastnými slovami a pripravím ďalšie. Keď budú
+            prvky odsúhlasené, poskladám z nich dve alebo tri celé zostavy a tie doladíme.
+          </p>
+          <p class="lead">
+            Moja zostava by bola <strong>1C, 2A, 3A, 4B, 5B, 6C, 7A, 8C, 9A</strong>: tichý riadok
+            s kľúčovým slovom, nadpis o ohybe, jedna veta o médiách, žlté tlačidlo na katalóg, odkaz
+            na PDF, bez opakovania partnerstva, rez rúry a modrý pás len ako podstavec.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <style>
+      .uvod { padding: 56px 0 40px; }
+      .zaver { border-top: var(--line); margin-top: 48px; padding-bottom: 96px; }
+      .stitok { display: inline-block; font-size: 12.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--color-ink-soft); border: var(--line); border-radius: var(--radius-s); padding: 4px 10px; margin-bottom: 16px; }
+      .uvod h1 { font-size: clamp(32px, 3vw + 14px, 46px); margin-bottom: 16px; }
+      .uvod .lead { max-width: 46em; }
+      .uvod .lead + .lead { margin-top: 16px; }
+      .h-podnadpis { font-size: 20px; margin: 40px 0 12px; }
+      .uvod p { max-width: 46em; color: var(--color-ink-soft); }
+
+      .ulohy { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 32px; margin-top: 20px; max-width: 58em; }
+      .ulohy li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 12px; align-items: start; }
+      .ulohy span { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; background: var(--color-blue-100); color: var(--color-blue-900); font-size: 13px; font-weight: 600; }
+      .ulohy div { font-size: 15px; color: var(--color-ink-soft); }
+      .ulohy strong { color: var(--color-ink); font-weight: 600; }
+
+      .zistenia { margin-top: 44px; }
+      .zistenie { border-left: 3px solid var(--color-yellow-500); padding: 4px 0 4px 18px; margin-top: 18px; max-width: 58em; }
+      .zistenie strong { display: block; font-size: 16px; margin-bottom: 4px; }
+      .zistenie p { font-size: 15px; }
+      code { font-family: ui-monospace, monospace; font-size: 13.5px; background: var(--color-grey-100); padding: 1px 5px; border-radius: 3px; }
+
+      .prvok { padding: 48px 0; border-top: var(--line); }
+      .hlava { max-width: 52em; margin-bottom: 28px; }
+      .cislo { font-size: 12.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--color-blue-700); font-weight: 600; margin-bottom: 6px; }
+      .prvok h2 { font-size: 27px; margin-bottom: 8px; }
+      .otazka { color: var(--color-ink-soft); }
+
+      .moznosti { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; align-items: stretch; }
+      .m { display: flex; flex-direction: column; }
+      .z { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 700; font-size: 17px; color: var(--color-blue-900); margin-bottom: 10px; }
+      .z span { font-family: var(--font-text); font-stretch: 100%; font-weight: 400; font-size: 13px; color: var(--color-ink-soft); margin-left: 8px; }
+      /* Rovnako vysoké ukážky, aby sa možnosti dali porovnať férovo. */
+      .ukazka { flex: 1; background: linear-gradient(180deg, var(--color-white) 0%, #f6f9fd 100%); border: var(--line); border-radius: var(--radius-l); padding: 24px; min-height: 148px; display: flex; flex-direction: column; justify-content: center; }
+      .pozn { font-size: 14px; color: var(--color-ink-soft); margin-top: 10px; }
+      .pozn.varovanie { color: #9a5b00; }
+      .odporucam { margin-top: 24px; font-size: 15px; color: var(--color-ink-soft); }
+      .odporucam strong { color: var(--color-ink); }
+
+      .uk-h1 { display: flex; flex-direction: column; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 700; font-size: 25px; line-height: 1.08; letter-spacing: -0.02em; }
+      .uk-h1.male { font-size: 21px; }
+      .uk-h1 .t { color: var(--color-ink); }
+      .uk-h1 .b { color: var(--color-blue-700); }
+      .uk-kicker { font-size: 11px; font-weight: 600; letter-spacing: 0.13em; text-transform: uppercase; color: var(--color-ink-soft); margin-bottom: 12px; }
+      .uk-lead { font-size: 16px; color: var(--color-ink-soft); }
+      .uk-nota { font-size: 13px; color: #7a8494; }
+      .uk-prazdne { font-size: 14px; color: var(--color-grey-300); font-style: italic; }
+      .uk-odkaz { display: inline-flex; align-items: center; gap: 8px; font-weight: 500; color: var(--color-blue-700); border-bottom: 1px solid currentColor; padding-bottom: 3px; align-self: flex-start; }
+      .uk-logo { display: inline-flex; align-items: center; gap: 12px; }
+      .uk-logo span { font-size: 13px; color: var(--color-ink-soft); }
+      .uk-search { display: flex; height: 48px; border: var(--line); border-radius: var(--radius-s); overflow: hidden; background: var(--color-white); }
+      .uk-search input { flex: 1; min-width: 0; border: 0; padding: 0 14px; font: inherit; font-size: 15px; outline: none; }
+      .uk-search button { border: 0; background: linear-gradient(180deg, #1467c1 0%, var(--color-blue-700) 100%); color: #fff; padding: 0 16px; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
+      .uk-cisla { flex-direction: row; gap: 28px; }
+      .uk-cisla span { display: flex; flex-direction: column; font-size: 13px; color: var(--color-ink-soft); }
+      .uk-cisla b { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 22px; color: var(--color-blue-900); letter-spacing: -0.02em; }
+
+      .obrazy { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 24px; align-items: start; }
+      .ram { background: linear-gradient(180deg, var(--color-white) 0%, #f2f5f9 100%); border: var(--line); border-radius: var(--radius-l); aspect-ratio: 4 / 3; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 12px; }
+      .ram :global(img) { width: 100%; height: 100%; object-fit: contain; }
+
+      .pozadia { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 24px; align-items: start; }
+      .ram-p { border: var(--line); border-radius: var(--radius-l); aspect-ratio: 16 / 9; display: flex; align-items: center; padding: 0 22px; overflow: hidden; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 700; font-size: 20px; color: var(--color-ink); }
+      .ram-p .biely { color: #fff; }
+      .pa { background: radial-gradient(52% 62% at 74% 52%, rgb(0 93 185 / 0.07) 0%, rgb(0 93 185 / 0) 72%), linear-gradient(158deg, #ffffff 0%, #fafbfd 46%, #eef2f7 100%); }
+      .pb { background: linear-gradient(165deg, #0b3a80 0%, var(--color-blue-900) 100%); }
+      .pc { background: linear-gradient(180deg, #ffffff 0%, #f4f7fb 52%, #0b3a80 52%, var(--color-blue-900) 100%); }
+
+      @media (max-width: 760px) {
+        .ulohy { grid-template-columns: 1fr; }
+      }
+    </style>
+  </body>
+</html>

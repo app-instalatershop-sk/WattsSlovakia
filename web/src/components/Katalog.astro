@@ -106,9 +106,10 @@ const skupiny = (k: Kategoria) => rady.filter((r) => r.kategoria === k.id).sort(
   .katalog h2 { font-size: clamp(28px, 2.2vw + 14px, 42px); margin-bottom: 36px; }
 
   /* Záložky: prepínače bez skriptu. Vybraná záložka podčiarkne popis a odkryje svoj panel. */
-  .t-list { display: flex; gap: 8px; border-bottom: var(--line); }
+  .t-list { display: flex; justify-content: space-between; gap: 8px; border-bottom: var(--line); }
   .t-lbl { position: relative; padding: 14px 20px; cursor: pointer; color: var(--color-ink-soft); font-weight: 500; white-space: nowrap; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 150ms var(--ease-soft), border-color 200ms var(--ease-soft); }
   .t-lbl:first-child { padding-left: 0; }
+  .t-lbl:last-child { padding-right: 0; }
   .t-lbl input { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; }
   .t-lbl:hover { color: var(--color-ink); }
   .t-lbl:has(input:checked) { color: var(--color-blue-700); border-bottom-color: var(--color-blue-700); font-weight: 600; }
@@ -127,10 +128,12 @@ const skupiny = (k: Kategoria) => rady.filter((r) => r.kategoria === k.id).sort(
   .rady { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 24px 40px; padding: 40px 0 8px; }
   .rad { flex: 0 1 420px; max-width: 460px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 2px; color: var(--color-ink); }
   .rady[data-pocet="1"] .rad { flex-basis: 520px; max-width: 560px; }
+  .rady[data-pocet="3"] .rad { flex-basis: 340px; max-width: 380px; }
   /* Telo rúry pokračuje za ľavý okraj renderu, doznenie skryje rez obrázkom. */
-  .rad :global(.rad-img) { width: 100%; height: auto; display: block; margin-bottom: 14px; filter: drop-shadow(0 24px 28px rgb(11 27 51 / 0.2)); -webkit-mask-image: linear-gradient(to top left, #000 74%, transparent 98%); mask-image: linear-gradient(to top left, #000 74%, transparent 98%); transition: transform 400ms var(--ease-soft); }
+  .rad :global(.rad-img) { width: 100%; height: auto; aspect-ratio: 5 / 4; object-fit: contain; object-position: center bottom; display: block; margin-bottom: 16px; filter: drop-shadow(0 24px 28px rgb(11 27 51 / 0.2)); -webkit-mask-image: linear-gradient(to top left, #000 82%, transparent 99%); mask-image: linear-gradient(to top left, #000 82%, transparent 99%); transition: transform 400ms var(--ease-soft); }
   .rad:hover :global(.rad-img) { transform: translateY(-6px) scale(1.02); }
-  .rad strong { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 21px; letter-spacing: -0.01em; color: var(--color-ink); }
+  /* Dva riadky napevno: dlhý názov tak neposunie popis pod susedné dlaždice. */
+  .rad strong { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 21px; line-height: 1.25; min-height: 2.5em; letter-spacing: -0.01em; color: var(--color-ink); }
   .rad:hover strong { color: var(--color-blue-700); }
   .rad .muted { font-size: 15px; }
 
@@ -141,7 +144,7 @@ const skupiny = (k: Kategoria) => rady.filter((r) => r.kategoria === k.id).sort(
   .vsetko :global(svg) { width: 16px; height: 16px; }
 
   .diely { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; margin-top: 44px; padding-top: 28px; border-top: var(--line); }
-  .diely h3 { font-family: var(--font-text); font-stretch: 100%; font-size: 16px; font-weight: 600; letter-spacing: 0; padding-right: 28px; border-right: var(--line); }
+  .diely h3 { font-family: var(--font-text); font-stretch: 100%; font-size: 16px; font-weight: 600; letter-spacing: 0; }
   .diely ul { display: flex; flex-wrap: wrap; gap: 10px 26px; }
   .diely li a { display: inline-flex; align-items: center; gap: 4px; font-size: 15px; font-weight: 500; }
   .diely li :global(svg) { width: 15px; height: 15px; }
@@ -150,16 +153,18 @@ const skupiny = (k: Kategoria) => rady.filter((r) => r.kategoria === k.id).sort(
     .katalog { padding-bottom: 140px; }
     .t-list { overflow-x: auto; scrollbar-width: none; }
     .t-list::-webkit-scrollbar { display: none; }
-    .rad, .rady[data-pocet="1"] .rad { flex-basis: 360px; max-width: 420px; }
+    .t-list { justify-content: flex-start; }
+    .rad, .rady[data-pocet="1"] .rad, .rady[data-pocet="3"] .rad { flex-basis: 300px; max-width: 380px; }
   }
   @media (max-width: 760px) {
     .katalog { padding-top: 64px; padding-bottom: 100px; }
     .katalog h2 { margin-bottom: 24px; }
     .t-lbl { padding: 12px 14px; font-size: 15px; }
     .rady { padding-top: 28px; gap: 28px; }
-    .rad, .rady[data-pocet="1"] .rad { flex-basis: 100%; max-width: none; }
+    .rad, .rady[data-pocet="1"] .rad, .rady[data-pocet="3"] .rad { flex-basis: 100%; max-width: none; }
+    .rad strong { min-height: 0; }
     .pod { flex-direction: column; align-items: flex-start; }
     .vsetko { margin-left: 0; }
-    .diely h3 { border-right: 0; padding-right: 0; width: 100%; }
+    .diely h3 { width: 100%; }
   }
 </style>

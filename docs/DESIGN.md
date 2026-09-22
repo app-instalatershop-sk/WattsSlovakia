@@ -237,10 +237,13 @@ hero fotka ide pod text.
 +-----------------------------------+----------------------------------------+
 | Pás faktov z dát: polomer ohybu, nosná rúra, tlak, počet radov (60 % šírky) |
 +----------------------------------------------------------------------------+
-| Katalóg Microflex: JEDNA tabuľka bez obrázkov. Riadok = systém (kategória)  |
-| s médiom a tlakom z dát, stĺpec = 1 / 2 / 4 rúry v plášti, bunka = štítky    |
-| radov (MICROFLEX + model, počet dimenzií). Pod tým skupina Spojky a         |
-| príslušenstvo: riadok = kategória, bunka cez šírku = skupiny s počtom kusov |
+| Výber podľa použitia / Každý projekt má svoje potrubie.                     |
+| [Vykurovanie] [Teplá a studená voda] [Vykur. a sanita] [Chlad] [Tep. čerp.] |
+|    render radu          render radu          (1 až 3 podľa kategórie)       |
+|    Microflex UNO        Microflex DUO                                       |
+|    Jedna rúra v plášti  Dve rúry v plášti                                   |
+| Aj vo vyhotovení UNO PRIMO a PRIMO DUO          Celý katalóg potrubí →      |
+| Spojky a príslušenstvo   skupiny dielov ako odkazy                          |
 +-----------------------------------+----------------------------------------+
 | Päť systémov, jedna rodina.       |   render rodiny potrubí cez švík pásu  |
 | 3 fakty s vetou: ohyb, viac rúr,  |   (presah vpravo, doznenie koncov rúr) |
@@ -254,6 +257,12 @@ hero fotka ide pod text.
 | Pätička (modrý gradient, logo Watts): prevádzkovateľ, kontakt, e-shop, dokumenty|
 +----------------------------------------------------------------------------+
 ```
+
+Katalóg na domove (Juraj 22. 9. 2026, podľa jeho vlastného návrhu): záložky = kategórie, v paneli
+veľké rendery radov. Rad dostane dlaždicu len vtedy, keď má vlastný render; vyhotovenia, ktoré
+zdieľajú render so súrodencom (PRIMO), sú v riadku pod dlaždicami, aby sa obrázok neopakoval.
+Naraz sú tak na obrazovke najviac tri rendery, nie dvanásť. Záložky sú prepínače bez skriptu
+a obsah všetkých panelov je v HTML kvôli vyhľadávačom.
 
 Zásada domova (Juraj 21. 9. 2026, po duplicite dlaždíc použitia a katalógu): každá sekcia má inú
 úlohu aj inú formu. Rendery kategórií sú len v katalógu, výber je typografická tabuľka, rodina je

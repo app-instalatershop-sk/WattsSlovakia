@@ -109,8 +109,17 @@ Kresba v návrhu B nie je kreslená ikona v zmysle zákazu z DESIGN.md kap. 6. J
 z katalógových rozmerov (`plast_mm`, priemer nosnej rúry), spoločná mierka 1 jednotka = 1 mm,
 čiarkovaný obrys pri rade bez stiahnutej tabuľky. Kreslí sa zo základnej (najmenšej) veľkosti radu.
 
-Odporúčanie: **B na domov, A na stránku Potrubia.** D ako doplnok na Na stiahnutie, C až keď
-pribudne filter.
+Odporúčanie bolo B na domov a A na stránku Potrubia.
+
+**Ako to dopadlo:** Juraj si nevybral ani jeden z týchto štyroch a poslal vlastný návrh, ktorý je
+teraz postavený (`web/src/components/Katalog.astro`). Záložky sú kategórie, v paneli sú veľké rendery
+radov s názvom a počtom rúr v plášti, pod nimi riadok s vyhotoveniami PRIMO a odkaz na celý katalóg,
+dole skupiny spojok a príslušenstva. Pracovná stránka s návrhmi je zmazaná.
+
+Rozpočet obrázkov z kap. 4 tým nie je porušený: rendery sú síce späť, ale naraz sú viditeľné najviac
+tri, líšia sa počtom rúr a sú veľké, takže nesú informáciu. Pravidlo z kap. 3 znelo „neopakovať ten
+istý motív“, nie „nepoužívať rendery“. Preto rady, ktoré v dátach zdieľajú render so súrodencom
+(PRIMO), dlaždicu nedostanú.
 
 ## 7. Otvorené (potrebujeme od Juraja alebo Watts)
 

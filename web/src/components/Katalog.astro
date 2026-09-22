@@ -1,0 +1,165 @@
+---
+/**
+ * Katalóg na domove: záložky podľa použitia, pod nimi rendery radov v danej kategórii.
+ * Záložky sú prepínače (radio + label), takže fungujú bez skriptu a celý obsah je v HTML
+ * kvôli vyhľadávačom. Rad dostane dlaždicu len vtedy, keď má vlastný render; vyhotovenia,
+ * ktoré zdieľajú render so súrodencom (PRIMO), idú do riadku pod dlaždicami.
+ */
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import Ikona from './Ikona.astro';
+import { kategorie, cestaKategorie, cestaRadu, kKratky, rNazov, type Kategoria, type Rad } from '../lib/katalog';
+import { piktogram } from '../lib/obrazky';
+import { type Lang, t, route } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const ui = t(lang);
+const h = ui.home;
+
+const kats = await kategorie();
+const rady = (await getCollection('rady')).map((r) => r.data);
+const potrubia = kats.filter((k) => k.typ === 'potrubie');
+const diely = kats.filter((k) => k.typ !== 'potrubie');
+
+/** Názov radu bez upresnenia za čiarkou: „Microflex UNO, vykurovanie 6 bar“ → „Microflex UNO“. */
+const model = (r: Rad) => rNazov(r, lang).split(',')[0].trim();
+/** Model bez značky: „Microflex UNO PRIMO“ → „UNO PRIMO“. */
+const bezZnacky = (r: Rad) => model(r).replace(/^Microflex\s+/i, '');
+
+function panel(k: Kategoria) {
+  const rr = rady.filter((r) => r.kategoria === k.id).sort((a, b) => a.poradie - b.poradie);
+  const videne = new Set<string>();
+  const dlazdice: Rad[] = [];
+  const dalsie: Rad[] = [];
+  for (const r of rr) {
+    // Dve dlaždice s tým istým renderom by boli len opakovanie, preto ide vyhotovenie do textu.
+    if (r.piktogram && !videne.has(r.piktogram)) { videne.add(r.piktogram); dlazdice.push(r); }
+    else dalsie.push(r);
+  }
+  return { kat: k, dlazdice, dalsie };
+}
+const panely = potrubia.map(panel);
+const skupiny = (k: Kategoria) => rady.filter((r) => r.kategoria === k.id).sort((a, b) => a.poradie - b.poradie);
+---
+<section class="section band-soft katalog" aria-labelledby="h-kat">
+  <div class="wrap">
+    <p class="kicker" data-reveal>{h.katalogKicker}</p>
+    <h2 id="h-kat" data-reveal>{h.katalogH2}</h2>
+
+    <div class="kat-taby">
+      <div class="t-list" data-reveal>
+        {panely.map((p, i) => (
+          <label class="t-lbl">
+            <input type="radio" name="katalog-tab" value={p.kat.id} checked={i === 0} />
+            <span>{kKratky(p.kat, lang)}</span>
+          </label>
+        ))}
+      </div>
+
+      <div class="t-panely">
+        {panely.map((p) => (
+          <div class="t-panel" aria-label={kKratky(p.kat, lang)}>
+            <div class="rady" data-pocet={p.dlazdice.length}>
+              {p.dlazdice.map((r) => { const img = piktogram(r.piktogram); return (
+                <a class="rad" href={cestaRadu(p.kat, r, lang)}>
+                  {img && <Image src={img} alt={`${model(r)} v reze`} widths={[420, 640, 900]} sizes="(max-width: 760px) 86vw, 34vw" class="rad-img" />}
+                  <strong>{model(r)}</strong>
+                  <span class="muted">{h.rury(r.pocet_rur ?? 1)}</span>
+                </a>
+              ); })}
+            </div>
+            <div class="pod">
+              {p.dalsie.length > 0 && (
+                <p class="dalsie">
+                  {h.ajVo}{' '}
+                  {p.dalsie.map((r, i) => (
+                    <>
+                      {i > 0 && (i === p.dalsie.length - 1 ? ` ${ui.common.a} ` : ', ')}
+                      <a href={cestaRadu(p.kat, r, lang)}>{bezZnacky(r)}</a>
+                    </>
+                  ))}
+                </p>
+              )}
+              <a class="vsetko" href={route(lang, 'potrubia')}>{h.celyKatalog} <Ikona nazov="arrow-up-right" velkost={16} /></a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="diely" data-reveal>
+      <h3>{h.dielyH3}</h3>
+      <ul>
+        {diely.flatMap((k) => skupiny(k).map((r) => (
+          <li><a href={`${cestaKategorie(k, lang)}#h-${r.id}`}>{rNazov(r, lang)} <Ikona nazov="chevron-right" velkost={16} /></a></li>
+        )))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Dole ostáva miesto: render rodiny potrubí zhora prechádza cez švík do bielej sekcie pod ním. */
+  .katalog { padding-top: 96px; padding-bottom: 200px; }
+  .kicker { font-size: 12.5px; letter-spacing: .09em; text-transform: uppercase; color: var(--color-blue-700); font-weight: 600; margin-bottom: 10px; }
+  .katalog h2 { font-size: clamp(28px, 2.2vw + 14px, 42px); margin-bottom: 36px; }
+
+  /* Záložky: prepínače bez skriptu. Vybraná záložka podčiarkne popis a odkryje svoj panel. */
+  .t-list { display: flex; gap: 8px; border-bottom: var(--line); }
+  .t-lbl { position: relative; padding: 14px 20px; cursor: pointer; color: var(--color-ink-soft); font-weight: 500; white-space: nowrap; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 150ms var(--ease-soft), border-color 200ms var(--ease-soft); }
+  .t-lbl:first-child { padding-left: 0; }
+  .t-lbl input { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; }
+  .t-lbl:hover { color: var(--color-ink); }
+  .t-lbl:has(input:checked) { color: var(--color-blue-700); border-bottom-color: var(--color-blue-700); font-weight: 600; }
+  .t-lbl:has(input:focus-visible) { outline: 2px solid var(--color-blue-700); outline-offset: -4px; border-radius: 2px; }
+
+  .t-panel { display: none; }
+  /* Pár záložka → panel. Kategórií je päť, šiesty pár je rezerva pri rozšírení katalógu. */
+  .kat-taby:has(.t-lbl:nth-of-type(1) input:checked) .t-panel:nth-of-type(1),
+  .kat-taby:has(.t-lbl:nth-of-type(2) input:checked) .t-panel:nth-of-type(2),
+  .kat-taby:has(.t-lbl:nth-of-type(3) input:checked) .t-panel:nth-of-type(3),
+  .kat-taby:has(.t-lbl:nth-of-type(4) input:checked) .t-panel:nth-of-type(4),
+  .kat-taby:has(.t-lbl:nth-of-type(5) input:checked) .t-panel:nth-of-type(5),
+  .kat-taby:has(.t-lbl:nth-of-type(6) input:checked) .t-panel:nth-of-type(6) { display: block; animation: panel 420ms var(--ease-soft) both; }
+  @keyframes panel { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+  .rady { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 24px 40px; padding: 40px 0 8px; }
+  .rad { flex: 0 1 420px; max-width: 460px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 2px; color: var(--color-ink); }
+  .rady[data-pocet="1"] .rad { flex-basis: 520px; max-width: 560px; }
+  /* Telo rúry pokračuje za ľavý okraj renderu, doznenie skryje rez obrázkom. */
+  .rad :global(.rad-img) { width: 100%; height: auto; display: block; margin-bottom: 14px; filter: drop-shadow(0 24px 28px rgb(11 27 51 / 0.2)); -webkit-mask-image: linear-gradient(to top left, #000 74%, transparent 98%); mask-image: linear-gradient(to top left, #000 74%, transparent 98%); transition: transform 400ms var(--ease-soft); }
+  .rad:hover :global(.rad-img) { transform: translateY(-6px) scale(1.02); }
+  .rad strong { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 21px; letter-spacing: -0.01em; color: var(--color-ink); }
+  .rad:hover strong { color: var(--color-blue-700); }
+  .rad .muted { font-size: 15px; }
+
+  .pod { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; padding-top: 20px; }
+  .dalsie { font-size: 15px; color: var(--color-ink-soft); }
+  .dalsie a { font-weight: 500; }
+  .vsetko { display: inline-flex; align-items: center; gap: 6px; font-weight: 500; margin-left: auto; border-bottom: 1px solid currentColor; padding-bottom: 2px; }
+  .vsetko :global(svg) { width: 16px; height: 16px; }
+
+  .diely { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; margin-top: 44px; padding-top: 28px; border-top: var(--line); }
+  .diely h3 { font-family: var(--font-text); font-stretch: 100%; font-size: 16px; font-weight: 600; letter-spacing: 0; padding-right: 28px; border-right: var(--line); }
+  .diely ul { display: flex; flex-wrap: wrap; gap: 10px 26px; }
+  .diely li a { display: inline-flex; align-items: center; gap: 4px; font-size: 15px; font-weight: 500; }
+  .diely li :global(svg) { width: 15px; height: 15px; }
+
+  @media (max-width: 1100px) {
+    .katalog { padding-bottom: 140px; }
+    .t-list { overflow-x: auto; scrollbar-width: none; }
+    .t-list::-webkit-scrollbar { display: none; }
+    .rad, .rady[data-pocet="1"] .rad { flex-basis: 360px; max-width: 420px; }
+  }
+  @media (max-width: 760px) {
+    .katalog { padding-top: 64px; padding-bottom: 100px; }
+    .katalog h2 { margin-bottom: 24px; }
+    .t-lbl { padding: 12px 14px; font-size: 15px; }
+    .rady { padding-top: 28px; gap: 28px; }
+    .rad, .rady[data-pocet="1"] .rad { flex-basis: 100%; max-width: none; }
+    .pod { flex-direction: column; align-items: flex-start; }
+    .vsetko { margin-left: 0; }
+    .diely h3 { border-right: 0; padding-right: 0; width: 100%; }
+  }
+</style>

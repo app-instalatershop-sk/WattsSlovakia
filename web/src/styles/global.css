@@ -137,6 +137,8 @@
 
   /* Pásy */
   .band { background: linear-gradient(180deg, #f3f7fc 0%, var(--color-blue-50) 55%, #e6eff9 100%); }
+  /* Svetlý pás, ktorý začína bielou: sekcia pod hero prechádza plynulo, bez viditeľného švíku. */
+  .band-soft { background: linear-gradient(180deg, var(--color-white) 0, var(--color-blue-50) 140px, var(--color-blue-50) 100%); }
   .band-dark { background: linear-gradient(170deg, #0e3676 0%, var(--color-blue-900) 100%); color: #fff; }
   .band-dark h2, .band-dark h3 { color: #fff; }
   .band-dark a { color: #fff; }

@@ -23,8 +23,6 @@ export default defineConfig({
   integrations: [
     react(),
     sitemap({
-      // Pracovné stránky s návrhmi do mapy webu nepatria.
-      filter: (page) => !page.includes('/navrhy/'),
       i18n: { defaultLocale: 'sk', locales: { sk: 'sk-SK', cs: 'cs-CZ' } },
     }),
   ],

@@ -6,7 +6,8 @@ import Ikona from '../components/Ikona.astro';
 import Katalog from '../components/Katalog.astro';
 import { kategorie, cislo, rozsah } from '../lib/katalog';
 import { fotka } from '../lib/obrazky';
-import { type Lang, t, route, staticAlternates } from '../i18n/ui';
+import { sadzba } from '../lib/sadzba';
+import { type Lang, t, route, staticAlternates, KATALOG_PDF } from '../i18n/ui';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -31,9 +32,9 @@ const faktRady = String(radyPotrubi.length);
 
 const heroRez = fotka('hero-rez-duo.png')!;
 const rodina = fotka('rodina-potrubi.png')!;
-const vykop = fotka('vykop-spojky.jpg')!;
 const kotuc = fotka('kotuc.jpg')!;
-const refFotky = [fotka('prierez-duo.jpg')!, fotka('referencia-skola.png')!, fotka('referencia-povazska-bystrica.jpg')!];
+const vykop = fotka('vykop-spojky.jpg')!;
+const [plast, izolacia, rura] = h.vrstvy;
 ---
 <Base lang={lang} alternates={staticAlternates('domov')} title={ui.domov.title} description={ui.domov.description}>
   <section class="hero" aria-labelledby="h-hero">
@@ -45,15 +46,14 @@ const refFotky = [fotka('prierez-duo.jpg')!, fotka('referencia-skola.png')!, fot
           <span class="h1-a">{h.h1a}</span>
           <span class="h1-b">{h.h1b}</span>
         </h1>
-        <p class="lead">{h.lead}</p>
+        <p class="lead">{sadzba(h.lead)}</p>
         <div class="hero-actions">
-          <a class="btn btn-yellow" href={route(lang, 'vyber')}>{h.cta} <Ikona nazov="arrow-right" velkost={18} /></a>
-          <a class="hero-odkaz" href={route(lang, 'stiahnut')}>{h.cta2} <Ikona nazov="arrow-down" velkost={16} /></a>
+          <a class="btn btn-yellow" href="#vyber">{h.cta} <Ikona nazov="arrow-down" velkost={18} /></a>
+          <a class="hero-odkaz" href={KATALOG_PDF} target="_blank" rel="noopener">{h.cta2} <span class="meta">{h.cta2Meta}</span> <Ikona nazov="download" velkost={16} /></a>
         </div>
-        <p class="hero-nota">{h.heroNota}</p>
       </div>
       <div class="hero-product">
-        <Image src={heroRez} alt="Rez predizolovaným potrubím Microflex DUO" widths={[760, 1140, 1517]} sizes="(max-width: 760px) 100vw, 58vw" loading="eager" fetchpriority="high" />
+        <Image src={heroRez} alt={h.heroAlt} widths={[760, 1140, 1517]} sizes="(max-width: 760px) 100vw, 62vw" loading="eager" fetchpriority="high" />
       </div>
     </div>
   </section>
@@ -70,155 +70,262 @@ const refFotky = [fotka('prierez-duo.jpg')!, fotka('referencia-skola.png')!, fot
   <Katalog lang={lang} />
 
   <section class="section rodina" aria-labelledby="h-rodina">
-    <div class="wrap">
-      <div class="rodina-grid">
-        <div class="rodina-head" data-reveal>
-          <h2 id="h-rodina">{h.rodinaH2}</h2>
-          <p class="lead">{h.rodinaP}</p>
-        </div>
-        <div class="rodina-wrap"><Image src={rodina} alt={h.rodinaAlt} widths={[800, 1200, 1633]} sizes="(max-width: 760px) 100vw, 60vw" class="rodina-img" data-parallax="0.06" /></div>
+    <div class="wrap rodina-grid">
+      <div class="rodina-text">
+        <h2 id="h-rodina">{h.rodinaH2}</h2>
+        <p class="lead">{sadzba(h.rodinaP)}</p>
+        {/* Vrstvy sú vnorené do seba ako v reze: izolácia je v plášti, rúra v izolácii.
+            Farba linky je farba vrstvy na renderi vedľa: modrý plášť, sivá pena, žltá rúra. */}
+        <ol class="vrstvy" aria-label={h.vrstvyLabel} data-reveal-seq>
+          <li class="v v-plast" data-seq>
+            <h3>{plast[0]}</h3><p>{sadzba(plast[1])}</p>
+            <ol>
+              <li class="v v-pena" data-seq>
+                <h3>{izolacia[0]}</h3><p>{sadzba(izolacia[1])}</p>
+                <ol>
+                  <li class="v v-rura" data-seq><h3>{rura[0]}</h3><p>{sadzba(rura[1])}</p></li>
+                </ol>
+              </li>
+            </ol>
+          </li>
+        </ol>
       </div>
-      <div class="fakty" data-reveal-group>
-        {h.fakty.map(([dt, dd]) => <div><h3>{dt}</h3><p>{dd}</p></div>)}
+      <div class="rodina-wrap"><Image src={rodina} alt={h.rodinaAlt} widths={[800, 1200, 1633]} sizes="(max-width: 1100px) 100vw, 64vw" class="rodina-img" data-parallax="0.06" /></div>
+    </div>
+  </section>
+
+  <section class="section band-soft pokladka" aria-labelledby="h-pokladka">
+    {/* Fotka kotúča má čisto bielu plochu: násobením splynie s pásom a text sedí vo vnútri kotúča. */}
+    <div class="kotuc-obal">
+      <Image src={kotuc} alt={h.pokladkaAlt} widths={[900, 1400, 2000]} sizes="(max-width: 760px) 120vw, 76vw" class="kotuc" data-otacaj="-4 3" />
+    </div>
+    <div class="wrap pokladka-grid">
+      <div class="pokladka-text">
+        <h2 id="h-pokladka">{h.pokladkaH2}</h2>
+        <p class="lead">{sadzba(h.pokladkaP)}</p>
+        <div class="kroky-obal" data-rozvin>
+          <span class="k-rura" aria-hidden="true"></span>
+          <ol class="kroky" aria-label={h.krokyLabel}>
+            {h.kroky.map(([nazov, text], i) => (
+              <li><span class="k-cislo" aria-hidden="true">{i + 1}</span><h3>{nazov}</h3><p>{sadzba(text)}</p></li>
+            ))}
+          </ol>
+        </div>
+        <div class="pokladka-pata">
+          <p class="zataz"><strong>{h.zataz[0]}</strong><span>{sadzba(h.zataz[1])}</span></p>
+          <p class="zdroj">{h.pokladkaZdroj} <a href={`${KATALOG_PDF}#page=37`} target="_blank" rel="noopener">{h.pokladkaOdkaz} <Ikona nazov="arrow-up-right" velkost={14} /></a></p>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="section band refs-sec" aria-labelledby="h-refs">
-    <div class="wrap refs-grid">
-      <div class="refs-text">
-        <div class="section-head" data-reveal>
+  {/* Podzemie: posledný úsek stránky je tmavý ako zem, do ktorej potrubie ide. Fotka z výkopu
+      prekračuje šikmú hranu, takže svetlá a tmavá časť nie sú dva bloky, ale jeden prechod. */}
+  <div class="podzemie">
+    <section class="refs" aria-labelledby="h-refs">
+      <div class="wrap refs-grid">
+        <figure class="refs-photo">
+          <Image src={vykop} alt={h.refAlt} widths={[800, 1200, 1600]} sizes="(max-width: 1100px) 100vw, 70vw" />
+        </figure>
+        <div class="refs-text">
           <h2 id="h-refs">{h.refH2}</h2>
+          <ul class="refs-list" data-reveal-group>
+            {h.refs.map(([b, s]) => (
+              <li><a href={route(lang, 'referencie')}><strong>{b}</strong><span>{sadzba(s)}</span></a></li>
+            ))}
+          </ul>
+          <p class="refs-pata"><a href={route(lang, 'referencie')}>{h.refVsetky} <Ikona nazov="arrow-up-right" velkost={16} /></a></p>
         </div>
-        <ul class="refs" data-reveal-group>
-          {h.refs.map(([b, s], i) => (
-            <li><a class="ref" href={route(lang, 'referencie')}><Image src={refFotky[i]} alt="" width={112} height={84} densities={[1, 2]} /><span><strong>{b}</strong><span class="muted">{s}</span></span></a></li>
-          ))}
-        </ul>
-        <p class="m-foot" data-reveal><a href={route(lang, 'referencie')}>{h.refVsetky} <Ikona nazov="arrow-up-right" velkost={16} /></a></p>
       </div>
-      <figure class="refs-photo" data-reveal>
-        <Image src={vykop} alt={h.refAlt} widths={[640, 960, 1280]} sizes="(max-width: 1100px) 100vw, 55vw" />
-      </figure>
-    </div>
-  </section>
+    </section>
 
-  <section class="section band-dark b2b" aria-labelledby="h-b2b">
-    <Image src={kotuc} alt="" class="b2b-bg" widths={[960, 1600]} sizes="100vw" aria-hidden="true" data-parallax="0.1" />
-    <div class="wrap b2b-grid">
-      <div class="b2b-text" data-reveal>
-        <h2 id="h-b2b">{h.b2bH2}</h2>
-        <p class="lead">{h.b2bP}</p>
-        <div class="hero-actions">
-          <a class="btn btn-inverse" href={route(lang, 'firmy')}>{h.b2bDopyt}</a>
-          <a class="btn btn-ghost-light" href={route(lang, 'stiahnut')}><Ikona nazov="download" velkost={18} />{h.b2bPodklady}</a>
+    <section class="b2b wrap" aria-labelledby="h-b2b">
+      <div class="b2b-grid">
+        <div class="b2b-text">
+          <h2 id="h-b2b">{h.b2bH2}</h2>
+          <p class="lead">{sadzba(h.b2bP)}</p>
+          <div class="b2b-akcie">
+            <a class="btn btn-inverse" href={route(lang, 'firmy')}>{h.b2bDopyt}</a>
+            <a class="btn btn-ghost-light" href={route(lang, 'stiahnut')}><Ikona nazov="download" velkost={18} />{h.b2bPodklady}</a>
+          </div>
         </div>
+        <ul class="b2b-list" data-reveal-group>
+          {h.b2bList.map(([b, s]) => <li><strong>{b}</strong><span>{sadzba(s)}</span></li>)}
+        </ul>
       </div>
-      <ul class="b2b-list" data-reveal-group>
-        {h.b2bList.map(([b, s]) => <li><strong>{b}</strong><span>{s}</span></li>)}
-      </ul>
-    </div>
-  </section>
+    </section>
+  </div>
 </Base>
 
 <style>
-  /* Hero: svetlé pole, nositeľom farby je samotný výrobok. Jemné teplo zprava a slabá modrá
-     žiara za rúrou dávajú hĺbku bez toho, aby niečo prekrývalo text. */
-  .hero { position: relative; display: flex; align-items: center; min-height: clamp(520px, 68vh, 700px); overflow: hidden; z-index: 1; color: var(--color-ink);
+  /* ---------- Hero: svetlé pole, farbu nesie výrobok ---------- */
+  .hero { position: relative; display: flex; align-items: center; min-height: clamp(540px, 70vh, 720px); overflow: hidden; z-index: 1; color: var(--color-ink);
     background:
       linear-gradient(to bottom, rgb(255 255 255 / 0) 62%, #ffffff 100%),
-      radial-gradient(52% 62% at 74% 52%, rgb(0 93 185 / 0.07) 0%, rgb(0 93 185 / 0) 72%),
+      radial-gradient(52% 62% at 76% 52%, rgb(0 93 185 / 0.08) 0%, rgb(0 93 185 / 0) 72%),
       linear-gradient(158deg, #ffffff 0%, #fafbfd 46%, #eef2f7 100%); }
-  .hero-in { position: relative; width: 100%; display: grid; grid-template-columns: minmax(0, 47fr) minmax(0, 53fr); align-items: center; gap: 24px; }
-  .hero-text { max-width: 620px; padding-block: 72px; display: flex; flex-direction: column; align-items: flex-start; }
+  .hero-in { position: relative; width: 100%; display: grid; grid-template-columns: minmax(0, 44fr) minmax(0, 56fr); align-items: center; gap: 24px; }
+  .hero-text { max-width: 620px; padding-block: 72px; display: flex; flex-direction: column; align-items: flex-start; position: relative; z-index: 3; }
   .hero-text > * { animation: rise 680ms var(--ease-soft) both; }
-  .hero-text > :nth-child(1) { animation-delay: 60ms; }
-  .hero-text > :nth-child(2) { animation-delay: 170ms; }
-  .hero-text > :nth-child(3) { animation-delay: 260ms; }
-  .hero-text > :nth-child(4) { animation-delay: 340ms; }
-  .hero h1 { display: flex; flex-direction: column; font-size: clamp(34px, 2.6vw + 12px, 52px); line-height: 1.04; letter-spacing: -0.03em; text-wrap: nowrap; }
+  .hero-text > :nth-child(2) { animation-delay: 220ms; }
+  .hero-text > :nth-child(3) { animation-delay: 320ms; }
+  .hero h1 { display: flex; flex-direction: column; font-size: clamp(34px, 2.9vw + 12px, 58px); line-height: 1.03; letter-spacing: -0.03em; text-wrap: nowrap; }
   .h1-kicker { font-family: var(--font-text); font-stretch: 100%; font-size: 12.5px; font-weight: 600; line-height: 1.4; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-soft); margin-bottom: 20px; }
-  .h1-a { color: var(--color-ink); }
+  /* Jediný orchestrovaný moment: prvý riadok sa pri načítaní roztiahne po osi šírky písma,
+     tak ako sa rozvinie ohybné potrubie. Cieľ je šírka nadpisu, preto animácia nemá koncový stav. */
+  .h1-a { color: var(--color-ink); animation: flex 1150ms 60ms var(--ease-soft) both; }
   .h1-b { color: var(--color-blue-700); }
+  @keyframes flex { from { font-stretch: 72%; opacity: 0; } 35% { opacity: 1; } }
   .hero .lead { font-size: 18px; max-width: 30em; margin-top: 22px; }
-  .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; margin-top: 32px; }
+  .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 30px; margin-top: 34px; }
   .hero-actions .btn :global(svg) { transition: transform 200ms var(--ease-soft); }
-  .hero-actions .btn:hover :global(svg) { transform: translateX(3px); }
-  /* Druhá akcia nie je tlačidlo: nemá súperiť so žltým, len ponúknuť katalóg. */
+  .hero-actions .btn:hover :global(svg) { transform: translateY(3px); }
+  /* Druhá akcia nie je tlačidlo: nemá súperiť so žltým, len ponúknuť katalóg na stiahnutie. */
   .hero-odkaz { display: inline-flex; align-items: center; gap: 8px; font-weight: 500; color: var(--color-blue-700); border-bottom: 1px solid currentColor; padding-bottom: 3px; }
+  .hero-odkaz .meta { font-weight: 400; font-size: 14px; color: var(--color-ink-soft); }
   .hero-odkaz :global(svg) { transition: transform 200ms var(--ease-soft); }
-  .hero-odkaz:hover :global(svg) { transform: translateY(3px); }
-  .hero-nota { margin-top: 36px; font-size: 13px; color: #7a8494; }
+  .hero-odkaz:hover :global(svg) { transform: translateY(2px); }
   /* Rúra prekračuje pravý okraj obsahovej mriežky až za okraj obrazovky. */
-  .hero-product { position: relative; z-index: 2; margin-left: -4%;
-    margin-right: calc(min(calc(-1 * var(--gutter)), calc((var(--container-site) - 100vw) / 2)) - 32px);
-    pointer-events: none; animation: settle 1200ms 140ms var(--ease-soft) both; }
-  .hero-product :global(img) { width: 100%; max-width: 1080px; height: auto; display: block; margin-inline: auto; filter: drop-shadow(0 34px 44px rgb(11 27 51 / 0.18)); }
+  .hero-product { position: relative; z-index: 2; margin-left: -9%;
+    margin-right: calc(min(calc(-1 * var(--gutter)), calc((var(--container-site) - 100vw) / 2)) - 64px);
+    pointer-events: none; animation: settle 1300ms 120ms var(--ease-soft) both; }
+  .hero-product :global(img) { width: 100%; max-width: 1180px; height: auto; display: block; margin-inline: auto; filter: drop-shadow(0 38px 46px rgb(11 27 51 / 0.2)); }
   @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-  @keyframes settle { from { opacity: 0; transform: translate(26px, 0) scale(1.015); } to { opacity: 1; transform: none; } }
+  @keyframes settle { from { opacity: 0; transform: translate(40px, 0) rotate(-1.5deg) scale(1.02); } to { opacity: 1; transform: none; } }
 
-  /* Kľúčové čísla nie sú štyri karty. Je to pás na mriežke stránky: prvý údaj lícuje s nadpisom
+  /* Kľúčové čísla nie sú karty. Je to pás na mriežke stránky: prvý údaj lícuje s nadpisom
      hero, oddeľujú ich len vlasové čiary a číslo nesie váhu, nie rámček. */
-  .facts-bar { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: var(--line); margin: 56px 0 0; position: relative; z-index: 2; animation: rise 640ms 380ms var(--ease-soft) both; }
+  .facts-bar { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: var(--line); margin: 48px 0 0; position: relative; z-index: 2; animation: rise 640ms 420ms var(--ease-soft) both; }
   .facts-bar > div { display: flex; flex-direction: column; gap: 8px; padding: 30px 36px; border-left: var(--line); min-width: 0; }
   .facts-bar > div:first-child { border-left: 0; padding-left: 0; }
   .facts-bar > div:last-child { padding-right: 0; }
   .facts-bar dd { margin: 0; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: clamp(25px, 2vw, 36px); line-height: 1.02; letter-spacing: -0.025em; color: var(--color-blue-900); font-variant-numeric: tabular-nums; white-space: nowrap; }
   .facts-bar dt { font-size: 14px; color: var(--color-ink-soft); }
 
-  /* Rodina: jediné miesto, kde sú všetky systémy naraz. Render prechádza cez švík z modrého pásu do bielej. */
-  .rodina { background: var(--color-white); padding-top: 0; overflow-x: clip; overflow-y: visible; }
+  /* ---------- Rodina: render prechádza cez švík z modrého pásu do bielej ---------- */
+  .rodina { background: var(--color-white); padding-top: 0; padding-bottom: 96px; overflow-x: clip; overflow-y: visible; }
   .rodina-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px; align-items: start; }
-  .rodina-head { display: flex; flex-direction: column; gap: 16px; padding-top: 56px; }
-  .rodina-head .lead { max-width: none; }
-  .rodina-wrap { width: 128%; max-width: none; margin: -230px 0 0; margin-right: min(calc(-1 * var(--gutter)), calc((var(--container-site) - 100vw) / 2)); position: relative; z-index: 2; filter: drop-shadow(0 28px 36px rgb(11 27 51 / 0.2)); }
+  .rodina-text { padding-top: 64px; }
+  .rodina-text h2 { margin-bottom: 16px; }
+  .rodina-text .lead { max-width: 30em; }
+  /* Render je veľký a vždy dobehne za pravý okraj obrazovky, aj na širokom monitore. */
+  .rodina-wrap { width: max(146%, calc(104% + var(--bleed) + 24px)); max-width: none; margin: -196px 0 0 -4%; position: relative; z-index: 2; filter: drop-shadow(0 28px 36px rgb(11 27 51 / 0.2)); }
   .rodina-wrap :global(.rodina-img) { width: 100%; height: auto; display: block; -webkit-mask-image: linear-gradient(to top right, #000 66%, transparent 97%); mask-image: linear-gradient(to top right, #000 66%, transparent 97%); }
-  .fakty { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 48px; margin-top: 24px; padding-top: 32px; border-top: var(--line); }
-  .fakty h3 { font-size: 19px; margin-bottom: 8px; }
-  .fakty p { color: var(--color-ink-soft); max-width: 36em; }
 
-  /* Referencie: zoznam s náhľadmi (5 stĺpcov) + jediná fotka zo stavby (7 stĺpcov). */
-  .refs-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 24px; align-items: center; }
-  .refs-text { grid-column: 1 / 6; }
-  .refs-text .section-head { margin-bottom: 20px; }
-  .refs { display: flex; flex-direction: column; }
-  .refs li { border-top: var(--line); }
-  .refs li:last-child { border-bottom: var(--line); }
-  .ref { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 18px; align-items: center; padding: 14px 0; color: var(--color-ink); }
-  .ref :global(img) { width: 112px; height: 84px; object-fit: cover; border-radius: var(--radius-s); display: block; }
-  .ref strong { display: block; font-weight: 600; }
-  .ref .muted { font-size: 14px; }
-  .ref:hover strong { color: var(--color-blue-700); }
-  .m-foot { margin-top: 20px; font-size: 15px; }
-  .m-foot a { display: inline-flex; align-items: center; gap: 6px; font-weight: 500; }
-  .m-foot :global(svg) { width: 16px; height: 16px; }
-  .refs-photo { grid-column: 6 / 13; margin: 0; }
-  .refs-photo :global(img) { width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: var(--radius-l); display: block; box-shadow: var(--shadow-float); }
+  /* Stavba potrubia ako rez v typografii: každá vrstva je vnorená v predchádzajúcej. */
+  .vrstvy { margin-top: 40px; }
+  .vrstvy ol { margin-top: 20px; }
+  .v { position: relative; padding-left: 22px; }
+  .v::before { content: ""; position: absolute; left: 0; top: 4px; bottom: 0; width: 3px; border-radius: 2px; }
+  .v-plast::before { background: var(--color-blue-700); }
+  .v-pena::before { background: #9aa3ae; }
+  .v-rura::before { background: var(--color-yellow-500); bottom: 4px; }
+  .v h3 { font-size: 18px; line-height: 1.3; margin-bottom: 4px; }
+  .v p { font-size: 15px; color: var(--color-ink-soft); max-width: 34em; }
 
-  /* Šikmá horná hrana tmavého bloku: odkaz na diagonálny motív Watts, zároveň prechod z referencií. */
-  .b2b { position: relative; overflow: hidden; clip-path: polygon(0 4vw, 100% 0, 100% 100%, 0 100%); margin-top: -4vw; padding-top: calc(64px + 4vw); margin-bottom: -96px; padding-bottom: 96px; }
-  .b2b :global(.b2b-bg) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% 50%; opacity: .55; mix-blend-mode: luminosity; filter: saturate(0) contrast(1.15); pointer-events: none; }
-  .b2b::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--color-blue-900) 0%, rgb(10 42 94 / 0.92) 45%, rgb(10 42 94 / 0.45) 100%); pointer-events: none; }
-  .b2b-grid { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 24px; }
-  .b2b-text { grid-column: 1 / 7; display: flex; flex-direction: column; gap: 24px; }
+  /* ---------- Pokládka: kotúč vľavo cez okraj obrazovky, text v jeho vnútri ---------- */
+  .pokladka { position: relative; overflow: hidden; padding-top: 112px; padding-bottom: 232px; isolation: isolate; }
+  /* Obal je celá plocha sekcie: maska na ňom rozpustí kotúč hore aj dole v páse, nech je obrázok
+     akokoľvek vysoký. Násobenie je tiež na obale, lebo obrázok v samostatnej vrstve by sa miešal
+     len s prázdnom a biela by ostala biela. */
+  .kotuc-obal { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; mix-blend-mode: multiply;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 17%, #000 80%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 17%, #000 80%, transparent 100%); }
+  /* Vnútorný okraj kotúča (asi 57 % šírky fotky) leží 150 px pred stĺpcom textu, ktorý začína
+     v strede mriežky. Na širokom monitore kotúč rastie, aby vždy dobehol za ľavý okraj obrazovky. */
+  .kotuc-obal :global(.kotuc) { --w: max(1180px, calc((50vw - 40px) / 0.57)); position: absolute; width: var(--w); max-width: none; height: auto; left: calc(50% - 150px - 0.57 * var(--w)); top: calc(50% - var(--w) / 2.566); transform-origin: 96% 50%; }
+  .pokladka-grid { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 24px; }
+  .pokladka-text { grid-column: 7 / 13; }
+  .pokladka h2 { font-size: clamp(32px, 3vw + 12px, 58px); line-height: 1.04; letter-spacing: -0.03em; max-width: 11em; }
+  .pokladka .lead { margin-top: 22px; max-width: 32em; }
+
+  /* Postup je skutočná postupnosť, preto čísla. Rúra po ľavej strane sa pri rolovaní rozvinie. */
+  .kroky-obal { position: relative; margin-top: 44px; padding-left: 28px; }
+  .kroky-obal::before { content: ""; position: absolute; left: 2px; top: 6px; bottom: 6px; width: 2px; background: rgb(10 42 94 / 0.14); border-radius: 1px; }
+  .k-rura { position: absolute; left: 0; top: 6px; bottom: 6px; width: 6px; border-radius: 3px; background: linear-gradient(90deg, #2a7fd6 0%, var(--color-blue-700) 45%, var(--color-blue-800) 100%); transform-origin: top; transform: scaleY(var(--rozvin, 1)); }
+  .kroky { display: flex; flex-direction: column; gap: 22px; }
+  .kroky li { display: grid; grid-template-columns: 30px minmax(0, 1fr); column-gap: 10px; }
+  .k-cislo { grid-row: 1 / span 2; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 19px; line-height: 1.3; color: var(--color-blue-700); font-variant-numeric: tabular-nums; transition: color 250ms var(--ease-soft); }
+  .kroky h3 { font-size: 18px; line-height: 1.3; margin-bottom: 2px; }
+  .kroky p { font-size: 15px; color: var(--color-ink-soft); max-width: 32em; }
+  /* Kým ich rúra nedosiahne, sú kroky tlmené. Bez skriptu sú všetky plné. */
+  .kroky-obal.is-ready li:not(.is-on) .k-cislo { color: #9aa3ae; }
+  .kroky-obal.is-ready li { transition: opacity 300ms var(--ease-soft); }
+  .kroky-obal.is-ready li:not(.is-on) { opacity: 0.6; }
+
+  .pokladka-pata { margin-top: 36px; padding-top: 22px; border-top: 1px solid rgb(10 42 94 / 0.14); display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 28px; }
+  .zataz { display: flex; align-items: baseline; gap: 12px; }
+  .zataz strong { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 28px; letter-spacing: -0.02em; color: var(--color-blue-900); white-space: nowrap; }
+  .zataz span { font-size: 15px; color: var(--color-ink-soft); }
+  .zdroj { font-size: 13px; color: #7a8494; }
+  .zdroj a { display: inline-flex; align-items: center; gap: 4px; font-weight: 500; }
+  .zdroj :global(svg) { width: 14px; height: 14px; }
+
+  /* ---------- Podzemie: referencie a pre firmy na tmavom, šikmá horná hrana ---------- */
+  .podzemie { --sikmina: clamp(28px, 5vw, 96px); position: relative; overflow-x: clip; margin-top: calc(-1 * var(--sikmina)); padding-top: calc(var(--sikmina) + 8px); margin-bottom: -96px; padding-bottom: 112px; color: #fff; }
+  /* Spodok končí farbou, ktorou začína pätička, aby medzi nimi nebol schod. */
+  .podzemie::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, #0e3676 0%, var(--color-blue-900) 38%, #0b2d66 78%, #0c3272 100%); clip-path: polygon(0 var(--sikmina), 100% 0, 100% 100%, 0 100%); }
+  .podzemie h2 { color: #fff; }
+  .podzemie a { color: #fff; }
+  .podzemie a:not(.btn):hover { color: var(--color-yellow-500); }
+
+  .refs { position: relative; }
+  .refs-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 24px; align-items: end; }
+  /* Fotka zo stavby vystupuje nad šikmú hranu do svetlého pásu a vpravo za okraj obrazovky. */
+  .refs-photo { grid-column: 5 / 13; grid-row: 1; margin: -176px calc(-1 * var(--bleed)) 0 0; position: relative; z-index: 1; }
+  .refs-photo :global(img) { width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: 55% 60%; display: block; border-radius: var(--radius-l) 0 0 var(--radius-l); box-shadow: 0 30px 60px rgb(4 16 40 / 0.45); }
+  .refs-text { grid-column: 1 / 5; grid-row: 1; padding-bottom: 4px; }
+  .refs-text h2 { font-size: clamp(26px, 1.6vw + 16px, 36px); margin-bottom: 24px; max-width: 9em; }
+  .refs-list li { border-top: 1px solid rgb(255 255 255 / 0.16); }
+  .refs-list li:last-child { border-bottom: 1px solid rgb(255 255 255 / 0.16); }
+  .refs-list a { display: flex; flex-direction: column; gap: 2px; padding: 14px 0; }
+  .refs-list strong { font-weight: 600; transition: color 150ms var(--ease-soft); }
+  .refs-list span { font-size: 14px; color: var(--color-on-dark-muted); }
+  .refs-list a:hover strong { color: var(--color-yellow-500); }
+  .refs-pata { margin-top: 20px; font-size: 15px; }
+  .refs-pata a { display: inline-flex; align-items: center; gap: 6px; font-weight: 500; }
+  .refs-pata :global(svg) { width: 16px; height: 16px; }
+
+  .b2b { position: relative; margin-top: 96px; }
+  .b2b-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 24px; padding-top: 56px; border-top: 1px solid rgb(255 255 255 / 0.16); }
+  .b2b-text { grid-column: 1 / 7; display: flex; flex-direction: column; gap: 22px; }
+  .b2b-text h2 { font-size: clamp(26px, 1.6vw + 16px, 36px); max-width: 15em; }
   .b2b-text .lead { color: var(--color-on-dark-muted); }
+  .b2b-akcie { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; }
+  .b2b-akcie .btn-inverse, .b2b-akcie .btn-inverse:hover { color: var(--color-blue-900); }
   .b2b-list { grid-column: 8 / 13; }
-  .b2b-list li { padding: 14px 0; border-top: 1px solid rgb(255 255 255 / 0.18); display: flex; flex-direction: column; gap: 2px; }
-  .b2b-list li:last-child { border-bottom: 1px solid rgb(255 255 255 / 0.18); }
+  .b2b-list li { padding: 14px 0; border-top: 1px solid rgb(255 255 255 / 0.16); display: flex; flex-direction: column; gap: 2px; }
+  .b2b-list li:last-child { border-bottom: 1px solid rgb(255 255 255 / 0.16); }
   .b2b-list strong { font-weight: 600; }
   .b2b-list span { color: var(--color-on-dark-muted); font-size: 14px; }
 
+  /* ---------- Tablet ---------- */
   @media (max-width: 1100px) {
     .facts-bar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .facts-bar > div:nth-child(3) { border-left: 0; padding-left: 0; }
     .facts-bar > div:nth-child(2) { padding-right: 0; }
     .facts-bar > div:nth-child(n + 3) { border-top: var(--line); }
-    .hero-in { grid-template-columns: minmax(0, 44fr) minmax(0, 56fr); }
+    .hero-in { grid-template-columns: minmax(0, 46fr) minmax(0, 54fr); }
     .hero h1 { font-size: clamp(34px, 3.4vw + 10px, 50px); }
     .rodina-grid { grid-template-columns: 1fr; }
-    .rodina-wrap { width: 100%; margin: -120px 0 0; }
-    .refs-grid > * { grid-column: 1 / -1; }
+    .rodina-wrap { width: 100%; margin: -120px 0 0; grid-row: 1; }
+    .rodina-text { padding-top: 24px; }
+    .refs-photo { grid-column: 1 / -1; margin-left: 0; }
+    .refs-text { grid-column: 1 / -1; grid-row: 2; padding-top: 16px; }
+    .b2b-text, .b2b-list { grid-column: 1 / -1; }
   }
+
+  /* Pod 900 px vedľa kotúča nie je miesto: kotúč ide nad text ako pás, vľavo závity, vpravo jeho vnútro. */
+  @media (max-width: 900px) {
+    .pokladka { padding-top: 0; }
+    .kotuc-obal { position: relative; inset: auto; height: clamp(250px, 40vw, 400px); margin-bottom: 4px;
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 60%, transparent 100%);
+      mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 60%, transparent 100%); }
+    .kotuc-obal :global(.kotuc) { --w: max(620px, 104vw); left: calc(-0.18 * var(--w)); top: calc(-0.1 * var(--w)); }
+    .pokladka-text { grid-column: 1 / -1; max-width: 640px; }
+  }
+
+  /* ---------- Telefón ---------- */
   @media (max-width: 760px) {
     .hero { min-height: 0; }
     .hero-in { grid-template-columns: 1fr; gap: 8px; }
@@ -227,18 +334,22 @@ const refFotky = [fotka('prierez-duo.jpg')!, fotka('referencia-skola.png')!, fot
     .hero h1 { font-size: clamp(30px, 8.2vw, 44px); text-wrap: wrap; }
     .hero .lead { margin-top: 18px; font-size: 17px; }
     .hero-actions { margin-top: 26px; }
-    .hero-nota { margin-top: 26px; }
     .hero-product { margin: 8px 0 0; margin-right: calc(-1 * var(--gutter)); margin-left: calc(-1 * var(--gutter)); justify-self: stretch; }
-    .facts-bar { margin-top: 32px; }
+    .facts-bar { margin-top: 28px; }
     .facts-bar > div { padding: 20px 18px; }
     .facts-bar > div:nth-child(odd) { padding-left: 0; }
     .facts-bar > div:nth-child(even) { padding-right: 0; }
     .facts-bar dd { font-size: clamp(19px, 5.4vw, 25px); }
-    .rodina { padding-top: 56px; }
-    .rodina-wrap { margin-top: -80px; }
-    .fakty { grid-template-columns: 1fr; }
-    .b2b-grid > * { grid-column: 1 / -1; }
-    .b2b::after { background: rgb(10 42 94 / 0.82); }
-    .b2b { clip-path: polygon(0 24px, 100% 0, 100% 100%, 0 100%); margin-top: -24px; padding-top: calc(48px + 24px); }
+    .rodina { padding-bottom: 64px; }
+    .rodina-wrap { margin-top: -72px; }
+    .vrstvy { margin-top: 32px; }
+    /* Kotúč ide nad text ako pás, jeho vnútro je pod ním. */
+    .pokladka { padding-bottom: 168px; }
+    .kroky-obal { margin-top: 32px; }
+    .podzemie { padding-bottom: 88px; }
+    .refs-photo { margin-top: -112px; margin-right: calc(-1 * var(--gutter)); }
+    .refs-photo :global(img) { aspect-ratio: 4 / 3; }
+    .b2b { margin-top: 64px; }
+    .b2b-grid { padding-top: 40px; }
   }
 </style>

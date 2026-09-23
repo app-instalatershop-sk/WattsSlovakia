@@ -3,7 +3,11 @@
  *
  *  data-reveal            prvok sa pri vstupe do okna zdvihne a zjaví
  *  data-reveal-group      jeho deti prídu odstupňovane po 70 ms
+ *  data-reveal-seq        potomkovia s data-seq prídu v poradí dokumentu (aj vnorení, zvonka dnu)
  *  data-parallax="0.12"   prvok sa pri rolovaní jemne posúva (podiel z výšky rodiča)
+ *  data-otacaj="-4 3"     prvok sa pri prechode sekciou pootočí z prvého uhla na druhý (stupne)
+ *  data-rozvin            premenná --rozvin ide s rolovaním od 0 po 1 a položky <li>, ku ktorým
+ *                         dorazila, dostanú triedu is-on (rúra pri krokoch pokládky)
  *
  * Bez JavaScriptu je všetko viditeľné (nepriehľadnosť sa sťahuje až tu). Pri „obmedziť pohyb“ sa nič nehýbe.
  */
@@ -33,6 +37,15 @@ function init() {
     }, { margin: MARGIN });
   });
 
+  document.querySelectorAll<HTMLElement>('[data-reveal-seq]:not([data-done])').forEach((root) => {
+    root.dataset.done = '1';
+    const kids = Array.from(root.querySelectorAll<HTMLElement>('[data-seq]'));
+    kids.forEach((k) => (k.style.opacity = '0'));
+    inView(root, () => {
+      animate(kids, { opacity: [0, 1], x: [-10, 0] }, { duration: 0.6, delay: stagger(0.18), ease: EASE });
+    }, { margin: MARGIN });
+  });
+
   document.querySelectorAll<HTMLElement>('[data-parallax]:not([data-done])').forEach((el) => {
     el.dataset.done = '1';
     const f = parseFloat(el.dataset.parallax ?? '0.12');
@@ -42,6 +55,27 @@ function init() {
       target,
       offset: ['start end', 'end start'],
     });
+  });
+
+  document.querySelectorAll<HTMLElement>('[data-otacaj]:not([data-done])').forEach((el) => {
+    el.dataset.done = '1';
+    const [od = -4, po = 3] = (el.dataset.otacaj ?? '').split(' ').map(Number);
+    const target = (el.closest('section') as HTMLElement | null) ?? el;
+    scroll(animate(el, { rotate: [od, po] }, { ease: 'linear' }), {
+      target,
+      offset: ['start end', 'end start'],
+    });
+  });
+
+  document.querySelectorAll<HTMLElement>('[data-rozvin]:not([data-done])').forEach((wrap) => {
+    wrap.dataset.done = '1';
+    const items = Array.from(wrap.querySelectorAll<HTMLElement>('li'));
+    wrap.classList.add('is-ready');
+    scroll((p: number) => {
+      wrap.style.setProperty('--rozvin', p.toFixed(4));
+      const dosah = p * wrap.offsetHeight;
+      items.forEach((li) => li.classList.toggle('is-on', dosah >= li.offsetTop + 4));
+    }, { target: wrap, offset: ['start 80%', 'end 55%'] });
   });
 }
 

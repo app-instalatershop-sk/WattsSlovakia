@@ -203,14 +203,19 @@ filter (sliders-horizontal), stiahnuť, menu, zavrieť, externý odkaz (pri odka
 
 ## 8. Pohyb
 
-- **Jeden orchestrovaný moment:** pri otvorení domova sa nad skutočnou fotkou prierezu postupne
-  objavia tri popisky (plášť, izolácia, nosné rúry), spolu do 900 ms. Kreslený prierez sa
-  nepoužíva, prierez je vždy fotka odrezku s prekryvom popiskov (rozhodnutie Juraja 21. 9. 2026).
-  Pri `prefers-reduced-motion` sú popisky hneď viditeľné.
-- Všetok ostatný pohyb je odpoveď na akciu človeka: rozbalenie filtra, prepnutie kroku sprievodcu
-  (posun 150–200 ms), zobrazenie výsledkov hľadania, potvrdenie formulára.
-- Žiadne postupné zjavovanie sekcií pri rolovaní, žiadne zväčšovanie kariet pri prejdení myšou,
-  žiadne karusely.
+- **Jeden orchestrovaný moment (domov v4, 23. 9. 2026):** pri otvorení domova sa prvý riadok nadpisu
+  „Flexibilné potrubie.“ roztiahne po osi šírky písma Archivo zo 72 % na 112,5 %, tak ako sa rozvinie
+  ohybné potrubie; render súčasne dosadne sprava. Spolu do 1,2 s. Animácia nemá koncový stav, cieľom
+  je šírka, ktorú má nadpis podľa šírky okna (na mobile 100 %). Popisky nad fotkou prierezu sa
+  nepoužívajú (Juraj 21. 9.: „nie popisky ako dieťaťu“).
+- **Pohyb viazaný na rolovanie má význam, nie ozdobu** (`web/src/scripts/pohyb.ts`): rúra pri
+  krokoch pokládky sa s rolovaním rozvinie a kroky, ku ktorým dorazí, sa rozsvietia (`data-rozvin`);
+  kotúč sa jemne pootočí, akoby sa odvíjal (`data-otacaj`); vrstvy potrubia prídu zvonka dnu
+  (`data-reveal-seq`). Všeobecné vynáranie sekcií sa nepridáva.
+- Všetok ostatný pohyb je odpoveď na akciu človeka: prepnutie kategórie v katalógu, rozbalenie filtra,
+  prepnutie kroku sprievodcu (posun 150–200 ms), zobrazenie výsledkov hľadania, potvrdenie formulára.
+- Žiadne zväčšovanie kariet pri prejdení myšou, žiadne karusely. Pri `prefers-reduced-motion` sa
+  nehýbe nič a všetko je hneď viditeľné (kroky pokládky plné, rúra rozvinutá).
 
 ---
 
@@ -221,69 +226,96 @@ hero fotka ide pod text.
 
 ### Domov
 
+Domov v4 (23. 9. 2026, zadanie Juraja „najpútavejší dizajn, kľudne asymetrický, nie štvorec vedľa
+štvorca“). Rozbor a dôvody sú v `docs/AUDIT-DOMOV.md` kap. 8. Stránka je rad „dvojstrán“ na mriežke
+12 stĺpcov, každá je ukotvená inak a obrázky prekračujú hrany sekcií. Tón ide zhora nadol od bielej
+(povrch) cez svetlomodrú k tmavomodrej (podzemie), kam potrubie naozaj ide.
+
 ```
 +----------------------------------------------------------------------------+
-| Microflex Slovensko    Potrubia  Výber  Na stiahnutie  Pre firmy  Poradňa   |
-|                                                [ Hľadať obj. číslo, rad… ]  |
-+-----------------------------------+----------------------------------------+
 | PREDIZOLOVANÉ POTRUBIA MICROFLEX® |                                        |
-|                                   |   render rezu rúry v plnej veľkosti,   |
-| Flexibilné potrubie.   (tmavá)    |   prekračuje pravý okraj obrazovky,    |
-| Precízne riešenie.     (modrá)    |   bez rámu a bez plochy za sebou       |
-|                                   |                                        |
-| Pre vykurovanie, pitnú vodu,      |                                        |
-| chladenie a tepelné čerpadlá.     |                                        |
-|                                   |                                        |
-| [Vybrať potrubie →]  Stiahnuť ↓   |                                        |
-| Technológia Watts. Podpora na SK. |                                        |
-+-----------------------------------+----------------------------------------+
-| Pás faktov z dát: polomer ohybu, nosná rúra, tlak, počet radov (celá šírka) |
+| Flexibilné potrubie.  (os šírky)  |   render rezu, 4 rúry, cez pravý okraj |
+| Precízne riešenie.                |   obrazovky, bez rámu                  |
+| Pre vykurovanie, pitnú vodu, …    |                                        |
+| [Vybrať potrubie ↓]  Stiahnuť katalóg PDF, 19 MB ↓                         |
+|----------------------------------------------------------------------------|
+| od 0,20 m | 25 až 125 mm | 6 / 10 / 16 bar | 12        pás čísel z dát      |
 +----------------------------------------------------------------------------+
-| Výber podľa použitia / Každý projekt má svoje potrubie.                     |
-| [Vykurovanie] [Teplá a studená voda] [Vykur. a sanita] [Chlad] [Tep. čerp.] |
-|    render radu          render radu          (1 až 3 podľa kategórie)       |
-|    Microflex UNO        Microflex DUO                                       |
-|    Jedna rúra v plášti  Dve rúry v plášti                                   |
-| Aj vo vyhotovení UNO PRIMO a PRIMO DUO          Celý katalóg potrubí →      |
-| Spojky a príslušenstvo   skupiny dielov ako odkazy                          |
+| Výber podľa použitia / Každý projekt má svoje potrubie.   (svetlý pás)      |
+| ▌Vykurovanie      4 rady |        mäkké svetlo štúdia                      |
+|  Teplá a studená  3 rady |   [render UNO]        [render DUO]              |
+|  …                       |   ────────────── spoločná podlaha ───────────── |
+| popis kategórie,         |   Microflex UNO       Microflex DUO             |
+| Aj vo vyhotovení PRIMO   |   Jedna rúra v plášti Dve rúry v plášti         |
+| Celý katalóg potrubí ↗   |   16 dimenzií, plášť  8 dimenzií, plášť         |
+| Spojky a príslušenstvo: skupiny dielov ako odkazy                          |
++--------------------------+-------------------------------------------------+
+| Päť systémov, jedna rodina.       |   render rodiny cez švík pásu, za      |
+| ┃ Plášť z HDPE        (modrá)     |   pravý okraj obrazovky                |
+| ┃ ┃ Izolácia z PE-X   (sivá)      |                                        |
+| ┃ ┃ ┃ Nosná rúra      (žltá)      |                                        |
 +-----------------------------------+----------------------------------------+
-| Päť systémov, jedna rodina.       |   render rodiny potrubí cez švík pásu  |
-| 3 fakty s vetou: ohyb, viac rúr,  |   (presah vpravo, doznenie koncov rúr) |
-| materiály podľa noriem            |                                        |
-+-----------------------------------+----------------------------------------+
-| Referencie: zoznam 3 referencií   |   fotka z výkopu (7 stĺpcov), jediná   |
-| s malými náhľadmi + odkaz         |   fotka zo stavby na domove            |
-+-----------------------------------+----------------------------------------+
-| Pre firmy (tmavý blok blue-900): technické listy, BIM/CAD, dopyt, veľkoobchod|
+| ⟵ kotúč cez ľavý okraj            |  Sto metrov za štyridsať minút.        |
+|   (biela fotky splynie s pásom,   |  1 Kotúč k výkopu   ┃ rúra sa rozvinie  |
+|   pri rolovaní sa pootočí)        |  2 Rozvinúť do piesku  s rolovaním     |
+|                                   |  3 Spojky a skúška                     |
+|                                   |  4 Páska a zásyp      až 60 t, zdroj   |
++==== šikmá hrana, fotka z výkopu ju prekračuje =============================+
+| Kde už Microflex leží (biely text) |  fotka z výkopu, cez pravý okraj      |
+| 3 referencie ako zoznam            |                                       |
+|----------------------------------------------------------------------------|
+| Pre projektantov, montážne firmy…  |  technické listy, BIM a CAD, …        |
 +----------------------------------------------------------------------------+
-| Pätička (modrý gradient, logo Watts): prevádzkovateľ, kontakt, e-shop, dokumenty|
+| Pätička (tmavomodrá, nadväzuje bez schodu)                                 |
 +----------------------------------------------------------------------------+
 ```
 
 Hero (Juraj 22. 9. 2026, podľa jeho vlastného návrhu): **svetlé pole, nie tmavý panel.** Farbu nesie
-samotný výrobok, pozadie je len biela s jemným teplom vpravo dole a slabou modrou žiarou za rúrou;
-dole dobieha do bielej, aby medzi hero a pásom čísel nebol šev. Nad nadpisom je tichý riadok
-s kľúčovým slovom (ostáva súčasťou H1 kvôli vyhľadávaniu), nadpis má dva riadky a druhý je modrý.
-Akcie sú nerovnocenné zámerne: žlté tlačidlo so šípkou a vedľa neho len podčiarknutý odkaz na katalóg.
-Pod nimi tichá veta o partnerstve s Watts. Render prekračuje pravý okraj obrazovky a má strop 1080 px,
-aby sa na širokej obrazovke nerozťahoval. Tmavý diagonálny panel z predchádzajúcej verzie je zrušený,
-diagonála ostáva motívom len v bloku Pre firmy a v pätičke.
+samotný výrobok. Nad nadpisom je tichý riadok s kľúčovým slovom (ostáva súčasťou H1 kvôli
+vyhľadávaniu), nadpis má dva riadky a druhý je modrý. Akcie sú nerovnocenné zámerne: žlté tlačidlo
+vedie na výber podľa použitia priamo pod ním (kotva `#vyber`, sprievodca `/vyber/` je zatiaľ zástupná
+stránka) a podčiarknutý odkaz otvára katalóg PDF výrobcu s veľkosťou súboru. Veta o partnerstve
+v hero nie je, lebo to isté aj s logom hovorí horný pás. Render má strop 1 180 px.
 
-Katalóg na domove (Juraj 22. 9. 2026, podľa jeho vlastného návrhu): záložky = kategórie, v paneli
-veľké rendery radov. Rad dostane dlaždicu len vtedy, keď má vlastný render; vyhotovenia, ktoré
-zdieľajú render so súrodencom (PRIMO), sú v riadku pod dlaždicami, aby sa obrázok neopakoval.
-Naraz sú tak na obrazovke najviac tri rendery, nie dvanásť. Záložky sú prepínače bez skriptu
-a obsah všetkých panelov je v HTML kvôli vyhľadávačom.
+Katalóg na domove (Juraj 22. 9. 2026, podľa jeho vlastného návrhu, v4 prekomponované): záložky =
+kategórie, v paneli veľké rendery radov. V4 z nich robí **register** vľavo (ako palcový register
+tlačeného katalógu: názov a počet radov, vybraná kategória má žltú značku, farbu jadra rúry) a
+**štúdio** vpravo: rendery stoja na spoločnej podlahe s tieňom, popisy sú zarovnané doľava a začínajú
+na jednej linke (podmriežka). Pri jednom rade je popis vedľa renderu. Popis vybranej kategórie a
+vyhotovenia PRIMO sú v ľavom stĺpci pod registrom. Rad dostane render len vtedy, keď má vlastný.
+Záložky sú prepínače bez skriptu a obsah všetkých panelov je v HTML kvôli vyhľadávačom.
 
-Zásada domova (Juraj 21. 9. 2026, po duplicite dlaždíc použitia a katalógu): každá sekcia má inú
-úlohu aj inú formu. Rendery kategórií sú len v katalógu, výber je typografická tabuľka, rodina je
-jeden veľký render, referencie sú fotky, B2B je tmavý blok. Dve sekcie s rovnakými obrázkami a
-inými popiskami pôsobia ako duplicita. Rozpočet obrázkov domova (audit 21. 9. 2026,
-`docs/AUDIT-DOMOV.md`): najviac tri veľké obrázky, každý iného druhu – render rezu v hero, render
-rodiny, fotka zo stavby. Drobné náhľady referencií sa nerátajú. Ten istý motív (modrá rúra v reze)
-sa na stránke neopakuje. Pravidlá, podľa ktorých hodnotíme: Vignelli (disciplína, jedno ohnisko),
-Müller-Brockmann (mriežka 12 stĺpcov, delenie 5 / 7, 6 / 6, 3 × 4), Tufte (dátový atrament),
-Refactoring UI (popis k nadpisu, nekvalitná fotka len ako náhľad).
+Rodina: render prechádza cez švík z pásu katalógu a za pravý okraj obrazovky. Namiesto troch
+rovnakých stĺpcov faktov je **stavba potrubia ako rez v typografii**: tri vrstvy vnorené do seba,
+farba linky je farba vrstvy na renderi (modrý plášť, sivá pena, žltá nosná rúra). Pozor na fakty:
+spoločná je stavba, nie materiál rúry. COOL má nosnú rúru PE 100 do 16 bar, ostatné PE-Xa
+(katalóg s. 8 až 18).
+
+Pokládka (nová sekcia v4): jediné miesto s obrázkom vľavo. Fotka kotúča má čisto bielu plochu,
+násobením splynie so svetlým pásom a text leží v jeho vnútri. Obsah je z katalógu výrobcu: časy
+pokládky (s. 36, „približne, bez dopravy a výkopu“), postup zemných prác (s. 37) skrátený na štyri
+skutočné kroky a zaťaženie až 60 t pri uložení v hĺbke 0,5 až 6 m. Odkaz vedie na s. 37 katalógu.
+Pod 900 px je kotúč pás nad textom. Fotka kotúča je tónovaná na farbu renderov (len modré plochy,
+biela ostala biela), originál je v podkladoch.
+
+Podzemie: referencie, Pre firmy a pätička sú jeden tmavý úsek so šikmou hornou hranou (motív Watts).
+Fotka z výkopu hranu prekračuje, takže svetlá a tmavá časť sú jeden prechod. Referencie sú zoznam bez
+náhľadov (náhľady boli z 300 px zdrojov a prvý bol rez rúry, nie stavba). Spodok podzemia má tú istú
+farbu ako začiatok pätičky.
+
+Zásada domova (Juraj 21. 9. 2026): každá sekcia má inú úlohu aj inú formu. V4: produkt ako monument
+(hero), register a štúdio (katalóg), render a typografický rez (rodina), postup s číslami (pokládka),
+fotka cez hranu (referencie), tmavý zoznam podkladov (Pre firmy). Ukotvenie sa strieda: obrázok
+vpravo, register a štúdio, render vpravo cez švík, kotúč vľavo, fotka vpravo cez šikmú hranu.
+Pravidlo „text vľavo, obrázok vpravo v celej stránke rovnako“ z auditu 21. 9. už neplatí, robilo
+stránku jednotvárnou. Ten istý motív sa neopakuje v tej istej forme; rez rúry je v hero, v štúdiu
+a v rodine, ale zakaždým v inej úlohe (výrobok, voľba radu, porovnanie vrstiev). Pravidlá, podľa
+ktorých hodnotíme: Vignelli (disciplína, jedno ohnisko), Müller-Brockmann (mriežka 12 stĺpcov),
+Tufte (dátový atrament), Refactoring UI (popis k nadpisu, nekvalitná fotka len ako náhľad).
+
+Sadzba: texty domova prechádzajú funkciou `sadzba()` (`web/src/lib/sadzba.ts`), ktorá dá
+nezlomiteľnú medzeru za jednopísmenové predložky a spojky, medzi číslo a jednotku (95 °C, 16 bar,
+60 t) a do označení noriem (EN ISO 15875). Text sa inak nemení.
 
 ### Kategória (napr. Potrubia pre vykurovanie)
 

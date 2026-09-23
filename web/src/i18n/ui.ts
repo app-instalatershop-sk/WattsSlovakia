@@ -5,6 +5,8 @@ export const DEFAULT_LANG: Lang = 'sk';
 export const LOCALE: Record<Lang, string> = { sk: 'sk-SK', cs: 'cs-CZ' };
 export const ESHOP = 'https://www.instalatershop.sk/predizolovane-potrubie-microflex/';
 export const ESHOP_SEARCH = 'https://www.instalatershop.sk/vyhledavani/?string=';
+/** Katalóg Microflex od výrobcu, slovenské vydanie (19 MB). Overené 23. 9. 2026: HTTP 200, otvára sa v prehliadači. */
+export const KATALOG_PDF = 'https://www.watts.eu/dfsmedia/0533DBBA-1771-4B1A-B581-AB07A4CBB521/640504-source/639239694230000000/MICROFLEX_SK_PDF.pdf';
 
 const sk = {
   site: { name: 'Microflex Slovensko', sub: 'Slovensko', tagline: 'Predizolované ohybné potrubie Microflex pre Slovensko' },
@@ -70,23 +72,40 @@ const sk = {
     heroKicker: 'Predizolované potrubia Microflex®',
     h1a: 'Flexibilné potrubie.', h1b: 'Precízne riešenie.',
     lead: 'Pre vykurovanie, pitnú vodu, chladenie a tepelné čerpadlá.',
-    cta: 'Vybrať potrubie', cta2: 'Stiahnuť katalóg',
-    heroNota: 'Technológia Watts. Podpora na Slovensku.',
+    cta: 'Vybrať potrubie', cta2: 'Stiahnuť katalóg', cta2Meta: 'PDF, 19 MB',
+    heroAlt: 'Rez predizolovaným potrubím Microflex so štyrmi rúrami: zvlnený plášť, izolácia a nosné rúry',
     facts: { polomer: 'Polomer ohybu', rura: 'Nosná rúra', tlak: 'Prevádzkový tlak', rady: 'Potrubných radov' },
     katalogKicker: 'Výber podľa použitia',
     katalogH2: 'Každý projekt má svoje potrubie.',
     rury: (n: number) => (n === 1 ? 'Jedna rúra v plášti' : n === 2 ? 'Dve rúry v plášti' : n === 4 ? 'Štyri rúry v plášti' : `${n} rúry v plášti`),
+    plast: 'plášť',
     ajVo: 'Aj vo vyhotovení',
     celyKatalog: 'Celý katalóg potrubí',
     dielyH3: 'Spojky a príslušenstvo',
     rodinaH2: 'Päť systémov, jedna rodina.',
-    rodinaP: 'UNO a DUO pre vykurovanie a pitnú vodu, QUADRO pre všetko v jednom plášti, COOL pre chlad, HP pre tepelné čerpadlá. Rovnaká nosná rúra PE-Xa, rovnaká izolácia, rovnaký plášť.',
+    // COOL má nosnú rúru PE 100, nie PE-Xa (katalóg s. 16 až 18). Spoločná je stavba, nie materiál rúry.
+    rodinaP: 'UNO a DUO pre vykurovanie a pitnú vodu, QUADRO pre všetko v jednom plášti, COOL pre chlad, HP pre tepelné čerpadlá. Všetky majú rovnakú stavbu z troch vrstiev.',
     rodinaAlt: 'Rodina potrubí Microflex: UNO, DUO, QUADRO a COOL vedľa seba',
-    fakty: [
-      ['Ohne sa okolo prekážky', 'Polomer ohybu od 0,20 m. Potrubie kopíruje výkop, obíde základy aj strom, bez kolien a spojov.'],
-      ['Viac rúr, jeden výkop', 'DUO a QUADRO vedú prívod aj spiatočku, teplú aj studenú vodu v jednom plášti.'],
-      ['Materiály podľa noriem', 'Nosná rúra PE-Xa podľa EN ISO 15875 s kyslíkovou bariérou podľa DIN 4726, pena PE-X s uzavretými bunkami, plášť HDPE.'],
+    vrstvyLabel: 'Stavba potrubia od plášťa po nosnú rúru',
+    vrstvy: [
+      ['Plášť z HDPE', 'Zvlnený, s dvojitou stenou a uzavretými komorami. Dáva potrubiu ohybnosť a chráni izoláciu pred tlakom zeminy, nárazmi aj UV žiarením.'],
+      ['Izolácia z PE-X peny', 'Sieťovaný polyetylén s uzavretými bunkami, bez freónov. Nasiakavosť pod 1 % podľa ISO 2896, izolačné vlastnosti drží po celú životnosť.'],
+      ['Nosná rúra', 'PE-Xa podľa EN ISO 15875 pre vykurovanie a pitnú vodu do 95 °C, pri vykurovaní s kyslíkovou bariérou podľa DIN 4726. PE 100 podľa EN ISO 12201 pre studenú a chladenú vodu do 16 bar.'],
     ] as [string, string][],
+    // Časy a postup: katalóg Watts Microflex, s. 36 (doba inštalácie) a s. 37 (zemné práce).
+    pokladkaH2: 'Sto metrov za štyridsať minút.',
+    pokladkaP: 'Za toľko podľa katalógu výrobcu položia traja montážnici stometrový kotúč Microflex UNO alebo DUO v menších dimenziách. Bez zvárania, bez predizolovaných kolien a bez špeciálneho náradia.',
+    pokladkaAlt: 'Kotúč potrubia Microflex so zvlneným modrým plášťom a sťahovacími páskami',
+    krokyLabel: 'Postup pokládky',
+    kroky: [
+      ['Kotúč k výkopu', 'Kotúč položte pozdĺž výkopu, odstráňte fóliu a koniec rúry dajte na miesto napojenia.'],
+      ['Rozvinúť do piesku', 'Postupne strihajte sťahovacie pásky a rúru rozvíjajte do pieskového lôžka, mierne hadovito a s dodržaním polomeru ohybu.'],
+      ['Spojky a skúška', 'Konce uzavrite krytkami, pripojte spojky PE-X a urobte tlakovú skúšku s protokolom.'],
+      ['Páska a zásyp', 'Zasypte prvú vrstvu, položte výstražnú pásku a výkop zasypte celý.'],
+    ] as [string, string][],
+    zataz: ['až 60 t', 'unesie potrubie uložené v hĺbke 0,5 až 6 m'] as [string, string],
+    pokladkaZdroj: 'Časy sú približné, bez dopravy a výkopu.',
+    pokladkaOdkaz: 'Celý postup v katalógu výrobcu',
     refH2: 'Kde už Microflex leží', refVsetky: 'Všetky referencie',
     refAlt: 'Potrubie Microflex vo výkope so spojkami',
     refs: [
@@ -219,23 +238,38 @@ const cs: typeof sk = {
     heroKicker: 'Předizolované potrubí Microflex®',
     h1a: 'Flexibilní potrubí.', h1b: 'Precizní řešení.',
     lead: 'Pro vytápění, pitnou vodu, chlazení a tepelná čerpadla.',
-    cta: 'Vybrat potrubí', cta2: 'Stáhnout katalog',
-    heroNota: 'Technologie Watts. Podpora ze Slovenska.',
+    cta: 'Vybrat potrubí', cta2: 'Stáhnout katalog', cta2Meta: 'PDF, 19 MB, slovensky',
+    heroAlt: 'Řez předizolovaným potrubím Microflex se čtyřmi trubkami: zvlněný plášť, izolace a nosné trubky',
     facts: { polomer: 'Poloměr ohybu', rura: 'Nosná trubka', tlak: 'Provozní tlak', rady: 'Potrubních řad' },
     katalogKicker: 'Výběr podle použití',
-    katalogH2: 'Každý projekt má svoje potrubí.',
+    katalogH2: 'Každý projekt má své potrubí.',
     rury: (n: number) => (n === 1 ? 'Jedna trubka v plášti' : n === 2 ? 'Dvě trubky v plášti' : n === 4 ? 'Čtyři trubky v plášti' : `${n} trubky v plášti`),
+    plast: 'plášť',
     ajVo: 'I v provedení',
     celyKatalog: 'Celý katalog potrubí',
     dielyH3: 'Spojky a příslušenství',
     rodinaH2: 'Pět systémů, jedna rodina.',
-    rodinaP: 'UNO a DUO pro vytápění a pitnou vodu, QUADRO pro všechno v jednom plášti, COOL pro chlad, HP pro tepelná čerpadla. Stejná nosná trubka PE-Xa, stejná izolace, stejný plášť.',
+    rodinaP: 'UNO a DUO pro vytápění a pitnou vodu, QUADRO pro všechno v jednom plášti, COOL pro chlad, HP pro tepelná čerpadla. Všechny mají stejnou stavbu ze tří vrstev.',
     rodinaAlt: 'Rodina potrubí Microflex: UNO, DUO, QUADRO a COOL vedle sebe',
-    fakty: [
-      ['Ohne se kolem překážky', 'Poloměr ohybu od 0,20 m. Potrubí kopíruje výkop, obejde základy i strom, bez kolen a spojů.'],
-      ['Více trubek, jeden výkop', 'DUO a QUADRO vedou přívod i zpátečku, teplou i studenou vodu v jednom plášti.'],
-      ['Materiály podle norem', 'Nosná trubka PE-Xa podle EN ISO 15875 s kyslíkovou bariérou podle DIN 4726, pěna PE-X s uzavřenými buňkami, plášť HDPE.'],
+    vrstvyLabel: 'Stavba potrubí od pláště po nosnou trubku',
+    vrstvy: [
+      ['Plášť z HDPE', 'Zvlněný, s dvojitou stěnou a uzavřenými komorami. Dává potrubí ohebnost a chrání izolaci před tlakem zeminy, nárazy i UV zářením.'],
+      ['Izolace z PE-X pěny', 'Síťovaný polyetylen s uzavřenými buňkami, bez freonů. Nasákavost pod 1 % podle ISO 2896, izolační vlastnosti drží po celou životnost.'],
+      ['Nosná trubka', 'PE-Xa podle EN ISO 15875 pro vytápění a pitnou vodu do 95 °C, u vytápění s kyslíkovou bariérou podle DIN 4726. PE 100 podle EN ISO 12201 pro studenou a chlazenou vodu do 16 bar.'],
     ],
+    pokladkaH2: 'Sto metrů za čtyřicet minut.',
+    pokladkaP: 'Za tuto dobu podle katalogu výrobce položí tři montážníci stometrový kotouč Microflex UNO nebo DUO v menších dimenzích. Bez svařování, bez předizolovaných kolen a bez speciálního nářadí.',
+    pokladkaAlt: 'Kotouč potrubí Microflex se zvlněným modrým pláštěm a stahovacími páskami',
+    krokyLabel: 'Postup pokládky',
+    kroky: [
+      ['Kotouč k výkopu', 'Kotouč položte podél výkopu, odstraňte fólii a konec trubky dejte na místo napojení.'],
+      ['Rozvinout do písku', 'Postupně stříhejte stahovací pásky a trubku rozvíjejte do pískového lože, mírně hadovitě a s dodržením poloměru ohybu.'],
+      ['Spojky a zkouška', 'Konce uzavřete krytkami, připojte spojky PE-X a proveďte tlakovou zkoušku s protokolem.'],
+      ['Páska a zásyp', 'Zasypte první vrstvu, položte výstražnou pásku a výkop zasypte celý.'],
+    ],
+    zataz: ['až 60 t', 'unese potrubí uložené v hloubce 0,5 až 6 m'],
+    pokladkaZdroj: 'Časy jsou přibližné, bez dopravy a výkopu.',
+    pokladkaOdkaz: 'Celý postup v katalogu výrobce',
     refH2: 'Kde už Microflex leží', refVsetky: 'Všechny reference',
     refAlt: 'Potrubí Microflex ve výkopu se spojkami',
     refs: [

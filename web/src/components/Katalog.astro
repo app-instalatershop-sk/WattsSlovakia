@@ -1,15 +1,17 @@
 ---
 /**
- * Katalóg na domove: záložky podľa použitia, pod nimi rendery radov v danej kategórii.
- * Záložky sú prepínače (radio + label), takže fungujú bez skriptu a celý obsah je v HTML
- * kvôli vyhľadávačom. Rad dostane dlaždicu len vtedy, keď má vlastný render; vyhotovenia,
- * ktoré zdieľajú render so súrodencom (PRIMO), idú do riadku pod dlaždicami.
+ * Katalóg na domove: výber podľa použitia. Vľavo register kategórií ako palcový register tlačeného
+ * katalógu, pod ním popis vybranej kategórie. Vpravo „štúdio“: rendery radov stoja na jednej
+ * podlahe ako výrobky pri fotení. Záložky sú prepínače (radio + label), fungujú bez skriptu a obsah
+ * všetkých panelov je v HTML kvôli vyhľadávačom. Rad dostane render len vtedy, keď má vlastný;
+ * vyhotovenia, ktoré zdieľajú render so súrodencom (PRIMO), sú vymenované v popise.
  */
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import Ikona from './Ikona.astro';
-import { kategorie, cestaKategorie, cestaRadu, kKratky, rNazov, type Kategoria, type Rad } from '../lib/katalog';
+import { kategorie, cestaKategorie, cestaRadu, kKratky, kPopis, rNazov, rozsah, type Kategoria, type Rad } from '../lib/katalog';
 import { piktogram } from '../lib/obrazky';
+import { sadzba } from '../lib/sadzba';
 import { type Lang, t, route } from '../i18n/ui';
 
 interface Props { lang: Lang }
@@ -19,6 +21,7 @@ const h = ui.home;
 
 const kats = await kategorie();
 const rady = (await getCollection('rady')).map((r) => r.data);
+const varianty = (await getCollection('varianty')).map((v) => v.data);
 const potrubia = kats.filter((k) => k.typ === 'potrubie');
 const diely = kats.filter((k) => k.typ !== 'potrubie');
 
@@ -26,6 +29,14 @@ const diely = kats.filter((k) => k.typ !== 'potrubie');
 const model = (r: Rad) => rNazov(r, lang).split(',')[0].trim();
 /** Model bez značky: „Microflex UNO PRIMO“ → „UNO PRIMO“. */
 const bezZnacky = (r: Rad) => model(r).replace(/^Microflex\s+/i, '');
+
+/** Tichý riadok pod názvom: počet dimenzií a rozsah plášťa z dát, inak odkaz na katalóg. */
+function udaje(r: Rad): string {
+  const vv = varianty.filter((v) => v.rad === r.id);
+  if (!vv.length) return ui.common.rozmeryVKatalogu;
+  const plast = rozsah(vv.map((v) => v.plast_mm), 'mm', lang);
+  return `${ui.sklonovanie.dimenzii(vv.length)}, ${h.plast} ${plast}`;
+}
 
 function panel(k: Kategoria) {
   const rr = rady.filter((r) => r.kategoria === k.id).sort((a, b) => a.poradie - b.poradie);
@@ -37,39 +48,32 @@ function panel(k: Kategoria) {
     if (r.piktogram && !videne.has(r.piktogram)) { videne.add(r.piktogram); dlazdice.push(r); }
     else dalsie.push(r);
   }
-  return { kat: k, dlazdice, dalsie };
+  return { kat: k, pocet: rr.length, dlazdice, dalsie };
 }
 const panely = potrubia.map(panel);
 const skupiny = (k: Kategoria) => rady.filter((r) => r.kategoria === k.id).sort((a, b) => a.poradie - b.poradie);
 ---
-<section class="section band-soft katalog" aria-labelledby="h-kat">
+<section id="vyber" class="section band-soft katalog" aria-labelledby="h-kat">
   <div class="wrap">
-    <p class="kicker" data-reveal>{h.katalogKicker}</p>
-    <h2 id="h-kat" data-reveal>{h.katalogH2}</h2>
+    <p class="kicker">{h.katalogKicker}</p>
+    <h2 id="h-kat">{h.katalogH2}</h2>
 
     <div class="kat-taby">
-      <div class="t-list" data-reveal>
+      <div class="t-list" role="radiogroup" aria-labelledby="h-kat">
         {panely.map((p, i) => (
           <label class="t-lbl">
             <input type="radio" name="katalog-tab" value={p.kat.id} checked={i === 0} />
-            <span>{kKratky(p.kat, lang)}</span>
+            <span class="t-nazov">{kKratky(p.kat, lang)}</span>
+            <span class="t-pocet">{ui.sklonovanie.radov(p.pocet)}</span>
           </label>
         ))}
       </div>
 
       <div class="t-panely">
         {panely.map((p) => (
-          <div class="t-panel" aria-label={kKratky(p.kat, lang)}>
-            <div class="rady" data-pocet={p.dlazdice.length}>
-              {p.dlazdice.map((r) => { const img = piktogram(r.piktogram); return (
-                <a class="rad" href={cestaRadu(p.kat, r, lang)}>
-                  {img && <Image src={img} alt={`${model(r)} v reze`} widths={[420, 640, 900]} sizes="(max-width: 760px) 86vw, 34vw" class="rad-img" />}
-                  <strong>{model(r)}</strong>
-                  <span class="muted">{h.rury(r.pocet_rur ?? 1)}</span>
-                </a>
-              ); })}
-            </div>
-            <div class="pod">
+          <div class="t-panel" role="group" aria-label={kKratky(p.kat, lang)}>
+            <div class="t-info">
+              <p>{sadzba(kPopis(p.kat, lang))}</p>
               {p.dalsie.length > 0 && (
                 <p class="dalsie">
                   {h.ajVo}{' '}
@@ -78,17 +82,32 @@ const skupiny = (k: Kategoria) => rady.filter((r) => r.kategoria === k.id).sort(
                       {i > 0 && (i === p.dalsie.length - 1 ? ` ${ui.common.a} ` : ', ')}
                       <a href={cestaRadu(p.kat, r, lang)}>{bezZnacky(r)}</a>
                     </>
-                  ))}
+                  ))}.
                 </p>
               )}
-              <a class="vsetko" href={route(lang, 'potrubia')}>{h.celyKatalog} <Ikona nazov="arrow-up-right" velkost={16} /></a>
+            </div>
+            <div class="studio" data-pocet={p.dlazdice.length}>
+              {p.dlazdice.map((r) => { const img = piktogram(r.piktogram); return (
+                <a class="rad" href={cestaRadu(p.kat, r, lang)}>
+                  <span class="rad-obj">
+                    {img && <Image src={img} alt={`${model(r)} v reze`} widths={[420, 640, 900]} sizes="(max-width: 760px) 78vw, (max-width: 1100px) 44vw, 34vw" class="rad-img" />}
+                  </span>
+                  <span class="rad-txt">
+                    <strong>{sadzba(model(r))}</strong>
+                    <span class="rad-rury">{h.rury(r.pocet_rur ?? 1)}</span>
+                    <span class="rad-data">{sadzba(udaje(r))}</span>
+                  </span>
+                </a>
+              ); })}
             </div>
           </div>
         ))}
       </div>
+
+      <a class="vsetko" href={route(lang, 'potrubia')}>{h.celyKatalog} <Ikona nazov="arrow-up-right" velkost={16} /></a>
     </div>
 
-    <div class="diely" data-reveal>
+    <div class="diely">
       <h3>{h.dielyH3}</h3>
       <ul>
         {diely.flatMap((k) => skupiny(k).map((r) => (
@@ -101,70 +120,105 @@ const skupiny = (k: Kategoria) => rady.filter((r) => r.kategoria === k.id).sort(
 
 <style>
   /* Dole ostáva miesto: render rodiny potrubí zhora prechádza cez švík do bielej sekcie pod ním. */
-  .katalog { padding-top: 96px; padding-bottom: 200px; }
+  .katalog { padding-top: 96px; padding-bottom: 200px; scroll-margin-top: 24px; overflow-x: clip; }
   .kicker { font-size: 12.5px; letter-spacing: .09em; text-transform: uppercase; color: var(--color-blue-700); font-weight: 600; margin-bottom: 10px; }
-  .katalog h2 { font-size: clamp(28px, 2.2vw + 14px, 42px); margin-bottom: 36px; }
+  .katalog h2 { font-size: clamp(28px, 2.2vw + 14px, 42px); margin-bottom: 44px; }
 
-  /* Záložky: prepínače bez skriptu. Vybraná záložka podčiarkne popis a odkryje svoj panel. */
-  .t-list { display: flex; justify-content: space-between; gap: 8px; border-bottom: var(--line); }
-  .t-lbl { position: relative; padding: 14px 20px; cursor: pointer; color: var(--color-ink-soft); font-weight: 500; white-space: nowrap; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 150ms var(--ease-soft), border-color 200ms var(--ease-soft); }
-  .t-lbl:first-child { padding-left: 0; }
-  .t-lbl:last-child { padding-right: 0; }
+  /* Dva stĺpce na mriežke 4 / 8. Panely sú podmriežka cez celú šírku, takže popis vybranej kategórie
+     sedí vľavo pod registrom a rendery vpravo, hoci patria do toho istého panela. */
+  .kat-taby { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); grid-template-rows: auto auto 1fr; column-gap: 24px; }
+  .t-list { grid-column: 1; grid-row: 1; position: relative; z-index: 2; border-top: var(--line); }
+  .t-panely { grid-column: 1 / -1; grid-row: 1 / -1; display: grid; grid-template-columns: subgrid; grid-template-rows: subgrid; }
+  .t-panel { grid-column: 1 / -1; grid-row: 1 / -1; display: none; grid-template-columns: subgrid; grid-template-rows: subgrid; }
+  .vsetko { grid-column: 1; grid-row: 3; align-self: end; justify-self: start; position: relative; z-index: 2; display: inline-flex; align-items: center; gap: 6px; font-weight: 500; border-bottom: 1px solid currentColor; padding-bottom: 2px; }
+  .vsetko :global(svg) { width: 16px; height: 16px; }
+
+  /* Register: riadok = kategória a počet radov. Vybraná má žltú značku, farbu jadra rúry. */
+  .t-lbl { position: relative; display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 15px 0 15px 20px; border-bottom: var(--line); cursor: pointer; color: var(--color-ink-soft); transition: color 150ms var(--ease-soft); }
+  .t-lbl::before { content: ""; position: absolute; left: 0; top: 50%; width: 4px; height: 0; border-radius: 2px; background: var(--color-yellow-500); transform: translateY(-50%); transition: height 250ms var(--ease-soft); }
   .t-lbl input { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; }
+  .t-nazov { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 500; font-size: 19px; line-height: 1.25; letter-spacing: -0.01em; }
+  .t-pocet { font-size: 14px; font-variant-numeric: tabular-nums; white-space: nowrap; color: #7a8494; }
   .t-lbl:hover { color: var(--color-ink); }
-  .t-lbl:has(input:checked) { color: var(--color-blue-700); border-bottom-color: var(--color-blue-700); font-weight: 600; }
-  .t-lbl:has(input:focus-visible) { outline: 2px solid var(--color-blue-700); outline-offset: -4px; border-radius: 2px; }
+  .t-lbl:has(input:checked) { color: var(--color-ink); }
+  .t-lbl:has(input:checked) .t-nazov { font-weight: 650; }
+  .t-lbl:has(input:checked)::before { height: 26px; }
+  .t-lbl:has(input:checked) .t-pocet { color: var(--color-ink-soft); }
+  .t-lbl:has(input:focus-visible) { outline: 2px solid var(--color-blue-700); outline-offset: 2px; border-radius: 2px; }
 
-  .t-panel { display: none; }
   /* Pár záložka → panel. Kategórií je päť, šiesty pár je rezerva pri rozšírení katalógu. */
   .kat-taby:has(.t-lbl:nth-of-type(1) input:checked) .t-panel:nth-of-type(1),
   .kat-taby:has(.t-lbl:nth-of-type(2) input:checked) .t-panel:nth-of-type(2),
   .kat-taby:has(.t-lbl:nth-of-type(3) input:checked) .t-panel:nth-of-type(3),
   .kat-taby:has(.t-lbl:nth-of-type(4) input:checked) .t-panel:nth-of-type(4),
   .kat-taby:has(.t-lbl:nth-of-type(5) input:checked) .t-panel:nth-of-type(5),
-  .kat-taby:has(.t-lbl:nth-of-type(6) input:checked) .t-panel:nth-of-type(6) { display: block; animation: panel 420ms var(--ease-soft) both; }
+  .kat-taby:has(.t-lbl:nth-of-type(6) input:checked) .t-panel:nth-of-type(6) { display: grid; }
+
+  .t-info { grid-column: 1; grid-row: 2; padding: 24px 24px 32px 20px; color: var(--color-ink-soft); max-width: 30em; animation: panel 420ms var(--ease-soft) both; }
+  .t-info .dalsie { margin-top: 12px; font-size: 15px; }
+  .t-info .dalsie a { font-weight: 500; }
+
+  /* Štúdio: mäkké svetlo za výrobkami. Podmriežka dáva všetkým radom dva spoločné riadky:
+     rendery stoja na jednej podlahe a popisy začínajú na jednej linke, aj keď má názov dva riadky. */
+  .studio { grid-column: 2; grid-row: 1 / -1; position: relative; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); grid-template-rows: 1fr auto; column-gap: 28px; align-content: end; padding-left: 16px; min-height: 480px; }
+  .studio::before { content: ""; position: absolute; inset: -56px -8% 36px 4%; background: radial-gradient(50% 58% at 56% 50%, #ffffff 0%, rgb(255 255 255 / 0.55) 42%, rgb(255 255 255 / 0) 72%); pointer-events: none; }
+  .rad { position: relative; grid-row: span 2; display: grid; grid-template-rows: subgrid; color: var(--color-ink); animation: panel 520ms var(--ease-soft) both; }
+  .rad:nth-child(2) { animation-delay: 70ms; }
+  .rad:nth-child(3) { animation-delay: 140ms; }
+  /* Jeden rad: render vľavo, popis vedľa neho pri podlahe. */
+  .studio[data-pocet="1"] .rad { display: flex; align-items: flex-end; gap: 8px; }
+  .studio[data-pocet="1"] .rad-obj { flex: 0 0 66%; }
+  .studio[data-pocet="1"] .rad-txt { padding-bottom: 36px; border-top: 0; margin-top: 0; }
+  /* Tieň nesie obal a masku obrázok. Maska a tieň na jednom prvku by tieň orezali na hranu boxu. */
+  .rad-obj { position: relative; display: block; align-self: end; filter: drop-shadow(0 26px 26px rgb(11 27 51 / 0.2)); transition: transform 400ms var(--ease-soft); }
+  .rad-obj::after { content: ""; position: absolute; left: 14%; right: 6%; bottom: -6px; height: 22px; border-radius: 50%; background: radial-gradient(closest-side, rgb(10 42 94 / 0.22), rgb(10 42 94 / 0)); z-index: -1; }
+  /* Telo rúry pokračuje za ľavý okraj renderu: doznenie zľava a do horného ľavého rohu skryje rez obrázkom. */
+  .rad-obj :global(.rad-img) { width: 100%; height: auto; aspect-ratio: 5 / 4; object-fit: contain; object-position: center bottom; display: block;
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 22%), linear-gradient(to top left, #000 78%, transparent 99%); -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(to right, transparent 0%, #000 22%), linear-gradient(to top left, #000 78%, transparent 99%); mask-composite: intersect; }
+  .rad:hover .rad-obj { transform: translateY(-6px); }
+  .rad-txt { display: flex; flex-direction: column; gap: 2px; align-self: start; padding-top: 22px; border-top: 1px solid rgb(10 42 94 / 0.14); margin-top: 18px; }
+  .rad strong { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 22px; line-height: 1.2; letter-spacing: -0.01em; color: var(--color-ink); transition: color 150ms var(--ease-soft); }
+  .rad:hover strong { color: var(--color-blue-700); }
+  .rad-rury { font-size: 15px; color: var(--color-ink-soft); }
+  .rad-data { font-size: 14px; color: #7a8494; font-variant-numeric: tabular-nums; }
   @keyframes panel { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
-  .rady { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 24px 40px; padding: 40px 0 8px; }
-  .rad { flex: 0 1 420px; max-width: 460px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 2px; color: var(--color-ink); }
-  .rady[data-pocet="1"] .rad { flex-basis: 520px; max-width: 560px; }
-  .rady[data-pocet="3"] .rad { flex-basis: 340px; max-width: 380px; }
-  /* Telo rúry pokračuje za ľavý okraj renderu, doznenie skryje rez obrázkom. */
-  .rad :global(.rad-img) { width: 100%; height: auto; aspect-ratio: 5 / 4; object-fit: contain; object-position: center bottom; display: block; margin-bottom: 16px; filter: drop-shadow(0 24px 28px rgb(11 27 51 / 0.2)); -webkit-mask-image: linear-gradient(to top left, #000 82%, transparent 99%); mask-image: linear-gradient(to top left, #000 82%, transparent 99%); transition: transform 400ms var(--ease-soft); }
-  .rad:hover :global(.rad-img) { transform: translateY(-6px) scale(1.02); }
-  /* Dva riadky napevno: dlhý názov tak neposunie popis pod susedné dlaždice. */
-  .rad strong { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 21px; line-height: 1.25; min-height: 2.5em; letter-spacing: -0.01em; color: var(--color-ink); }
-  .rad:hover strong { color: var(--color-blue-700); }
-  .rad .muted { font-size: 15px; }
-
-  .pod { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; padding-top: 20px; }
-  .dalsie { font-size: 15px; color: var(--color-ink-soft); }
-  .dalsie a { font-weight: 500; }
-  .vsetko { display: inline-flex; align-items: center; gap: 6px; font-weight: 500; margin-left: auto; border-bottom: 1px solid currentColor; padding-bottom: 2px; }
-  .vsetko :global(svg) { width: 16px; height: 16px; }
-
-  .diely { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; margin-top: 44px; padding-top: 28px; border-top: var(--line); }
+  .diely { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px 28px; margin-top: 56px; padding-top: 28px; border-top: var(--line); }
   .diely h3 { font-family: var(--font-text); font-stretch: 100%; font-size: 16px; font-weight: 600; letter-spacing: 0; }
   .diely ul { display: flex; flex-wrap: wrap; gap: 10px 26px; }
   .diely li a { display: inline-flex; align-items: center; gap: 4px; font-size: 15px; font-weight: 500; }
   .diely li :global(svg) { width: 15px; height: 15px; }
 
+  /* Pod 1 100 px: register je vodorovný pás záložiek, popis pod ním, rendery ako koľajnica na posun prstom. */
   @media (max-width: 1100px) {
     .katalog { padding-bottom: 140px; }
-    .t-list { overflow-x: auto; scrollbar-width: none; }
+    .kat-taby { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto auto auto; }
+    .t-list { display: flex; gap: 4px; border-top: 0; border-bottom: var(--line); overflow-x: auto; scrollbar-width: none; margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); }
     .t-list::-webkit-scrollbar { display: none; }
-    .t-list { justify-content: flex-start; }
-    .rad, .rady[data-pocet="1"] .rad, .rady[data-pocet="3"] .rad { flex-basis: 300px; max-width: 380px; }
+    .t-lbl { flex: none; padding: 12px 16px 14px; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+    .t-lbl:first-child { padding-left: 0; }
+    .t-lbl::before { display: none; }
+    .t-lbl:has(input:checked) { border-bottom-color: var(--color-yellow-500); }
+    .t-nazov { font-size: 17px; }
+    .t-pocet { display: none; }
+    .t-panel { grid-row: 1 / -1; }
+    .t-info { grid-column: 1; grid-row: 2; padding: 20px 0 8px; }
+    .studio { grid-column: 1; grid-row: 3; padding: 24px 0 0; min-height: 0; }
+    .vsetko { grid-row: 4; margin-top: 28px; }
   }
   @media (max-width: 760px) {
     .katalog { padding-top: 64px; padding-bottom: 100px; }
-    .katalog h2 { margin-bottom: 24px; }
-    .t-lbl { padding: 12px 14px; font-size: 15px; }
-    .rady { padding-top: 28px; gap: 28px; }
-    .rad, .rady[data-pocet="1"] .rad, .rady[data-pocet="3"] .rad { flex-basis: 100%; max-width: none; }
-    .rad strong { min-height: 0; }
-    .pod { flex-direction: column; align-items: flex-start; }
-    .vsetko { margin-left: 0; }
+    .katalog h2 { margin-bottom: 28px; }
+    /* scroll-padding drží prvý render na okraji mriežky; bez neho by ho prichytávanie posunulo k hrane displeja. */
+    .studio { grid-auto-columns: 78%; column-gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter); scrollbar-width: none; margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); }
+    .studio::-webkit-scrollbar { display: none; }
+    .studio::before { display: none; }
+    .rad { scroll-snap-align: start; }
+    .studio[data-pocet="1"] { grid-auto-columns: 100%; }
+    .studio[data-pocet="1"] .rad { display: grid; grid-template-rows: subgrid; }
+    .studio[data-pocet="1"] .rad-obj { flex: none; }
+    .studio[data-pocet="1"] .rad-txt { padding-bottom: 0; border-top: 1px solid rgb(10 42 94 / 0.14); margin-top: 18px; }
     .diely h3 { width: 100%; }
   }
 </style>

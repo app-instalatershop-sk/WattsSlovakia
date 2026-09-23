@@ -127,3 +127,72 @@ istý motív“, nie „nepoužívať rendery“. Preto rady, ktoré v dátach z
   sú referencie len zoznam s náhľadmi.
 - Stránka Výber potrubia (/vyber/) je zástupná; odkaz „Sprievodca výberom v troch krokoch“ na ňu
   vedie. Sprievodca je fáza F2.
+
+## 8. Domov v4: analýza a redizajn (23. 9. 2026)
+
+Podnet (Juraj): „Navrhni čo najlepší a najpútavejší design, kľudne asymetrický, rôznorodý, nemusí
+byť štvorec vedľa seba, ale akokoľvek po stránke. Urob analýzu a potom konaj.“ Meranie je zo stavu
+po commitoch 712af41 a 33bba8b pri 1 440 × 900 a 390 × 844.
+
+### 8.1 Zistenia
+
+1. **Jednotvárne ukotvenie.** Päť zo šiestich sekcií malo text vľavo a obrázok vpravo. Pravidlo
+   z kap. 5 („text vľavo, obrázok vpravo v celej stránke rovnako“) dalo poriadok, ale aj rytmus
+   jedného opakovaného vzoru.
+2. **Katalóg ako štvorce vedľa seba.** Dlaždice boli vycentrované, popisy na stred (brief kap. 5:
+   text vždy vľavo), záložky roztiahnuté cez celú šírku s veľkými medzerami. Pri UNO a QUADRO bol
+   vidieť rovný rez tela rúry na ľavom okraji renderu. Maska a tieň boli na tom istom obrázku
+   (pasca z 21. 9.), takže tieň sa orezával.
+3. **Nepravdivá veta.** „Rovnaká nosná rúra PE-Xa“ pri rodine neplatí: rady COOL majú nosnú rúru
+   z PE 100 podľa EN ISO 12201 do 16 bar (katalóg s. 16 až 18). Spoločná je stavba, nie materiál.
+4. **Neúplné číslo.** Pás pod hero hlásil tlak „6 / 10 bar“, lebo COOL nemal v dátach tlak.
+5. **Akcie do prázdna.** Žlté tlačidlo viedlo na zástupnú stránku /vyber/, druhý odkaz na zástupnú
+   /na-stiahnutie/ (zistené už v rozbore hero, /navrhy/hero/).
+6. **Duplicita.** Veta o partnerstve v hero opakovala horný pás, ktorý hovorí to isté aj s logom.
+7. **Premárnený obraz.** Kotúč, jediná fotka, ktorá ukazuje, ako sa potrubie dodáva, bol len
+   odfarbenou textúrou pod blokom Pre firmy.
+8. **Referencie.** Prvý náhľad bol rez rúry, nie stavba; ostatné náhľady boli z 300 px zdrojov.
+9. **Chyba na mobile.** Render rodiny prekrýval posledný riadok úvodného textu.
+10. **Chýbajúca odpoveď.** Montážnik aj majiteľ domu sa pýtajú, ako sa potrubie kladie a ako dlho to
+    trvá. Katalóg výrobcu na to má čísla (s. 36 doba inštalácie, s. 37 zemné práce), web nie.
+
+### 8.2 Koncept: z kotúča do zeme
+
+Stránka ide po ceste výrobku: čo to je (hero), ktoré potrebujem (katalóg), z čoho je (rodina), ako
+sa kladie (pokládka), kde už leží (referencie), čo majú profesionáli (Pre firmy). Tón ide od bielej
+(povrch) cez svetlomodrú do tmavomodrej (podzemie). Každá sekcia je „dvojstrana“ s iným ukotvením
+a jej hlavný obrázok prekračuje hranu: okraj obrazovky, švík pásu alebo šikmú hranu podzemia.
+Výrazná vec je jedna, kotúč s nadpisom v jeho vnútri; ostatné je pokojné.
+
+### 8.3 Rozhodnutia
+
+| Sekcia | Bolo | Je |
+|---|---|---|
+| Hero | predloha Juraja, tlačidlo na zástupnú stránku, veta o partnerstve | predloha ostáva; väčší render cez okraj; prvý riadok nadpisu sa pri načítaní roztiahne po osi šírky písma; žlté tlačidlo na výber pod ním (`#vyber`), odkaz priamo na katalóg PDF s veľkosťou; veta o partnerstve preč |
+| Pás čísel | 6 / 10 bar | 6 / 10 / 16 bar (COOL doplnený v `data/normalize.py` podľa katalógu) |
+| Katalóg | záložky cez šírku, vycentrované dlaždice | register vľavo so žltou značkou a počtom radov, popis kategórie pod ním; štúdio vpravo so spoločnou podlahou, popisy vľavo na jednej linke, pod názvom počet dimenzií a rozsah plášťa z dát; doznenie renderu aj zľava |
+| Rodina | render + tri rovnaké stĺpce faktov | render cez švík a za okraj; stavba potrubia ako tri vrstvy vnorené do seba, linky vo farbe vrstiev; opravená veta o materiáloch |
+| Pokládka | nebola | nová: kotúč cez ľavý okraj, text v jeho vnútri, „Sto metrov za štyridsať minút.“, štyri kroky zo s. 37 s rúrou, ktorá sa pri rolovaní rozvinie, zaťaženie až 60 t, zdroj a odkaz na s. 37 |
+| Referencie | zoznam s náhľadmi (5) + fotka (7) na svetlom páse | tmavé podzemie so šikmou hranou, fotka z výkopu hranu prekračuje, zoznam bez náhľadov |
+| Pre firmy | tmavý blok s textúrou kotúča a šikmou hranou | pokračovanie podzemia bez textúry, spodok nadväzuje na pätičku bez schodu |
+
+Obrázky na domove: render rezu, rendery radov v štúdiu (naraz 1 až 3), render rodiny, fotka kotúča,
+fotka z výkopu. Každý v inej úlohe a v inej sekcii, na obrazovku pripadá najviac jeden veľký.
+
+Technické poznámky pre ďalšie stránky:
+- Premenná `--bleed` (global.css) je vzdialenosť od okraja mriežky k okraju obrazovky. Prvok, ktorý
+  má dobehnúť za okraj, ju použije ako záporný okraj; sekcia potrebuje `overflow-x: clip`.
+- Fotka s čisto bielym pozadím môže byť „voľný objekt“ ako priehľadný render: `mix-blend-mode:
+  multiply` na obale (nie na obrázku v samostatnej vrstve), biela potom splynie s pásom.
+- Pseudoprvok, ktorý presahuje sekciu (svetlo štúdia), na tablete spôsobil vodorovné rolovanie;
+  sekcia s takým prvkom má mať `overflow-x: clip`.
+- Rady v štúdiu zarovnáva podmriežka (`grid-template-rows: subgrid`), nie pevná výška názvu.
+
+### 8.4 Otvorené pre Juraja
+
+- Nadpis hero ostal podľa predlohy („Flexibilné potrubie. Precízne riešenie.“). Z rozboru hero ostáva
+  návrh „Potrubie, ktoré sa ohne okolo prekážky.“; rozhodnutie je na Jurajovi.
+- Pracovnú stránku `/navrhy/hero/` treba po schválení zmazať; body 2A, 3A, 4 (kotva na výber), 5B,
+  6C, 7A, 8A a 9A z nej sú v domove.
+- Tlak pre QUADRO (6 bar vykurovacie a 10 bar sanitárne rúry) a HP (nie je v slovenskom katalógu)
+  v dátach chýba; pás čísel ich nezapočítava.

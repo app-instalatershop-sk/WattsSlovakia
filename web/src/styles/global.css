@@ -37,6 +37,9 @@
   :root {
     color-scheme: light;
     --gutter: clamp(16px, 3vw, 48px);
+    /* Vzdialenosť od okraja obsahovej mriežky k okraju obrazovky. Pre prvky, ktoré majú dobehnúť
+       za okraj; 100vw obsahuje aj posuvník, preto sekcia s presahom potrebuje overflow-x: clip. */
+    --bleed: calc(var(--gutter) + max(0px, (100vw - var(--container-site)) / 2));
     --line: 1px solid var(--color-grey-300);
     --hdr-h: 72px;
     interpolate-size: allow-keywords;

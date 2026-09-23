@@ -11,8 +11,10 @@ import Hlava from '../components/Hlava.astro';
 import Zaver from '../components/Zaver.astro';
 import Ikona from '../components/Ikona.astro';
 import Kopirovanie from '../components/Kopirovanie.astro';
-import { cestaRadu, kKratky, rNazov, rKratky, tlakText, priemery, ruraText, cislo } from '../lib/katalog';
+import { cestaRadu, cestaProduktu, kKratky, rNazov, rKratky, tlakText, priemery, ruraText, cislo } from '../lib/katalog';
 import { piktogram } from '../lib/obrazky';
+import { materialVariantu } from '../lib/material';
+import { kodyProduktu } from '../lib/produkty';
 import { sadzba } from '../lib/sadzba';
 import { type Lang, route, staticAlternates } from '../i18n/ui';
 
@@ -31,6 +33,17 @@ const tx = {
     odporucame: 'Odporúčame', aj: 'Aj s väčšou rezervou', ruraL: 'Rúra', plastL: 'Plášť', vykonL: 'Výkon', polomerL: 'Polomer ohybu', izolaciaL: 'Izolácia',
     standard: 'štandardná', zosilnena: 'zosilnená', rad: 'Tabuľka radu', eshop: 'Do e-shopu', dopyt: 'Poslať dopyt s týmto potrubím',
     zdiel: 'Odkaz na tento výber', skopirovany: 'Odkaz je v schránke',
+    k4: 'Zoznam materiálu na trasu', zoznamBtn: 'Zoznam materiálu',
+    k4P: 'Zadajte trasu a dostanete zoznam dielov s obj. číslami. Zoznam je návrh podľa katalógu výrobcu; množstvá a obj. čísla overíme a potvrdíme v ponuke.',
+    pre: 'Potrubie', dlzka: 'Dĺžka trasy', dlzkaPozn: 'celá dĺžka vrátane odbočiek', odbocky: 'Odbočky', odbockyPozn: 'T-kusy na trase', spoje: 'Spoje pod zemou', spojePozn: 'napr. trasa dlhšia ako rolka 100 m', prestupy: 'Prestupy stenou', prestupyPozn: 'vstupy do budov',
+    konce: 'Na každom konci trasy', koncePozn: 'Zaškrtnite, čo na koncoch potrebujete. Ak si nie ste istí, pošlite zoznam ako dopyt, doplníme ho.',
+    optPR: 'Prechodová spojka s vonkajším závitom na každú rúru', optMFP: 'Pevný bod MFP', optKr: 'Koncová krytka', krMK: 'zmršťovacia MK', krMG: 'gumová EPDM', paskaOpt: 'Výstražná páska nad trasu',
+    polozka: 'Položka', mnozstvo: 'Množstvo', ks: 'ks', m: 'm',
+    nazvy: { potrubie: 'Potrubie', T: 'T-spojka 3 × PE-X', P: 'Priama spojka PE-X × PE-X', PR: 'Prechodová spojka PE-X s vonkajším závitom', MFP: 'Pevný bod MFP', MK: 'Zmršťovacia krytka', MG: 'Gumová krytka EPDM', IST: 'Izolačná sada T-kusu', ISP: 'Izolačná sada priameho spoja', MP: 'Tesnenie MICRO PRESS, prestup stenou', paska: 'Výstražná páska' },
+    rezerva: (n: number) => `vrátane rezervy 1 m na každý z ${n} koncov, rolky po 100 m alebo metráž`,
+    bezKodu: 'obj. číslo doplníme pri dopyte', overT: 'overíme pri dopyte: v tabuľke výrobcu nesedia obj. čísla s rozmermi',
+    prazdny: 'Zadajte dĺžku trasy.', poslat: 'Poslať zoznam ako dopyt', kopirovatZoznam: 'Kopírovať zoznam', skopirovanyZoznam: 'Zoznam je v schránke', tlacit: 'Tlačiť',
+    hlavickaZoznamu: 'Zoznam materiálu Microflex', trasa: 'Trasa',
   },
   cs: {
     title: 'Průvodce výběrem potrubí', kratko: 'Výběr potrubí',
@@ -44,12 +57,25 @@ const tx = {
     odporucame: 'Doporučujeme', aj: 'I s větší rezervou', ruraL: 'Trubka', plastL: 'Plášť', vykonL: 'Výkon', polomerL: 'Poloměr ohybu', izolaciaL: 'Izolace',
     standard: 'standardní', zosilnena: 'zesílená', rad: 'Tabulka řady', eshop: 'Do e-shopu', dopyt: 'Poslat poptávku s tímto potrubím',
     zdiel: 'Odkaz na tento výběr', skopirovany: 'Odkaz je ve schránce',
+    k4: 'Seznam materiálu na trasu', zoznamBtn: 'Seznam materiálu',
+    k4P: 'Zadejte trasu a dostanete seznam dílů s obj. čísly. Seznam je návrh podle katalogu výrobce; množství a obj. čísla ověříme a potvrdíme v nabídce.',
+    pre: 'Potrubí', dlzka: 'Délka trasy', dlzkaPozn: 'celá délka včetně odboček', odbocky: 'Odbočky', odbockyPozn: 'T-kusy na trase', spoje: 'Spoje pod zemí', spojePozn: 'např. trasa delší než role 100 m', prestupy: 'Prostupy stěnou', prestupyPozn: 'vstupy do budov',
+    konce: 'Na každém konci trasy', koncePozn: 'Zaškrtněte, co na koncích potřebujete. Pokud si nejste jistí, pošlete seznam jako poptávku, doplníme ho.',
+    optPR: 'Přechodová spojka s vnějším závitem na každou trubku', optMFP: 'Pevný bod MFP', optKr: 'Koncová krytka', krMK: 'smršťovací MK', krMG: 'pryžová EPDM', paskaOpt: 'Výstražná páska nad trasu',
+    polozka: 'Položka', mnozstvo: 'Množství', ks: 'ks', m: 'm',
+    nazvy: { potrubie: 'Potrubí', T: 'T-spojka 3 × PE-X', P: 'Přímá spojka PE-X × PE-X', PR: 'Přechodová spojka PE-X s vnějším závitem', MFP: 'Pevný bod MFP', MK: 'Smršťovací krytka', MG: 'Pryžová krytka EPDM', IST: 'Izolační sada T-kusu', ISP: 'Izolační sada přímého spoje', MP: 'Těsnění MICRO PRESS, prostup stěnou', paska: 'Výstražná páska' },
+    rezerva: (n: number) => `včetně rezervy 1 m na každý z ${n} konců, role po 100 m nebo metráž`,
+    bezKodu: 'obj. číslo doplníme při poptávce', overT: 'ověříme při poptávce: v tabulce výrobce nesedí obj. čísla s rozměry',
+    prazdny: 'Zadejte délku trasy.', poslat: 'Poslat seznam jako poptávku', kopirovatZoznam: 'Kopírovat seznam', skopirovanyZoznam: 'Seznam je ve schránce', tlacit: 'Tisknout',
+    hlavickaZoznamu: 'Seznam materiálu Microflex', trasa: 'Trasa',
   },
 }[lang];
 
 const kat = (await getCollection('kategorie')).map((k) => k.data).filter((k) => k.typ === 'potrubie').sort((a, b) => a.poradie - b.poradie);
 const rady = (await getCollection('rady')).map((r) => r.data).filter((r) => !r.je_skupina);
 const varianty = (await getCollection('varianty')).map((v) => v.data);
+const produkty = (await getCollection('produkty')).map((p) => p.data);
+const vsetkyKat = (await getCollection('kategorie')).map((k) => k.data);
 const systemy = kat.map((k) => ({ k, rady: rady.filter((r) => r.kategoria === k.id).sort((a, b) => a.poradie - b.poradie) }));
 // Dáta pre skript: len to, čo výsledok zobrazuje.
 const data = {
@@ -57,9 +83,12 @@ const data = {
   varianty: varianty.filter((v) => rady.some((r) => r.id === v.rad)).map((v) => ({
     r: rady.find((r) => r.id === v.rad)!.slug, o: v.obj_cislo, d: priemery(v), t: ruraText(v), p: v.plast_mm ? cislo(v.plast_mm) : '',
     kw: v.vykon_kw ?? null, pol: v.polomer_ohybu_m ? cislo(v.polomer_ohybu_m, 2) : '', iz: v.izolacia ?? '', e: v.eshop_url,
+    m: materialVariantu(v, rady.find((r) => r.id === v.rad)!, produkty),
   })),
+  // Obj. číslo dielu → [názov, stránka dielu] pre zoznam materiálu.
+  diely: Object.fromEntries(produkty.flatMap((p) => { const u = cestaProduktu(p, vsetkyKat.find((k) => k.id === p.kategoria)!, lang); return kodyProduktu(p).map((c) => [c, u]); })),
 };
-const texty = { ...tx, kwNad: tx.kwNad(0) };
+const texty = { ...tx, kwNad: tx.kwNad(0), rezerva: tx.rezerva(0), ui_obj: 'Obj. číslo' };
 const obrazky = await Promise.all(systemy.map(async ({ k }) => { const p = piktogram(k.piktogram); return p ? (await getImage({ src: p, width: 360, format: 'webp' })).src : ''; }));
 ---
 <Base lang={lang} alternates={staticAlternates('vyber')} title={tx.title} description={tx.desc} aktivna="vyber" drobceky={[{ text: tx.kratko }]} vizualneDrobceky={false}>
@@ -112,6 +141,34 @@ const obrazky = await Promise.all(systemy.map(async ({ k }) => { const p = pikto
         </div>
       </div>
       <div class="vysledok" data-vysledok aria-live="polite"></div>
+    </section>
+
+    <section class="wrap krok" aria-labelledby="h-k4" data-krok4 hidden>
+      <div class="krok-hlava"><span class="krok-c">4</span><h2 id="h-k4">{tx.k4}</h2></div>
+      <p class="k4-p">{tx.k4P}</p>
+      <div class="k4">
+        <div class="harok k4-vstupy">
+          <p class="k4-pre" data-k4-pre></p>
+          <div class="k4-polia">
+            {([['l', tx.dlzka, tx.dlzkaPozn, 'm'], ['t', tx.odbocky, tx.odbockyPozn, tx.ks], ['sp', tx.spoje, tx.spojePozn, tx.ks], ['w', tx.prestupy, tx.prestupyPozn, tx.ks]] as const).map(([k, n, p, j]) => (
+              <label class="k4-pole"><span class="k4-l">{n}</span><span class="k4-vstup"><input type="number" inputmode="numeric" min="0" max="5000" step="1" value={k === 'l' ? '' : '0'} placeholder={k === 'l' ? '40' : ''} data-k4={k} /><span>{j}</span></span><small>{p}</small></label>
+            ))}
+          </div>
+          <fieldset class="k4-konce">
+            <legend>{tx.konce}</legend>
+            <p>{tx.koncePozn}</p>
+            <label class="k4-chk"><input type="checkbox" data-k4-ko="p" /><span>{tx.optPR}</span></label>
+            <label class="k4-chk" data-k4-mfp><input type="checkbox" data-k4-ko="b" /><span>{tx.optMFP}</span></label>
+            <label class="k4-chk"><input type="checkbox" data-k4-ko="k" /><span>{tx.optKr}</span></label>
+            <div class="k4-kr" role="radiogroup" aria-label={tx.optKr}>
+              <label class="volba"><input type="radio" name="k4kr" value="mk" checked data-k4-kr /><span>{tx.krMK}</span></label>
+              <label class="volba"><input type="radio" name="k4kr" value="mg" data-k4-kr /><span>{tx.krMG}</span></label>
+            </div>
+          </fieldset>
+          <label class="k4-chk k4-paska"><input type="checkbox" checked data-k4-pa /><span>{tx.paskaOpt}</span></label>
+        </div>
+        <div class="harok k4-zoznam k4-tlac" data-k4-zoznam aria-live="polite"></div>
+      </div>
     </section>
     <template data-ikona-sipka><Ikona nazov="arrow-right" velkost={16} /></template>
     <template data-ikona-ext><Ikona nazov="external-link" velkost={14} /></template>
@@ -170,18 +227,74 @@ const obrazky = await Promise.all(systemy.map(async ({ k }) => { const p = pikto
   .vysledok :global(.vy-udaje dd) { margin: 1px 0 0; font-weight: 600; font-size: 15px; }
   .vysledok :global(.vy-odkazy) { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: auto; padding-top: 10px; border-top: 1px solid rgb(10 42 94 / 0.08); font-size: 14.5px; font-weight: 500; }
   .vysledok :global(.vy-odkazy a) { display: inline-flex; align-items: center; gap: 6px; }
+  .vysledok :global(.vy-zoznam) { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; border: 1px solid var(--color-blue-700); border-radius: 10px; background: #fff; font: inherit; font-size: 14.5px; font-weight: 600; color: var(--color-blue-700); cursor: pointer; transition: background-color 150ms var(--ease-soft); }
+  .vysledok :global(.vy-zoznam:hover) { background: var(--color-blue-50); }
   .vysledok :global(.vy-pozn) { margin-top: 16px; font-size: 13.5px; color: var(--color-ink-soft); max-width: 60em; }
   .vysledok :global(.vy-varovanie) { padding: 18px 22px; border-radius: 14px; background: #fff7df; color: #7a5200; font-weight: 500; margin-bottom: 16px; }
   .vysledok :global(.vy-akcie) { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; margin-top: 24px; }
   .vysledok :global(.vy-zdiel) { padding: 0; border: 0; background: none; font: inherit; font-weight: 500; color: var(--color-blue-700); cursor: pointer; border-bottom: 1px solid currentColor; }
+  .k4-p { margin: -8px 0 22px; color: var(--color-ink-soft); max-width: 48em; }
+  .k4 { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px; align-items: start; }
+  .k4-vstupy { padding: 24px 26px; display: flex; flex-direction: column; gap: 20px; }
+  .k4-pre { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 700; font-size: 19px; color: var(--color-blue-900); }
+  .k4-pre :global(small) { display: block; font-family: var(--font-text); font-weight: 400; font-size: 14px; color: var(--color-ink-soft); }
+  .k4-polia { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .k4-pole { display: flex; flex-direction: column; gap: 5px; }
+  .k4-l { font-weight: 600; font-size: 14.5px; }
+  .k4-vstup { display: flex; align-items: center; gap: 8px; }
+  .k4-vstup input { width: 100%; height: 48px; padding: 0 14px; border: 1px solid rgb(10 42 94 / 0.18); border-radius: 12px; background: #f8fafd; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 20px; color: var(--color-blue-900); }
+  .k4-vstup input:focus { outline: none; background: #fff; border-color: var(--color-blue-700); box-shadow: 0 0 0 4px rgb(0 93 185 / 0.12); }
+  .k4-vstup span { color: var(--color-ink-soft); font-weight: 500; }
+  .k4-pole small { font-size: 12.5px; color: var(--color-ink-soft); }
+  .k4-konce { border: 0; margin: 0; padding: 16px 0 0; border-top: 1px solid rgb(10 42 94 / 0.08); display: flex; flex-direction: column; gap: 10px; }
+  .k4-konce legend { font-weight: 600; font-size: 15px; padding: 0; }
+  .k4-konce p { font-size: 13.5px; color: var(--color-ink-soft); }
+  .k4-chk { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; align-items: start; font-size: 15px; cursor: pointer; }
+  .k4-chk input { width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--color-blue-700); }
+  .k4-kr { display: flex; flex-wrap: wrap; gap: 8px; padding-left: 32px; }
+  .k4-kr .volba { position: relative; }
+  .k4-kr .volba input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .k4-kr .volba span { display: inline-flex; align-items: center; height: 34px; padding: 0 12px; border-radius: 9px; border: 1px solid rgb(10 42 94 / 0.18); background: #f8fafd; font-size: 14px; font-weight: 500; }
+  .k4-kr .volba input:checked + span { background: var(--color-blue-900); border-color: var(--color-blue-900); color: #fff; }
+  .k4-paska { padding-top: 14px; border-top: 1px solid rgb(10 42 94 / 0.08); }
+  .k4-zoznam { padding: 22px 24px; }
+  .k4-zoznam :global(.k4-h) { font-family: var(--font-display); font-weight: 700; font-size: 20px; margin-bottom: 4px; }
+  .k4-zoznam :global(.k4-trasa) { font-size: 14px; color: var(--color-ink-soft); margin-bottom: 14px; }
+  .k4-zoznam :global(table) { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+  .k4-zoznam :global(th) { text-align: left; font-size: 12.5px; font-weight: 500; color: var(--color-ink-soft); padding: 8px 10px; border-bottom: 1px solid rgb(10 42 94 / 0.12); }
+  .k4-zoznam :global(td) { padding: 11px 10px; border-bottom: 1px solid rgb(10 42 94 / 0.08); vertical-align: top; }
+  .k4-zoznam :global(td.k4-mn) { text-align: right; white-space: nowrap; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 700; font-size: 17px; color: var(--color-blue-900); }
+  .k4-zoznam :global(.k4-kod) { display: inline-flex; align-items: center; gap: 4px; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; color: var(--color-blue-900); white-space: nowrap; }
+  .k4-zoznam :global(.k4-pozn) { display: block; font-size: 12.5px; color: var(--color-ink-soft); margin-top: 2px; }
+  .k4-zoznam :global(.k4-pozn.over) { color: #8a5a00; }
+  .k4-zoznam :global(.k4-akcie) { display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: center; margin-top: 18px; }
+  .k4-zoznam :global(.k4-akcie button) { padding: 0; border: 0; background: none; font: inherit; font-weight: 500; color: var(--color-blue-700); cursor: pointer; border-bottom: 1px solid currentColor; }
+  .k4-zoznam :global(.k4-prazdny) { color: var(--color-ink-soft); }
+  @media print {
+    :global(body *) { visibility: hidden; }
+    .k4-tlac, .k4-tlac :global(*) { visibility: visible; }
+    .k4-tlac { position: absolute; left: 0; top: 0; width: 100%; box-shadow: none; }
+    .k4-tlac :global(.k4-akcie), .k4-tlac :global(.kopia) { display: none; }
+  }
+  @media (max-width: 1000px) { .k4 { grid-template-columns: minmax(0, 1fr); } }
+  @media (max-width: 760px) {
+    .k4-vstupy, .k4-zoznam { padding: 20px 18px; }
+    .k4-zoznam :global(table), .k4-zoznam :global(tbody), .k4-zoznam :global(td) { display: block; }
+    .k4-zoznam :global(thead) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .k4-zoznam :global(tr) { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; padding: 12px 0; border-bottom: 1px solid rgb(10 42 94 / 0.08); }
+    .k4-zoznam :global(td) { padding: 0; border: 0; }
+    .k4-zoznam :global(td:first-child) { grid-column: 1 / -1; }
+  }
   @media (max-width: 1100px) { .volby-k1 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
   @media (max-width: 900px) { .k3 { grid-template-columns: minmax(0, 1fr); } }
   @media (max-width: 760px) { .volby-k1 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; } .volba-k { padding: 12px 14px 16px; } .k3 { padding: 22px 18px; } }
 </style>
 
 <script>
-  type V = { r: string; o: string; d: number[]; t: string; p: string; kw: number | null; pol: string; iz: string; e: string };
-  type Data = { rady: Record<string, { model: string; url: string }>; varianty: V[] };
+  type Diel = { kod: string; n: number; poz?: string; over?: boolean };
+  type M = { rury: number; T: Diel[]; P: Diel[]; PR: Diel[]; MFP: Diel[]; MK?: string; MG?: string; IST?: string; ISP?: string; MP?: string; paska: string };
+  type V = { r: string; o: string; d: number[]; t: string; p: string; kw: number | null; pol: string; iz: string; e: string; m: M };
+  type Data = { rady: Record<string, { model: string; url: string }>; varianty: V[]; diely: Record<string, string> };
 
   function initVyber() {
     const kor = document.querySelector<HTMLElement>('[data-vyber]');
@@ -195,7 +308,9 @@ const obrazky = await Promise.all(systemy.map(async ({ k }) => { const p = pikto
     const kwBlok = kor.querySelector<HTMLElement>('[data-kw-blok]')!, kwVstup = kor.querySelector<HTMLInputElement>('[data-kw-vstup]')!;
     const dChips = kor.querySelector<HTMLElement>('[data-d-chips]')!, vysl = kor.querySelector<HTMLElement>('[data-vysledok]')!;
     const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
-    const stav = { k: '', r: '', kw: 0, d: 0 };
+    const krok4 = kor.querySelector<HTMLElement>('[data-krok4]')!, zoznamEl = kor.querySelector<HTMLElement>('[data-k4-zoznam]')!;
+    // v = obj. číslo pre zoznam materiálu, l/t/sp/w = dĺžka, odbočky, spoje, prestupy, ko = konce (p, b, k), kr = krytka mg, pa = 0 bez pásky
+    const stav = { k: '', r: '', kw: 0, d: 0, v: '', l: 0, t: 0, sp: 0, w: 0, ko: '', kr: '', pa: '' };
 
     const ulozit = () => {
       const u = new URL(location.href);
@@ -215,7 +330,7 @@ const obrazky = await Promise.all(systemy.map(async ({ k }) => { const p = pikto
       ulozit();
     }
     function vyberR(r: string, posun = true) {
-      if (stav.r !== r) { stav.kw = 0; stav.d = 0; }
+      if (stav.r !== r) { stav.kw = 0; stav.d = 0; stav.v = ''; krok4.hidden = true; }
       stav.r = r; oznac('[data-r]', 'r', r);
       const b = kor.querySelector<HTMLElement>(`[data-r="${r}"]`);
       kwBlok.hidden = !b?.dataset.kw;
@@ -237,6 +352,7 @@ const obrazky = await Promise.all(systemy.map(async ({ k }) => { const p = pikto
         <div class="vy-kod">${esc(v.o)}<button type="button" class="kopia" data-kopia="${esc(v.o)}" aria-label="${esc(v.o)}">${copy}</button><small>${esc(rad.model)}</small></div>
         <dl class="vy-udaje">${u.map(([a, b]) => `<div><dt>${esc(a)}</dt><dd>${esc(b)}</dd></div>`).join('')}</dl>
         <div class="vy-odkazy"><a href="${esc(rad.url)}#varianty">${esc(tx.rad)} ${sipka}</a><a href="${esc(v.e)}" target="_blank" rel="noopener">${esc(tx.eshop)} ${ext}</a></div>
+        <button type="button" class="vy-zoznam" data-zoznam="${esc(v.o)}">${esc(tx.zoznamBtn)} ${sipka}</button>
       </article>`;
     }
 
@@ -270,10 +386,79 @@ const obrazky = await Promise.all(systemy.map(async ({ k }) => { const p = pikto
       const dopyt = hlavny ? `${kor.dataset.firmy}?rad=${encodeURIComponent(`${data.rady[hlavny.r].model} ${hlavny.o}`)}#dopyt` : `${kor.dataset.firmy}#dopyt`;
       vysl.innerHTML = `<div class="vy-h"><h3>${esc(tx.vysledok)}</h3></div>${obsah}
         <div class="vy-akcie"><a class="btn btn-yellow" href="${esc(dopyt)}">${esc(tx.dopyt)} ${sipka}</a><button type="button" class="vy-zdiel" data-zdiel>${esc(tx.zdiel)}</button></div>`;
+      vysl.querySelectorAll<HTMLButtonElement>('[data-zoznam]').forEach((b) => b.addEventListener('click', () => otvorZoznam(b.dataset.zoznam!)));
       vysl.querySelector<HTMLButtonElement>('[data-zdiel]')?.addEventListener('click', async (e) => {
         try { await navigator.clipboard.writeText(location.href); (e.target as HTMLElement).textContent = tx.skopirovany; } catch { /* schránka nedostupná */ }
       });
     }
+
+    // --- Krok 4: zoznam materiálu na trasu ---
+    const vstupy = [...kor.querySelectorAll<HTMLInputElement>('[data-k4]')];
+    const konce = [...kor.querySelectorAll<HTMLInputElement>('[data-k4-ko]')];
+    const krytky = [...kor.querySelectorAll<HTMLInputElement>('[data-k4-kr]')];
+    const paska = kor.querySelector<HTMLInputElement>('[data-k4-pa]')!;
+    const naVstupy = () => {
+      vstupy.forEach((i) => { const k = i.dataset.k4 as 'l' | 't' | 'sp' | 'w'; i.value = stav[k] || k === 'l' ? String(stav[k] || '') : '0'; });
+      konce.forEach((c) => (c.checked = stav.ko.includes(c.dataset.k4Ko!)));
+      krytky.forEach((c) => (c.checked = c.value === (stav.kr || 'mk')));
+      paska.checked = stav.pa !== '0';
+    };
+    const zVstupov = () => {
+      for (const i of vstupy) { const k = i.dataset.k4 as 'l' | 't' | 'sp' | 'w'; stav[k] = Math.max(0, Math.min(5000, Math.round(Number(i.value) || 0))); }
+      stav.ko = konce.filter((c) => c.checked).map((c) => c.dataset.k4Ko).join('');
+      stav.kr = krytky.find((c) => c.checked)?.value === 'mg' ? 'mg' : '';
+      stav.pa = paska.checked ? '' : '0';
+    };
+    function otvorZoznam(obj: string, posun = true) {
+      if (!data.varianty.some((x) => x.o === obj && x.r === stav.r)) return;
+      stav.v = obj;
+      krok4.hidden = false;
+      naVstupy();
+      kresliZoznam();
+      if (posun) krok4.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      ulozit();
+    }
+    function kresliZoznam() {
+      const v = data.varianty.find((x) => x.o === stav.v && x.r === stav.r);
+      if (!v) return;
+      const m = v.m, rad = data.rady[v.r];
+      kor.querySelector<HTMLElement>('[data-k4-pre]')!.innerHTML = `${esc(v.o)}<small>${esc(rad.model)} · ${esc(v.t)}${v.p ? ` · ${esc(tx.plastL.toLowerCase())} ${esc(v.p)} mm` : ''}</small>`;
+      kor.querySelector<HTMLElement>('[data-k4-mfp]')!.hidden = !m.MFP.length;
+      if (!stav.l) { zoznamEl.innerHTML = `<p class="k4-prazdny">${esc(tx.prazdny)}</p>`; return; }
+      const kon = 2 + stav.t;
+      type Riadok = { nazov: string; kod: string; n: number; j: string; pozn?: string; over?: boolean };
+      const rr: Riadok[] = [{ nazov: `${tx.nazvy.potrubie} ${rad.model}`, kod: v.o, n: stav.l + kon, j: tx.m, pozn: tx.rezerva.replace('0', String(kon)) }];
+      const pridaj = (druh: keyof typeof tx.nazvy, diely: Diel[], krat: number) => {
+        for (const d of diely) if (krat * d.n > 0) rr.push({ nazov: tx.nazvy[druh], kod: d.kod, n: krat * d.n, j: tx.ks, pozn: d.poz, over: d.over });
+      };
+      if (stav.ko.includes('p')) pridaj('PR', m.PR, kon);
+      if (stav.ko.includes('b')) pridaj('MFP', m.MFP, kon);
+      if (stav.ko.includes('k')) { const kod = stav.kr === 'mg' ? m.MG : m.MK; rr.push({ nazov: tx.nazvy[stav.kr === 'mg' ? 'MG' : 'MK'], kod: kod ?? '', n: kon, j: tx.ks }); }
+      if (stav.t) { pridaj('T', m.T, stav.t); rr.push({ nazov: tx.nazvy.IST, kod: m.IST ?? '', n: stav.t, j: tx.ks }); }
+      if (stav.sp) { pridaj('P', m.P, stav.sp); rr.push({ nazov: tx.nazvy.ISP, kod: m.ISP ?? '', n: stav.sp, j: tx.ks }); }
+      if (stav.w) rr.push({ nazov: tx.nazvy.MP, kod: m.MP ?? '', n: stav.w, j: tx.ks });
+      if (stav.pa !== '0') rr.push({ nazov: tx.nazvy.paska, kod: m.paska, n: stav.l, j: tx.m });
+      const trasa = `${tx.trasa}: ${stav.l} m, ${tx.odbocky.toLowerCase()} ${stav.t}, ${tx.spoje.toLowerCase()} ${stav.sp}, ${tx.prestupy.toLowerCase()} ${stav.w}`;
+      const text = [`${tx.hlavickaZoznamu}`, trasa, ...rr.map((x) => `${x.nazov}${x.pozn ? ` (${x.pozn})` : ''}: ${x.kod || tx.bezKodu}, ${x.n} ${x.j}`)].join('\n');
+      const kodHtml = (x: Riadok) => x.kod
+        ? `<span class="k4-kod">${data.diely[x.kod] ? `<a href="${esc(data.diely[x.kod])}">${esc(x.kod)}</a>` : esc(x.kod)}<button type="button" class="kopia" data-kopia="${esc(x.kod)}" aria-label="${esc(x.kod)}">${copy}</button></span>`
+        : `<span class="k4-pozn">${esc(tx.bezKodu)}</span>`;
+      const dopyt = `${kor.dataset.firmy}?rad=${encodeURIComponent(`${rad.model} ${v.o}`)}&zoznam=${encodeURIComponent(text)}#dopyt`;
+      zoznamEl.innerHTML = `<p class="k4-h">${esc(tx.hlavickaZoznamu)}</p><p class="k4-trasa">${esc(trasa)}</p>
+        <table><thead><tr><th>${esc(tx.polozka)}</th><th>${esc(tx.ui_obj)}</th><th style="text-align:right">${esc(tx.mnozstvo)}</th></tr></thead><tbody>
+        ${rr.map((x) => `<tr><td>${esc(x.nazov)}${x.pozn ? `<span class="k4-pozn">${esc(x.pozn)}</span>` : ''}${x.over ? `<span class="k4-pozn over">${esc(tx.overT)}</span>` : ''}</td><td>${kodHtml(x)}</td><td class="k4-mn">${x.n} ${esc(x.j)}</td></tr>`).join('')}
+        </tbody></table>
+        <div class="k4-akcie"><a class="btn btn-yellow" href="${esc(dopyt)}">${esc(tx.poslat)} ${sipka}</a><button type="button" data-k4-kopia>${esc(tx.kopirovatZoznam)}</button><button type="button" data-k4-tlac>${esc(tx.tlacit)}</button></div>`;
+      zoznamEl.querySelector<HTMLButtonElement>('[data-k4-kopia]')!.addEventListener('click', async (e) => {
+        try { await navigator.clipboard.writeText(text); (e.target as HTMLElement).textContent = tx.skopirovanyZoznam; } catch { /* schránka nedostupná */ }
+      });
+      zoznamEl.querySelector<HTMLButtonElement>('[data-k4-tlac]')!.addEventListener('click', () => window.print());
+    }
+    let casovac4 = 0;
+    kor.querySelector<HTMLElement>('.k4-vstupy')!.addEventListener('input', () => {
+      clearTimeout(casovac4);
+      casovac4 = window.setTimeout(() => { zVstupov(); kresliZoznam(); ulozit(); }, 150);
+    });
 
     kor.querySelectorAll<HTMLElement>('[data-k]').forEach((b) => b.addEventListener('click', () => vyberK(b.dataset.k!)));
     kor.querySelectorAll<HTMLElement>('[data-r]').forEach((b) => b.addEventListener('click', () => vyberR(b.dataset.r!)));
@@ -295,12 +480,18 @@ const obrazky = await Promise.all(systemy.map(async ({ k }) => { const p = pikto
     // Obnova zo zdieľaného odkazu.
     const q = new URLSearchParams(location.search);
     stav.kw = Number(q.get('kw')) || 0; stav.d = Number(q.get('d')) || 0;
+    const v0 = q.get('v') ?? '';
+    const z0 = { l: Number(q.get('l')) || 0, t: Number(q.get('t')) || 0, sp: Number(q.get('sp')) || 0, w: Number(q.get('w')) || 0, ko: (q.get('ko') ?? '').replace(/[^pbk]/g, ''), kr: q.get('kr') === 'mg' ? 'mg' : '', pa: q.get('pa') === '0' ? '0' : '' };
     const r0 = q.get('r') ?? '', k0 = q.get('k') ?? '';
     if (k0 && kor.querySelector(`[data-k="${k0}"]`)) {
       stav.r = r0;
       const kw = stav.kw, d = stav.d;
       vyberK(k0, false);
-      if (r0 && kor.querySelector(`[data-pre="${k0}"] [data-r="${r0}"]`)) { stav.r = ''; vyberR(r0, false); stav.kw = kw; stav.d = d; kwVstup.value = kw ? String(kw) : ''; vypis(); ulozit(); }
+      if (r0 && kor.querySelector(`[data-pre="${k0}"] [data-r="${r0}"]`)) {
+        stav.r = ''; vyberR(r0, false); stav.kw = kw; stav.d = d; kwVstup.value = kw ? String(kw) : ''; vypis();
+        if (v0) { Object.assign(stav, z0); otvorZoznam(v0, false); }
+        ulozit();
+      }
     }
   }
   initVyber();

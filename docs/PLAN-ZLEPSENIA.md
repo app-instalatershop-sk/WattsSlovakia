@@ -65,7 +65,18 @@ a odoslanie ako dopyt (predvyplnený formulár Pre firmy).
 | Prestup stenou | tesnenie MICRO PRESS podľa plášťa, pre tlakovú vodu MICRO SEAL | katalóg s. 30, voľba ❔ |
 | Výstražná páska | dĺžka trasy | katalóg s. 37 |
 
+**Hotové 23. 9.** ako krok 4 sprievodcu výberom (`lib/material.ts`, `templates/Vyber.astro`). Juraj
+potvrdil: rezerva 1 m na každý koniec, krytka na výber (zmršťovacia MK alebo gumová EPDM), odbočky
+a spoje so spojkami aj izolačnými sadami. Čo patrí na konce trasy, nevie: zákazník si to zaškrtne sám,
+nič nie je predvolené (otázka č. 14 pre manažéra). Počet koncov = 2 + počet odbočiek. Spojky sa vyberajú
+podľa rúry a SDR, izolačné sady a MICRO PRESS podľa plášťa, krytky a pevné body z katalógu. Pri
+sanitárnych T-spojkách poznámka „overíme pri dopyte“ (v tabuľke výrobcu nesedia obj. čísla s rozmermi,
+otázka č. 11). Zoznam sa pošle ako dopyt (vyplní poznámku formulára Pre firmy), skopíruje alebo vytlačí;
+celé zadanie je v adrese.
+
 ## Krok 4: Cena a dostupnosť z e-shopu
 
 Otázka pre manažéra (dokument „Microflex Slovensko: otázky pre manažéra“): povoliť cenu a dostupnosť
 pri obj. číslach z exportu e-shopu. Rozhodnutie z 21. 9. je „fáza 1 bez cien“.
+
+**Hotové 23. 9.:** otázka č. 9 v dokumente pre manažéra.

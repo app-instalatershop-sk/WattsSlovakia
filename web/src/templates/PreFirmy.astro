@@ -179,6 +179,10 @@ const polia = { meno: tx.meno, firma: tx.firma, email: tx.email, telefon: tx.tel
     const rad = new URLSearchParams(location.search).get('rad');
     const radPole = f.querySelector<HTMLInputElement>('[data-rad]');
     if (rad && radPole && !radPole.value) radPole.value = rad;
+    // Zoznam materiálu zo sprievodcu výberom príde ako ?zoznam= a vloží sa do poznámky.
+    const zoznam = new URLSearchParams(location.search).get('zoznam');
+    const poznamka = f.elements.namedItem('poznamka') as HTMLTextAreaElement | null;
+    if (zoznam && poznamka && !poznamka.value) { poznamka.value = zoznam; poznamka.rows = Math.min(16, zoznam.split('\n').length + 1); }
     const chyba = f.querySelector<HTMLElement>('[data-chyba-text]')!;
     f.addEventListener('submit', (e) => {
       e.preventDefault();

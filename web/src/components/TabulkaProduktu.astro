@@ -2,6 +2,7 @@
 /**
  * Tabuľka obj. čísel spojky alebo dielu príslušenstva z vyčistenej tabuľky výrobcu (hlavičky a jednotky
  * z data/produkty_texty.py). Prvý stĺpec je obj. číslo s kopírovaním, posledný odkaz do e-shopu.
+ * Pri krytkách a pevnom bode stĺpec „Pre potrubie“: obj. čísla potrubia z katalógu s odkazom na tabuľku radu.
  * Pod 760 px je riadok karta, ako pri variantoch potrubia.
  */
 import Ikona from './Ikona.astro';
@@ -9,20 +10,25 @@ import { stranky } from '../content/stranky';
 import { type Lang, t, ESHOP_SEARCH } from '../i18n/ui';
 
 interface Tabulka { hlavicky: string[]; hlavicky_cs: string[]; jednotky: (string | null)[]; riadky: string[][]; riadky_cs: string[][] }
-interface Props { tabulka: Tabulka; lang: Lang }
-const { tabulka, lang } = Astro.props;
+/** pouzitie: obj. číslo dielu → obj. čísla potrubia; potrubia: obj. číslo potrubia → adresa tabuľky radu. */
+interface Props { tabulka: Tabulka; lang: Lang; pouzitie?: Record<string, string[]>; potrubia?: Record<string, string> }
+const { tabulka, lang, pouzitie = {}, potrubia = {} } = Astro.props;
 const ui = t(lang);
 const tx = stranky(lang).rad;
 const hlavicky = lang === 'cs' ? tabulka.hlavicky_cs : tabulka.hlavicky;
 const riadky = lang === 'cs' ? tabulka.riadky_cs : tabulka.riadky;
 // Číselné stĺpce zarovnané doprava: bunky sú čísla, rozmery alebo závity.
 const cisla = hlavicky.map((_, i) => i > 0 && riadky.every((r) => !r[i] || /^[\d\s,.×x+–/″Ø~-]+$/.test(r[i])));
+const txp = stranky(lang).produkt;
+const iPre = hlavicky.findIndex((x) => x === txp.prePotrubie);
+const pridatPre = iPre < 0 && riadky.some((r) => pouzitie[r[0]]?.length);
 ---
 <div class="tp-obal">
   <table class="data tp">
     <thead>
       <tr>
         {hlavicky.map((h, i) => <th scope="col" class:list={{ right: cisla[i] }}>{h}{tabulka.jednotky[i] && <small>{tabulka.jednotky[i]}</small>}</th>)}
+        {pridatPre && <th scope="col">{txp.prePotrubie}</th>}
         <th scope="col"><span class="sr">{ui.tabulka.eshop}</span></th>
       </tr>
     </thead>
@@ -33,7 +39,10 @@ const cisla = hlavicky.map((_, i) => i > 0 && riadky.every((r) => !r[i] || /^[\d
             <span>{r[0]}</span>
             <button type="button" class="kopia" data-kopia={r[0]} aria-label={`${tx.kopirovat} ${r[0]}`} title={tx.kopirovat}><Ikona nazov="copy" velkost={15} /></button>
           </span></td>
-          {r.slice(1).map((c, j) => <td class:list={{ right: cisla[j + 1], dlhy: c.length > 22 }} data-l={`${hlavicky[j + 1]}${tabulka.jednotky[j + 1] ? `, ${tabulka.jednotky[j + 1]}` : ''}`}>{c}</td>)}
+          {r.slice(1).map((c, j) => (j + 1 === iPre
+            ? <td class="dlhy pre" data-l={txp.prePotrubie}>{c.split(', ').map((k, i) => <>{i > 0 && ', '}{potrubia[k] ? <a href={potrubia[k]}>{k}</a> : k}</>)}</td>
+            : <td class:list={{ right: cisla[j + 1], dlhy: c.length > 22 }} data-l={`${hlavicky[j + 1]}${tabulka.jednotky[j + 1] ? `, ${tabulka.jednotky[j + 1]}` : ''}`}>{c}</td>))}
+          {pridatPre && <td class="dlhy pre" data-l={txp.prePotrubie}>{(pouzitie[r[0]] ?? []).map((k, i) => <>{i > 0 && ', '}{potrubia[k] ? <a href={potrubia[k]}>{k}</a> : k}</>)}</td>}
           <td class="tp-shop"><a href={ESHOP_SEARCH + encodeURIComponent(r[0])} target="_blank" rel="noopener">{ui.common.doEshopu} <Ikona nazov="external-link" velkost={14} /></a></td>
         </tr>
       ))}
@@ -47,6 +56,8 @@ const cisla = hlavicky.map((_, i) => i > 0 && riadky.every((r) => !r[i] || /^[\d
   .tp th, .tp td { padding: 13px 14px; }
   .tp td.code { padding-block: 8px; }
   .tp td.dlhy { white-space: normal; min-width: 16em; }
+  .tp td.pre { font-size: 13.5px; line-height: 1.6; color: var(--color-ink-soft); }
+  .tp td.pre a { font-weight: 500; white-space: nowrap; }
   .tp-kod { display: flex; align-items: center; gap: 6px; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 15px; letter-spacing: 0.01em; color: var(--color-blue-900); white-space: nowrap; }
   .tp-shop a { display: inline-flex; align-items: center; gap: 6px; font-weight: 500; color: var(--color-blue-700); white-space: nowrap; }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }

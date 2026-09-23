@@ -39,6 +39,13 @@ protiprachovú krytku MS a gumovú krytku EPDM MG. Príklad: M9032C → MK2100, 
 
 Hotovo, keď má príslušenstvo každý variant, ktorý katalóg uvádza, a náhodná kontrola 5 riadkov sedí s katalógom.
 
+**Hotové 23. 9.:** `data/prislusenstvo.py` číta bloky katalógu; príslušenstvo má 62 z 91 variantov
+potrubia (zvyšok katalóg v tabuľkách príslušenstva neuvádza: časť sanitárneho DUO, COOL s káblom, HP,
+COOL DUO, QUADRO 200 mm). Sanitárne DUO má na watts.eu príponu SWI, v katalógu S (`kod_katalogu`).
+Gumové krytky EPDM majú tabuľky 7, 3 a 1 obj. čísla, krytky a pevný bod stĺpec „Pre potrubie“.
+Hľadanie kódu krytky nájde aj potrubia (MK2100 → 8 variantov). Opravená aj staršia chyba: klik do
+riadku tabuľky variantov prepínal filter izolácie.
+
 ## Krok 3: Zoznam materiálu na trasu
 
 Nový krok sprievodcu výberom: rad a dimenzia, dĺžka trasy, počet koncov, odbočiek, priamych spojov

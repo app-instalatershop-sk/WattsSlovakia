@@ -55,6 +55,7 @@ const varianty = defineCollection({
     kotuc: z.object({ d: z.number().nullable(), sirka: z.number().nullable() }).nullable().optional(),
     eshop_url: z.string().url(), raw: z.record(z.string(), z.string()),
     vykon_kw: n, zdroj_strana: n,
+    prislusenstvo: z.array(z.object({ druh: z.enum(['MK', 'MS', 'MG', 'MFP', 'MPP']), obj: z.string(), zavit: s, pocet: n, produkt: s })).optional(),
   }),
 });
 
@@ -64,6 +65,7 @@ const produkty = defineCollection({
     id: z.string(), slug: z.string(), slug_cs: z.string(), skupina: z.string(), kategoria: z.string(), poradie: z.number(),
     nazov: z.string(), nazov_cs: s, nazov_watts: z.string(), popis: z.string().nullable(), popis_cs: s,
     subory: z.array(subor), pocet_variantov: z.number(), tabulky: z.array(tabulka),
+    pouzitie: z.record(z.string(), z.array(z.string())).optional(),
     zdroj_url: z.string().url(), stiahnute: z.string(),
   }),
 });

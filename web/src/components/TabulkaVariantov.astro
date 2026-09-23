@@ -2,15 +2,17 @@
 /**
  * Tabuľka variantov radu: filter podľa priemeru nosnej rúry a izolácie, kopírovanie obj. čísla,
  * výkon z katalógu výrobcu. Poradie podľa rúry a plášťa, takže štandardná a zosilnená izolácia
- * tej istej rúry stoja pod sebou. Pod 760 px je každý variant karta.
+ * tej istej rúry stoja pod sebou. Príslušenstvo z katalógu (krytky, pevné body) sa rozbalí pod riadkom.
+ * Pod 760 px je každý variant karta.
  */
 import Ikona from './Ikona.astro';
 import { cislo, datum, priemery, ruraText, type Variant } from '../lib/katalog';
 import { stranky } from '../content/stranky';
-import { type Lang, t } from '../i18n/ui';
+import { type Lang, t, ESHOP_SEARCH } from '../i18n/ui';
 
-interface Props { varianty: Variant[]; zdroj: string; stiahnute: string; lang: Lang; primoZaklad?: string }
-const { varianty, zdroj, stiahnute, lang, primoZaklad } = Astro.props;
+/** diely: id produktu → adresa jeho stránky (odkaz pri kúsku príslušenstva). */
+interface Props { varianty: Variant[]; zdroj: string; stiahnute: string; lang: Lang; primoZaklad?: string; diely?: Record<string, string> }
+const { varianty, zdroj, stiahnute, lang, primoZaklad, diely = {} } = Astro.props;
 const ui = t(lang);
 const tx = stranky(lang).rad;
 const ma = (k: keyof Variant) => varianty.some((v) => v[k] !== null && v[k] !== undefined && v[k] !== '');
@@ -21,6 +23,9 @@ const izolacie = new Set(varianty.map((v) => v.izolacia).filter(Boolean));
 const strany = [...new Set(varianty.map((v) => v.zdroj_strana).filter((x): x is number => typeof x === 'number'))];
 const zKatalogu = strany.length > 0 && varianty.every((v) => typeof v.zdroj_strana === 'number');
 const maVykon = ma('vykon_kw');
+const maPrisl = varianty.some((v) => v.prislusenstvo?.length);
+const stlpcov = 2 + [maRuru, ma('dn'), ma('plast_mm'), maVykon, ma('tlak_bar'), ma('hmotnost_kg_m'), ma('polomer_ohybu_m'), ma('kotuc'), izolacie.size > 0, maPrisl].filter(Boolean).length;
+const idDetailu = (v: Variant) => `pr-${v.obj_cislo.replace(/[^A-Za-z0-9]/g, '')}`;
 ---
 <div class="tv" data-tv>
   {(rury.length > 2 || izolacie.size > 1) && (
@@ -62,11 +67,12 @@ const maVykon = ma('vykon_kw');
           {ma('polomer_ohybu_m') && <th scope="col" class="right">{ui.tabulka.polomer}<small>m</small></th>}
           {ma('kotuc') && <th scope="col" class="right">{ui.tabulka.kotuc}<small>m</small></th>}
           {izolacie.size > 0 && <th scope="col">{ui.tabulka.izolacia}</th>}
+          {maPrisl && <th scope="col">{tx.prislusenstvo}</th>}
           <th scope="col"><span class="sr">{ui.tabulka.eshop}</span></th>
         </tr>
       </thead>
       <tbody>
-        {zoradene.map((v) => (
+        {zoradene.map((v) => (<>
           <tr data-rury={priemery(v).join(' ')} data-izolacia={v.izolacia ?? ''}>
             <td class="code"><span class="tv-kod-obal">
               <span class="tv-kod">{v.obj_cislo}</span>
@@ -81,9 +87,29 @@ const maVykon = ma('vykon_kw');
             {ma('polomer_ohybu_m') && <td class="right" data-l={`${ui.tabulka.polomer}, m`}>{cislo(v.polomer_ohybu_m, 2)}</td>}
             {ma('kotuc') && <td class="right" data-l={`${ui.tabulka.kotuc}, m`}>{v.kotuc ? `${cislo(v.kotuc.d, 2)} / ${cislo(v.kotuc.sirka, 2)}` : ''}</td>}
             {izolacie.size > 0 && <td data-l={ui.tabulka.izolacia}>{v.izolacia && <span class:list={['tv-iz', { zos: v.izolacia === 'zosilnena' }]}>{v.izolacia === 'zosilnena' ? ui.tabulka.zosilnena : ui.tabulka.standard}</span>}</td>}
+            {maPrisl && <td class="tv-pr-td">{v.prislusenstvo?.length ? <button type="button" class="tv-pr" aria-expanded="false" aria-controls={idDetailu(v)} data-pr>{tx.dielov(v.prislusenstvo.length)} <Ikona nazov="chevron-down" velkost={16} /></button> : null}</td>}
             <td class="tv-shop"><a href={v.eshop_url} target="_blank" rel="noopener">{ui.common.doEshopu} <Ikona nazov="external-link" velkost={14} /></a></td>
           </tr>
-        ))}
+          {v.prislusenstvo?.length ? (
+            <tr class="tv-det" id={idDetailu(v)} hidden>
+              <td colspan={stlpcov}>
+                <ul class="tv-diely">
+                  {v.prislusenstvo.map((d) => (
+                    <li>
+                      <span class="tv-diel-druh">{tx.druhy[d.druh]}{d.zavit && <small>{d.zavit}</small>}</span>
+                      <span class="tv-diel-kod">{d.obj}<button type="button" class="kopia" data-kopia={d.obj} aria-label={`${tx.kopirovat} ${d.obj}`} title={tx.kopirovat}><Ikona nazov="copy" velkost={14} /></button></span>
+                      {d.pocet === 2 && <span class="tv-diel-ks">{tx.ks2}</span>}
+                      <span class="tv-diel-odkazy">
+                        {d.produkt && diely[d.produkt] && <a href={diely[d.produkt]}>{tx.stranaDielu}</a>}
+                        <a href={ESHOP_SEARCH + encodeURIComponent(d.obj)} target="_blank" rel="noopener">{ui.common.doEshopu} <Ikona nazov="external-link" velkost={13} /></a>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </td>
+            </tr>
+          ) : null}
+        </>))}
       </tbody>
     </table>
   </div>
@@ -93,6 +119,7 @@ const maVykon = ma('vykon_kw');
     {ma('hmotnost_kg_m') && <p>{ui.tabulka.zdrojPozn}</p>}
     {primoZaklad && <p>{tx.primoPozn(primoZaklad)}</p>}
     {!ma('plast_mm') && <p>{tx.bezPlasta}</p>}
+    {maPrisl && <p>{tx.prislPozn}</p>}
     <p>{zKatalogu ? tx.zdrojStrana(strany[0]) : <>{ui.common.zdroj} {datum(stiahnute, lang)}. <a href={zdroj} target="_blank" rel="noopener">{ui.common.strankaVyrobcu}</a>.</>}</p>
   </div>
 </div>
@@ -113,6 +140,21 @@ const maVykon = ma('vykon_kw');
   .tv-iz { display: inline-flex; align-items: center; gap: 7px; }
   .tv-iz::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--color-grey-300); }
   .tv-iz.zos::before { background: var(--color-blue-700); box-shadow: 0 0 0 3px rgb(0 93 185 / 0.15); }
+  .tv-pr { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 10px 0 12px; border: 1px solid rgb(10 42 94 / 0.16); border-radius: 9px; background: #fff; font: inherit; font-size: 13.5px; font-weight: 500; color: var(--color-ink); cursor: pointer; white-space: nowrap; transition: border-color 150ms var(--ease-soft), background-color 150ms var(--ease-soft); }
+  .tv-pr:hover { border-color: var(--color-blue-700); }
+  .tv-pr :global(.icon) { color: var(--color-blue-700); transition: transform 200ms var(--ease-soft); }
+  .tv-pr[aria-expanded="true"] { background: var(--color-blue-50); border-color: var(--color-blue-700); }
+  .tv-pr[aria-expanded="true"] :global(.icon) { transform: rotate(180deg); }
+  .tv-tab tr.tv-det > td { padding: 4px 14px 18px; background: linear-gradient(180deg, #f3f7fc 0%, #f8fafd 100%); white-space: normal; }
+  .tv-tab tbody tr.tv-det:hover { background: transparent; }
+  .tv-diely { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px; }
+  .tv-diely li { display: flex; flex-direction: column; gap: 3px; padding: 12px 14px; border-radius: 12px; background: #fff; box-shadow: 0 1px 0 rgb(10 42 94 / 0.05), 0 10px 22px -16px rgb(10 42 94 / 0.45); }
+  .tv-diel-druh { font-size: 13px; color: var(--color-ink-soft); }
+  .tv-diel-druh small { margin-left: 8px; font-size: 13px; color: var(--color-ink); font-weight: 500; }
+  .tv-diel-kod { display: flex; align-items: center; gap: 4px; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 16px; color: var(--color-blue-900); }
+  .tv-diel-ks { align-self: flex-start; padding: 2px 8px; border-radius: 6px; background: #fff4cc; font-size: 12.5px; font-weight: 600; color: #6b4d00; }
+  .tv-diel-odkazy { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 2px; font-size: 13.5px; font-weight: 500; }
+  .tv-diel-odkazy a { display: inline-flex; align-items: center; gap: 4px; }
   .tv-shop a { display: inline-flex; align-items: center; gap: 6px; font-weight: 500; color: var(--color-blue-700); }
   .tv-shop a:hover { color: var(--color-blue-900); }
 
@@ -132,7 +174,11 @@ const maVykon = ma('vykon_kw');
     .tv-tab td { display: block; padding: 0; border: 0; white-space: normal; text-align: left; font-size: 14.5px; }
     .tv-tab td[data-l]::before { content: attr(data-l); display: block; font-size: 11.5px; line-height: 1.3; color: var(--color-ink-soft); margin-bottom: 1px; }
     .tv-tab td:empty { display: none; }
-    .tv-tab td.viac { grid-column: 1 / -1; }
+    .tv-tab td.viac, .tv-tab td.tv-pr-td { grid-column: 1 / -1; }
+    .tv-tab tbody tr.tv-det { display: block; padding: 0 18px 16px; border-bottom: 1px solid rgb(10 42 94 / 0.08); }
+    .tv-tab tbody tr.tv-det[hidden] { display: none; }
+    .tv-tab tr.tv-det > td { display: block; padding: 12px; border-radius: 14px; }
+    .tv-diely { grid-template-columns: minmax(0, 1fr); }
     .tv-tab td.code { grid-column: 1 / 3; padding: 0; }
     .tv-kod-obal { font-size: 17px; }
     .tv-tab td.tv-shop { grid-column: 3; grid-row: 1; justify-self: end; align-self: center; white-space: nowrap; }
@@ -145,7 +191,17 @@ const maVykon = ma('vykon_kw');
     document.querySelectorAll<HTMLElement>('[data-tv]').forEach((tv) => {
       if (tv.dataset.init) return;
       tv.dataset.init = '1';
-      const riadky = [...tv.querySelectorAll<HTMLTableRowElement>('tbody tr')];
+      const riadky = [...tv.querySelectorAll<HTMLTableRowElement>('tbody tr[data-rury]')];
+      // Riadok s príslušenstvom je vidieť, len keď je jeho variant viditeľný a rozbalený.
+      const detail = (r: HTMLTableRowElement) => {
+        const b = r.querySelector<HTMLElement>('[data-pr]');
+        const d = b ? document.getElementById(b.getAttribute('aria-controls')!) : null;
+        if (d) d.hidden = r.hidden || b!.getAttribute('aria-expanded') !== 'true';
+      };
+      tv.querySelectorAll<HTMLButtonElement>('[data-pr]').forEach((b) => b.addEventListener('click', () => {
+        b.setAttribute('aria-expanded', String(b.getAttribute('aria-expanded') !== 'true'));
+        detail(b.closest('tr')!);
+      }));
       const pocet = tv.querySelector<HTMLElement>('[data-pocet]');
       const stav = { rura: '', izolacia: '' };
       const obnov = () => {
@@ -153,15 +209,16 @@ const maVykon = ma('vykon_kw');
         for (const r of riadky) {
           const ok = (!stav.rura || (r.dataset.rury ?? '').split(' ').includes(stav.rura)) && (!stav.izolacia || r.dataset.izolacia === stav.izolacia);
           r.hidden = !ok;
+          detail(r);
           if (ok) n++;
         }
         if (pocet) pocet.textContent = (pocet.dataset.sablona ?? '').replace('{n}', String(n)).replace('{z}', String(riadky.length));
       };
-      tv.querySelectorAll<HTMLButtonElement>('[data-rura], [data-izolacia]').forEach((b) => {
+      tv.querySelectorAll<HTMLButtonElement>('button[data-rura], button[data-izolacia]').forEach((b) => {
         b.addEventListener('click', () => {
           const kluc = 'rura' in b.dataset ? 'rura' : 'izolacia';
           stav[kluc] = b.dataset[kluc] ?? '';
-          tv.querySelectorAll<HTMLButtonElement>(`[data-${kluc}]`).forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+          tv.querySelectorAll<HTMLButtonElement>(`button[data-${kluc}]`).forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
           obnov();
         });
       });

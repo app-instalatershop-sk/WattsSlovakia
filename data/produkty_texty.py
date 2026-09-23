@@ -108,16 +108,16 @@ PRODUKTY = {
         popis_cs='Teplem smrštitelná krytka na konec potrubí se dvěma trubkami. Zabrání vniknutí vody mezi vnější plášť a izolované nosné trubky.'),
     'dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach': dict(
         nazov='Gumová krytka EPDM pre UNO', nazov_cs='Pryžová krytka EPDM pro UNO',
-        popis='Gumová koncová krytka z EPDM na potrubie s jednou rúrou. Obj. čísla pre jednotlivé rozmery sú v katalógu výrobcu pri každom rade.',
-        popis_cs='Pryžová koncová krytka z EPDM na potrubí s jednou trubkou. Obj. čísla pro jednotlivé rozměry jsou v katalogu výrobce u každé řady.'),
+        popis='Gumová koncová krytka z EPDM na potrubie s jednou rúrou. Utesní koniec potrubia natrvalo, aby sa medzi plášť a rúru nedostala voda. Obj. číslo závisí od plášťa a rúry; v tabuľke je pri každom aj potrubie, ku ktorému patrí.',
+        popis_cs='Pryžová koncová krytka z EPDM na potrubí s jednou trubkou. Utěsní konec potrubí natrvalo, aby se mezi plášť a trubku nedostala voda. Obj. číslo závisí na plášti a trubce; v tabulce je u každého i potrubí, ke kterému patří.'),
     'dokoncenie-uzaverov-epdm-na-dvojitych-potrubiach': dict(
         nazov='Gumová krytka EPDM pre DUO', nazov_cs='Pryžová krytka EPDM pro DUO',
-        popis='Gumová koncová krytka z EPDM na potrubie s dvoma rúrami. Obj. čísla pre jednotlivé rozmery sú v katalógu výrobcu pri každom rade.',
-        popis_cs='Pryžová koncová krytka z EPDM na potrubí se dvěma trubkami. Obj. čísla pro jednotlivé rozměry jsou v katalogu výrobce u každé řady.'),
+        popis='Gumová koncová krytka z EPDM na potrubie s dvoma rúrami. Utesní koniec potrubia natrvalo, aby sa medzi plášť a rúry nedostala voda. Obj. číslo závisí od plášťa a rúr; v tabuľke je pri každom aj potrubie, ku ktorému patrí.',
+        popis_cs='Pryžová koncová krytka z EPDM na potrubí se dvěma trubkami. Utěsní konec potrubí natrvalo, aby se mezi plášť a trubky nedostala voda. Obj. číslo závisí na plášti a trubkách; v tabulce je u každého i potrubí, ke kterému patří.'),
     'dokoncenie-uzaverov-epdm-na-potrubiach-quadro': dict(
         nazov='Gumová krytka EPDM pre QUADRO', nazov_cs='Pryžová krytka EPDM pro QUADRO',
-        popis='Gumová koncová krytka z EPDM na potrubie QUADRO. Obj. čísla sú v katalógu výrobcu pri rade QUADRO.',
-        popis_cs='Pryžová koncová krytka z EPDM na potrubí QUADRO. Obj. čísla jsou v katalogu výrobce u řady QUADRO.'),
+        popis='Gumová koncová krytka z EPDM na potrubie QUADRO. Utesní koniec potrubia natrvalo, aby sa medzi plášť a rúry nedostala voda. Katalóg ju uvádza pre QUADRO s plášťom 160 mm.',
+        popis_cs='Pryžová koncová krytka z EPDM na potrubí QUADRO. Utěsní konec potrubí natrvalo, aby se mezi plášť a trubky nedostala voda. Katalog ji uvádí pro QUADRO s pláštěm 160 mm.'),
     # --- Izolačné sady a revízna šachta (katalóg s. 19, 31 až 33) ---
     'pripojovacia-sada-pre-microflex-cool-s-vykurovacou-paskou': dict(
         nazov='Pripojovacia sada pre vyhrievací kábel COOL', nazov_cs='Připojovací sada pro topný kabel COOL',

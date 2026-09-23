@@ -38,7 +38,7 @@ export async function indexHladania(lang: Lang): Promise<Polozka[]> {
     // „125/32“, „125/2x32“: bežný zápis dimenzie plášť/rúry v objednávkach
     const d0 = v.rura?.d ?? (rura.match(/\d{2,3}/)?.[0] ?? '');
     const pocet = r.pocet_rur && r.pocet_rur > 1 ? `${r.pocet_rur}x` : '';
-    out.push({ s: 'kod', n: v.obj_cislo, d, u: `${cestaRadu(k, r, lang)}#varianty`, k: `${model} ${v.plast_mm ?? ''}/${d0} ${v.plast_mm ?? ''}/${pocet}${d0} ${rura}` });
+    out.push({ s: 'kod', n: v.obj_cislo, d, u: `${cestaRadu(k, r, lang)}#varianty`, k: `${model} ${v.plast_mm ?? ''}/${d0} ${v.plast_mm ?? ''}/${pocet}${d0} ${rura} ${(v.prislusenstvo ?? []).map((d) => d.obj).join(' ')}` });
   }
 
   for (const p of produkty) {

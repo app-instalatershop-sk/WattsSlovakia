@@ -27,7 +27,30 @@
   "id": "microflex-uno-6-bar/M7525C",
   "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M7525C",
   "vykon_kw": 30,
-  "dn": "20"
+  "dn": "20",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2000",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS7525",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG751832",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP34",
+    "zavit": "3/4″ M",
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-uno-6-bar",
@@ -57,7 +80,30 @@
   "id": "microflex-uno-6-bar/M9032C",
   "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M9032C",
   "vykon_kw": 60,
-  "dn": "25"
+  "dn": "25",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2100",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS9032",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG901840",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP44",
+    "zavit": "1″ M",
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-uno-6-bar",
@@ -87,7 +133,29 @@
   "id": "microflex-uno-6-bar/M9040C",
   "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M9040C",
   "vykon_kw": 90,
-  "dn": "32"
+  "dn": "32",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2100",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS9040",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG901840",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP54",
+    "zavit": "1 1/4″ M"
+   }
+  ]
  },
  {
   "rad": "microflex-uno-6-bar",
@@ -117,7 +185,30 @@
   "id": "microflex-uno-6-bar/M12550C",
   "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M12550C",
   "vykon_kw": 140,
-  "dn": "40"
+  "dn": "40",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2200",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS12550",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG1254063",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP64",
+    "zavit": "1 1/2″ M",
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-uno-6-bar",
@@ -147,7 +238,30 @@
   "id": "microflex-uno-6-bar/M12563C",
   "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M12563C",
   "vykon_kw": 220,
-  "dn": "50"
+  "dn": "50",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2400",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS12563",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG1254063",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP2",
+    "zavit": "2″ M",
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-uno-6-bar",
@@ -177,7 +291,30 @@
   "id": "microflex-uno-6-bar/M16075C",
   "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M16075C",
   "vykon_kw": 330,
-  "dn": "61"
+  "dn": "61",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2500",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS16075",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG1606390",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP212",
+    "zavit": "2 1/2″ M",
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-uno-6-bar",
@@ -207,7 +344,30 @@
   "id": "microflex-uno-6-bar/M16090C",
   "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M16090C",
   "vykon_kw": 480,
-  "dn": "73"
+  "dn": "73",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2500",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS16090",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG1606390",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP3",
+    "zavit": "3″ M",
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-uno-6-bar",
@@ -237,7 +397,30 @@
   "id": "microflex-uno-6-bar/M200110C",
   "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M200110C",
   "vykon_kw": 700,
-  "dn": "90"
+  "dn": "90",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2600",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS200110",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG20075125",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP4",
+    "zavit": "4″ M",
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-uno-6-bar",
@@ -267,7 +450,29 @@
   "id": "microflex-uno-6-bar/M200125C",
   "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M200125C",
   "vykon_kw": 900,
-  "dn": "102"
+  "dn": "102",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2600",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS200125"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG20075125",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP4",
+    "zavit": "4″ M",
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-uno-6-bar",
@@ -297,7 +502,29 @@
   "id": "microflex-uno-6-bar/M12525C",
   "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M12525C",
   "vykon_kw": 30,
-  "dn": "20"
+  "dn": "20",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2200",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS12525"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG1251832",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP34",
+    "zavit": "3/4″ M",
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-uno-6-bar",
@@ -327,7 +554,29 @@
   "id": "microflex-uno-6-bar/M12532C",
   "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M12532C",
   "vykon_kw": 40,
-  "dn": "25"
+  "dn": "25",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2200",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS12532"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG1251832",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP44",
+    "zavit": "1″ M",
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-uno-6-bar",
@@ -357,7 +606,29 @@
   "id": "microflex-uno-6-bar/M16040C",
   "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M16040C",
   "vykon_kw": 90,
-  "dn": "32"
+  "dn": "32",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2340",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS16040",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG1603250",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP54",
+    "zavit": "1 1/4″ M"
+   }
+  ]
  },
  {
   "rad": "microflex-uno-6-bar",
@@ -387,7 +658,30 @@
   "id": "microflex-uno-6-bar/M16050C",
   "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M16050C",
   "vykon_kw": 140,
-  "dn": "40"
+  "dn": "40",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2340",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS16050",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG1603250",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP64",
+    "zavit": "1 1/2″ M",
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-uno-6-bar",
@@ -417,7 +711,30 @@
   "id": "microflex-uno-6-bar/M16063C",
   "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M16063C",
   "vykon_kw": 220,
-  "dn": "50"
+  "dn": "50",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2500",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS16063",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG1606390",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP2",
+    "zavit": "2″ M",
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-uno-6-bar",
@@ -447,7 +764,30 @@
   "id": "microflex-uno-6-bar/M20075C",
   "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M20075C",
   "vykon_kw": 330,
-  "dn": "61"
+  "dn": "61",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2600",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS20075",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG20075125",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP212",
+    "zavit": "2 1/2″ M",
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-uno-6-bar",
@@ -477,7 +817,30 @@
   "id": "microflex-uno-6-bar/M20090C",
   "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M20090C",
   "vykon_kw": 480,
-  "dn": "72"
+  "dn": "72",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2600",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS20090",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG20075125",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP3",
+    "zavit": "3″ M",
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-duo-6-bar",
@@ -507,7 +870,31 @@
   "id": "microflex-duo-6-bar/MD12525C",
   "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD12525C",
   "vykon_kw": 30,
-  "dn": "20"
+  "dn": "20",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK3250-P604",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-rurku-duo"
+   },
+   {
+    "druh": "MS",
+    "obj": "MSD12525",
+    "produkt": "uzatvara-prach-na-dvojitom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MGD1251832",
+    "produkt": "dokoncenie-uzaverov-epdm-na-dvojitych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP34",
+    "zavit": "3/4″ M",
+    "pocet": 2,
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-duo-6-bar",
@@ -537,7 +924,31 @@
   "id": "microflex-duo-6-bar/MD12532C",
   "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD12532C",
   "vykon_kw": 60,
-  "dn": "25"
+  "dn": "25",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK3280",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-rurku-duo"
+   },
+   {
+    "druh": "MS",
+    "obj": "MSD12532",
+    "produkt": "uzatvara-prach-na-dvojitom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MGD1251832",
+    "produkt": "dokoncenie-uzaverov-epdm-na-dvojitych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP44",
+    "zavit": "1″ M",
+    "pocet": 2,
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-duo-6-bar",
@@ -567,7 +978,30 @@
   "id": "microflex-duo-6-bar/MD16040C",
   "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD16040C",
   "vykon_kw": 90,
-  "dn": "32"
+  "dn": "32",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK3350-02",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-rurku-duo"
+   },
+   {
+    "druh": "MS",
+    "obj": "MSD16040",
+    "produkt": "uzatvara-prach-na-dvojitom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MGD1602550",
+    "produkt": "dokoncenie-uzaverov-epdm-na-dvojitych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP54",
+    "zavit": "1 1/4″ M",
+    "pocet": 2
+   }
+  ]
  },
  {
   "rad": "microflex-duo-6-bar",
@@ -597,7 +1031,31 @@
   "id": "microflex-duo-6-bar/MD16050C",
   "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD16050C",
   "vykon_kw": 140,
-  "dn": "40"
+  "dn": "40",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK3350-03",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-rurku-duo"
+   },
+   {
+    "druh": "MS",
+    "obj": "MSD16050",
+    "produkt": "uzatvara-prach-na-dvojitom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MGD1602550",
+    "produkt": "dokoncenie-uzaverov-epdm-na-dvojitych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP64",
+    "zavit": "1 1/2″ M",
+    "pocet": 2,
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-duo-6-bar",
@@ -627,7 +1085,31 @@
   "id": "microflex-duo-6-bar/MD20063C",
   "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD20063C",
   "vykon_kw": 220,
-  "dn": "50"
+  "dn": "50",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK3350-05",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-rurku-duo"
+   },
+   {
+    "druh": "MS",
+    "obj": "MSD20063",
+    "produkt": "uzatvara-prach-na-dvojitom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MGD2004063",
+    "produkt": "dokoncenie-uzaverov-epdm-na-dvojitych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP2",
+    "zavit": "2″ M",
+    "pocet": 2,
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-duo-6-bar",
@@ -657,7 +1139,31 @@
   "id": "microflex-duo-6-bar/MD16025C",
   "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD16025C",
   "vykon_kw": 30,
-  "dn": "20"
+  "dn": "20",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK3350-01",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-rurku-duo"
+   },
+   {
+    "druh": "MS",
+    "obj": "MSD16025",
+    "produkt": "uzatvara-prach-na-dvojitom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MGD1602550",
+    "produkt": "dokoncenie-uzaverov-epdm-na-dvojitych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP34",
+    "zavit": "3/4″ M",
+    "pocet": 2,
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-duo-6-bar",
@@ -687,7 +1193,31 @@
   "id": "microflex-duo-6-bar/MD16032C",
   "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD16032C",
   "vykon_kw": 60,
-  "dn": "25"
+  "dn": "25",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK3350-01",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-rurku-duo"
+   },
+   {
+    "druh": "MS",
+    "obj": "MSD16032",
+    "produkt": "uzatvara-prach-na-dvojitom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MGD1602550",
+    "produkt": "dokoncenie-uzaverov-epdm-na-dvojitych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP44",
+    "zavit": "1″ M",
+    "pocet": 2,
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-duo-6-bar",
@@ -717,7 +1247,31 @@
   "id": "microflex-duo-6-bar/MD20050C",
   "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD20050C",
   "vykon_kw": 140,
-  "dn": "40"
+  "dn": "40",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK3350-03",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-rurku-duo"
+   },
+   {
+    "druh": "MS",
+    "obj": "MSD20050",
+    "produkt": "uzatvara-prach-na-dvojitom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MGD2004063",
+    "produkt": "dokoncenie-uzaverov-epdm-na-dvojitych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP64",
+    "zavit": "1 1/2″ M",
+    "pocet": 2,
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-uno-10-bar",
@@ -745,7 +1299,30 @@
    "sirka": 0.3
   },
   "id": "microflex-uno-10-bar/M7525S",
-  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M7525S"
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M7525S",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2000",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS7525",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG751832",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP34",
+    "zavit": "3/4″ M",
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-uno-10-bar",
@@ -773,7 +1350,30 @@
    "sirka": 0.45
   },
   "id": "microflex-uno-10-bar/M9032S",
-  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M9032S"
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M9032S",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2100",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS9032",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG901840",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP44",
+    "zavit": "1″ M",
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-uno-10-bar",
@@ -829,7 +1429,30 @@
    "sirka": 0.7
   },
   "id": "microflex-uno-10-bar/M12550S",
-  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M12550S"
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M12550S",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2200",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS12550",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG1254063",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP64",
+    "zavit": "1 1/2″ M",
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-uno-10-bar",
@@ -857,7 +1480,30 @@
    "sirka": 0.7
   },
   "id": "microflex-uno-10-bar/M12563S",
-  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M12563S"
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M12563S",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2400",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS12563",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG1254063",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP2",
+    "zavit": "2″ M",
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-uno-10-bar",
@@ -941,7 +1587,30 @@
    "sirka": 1.4
   },
   "id": "microflex-uno-10-bar/M200110S",
-  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M200110S"
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M200110S",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2600",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS200110",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG20075125",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP4",
+    "zavit": "4″ M",
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-duo-10-bar",
@@ -1010,7 +1679,31 @@
   "polomer_ohybu_m": 0.5,
   "tlak_bar": 10,
   "id": "microflex-duo-10-bar/MD16025SWI",
-  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD16025SWI"
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD16025SWI",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK3350-01",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-rurku-duo"
+   },
+   {
+    "druh": "MS",
+    "obj": "MSD16025",
+    "produkt": "uzatvara-prach-na-dvojitom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MGD1602550",
+    "produkt": "dokoncenie-uzaverov-epdm-na-dvojitych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP34",
+    "zavit": "3/4″ M",
+    "pocet": 2,
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-duo-10-bar",
@@ -1056,7 +1749,35 @@
   "polomer_ohybu_m": 0.5,
   "tlak_bar": 10,
   "id": "microflex-duo-10-bar/MD1603225SWI",
-  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD1603225SWI"
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD1603225SWI",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK3350-01",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-rurku-duo"
+   },
+   {
+    "druh": "MS",
+    "obj": "MSD1603225"
+   },
+   {
+    "druh": "MG",
+    "obj": "MGD1602550",
+    "produkt": "dokoncenie-uzaverov-epdm-na-dvojitych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP44",
+    "zavit": "1″ M",
+    "produkt": "fixny-bod"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP34",
+    "zavit": "3/4″ M",
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-duo-10-bar",
@@ -1102,7 +1823,34 @@
   "polomer_ohybu_m": 0.6,
   "tlak_bar": 10,
   "id": "microflex-duo-10-bar/MD1604025SWI",
-  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD1604025SWI"
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD1604025SWI",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK3350-02",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-rurku-duo"
+   },
+   {
+    "druh": "MS",
+    "obj": "MSD1604025"
+   },
+   {
+    "druh": "MG",
+    "obj": "MGD1602550",
+    "produkt": "dokoncenie-uzaverov-epdm-na-dvojitych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP54",
+    "zavit": "1 1/4″ M"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP34",
+    "zavit": "3/4″ M",
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-duo-10-bar",
@@ -1171,7 +1919,34 @@
   "polomer_ohybu_m": 0.6,
   "tlak_bar": 10,
   "id": "microflex-duo-10-bar/MD1605025SWI",
-  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD1605025SWI"
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD1605025SWI",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK3360-01"
+   },
+   {
+    "druh": "MS",
+    "obj": "MSD1605025"
+   },
+   {
+    "druh": "MG",
+    "obj": "MGD1602550",
+    "produkt": "dokoncenie-uzaverov-epdm-na-dvojitych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP64",
+    "zavit": "1 1/2″ M",
+    "produkt": "fixny-bod"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP34",
+    "zavit": "3/4″ M",
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-duo-10-bar",
@@ -1194,7 +1969,35 @@
   "polomer_ohybu_m": 0.6,
   "tlak_bar": 10,
   "id": "microflex-duo-10-bar/MD1605032SWI",
-  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD1605032SWI"
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD1605032SWI",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK3350-03",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-rurku-duo"
+   },
+   {
+    "druh": "MS",
+    "obj": "MSD1605032"
+   },
+   {
+    "druh": "MG",
+    "obj": "MGD1602550",
+    "produkt": "dokoncenie-uzaverov-epdm-na-dvojitych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP64",
+    "zavit": "1 1/2″ M",
+    "produkt": "fixny-bod"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP44",
+    "zavit": "1″ M",
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-duo-10-bar",
@@ -1263,7 +2066,38 @@
    "sirka": 0.85
   },
   "id": "microflex-quadro/MQ16025C2520S",
-  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MQ16025C2520S"
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MQ16025C2520S",
+  "prislusenstvo": [
+   {
+    "druh": "MS",
+    "obj": "MSQ160252520",
+    "produkt": "uzatvara-prach-na-potrubi-quadro"
+   },
+   {
+    "druh": "MG",
+    "obj": "MGQ1602532",
+    "produkt": "dokoncenie-uzaverov-epdm-na-potrubiach-quadro"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP34",
+    "zavit": "3/4″ M",
+    "pocet": 2,
+    "produkt": "fixny-bod"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP34",
+    "zavit": "3/4″ M",
+    "produkt": "fixny-bod"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP34",
+    "zavit": "3/4″ M",
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-quadro",
@@ -1286,7 +2120,38 @@
    "sirka": 0.85
   },
   "id": "microflex-quadro/MQ16032C2520S",
-  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MQ16032C2520S"
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MQ16032C2520S",
+  "prislusenstvo": [
+   {
+    "druh": "MS",
+    "obj": "MSQ160322520",
+    "produkt": "uzatvara-prach-na-potrubi-quadro"
+   },
+   {
+    "druh": "MG",
+    "obj": "MGQ1602532",
+    "produkt": "dokoncenie-uzaverov-epdm-na-potrubiach-quadro"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP44",
+    "zavit": "1″ M",
+    "pocet": 2,
+    "produkt": "fixny-bod"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP34",
+    "zavit": "3/4″ M",
+    "produkt": "fixny-bod"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP34",
+    "zavit": "3/4″ M",
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-quadro",
@@ -1309,7 +2174,38 @@
    "sirka": 0.85
   },
   "id": "microflex-quadro/MQ16032C3225S",
-  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MQ16032C3225S"
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MQ16032C3225S",
+  "prislusenstvo": [
+   {
+    "druh": "MS",
+    "obj": "MSQ160323225",
+    "produkt": "uzatvara-prach-na-potrubi-quadro"
+   },
+   {
+    "druh": "MG",
+    "obj": "MGQ1602532",
+    "produkt": "dokoncenie-uzaverov-epdm-na-potrubiach-quadro"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP44",
+    "zavit": "1″ M",
+    "pocet": 2,
+    "produkt": "fixny-bod"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP44",
+    "zavit": "1″ M",
+    "produkt": "fixny-bod"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP34",
+    "zavit": "3/4″ M",
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-quadro",
@@ -1360,7 +2256,29 @@
    "sirka": 0.45
   },
   "id": "microflex-cool/M9032PE",
-  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M9032PE"
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M9032PE",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2100",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS9032",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG901840",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MPP",
+    "obj": "MPP3414432/29",
+    "zavit": "1″ M"
+   }
+  ]
  },
  {
   "rad": "microflex-cool",
@@ -1388,7 +2306,29 @@
    "sirka": 0.7
   },
   "id": "microflex-cool/M9040PE",
-  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M9040PE"
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M9040PE",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2100",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS9040",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG901840",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MPP",
+    "obj": "MPP3415440/37",
+    "zavit": "1 1/4″ M"
+   }
+  ]
  },
  {
   "rad": "microflex-cool",
@@ -1416,7 +2356,29 @@
    "sirka": 0.7
   },
   "id": "microflex-cool/M12550PE",
-  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M12550PE"
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M12550PE",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2200",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS12550",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG1254063",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MPP",
+    "obj": "MPP3416450/46",
+    "zavit": "1 1/2″ M"
+   }
+  ]
  },
  {
   "rad": "microflex-cool",
@@ -1444,7 +2406,29 @@
    "sirka": 0.7
   },
   "id": "microflex-cool/M12563PE",
-  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M12563PE"
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M12563PE",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2400",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS12563",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG1254063",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MPP",
+    "obj": "MPP341263/58",
+    "zavit": "2″ M"
+   }
+  ]
  },
  {
   "rad": "microflex-cool",
@@ -1472,7 +2456,29 @@
    "sirka": 0.85
   },
   "id": "microflex-cool/M16075PE",
-  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M16075PE"
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M16075PE",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2500",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS16075",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG1606390",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MPP",
+    "obj": "MPP34121275/68",
+    "zavit": "2 1/2″ M"
+   }
+  ]
  },
  {
   "rad": "microflex-cool",
@@ -1500,7 +2506,29 @@
    "sirka": 0.85
   },
   "id": "microflex-cool/M16090PE",
-  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M16090PE"
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M16090PE",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2500",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS16090",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG1606390",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MPP",
+    "obj": "MPP341390/82",
+    "zavit": "3″ M"
+   }
+  ]
  },
  {
   "rad": "microflex-cool",
@@ -1528,7 +2556,29 @@
    "sirka": 1.4
   },
   "id": "microflex-cool/M200110PE",
-  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M200110PE"
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=M200110PE",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2600",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS200110",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG20075125",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MPP",
+    "obj": "MPP3414110/100",
+    "zavit": "4″ M"
+   }
+  ]
  },
  {
   "rad": "microflex-cool-s-vyhrievacim-kablom",
@@ -1556,7 +2606,29 @@
    "sirka": 0.3
   },
   "id": "microflex-cool-s-vyhrievacim-kablom/MV7532PE",
-  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MV7532PE"
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MV7532PE",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2100",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS7532",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG751832",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MPP",
+    "obj": "MPP3414432/29",
+    "zavit": "1″ M"
+   }
+  ]
  },
  {
   "rad": "microflex-cool-s-vyhrievacim-kablom",
@@ -1612,7 +2684,29 @@
    "sirka": 0.7
   },
   "id": "microflex-cool-s-vyhrievacim-kablom/MV9040PE",
-  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MV9040PE"
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MV9040PE",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2100",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS9040",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG901840",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MPP",
+    "obj": "MPP3415440/37",
+    "zavit": "1 1/4″ M"
+   }
+  ]
  },
  {
   "rad": "microflex-cool-s-vyhrievacim-kablom",
@@ -1640,7 +2734,29 @@
    "sirka": 0.7
   },
   "id": "microflex-cool-s-vyhrievacim-kablom/MV12550PE",
-  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MV12550PE"
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MV12550PE",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2200",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS12550",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG1254063",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MPP",
+    "obj": "MPP3416450/46",
+    "zavit": "1 1/2″ M"
+   }
+  ]
  },
  {
   "rad": "microflex-cool-s-vyhrievacim-kablom",
@@ -1668,7 +2784,29 @@
    "sirka": 0.7
   },
   "id": "microflex-cool-s-vyhrievacim-kablom/MV12563PE",
-  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MV12563PE"
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MV12563PE",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2400",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS12563",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG1254063",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MPP",
+    "obj": "MPP341263/58",
+    "zavit": "2″ M"
+   }
+  ]
  },
  {
   "rad": "microflex-cool-s-vyhrievacim-kablom",
@@ -1696,7 +2834,29 @@
    "sirka": 0.85
   },
   "id": "microflex-cool-s-vyhrievacim-kablom/MV16075PE",
-  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MV16075PE"
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MV16075PE",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2500",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS16075",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG1606390",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MPP",
+    "obj": "MPP34121275/68",
+    "zavit": "2 1/2″ M"
+   }
+  ]
  },
  {
   "rad": "microflex-cool-s-vyhrievacim-kablom",
@@ -1724,7 +2884,29 @@
    "sirka": 0.85
   },
   "id": "microflex-cool-s-vyhrievacim-kablom/MV16090PE",
-  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MV16090PE"
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MV16090PE",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2500",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS16090",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG1606390",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MPP",
+    "obj": "MPP341390/82",
+    "zavit": "3″ M"
+   }
+  ]
  },
  {
   "rad": "microflex-cool-s-vyhrievacim-kablom",
@@ -1752,7 +2934,29 @@
    "sirka": 1.4
   },
   "id": "microflex-cool-s-vyhrievacim-kablom/MV200110PE",
-  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MV200110PE"
+  "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MV200110PE",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2600",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS200110",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG20075125",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MPP",
+    "obj": "MPP3414110/100",
+    "zavit": "4″ M"
+   }
+  ]
  },
  {
   "rad": "microflex-cool-s-vyhrievacim-kablom",
@@ -5171,7 +6375,29 @@
    "d": 40,
    "s": 3.7
   },
-  "vykon_kw": 90
+  "vykon_kw": 90,
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2100",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS9040",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG901840",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP54",
+    "zavit": "1 1/4″ M"
+   }
+  ]
  },
  {
   "rad": "microflex-uno-primo-6-bar",
@@ -5198,7 +6424,29 @@
    "d": 40,
    "s": 3.7
   },
-  "vykon_kw": 90
+  "vykon_kw": 90,
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2200",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS12540",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG1254063",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP54",
+    "zavit": "1 1/4″ M"
+   }
+  ]
  },
  {
   "rad": "microflex-uno-primo-6-bar",
@@ -5225,7 +6473,30 @@
    "d": 50,
    "s": 4.6
   },
-  "vykon_kw": 140
+  "vykon_kw": 140,
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2200",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS12550",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG1254063",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP64",
+    "zavit": "1 1/2″ M",
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-uno-primo-6-bar",
@@ -5252,7 +6523,30 @@
    "d": 63,
    "s": 5.8
   },
-  "vykon_kw": 220
+  "vykon_kw": 220,
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2400",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS12563",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG1254063",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP2",
+    "zavit": "2″ M",
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-uno-primo-6-bar",
@@ -5279,7 +6573,30 @@
    "d": 75,
    "s": 6.8
   },
-  "vykon_kw": 330
+  "vykon_kw": 330,
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2500",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS16075",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG1606390",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP212",
+    "zavit": "2 1/2″ M",
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-uno-primo-6-bar",
@@ -5306,7 +6623,30 @@
    "d": 90,
    "s": 8.2
   },
-  "vykon_kw": 480
+  "vykon_kw": 480,
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK2500",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-uno-rurku"
+   },
+   {
+    "druh": "MS",
+    "obj": "MS16090",
+    "produkt": "uzatvara-prach-na-jednom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MG1606390",
+    "produkt": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP3",
+    "zavit": "3″ M",
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-primo-duo-6-bar",
@@ -5333,7 +6673,31 @@
    "d": 25,
    "s": 2.3
   },
-  "vykon_kw": 30
+  "vykon_kw": 30,
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK3250-P604",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-rurku-duo"
+   },
+   {
+    "druh": "MS",
+    "obj": "MSD12525",
+    "produkt": "uzatvara-prach-na-dvojitom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MGD1251832",
+    "produkt": "dokoncenie-uzaverov-epdm-na-dvojitych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP34",
+    "zavit": "3/4″ M",
+    "pocet": 2,
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-primo-duo-6-bar",
@@ -5360,7 +6724,31 @@
    "d": 32,
    "s": 2.9
   },
-  "vykon_kw": 60
+  "vykon_kw": 60,
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK3280",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-rurku-duo"
+   },
+   {
+    "druh": "MS",
+    "obj": "MSD12532",
+    "produkt": "uzatvara-prach-na-dvojitom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MGD1251832",
+    "produkt": "dokoncenie-uzaverov-epdm-na-dvojitych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP44",
+    "zavit": "1″ M",
+    "pocet": 2,
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-primo-duo-6-bar",
@@ -5387,7 +6775,31 @@
    "d": 50,
    "s": 4.6
   },
-  "vykon_kw": 140
+  "vykon_kw": 140,
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK3350-03",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-rurku-duo"
+   },
+   {
+    "druh": "MS",
+    "obj": "MSD16050",
+    "produkt": "uzatvara-prach-na-dvojitom-potrubi"
+   },
+   {
+    "druh": "MG",
+    "obj": "MGD1602550",
+    "produkt": "dokoncenie-uzaverov-epdm-na-dvojitych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP64",
+    "zavit": "1 1/2″ M",
+    "pocet": 2,
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-primo-duo-10-bar",
@@ -5410,7 +6822,35 @@
   "izolacia": "standard",
   "zdroj_strana": 14,
   "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD1252520S",
-  "rura_text": "1x25/3,5 1x20/2,8"
+  "rura_text": "1x25/3,5 1x20/2,8",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK3250-P604",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-rurku-duo"
+   },
+   {
+    "druh": "MS",
+    "obj": "MSD1252520"
+   },
+   {
+    "druh": "MG",
+    "obj": "MGD1251832",
+    "produkt": "dokoncenie-uzaverov-epdm-na-dvojitych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP34",
+    "zavit": "3/4″ M",
+    "produkt": "fixny-bod"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP34",
+    "zavit": "3/4″ M",
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-primo-duo-10-bar",
@@ -5433,7 +6873,35 @@
   "izolacia": "standard",
   "zdroj_strana": 14,
   "eshop_url": "https://www.instalatershop.sk/vyhledavani/?string=MD1253225S",
-  "rura_text": "1x32/4,4 1x25/3,5"
+  "rura_text": "1x32/4,4 1x25/3,5",
+  "prislusenstvo": [
+   {
+    "druh": "MK",
+    "obj": "MK3250-P604",
+    "produkt": "teplom-zmrstitelne-hlavice-pre-rurku-duo"
+   },
+   {
+    "druh": "MS",
+    "obj": "MSD1253225"
+   },
+   {
+    "druh": "MG",
+    "obj": "MGD1251832",
+    "produkt": "dokoncenie-uzaverov-epdm-na-dvojitych-potrubiach"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP44",
+    "zavit": "1″ M",
+    "produkt": "fixny-bod"
+   },
+   {
+    "druh": "MFP",
+    "obj": "MFP34",
+    "zavit": "3/4″ M",
+    "produkt": "fixny-bod"
+   }
+  ]
  },
  {
   "rad": "microflex-cool-duo",

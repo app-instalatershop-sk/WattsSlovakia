@@ -499,6 +499,52 @@ def main():
     OPRAVY = {'MQ20040C4028S': {'hmotnost_kg_m': 4.12, 'polomer_ohybu_m': 1.3}}
     for v in varianty:
         v.update(OPRAVY.get(v['obj_cislo'], {}))
+
+    # Príslušenstvo ku každému obj. číslu potrubia (katalóg s. 8 až 16 a 18): krytky, pevné body, spojky MPP.
+    # Diel sa prepojí s produktom podľa obj. čísla v tabuľke produktu; gumové krytky EPDM tabuľku na
+    # watts.eu nemajú, priradia sa podľa predpony (MG = UNO, MGD = DUO, MGQ = QUADRO).
+    import fitz
+    from prislusenstvo import katalog_prislusenstvo, kod_katalogu
+    prisl = katalog_prislusenstvo(fitz.open(KATALOG))
+    kod_produktu = {}
+    for p in produkty:
+        for t in p['tabulky']:
+            for riadok in t['riadky']:
+                kod_produktu.setdefault(riadok[0], p['id'])
+    EPDM = {'MGQ': 'dokoncenie-uzaverov-epdm-na-potrubiach-quadro', 'MGD': 'dokoncenie-uzaverov-epdm-na-dvojitych-potrubiach',
+            'MG': 'dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach'}
+    rady_potrubia = {r['id'] for r in rady if not r.get('je_skupina')}
+    pouzitie = {}  # produkt → {obj. číslo dielu → [obj. čísla potrubia]}
+    for v in varianty:
+        if v['rad'] not in rady_potrubia:
+            continue
+        diely = prisl.get(kod_katalogu(v['obj_cislo']))
+        if not diely:
+            continue
+        v['prislusenstvo'] = []
+        for d in diely:
+            pid = kod_produktu.get(d['obj']) or next((EPDM[k] for k in EPDM if d['druh'] == 'MG' and d['obj'].startswith(k)), None)
+            v['prislusenstvo'].append({**d, **({'produkt': pid} if pid else {})})
+            if pid:
+                zoznam = pouzitie.setdefault(pid, {}).setdefault(d['obj'], [])
+                if v['obj_cislo'] not in zoznam:
+                    zoznam.append(v['obj_cislo'])
+    plast = {v['obj_cislo']: v.get('plast_mm') for v in varianty if v['rad'] in rady_potrubia}
+    for p in produkty:
+        if p['id'] not in pouzitie:
+            continue
+        p['pouzitie'] = pouzitie[p['id']]
+        if not p['tabulky']:
+            # Gumové krytky EPDM: tabuľka obj. čísel z katalógu, plášť podľa potrubia, ku ktorému krytka patrí.
+            riadky = []
+            for kod, rury in pouzitie[p['id']].items():
+                pl = sorted({plast[r] for r in rury if plast.get(r)})
+                riadky.append([kod, ' a '.join(str(int(x)) for x in pl), ', '.join(rury)])
+            riadky.sort(key=lambda r: (int(r[1].split(' ')[0]) if r[1] else 0, r[0]))
+            p['tabulky'] = [{'hlavicky': ['Obj. číslo', 'Plášť potrubia Ø', 'Pre potrubie'], 'hlavicky_cs': ['Obj. číslo', 'Plášť potrubí Ø', 'Pro potrubí'],
+                             'jednotky': [None, 'mm', None], 'riadky': riadky, 'riadky_cs': [list(r) for r in riadky]}]
+            p['pocet_variantov'] = len(riadky)
+
     for v in varianty:
         v['id'] = v['rad'] + '/' + v['obj_cislo']
     for r in rady:

@@ -1604,7 +1604,65 @@
    }
   ],
   "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/accessories/anchoring-fixing-threaded-couplings",
-  "stiahnute": "2026-09-21"
+  "stiahnute": "2026-09-21",
+  "pouzitie": {
+   "MFP34": [
+    "M7525C",
+    "M12525C",
+    "MD12525C",
+    "MD16025C",
+    "M7525S",
+    "MD16025SWI",
+    "MD1603225SWI",
+    "MD1604025SWI",
+    "MD1605025SWI",
+    "MQ16025C2520S",
+    "MQ16032C2520S",
+    "MQ16032C3225S",
+    "MD1252520S",
+    "MD1253225S"
+   ],
+   "MFP44": [
+    "M9032C",
+    "M12532C",
+    "MD12532C",
+    "MD16032C",
+    "M9032S",
+    "MD1603225SWI",
+    "MD1605032SWI",
+    "MQ16032C2520S",
+    "MQ16032C3225S",
+    "MD1253225S"
+   ],
+   "MFP64": [
+    "M12550C",
+    "M16050C",
+    "MD16050C",
+    "MD20050C",
+    "M12550S",
+    "MD1605025SWI",
+    "MD1605032SWI"
+   ],
+   "MFP2": [
+    "M12563C",
+    "M16063C",
+    "MD20063C",
+    "M12563S"
+   ],
+   "MFP212": [
+    "M16075C",
+    "M20075C"
+   ],
+   "MFP3": [
+    "M16090C",
+    "M20090C"
+   ],
+   "MFP4": [
+    "M200110C",
+    "M200125C",
+    "M200110S"
+   ]
+  }
  },
  {
   "id": "objimka-obal",
@@ -2753,7 +2811,72 @@
    }
   ],
   "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/caps-and-reduction-kits/dust-cap-ms-uno",
-  "stiahnute": "2026-09-21"
+  "stiahnute": "2026-09-21",
+  "pouzitie": {
+   "MS7525": [
+    "M7525C",
+    "M7525S"
+   ],
+   "MS9032": [
+    "M9032C",
+    "M9032S",
+    "M9032PE"
+   ],
+   "MS9040": [
+    "M9040C",
+    "M9040PE",
+    "MV9040PE"
+   ],
+   "MS12550": [
+    "M12550C",
+    "M12550S",
+    "M12550PE",
+    "MV12550PE"
+   ],
+   "MS12563": [
+    "M12563C",
+    "M12563S",
+    "M12563PE",
+    "MV12563PE"
+   ],
+   "MS16075": [
+    "M16075C",
+    "M16075PE",
+    "MV16075PE"
+   ],
+   "MS16090": [
+    "M16090C",
+    "M16090PE",
+    "MV16090PE"
+   ],
+   "MS200110": [
+    "M200110C",
+    "M200110S",
+    "M200110PE",
+    "MV200110PE"
+   ],
+   "MS16040": [
+    "M16040C"
+   ],
+   "MS16050": [
+    "M16050C"
+   ],
+   "MS16063": [
+    "M16063C"
+   ],
+   "MS20075": [
+    "M20075C"
+   ],
+   "MS20090": [
+    "M20090C"
+   ],
+   "MS7532": [
+    "MV7532PE"
+   ],
+   "MS12540": [
+    "M12540C"
+   ]
+  }
  },
  {
   "id": "uzatvara-prach-na-dvojitom-potrubi",
@@ -2854,7 +2977,34 @@
    }
   ],
   "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/caps-and-reduction-kits/dust-cap-msd-duo",
-  "stiahnute": "2026-09-21"
+  "stiahnute": "2026-09-21",
+  "pouzitie": {
+   "MSD12525": [
+    "MD12525C"
+   ],
+   "MSD12532": [
+    "MD12532C"
+   ],
+   "MSD16040": [
+    "MD16040C"
+   ],
+   "MSD16050": [
+    "MD16050C"
+   ],
+   "MSD20063": [
+    "MD20063C"
+   ],
+   "MSD16025": [
+    "MD16025C",
+    "MD16025SWI"
+   ],
+   "MSD16032": [
+    "MD16032C"
+   ],
+   "MSD20050": [
+    "MD20050C"
+   ]
+  }
  },
  {
   "id": "uzatvara-prach-na-potrubi-quadro",
@@ -2923,7 +3073,18 @@
    }
   ],
   "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/caps-and-reduction-kits/dust-cap-msq-quadro",
-  "stiahnute": "2026-09-21"
+  "stiahnute": "2026-09-21",
+  "pouzitie": {
+   "MSQ160252520": [
+    "MQ16025C2520S"
+   ],
+   "MSQ160322520": [
+    "MQ16032C2520S"
+   ],
+   "MSQ160323225": [
+    "MQ16032C3225S"
+   ]
+  }
  },
  {
   "id": "teplom-zmrstitelne-hlavice-pre-uno-rurku",
@@ -3024,7 +3185,59 @@
    }
   ],
   "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/caps-and-reduction-kits/heat-shrink-caps-on-single-pipelines",
-  "stiahnute": "2026-09-21"
+  "stiahnute": "2026-09-21",
+  "pouzitie": {
+   "MK2000": [
+    "M7525C",
+    "M7525S"
+   ],
+   "MK2100": [
+    "M9032C",
+    "M9040C",
+    "M9032S",
+    "M9032PE",
+    "M9040PE",
+    "MV7532PE",
+    "MV9040PE"
+   ],
+   "MK2200": [
+    "M12550C",
+    "M12525C",
+    "M12532C",
+    "M12550S",
+    "M12550PE",
+    "MV12550PE",
+    "M12540C"
+   ],
+   "MK2400": [
+    "M12563C",
+    "M12563S",
+    "M12563PE",
+    "MV12563PE"
+   ],
+   "MK2500": [
+    "M16075C",
+    "M16090C",
+    "M16063C",
+    "M16075PE",
+    "M16090PE",
+    "MV16075PE",
+    "MV16090PE"
+   ],
+   "MK2600": [
+    "M200110C",
+    "M200125C",
+    "M20075C",
+    "M20090C",
+    "M200110S",
+    "M200110PE",
+    "MV200110PE"
+   ],
+   "MK2340": [
+    "M16040C",
+    "M16050C"
+   ]
+  }
  },
  {
   "id": "teplom-zmrstitelne-hlavice-pre-rurku-duo",
@@ -3109,7 +3322,35 @@
    }
   ],
   "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/caps-and-reduction-kits/dust-cap-msq-duo",
-  "stiahnute": "2026-09-21"
+  "stiahnute": "2026-09-21",
+  "pouzitie": {
+   "MK3250-P604": [
+    "MD12525C",
+    "MD1252520S",
+    "MD1253225S"
+   ],
+   "MK3280": [
+    "MD12532C"
+   ],
+   "MK3350-02": [
+    "MD16040C",
+    "MD1604025SWI"
+   ],
+   "MK3350-03": [
+    "MD16050C",
+    "MD20050C",
+    "MD1605032SWI"
+   ],
+   "MK3350-05": [
+    "MD20063C"
+   ],
+   "MK3350-01": [
+    "MD16025C",
+    "MD16032C",
+    "MD16025SWI",
+    "MD1603225SWI"
+   ]
+  }
  },
  {
   "id": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach",
@@ -3121,8 +3362,8 @@
   "nazov": "Gumová krytka EPDM pre UNO",
   "nazov_cs": "Pryžová krytka EPDM pro UNO",
   "nazov_watts": "Dokončenie uzáverov EPDM na jednotlivých potrubiach",
-  "popis": "Gumová koncová krytka z EPDM na potrubie s jednou rúrou. Obj. čísla pre jednotlivé rozmery sú v katalógu výrobcu pri každom rade.",
-  "popis_cs": "Pryžová koncová krytka z EPDM na potrubí s jednou trubkou. Obj. čísla pro jednotlivé rozměry jsou v katalogu výrobce u každé řady.",
+  "popis": "Gumová koncová krytka z EPDM na potrubie s jednou rúrou. Utesní koniec potrubia natrvalo, aby sa medzi plášť a rúru nedostala voda. Obj. číslo závisí od plášťa a rúry; v tabuľke je pri každom aj potrubie, ku ktorému patrí.",
+  "popis_cs": "Pryžová koncová krytka z EPDM na potrubí s jednou trubkou. Utěsní konec potrubí natrvalo, aby se mezi plášť a trubku nedostala voda. Obj. číslo závisí na plášti a trubce; v tabulce je u každého i potrubí, ke kterému patří.",
   "subory": [
    {
     "nazov": "Katalóg Microflex (SK)",
@@ -3131,10 +3372,154 @@
     "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
    }
   ],
-  "pocet_variantov": 0,
-  "tabulky": [],
+  "pocet_variantov": 7,
+  "tabulky": [
+   {
+    "hlavicky": [
+     "Obj. číslo",
+     "Plášť potrubia Ø",
+     "Pre potrubie"
+    ],
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Plášť potrubí Ø",
+     "Pro potrubí"
+    ],
+    "jednotky": [
+     null,
+     "mm",
+     null
+    ],
+    "riadky": [
+     [
+      "MG751832",
+      "75",
+      "M7525C, M7525S, MV7532PE"
+     ],
+     [
+      "MG901840",
+      "90",
+      "M9032C, M9040C, M9032S, M9032PE, M9040PE, MV9040PE"
+     ],
+     [
+      "MG1251832",
+      "125",
+      "M12525C, M12532C"
+     ],
+     [
+      "MG1254063",
+      "125",
+      "M12550C, M12563C, M12550S, M12563S, M12550PE, M12563PE, MV12550PE, MV12563PE, M12540C"
+     ],
+     [
+      "MG1603250",
+      "160",
+      "M16040C, M16050C"
+     ],
+     [
+      "MG1606390",
+      "160",
+      "M16075C, M16090C, M16063C, M16075PE, M16090PE, MV16075PE, MV16090PE"
+     ],
+     [
+      "MG20075125",
+      "200",
+      "M200110C, M200125C, M20075C, M20090C, M200110S, M200110PE, MV200110PE"
+     ]
+    ],
+    "riadky_cs": [
+     [
+      "MG751832",
+      "75",
+      "M7525C, M7525S, MV7532PE"
+     ],
+     [
+      "MG901840",
+      "90",
+      "M9032C, M9040C, M9032S, M9032PE, M9040PE, MV9040PE"
+     ],
+     [
+      "MG1251832",
+      "125",
+      "M12525C, M12532C"
+     ],
+     [
+      "MG1254063",
+      "125",
+      "M12550C, M12563C, M12550S, M12563S, M12550PE, M12563PE, MV12550PE, MV12563PE, M12540C"
+     ],
+     [
+      "MG1603250",
+      "160",
+      "M16040C, M16050C"
+     ],
+     [
+      "MG1606390",
+      "160",
+      "M16075C, M16090C, M16063C, M16075PE, M16090PE, MV16075PE, MV16090PE"
+     ],
+     [
+      "MG20075125",
+      "200",
+      "M200110C, M200125C, M20075C, M20090C, M200110S, M200110PE, MV200110PE"
+     ]
+    ]
+   }
+  ],
   "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/caps-and-reduction-kits/finishing-epdm-caps-on-single-pipelines",
-  "stiahnute": "2026-09-21"
+  "stiahnute": "2026-09-21",
+  "pouzitie": {
+   "MG751832": [
+    "M7525C",
+    "M7525S",
+    "MV7532PE"
+   ],
+   "MG901840": [
+    "M9032C",
+    "M9040C",
+    "M9032S",
+    "M9032PE",
+    "M9040PE",
+    "MV9040PE"
+   ],
+   "MG1254063": [
+    "M12550C",
+    "M12563C",
+    "M12550S",
+    "M12563S",
+    "M12550PE",
+    "M12563PE",
+    "MV12550PE",
+    "MV12563PE",
+    "M12540C"
+   ],
+   "MG1606390": [
+    "M16075C",
+    "M16090C",
+    "M16063C",
+    "M16075PE",
+    "M16090PE",
+    "MV16075PE",
+    "MV16090PE"
+   ],
+   "MG20075125": [
+    "M200110C",
+    "M200125C",
+    "M20075C",
+    "M20090C",
+    "M200110S",
+    "M200110PE",
+    "MV200110PE"
+   ],
+   "MG1251832": [
+    "M12525C",
+    "M12532C"
+   ],
+   "MG1603250": [
+    "M16040C",
+    "M16050C"
+   ]
+  }
  },
  {
   "id": "dokoncenie-uzaverov-epdm-na-dvojitych-potrubiach",
@@ -3146,8 +3531,8 @@
   "nazov": "Gumová krytka EPDM pre DUO",
   "nazov_cs": "Pryžová krytka EPDM pro DUO",
   "nazov_watts": "Dokončenie uzáverov EPDM na dvojitých potrubiach",
-  "popis": "Gumová koncová krytka z EPDM na potrubie s dvoma rúrami. Obj. čísla pre jednotlivé rozmery sú v katalógu výrobcu pri každom rade.",
-  "popis_cs": "Pryžová koncová krytka z EPDM na potrubí se dvěma trubkami. Obj. čísla pro jednotlivé rozměry jsou v katalogu výrobce u každé řady.",
+  "popis": "Gumová koncová krytka z EPDM na potrubie s dvoma rúrami. Utesní koniec potrubia natrvalo, aby sa medzi plášť a rúry nedostala voda. Obj. číslo závisí od plášťa a rúr; v tabuľke je pri každom aj potrubie, ku ktorému patrí.",
+  "popis_cs": "Pryžová koncová krytka z EPDM na potrubí se dvěma trubkami. Utěsní konec potrubí natrvalo, aby se mezi plášť a trubky nedostala voda. Obj. číslo závisí na plášti a trubkách; v tabulce je u každého i potrubí, ke kterému patří.",
   "subory": [
    {
     "nazov": "Katalóg Microflex (SK)",
@@ -3156,10 +3541,85 @@
     "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
    }
   ],
-  "pocet_variantov": 0,
-  "tabulky": [],
+  "pocet_variantov": 3,
+  "tabulky": [
+   {
+    "hlavicky": [
+     "Obj. číslo",
+     "Plášť potrubia Ø",
+     "Pre potrubie"
+    ],
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Plášť potrubí Ø",
+     "Pro potrubí"
+    ],
+    "jednotky": [
+     null,
+     "mm",
+     null
+    ],
+    "riadky": [
+     [
+      "MGD1251832",
+      "125",
+      "MD12525C, MD12532C, MD1252520S, MD1253225S"
+     ],
+     [
+      "MGD1602550",
+      "160",
+      "MD16040C, MD16050C, MD16025C, MD16032C, MD16025SWI, MD1603225SWI, MD1604025SWI, MD1605025SWI, MD1605032SWI"
+     ],
+     [
+      "MGD2004063",
+      "200",
+      "MD20063C, MD20050C"
+     ]
+    ],
+    "riadky_cs": [
+     [
+      "MGD1251832",
+      "125",
+      "MD12525C, MD12532C, MD1252520S, MD1253225S"
+     ],
+     [
+      "MGD1602550",
+      "160",
+      "MD16040C, MD16050C, MD16025C, MD16032C, MD16025SWI, MD1603225SWI, MD1604025SWI, MD1605025SWI, MD1605032SWI"
+     ],
+     [
+      "MGD2004063",
+      "200",
+      "MD20063C, MD20050C"
+     ]
+    ]
+   }
+  ],
   "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/caps-and-reduction-kits/finishing-epdm-caps-on-double-pipelines",
-  "stiahnute": "2026-09-21"
+  "stiahnute": "2026-09-21",
+  "pouzitie": {
+   "MGD1251832": [
+    "MD12525C",
+    "MD12532C",
+    "MD1252520S",
+    "MD1253225S"
+   ],
+   "MGD1602550": [
+    "MD16040C",
+    "MD16050C",
+    "MD16025C",
+    "MD16032C",
+    "MD16025SWI",
+    "MD1603225SWI",
+    "MD1604025SWI",
+    "MD1605025SWI",
+    "MD1605032SWI"
+   ],
+   "MGD2004063": [
+    "MD20063C",
+    "MD20050C"
+   ]
+  }
  },
  {
   "id": "dokoncenie-uzaverov-epdm-na-potrubiach-quadro",
@@ -3171,8 +3631,8 @@
   "nazov": "Gumová krytka EPDM pre QUADRO",
   "nazov_cs": "Pryžová krytka EPDM pro QUADRO",
   "nazov_watts": "Dokončenie uzáverov EPDM na potrubiach quadro",
-  "popis": "Gumová koncová krytka z EPDM na potrubie QUADRO. Obj. čísla sú v katalógu výrobcu pri rade QUADRO.",
-  "popis_cs": "Pryžová koncová krytka z EPDM na potrubí QUADRO. Obj. čísla jsou v katalogu výrobce u řady QUADRO.",
+  "popis": "Gumová koncová krytka z EPDM na potrubie QUADRO. Utesní koniec potrubia natrvalo, aby sa medzi plášť a rúry nedostala voda. Katalóg ju uvádza pre QUADRO s plášťom 160 mm.",
+  "popis_cs": "Pryžová koncová krytka z EPDM na potrubí QUADRO. Utěsní konec potrubí natrvalo, aby se mezi plášť a trubky nedostala voda. Katalog ji uvádí pro QUADRO s pláštěm 160 mm.",
   "subory": [
    {
     "nazov": "Katalóg Microflex (SK)",
@@ -3181,10 +3641,49 @@
     "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
    }
   ],
-  "pocet_variantov": 0,
-  "tabulky": [],
+  "pocet_variantov": 1,
+  "tabulky": [
+   {
+    "hlavicky": [
+     "Obj. číslo",
+     "Plášť potrubia Ø",
+     "Pre potrubie"
+    ],
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Plášť potrubí Ø",
+     "Pro potrubí"
+    ],
+    "jednotky": [
+     null,
+     "mm",
+     null
+    ],
+    "riadky": [
+     [
+      "MGQ1602532",
+      "160",
+      "MQ16025C2520S, MQ16032C2520S, MQ16032C3225S"
+     ]
+    ],
+    "riadky_cs": [
+     [
+      "MGQ1602532",
+      "160",
+      "MQ16025C2520S, MQ16032C2520S, MQ16032C3225S"
+     ]
+    ]
+   }
+  ],
   "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/caps-and-reduction-kits/finishing-epdm-caps-on-quado-pipelines",
-  "stiahnute": "2026-09-21"
+  "stiahnute": "2026-09-21",
+  "pouzitie": {
+   "MGQ1602532": [
+    "MQ16025C2520S",
+    "MQ16032C2520S",
+    "MQ16032C3225S"
+   ]
+  }
  },
  {
   "id": "pripojovacia-sada-pre-microflex-cool-s-vykurovacou-paskou",

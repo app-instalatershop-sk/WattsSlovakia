@@ -73,6 +73,7 @@ const skupinyRel = [...new Set(suvisiace.map((p) => p.skupina))].map((sid) => ({
   ps: suvisiace.filter((p) => p.skupina === sid),
 })).filter((g) => g.s);
 const katProduktu = (id: string) => vsetkyKat.find((x) => x.id === id)!;
+const dielyUrl = Object.fromEntries(produkty.map((p) => [p.id, cestaProduktu(p, katProduktu(p.kategoria), lang)]));
 
 const refs = referencie(lang).filter((x) => x.rad === r.slug || (x.rad === null && x.kategoria === k.id)).sort((a, b) => Number(b.rad === r.slug) - Number(a.rad === r.slug)).slice(0, 2);
 
@@ -120,7 +121,7 @@ const productLd = [{
         <p>{varianty.length ? <>{tx.pocetDim(varianty.length)}{zosilnene ? tx.zosilnenych(zosilnene) : ''}. {tx.variantyP}</> : tx.chybaju(model, obsah?.strana ?? null)}</p>
       </div>
       {varianty.length > 0 ? (
-        <div class="harok"><TabulkaVariantov varianty={varianty} zdroj={r.zdroj_url} stiahnute={r.stiahnute} lang={lang} primoZaklad={primoZaklad} /></div>
+        <div class="harok"><TabulkaVariantov varianty={varianty} zdroj={r.zdroj_url} stiahnute={r.stiahnute} lang={lang} primoZaklad={primoZaklad} diely={dielyUrl} /></div>
       ) : (
         <div class="harok prazdne">
           <a class="btn btn-yellow" href={KATALOG_PDF} target="_blank" rel="noopener">{tx.otvoritKatalog} <Ikona nazov="download" velkost={18} /></a>

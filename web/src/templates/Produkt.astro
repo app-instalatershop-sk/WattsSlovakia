@@ -31,6 +31,13 @@ const fakty = faktyProduktu(p, lang);
 const kody = kodyProduktu(p);
 const vsetkyKat = await kategorie();
 const rady = (await radyProduktu(p)).map((r) => ({ r, k: vsetkyKat.find((x) => x.id === r.kategoria)! }));
+// Obj. číslo potrubia → tabuľka jeho radu (stĺpec „Pre potrubie“ pri krytkách a pevnom bode).
+const radyVsetky = (await getCollection('rady')).map((x) => x.data).filter((x) => !x.je_skupina);
+const potrubiaUrl: Record<string, string> = {};
+if (p.pouzitie) for (const v of (await getCollection('varianty')).map((x) => x.data)) {
+  const rv = radyVsetky.find((x) => x.id === v.rad);
+  if (rv && !potrubiaUrl[v.obj_cislo]) potrubiaUrl[v.obj_cislo] = `${cestaRadu(vsetkyKat.find((x) => x.id === rv.kategoria)!, rv, lang)}#varianty`;
+}
 const surodenci = (await getCollection('produkty')).map((x) => x.data).filter((x) => x.skupina === p.skupina && x.id !== p.id).sort((a, b) => a.poradie - b.poradie);
 
 // Hľadanie v e-shope: spoločný začiatok obj. čísel (MJ13025/23 … MJ130125/114 → MJ130), inak názov.
@@ -62,7 +69,7 @@ const ld = [{
     <section class="wrap cast" id="tabulka" aria-labelledby="h-tab">
       <div class="s-hlava"><h2 id="h-tab">{tx.tabulkaH2}</h2><p>{kody.length ? tx.tabulkaP : tx.bezTabulky}</p></div>
       {p.tabulky.length > 0 ? p.tabulky.map((tab) => (
-        <div class="harok tab"><TabulkaProduktu tabulka={tab} lang={lang} /></div>
+        <div class="harok tab"><TabulkaProduktu tabulka={tab} lang={lang} pouzitie={p.pouzitie} potrubia={potrubiaUrl} /></div>
       )) : (
         <div class="harok prazdne">
           <a class="btn btn-yellow" href={KATALOG_PDF} target="_blank" rel="noopener">{tx.otvoritKatalog} <Ikona nazov="download" velkost={18} /></a>

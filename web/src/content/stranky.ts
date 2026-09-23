@@ -32,6 +32,9 @@ const sk = {
     refP: 'Stavby, na ktorých leží tento rad alebo systém. Podľa referencií výrobcu.',
     relH2: 'Čo budete potrebovať k potrubiu', vsetkyDiely: 'Všetky spojky a príslušenstvo',
     ajVo: 'Tento rad je aj vo vyhotovení',
+    prislusenstvo: 'Príslušenstvo', dielov: (n: number) => (n === 1 ? '1 diel' : n >= 2 && n <= 4 ? `${n} diely` : `${n} dielov`),
+    druhy: { MK: 'Zmršťovacia krytka', MS: 'Protiprachová krytka', MG: 'Gumová krytka EPDM', MFP: 'Pevný bod', MPP: 'Plastová spojka MPP' } as Record<string, string>,
+    stranaDielu: 'Stránka dielu', ks2: 'potrebné 2 ks', prislPozn: 'Príslušenstvo k obj. číslu je podľa katalógu výrobcu, s. 8 až 18.',
   },
   skupiny: {
     produktov: (n: number) => (n === 1 ? '1 produkt' : n >= 2 && n <= 4 ? `${n} produkty` : `${n} produktov`),
@@ -53,7 +56,7 @@ const sk = {
     dalsieH2: (s: string) => `Ďalšie v skupine ${s}`,
     zdroj: 'Údaje z katalógu výrobcu a watts.eu.', strankaVyrobcu: 'Stránka produktu na watts.eu',
     oznacenie: 'Označenie výrobcu',
-    rura: 'Nosná rúra', plast: 'Plášť potrubia', zavit: 'Závit',
+    rura: 'Nosná rúra', plast: 'Plášť potrubia', zavit: 'Závit', prePotrubie: 'Pre potrubie',
   },
   kategoria: {
     rady: 'Rady a obj. čísla', sprievodca: 'Sprievodca výberom',
@@ -110,6 +113,9 @@ const cs: typeof sk = {
     refP: 'Stavby, na kterých leží tato řada nebo systém. Podle referencí výrobce.',
     relH2: 'Co budete potřebovat k potrubí', vsetkyDiely: 'Všechny spojky a příslušenství',
     ajVo: 'Tato řada je i v provedení',
+    prislusenstvo: 'Příslušenství', dielov: (n: number) => (n === 1 ? '1 díl' : n >= 2 && n <= 4 ? `${n} díly` : `${n} dílů`),
+    druhy: { MK: 'Smršťovací krytka', MS: 'Protiprachová krytka', MG: 'Pryžová krytka EPDM', MFP: 'Pevný bod', MPP: 'Plastová spojka MPP' },
+    stranaDielu: 'Stránka dílu', ks2: 'potřeba 2 ks', prislPozn: 'Příslušenství k obj. číslu je podle katalogu výrobce, s. 8 až 18.',
   },
   skupiny: {
     produktov: (n: number) => (n === 1 ? '1 produkt' : n >= 2 && n <= 4 ? `${n} produkty` : `${n} produktů`),
@@ -131,7 +137,7 @@ const cs: typeof sk = {
     dalsieH2: (s: string) => `Další ve skupině ${s}`,
     zdroj: 'Údaje z katalogu výrobce a watts.eu.', strankaVyrobcu: 'Stránka produktu na watts.eu',
     oznacenie: 'Označení výrobce',
-    rura: 'Nosná trubka', plast: 'Plášť potrubí', zavit: 'Závit',
+    rura: 'Nosná trubka', plast: 'Plášť potrubí', zavit: 'Závit', prePotrubie: 'Pro potrubí',
   },
   kategoria: {
     rady: 'Řady a obj. čísla', sprievodca: 'Průvodce výběrem',

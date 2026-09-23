@@ -210,3 +210,31 @@ prezrádzalo generovaný dizajn. Každý prvok má dôvod, všetko ladí dokopy,
 
 Bez odpovedí na 1, 4 a 8 vieme stavať F0 aj F1 s pracovnými hodnotami (nápis „Microflex
 Slovensko“, bez vety o partnerstve, navrhnuté názvy). Menia sa potom na jednom mieste.
+
+---
+
+## 10. Stav stavby (23. 9. 2026)
+
+F1 až F3 sú postavené, SK aj CS, 148 stránok. Build prejde, interné odkazy a kotvy bez chyby
+(kontrola celého `dist/`).
+
+| Časť | Stav |
+|---|---|
+| Potrubia, 5 systémov, 12 radov | hotové: hlava s renderom a číslami, tabuľka variantov s filtrom, kopírovaním a výkonom, stavba pod lupou, podklady, referencie, príslušenstvo |
+| Spojky, príslušenstvo, 41 produktov | hotové: prehľady po skupinách, stránka každého produktu s tabuľkou obj. čísel a fotkou výrobcu |
+| Hľadanie | hotové: statický index `/hladat/index.json` (rady, obj. čísla, diely, stránky), hľadá prehliadač; vlastné skóre, MiniSearch netreba |
+| Sprievodca výberom | hotový: systém → rad → dimenzia podľa kW (katalóg) alebo priemeru, stav v adrese |
+| Pre firmy, dopyt | hotové; **formulár zatiaľ skladá e-mail (mailto) na dotazy@instalatershop.sk**. Po rozhodnutí o hostingu ho prepojiť na Cloudflare Pages Function + Resend s Turnstile (rozhodnutie 5) |
+| Referencie, kontakt, na stiahnutie, poradňa (4 články), 404 | hotové |
+| Paleta hľadania (Ctrl K) | hlavička posiela na `/hladat/?q=`; samostatná paleta zatiaľ nie |
+
+Dáta, na ktoré treba myslieť:
+
+- **COOL DUO**: tabuľka v katalógu (s. 17) má posunuté stĺpce plášťa, hmotnosti a polomeru.
+  Web uvádza len obj. číslo, rúry a DN; zvyšok potvrdíme pri dopyte. Overiť u Watts.
+- **QUADRO MQ20040C4028S**: watts.eu uvádza 1,92 kg/m a polomer 5 m, katalóg 4,12 kg/m
+  a 1,30 m. Web berie katalóg (`OPRAVY` v `data/normalize.py`).
+- Pri 16 ďalších variantoch sa hmotnosť alebo polomer na watts.eu a v katalógu mierne líšia
+  (napr. M12525C 1,62 vs 1,32 kg/m). Web berie watts.eu ako novší zdroj.
+- PRIMO rady nemajú na watts.eu vlastnú tabuľku; varianty sú z katalógu (s. 9, 11, 14) a tie
+  isté obj. čísla sú v tabuľke základného radu ako štandardná izolácia.

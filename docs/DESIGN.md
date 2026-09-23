@@ -386,6 +386,24 @@ Sadzba: texty domova prechádzajú funkciou `sadzba()` (`web/src/lib/sadzba.ts`)
 nezlomiteľnú medzeru za jednopísmenové predložky a spojky, medzi číslo a jednotku (95 °C, 16 bar,
 60 t) a do označení noriem (EN ISO 15875). Text sa inak nemení.
 
+### Vnútorné stránky: hlava, telo, záver (23. 9. 2026)
+
+Každá vnútorná stránka má rovnakú kostru, aby web pôsobil ako celok:
+
+- **Hlava** (`components/Hlava.astro`): svetlé pole ako hero domova, drobčeky, nadpis a popis
+  vľavo, obraz vpravo cez okraj obrazovky a spodkom cez šikmú hranu do tela. Druhy obrazu:
+  render (tieň), biely (násobenie, biela splynie s poľom aj pod hranou), foto (zaoblená fotka).
+  Kľúčové čísla (tlak, rúra, plášť) sú v hlave pri obraze, nie v samostatnom páse.
+- **Telo** (`.telo`): zostup „pod zem“ (zem-1 až zem-3), obsah na bielych hárkoch (`.harok`)
+  s mäkkým tieňom. Nadpis sekcie `.s-hlava`, odkaz vpravo.
+- **Plávajúca navigácia častí** (`components/CastiStranky.astro`) na dlhých stránkach (rad,
+  spojky, príslušenstvo): pás pod hlavičkou, aktívna časť tmavomodrá.
+- **Záver** (`components/Zaver.astro`): tmavý pás so šikmou hranou, e-shop, dopyt a kontakt,
+  splýva s pätičkou.
+- Jedno žlté tlačidlo na obrazovku (hlavná akcia), ostatné odkazy `.odkaz`.
+- Tabuľky obj. čísel: kopírovanie jedným klikom, odkaz do e-shopu v riadku, na mobile karta
+  s tromi stĺpcami údajov.
+
 ### Kategória (napr. Potrubia pre vykurovanie)
 
 ```

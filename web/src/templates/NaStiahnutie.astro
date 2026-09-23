@@ -1,0 +1,169 @@
+---
+/**
+ * Na stiahnutie: katalóg s obálkou ako hlavný podklad, výkresy DWG a DXF podľa radov, vyhlásenia
+ * a environmentálne vyhlásenie. Zoznam sa skladá z podkladov radov a produktov (data/normalize.py),
+ * rovnaký súbor sa zobrazí raz.
+ */
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Hlava from '../components/Hlava.astro';
+import Zaver from '../components/Zaver.astro';
+import Ikona from '../components/Ikona.astro';
+import { cestaRadu, rNazov, type Rad } from '../lib/katalog';
+import { popisSuboru, nazovVykresu, type Subor } from '../lib/subory';
+import { fotka } from '../lib/obrazky';
+import { sadzba } from '../lib/sadzba';
+import { type Lang, staticAlternates, KATALOG_PDF } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const tx = {
+  sk: {
+    title: 'Na stiahnutie', desc: 'Katalóg Microflex v PDF, výkresy DWG a DXF pre projekt, vyhlásenie o zhode, environmentálne vyhlásenie EPD a technický list Microflex HP.',
+    lead: 'Katalóg, výkresy pre projekt a vyhlásenia výrobcu na jednom mieste. Katalóg sa stiahne priamo, ostatné podklady sa otvoria na watts.eu.',
+    katalogH2: 'Katalóg Microflex', katalogP: 'Všetky rady potrubia s tabuľkami rozmerov a výkonu, spojky, príslušenstvo, pokyny k inštalácii, tepelné a tlakové straty. Slovenské vydanie výrobcu.',
+    stiahnut: 'Stiahnuť katalóg PDF', velkost: 'PDF, 19 MB, 44 strán',
+    obsah: [['Potrubia', 's. 8 až 21'], ['Spojky a príslušenstvo', 's. 22 až 33'], ['Pokyny k inštalácii', 's. 35 až 37'], ['Tepelné a tlakové straty, tlaková skúška', 's. 38 až 42']] as [string, string][],
+    vykresyH2: 'Výkresy pre projekt', vykresyP: 'Rezy potrubím vo formátoch DWG a DXF na vloženie do projektovej dokumentácie.', vykres: 'Výkres', rady: 'Rady',
+    dalsieH2: 'Vyhlásenia a ďalšie podklady', dalsieP: 'Pre stavebné konanie, výberové konania a hodnotenie budov.',
+    obalka: 'Obálka katalógu Microflex, slovenské vydanie',
+    zdroj: 'Podklady vydáva výrobca Watts. Na watts.eu sú vždy v aktuálnej verzii.',
+  },
+  cs: {
+    title: 'Ke stažení', desc: 'Katalog Microflex v PDF, výkresy DWG a DXF pro projekt, prohlášení o shodě, environmentální prohlášení EPD a technický list Microflex HP.',
+    lead: 'Katalog, výkresy pro projekt a prohlášení výrobce na jednom místě. Katalog se stáhne přímo, ostatní podklady se otevřou na watts.eu.',
+    katalogH2: 'Katalog Microflex', katalogP: 'Všechny řady potrubí s tabulkami rozměrů a výkonu, spojky, příslušenství, pokyny k instalaci, tepelné a tlakové ztráty. Slovenské vydání výrobce.',
+    stiahnut: 'Stáhnout katalog PDF', velkost: 'PDF, 19 MB, 44 stran, slovensky',
+    obsah: [['Potrubí', 's. 8 až 21'], ['Spojky a příslušenství', 's. 22 až 33'], ['Pokyny k instalaci', 's. 35 až 37'], ['Tepelné a tlakové ztráty, tlaková zkouška', 's. 38 až 42']] as [string, string][],
+    vykresyH2: 'Výkresy pro projekt', vykresyP: 'Řezy potrubím ve formátech DWG a DXF pro vložení do projektové dokumentace.', vykres: 'Výkres', rady: 'Řady',
+    dalsieH2: 'Prohlášení a další podklady', dalsieP: 'Pro stavební řízení, výběrová řízení a hodnocení budov.',
+    obalka: 'Obálka katalogu Microflex, slovenské vydání',
+    zdroj: 'Podklady vydává výrobce Watts. Na watts.eu jsou vždy v aktuální verzi.',
+  },
+}[lang];
+
+const kat = (await getCollection('kategorie')).map((k) => k.data);
+const poradieKat = (id: string) => kat.find((k) => k.id === id)?.poradie ?? 99;
+const rady = (await getCollection('rady')).map((r) => r.data).filter((r) => !r.je_skupina)
+  .sort((a, b) => poradieKat(a.kategoria) - poradieKat(b.kategoria) || a.poradie - b.poradie);
+const produkty = (await getCollection('produkty')).map((p) => p.data);
+
+// Výkresy: jeden riadok na výkres (UNO a UNO PRIMO zdieľajú jeden), DWG a DXF vedľa seba.
+const vykresy = new Map<string, { nazov: string; dwg?: string; dxf?: string; rady: Rad[] }>();
+for (const r of rady) for (const s of r.subory) {
+  const m = s.nazov.match(/^Výkres (DWG|DXF): (.+)$/);
+  if (!m) continue;
+  const v = vykresy.get(m[2]) ?? { nazov: nazovVykresu(m[2], lang), rady: [] };
+  if (m[1] === 'DWG') v.dwg = s.url; else v.dxf = s.url;
+  if (!v.rady.includes(r)) v.rady.push(r);
+  vykresy.set(m[2], v);
+}
+// Ostatné podklady raz, bez katalógu a výkresov.
+const ostatne = new Map<string, Subor>();
+for (const s of [...rady.flatMap((r) => r.subory), ...produkty.flatMap((p) => p.subory)]) {
+  const d = popisSuboru(s, lang).druh;
+  if (d !== 'katalog' && d !== 'vykres' && !ostatne.has(s.url)) ostatne.set(s.url, s);
+}
+const poradieDruhu = { list: 0, zhoda: 1, epd: 2, brozura: 3, iny: 4, katalog: 5, vykres: 6 };
+const dalsie = [...ostatne.values()].map((s) => ({ ...popisSuboru(s, lang), url: s.url })).sort((a, b) => poradieDruhu[a.druh] - poradieDruhu[b.druh]);
+const hpRad = rady.find((r) => r.slug === 'microflex-hp');
+const obalka = fotka('katalog-obalka.jpg')!;
+const katRadu = (r: Rad) => kat.find((k) => k.id === r.kategoria)!;
+---
+<Base lang={lang} alternates={staticAlternates('stiahnut')} title={tx.title} description={tx.desc} aktivna="stiahnut" drobceky={[{ text: tx.title }]} vizualneDrobceky={false}>
+  <Hlava lang={lang} nadpis={tx.title} drobceky={[{ text: tx.title }]} lead={tx.lead}>
+    <div class="hlava-akcie">
+      <a class="btn btn-yellow" href={KATALOG_PDF} target="_blank" rel="noopener">{tx.stiahnut} <Ikona nazov="download" velkost={18} /></a>
+      <a class="odkaz" href="#vykresy">{tx.vykresyH2} <Ikona nazov="arrow-down" velkost={16} /></a>
+    </div>
+    <a slot="bok" class="obalka" href={KATALOG_PDF} target="_blank" rel="noopener" aria-label={tx.stiahnut}>
+      <Image src={obalka} alt={tx.obalka} widths={[320, 480, 640]} sizes="(max-width: 900px) 60vw, 320px" loading="eager" />
+    </a>
+  </Hlava>
+
+  <div class="telo">
+    <section class="wrap" aria-labelledby="h-kat">
+      <div class="harok katalog">
+        <div>
+          <h2 id="h-kat">{tx.katalogH2}</h2>
+          <p class="katalog-p">{sadzba(tx.katalogP)}</p>
+          <a class="btn btn-yellow" href={KATALOG_PDF} target="_blank" rel="noopener">{tx.stiahnut} <Ikona nazov="download" velkost={18} /></a>
+          <p class="velkost">{tx.velkost}</p>
+        </div>
+        <dl class="obsah">{tx.obsah.map(([dt, dd]) => <div><dt>{dt}</dt><dd>{dd}</dd></div>)}</dl>
+      </div>
+    </section>
+
+    <section class="wrap cast" id="vykresy" aria-labelledby="h-vyk">
+      <div class="s-hlava"><h2 id="h-vyk">{tx.vykresyH2}</h2><p>{tx.vykresyP}</p></div>
+      <div class="harok vykresy">
+        <table class="data">
+          <thead><tr><th scope="col">{tx.vykres}</th><th scope="col">{tx.rady}</th><th scope="col"><span class="sr">DWG</span></th><th scope="col"><span class="sr">DXF</span></th></tr></thead>
+          <tbody>
+            {[...vykresy.values()].map((v) => (
+              <tr>
+                <td class="v-nazov">{v.nazov}</td>
+                <td class="v-rady">{v.rady.map((r, i) => <>{i > 0 && ', '}<a href={cestaRadu(katRadu(r), r, lang)}>{rNazov(r, lang).split(',')[0].replace('Microflex ', '')}</a></>)}</td>
+                <td>{v.dwg && <a class="format" href={v.dwg} target="_blank" rel="noopener">DWG <Ikona nazov="download" velkost={15} /></a>}</td>
+                <td>{v.dxf && <a class="format" href={v.dxf} target="_blank" rel="noopener">DXF <Ikona nazov="download" velkost={15} /></a>}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="wrap" aria-labelledby="h-dalsie">
+      <div class="s-hlava"><h2 id="h-dalsie">{tx.dalsieH2}</h2><p>{tx.dalsieP}</p></div>
+      <ul class="dalsie">
+        {dalsie.map((d) => (
+          <li>
+            <a class="harok podklad" href={d.url} target="_blank" rel="noopener">
+              <span class:list={['typ', `typ-${d.typ.toLowerCase()}`]}>{d.typ}</span>
+              <span class="podklad-text"><span class="podklad-nazov">{d.nazov}</span>{d.meta && <span class="podklad-meta">{d.druh === 'list' && hpRad ? rNazov(hpRad, lang) : d.meta}</span>}</span>
+              <Ikona nazov="external-link" velkost={18} />
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p class="source">{tx.zdroj}</p>
+    </section>
+  </div>
+  <Zaver lang={lang} />
+</Base>
+
+<style>
+  .obalka { display: block; width: min(320px, 70vw); margin: 8px 6% 0 auto; transform: rotate(3deg); transition: transform 400ms var(--ease-soft); }
+  .obalka:hover { transform: rotate(1deg) translateY(-6px); }
+  .obalka :global(img) { display: block; width: 100%; height: auto; border-radius: 4px; box-shadow: 0 2px 0 rgb(10 42 94 / 0.06), 0 40px 70px -30px rgb(11 27 51 / 0.6), 0 12px 24px -12px rgb(11 27 51 / 0.35); }
+
+  .katalog { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 32px 56px; align-items: center; padding: 36px 40px; }
+  .katalog h2 { font-size: clamp(26px, 1.4vw + 17px, 36px); letter-spacing: -0.02em; }
+  .katalog-p { margin: 14px 0 24px; color: var(--color-ink-soft); max-width: 34em; font-size: 17px; }
+  .velkost { margin-top: 10px; font-size: 13.5px; color: var(--color-ink-soft); }
+  .obsah { margin: 0; }
+  .obsah > div { display: flex; justify-content: space-between; gap: 16px; padding: 13px 0; border-bottom: 1px solid rgb(10 42 94 / 0.08); }
+  .obsah dt { font-weight: 500; }
+  .obsah dd { margin: 0; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; color: var(--color-blue-900); white-space: nowrap; }
+
+  .vykresy { overflow-x: auto; padding: 4px 16px 8px; }
+  .vykresy th { background: #fff; }
+  .v-nazov { font-weight: 600; white-space: normal !important; }
+  .v-rady { white-space: normal !important; color: var(--color-ink-soft); }
+  .v-rady a { font-weight: 500; }
+  .format { display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 9px; background: var(--color-blue-50); font-family: var(--font-display); font-stretch: 112.5%; font-weight: 700; font-size: 13px; letter-spacing: .03em; color: var(--color-blue-900); transition: background-color 150ms var(--ease-soft); }
+  .format:hover { background: var(--color-blue-100); color: var(--color-blue-900); }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+  .dalsie { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 18px; }
+  .podklad { display: grid; grid-template-columns: 48px minmax(0, 1fr) auto; gap: 16px; align-items: center; padding: 18px 22px; color: var(--color-ink); transition: transform 250ms var(--ease-soft); }
+  .podklad:hover { color: var(--color-ink); transform: translateY(-2px); }
+  .podklad :global(.icon) { color: var(--color-blue-700); }
+  .typ { width: 48px; height: 56px; border-radius: 6px 14px 6px 6px; display: grid; place-items: end center; padding-bottom: 8px; font-family: var(--font-display); font-stretch: 112.5%; font-size: 11.5px; font-weight: 700; letter-spacing: 0.04em; color: #fff; background: linear-gradient(160deg, #1467c1 0%, var(--color-blue-900) 100%); box-shadow: 0 10px 18px -10px rgb(10 42 94 / 0.6), inset 0 1px 0 rgb(255 255 255 / 0.25); }
+  .typ-epd { background: linear-gradient(160deg, #2f8f5b 0%, #1d6340 100%); }
+  .podklad-nazov { display: block; font-weight: 600; }
+  .podklad-meta { display: block; font-size: 13.5px; color: var(--color-ink-soft); margin-top: 1px; }
+  .source { margin-top: 16px; }
+  @media (max-width: 900px) { .katalog { grid-template-columns: minmax(0, 1fr); padding: 28px 24px; } .obalka { margin: 8px auto 0; width: min(240px, 60vw); } }
+</style>

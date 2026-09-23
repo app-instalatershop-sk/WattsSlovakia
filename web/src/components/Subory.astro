@@ -4,35 +4,15 @@
  * preto sa zobrazujú ako druh podkladu a doplnok („Výkres DWG“ + „UNO & UNO PRIMO heating and cooling“).
  */
 import Ikona from './Ikona.astro';
-import { type Lang, t } from '../i18n/ui';
-interface Subor { nazov: string; typ: string; jazyk: string | null; url: string }
+import { popisSuboru, type Subor } from '../lib/subory';
+import { type Lang, KATALOG_PDF } from '../i18n/ui';
 interface Props { subory: Subor[]; lang: Lang }
 const { subory, lang } = Astro.props;
-const ui = t(lang);
-const cs = lang === 'cs';
-const jazyk = (j: string | null) => (j === 'sk' ? ui.subory.slovensky : j === 'en' ? ui.subory.anglicky : j === 'cs' ? ui.subory.cesky : null);
-
-function popis(s: Subor): { typ: string; nazov: string; meta: string | null } {
-  const n = s.nazov;
-  let m: RegExpMatchArray | null;
-  if (s.typ === 'EPD' || /deklar/i.test(n)) {
-    const platna = n.match(/platná do (.+)$/);
-    return { typ: 'EPD', nazov: cs ? 'Environmentální prohlášení o produktu' : 'Environmentálne vyhlásenie o produkte', meta: platna ? `platné do ${platna[1]}` : null };
-  }
-  if ((m = n.match(/^Výkres (DWG|DXF): (.+)$/))) {
-    const meta = m[2].replace(/ & /g, ' a ').replace('heating and cooling', cs ? 'vytápění a chlazení' : 'vykurovanie a chladenie')
-      .replace('sanitary water', 'pitná voda').replace('with heating cable', cs ? 's topným kabelem' : 's vykurovacím káblom');
-    return { typ: m[1], nazov: `Výkres ${m[1]}`, meta };
-  }
-  if (/^Katalóg/.test(n)) return { typ: 'PDF', nazov: cs ? 'Katalog Microflex' : 'Katalóg Microflex', meta: 'slovensky, 19 MB' };
-  if (/^Brožúra/.test(n)) return { typ: 'PDF', nazov: cs ? 'Brožura Microflex' : 'Brožúra Microflex', meta: jazyk(s.jazyk) };
-  if (/^Vyhlásenie o zhode/.test(n)) return { typ: 'PDF', nazov: cs ? 'Prohlášení o shodě' : 'Vyhlásenie o zhode', meta: jazyk(s.jazyk) };
-  if (/Technický list/.test(n)) return { typ: 'PDF', nazov: 'Technický list', meta: n.replace(/\s*-\s*Technický list/, '') };
-  return { typ: s.typ, nazov: n, meta: jazyk(s.jazyk) };
-}
+const popis = (s: Subor) => popisSuboru(s, lang);
 // Katalóg a technický list prvé, potom výkresy, vyhlásenia a brožúra.
 const poradie = (p: { typ: string; nazov: string }) => (/Katal|Technick/.test(p.nazov) ? 0 : p.typ === 'DWG' || p.typ === 'DXF' ? 1 : p.typ === 'EPD' ? 3 : /Brož/.test(p.nazov) ? 4 : 2);
-const polozky = subory.map((s) => ({ ...popis(s), url: s.url })).sort((a, b) => poradie(a) - poradie(b));
+// Katalóg vedie priamo na PDF, nie na stránku podkladu na watts.eu.
+const polozky = subory.map((s) => { const p = popis(s); return { ...p, url: p.druh === 'katalog' ? KATALOG_PDF : s.url }; }).sort((a, b) => poradie(a) - poradie(b));
 ---
 <ul class="subory">
   {polozky.map((p) => (

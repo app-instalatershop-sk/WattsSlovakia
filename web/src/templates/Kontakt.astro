@@ -1,0 +1,135 @@
+---
+/**
+ * Kontakt: telefón a e-mail hneď v hlave, predajňa a sklad s otváracími hodinami a navigáciou,
+ * fakturačné údaje prevádzkovateľa a odkaz na výrobcu. Údaje sú len v content/firma.ts.
+ */
+import Base from '../layouts/Base.astro';
+import Hlava from '../components/Hlava.astro';
+import Zaver from '../components/Zaver.astro';
+import Ikona from '../components/Ikona.astro';
+import { FIRMA, firma } from '../content/firma';
+import { type Lang, route, staticAlternates, ESHOP } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const f = firma(lang);
+const tx = {
+  sk: {
+    title: 'Kontakt a predajňa', desc: 'Telefón, e-mail, predajňa a sklad potrubia Microflex v Rakovej pri Čadci. Otváracie hodiny a fakturačné údaje.',
+    lead: 'Microflex predávame cez e-shop instalatershop.sk a v predajni so skladom v Rakovej pri Čadci. Zavolajte alebo napíšte, s výberom dimenzie aj s ponukou na projekt poradíme.',
+    telefon: 'Telefón', email: 'E-mail', dopyt: 'Dopyty na projekty', hodiny: 'Otváracie hodiny',
+    predajnaH2: 'Predajňa a sklad', predajnaP: 'Potrubie v kotúčoch, spojky a príslušenstvo na jednom mieste.',
+    adresa: 'Adresa', navigovat: 'Navigovať v Mapách Google', eshopH3: 'E-shop', eshopP: 'Ceny, dostupnosť a objednávka každého obj. čísla.', eshopOdkaz: 'Do e-shopu instalatershop.sk',
+    fakturaH2: 'Fakturačné údaje', meno: 'Obchodné meno', sidlo: 'Sídlo', ico: 'IČO', dic: 'DIČ', icdph: 'IČ DPH',
+    vyrobcaH2: 'Výrobca', vyrobcaP: 'Microflex vyrába Watts. Sme oficiálny partner pre Slovensko; technické podklady výrobcu nájdete v časti Na stiahnutie.', podklady: 'Podklady na stiahnutie',
+    zaverNadpis: 'Kúpiť alebo poslať dopyt', zaverText: 'Menšie množstvá objednáte priamo v e-shope. Na projekt pošlite dopyt, ozveme sa s ponukou a dostupnosťou.',
+  },
+  cs: {
+    title: 'Kontakt a prodejna', desc: 'Telefon, e-mail, prodejna a sklad potrubí Microflex v Rakové u Čadce. Otevírací doba a fakturační údaje.',
+    lead: 'Microflex prodáváme přes e-shop instalatershop.sk a v prodejně se skladem v Rakové u Čadce. Zavolejte nebo napište, s výběrem dimenze i s nabídkou na projekt poradíme.',
+    telefon: 'Telefon', email: 'E-mail', dopyt: 'Poptávky na projekty', hodiny: 'Otevírací doba',
+    predajnaH2: 'Prodejna a sklad', predajnaP: 'Potrubí v kotoučích, spojky a příslušenství na jednom místě.',
+    adresa: 'Adresa', navigovat: 'Navigovat v Mapách Google', eshopH3: 'E-shop', eshopP: 'Ceny, dostupnost a objednávka každého obj. čísla.', eshopOdkaz: 'Do e-shopu instalatershop.sk',
+    fakturaH2: 'Fakturační údaje', meno: 'Obchodní firma', sidlo: 'Sídlo', ico: 'IČO', dic: 'DIČ', icdph: 'DIČ (SK)',
+    vyrobcaH2: 'Výrobce', vyrobcaP: 'Microflex vyrábí Watts. Jsme oficiální partner pro Slovensko; technické podklady výrobce najdete v části Ke stažení.', podklady: 'Podklady ke stažení',
+    zaverNadpis: 'Koupit nebo poslat poptávku', zaverText: 'Menší množství objednáte přímo v e-shopu. Na projekt pošlete poptávku, ozveme se s nabídkou a dostupností.',
+  },
+}[lang];
+const adresa = `${FIRMA.predajna.ulica}, ${FIRMA.predajna.psc} ${FIRMA.predajna.mesto}`;
+const mapa = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(adresa)}`;
+const ld = [{
+  '@context': 'https://schema.org', '@type': 'Store', name: FIRMA.obchod, legalName: FIRMA.nazov, url: FIRMA.eshop,
+  telephone: FIRMA.telefon, email: FIRMA.email, vatID: FIRMA.icdph, taxID: FIRMA.dic,
+  address: { '@type': 'PostalAddress', streetAddress: FIRMA.predajna.ulica, postalCode: FIRMA.predajna.psc, addressLocality: FIRMA.predajna.mesto, addressCountry: 'SK' },
+  openingHours: FIRMA.hodinySchema,
+}];
+---
+<Base lang={lang} alternates={staticAlternates('kontakt')} title={tx.title} description={tx.desc} drobceky={[{ text: tx.title }]} vizualneDrobceky={false} jsonLd={ld}>
+  <Hlava lang={lang} nadpis={tx.title} drobceky={[{ text: tx.title }]} lead={tx.lead}>
+    <div slot="bok" class="harok vizitka">
+      <a class="vizitka-tel" href={FIRMA.telefonHref}><Ikona nazov="phone" velkost={22} /><span><small>{tx.telefon}</small>{FIRMA.telefon}</span></a>
+      <a class="vizitka-riadok" href={`mailto:${FIRMA.email}`}><Ikona nazov="mail" velkost={20} /><span><small>{tx.email}</small>{FIRMA.email}</span></a>
+      <a class="vizitka-riadok" href={`mailto:${FIRMA.emailDopyt}`}><Ikona nazov="file-text" velkost={20} /><span><small>{tx.dopyt}</small>{FIRMA.emailDopyt}</span></a>
+      <div class="vizitka-hodiny"><small>{tx.hodiny}</small><span>{f.hodinyKratko}</span></div>
+    </div>
+  </Hlava>
+
+  <div class="telo">
+    <section class="wrap" aria-labelledby="h-predajna">
+      <div class="s-hlava"><h2 id="h-predajna">{tx.predajnaH2}</h2><p>{tx.predajnaP}</p></div>
+      <div class="predajna">
+        <div class="harok karta">
+          <h3>{tx.adresa}</h3>
+          <p class="adresa">{FIRMA.obchod}<br />{FIRMA.predajna.ulica}, {FIRMA.predajna.areal}<br />{FIRMA.predajna.psc} {FIRMA.predajna.mesto}</p>
+          <a class="odkaz" href={mapa} target="_blank" rel="noopener">{tx.navigovat} <Ikona nazov="external-link" velkost={16} /></a>
+        </div>
+        <div class="harok karta">
+          <h3>{tx.hodiny}</h3>
+          <dl class="hodiny">{f.hodiny.map(([d, h]) => <div><dt>{d}</dt><dd>{h}</dd></div>)}</dl>
+        </div>
+        <a class="harok karta karta-eshop" href={ESHOP} target="_blank" rel="noopener">
+          <h3>{tx.eshopH3}</h3>
+          <p>{tx.eshopP}</p>
+          <span class="odkaz">{tx.eshopOdkaz} <Ikona nazov="external-link" velkost={16} /></span>
+        </a>
+      </div>
+    </section>
+
+    <section class="wrap dve" aria-labelledby="h-faktura">
+      <div>
+        <h2 id="h-faktura">{tx.fakturaH2}</h2>
+        <dl class="harok faktura">
+          <div><dt>{tx.meno}</dt><dd>{FIRMA.nazov}</dd></div>
+          <div><dt>{tx.sidlo}</dt><dd>{FIRMA.sidlo.ulica}, {FIRMA.sidlo.psc} {FIRMA.sidlo.mesto}</dd></div>
+          <div><dt>{tx.ico}</dt><dd>{FIRMA.ico}</dd></div>
+          <div><dt>{tx.dic}</dt><dd>{FIRMA.dic}</dd></div>
+          <div><dt>{tx.icdph}</dt><dd>{FIRMA.icdph}</dd></div>
+        </dl>
+        <p class="register">{f.register}</p>
+      </div>
+      <div>
+        <h2>{tx.vyrobcaH2}</h2>
+        <p class="vyrobca">{tx.vyrobcaP}</p>
+        <a class="odkaz" href={route(lang, 'stiahnut')}>{tx.podklady} <Ikona nazov="arrow-right" velkost={16} /></a>
+      </div>
+    </section>
+  </div>
+  <Zaver lang={lang} nadpis={tx.zaverNadpis} text={tx.zaverText} kontakt={false} />
+</Base>
+
+<style>
+  .vizitka { display: flex; flex-direction: column; padding: 10px 28px; max-width: 460px; margin: 32px 0 0 auto; }
+  .vizitka a, .vizitka-hodiny { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 14px; align-items: center; padding: 16px 0; color: var(--color-ink); }
+  .vizitka > * + * { border-top: 1px solid rgb(10 42 94 / 0.08); }
+  .vizitka small { display: block; font-size: 13px; color: var(--color-ink-soft); font-weight: 400; }
+  .vizitka :global(.icon) { color: var(--color-blue-700); }
+  .vizitka-tel span { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 700; font-size: clamp(24px, 1.2vw + 16px, 30px); letter-spacing: -0.01em; color: var(--color-blue-900); }
+  .vizitka-riadok span { font-weight: 600; font-size: 17px; }
+  .vizitka a:hover span { color: var(--color-blue-700); }
+  .vizitka-hodiny { grid-template-columns: minmax(0, 1fr); padding-left: 42px; }
+  .vizitka-hodiny span { font-weight: 500; }
+
+  .predajna { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: stretch; }
+  .karta { display: flex; flex-direction: column; gap: 12px; padding: 26px 28px; color: var(--color-ink); }
+  .karta h3 { font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-blue-700); }
+  .adresa { font-size: 18px; line-height: 1.55; font-weight: 500; }
+  .karta .odkaz { margin-top: auto; align-self: flex-start; }
+  .hodiny > div { display: flex; justify-content: space-between; gap: 16px; padding: 9px 0; border-bottom: 1px solid rgb(10 42 94 / 0.08); }
+  .hodiny dt { color: var(--color-ink-soft); }
+  .hodiny dd { margin: 0; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; color: var(--color-blue-900); }
+  .karta-eshop { background: linear-gradient(160deg, #fff 0%, #f3f7fc 100%); transition: transform 250ms var(--ease-soft); }
+  .karta-eshop:hover { color: var(--color-ink); transform: translateY(-3px); }
+  .karta-eshop p { color: var(--color-ink-soft); }
+
+  .dve { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 32px 64px; align-items: start; }
+  .dve h2 { font-size: clamp(26px, 1.4vw + 17px, 36px); letter-spacing: -0.02em; margin-bottom: 20px; }
+  .faktura { margin: 0; padding: 8px 28px; }
+  .faktura > div { display: grid; grid-template-columns: 9em minmax(0, 1fr); gap: 16px; padding: 12px 0; }
+  .faktura > div + div { border-top: 1px solid rgb(10 42 94 / 0.08); }
+  .faktura dt { color: var(--color-ink-soft); }
+  .faktura dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .register { margin-top: 12px; font-size: 13.5px; color: var(--color-ink-soft); }
+  .vyrobca { color: var(--color-ink-soft); max-width: 32em; margin-bottom: 16px; }
+  @media (max-width: 900px) { .predajna, .dve { grid-template-columns: minmax(0, 1fr); } .vizitka { margin: 8px 0 0; max-width: none; } }
+  @media (max-width: 760px) { .faktura > div { grid-template-columns: minmax(0, 1fr); gap: 2px; } }
+</style>

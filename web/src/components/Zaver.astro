@@ -9,8 +9,8 @@ import { FIRMA, firma } from '../content/firma';
 import { stranky } from '../content/stranky';
 import { type Lang, ESHOP, route } from '../i18n/ui';
 
-interface Props { lang: Lang; nadpis?: string; text?: string }
-const { lang, nadpis, text } = Astro.props;
+interface Props { lang: Lang; nadpis?: string; text?: string; kontakt?: boolean }
+const { lang, nadpis, text, kontakt = true } = Astro.props;
 const z = stranky(lang).zaver;
 const f = firma(lang);
 ---
@@ -24,11 +24,11 @@ const f = firma(lang);
         <a class="btn btn-ghost-light" href={`${route(lang, 'firmy')}#dopyt`}>{z.dopyt}</a>
       </div>
     </div>
-    <dl class="zaver-kontakt">
+    {kontakt && <dl class="zaver-kontakt">
       <div><dt>{z.telefon}</dt><dd><a href={FIRMA.telefonHref}>{FIRMA.telefon}</a></dd></div>
       <div><dt>{z.email}</dt><dd><a href={`mailto:${FIRMA.email}`}>{FIRMA.email}</a></dd></div>
       <div><dt>{z.predajna}</dt><dd>{FIRMA.predajna.ulica}, {FIRMA.predajna.mesto}<span>{f.hodinyKratko}</span></dd></div>
-    </dl>
+    </dl>}
   </div>
 </section>
 

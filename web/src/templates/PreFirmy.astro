@@ -1,0 +1,199 @@
+---
+/**
+ * Pre firmy: čo dostanú projektanti, montážne firmy a veľkoobchod, podklady a dopyt na projekt.
+ * Web nemá server: formulár z vyplnených polí zloží e-mail na FIRMA.emailDopyt a otvorí ho
+ * v e-mailovom programe (mailto). Parameter ?rad= predvyplní potrubie (odkazy zo stránok radov).
+ */
+import Base from '../layouts/Base.astro';
+import Hlava from '../components/Hlava.astro';
+import Zaver from '../components/Zaver.astro';
+import Ikona from '../components/Ikona.astro';
+import { FIRMA } from '../content/firma';
+import { fotka } from '../lib/obrazky';
+import { sadzba } from '../lib/sadzba';
+import { type Lang, route, staticAlternates } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const tx = {
+  sk: {
+    title: 'Pre projektantov, montážne firmy a veľkoobchod', kratko: 'Pre firmy',
+    desc: 'Podklady na projekt s potrubím Microflex, ponuka materiálu na celú trasu a dopyt na projekt. Výkresy DWG a DXF, katalóg, vyhlásenia o zhode.',
+    lead: 'Podklady na projekt, materiál na celú trasu od potrubia po prestupy stenou a ponuka s dostupnosťou. Pošlite dopyt, ozveme sa.',
+    foto: 'Potrubie Microflex vstupuje cez stenu do budovy, pripojenie k zdroju tepla',
+    pre: [
+      { h: 'Projektanti', p: 'Výkresy DWG a DXF pre každý rad, tabuľky rozmerov a výkonu, tepelné a tlakové straty a vyhlásenia výrobcu na jednom mieste.', odkaz: 'Podklady na stiahnutie', href: 'stiahnut' },
+      { h: 'Montážne firmy', p: 'Materiál na celý výkop v jednej ponuke: potrubie, svorné spojky, koncové krytky, izolačné sady na spoje pod zemou a prestupy stenou.', odkaz: 'Spojky a príslušenstvo', href: 'spojky' },
+      { h: 'Veľkoobchod', p: 'Obj. čísla výrobcu pri každej dimenzii a diele, kopírovateľné jedným klikom. Ponuku a dostupnosť pripravíme na dopyt.', odkaz: 'Všetky potrubia', href: 'potrubia' },
+    ],
+    dopytH2: 'Dopyt na projekt', dopytP: 'Čím viac o trase viete, tým presnejšia bude ponuka. Stačí aj orientačná dĺžka a médium.',
+    meno: 'Meno a priezvisko', firma: 'Firma', email: 'E-mail', telefon: 'Telefón', miesto: 'Miesto stavby',
+    medium: 'Čo potrubím povediete', media: ['Vykurovanie', 'Teplá a studená voda', 'Vykurovanie aj teplá voda', 'Studená alebo chladená voda', 'Tepelné čerpadlo', 'Neviem, poraďte'],
+    potrubie: 'Potrubie a dĺžky', potrubieHint: 'napríklad DUO 125/2 × 32, asi 40 m', termin: 'Termín', terminHint: 'napríklad jar 2027',
+    poznamka: 'Poznámka', poznamkaHint: 'Spojky, prestupy stenou, počet odbočiek, zdroj tepla…',
+    povinne: 'povinné', odoslat: 'Pripraviť e-mail s dopytom',
+    pozn: (e: string) => `Tlačidlo otvorí Váš e-mailový program s vyplneným dopytom na ${e}. Môžete napísať aj priamo alebo zavolať.`,
+    predmet: 'Dopyt Microflex', chyba: 'Vyplňte meno a e-mail, aby sme Vám mohli odpovedať.',
+    postupH2: 'Ako dopyt prebieha', postup: [['Pošlete trasu', 'Médium, dĺžky, dimenzie alebo výkon a miesto stavby. Stačí aj náčrt trasy v prílohe e-mailu.'], ['Pripravíme ponuku', 'Potrubie, spojky a príslušenstvo na celú trasu s dostupnosťou.'], ['Objednáte', 'Objednávka podľa ponuky, menšie množstvá priamo v e-shope instalatershop.sk.']] as [string, string][],
+    kontaktH3: 'Radšej telefonicky?',
+  },
+  cs: {
+    title: 'Pro projektanty, montážní firmy a velkoobchod', kratko: 'Pro firmy',
+    desc: 'Podklady pro projekt s potrubím Microflex, nabídka materiálu na celou trasu a poptávka na projekt. Výkresy DWG a DXF, katalog, prohlášení o shodě.',
+    lead: 'Podklady pro projekt, materiál na celou trasu od potrubí po prostupy stěnou a nabídka s dostupností. Pošlete poptávku, ozveme se.',
+    foto: 'Potrubí Microflex vstupuje stěnou do budovy, připojení ke zdroji tepla',
+    pre: [
+      { h: 'Projektanti', p: 'Výkresy DWG a DXF pro každou řadu, tabulky rozměrů a výkonu, tepelné a tlakové ztráty a prohlášení výrobce na jednom místě.', odkaz: 'Podklady ke stažení', href: 'stiahnut' },
+      { h: 'Montážní firmy', p: 'Materiál na celý výkop v jedné nabídce: potrubí, svěrné spojky, koncové krytky, izolační sady na spoje pod zemí a prostupy stěnou.', odkaz: 'Spojky a příslušenství', href: 'spojky' },
+      { h: 'Velkoobchod', p: 'Obj. čísla výrobce u každé dimenze a dílu, kopírovatelná jedním klikem. Nabídku a dostupnost připravíme na poptávku.', odkaz: 'Všechna potrubí', href: 'potrubia' },
+    ],
+    dopytH2: 'Poptávka na projekt', dopytP: 'Čím víc o trase víte, tím přesnější bude nabídka. Stačí i orientační délka a médium.',
+    meno: 'Jméno a příjmení', firma: 'Firma', email: 'E-mail', telefon: 'Telefon', miesto: 'Místo stavby',
+    medium: 'Co potrubím povedete', media: ['Vytápění', 'Teplá a studená voda', 'Vytápění i teplá voda', 'Studená nebo chlazená voda', 'Tepelné čerpadlo', 'Nevím, poraďte'],
+    potrubie: 'Potrubí a délky', potrubieHint: 'například DUO 125/2 × 32, asi 40 m', termin: 'Termín', terminHint: 'například jaro 2027',
+    poznamka: 'Poznámka', poznamkaHint: 'Spojky, prostupy stěnou, počet odboček, zdroj tepla…',
+    povinne: 'povinné', odoslat: 'Připravit e-mail s poptávkou',
+    pozn: (e: string) => `Tlačítko otevře Váš e-mailový program s vyplněnou poptávkou na ${e}. Můžete napsat i přímo nebo zavolat.`,
+    predmet: 'Poptávka Microflex', chyba: 'Vyplňte jméno a e-mail, abychom Vám mohli odpovědět.',
+    postupH2: 'Jak poptávka probíhá', postup: [['Pošlete trasu', 'Médium, délky, dimenze nebo výkon a místo stavby. Stačí i náčrt trasy v příloze e-mailu.'], ['Připravíme nabídku', 'Potrubí, spojky a příslušenství na celou trasu s dostupností.'], ['Objednáte', 'Objednávka podle nabídky, menší množství přímo v e-shopu instalatershop.sk.']] as [string, string][],
+    kontaktH3: 'Raději telefonicky?',
+  },
+}[lang];
+const obraz = fotka('montaz-budova.jpg');
+const polia = { meno: tx.meno, firma: tx.firma, email: tx.email, telefon: tx.telefon, miesto: tx.miesto, medium: tx.medium, potrubie: tx.potrubie, termin: tx.termin, poznamka: tx.poznamka };
+---
+<Base lang={lang} alternates={staticAlternates('firmy')} title={tx.title} description={tx.desc} aktivna="firmy" drobceky={[{ text: tx.kratko }]} vizualneDrobceky={false}>
+  <Hlava lang={lang} nadpis={tx.title} drobceky={[{ text: tx.kratko }]} lead={tx.lead} obraz={obraz} obrazAlt={tx.foto} druh="foto">
+    <div class="hlava-akcie">
+      <a class="btn btn-yellow" href="#dopyt">{tx.dopytH2} <Ikona nazov="arrow-down" velkost={18} /></a>
+      <a class="odkaz" href={route(lang, 'stiahnut')}>{tx.pre[0].odkaz} <Ikona nazov="arrow-right" velkost={16} /></a>
+    </div>
+  </Hlava>
+
+  <div class="telo">
+    <section class="wrap" aria-label={tx.kratko}>
+      <ul class="pre">
+        {tx.pre.map((x) => (
+          <li class="harok pre-karta">
+            <h2>{x.h}</h2>
+            <p>{sadzba(x.p)}</p>
+            <a class="odkaz" href={route(lang, x.href as 'stiahnut')}>{x.odkaz} <Ikona nazov="arrow-right" velkost={16} /></a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="wrap cast dopyt" id="dopyt" aria-labelledby="h-dopyt">
+      <div class="dopyt-bok">
+        <h2 id="h-dopyt">{tx.dopytH2}</h2>
+        <p class="dopyt-p">{tx.dopytP}</p>
+        <ol class="postup">
+          {tx.postup.map(([h, p]) => <li><strong>{h}</strong><span>{sadzba(p)}</span></li>)}
+        </ol>
+        <div class="telefon">
+          <h3>{tx.kontaktH3}</h3>
+          <a href={FIRMA.telefonHref}><Ikona nazov="phone" velkost={20} /> {FIRMA.telefon}</a>
+          <a href={`mailto:${FIRMA.emailDopyt}`}><Ikona nazov="mail" velkost={20} /> {FIRMA.emailDopyt}</a>
+        </div>
+      </div>
+
+      <form class="harok formular" data-dopyt data-komu={FIRMA.emailDopyt} data-predmet={tx.predmet} data-chyba={tx.chyba} novalidate>
+        <div class="riadok">
+          <label class="pole"><span>{tx.meno} <em>{tx.povinne}</em></span><input name="meno" autocomplete="name" required /></label>
+          <label class="pole"><span>{tx.firma}</span><input name="firma" autocomplete="organization" /></label>
+        </div>
+        <div class="riadok">
+          <label class="pole"><span>{tx.email} <em>{tx.povinne}</em></span><input name="email" type="email" autocomplete="email" required /></label>
+          <label class="pole"><span>{tx.telefon}</span><input name="telefon" type="tel" autocomplete="tel" /></label>
+        </div>
+        <div class="riadok">
+          <label class="pole"><span>{tx.miesto}</span><input name="miesto" autocomplete="address-level2" /></label>
+          <label class="pole"><span>{tx.termin}</span><input name="termin" placeholder={tx.terminHint} /></label>
+        </div>
+        <fieldset class="pole">
+          <legend>{tx.medium}</legend>
+          <div class="volby">{tx.media.map((m, i) => <label class="volba"><input type="radio" name="medium" value={m} checked={i === 0} /><span>{m}</span></label>)}</div>
+        </fieldset>
+        <label class="pole"><span>{tx.potrubie}</span><input name="potrubie" placeholder={tx.potrubieHint} data-rad /></label>
+        <label class="pole"><span>{tx.poznamka}</span><textarea name="poznamka" rows="4" placeholder={tx.poznamkaHint}></textarea></label>
+        <p class="chyba" role="alert" data-chyba-text hidden></p>
+        <button type="submit" class="btn btn-yellow">{tx.odoslat} <Ikona nazov="mail" velkost={18} /></button>
+        <p class="formular-pozn">{tx.pozn(FIRMA.emailDopyt)}</p>
+        <script type="application/json" data-polia set:html={JSON.stringify(polia)} />
+      </form>
+    </section>
+  </div>
+  <Zaver lang={lang} />
+</Base>
+
+<style>
+  .pre { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+  .pre-karta { display: flex; flex-direction: column; gap: 12px; padding: 30px 30px 26px; }
+  .pre-karta h2 { font-size: 24px; letter-spacing: -0.015em; }
+  .pre-karta p { color: var(--color-ink-soft); }
+  .pre-karta .odkaz { margin-top: auto; align-self: flex-start; }
+
+  .dopyt { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 32px 56px; align-items: start; }
+  .dopyt h2 { font-size: clamp(28px, 1.6vw + 17px, 40px); letter-spacing: -0.02em; }
+  .dopyt-p { margin-top: 14px; color: var(--color-ink-soft); max-width: 30em; }
+  .postup { counter-reset: krok; margin-top: 28px; }
+  .postup li { counter-increment: krok; position: relative; display: flex; flex-direction: column; gap: 2px; padding: 0 0 22px 56px; }
+  .postup li::before { content: counter(krok); position: absolute; left: 0; top: -2px; width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; background: #fff; box-shadow: 0 10px 22px -12px rgb(10 42 94 / 0.5); font-family: var(--font-display); font-stretch: 112.5%; font-weight: 700; color: var(--color-blue-900); }
+  .postup li:not(:last-child)::after { content: ""; position: absolute; left: 18px; top: 42px; bottom: 4px; width: 2px; background: rgb(10 42 94 / 0.12); }
+  .postup strong { font-size: 17px; }
+  .postup span { color: var(--color-ink-soft); font-size: 15px; }
+  .telefon { margin-top: 12px; padding-top: 22px; border-top: 1px solid rgb(10 42 94 / 0.12); display: flex; flex-direction: column; gap: 10px; }
+  .telefon h3 { font-size: 16px; }
+  .telefon a { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; }
+
+  .formular { display: flex; flex-direction: column; gap: 18px; padding: 32px; }
+  .riadok { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+  .pole { display: flex; flex-direction: column; gap: 7px; border: 0; margin: 0; padding: 0; min-width: 0; }
+  .pole > span, .pole legend { font-size: 14px; font-weight: 600; color: var(--color-ink); padding: 0; }
+  .pole em { font-style: normal; font-weight: 400; font-size: 12.5px; color: var(--color-ink-soft); margin-left: 4px; }
+  .pole input, .pole textarea { width: 100%; min-height: 46px; padding: 11px 14px; border: 1px solid rgb(10 42 94 / 0.18); border-radius: 12px; background: #f8fafd; font: inherit; font-size: 15.5px; color: var(--color-ink); transition: border-color 150ms var(--ease-soft), box-shadow 150ms var(--ease-soft), background-color 150ms var(--ease-soft); }
+  .pole textarea { resize: vertical; min-height: 110px; }
+  .pole input::placeholder, .pole textarea::placeholder { color: #8a93a2; }
+  .pole input:focus, .pole textarea:focus { outline: none; background: #fff; border-color: var(--color-blue-700); box-shadow: 0 0 0 4px rgb(0 93 185 / 0.12); }
+  .pole input[aria-invalid="true"] { border-color: #c2410c; box-shadow: 0 0 0 4px rgb(194 65 12 / 0.12); }
+  .volby { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+  .volba { position: relative; }
+  .volba input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .volba span { display: inline-flex; align-items: center; height: 38px; padding: 0 14px; border-radius: 10px; border: 1px solid rgb(10 42 94 / 0.18); background: #f8fafd; font-size: 14.5px; font-weight: 500; transition: background-color 150ms var(--ease-soft), border-color 150ms var(--ease-soft), color 150ms var(--ease-soft); }
+  .volba input:checked + span { background: var(--color-blue-900); border-color: var(--color-blue-900); color: #fff; }
+  .volba input:focus-visible + span { box-shadow: 0 0 0 4px rgb(0 93 185 / 0.2); }
+  .formular .btn { align-self: flex-start; margin-top: 4px; }
+  .chyba { color: #c2410c; font-weight: 500; font-size: 14.5px; }
+  .formular-pozn { font-size: 13.5px; color: var(--color-ink-soft); }
+  @media (max-width: 1000px) { .pre { grid-template-columns: minmax(0, 1fr); } }
+  @media (max-width: 900px) { .dopyt { grid-template-columns: minmax(0, 1fr); } }
+  @media (max-width: 760px) { .riadok { grid-template-columns: minmax(0, 1fr); } .formular { padding: 22px 18px; } }
+</style>
+
+<script>
+  function initDopyt() {
+    const f = document.querySelector<HTMLFormElement>('[data-dopyt]');
+    if (!f || f.dataset.init) return;
+    f.dataset.init = '1';
+    const polia = JSON.parse(f.querySelector('[data-polia]')?.textContent ?? '{}') as Record<string, string>;
+    const rad = new URLSearchParams(location.search).get('rad');
+    const radPole = f.querySelector<HTMLInputElement>('[data-rad]');
+    if (rad && radPole && !radPole.value) radPole.value = rad;
+    const chyba = f.querySelector<HTMLElement>('[data-chyba-text]')!;
+    f.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const d = new FormData(f);
+      const meno = f.elements.namedItem('meno') as HTMLInputElement;
+      const email = f.elements.namedItem('email') as HTMLInputElement;
+      const zle = [meno, email].filter((x) => !x.value.trim() || !x.checkValidity());
+      [meno, email].forEach((x) => x.setAttribute('aria-invalid', String(zle.includes(x))));
+      if (zle.length) { chyba.textContent = f.dataset.chyba ?? ''; chyba.hidden = false; zle[0].focus(); return; }
+      chyba.hidden = true;
+      const riadky = Object.entries(polia).map(([k, nazov]) => [nazov, String(d.get(k) ?? '').trim()]).filter(([, v]) => v).map(([n, v]) => `${n}: ${v}`);
+      const predmet = `${f.dataset.predmet} – ${String(d.get('firma') || d.get('meno')).trim()}`;
+      location.href = `mailto:${f.dataset.komu}?subject=${encodeURIComponent(predmet)}&body=${encodeURIComponent(riadky.join('\n'))}`;
+    });
+  }
+  initDopyt();
+  document.addEventListener('astro:page-load', initDopyt);
+</script>

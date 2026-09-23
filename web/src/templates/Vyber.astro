@@ -1,0 +1,308 @@
+---
+/**
+ * Sprievodca výberom v troch krokoch: čo potrubím povediete (systém), rad a dimenzia podľa výkonu
+ * v kW (vykurovacie rady s výkonom z katalógu) alebo podľa priemeru nosnej rúry. Kroky 1 a 2 sú
+ * vykreslené na serveri, výsledok skladá skript z vložených dát. Stav je v adrese (?k=&r=&kw=&d=).
+ */
+import { Image, getImage } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Hlava from '../components/Hlava.astro';
+import Zaver from '../components/Zaver.astro';
+import Ikona from '../components/Ikona.astro';
+import Kopirovanie from '../components/Kopirovanie.astro';
+import { cestaRadu, kKratky, rNazov, rKratky, tlakText, priemery, ruraText, cislo } from '../lib/katalog';
+import { piktogram } from '../lib/obrazky';
+import { sadzba } from '../lib/sadzba';
+import { type Lang, route, staticAlternates } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const tx = {
+  sk: {
+    title: 'Sprievodca výberom potrubia', kratko: 'Výber potrubia',
+    desc: 'Vyberte predizolované potrubie Microflex v troch krokoch: médium, rad a dimenzia podľa výkonu v kW alebo priemeru rúry. S obj. číslami a odkazom do e-shopu.',
+    lead: 'Tri kroky od média k obj. číslu. Pri vykurovaní navrhneme dimenziu podľa výkonu z katalógu výrobcu.',
+    k1: 'Čo potrubím povediete', k2: 'Ktorý rad', k3: 'Aká dimenzia',
+    kw: 'Potrebný výkon', kwHint: 'napríklad 25', kwJ: 'kW', kwAlebo: 'alebo vyberte priemer nosnej rúry',
+    rura: 'Priemer nosnej rúry', vysledok: 'Vhodné obj. čísla',
+    kwPozn: 'Výkon je orientačný prenášaný výkon podľa katalógu výrobcu pri 80 °C a rozdiele 20 K. Pri dlhej trase alebo inom teplotnom spáde overte tlakové straty v katalógu alebo nám pošlite dopyt.',
+    kwNad: (max: number) => `Výkon nad ${max} kW tento rad jednou trasou neprenesie. Zvážte UNO vo väčšej dimenzii alebo dve vetvy, radi poradíme.`,
+    odporucame: 'Odporúčame', aj: 'Aj s väčšou rezervou', ruraL: 'Rúra', plastL: 'Plášť', vykonL: 'Výkon', polomerL: 'Polomer ohybu', izolaciaL: 'Izolácia',
+    standard: 'štandardná', zosilnena: 'zosilnená', rad: 'Tabuľka radu', eshop: 'Do e-shopu', dopyt: 'Poslať dopyt s týmto potrubím',
+    zdiel: 'Odkaz na tento výber', skopirovany: 'Odkaz je v schránke',
+  },
+  cs: {
+    title: 'Průvodce výběrem potrubí', kratko: 'Výběr potrubí',
+    desc: 'Vyberte předizolované potrubí Microflex ve třech krocích: médium, řada a dimenze podle výkonu v kW nebo průměru trubky. S obj. čísly a odkazem do e-shopu.',
+    lead: 'Tři kroky od média k obj. číslu. U vytápění navrhneme dimenzi podle výkonu z katalogu výrobce.',
+    k1: 'Co potrubím povedete', k2: 'Která řada', k3: 'Jaká dimenze',
+    kw: 'Potřebný výkon', kwHint: 'například 25', kwJ: 'kW', kwAlebo: 'nebo vyberte průměr nosné trubky',
+    rura: 'Průměr nosné trubky', vysledok: 'Vhodná obj. čísla',
+    kwPozn: 'Výkon je orientační přenášený výkon podle katalogu výrobce při 80 °C a rozdílu 20 K. U dlouhé trasy nebo jiného teplotního spádu ověřte tlakové ztráty v katalogu nebo nám pošlete poptávku.',
+    kwNad: (max: number) => `Výkon nad ${max} kW tato řada jednou trasou nepřenese. Zvažte UNO ve větší dimenzi nebo dvě větve, rádi poradíme.`,
+    odporucame: 'Doporučujeme', aj: 'I s větší rezervou', ruraL: 'Trubka', plastL: 'Plášť', vykonL: 'Výkon', polomerL: 'Poloměr ohybu', izolaciaL: 'Izolace',
+    standard: 'standardní', zosilnena: 'zesílená', rad: 'Tabulka řady', eshop: 'Do e-shopu', dopyt: 'Poslat poptávku s tímto potrubím',
+    zdiel: 'Odkaz na tento výběr', skopirovany: 'Odkaz je ve schránce',
+  },
+}[lang];
+
+const kat = (await getCollection('kategorie')).map((k) => k.data).filter((k) => k.typ === 'potrubie').sort((a, b) => a.poradie - b.poradie);
+const rady = (await getCollection('rady')).map((r) => r.data).filter((r) => !r.je_skupina);
+const varianty = (await getCollection('varianty')).map((v) => v.data);
+const systemy = kat.map((k) => ({ k, rady: rady.filter((r) => r.kategoria === k.id).sort((a, b) => a.poradie - b.poradie) }));
+// Dáta pre skript: len to, čo výsledok zobrazuje.
+const data = {
+  rady: Object.fromEntries(rady.map((r) => [r.slug, { model: rNazov(r, lang).split(',')[0].trim(), url: cestaRadu(kat.find((k) => k.id === r.kategoria)!, r, lang) }])),
+  varianty: varianty.filter((v) => rady.some((r) => r.id === v.rad)).map((v) => ({
+    r: rady.find((r) => r.id === v.rad)!.slug, o: v.obj_cislo, d: priemery(v), t: ruraText(v), p: v.plast_mm ? cislo(v.plast_mm) : '',
+    kw: v.vykon_kw ?? null, pol: v.polomer_ohybu_m ? cislo(v.polomer_ohybu_m, 2) : '', iz: v.izolacia ?? '', e: v.eshop_url,
+  })),
+};
+const texty = { ...tx, kwNad: tx.kwNad(0) };
+const obrazky = await Promise.all(systemy.map(async ({ k }) => { const p = piktogram(k.piktogram); return p ? (await getImage({ src: p, width: 360, format: 'webp' })).src : ''; }));
+---
+<Base lang={lang} alternates={staticAlternates('vyber')} title={tx.title} description={tx.desc} aktivna="vyber" drobceky={[{ text: tx.kratko }]} vizualneDrobceky={false}>
+  <Hlava lang={lang} nadpis={tx.title} drobceky={[{ text: tx.kratko }]} lead={tx.lead} />
+
+  <div class="telo" data-vyber data-texty={JSON.stringify(texty)} data-firmy={route(lang, 'firmy')}>
+    <section class="wrap krok" aria-labelledby="h-k1">
+      <div class="krok-hlava"><span class="krok-c">1</span><h2 id="h-k1">{tx.k1}</h2></div>
+      <div class="volby-k1" role="radiogroup" aria-labelledby="h-k1">
+        {systemy.map(({ k, rady: rr }, i) => (
+          <button type="button" class="harok volba-k" role="radio" aria-checked="false" data-k={k.id}>
+            {obrazky[i] && <img src={obrazky[i]} alt="" width="180" height="140" loading="lazy" decoding="async" />}
+            <span class="volba-nazov">{kKratky(k, lang)}</span>
+            <span class="volba-pod">{rr.map((r) => rNazov(r, lang).split(',')[0].replace('Microflex ', '')).join(', ')}</span>
+          </button>
+        ))}
+      </div>
+    </section>
+
+    <section class="wrap krok" aria-labelledby="h-k2" data-krok2 hidden>
+      <div class="krok-hlava"><span class="krok-c">2</span><h2 id="h-k2">{tx.k2}</h2></div>
+      {systemy.map(({ k, rady: rr }) => (
+        <div class="volby-k2" role="radiogroup" aria-labelledby="h-k2" data-pre={k.id} hidden>
+          {rr.map((r) => { const p = piktogram(r.piktogram); return (
+            <button type="button" class="harok volba-r" role="radio" aria-checked="false" data-r={r.slug} data-kw={varianty.some((v) => v.rad === r.id && v.vykon_kw) ? '1' : ''}>
+              {p && <Image src={p} alt="" widths={[160, 240]} sizes="120px" class="volba-r-img" />}
+              <span class="volba-r-text">
+                <span class="volba-nazov">{rNazov(r, lang).split(',')[0].trim()}</span>
+                <span class="volba-pod">{[r.pocet_rur ? `${r.pocet_rur} × ${lang === 'cs' ? 'trubka' : 'rúra'}` : '', tlakText(r)].filter(Boolean).join(' · ')}</span>
+                {rKratky(r, lang) && <span class="volba-popis">{sadzba(rKratky(r, lang)!)}</span>}
+              </span>
+            </button>
+          ); })}
+        </div>
+      ))}
+    </section>
+
+    <section class="wrap krok" aria-labelledby="h-k3" data-krok3 hidden>
+      <div class="krok-hlava"><span class="krok-c">3</span><h2 id="h-k3">{tx.k3}</h2></div>
+      <div class="harok k3">
+        <div class="k3-kw" data-kw-blok>
+          <label for="kw">{tx.kw}</label>
+          <div class="kw-pole"><input id="kw" type="number" inputmode="decimal" min="1" max="2000" step="1" placeholder={tx.kwHint} data-kw-vstup /><span>{tx.kwJ}</span></div>
+          <div class="chips">{[10, 20, 30, 60, 100, 200].map((n) => <button type="button" class="chip" data-kw-rychlo={n}>{n} kW</button>)}</div>
+          <p class="k3-alebo">{tx.kwAlebo}</p>
+        </div>
+        <div class="k3-d">
+          <span class="k3-l">{tx.rura}</span>
+          <div class="chips" data-d-chips></div>
+        </div>
+      </div>
+      <div class="vysledok" data-vysledok aria-live="polite"></div>
+    </section>
+    <template data-ikona-sipka><Ikona nazov="arrow-right" velkost={16} /></template>
+    <template data-ikona-ext><Ikona nazov="external-link" velkost={14} /></template>
+    <template data-ikona-copy><Ikona nazov="copy" velkost={15} /></template>
+    <script type="application/json" data-vyber-data set:html={JSON.stringify(data)} />
+  </div>
+  <Zaver lang={lang} />
+  <Kopirovanie lang={lang} />
+</Base>
+
+<style>
+  .krok { scroll-margin-top: 100px; }
+  .telo > .krok + .krok { margin-top: 72px; }
+  .krok-hlava { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+  .krok-c { flex: none; width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; background: var(--color-blue-900); color: #fff; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 700; font-size: 19px; box-shadow: 0 12px 24px -12px rgb(10 42 94 / 0.7); }
+  .krok-hlava h2 { font-size: clamp(24px, 1.2vw + 16px, 32px); letter-spacing: -0.02em; }
+
+  .volby-k1 { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 18px; }
+  .volba-k, .volba-r { position: relative; border: 0; font: inherit; color: var(--color-ink); text-align: left; cursor: pointer; transition: transform 200ms var(--ease-soft), box-shadow 200ms var(--ease-soft); }
+  .volba-k { display: flex; flex-direction: column; gap: 4px; padding: 16px 18px 20px; }
+  .volba-k img { width: 100%; height: auto; aspect-ratio: 9 / 7; object-fit: contain; filter: drop-shadow(0 14px 14px rgb(11 27 51 / 0.2)); margin-bottom: 6px; transition: transform 300ms var(--ease-soft); }
+  .volba-k:hover, .volba-r:hover { transform: translateY(-3px); }
+  .volba-k:hover img { transform: translateY(-3px); }
+  .volba-k[aria-checked="true"], .volba-r[aria-checked="true"] { box-shadow: 0 0 0 3px var(--color-blue-700), 0 26px 50px -30px rgb(10 42 94 / 0.6); }
+  .volba-k[aria-checked="true"]::after, .volba-r[aria-checked="true"]::after { content: ""; position: absolute; top: 14px; right: 14px; width: 12px; height: 12px; border-radius: 50%; background: var(--color-yellow-500); box-shadow: 0 0 0 4px rgb(247 201 0 / 0.25); }
+  .volba-nazov { font-weight: 700; font-size: 17px; font-family: var(--font-display); letter-spacing: -0.01em; }
+  .volba-pod { font-size: 13.5px; color: var(--color-ink-soft); }
+  .volby-k2 { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
+  .volba-r { display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: 16px; align-items: center; padding: 14px 20px 14px 12px; }
+  .volba-r :global(.volba-r-img) { width: 104px; height: 80px; object-fit: contain; filter: drop-shadow(0 10px 10px rgb(11 27 51 / 0.2)); }
+  .volba-r-text { display: flex; flex-direction: column; gap: 2px; }
+  .volba-popis { margin-top: 6px; font-size: 13.5px; line-height: 1.45; color: var(--color-ink-soft); }
+
+  .k3 { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px 48px; padding: 28px 30px; align-items: start; }
+  .k3-kw label, .k3-l { display: block; font-weight: 600; margin-bottom: 10px; }
+  .kw-pole { display: flex; align-items: center; gap: 10px; max-width: 260px; margin-bottom: 14px; }
+  .kw-pole input { width: 100%; height: 56px; padding: 0 16px; border: 1px solid rgb(10 42 94 / 0.18); border-radius: 14px; background: #f8fafd; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 24px; color: var(--color-blue-900); }
+  .kw-pole input:focus { outline: none; background: #fff; border-color: var(--color-blue-700); box-shadow: 0 0 0 4px rgb(0 93 185 / 0.12); }
+  .kw-pole span { font-family: var(--font-display); font-weight: 600; font-size: 20px; color: var(--color-ink-soft); }
+  .k3-alebo { margin-top: 18px; font-size: 14px; color: var(--color-ink-soft); }
+  .k3-kw[hidden] + .k3-d { grid-column: 1 / -1; }
+
+  .vysledok { margin-top: 28px; }
+  .vysledok :global(.vy-h) { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 10px 20px; margin-bottom: 16px; }
+  .vysledok :global(.vy-h h3) { font-size: 22px; }
+  .vysledok :global(.vy-karty) { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 18px; }
+  .vysledok :global(.vy-k) { position: relative; padding: 20px 22px 18px; display: flex; flex-direction: column; gap: 12px; }
+  .vysledok :global(.vy-k.top) { box-shadow: 0 0 0 3px var(--color-yellow-500), 0 26px 50px -30px rgb(10 42 94 / 0.6); }
+  .vysledok :global(.vy-stitok) { align-self: flex-start; padding: 4px 10px; border-radius: 8px; background: var(--color-yellow-500); font-size: 12.5px; font-weight: 700; color: var(--color-ink); }
+  .vysledok :global(.vy-stitok.jemny) { background: var(--color-blue-50); color: var(--color-blue-900); }
+  .vysledok :global(.vy-kod) { display: flex; align-items: center; gap: 6px; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 700; font-size: 21px; color: var(--color-blue-900); }
+  .vysledok :global(.vy-kod) { flex-wrap: wrap; }
+  .vysledok :global(.vy-kod small) { flex-basis: 100%; font-family: var(--font-text); font-weight: 400; font-size: 14px; color: var(--color-ink-soft); margin-top: -2px; }
+  .vysledok :global(.vy-udaje) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 14px; margin: 0; }
+  .vysledok :global(.vy-udaje dt) { font-size: 12.5px; color: var(--color-ink-soft); }
+  .vysledok :global(.vy-udaje dd) { margin: 1px 0 0; font-weight: 600; font-size: 15px; }
+  .vysledok :global(.vy-odkazy) { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: auto; padding-top: 10px; border-top: 1px solid rgb(10 42 94 / 0.08); font-size: 14.5px; font-weight: 500; }
+  .vysledok :global(.vy-odkazy a) { display: inline-flex; align-items: center; gap: 6px; }
+  .vysledok :global(.vy-pozn) { margin-top: 16px; font-size: 13.5px; color: var(--color-ink-soft); max-width: 60em; }
+  .vysledok :global(.vy-varovanie) { padding: 18px 22px; border-radius: 14px; background: #fff7df; color: #7a5200; font-weight: 500; margin-bottom: 16px; }
+  .vysledok :global(.vy-akcie) { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; margin-top: 24px; }
+  .vysledok :global(.vy-zdiel) { padding: 0; border: 0; background: none; font: inherit; font-weight: 500; color: var(--color-blue-700); cursor: pointer; border-bottom: 1px solid currentColor; }
+  @media (max-width: 1100px) { .volby-k1 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (max-width: 900px) { .k3 { grid-template-columns: minmax(0, 1fr); } }
+  @media (max-width: 760px) { .volby-k1 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; } .volba-k { padding: 12px 14px 16px; } .k3 { padding: 22px 18px; } }
+</style>
+
+<script>
+  type V = { r: string; o: string; d: number[]; t: string; p: string; kw: number | null; pol: string; iz: string; e: string };
+  type Data = { rady: Record<string, { model: string; url: string }>; varianty: V[] };
+
+  function initVyber() {
+    const kor = document.querySelector<HTMLElement>('[data-vyber]');
+    if (!kor || kor.dataset.init) return;
+    kor.dataset.init = '1';
+    const tx = JSON.parse(kor.dataset.texty!);
+    const data: Data = JSON.parse(kor.querySelector('[data-vyber-data]')!.textContent!);
+    const html = (sel: string) => kor.querySelector<HTMLTemplateElement>(sel)?.innerHTML ?? '';
+    const sipka = html('[data-ikona-sipka]'), ext = html('[data-ikona-ext]'), copy = html('[data-ikona-copy]');
+    const krok2 = kor.querySelector<HTMLElement>('[data-krok2]')!, krok3 = kor.querySelector<HTMLElement>('[data-krok3]')!;
+    const kwBlok = kor.querySelector<HTMLElement>('[data-kw-blok]')!, kwVstup = kor.querySelector<HTMLInputElement>('[data-kw-vstup]')!;
+    const dChips = kor.querySelector<HTMLElement>('[data-d-chips]')!, vysl = kor.querySelector<HTMLElement>('[data-vysledok]')!;
+    const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+    const stav = { k: '', r: '', kw: 0, d: 0 };
+
+    const ulozit = () => {
+      const u = new URL(location.href);
+      for (const [k, v] of Object.entries(stav)) { if (v) u.searchParams.set(k, String(v)); else u.searchParams.delete(k); }
+      history.replaceState(null, '', u);
+    };
+    const oznac = (sel: string, attr: string, val: string) => kor.querySelectorAll<HTMLElement>(sel).forEach((b) => b.setAttribute('aria-checked', String(b.dataset[attr] === val)));
+
+    function vyberK(k: string, posun = true) {
+      stav.k = k; oznac('[data-k]', 'k', k);
+      krok2.hidden = false;
+      kor.querySelectorAll<HTMLElement>('[data-pre]').forEach((g) => (g.hidden = g.dataset.pre !== k));
+      const moznosti = [...kor.querySelectorAll<HTMLElement>(`[data-pre="${k}"] [data-r]`)];
+      if (!moznosti.some((b) => b.dataset.r === stav.r)) { stav.r = ''; stav.kw = 0; stav.d = 0; krok3.hidden = true; }
+      if (moznosti.length === 1) vyberR(moznosti[0].dataset.r!, posun);
+      else if (posun) krok2.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      ulozit();
+    }
+    function vyberR(r: string, posun = true) {
+      if (stav.r !== r) { stav.kw = 0; stav.d = 0; }
+      stav.r = r; oznac('[data-r]', 'r', r);
+      const b = kor.querySelector<HTMLElement>(`[data-r="${r}"]`);
+      kwBlok.hidden = !b?.dataset.kw;
+      kwVstup.value = stav.kw ? String(stav.kw) : '';
+      const vs = data.varianty.filter((v) => v.r === r);
+      const d = [...new Set(vs.flatMap((v) => v.d))].sort((a, b) => a - b);
+      dChips.innerHTML = d.map((x) => `<button type="button" class="chip" aria-pressed="${x === stav.d}" data-d="${x}">${x}</button>`).join('');
+      krok3.hidden = false;
+      vypis();
+      if (posun) krok3.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      ulozit();
+    }
+
+    function karta(v: V, stitok = '', jemny = false) {
+      const rad = data.rady[v.r];
+      const u = [[tx.ruraL, v.t], [tx.plastL, v.p ? `${v.p} mm` : ''], [tx.vykonL, v.kw ? `~${v.kw} kW` : ''], [tx.polomerL, v.pol ? `${v.pol} m` : ''], [tx.izolaciaL, v.iz ? (v.iz === 'zosilnena' ? tx.zosilnena : tx.standard) : '']].filter(([, x]) => x);
+      return `<article class="harok vy-k${stitok && !jemny ? ' top' : ''}">
+        ${stitok ? `<span class="vy-stitok${jemny ? ' jemny' : ''}">${esc(stitok)}</span>` : ''}
+        <div class="vy-kod">${esc(v.o)}<button type="button" class="kopia" data-kopia="${esc(v.o)}" aria-label="${esc(v.o)}">${copy}</button><small>${esc(rad.model)}</small></div>
+        <dl class="vy-udaje">${u.map(([a, b]) => `<div><dt>${esc(a)}</dt><dd>${esc(b)}</dd></div>`).join('')}</dl>
+        <div class="vy-odkazy"><a href="${esc(rad.url)}#varianty">${esc(tx.rad)} ${sipka}</a><a href="${esc(v.e)}" target="_blank" rel="noopener">${esc(tx.eshop)} ${ext}</a></div>
+      </article>`;
+    }
+
+    function vypis() {
+      const vs = data.varianty.filter((v) => v.r === stav.r);
+      dChips.querySelectorAll<HTMLElement>('[data-d]').forEach((b) => b.setAttribute('aria-pressed', String(Number(b.dataset.d) === stav.d)));
+      let obsah = '';
+      let hlavny: V | undefined;
+      if (stav.kw && !kwBlok.hidden) {
+        const sKw = vs.filter((v) => v.kw).sort((a, b) => a.kw! - b.kw! || Number(a.p.replace(',', '.')) - Number(b.p.replace(',', '.')));
+        const max = Math.max(...sKw.map((v) => v.kw!));
+        const vhodne = sKw.filter((v) => v.kw! >= stav.kw);
+        if (!vhodne.length) {
+          obsah = `<p class="vy-varovanie">${esc(tx.kwNad.replace('0', String(max)))}</p>`;
+        } else {
+          const kwMin = vhodne[0].kw!;
+          const prve = vhodne.filter((v) => v.kw === kwMin);
+          const dalsie = vhodne.filter((v) => v.kw! > kwMin);
+          const kwDalsi = dalsie[0]?.kw;
+          hlavny = prve[0];
+          obsah = `<div class="vy-karty">${prve.map((v, i) => karta(v, i === 0 ? tx.odporucame : '')).join('')}${dalsie.filter((v) => v.kw === kwDalsi).map((v) => karta(v, tx.aj, true)).join('')}</div><p class="vy-pozn">${esc(tx.kwPozn)}</p>`;
+        }
+      } else if (stav.d) {
+        const zvolene = vs.filter((v) => v.d.includes(stav.d));
+        hlavny = zvolene[0];
+        obsah = `<div class="vy-karty">${zvolene.map((v) => karta(v)).join('')}</div>`;
+      } else {
+        vysl.innerHTML = '';
+        return;
+      }
+      const dopyt = hlavny ? `${kor.dataset.firmy}?rad=${encodeURIComponent(`${data.rady[hlavny.r].model} ${hlavny.o}`)}#dopyt` : `${kor.dataset.firmy}#dopyt`;
+      vysl.innerHTML = `<div class="vy-h"><h3>${esc(tx.vysledok)}</h3></div>${obsah}
+        <div class="vy-akcie"><a class="btn btn-yellow" href="${esc(dopyt)}">${esc(tx.dopyt)} ${sipka}</a><button type="button" class="vy-zdiel" data-zdiel>${esc(tx.zdiel)}</button></div>`;
+      vysl.querySelector<HTMLButtonElement>('[data-zdiel]')?.addEventListener('click', async (e) => {
+        try { await navigator.clipboard.writeText(location.href); (e.target as HTMLElement).textContent = tx.skopirovany; } catch { /* schránka nedostupná */ }
+      });
+    }
+
+    kor.querySelectorAll<HTMLElement>('[data-k]').forEach((b) => b.addEventListener('click', () => vyberK(b.dataset.k!)));
+    kor.querySelectorAll<HTMLElement>('[data-r]').forEach((b) => b.addEventListener('click', () => vyberR(b.dataset.r!)));
+    dChips.addEventListener('click', (e) => {
+      const b = (e.target as HTMLElement).closest<HTMLElement>('[data-d]');
+      if (!b) return;
+      stav.d = Number(b.dataset.d); stav.kw = 0; kwVstup.value = '';
+      vypis(); ulozit();
+    });
+    let casovac = 0;
+    kwVstup.addEventListener('input', () => {
+      clearTimeout(casovac);
+      casovac = window.setTimeout(() => { stav.kw = Math.max(0, Math.round(Number(kwVstup.value.replace(',', '.')) || 0)); if (stav.kw) stav.d = 0; vypis(); ulozit(); }, 200);
+    });
+    kor.querySelectorAll<HTMLElement>('[data-kw-rychlo]').forEach((b) => b.addEventListener('click', () => {
+      stav.kw = Number(b.dataset.kwRychlo); stav.d = 0; kwVstup.value = String(stav.kw); vypis(); ulozit();
+    }));
+
+    // Obnova zo zdieľaného odkazu.
+    const q = new URLSearchParams(location.search);
+    stav.kw = Number(q.get('kw')) || 0; stav.d = Number(q.get('d')) || 0;
+    const r0 = q.get('r') ?? '', k0 = q.get('k') ?? '';
+    if (k0 && kor.querySelector(`[data-k="${k0}"]`)) {
+      stav.r = r0;
+      const kw = stav.kw, d = stav.d;
+      vyberK(k0, false);
+      if (r0 && kor.querySelector(`[data-pre="${k0}"] [data-r="${r0}"]`)) { stav.r = ''; vyberR(r0, false); stav.kw = kw; stav.d = d; kwVstup.value = kw ? String(kw) : ''; vypis(); ulozit(); }
+    }
+  }
+  initVyber();
+  document.addEventListener('astro:page-load', initVyber);
+</script>

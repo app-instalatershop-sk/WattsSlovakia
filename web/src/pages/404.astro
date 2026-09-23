@@ -1,0 +1,50 @@
+---
+/**
+ * Stránka 404. Statický hosting má jednu pre oba jazyky: text je slovenský, pod ním český riadok.
+ * Hľadanie a rozcestník vedú na najčastejšie ciele.
+ */
+import Base from '../layouts/Base.astro';
+import Hlava from '../components/Hlava.astro';
+import Zaver from '../components/Zaver.astro';
+import Ikona from '../components/Ikona.astro';
+import { route, staticAlternates } from '../i18n/ui';
+
+const ciele: [string, string, string][] = [
+  ['Potrubia', route('sk', 'potrubia'), 'UNO, DUO, QUADRO, COOL a HP'],
+  ['Výber potrubia', route('sk', 'vyber'), 'dimenzia podľa výkonu'],
+  ['Spojky', route('sk', 'spojky'), 'PE-X, kolená, T-kusy'],
+  ['Na stiahnutie', route('sk', 'stiahnut'), 'katalóg, výkresy DWG a DXF'],
+  ['Kontakt', route('sk', 'kontakt'), 'telefón, predajňa, e-mail'],
+];
+---
+<Base lang="sk" alternates={staticAlternates('domov')} title="Stránka sa nenašla" description="Stránka na tejto adrese neexistuje. Pokračujte hľadaním alebo na potrubia Microflex." robots="noindex" vizualneDrobceky={false}>
+  <Hlava lang="sk" nadpis="Táto stránka tu nie je" pred="Chyba 404" lead="Adresa sa mohla zmeniť alebo v nej je preklep. Skúste hľadanie podľa obj. čísla alebo pokračujte na niektorú z častí webu.">
+    <form class="f404" role="search" action={route('sk', 'hladat')} method="get">
+      <Ikona nazov="search" velkost={20} />
+      <input name="q" type="search" placeholder="Obj. číslo, rad, dimenzia" aria-label="Hľadať" autocomplete="off" />
+      <button type="submit" class="btn btn-yellow">Hľadať</button>
+    </form>
+    <p class="cs">Stránka nebyla nalezena. <a href={route('cs', 'domov')}>Pokračovat na českou verzi</a>.</p>
+  </Hlava>
+  <div class="telo">
+    <ul class="wrap ciele">
+      {ciele.map(([n, u, d]) => <li><a class="harok ciel" href={u}><strong>{n}</strong><span>{d}</span><Ikona nazov="arrow-right" velkost={18} /></a></li>)}
+    </ul>
+  </div>
+  <Zaver lang="sk" />
+</Base>
+
+<style>
+  .f404 { position: relative; display: flex; align-items: center; gap: 10px; margin-top: 28px; padding: 8px 8px 8px 50px; max-width: 560px; border-radius: 16px; background: #fff; box-shadow: 0 22px 44px -26px rgb(10 42 94 / 0.55), inset 0 0 0 1px rgb(10 42 94 / 0.08); }
+  .f404 > :global(.icon) { position: absolute; left: 16px; color: var(--color-blue-700); }
+  .f404 input { flex: 1; min-width: 0; height: 46px; border: 0; background: transparent; font: inherit; font-size: 17px; outline: none; }
+  .cs { margin-top: 18px; font-size: 14.5px; color: var(--color-ink-soft); }
+  .ciele { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 18px; }
+  .ciel { position: relative; display: flex; flex-direction: column; gap: 4px; padding: 22px 22px 46px; color: var(--color-ink); transition: transform 250ms var(--ease-soft); }
+  .ciel:hover { color: var(--color-ink); transform: translateY(-3px); }
+  .ciel strong { font-family: var(--font-display); font-size: 19px; }
+  .ciel span { font-size: 14px; color: var(--color-ink-soft); }
+  .ciel :global(.icon) { position: absolute; left: 22px; bottom: 18px; color: var(--color-blue-700); }
+  @media (max-width: 1000px) { .ciele { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 560px) { .ciele { grid-template-columns: minmax(0, 1fr); } }
+</style>

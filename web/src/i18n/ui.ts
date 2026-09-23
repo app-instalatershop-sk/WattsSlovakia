@@ -52,11 +52,6 @@ const sk = {
     ] as [string, string][],
     technickeUdaje: 'Technické údaje radov', rezAlt: 'Rez potrubím Microflex: modrý zvlnený plášť, sivá izolácia a žlté rúry PE-Xa',
     refH2: 'Kde už Microflex leží', refVsetky: 'Všetky referencie',
-    refs: [
-      ['Systém Microflex na vojenskej základni', 'Rozvod tepla medzi budovami areálu'],
-      ['Microflex obnovil vykurovanie školy', 'Výmena starého rozvodu bez zásahu do budovy'],
-      ['Bytové domy, Považská Bystrica', 'Veľký projekt na Slovensku'],
-    ] as [string, string][],
     b2bH2: 'Pre projektantov, montážne firmy a veľkoobchod',
     b2bP: 'Technické listy, výkresy DWG a DXF, vyhlásenia o zhode a environmentálna deklarácia na jednom mieste. Na projekt pošlite dopyt, ozveme sa s ponukou a dostupnosťou.',
     b2bDopyt: 'Poslať dopyt na projekt', b2bPodklady: 'Podklady na stiahnutie',
@@ -114,11 +109,6 @@ const sk = {
     pokladkaOdkaz: 'Celý postup v katalógu výrobcu',
     refH2: 'Kde už Microflex leží', refVsetky: 'Všetky referencie',
     refAlt: 'Potrubie Microflex vo výkope so spojkami',
-    refs: [
-      ['Vojenská základňa', 'Rozvod tepla medzi budovami areálu'],
-      ['Základná škola', 'Výmena starého rozvodu bez zásahu do budovy'],
-      ['Bytové domy, Považská Bystrica', 'Prípojky bytových domov'],
-    ] as [string, string][],
     b2bH2: 'Pre projektantov, montážne firmy a veľkoobchod',
     b2bP: 'Technické listy, výkresy DWG a DXF, vyhlásenia o zhode a environmentálna deklarácia na jednom mieste. Na projekt pošlite dopyt, ozveme sa s ponukou a dostupnosťou.',
     b2bDopyt: 'Poslať dopyt na projekt', b2bPodklady: 'Podklady na stiahnutie',
@@ -163,7 +153,6 @@ const sk = {
     zdrojPozn: 'Hmotnosť je na meter potrubia, kotúč ako priemer a šírka.',
   },
   subory: { slovensky: 'slovensky', anglicky: 'anglicky', cesky: 'česky' },
-  skupiny: { pripravujeme: 'Stránky jednotlivých produktov s tabuľkami obj. čísel pripravujeme. Zatiaľ', naWatts: 'na watts.eu' },
   footer: {
     popis: 'Prezentačný web predizolovaného potrubia Microflex pre Slovensko. Predaj a sklad zabezpečuje',
     potrubia: 'Potrubia a diely', podklady: 'Podklady', prevadzkovatel: 'Prevádzkovateľ', vyrobca: 'Výrobca',
@@ -172,7 +161,6 @@ const sk = {
     znamka: 'Microflex je ochranná známka skupiny Watts. Web prevádzkuje oficiálny partner, nie výrobca.',
     vyrobcaText: 'Microflex vyrába Watts. Sme oficiálny partner pre Slovensko.',
   },
-  stub: { prejst: 'Prejsť na potrubia' },
   sklonovanie: {
     variantov: (n: number) => (n === 1 ? '1 variant' : n >= 2 && n <= 4 ? `${n} varianty` : `${n} variantov`),
     dimenzii: (n: number) => (n === 1 ? '1 dimenzia' : n >= 2 && n <= 4 ? `${n} dimenzie` : `${n} dimenzií`),
@@ -224,11 +212,6 @@ const cs: typeof sk = {
     ],
     technickeUdaje: 'Technické údaje řad', rezAlt: 'Řez potrubím Microflex: modrý zvlněný plášť, šedá izolace a žluté trubky PE-Xa',
     refH2: 'Kde už Microflex leží', refVsetky: 'Všechny reference',
-    refs: [
-      ['Systém Microflex na vojenské základně', 'Rozvod tepla mezi budovami areálu'],
-      ['Microflex obnovil vytápění školy', 'Výměna starého rozvodu bez zásahu do budovy'],
-      ['Bytové domy, Považská Bystrica', 'Velký projekt na Slovensku'],
-    ],
     b2bH2: 'Pro projektanty, montážní firmy a velkoobchod',
     b2bP: 'Technické listy, výkresy DWG a DXF, prohlášení o shodě a environmentální deklarace na jednom místě. Na projekt pošlete poptávku, ozveme se s nabídkou a dostupností.',
     b2bDopyt: 'Poslat poptávku na projekt', b2bPodklady: 'Podklady ke stažení',
@@ -283,11 +266,6 @@ const cs: typeof sk = {
     pokladkaOdkaz: 'Celý postup v katalogu výrobce',
     refH2: 'Kde už Microflex leží', refVsetky: 'Všechny reference',
     refAlt: 'Potrubí Microflex ve výkopu se spojkami',
-    refs: [
-      ['Vojenská základna', 'Rozvod tepla mezi budovami areálu'],
-      ['Základní škola', 'Výměna starého rozvodu bez zásahu do budovy'],
-      ['Bytové domy, Považská Bystrica', 'Přípojky bytových domů'],
-    ],
     b2bH2: 'Pro projektanty, montážní firmy a velkoobchod',
     b2bP: 'Technické listy, výkresy DWG a DXF, prohlášení o shodě a environmentální deklarace na jednom místě. Na projekt pošlete poptávku, ozveme se s nabídkou a dostupností.',
     b2bDopyt: 'Poslat poptávku na projekt', b2bPodklady: 'Podklady ke stažení',
@@ -332,7 +310,6 @@ const cs: typeof sk = {
     zdrojPozn: 'Hmotnost je na metr potrubí, kotouč jako průměr a šířka.',
   },
   subory: { slovensky: 'slovensky', anglicky: 'anglicky', cesky: 'česky' },
-  skupiny: { pripravujeme: 'Stránky jednotlivých produktů s tabulkami obj. čísel připravujeme. Zatím', naWatts: 'na watts.eu' },
   footer: {
     popis: 'Prezentační web předizolovaného potrubí Microflex. Prodej a sklad zajišťuje',
     potrubia: 'Potrubí a díly', podklady: 'Podklady', prevadzkovatel: 'Provozovatel', vyrobca: 'Výrobce',
@@ -341,7 +318,6 @@ const cs: typeof sk = {
     znamka: 'Microflex je ochranná známka skupiny Watts. Web provozuje oficiální partner, nikoli výrobce.',
     vyrobcaText: 'Microflex vyrábí Watts. Jsme oficiální partner pro Slovensko.',
   },
-  stub: { prejst: 'Přejít na potrubí' },
   sklonovanie: {
     variantov: (n: number) => (n === 1 ? '1 varianta' : n >= 2 && n <= 4 ? `${n} varianty` : `${n} variant`),
     dimenzii: (n: number) => (n === 1 ? '1 dimenze' : n >= 2 && n <= 4 ? `${n} dimenze` : `${n} dimenzí`),

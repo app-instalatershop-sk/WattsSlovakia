@@ -7,6 +7,7 @@ import Katalog from '../components/Katalog.astro';
 import { kategorie, cislo, rozsah } from '../lib/katalog';
 import { fotka, detail } from '../lib/obrazky';
 import { sadzba } from '../lib/sadzba';
+import { referencie } from '../content/referencie';
 import { type Lang, t, route, staticAlternates, KATALOG_PDF } from '../i18n/ui';
 
 interface Props { lang: Lang }
@@ -149,9 +150,11 @@ const popisy = [
         <div class="refs-text">
           <h2 id="h-refs">{h.refH2}</h2>
           <ul class="refs-list" data-reveal-group>
-            {h.refs.map(([b, s]) => (
-              <li><a href={route(lang, 'referencie')}><strong>{b}</strong><span>{sadzba(s)}</span></a></li>
-            ))}
+            {referencie(lang).map((r) => {
+              const f = (re: RegExp) => r.fakty.find(([k]) => re.test(k))?.[1];
+              const pod = [f(/^Potrub/), f(/^D[ĺé]lka|^Dĺžka/)].filter(Boolean).join(', ') || r.fakty[0][1];
+              return <li><a href={`${route(lang, 'referencie')}#${r.id}`}><strong>{r.miesto.split(',')[0]}</strong><span>{sadzba(pod)}</span></a></li>;
+            })}
           </ul>
           <p class="refs-pata"><a href={route(lang, 'referencie')}>{h.refVsetky} <Ikona nazov="arrow-up-right" velkost={16} /></a></p>
         </div>

@@ -6,8 +6,8 @@ type Otazka = { q: string; a: string };
 const sk: Record<string, Otazka[]> = {
   vykurovanie: [
     { q: 'UNO alebo DUO: kedy sa oplatia dve rúry v jednom plášti?', a: 'Keď potrebujete prívod aj spiatočku na jednej trase, napríklad od tepelného čerpadla alebo kotolne k domu. DUO znamená jeden výkop a jednu pokládku. UNO použijete, keď vediete len jednu vetvu, alebo pri väčších dimenziách, ktoré sa v DUO nevyrábajú.' },
-    { q: 'Akú dimenziu potrubia zvoliť?', a: 'Podľa výkonu a prietoku. Orientačne pre rodinný dom s tepelným čerpadlom postačia rúry 32 alebo 40 mm. Presný výpočet urobí projektant, alebo použite výpočtový nástroj výrobcu, na ktorý odkazujeme pri každom rade.' },
-    { q: 'Ako hlboko sa potrubie ukladá a ako sa spája?', a: 'Ukladá sa do pieskového lôžka podľa montážneho návodu výrobcu. Spája sa svorno-lisovacími spojkami PE-X, koniec plášťa sa uzatvára teplom zmrštiteľnou koncovkou a prestup stenou tesnením Micro Press alebo Micro Seal.' },
+    { q: 'Akú dimenziu potrubia zvoliť?', a: 'Podľa výkonu. Katalóg výrobcu uvádza pri každej dimenzii orientačný prenášaný výkon pri 80 °C a rozdiele 20 K, napríklad rúra 32 mm približne 60 kW a rúra 40 mm približne 90 kW. Dimenziu podľa výkonu navrhne sprievodca výberom; pri dlhej trase overte aj tlakovú stratu v tabuľkách katalógu.' },
+    { q: 'Ako hlboko sa potrubie ukladá a ako sa spája?', a: 'Do pieskového lôžka v hĺbke 0,5 až 6 m, mierne hadovito a s dodržaním polomeru ohybu. Spája sa svornými spojkami PE-X bez zvárania, konce sa uzatvárajú krytkami a vstup do budovy tesnením MICRO PRESS alebo MICRO SEAL.' },
     { q: 'Čo znamená štandardná a zosilnená izolácia?', a: 'Pri zosilnenej izolácii je rovnaká nosná rúra v hrubšom plášti, takže tepelná strata trasy je menšia. Oplatí sa pri dlhších trasách a vyšších teplotách. V tabuľke variantov ju označujeme pri každom obj. čísle.' },
   ],
   sanita: [
@@ -31,8 +31,8 @@ const sk: Record<string, Otazka[]> = {
 const cs: Record<string, Otazka[]> = {
   vykurovanie: [
     { q: 'UNO nebo DUO: kdy se vyplatí dvě trubky v jednom plášti?', a: 'Když potřebujete přívod i zpátečku na jedné trase, například od tepelného čerpadla nebo kotelny k domu. DUO znamená jeden výkop a jednu pokládku. UNO použijete, když vedete jen jednu větev, nebo u větších dimenzí, které se v DUO nevyrábějí.' },
-    { q: 'Jakou dimenzi potrubí zvolit?', a: 'Podle výkonu a průtoku. Orientačně pro rodinný dům s tepelným čerpadlem postačí trubky 32 nebo 40 mm. Přesný výpočet udělá projektant, nebo použijte výpočtový nástroj výrobce, na který odkazujeme u každé řady.' },
-    { q: 'Jak hluboko se potrubí ukládá a jak se spojuje?', a: 'Ukládá se do pískového lože podle montážního návodu výrobce. Spojuje se svěrnými lisovacími spojkami PE-X, konec pláště se uzavírá teplem smrštitelnou koncovkou a prostup stěnou těsněním Micro Press nebo Micro Seal.' },
+    { q: 'Jakou dimenzi potrubí zvolit?', a: 'Podle výkonu. Katalog výrobce uvádí u každé dimenze orientační přenášený výkon při 80 °C a rozdílu 20 K, například trubka 32 mm přibližně 60 kW a trubka 40 mm přibližně 90 kW. Dimenzi podle výkonu navrhne průvodce výběrem; u dlouhé trasy ověřte i tlakovou ztrátu v tabulkách katalogu.' },
+    { q: 'Jak hluboko se potrubí ukládá a jak se spojuje?', a: 'Do pískového lože v hloubce 0,5 až 6 m, mírně hadovitě a s dodržením poloměru ohybu. Spojuje se svěrnými spojkami PE-X bez svařování, konce se uzavírají krytkami a vstup do budovy těsněním MICRO PRESS nebo MICRO SEAL.' },
     { q: 'Co znamená standardní a zesílená izolace?', a: 'U zesílené izolace je stejná nosná trubka v silnějším plášti, takže tepelná ztráta trasy je menší. Vyplatí se u delších tras a vyšších teplot. V tabulce variant ji označujeme u každého obj. čísla.' },
   ],
   sanita: [
@@ -54,3 +54,5 @@ const cs: Record<string, Otazka[]> = {
 };
 
 export const faq = (kategoriaId: string, lang: Lang): Otazka[] => (lang === 'cs' ? cs : sk)[kategoriaId] ?? [];
+/** Všetky otázky podľa kategórie (poradňa). */
+export const faqVsetky = (lang: Lang): Record<string, Otazka[]> => (lang === 'cs' ? cs : sk);

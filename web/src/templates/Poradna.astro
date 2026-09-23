@@ -1,0 +1,129 @@
+---
+/**
+ * Poradňa: články o výbere, pokládke, tlakovej skúške a tepelných stratách (content/clanky.ts)
+ * a časté otázky zo všetkých systémov (content/faq.ts) s odkazom na systém.
+ */
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Hlava from '../components/Hlava.astro';
+import Zaver from '../components/Zaver.astro';
+import Ikona from '../components/Ikona.astro';
+import { clanky } from '../content/clanky';
+import { faqVsetky } from '../content/faq';
+import { cestaKategorie, kKratky } from '../lib/katalog';
+import { fotka } from '../lib/obrazky';
+import { sadzba } from '../lib/sadzba';
+import { type Lang, route, staticAlternates } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const tx = {
+  sk: {
+    title: 'Poradňa', desc: 'Ako vybrať predizolované potrubie, pokládka krok za krokom, tlaková skúška podľa DIN 1988-2 a tepelné straty. Podľa katalógu výrobcu Microflex.',
+    lead: 'Výber, pokládka, skúška a tepelné straty. Stručne, s číslami z katalógu výrobcu a odkazom na stranu, kde ich nájdete.',
+    foto: 'Rez výkopom s dvoma potrubiami Microflex v pieskovom lôžku a výstražnou páskou',
+    clankyH2: 'Články', citanie: (n: number) => `${n} min čítania`, citat: 'Čítať',
+    faqH2: 'Časté otázky', faqP: 'Podľa systémov. Ak odpoveď chýba, napíšte nám alebo zavolajte.', kontakt: 'Kontakt',
+    sprievodca: 'Sprievodca výberom',
+  },
+  cs: {
+    title: 'Poradna', desc: 'Jak vybrat předizolované potrubí, pokládka krok za krokem, tlaková zkouška podle DIN 1988-2 a tepelné ztráty. Podle katalogu výrobce Microflex.',
+    lead: 'Výběr, pokládka, zkouška a tepelné ztráty. Stručně, s čísly z katalogu výrobce a odkazem na stranu, kde je najdete.',
+    foto: 'Řez výkopem se dvěma potrubími Microflex v pískovém loži a výstražnou páskou',
+    clankyH2: 'Články', citanie: (n: number) => `${n} min čtení`, citat: 'Číst',
+    faqH2: 'Časté otázky', faqP: 'Podle systémů. Pokud odpověď chybí, napište nám nebo zavolejte.', kontakt: 'Kontakt',
+    sprievodca: 'Průvodce výběrem',
+  },
+}[lang];
+const zoznam = clanky(lang);
+const otazky = faqVsetky(lang);
+const kat = (await getCollection('kategorie')).map((k) => k.data).filter((k) => otazky[k.id]?.length).sort((a, b) => a.poradie - b.poradie);
+const obraz = fotka('vykop-rez.jpg');
+---
+<Base lang={lang} alternates={staticAlternates('poradna')} title={tx.title} description={tx.desc} aktivna="poradna" drobceky={[{ text: tx.title }]} vizualneDrobceky={false}>
+  <Hlava lang={lang} nadpis={tx.title} drobceky={[{ text: tx.title }]} lead={tx.lead} obraz={obraz} obrazAlt={tx.foto} druh="foto" obrazMax={620}>
+    <div class="hlava-akcie">
+      <a class="btn btn-yellow" href="#clanky">{tx.clankyH2} <Ikona nazov="arrow-down" velkost={18} /></a>
+      <a class="odkaz" href={route(lang, 'vyber')}>{tx.sprievodca} <Ikona nazov="arrow-right" velkost={16} /></a>
+    </div>
+  </Hlava>
+
+  <div class="telo">
+    <section class="wrap cast" id="clanky" aria-labelledby="h-clanky">
+      <div class="s-hlava"><h2 id="h-clanky">{tx.clankyH2}</h2></div>
+      <ul class="clanky">
+        {zoznam.map((c, i) => { const img = fotka(c.obraz); return (
+          <li class:list={{ prvy: i === 0 }}>
+            <a class="harok clanok-k" href={`${route(lang, 'poradna')}${c.slug}/`}>
+              {img && <span class:list={['clanok-obraz', { render: c.obraz.endsWith('.png') }]}><Image src={img} alt="" widths={[480, 800, 1100]} sizes={i === 0 ? '(max-width: 900px) 100vw, 60vw' : '(max-width: 900px) 100vw, 30vw'} /></span>}
+              <span class="clanok-text">
+                <span class="clanok-min">{tx.citanie(c.minut)}</span>
+                <span class="clanok-n">{sadzba(c.nazov)}</span>
+                <span class="clanok-p">{sadzba(c.perex)}</span>
+                <span class="odkaz">{tx.citat} <Ikona nazov="arrow-right" velkost={16} /></span>
+              </span>
+            </a>
+          </li>
+        ); })}
+      </ul>
+    </section>
+
+    <section class="wrap" aria-labelledby="h-faq">
+      <div class="faq-mriezka">
+        <div>
+          <h2 id="h-faq">{tx.faqH2}</h2>
+          <p class="faq-p">{tx.faqP} <a href={route(lang, 'kontakt')}>{tx.kontakt}</a>.</p>
+        </div>
+        <div class="faq-skupiny">
+          {kat.map((k) => (
+            <div class="harok faq">
+              <h3><a href={cestaKategorie(k, lang)}>{kKratky(k, lang)} <Ikona nazov="arrow-right" velkost={15} /></a></h3>
+              {otazky[k.id].map((o) => <details><summary>{o.q}</summary><p>{sadzba(o.a)}</p></details>)}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  </div>
+  <Zaver lang={lang} />
+</Base>
+
+<style>
+  .clanky { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+  .clanky .prvy { grid-column: 1 / -1; }
+  .clanok-k { display: flex; flex-direction: column; height: 100%; overflow: hidden; color: var(--color-ink); transition: transform 250ms var(--ease-soft); }
+  .clanok-k:hover { color: var(--color-ink); transform: translateY(-3px); }
+  .clanok-obraz { display: block; aspect-ratio: 16 / 9; overflow: hidden; background: linear-gradient(160deg, #f5f8fc 0%, #e4edf8 100%); }
+  .clanok-obraz :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform 700ms var(--ease-soft); }
+  .clanok-obraz.render :global(img) { object-fit: contain; padding: 16px; }
+  .clanok-k:hover .clanok-obraz :global(img) { transform: scale(1.03); }
+  .clanok-text { display: flex; flex-direction: column; gap: 8px; padding: 22px 26px 26px; flex: 1; }
+  .clanok-min { font-size: 12.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--color-blue-700); }
+  .clanok-n { font-family: var(--font-display); font-weight: 700; font-size: 21px; line-height: 1.2; letter-spacing: -0.01em; }
+  .clanok-p { font-size: 15px; color: var(--color-ink-soft); }
+  .clanok-k .odkaz { margin-top: auto; padding-top: 8px; align-self: flex-start; }
+  .prvy .clanok-k { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+  .prvy .clanok-obraz { aspect-ratio: auto; min-height: 320px; }
+  .prvy .clanok-text { justify-content: center; padding: 36px 40px; }
+  .prvy .clanok-n { font-size: clamp(24px, 1.2vw + 16px, 32px); }
+  .prvy .clanok-p { font-size: 17px; }
+
+  .faq-mriezka { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 24px 48px; align-items: start; }
+  .faq-mriezka h2 { font-size: clamp(26px, 1.4vw + 17px, 36px); letter-spacing: -0.02em; }
+  .faq-p { margin-top: 12px; color: var(--color-ink-soft); }
+  .faq-skupiny { display: flex; flex-direction: column; gap: 18px; }
+  .faq { padding: 18px 26px 6px; }
+  .faq h3 { font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+  .faq h3 a { display: inline-flex; align-items: center; gap: 6px; color: var(--color-blue-700); }
+  .faq details { border-top: 1px solid rgb(10 42 94 / 0.1); }
+  .faq h3 + details { margin-top: 10px; }
+  .faq summary { cursor: pointer; padding: 15px 0; font-weight: 600; font-size: 16.5px; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "+"; color: var(--color-blue-700); font-weight: 400; font-size: 22px; line-height: 1; transition: transform 200ms var(--ease-soft); }
+  .faq details[open] summary::after { transform: rotate(45deg); }
+  .faq details p { padding-bottom: 16px; color: var(--color-ink-soft); max-width: 62ch; }
+  @media (max-width: 1000px) { .clanky { grid-template-columns: minmax(0, 1fr); } .prvy .clanok-k { grid-template-columns: minmax(0, 1fr); } .prvy .clanok-obraz { min-height: 0; aspect-ratio: 16 / 9; } .prvy .clanok-text { padding: 22px 26px 26px; } }
+  @media (max-width: 900px) { .faq-mriezka { grid-template-columns: minmax(0, 1fr); } }
+  @media (max-width: 760px) { .faq { padding: 14px 18px 4px; } }
+</style>

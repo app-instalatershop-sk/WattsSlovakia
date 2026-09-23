@@ -1,0 +1,9 @@
+---
+import Clanok from '../../templates/Clanok.astro';
+import { clanky } from '../../content/clanky';
+export function getStaticPaths() {
+  return clanky('sk').map((c, i) => ({ params: { clanok: c.slug }, props: { c, i } }));
+}
+const { c, i } = Astro.props;
+---
+<Clanok lang="sk" c={c} i={i} />

@@ -1,29 +1,61 @@
 ---
+/**
+ * Podklady výrobcu na stiahnutie (odkazy na watts.eu). Názvy z watts.eu sú dlhé a zmiešané s angličtinou,
+ * preto sa zobrazujú ako druh podkladu a doplnok („Výkres DWG“ + „UNO & UNO PRIMO heating and cooling“).
+ */
 import Ikona from './Ikona.astro';
 import { type Lang, t } from '../i18n/ui';
 interface Subor { nazov: string; typ: string; jazyk: string | null; url: string }
 interface Props { subory: Subor[]; lang: Lang }
 const { subory, lang } = Astro.props;
 const ui = t(lang);
+const cs = lang === 'cs';
 const jazyk = (j: string | null) => (j === 'sk' ? ui.subory.slovensky : j === 'en' ? ui.subory.anglicky : j === 'cs' ? ui.subory.cesky : null);
+
+function popis(s: Subor): { typ: string; nazov: string; meta: string | null } {
+  const n = s.nazov;
+  let m: RegExpMatchArray | null;
+  if (s.typ === 'EPD' || /deklar/i.test(n)) {
+    const platna = n.match(/platná do (.+)$/);
+    return { typ: 'EPD', nazov: cs ? 'Environmentální prohlášení o produktu' : 'Environmentálne vyhlásenie o produkte', meta: platna ? `platné do ${platna[1]}` : null };
+  }
+  if ((m = n.match(/^Výkres (DWG|DXF): (.+)$/))) {
+    const meta = m[2].replace(/ & /g, ' a ').replace('heating and cooling', cs ? 'vytápění a chlazení' : 'vykurovanie a chladenie')
+      .replace('sanitary water', 'pitná voda').replace('with heating cable', cs ? 's topným kabelem' : 's vykurovacím káblom');
+    return { typ: m[1], nazov: `Výkres ${m[1]}`, meta };
+  }
+  if (/^Katalóg/.test(n)) return { typ: 'PDF', nazov: cs ? 'Katalog Microflex' : 'Katalóg Microflex', meta: 'slovensky, 19 MB' };
+  if (/^Brožúra/.test(n)) return { typ: 'PDF', nazov: cs ? 'Brožura Microflex' : 'Brožúra Microflex', meta: jazyk(s.jazyk) };
+  if (/^Vyhlásenie o zhode/.test(n)) return { typ: 'PDF', nazov: cs ? 'Prohlášení o shodě' : 'Vyhlásenie o zhode', meta: jazyk(s.jazyk) };
+  if (/Technický list/.test(n)) return { typ: 'PDF', nazov: 'Technický list', meta: n.replace(/\s*-\s*Technický list/, '') };
+  return { typ: s.typ, nazov: n, meta: jazyk(s.jazyk) };
+}
+// Katalóg a technický list prvé, potom výkresy, vyhlásenia a brožúra.
+const poradie = (p: { typ: string; nazov: string }) => (/Katal|Technick/.test(p.nazov) ? 0 : p.typ === 'DWG' || p.typ === 'DXF' ? 1 : p.typ === 'EPD' ? 3 : /Brož/.test(p.nazov) ? 4 : 2);
+const polozky = subory.map((s) => ({ ...popis(s), url: s.url })).sort((a, b) => poradie(a) - poradie(b));
 ---
-<div class="files">
-  {subory.map((s) => (
-    <a class="file" href={s.url} target="_blank" rel="noopener">
-      <span class="type">{s.typ}</span>
-      <span><span class="name">{s.nazov}</span>{jazyk(s.jazyk) && <span class="meta">{jazyk(s.jazyk)}</span>}</span>
-      <Ikona nazov="download" velkost={20} class="dl" />
-    </a>
+<ul class="subory">
+  {polozky.map((p) => (
+    <li>
+      <a class="subor" href={p.url} target="_blank" rel="noopener">
+        <span class:list={['typ', `typ-${p.typ.toLowerCase()}`]}>{p.typ}</span>
+        <span class="text"><span class="nazov">{p.nazov}</span>{p.meta && <span class="meta">{p.meta}</span>}</span>
+        <Ikona nazov="download" velkost={20} class="dl" />
+      </a>
+    </li>
   ))}
-</div>
+</ul>
 
 <style>
-  .files { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 24px; }
-  .file { display: grid; grid-template-columns: 44px 1fr auto; gap: 14px; align-items: center; padding: 12px 14px; border: var(--line); border-radius: var(--radius-s); color: var(--color-ink); transition: border-color 150ms var(--ease-soft); }
-  .file:hover { border-color: var(--color-blue-700); color: var(--color-ink); }
-  .type { width: 44px; height: 44px; border-radius: var(--radius-s); background: var(--color-blue-50); color: var(--color-blue-700); display: grid; place-items: center; font-size: 11px; font-weight: 600; letter-spacing: .02em; }
-  .name { font-weight: 500; display: block; }
-  .meta { font-size: 13px; color: var(--color-ink-soft); display: block; }
-  .dl { color: var(--color-blue-700); }
-  @media (max-width: 760px) { .files { grid-template-columns: 1fr; } }
+  .subory { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 32px; }
+  .subor { display: grid; grid-template-columns: 48px minmax(0, 1fr) auto; gap: 16px; align-items: center; padding: 14px 4px; border-bottom: 1px solid rgb(10 42 94 / 0.08); color: var(--color-ink); transition: color 150ms var(--ease-soft); }
+  .subor:hover { color: var(--color-blue-700); }
+  .typ { width: 48px; height: 56px; border-radius: 6px 14px 6px 6px; display: grid; place-items: end center; padding-bottom: 8px; font-family: var(--font-display); font-stretch: 112.5%; font-size: 11.5px; font-weight: 700; letter-spacing: 0.04em; color: #fff; background: linear-gradient(160deg, #1467c1 0%, var(--color-blue-900) 100%); box-shadow: 0 10px 18px -10px rgb(10 42 94 / 0.6), inset 0 1px 0 rgb(255 255 255 / 0.25); transition: transform 200ms var(--ease-soft); }
+  .typ-dwg, .typ-dxf { background: linear-gradient(160deg, #3d4f66 0%, #1b2a3d 100%); }
+  .typ-epd { background: linear-gradient(160deg, #2f8f5b 0%, #1d6340 100%); }
+  .subor:hover .typ { transform: translateY(-2px); }
+  .nazov { display: block; font-weight: 600; }
+  .meta { display: block; font-size: 13.5px; color: var(--color-ink-soft); margin-top: 1px; }
+  .subor :global(.dl) { color: var(--color-blue-700); }
+  @media (max-width: 760px) { .subory { grid-template-columns: minmax(0, 1fr); } }
 </style>

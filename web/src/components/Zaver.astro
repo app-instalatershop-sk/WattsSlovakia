@@ -1,0 +1,52 @@
+---
+/**
+ * Záver každej vnútornej stránky: tmavý pás so šikmou hornou hranou (rovnaký motív ako podzemie
+ * domova), kúpa v e-shope, dopyt na projekt a kontakt na predajňu. Spodok má farbu začiatku pätičky,
+ * takže záver a pätička sú jeden celok.
+ */
+import Ikona from './Ikona.astro';
+import { FIRMA, firma } from '../content/firma';
+import { stranky } from '../content/stranky';
+import { type Lang, ESHOP, route } from '../i18n/ui';
+
+interface Props { lang: Lang; nadpis?: string; text?: string }
+const { lang, nadpis, text } = Astro.props;
+const z = stranky(lang).zaver;
+const f = firma(lang);
+---
+<section class="zaver" aria-labelledby="h-zaver">
+  <div class="wrap zaver-in">
+    <div class="zaver-text">
+      <h2 id="h-zaver">{nadpis ?? z.nadpis}</h2>
+      <p class="lead">{text ?? z.text}</p>
+      <div class="zaver-akcie">
+        <a class="btn btn-yellow" href={ESHOP} target="_blank" rel="noopener">{z.eshop} <Ikona nazov="external-link" velkost={18} /></a>
+        <a class="btn btn-ghost-light" href={`${route(lang, 'firmy')}#dopyt`}>{z.dopyt}</a>
+      </div>
+    </div>
+    <dl class="zaver-kontakt">
+      <div><dt>{z.telefon}</dt><dd><a href={FIRMA.telefonHref}>{FIRMA.telefon}</a></dd></div>
+      <div><dt>{z.email}</dt><dd><a href={`mailto:${FIRMA.email}`}>{FIRMA.email}</a></dd></div>
+      <div><dt>{z.predajna}</dt><dd>{FIRMA.predajna.ulica}, {FIRMA.predajna.mesto}<span>{f.hodinyKratko}</span></dd></div>
+    </dl>
+  </div>
+</section>
+
+<style>
+  .zaver { --sikmina: var(--sikmina-zaver); position: relative; z-index: 1; margin-top: calc(-1 * var(--sikmina)); margin-bottom: -96px; padding: calc(var(--sikmina) + 64px) 0 112px; color: #fff; }
+  .zaver::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, #0e3676 0%, var(--color-blue-900) 55%, #0c3272 100%); clip-path: polygon(0 var(--sikmina), 100% 0, 100% 100%, 0 100%); }
+  .zaver-in { position: relative; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 32px 56px; align-items: end; }
+  .zaver h2 { color: #fff; font-size: clamp(26px, 1.6vw + 16px, 38px); max-width: 16em; }
+  .zaver .lead { color: var(--color-on-dark-muted); margin-top: 16px; }
+  .zaver-akcie { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+  .zaver-kontakt { margin: 0; }
+  .zaver-kontakt > div { display: grid; grid-template-columns: 9.5em minmax(0, 1fr); gap: 12px; padding: 13px 0; border-top: 1px solid rgb(255 255 255 / 0.16); }
+  .zaver-kontakt > div:last-child { border-bottom: 1px solid rgb(255 255 255 / 0.16); }
+  .zaver-kontakt dt { color: var(--color-on-dark-muted); font-size: 14px; padding-top: 2px; }
+  .zaver-kontakt dd { margin: 0; font-weight: 600; }
+  .zaver-kontakt dd span { display: block; font-weight: 400; font-size: 14px; color: var(--color-on-dark-muted); margin-top: 2px; }
+  .zaver-kontakt a { color: #fff; }
+  .zaver-kontakt a:hover { color: var(--color-yellow-500); }
+  @media (max-width: 900px) { .zaver-in { grid-template-columns: minmax(0, 1fr); } }
+  @media (max-width: 760px) { .zaver { padding-bottom: 88px; } .zaver-kontakt > div { grid-template-columns: 1fr; gap: 2px; } }
+</style>

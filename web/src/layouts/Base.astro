@@ -15,8 +15,11 @@ interface Props {
   drobceky?: Drobcek[];
   jsonLd?: Record<string, unknown>[];
   ogImage?: string;
+  /** false = drobčeky vykreslí hlava stránky (komponent Hlava), tu ostanú len v štruktúrovaných dátach */
+  vizualneDrobceky?: boolean;
+  robots?: string;
 }
-const { lang, alternates, title, description, aktivna, drobceky = [], jsonLd = [], ogImage } = Astro.props;
+const { lang, alternates, title, description, aktivna, drobceky = [], jsonLd = [], ogImage, vizualneDrobceky = true, robots } = Astro.props;
 const ui = t(lang);
 const site = Astro.site ?? new URL('https://microflex.sk');
 const canonical = new URL(Astro.url.pathname, site).href;
@@ -48,6 +51,7 @@ const ld = [organizacia, ...(breadcrumbs ? [breadcrumbs] : []), ...jsonLd];
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    {robots && <meta name="robots" content={robots} />}
     <link rel="alternate" hreflang="sk" href={new URL(alternates.sk, site).href} />
     <link rel="alternate" hreflang="cs" href={new URL(alternates.cs, site).href} />
     <link rel="alternate" hreflang="x-default" href={new URL(alternates.sk, site).href} />
@@ -66,7 +70,7 @@ const ld = [organizacia, ...(breadcrumbs ? [breadcrumbs] : []), ...jsonLd];
   </head>
   <body>
     <Hlavicka lang={lang} aktivna={aktivna} alternates={alternates} />
-    {drobceky.length > 0 && (
+    {vizualneDrobceky && drobceky.length > 0 && (
       <div class="wrap">
         <ol class="crumbs" aria-label={ui.crumbs.label}>
           <li><a href={route(lang, 'domov')}>{ui.nav.domov}</a></li>

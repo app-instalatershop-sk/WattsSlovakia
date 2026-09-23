@@ -1,6 +1,7 @@
 ---
 import WattsLogo from './WattsLogo.astro';
 import MicroflexLogo from './MicroflexLogo.astro';
+import { FIRMA } from '../content/firma';
 import { kategorie, cestaKategorie, kKratky } from '../lib/katalog';
 import { type Lang, t, route } from '../i18n/ui';
 interface Props { lang: Lang }
@@ -35,8 +36,11 @@ const kats = await kategorie();
     <div>
       <h3>{ui.footer.prevadzkovatel}</h3>
       <ul>
-        <li>{ui.footer.firma}</li>
-        <li class="muted">{ui.footer.ico}</li>
+        <li>{FIRMA.nazov}</li>
+        <li class="muted">{FIRMA.sidlo.ulica}, {FIRMA.sidlo.psc} {FIRMA.sidlo.mesto}</li>
+        <li class="muted">{ui.footer.ico} {FIRMA.ico}, {ui.footer.icdph} {FIRMA.icdph}</li>
+        <li><a href={FIRMA.telefonHref}>{FIRMA.telefon}</a></li>
+        <li><a href={`mailto:${FIRMA.email}`}>{FIRMA.email}</a></li>
         <li><a href={route(lang, 'kontakt')}>{ui.footer.kontakt}</a></li>
       </ul>
     </div>

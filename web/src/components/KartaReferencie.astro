@@ -1,0 +1,47 @@
+---
+/**
+ * Karta referencie: fotka zo stavby so štítkom potrubia, pod ňou názov, miesto a čas a krátky popis.
+ * Vedie na referenciu na stránke referencií. Použitá na stránke radu a na domove.
+ */
+import { Image } from 'astro:assets';
+import Ikona from './Ikona.astro';
+import { fotkaReferencie } from '../lib/obrazky';
+import { sadzba } from '../lib/sadzba';
+import type { Referencia } from '../content/referencie';
+import { type Lang, route } from '../i18n/ui';
+
+interface Props { r: Referencia; lang: Lang; velka?: boolean }
+const { r, lang, velka = false } = Astro.props;
+const img = fotkaReferencie(r.fotky[0]);
+const potrubie = r.fakty.find(([k]) => /^Potrub/.test(k))?.[1];
+const dlzka = r.fakty.find(([k]) => /^D[ĺé]/.test(k))?.[1];
+const href = `${route(lang, 'referencie')}#${r.id}`;
+---
+<article class:list={['ref', { 'ref-velka': velka }]}>
+  <a class="ref-foto" href={href} tabindex="-1" aria-hidden="true">
+    {img && <Image src={img} alt="" widths={[480, 720, 1000]} sizes={velka ? '(max-width: 900px) 100vw, 58vw' : '(max-width: 900px) 100vw, 40vw'} />}
+    {(potrubie || dlzka) && <span class="ref-stitok">{[potrubie, dlzka].filter(Boolean).join(', ')}</span>}
+  </a>
+  <div class="ref-text">
+    <p class="ref-kde">{r.miesto}, {r.kedy}</p>
+    <h3><a href={href}>{sadzba(r.nazov)}</a></h3>
+    <p class="ref-perex">{sadzba(r.perex)}</p>
+    <a class="odkaz" href={href}>{lang === 'cs' ? 'Celá reference' : 'Celá referencia'} <Ikona nazov="arrow-right" velkost={16} /></a>
+  </div>
+</article>
+
+<style>
+  .ref { display: flex; flex-direction: column; gap: 20px; }
+  .ref-foto { position: relative; display: block; border-radius: 18px; overflow: hidden; box-shadow: 0 30px 56px -30px rgb(11 27 51 / 0.55); }
+  .ref-foto :global(img) { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; transition: transform 700ms var(--ease-soft); }
+  .ref:has(a:hover) .ref-foto :global(img) { transform: scale(1.03); }
+  .ref-stitok { position: absolute; left: 14px; bottom: 14px; right: 14px; width: fit-content; max-width: calc(100% - 28px); padding: 8px 12px; border-radius: 10px; background: rgb(10 42 94 / 0.82); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); color: #fff; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 14px; letter-spacing: 0.005em; }
+  .ref-kde { font-size: 13.5px; color: var(--color-ink-soft); }
+  .ref h3 { font-size: 21px; line-height: 1.25; margin-top: 4px; }
+  .ref h3 a { color: var(--color-ink); }
+  .ref h3 a:hover { color: var(--color-blue-700); }
+  .ref-perex { margin-top: 10px; color: var(--color-ink-soft); max-width: 36em; }
+  .ref .odkaz { margin-top: 16px; }
+  .ref-velka .ref-foto :global(img) { aspect-ratio: 3 / 2; }
+  .ref-velka h3 { font-size: clamp(22px, 1vw + 16px, 28px); }
+</style>

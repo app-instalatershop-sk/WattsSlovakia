@@ -49,6 +49,8 @@
     --zem-2: #e1ebf7;
     --zem-3: #d8e5f5;
     --zem-4: #cddff2;
+    /* Výška šikmej hrany tmavého záveru a podzemia. */
+    --sikmina-zaver: clamp(28px, 5vw, 96px);
     --hdr-h: 76px;
     interpolate-size: allow-keywords;
   }
@@ -149,6 +151,21 @@
   /* Pásy */
   .band { background: linear-gradient(180deg, #f3f7fc 0%, var(--color-blue-50) 55%, #e6eff9 100%); }
   /* Svetlý pás, ktorý začína bielou: sekcia pod hero prechádza plynulo, bez viditeľného švíku. */
+  /* Vnútorné stránky: telo pod hlavou pokračuje zostupom pod zem ako domov a končí pod šikmou
+     hranou tmavého záveru. */
+  .telo { position: relative; background: linear-gradient(180deg, var(--zem-1) 0%, var(--zem-2) 45%, var(--zem-3) 100%); padding: 48px 0 calc(var(--sikmina-zaver) + 88px); }
+  .telo > .wrap + .wrap, .telo > section + section { margin-top: 88px; }
+  /* Hárok: biela plocha pre tabuľky a zoznamy na modrom tele, jemne nadvihnutá. */
+  .harok { background: #fff; border-radius: 18px; box-shadow: 0 1px 0 rgb(10 42 94 / 0.05), 0 26px 60px -38px rgb(10 42 94 / 0.45); }
+  /* Nadpis sekcie vnútornej stránky: nadpis, popis pod ním a odkaz vpravo. */
+  .s-hlava { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px 32px; align-items: end; margin-bottom: 28px; }
+  .s-hlava h2 { font-size: clamp(26px, 1.4vw + 17px, 36px); letter-spacing: -0.02em; }
+  .s-hlava p { grid-column: 1; color: var(--color-ink-soft); max-width: 44em; }
+  .s-hlava > a { grid-column: 2; grid-row: 1 / span 2; align-self: end; display: inline-flex; align-items: center; gap: 6px; font-weight: 500; white-space: nowrap; border-bottom: 1px solid currentColor; padding-bottom: 2px; }
+  @media (max-width: 760px) { .s-hlava { grid-template-columns: minmax(0, 1fr); } .s-hlava > a { grid-column: 1; grid-row: auto; justify-self: start; } .telo { padding-top: 32px; } .telo > .wrap + .wrap, .telo > section + section { margin-top: 64px; } }
+  /* Odkaz s podčiarknutím a ikonou (druhá akcia vedľa tlačidla). */
+  .odkaz { display: inline-flex; align-items: center; gap: 8px; font-weight: 500; color: var(--color-blue-700); border-bottom: 1px solid currentColor; padding-bottom: 3px; }
+  .odkaz .meta { font-weight: 400; font-size: 14px; color: var(--color-ink-soft); }
   .band-soft { background: linear-gradient(180deg, var(--color-white) 0, var(--color-blue-50) 140px, var(--color-blue-50) 100%); }
   .band-dark { background: linear-gradient(170deg, #0e3676 0%, var(--color-blue-900) 100%); color: #fff; }
   .band-dark h2, .band-dark h3 { color: #fff; }

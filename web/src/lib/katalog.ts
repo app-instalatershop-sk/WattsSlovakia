@@ -77,3 +77,49 @@ export function rozsah(hodnoty: Array<number | null | undefined>, jednotka: stri
 export function datum(iso: string, lang: Lang): string {
   return new Date(iso).toLocaleDateString(lang === 'cs' ? 'cs-CZ' : 'sk-SK', { day: 'numeric', month: 'numeric', year: 'numeric' });
 }
+
+/**
+ * Priemery nosných rúr variantu v mm. Pri DUO 10 bar, QUADRO a HP je v bunke viac rúr naraz
+ * („1x28/4.01x18/2.5“, „2 x 25/2,3 1 x 25/3,5“, „2 x 32 x 2.9“): berie sa číslo pred hrúbkou steny.
+ */
+export function priemery(v: Variant): number[] {
+  if (v.rura?.d) return [v.rura.d];
+  const out: number[] = [];
+  for (const m of (v.rura_text ?? '').matchAll(/(\d{2,3})\s*[/x×]\s*\d{1,2}[.,]\d/g)) out.push(Number(m[1]));
+  return out;
+}
+/** Rozsah priemerov nosných rúr skupiny variantov („25 až 125 mm“), prázdny reťazec, ak nie sú. */
+export function rozsahRur(vs: Variant[], lang: Lang): string {
+  const d = vs.flatMap(priemery);
+  return d.length ? rozsah(d, 'mm', lang) : '';
+}
+
+/**
+ * Nosné rúry variantu na zobrazenie: „25 × 2,3“, pri viacerých rúrach „28 × 4,0 + 18 × 2,5“,
+ * rovnaké rúry s počtom „2× 32 × 2,9“.
+ */
+export function ruraText(v: Variant): string {
+  // Nezlomiteľné medzery: rúra „25 × 2,3“ sa nerozdelí na dva riadky, zalomiť sa dá len pri „+“.
+  if (v.rura?.d) return `${cislo(v.rura.d)} × ${cislo(v.rura.s, 1)}`;
+  const casti = [...(v.rura_text ?? '').matchAll(/(?:(\d)\s*[x×]\s*)?(\d{2,3})\s*[/x×]\s*(\d{1,2}[.,]\d)/g)];
+  if (!casti.length) return (v.rura_text ?? '').replace(/x/g, '×');
+  return casti.map(([, n, d, s]) => `${n && n !== '1' ? `${n}× ` : ''}${d} × ${s.replace('.', ',')}`).join(' + ');
+}
+
+/** Prevádzkové tlaky radov v bar (QUADRO má dva: 6 bar vykurovacie a 10 bar sanitárne rúry). */
+export function tlakyRadov(rr: Rad[]): number[] {
+  const t = new Set<number>();
+  for (const r of rr) {
+    if (typeof r.tlak_bar === 'number') t.add(r.tlak_bar);
+    for (const m of (r.tlak_text ?? '').matchAll(/\d+/g)) t.add(Number(m[0]));
+  }
+  return [...t].sort((a, b) => a - b);
+}
+/** Tlak radu na zobrazenie: „6 bar“, „6 / 10 bar“, alebo prázdny reťazec. */
+export const tlakText = (r: Rad) => r.tlak_text ?? (typeof r.tlak_bar === 'number' ? `${r.tlak_bar} bar` : '');
+
+/** Stránka produktu spojok a príslušenstva: /spojky/<slug>/, /cs/prislusenstvi/<slug_cs>/. */
+export function cestaProduktu(p: Produkt, k: Kategoria, lang: Lang): string {
+  return `${cestaKategorie(k, lang)}${lang === 'cs' ? p.slug_cs : p.slug}/`;
+}
+export const alternatyProduktu = (p: Produkt, k: Kategoria): Alternates => ({ sk: cestaProduktu(p, k, 'sk'), cs: cestaProduktu(p, k, 'cs') });

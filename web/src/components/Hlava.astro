@@ -1,0 +1,84 @@
+---
+/**
+ * Hlava vnútornej stránky: to isté svetlé pole ako hero domova, drobčeky, nadpis a popis vľavo,
+ * obraz vpravo cez okraj obrazovky. Dole je šikmá hrana, cez ktorú obraz prechádza do tela stránky
+ * (motív z domova: výrobok prekračuje hranu sekcie).
+ *
+ *  druh="render"  priehľadný render výrobku (tieň pod ním)
+ *  druh="biely"   render na bielom pozadí z katalógu (násobenie, biela splynie s poľom)
+ *  druh="foto"    fotka zo stavby (zaoblená, vybieha za pravý okraj)
+ * Bez obrazu je hlava nižšia. Slot pod popisom je na tlačidlá alebo údaje, slot "bok" nahrádza obraz.
+ */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { sadzba } from '../lib/sadzba';
+import { type Lang, t, route } from '../i18n/ui';
+
+interface Drobcek { text: string; href?: string }
+interface Props {
+  lang: Lang; nadpis: string; drobceky?: Drobcek[]; pred?: string; lead?: string;
+  obraz?: ImageMetadata; obrazAlt?: string; druh?: 'render' | 'biely' | 'foto'; obrazMax?: number;
+}
+const { lang, nadpis, drobceky = [], pred, lead, obraz, obrazAlt = '', druh = 'render', obrazMax = 760 } = Astro.props;
+const ui = t(lang);
+const maBok = Astro.slots.has('bok');
+---
+<section class:list={['hlava', obraz || maBok ? `hlava-${druh}` : 'hlava-bez']}>
+  <div class="wrap hlava-in">
+    <div class="hlava-text">
+      <ol class="crumbs" aria-label={ui.crumbs.label}>
+        <li><a href={route(lang, 'domov')}>{ui.nav.domov}</a></li>
+        {drobceky.map((d) => (d.href ? <li><a href={d.href}>{d.text}</a></li> : <li aria-current="page">{d.text}</li>))}
+      </ol>
+      {pred && <p class="hlava-pred">{pred}</p>}
+      <h1>{sadzba(nadpis)}</h1>
+      {lead && <p class="lead">{sadzba(lead)}</p>}
+      <slot />
+    </div>
+    {obraz && (
+      <div class="hlava-obraz" style={`--obraz-max: ${obrazMax}px`}>
+        <Image src={obraz} alt={obrazAlt} widths={[560, 900, 1300]} sizes="(max-width: 760px) 100vw, 52vw" loading="eager" fetchpriority="high" />
+      </div>
+    )}
+    {!obraz && maBok && <div class="hlava-bok"><slot name="bok" /></div>}
+  </div>
+</section>
+
+<style>
+  .hlava { position: relative; z-index: 2; overflow-x: clip; display: flex; align-items: center; min-height: clamp(380px, 50vh, 560px); padding-bottom: calc(var(--presah-hero) * 0.55); color: var(--color-ink);
+    background:
+      radial-gradient(48% 70% at 78% 46%, rgb(0 93 185 / 0.07) 0%, rgb(0 93 185 / 0) 72%),
+      linear-gradient(158deg, #ffffff 0%, #fafbfd 46%, #eef2f7 100%); }
+  /* Šikmá hrana: vľavo nižšie, vpravo vyššie, farba začiatku tela stránky. */
+  .hlava::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: var(--presah-hero); background: var(--zem-1); clip-path: polygon(0 100%, 100% 0, 100% 100%); pointer-events: none; }
+  .hlava-bez { min-height: 0; padding-top: 8px; }
+  .hlava-in { position: relative; z-index: 2; width: 100%; display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: 24px 40px; align-items: center; }
+  .hlava-bez .hlava-in { grid-template-columns: minmax(0, 1fr); }
+  .hlava-text { position: relative; z-index: 3; padding-block: 16px 40px; max-width: 640px; }
+  .hlava-bez .hlava-text { max-width: 860px; padding-bottom: 24px; }
+  .crumbs { padding-block: 0 28px; }
+  .hlava-pred { font-size: 12.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--color-blue-700); margin-bottom: 14px; }
+  .hlava h1 { font-size: clamp(32px, 2.4vw + 16px, 54px); line-height: 1.05; letter-spacing: -0.025em; max-width: 15em; }
+  .hlava .lead { margin-top: 20px; max-width: 34em; }
+  .hlava-text > :global(.hlava-akcie) { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; margin-top: 30px; }
+
+  /* Obraz vybieha za pravý okraj obrazovky a spodkom cez šikmú hranu do tela stránky. */
+  .hlava-obraz { position: relative; z-index: 2; align-self: end; margin-right: calc(-1 * var(--bleed)); margin-bottom: calc(var(--presah-hero) * -0.9); animation: hlava-obraz 1100ms 80ms var(--ease-soft) both; }
+  .hlava-obraz :global(img) { display: block; width: 100%; max-width: var(--obraz-max); height: auto; margin-left: auto; }
+  .hlava-render .hlava-obraz :global(img) { filter: drop-shadow(0 32px 40px rgb(11 27 51 / 0.2)); }
+  .hlava-biely .hlava-obraz { mix-blend-mode: multiply; }
+  .hlava-biely .hlava-obraz :global(img) { -webkit-mask-image: radial-gradient(75% 75% at 55% 50%, #000 62%, transparent 100%); mask-image: radial-gradient(75% 75% at 55% 50%, #000 62%, transparent 100%); }
+  .hlava-foto .hlava-obraz { align-self: center; margin-bottom: calc(var(--presah-hero) * -0.6); }
+  .hlava-foto .hlava-obraz :global(img) { aspect-ratio: 3 / 2; object-fit: cover; border-radius: var(--radius-l) 0 0 var(--radius-l); box-shadow: 0 30px 60px -20px rgb(11 27 51 / 0.45); }
+  .hlava-bok { position: relative; z-index: 2; }
+  @keyframes hlava-obraz { from { opacity: 0; transform: translateX(28px); } to { opacity: 1; transform: none; } }
+
+  @media (max-width: 900px) {
+    .hlava { min-height: 0; }
+    .hlava-in { grid-template-columns: minmax(0, 1fr); }
+    .hlava-text { padding-bottom: 8px; max-width: none; }
+    .hlava-obraz { margin: 0 calc(-1 * var(--gutter)) calc(var(--presah-hero) * -0.5); }
+    .hlava-obraz :global(img) { margin-inline: auto; max-width: min(var(--obraz-max), 100%); }
+    .hlava-foto .hlava-obraz { margin-left: 0; }
+  }
+</style>

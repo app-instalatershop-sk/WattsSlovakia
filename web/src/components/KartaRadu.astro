@@ -1,42 +1,74 @@
 ---
+/**
+ * Karta radu na stránke kategórie: biely hárok, render radu z neho vystupuje nad horný okraj
+ * (výrobok prekračuje hranu ako na domove). Pod ním názov, počet rúr, krátky popis, údaje z tabuľky
+ * a vyhotovenia, ktoré zdieľajú render (PRIMO), ako vlastné riadky s odkazom.
+ */
 import { Image } from 'astro:assets';
 import Ikona from './Ikona.astro';
-import { fotkaRadu } from '../lib/obrazky';
-import { rozsah, rNazov, rKratky, type Rad, type Variant } from '../lib/katalog';
+import { piktogram } from '../lib/obrazky';
+import { sadzba } from '../lib/sadzba';
+import { rozsah, rozsahRur, rNazov, rKratky, cislo, tlakText, type Rad, type Variant } from '../lib/katalog';
+import { stranky } from '../content/stranky';
 import { type Lang, t } from '../i18n/ui';
 
-interface Props { rad: Rad; href: string; varianty: Variant[]; lang: Lang }
-const { rad, href, varianty, lang } = Astro.props;
+interface Vyhotovenie { rad: Rad; href: string }
+interface Props { rad: Rad; href: string; varianty: Variant[]; lang: Lang; vyhotovenia?: Vyhotovenie[] }
+const { rad, href, varianty, lang, vyhotovenia = [] } = Astro.props;
 const ui = t(lang);
-const img = fotkaRadu(rad.fotka);
-const rura = rozsah(varianty.map((v) => v.rura?.d), 'mm', lang);
-const plast = rozsah(varianty.map((v) => v.plast_mm), 'mm', lang);
-const zosilnene = varianty.filter((v) => v.izolacia === 'zosilnena').length;
+const tx = stranky(lang).kategoria;
+const img = piktogram(rad.piktogram);
+const model = rNazov(rad, lang).split(',')[0].trim();
+const doplnok = rNazov(rad, lang).split(',').slice(1).join(',').trim();
 const kratky = rKratky(rad, lang);
+const pol = varianty.map((v) => v.polomer_ohybu_m).filter((x): x is number => typeof x === 'number');
+const zosilnene = varianty.filter((v) => v.izolacia === 'zosilnena').length;
+const udaje: [string, string][] = varianty.length ? [
+  [ui.karta.rura, `${rad.pocet_rur && rad.pocet_rur > 1 && varianty.some((v) => v.rura) ? `${rad.pocet_rur} × ` : ''}${rozsahRur(varianty, lang)}`],
+  [ui.karta.plast, rozsah(varianty.map((v) => v.plast_mm), 'mm', lang)],
+  ...(pol.length ? [[ui.kategoria.polomer, `${ui.common.od} ${cislo(Math.min(...pol), 2)} m`] as [string, string]] : []),
+  [ui.karta.dimenzie, `${ui.sklonovanie.dimenzii(varianty.length)}${zosilnene ? ui.karta.zosilnena(zosilnene) : ''}`],
+] : [];
 ---
-<a class="card" href={href}>
-  <div class="plate" style="aspect-ratio: 3 / 2" transition:name={`rad-${rad.id}`}>
-    {img ? <Image src={img} alt="" widths={[320, 480, 640]} sizes="(max-width: 760px) 90vw, 30vw" /> : null}
-  </div>
-  <div class="body">
-    <h3>{rNazov(rad, lang)}</h3>
-    {kratky && <p>{kratky}</p>}
-    {varianty.length > 0 && (
-      <dl class="kv">
-        <dt>{ui.karta.rura}</dt><dd>{rad.pocet_rur && rad.pocet_rur > 1 ? `${rad.pocet_rur} × ` : ''}{rura}</dd>
-        <dt>{ui.karta.plast}</dt><dd>{plast}</dd>
-        <dt>{ui.karta.dimenzie}</dt><dd>{ui.sklonovanie.dimenzii(varianty.length)}{zosilnene ? ui.karta.zosilnena(zosilnene) : ''}</dd>
-      </dl>
-    )}
-    <div class="meta">
-      <span>{varianty.length ? ui.common.objCisel(varianty.length) : ui.common.rozmeryVKatalogu}</span>
-      <strong>{ui.common.zobrazitVarianty} <Ikona nazov="chevron-right" velkost={16} /></strong>
-    </div>
-  </div>
-</a>
+<article class="karta harok">
+  <a class="karta-obraz" href={href} tabindex="-1" aria-hidden="true">
+    {img && <Image src={img} alt="" widths={[360, 560, 800]} sizes="(max-width: 760px) 80vw, 30vw" />}
+  </a>
+  <h3><a href={href}>{model}</a></h3>
+  <p class="karta-pod">{[doplnok, rad.pocet_rur ? ui.home.rury(rad.pocet_rur) : '', !doplnok ? tlakText(rad) : ''].filter(Boolean).join(', ')}</p>
+  {kratky && <p class="karta-popis">{sadzba(kratky)}</p>}
+  {udaje.length > 0 && (
+    <dl class="karta-udaje">{udaje.map(([dt, dd]) => <div><dt>{dt}</dt><dd>{dd}</dd></div>)}</dl>
+  )}
+  <a class="odkaz karta-cta" href={href}>{varianty.length ? tx.varianty : tx.rozmery} <Ikona nazov="arrow-right" velkost={16} /></a>
+  {vyhotovenia.length > 0 && (
+    <ul class="karta-vyh">
+      {vyhotovenia.map((v) => (
+        <li><a href={v.href}><span><strong>{rNazov(v.rad, lang).split(',')[0].trim()}</strong><span>{ui.home.primo}</span></span><Ikona nazov="chevron-right" velkost={18} /></a></li>
+      ))}
+    </ul>
+  )}
+</article>
 
 <style>
-  .kv { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; font-size: 14px; margin: 4px 0 0; }
-  .kv dt { color: var(--color-ink-soft); }
-  .kv dd { margin: 0; font-weight: 500; font-variant-numeric: tabular-nums; }
+  .karta { position: relative; display: flex; flex-direction: column; padding: 0 28px 24px; margin-top: 90px; }
+  .karta-obraz { display: block; margin: -90px auto 6px; width: min(86%, 380px); filter: drop-shadow(0 22px 24px rgb(11 27 51 / 0.22)); transition: transform 420ms var(--ease-soft); }
+  .karta-obraz :global(img) { width: 100%; height: auto; aspect-ratio: 5 / 4; object-fit: contain; object-position: center bottom; -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 18%), linear-gradient(to top left, #000 78%, transparent 99%); -webkit-mask-composite: source-in; mask-image: linear-gradient(to right, transparent 0%, #000 18%), linear-gradient(to top left, #000 78%, transparent 99%); mask-composite: intersect; }
+  .karta:has(a:hover) .karta-obraz { transform: translateY(-6px); }
+  .karta h3 { font-size: 24px; letter-spacing: -0.015em; }
+  .karta h3 a { color: var(--color-ink); }
+  .karta h3 a:hover { color: var(--color-blue-700); }
+  .karta-pod { margin-top: 2px; color: var(--color-ink-soft); font-size: 15px; }
+  .karta-popis { margin-top: 12px; font-size: 15px; color: var(--color-ink); }
+  .karta-udaje { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 20px; margin: 18px 0 0; padding-top: 16px; border-top: 1px solid rgb(10 42 94 / 0.1); }
+  .karta-udaje dt { font-size: 13px; color: var(--color-ink-soft); }
+  .karta-udaje dd { margin: 2px 0 0; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 16px; color: var(--color-blue-900); font-variant-numeric: tabular-nums; }
+  .karta-cta { align-self: flex-start; margin-top: 20px; }
+  .karta-vyh { margin-top: 20px; }
+  .karta-vyh a { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; border-radius: 12px; background: var(--color-blue-50); color: var(--color-ink); transition: background-color 150ms var(--ease-soft); }
+  .karta-vyh li + li { margin-top: 8px; }
+  .karta-vyh a:hover { background: var(--color-blue-100); color: var(--color-ink); }
+  .karta-vyh strong { display: block; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 16px; }
+  .karta-vyh strong + span { font-size: 14px; color: var(--color-ink-soft); }
+  .karta-vyh :global(svg) { color: var(--color-blue-700); flex: none; }
 </style>

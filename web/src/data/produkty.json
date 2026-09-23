@@ -1,14 +1,16 @@
 [
  {
   "id": "3-x-ohrev-spojky-pe-x-t",
-  "slug": "3-x-ohrev-spojky-pe-x-t",
+  "slug": "t-spojka-3-pe-x-vykurovanie-a-cool",
+  "slug_cs": "t-spojka-3-pe-x-vytapeni-a-cool",
   "skupina": "pe-x-spojky-vykurovanie-a-cool",
   "kategoria": "spojky",
-  "nazov": "3 x ohrev spojky PE-X T.",
-  "nazov_cs": "3 x ohřev spojky PE-X T.",
+  "poradie": 1,
+  "nazov": "T-spojka 3 × PE-X, vykurovanie a COOL",
+  "nazov_cs": "T-spojka 3 × PE-X, vytápění a COOL",
   "nazov_watts": "3 x ohrev spojky PE-X T.",
-  "popis": "Spojka typu T na použitie v potrubných systémoch vybavených dopravnými rúrami na vykurovanie, studenú alebo chladiacu vodu.Spojka má dlhú nosnú rúrku pre optimálne upnutie, kónické pripojenie vonkajšieho závitu a upínací krúžok so skrutkou z nehrdzavejúcej ocele. Priložený diaľkový ovládač uľahčuje montáž spojky.Pre podzemné prípojky sa odporúča použitie izolačnej súpravy T so zmršťovacími krytmi alebo koncovými krytmi EPDM.Pokyny na montáž: pozri náš inštalačný manuál.",
-  "popis_cs": "Spojka typu T pro použití v potrubních systémech vybavených dopravními trubkami na vytápění, studenou nebo chladicí vodu. Spojka má dlouhou nosnou trubku pro optimální upnutí, kónické připojení vnějšího závitu a upínací kroužek se šroubem z nerezavějící oceli. Přiložený dálkový ovladač usnadňuje montáž spojky. Pro podzemní přípojky se doporučuje použití izolační soupravy T se smršťovacími kryty nebo koncovými kryty EPDM. Pokyny pro montáž: viz náš instalační manuál.",
+  "popis": "Svorná T-spojka na odbočenie z nosnej rúry PE-X vo vykurovaní a v rozvodoch studenej alebo chladiacej vody. Má dlhú nosnú rúrku pre pevné uchytenie, objímku so skrutkou z nehrdzavejúcej ocele a oceľovú vložku, ktorá uľahčuje montáž. Pod zemou ju zakryte izolačnou sadou T-kusu.",
+  "popis_cs": "Svěrná T-spojka k odbočení z nosné trubky PE-X ve vytápění a v rozvodech studené nebo chladicí vody. Má dlouhou nosnou trubku pro pevné uchycení, objímku se šroubem z nerezové oceli a ocelovou vložku, která usnadňuje montáž. Pod zemí ji zakryjte izolační sadou T-kusu.",
   "subory": [
    {
     "nazov": "Katalóg Microflex (SK)",
@@ -20,84 +22,170 @@
   "pocet_variantov": 12,
   "tabulky": [
    {
-    "head": [
-     "Art. No.",
-     "PE-X dout/S (mm)",
-     "Thread (inch)",
-     "ø Outer Diameter of Pipe (mm)"
+    "hlavicky": [
+     "Obj. číslo",
+     "Rúra PE-X, Ø × hrúbka",
+     "Závit",
+     "Pripojenie, Ø rúr"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Trubka PE-X, Ø × tloušťka",
+     "Závit",
+     "Připojení, Ø trubek"
+    ],
+    "jednotky": [
+     null,
+     "mm",
+     null,
+     "mm"
+    ],
+    "riadky": [
      [
       "MJ13025/23",
-      "25/2.3",
-      "3 x 3/4\"",
-      "25 x 25 x 25"
+      "25 × 2,3",
+      "3 × 3/4″",
+      "25 × 25 × 25"
      ],
      [
       "MJ13032/29",
-      "32/2.9",
-      "3 x 1\"",
-      "32 x 32 x 32"
+      "32 × 2,9",
+      "3 × 1″",
+      "32 × 32 × 32"
      ],
      [
       "MJ1304032/37",
-      "40/3.7 + 32/2.9",
-      "2 x 1 1/4\" + 1 x 1\"",
-      "40 x 32 x 40"
+      "40 × 3,7 + 32 × 2,9",
+      "2 × 1 1/4″ + 1 × 1″",
+      "40 × 32 × 40"
      ],
      [
       "MJ13040/37",
-      "40/3.7",
-      "3 x 1 1/4\"",
-      "40 x 40 x 40"
+      "40 × 3,7",
+      "3 × 1 1/4″",
+      "40 × 40 × 40"
      ],
      [
       "MJ1305040/46",
-      "50/4.6 + 40/3.7",
-      "2 x 1 1/2\" + 1 x 1 1/4\"",
-      "50 x 40 x 50"
+      "50 × 4,6 + 40 × 3,7",
+      "2 × 1 1/2″ + 1 × 1 1/4″",
+      "50 × 40 × 50"
      ],
      [
       "MJ13050/46",
-      "50/4.6",
-      "2 x 1 1/2\"",
-      "50 x 50 x 50"
+      "50 × 4,6",
+      "2 × 1 1/2″",
+      "50 × 50 × 50"
      ],
      [
       "MJ1306350/58",
-      "63/5.8 + 50/4.6",
-      "2 x 2\" + 1 x 1 1/2\"",
-      "63 x 50 x 63"
+      "63 × 5,8 + 50 × 4,6",
+      "2 × 2″ + 1 × 1 1/2″",
+      "63 × 50 × 63"
      ],
      [
       "MJ13063/58",
-      "63/5.8",
-      "3 x 2\"",
-      "63 x 63 x 63"
+      "63 × 5,8",
+      "3 × 2″",
+      "63 × 63 × 63"
      ],
      [
       "MJ13075/68",
-      "75/6.8",
-      "3 x 2 1/2\"",
-      "75 x 75 x 75"
+      "75 × 6,8",
+      "3 × 2 1/2″",
+      "75 × 75 × 75"
      ],
      [
       "MJ13090/82",
-      "90/8.2",
-      "3 x 3\"",
-      "90 x 90 x 90"
+      "90 × 8,2",
+      "3 × 3″",
+      "90 × 90 × 90"
      ],
      [
       "MJ130110/100",
-      "110/10.0",
-      "3 x 4\"",
-      "110 x 110 x 110"
+      "110 × 10,0",
+      "3 × 4″",
+      "110 × 110 × 110"
      ],
      [
       "MJ130125/114",
-      "125/11.4",
-      "3 x 4\"",
-      "125 x 125 x 125"
+      "125 × 11,4",
+      "3 × 4″",
+      "125 × 125 × 125"
+     ]
+    ],
+    "riadky_cs": [
+     [
+      "MJ13025/23",
+      "25 × 2,3",
+      "3 × 3/4″",
+      "25 × 25 × 25"
+     ],
+     [
+      "MJ13032/29",
+      "32 × 2,9",
+      "3 × 1″",
+      "32 × 32 × 32"
+     ],
+     [
+      "MJ1304032/37",
+      "40 × 3,7 + 32 × 2,9",
+      "2 × 1 1/4″ + 1 × 1″",
+      "40 × 32 × 40"
+     ],
+     [
+      "MJ13040/37",
+      "40 × 3,7",
+      "3 × 1 1/4″",
+      "40 × 40 × 40"
+     ],
+     [
+      "MJ1305040/46",
+      "50 × 4,6 + 40 × 3,7",
+      "2 × 1 1/2″ + 1 × 1 1/4″",
+      "50 × 40 × 50"
+     ],
+     [
+      "MJ13050/46",
+      "50 × 4,6",
+      "2 × 1 1/2″",
+      "50 × 50 × 50"
+     ],
+     [
+      "MJ1306350/58",
+      "63 × 5,8 + 50 × 4,6",
+      "2 × 2″ + 1 × 1 1/2″",
+      "63 × 50 × 63"
+     ],
+     [
+      "MJ13063/58",
+      "63 × 5,8",
+      "3 × 2″",
+      "63 × 63 × 63"
+     ],
+     [
+      "MJ13075/68",
+      "75 × 6,8",
+      "3 × 2 1/2″",
+      "75 × 75 × 75"
+     ],
+     [
+      "MJ13090/82",
+      "90 × 8,2",
+      "3 × 3″",
+      "90 × 90 × 90"
+     ],
+     [
+      "MJ130110/100",
+      "110 × 10,0",
+      "3 × 4″",
+      "110 × 110 × 110"
+     ],
+     [
+      "MJ130125/114",
+      "125 × 11,4",
+      "3 × 4″",
+      "125 × 125 × 125"
      ]
     ]
    }
@@ -107,14 +195,16 @@
  },
  {
   "id": "pe-x-x-pe-x-spojka-kurenie",
-  "slug": "pe-x-x-pe-x-spojka-kurenie",
+  "slug": "priama-spojka-pe-x-pe-x-vykurovanie-a-cool",
+  "slug_cs": "prima-spojka-pe-x-pe-x-vytapeni-a-cool",
   "skupina": "pe-x-spojky-vykurovanie-a-cool",
   "kategoria": "spojky",
-  "nazov": "PE-X x PE-X spojka Kúrenie",
-  "nazov_cs": "PE-X x PE-X spojka Topení",
+  "poradie": 2,
+  "nazov": "Priama spojka PE-X × PE-X, vykurovanie a COOL",
+  "nazov_cs": "Přímá spojka PE-X × PE-X, vytápění a COOL",
   "nazov_watts": "PE-X x PE-X spojka Kúrenie",
-  "popis": "Pripojovacia spojka PE-X-PE-X na použitie v potrubných systémoch vybavených dopravnými rúrami na vykurovanie, studenú alebo chladiacu vodu.Spojka má dlhú nosnú rúrku pre optimálne upnutie, kónické pripojenie vonkajšieho závitu a upínací krúžok so skrutkou z nehrdzavejúcej ocele. Priložený diaľkový ovládač uľahčuje montáž spojky.Pre podzemné prípojky sa odporúča použitie priamej izolačnej súpravy so zmršťovacími krytmi alebo koncovými krytmi EPDM.Pokyny na montáž: pozri náš inštalačný manuál.",
-  "popis_cs": "Připojovací spojka PE-X-PE-X pro použití v potrubních systémech vybavených dopravními trubkami na vytápění, studenou nebo chladicí vodu. Spojka má dlouhou nosnou trubku pro optimální upnutí, kónické připojení vnějšího závitu a upínací kroužek se šroubem z nerezavějící oceli. Přiložený dálkový ovladač usnadňuje montáž spojky. Pro podzemní přípojky se doporučuje použití přímé izolační soupravy se smršťovacími kryty nebo koncovými kryty EPDM. Pokyny pro montáž: viz náš instalační manuál.",
+  "popis": "Svorná spojka, ktorá spojí dve nosné rúry PE-X vo vykurovaní a v rozvodoch studenej alebo chladiacej vody. Dlhá nosná rúrka, objímka so skrutkou z nehrdzavejúcej ocele a oceľová vložka pre ľahkú montáž. Pod zemou ju zakryte izolačnou sadou priameho spoja.",
+  "popis_cs": "Svěrná spojka, která spojí dvě nosné trubky PE-X ve vytápění a v rozvodech studené nebo chladicí vody. Dlouhá nosná trubka, objímka se šroubem z nerezové oceli a ocelová vložka pro snadnou montáž. Pod zemí ji zakryjte izolační sadou přímého spoje.",
   "subory": [
    {
     "nazov": "Katalóg Microflex (SK)",
@@ -126,76 +216,155 @@
   "pocet_variantov": 9,
   "tabulky": [
    {
-    "head": [
-     "Art. No.",
-     "PE-X dout/s (mm)",
-     "Thread (inch)",
-     "Ø Outer Diameter of Pipe (mm)",
-     "Weight (kg)"
+    "hlavicky": [
+     "Obj. číslo",
+     "Rúra PE-X, Ø × hrúbka",
+     "Závit",
+     "Pripojenie, Ø rúr",
+     "Hmotnosť"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Trubka PE-X, Ø × tloušťka",
+     "Závit",
+     "Připojení, Ø trubek",
+     "Hmotnost"
+    ],
+    "jednotky": [
+     null,
+     "mm",
+     null,
+     "mm",
+     "kg"
+    ],
+    "riadky": [
      [
       "MJ27025/23",
-      "25/2.3",
-      "2 x 3/4”",
-      "25x25",
-      "0.35"
+      "25 × 2,3",
+      "2 × 3/4″",
+      "25 × 25",
+      "0,35"
      ],
      [
       "MJ27032/29",
-      "32/2.9",
-      "2 x 1”",
-      "32x32",
-      "0.45"
+      "32 × 2,9",
+      "2 × 1″",
+      "32 × 32",
+      "0,45"
      ],
      [
       "MJ27040/37",
-      "40/3.7",
-      "2 x 1 1/4”",
-      "40x40",
-      "0.80"
+      "40 × 3,7",
+      "2 × 1 1/4″",
+      "40 × 40",
+      "0,80"
      ],
      [
       "MJ27050/46",
-      "50/4.6",
-      "2 x 1 1/2”",
-      "50x50",
-      "1.35"
+      "50 × 4,6",
+      "2 × 1 1/2″",
+      "50 × 50",
+      "1,35"
      ],
      [
       "MJ27063/58",
-      "63/5.8",
-      "2 x 2”",
-      "63x63",
-      "2.10"
+      "63 × 5,8",
+      "2 × 2″",
+      "63 × 63",
+      "2,10"
      ],
      [
       "MJ27075/68",
-      "75/6.8",
-      "2 x 2 1/2”",
-      "75x75",
-      "2.90"
+      "75 × 6,8",
+      "2 × 2 1/2″",
+      "75 × 75",
+      "2,90"
      ],
      [
       "MJ27090/82",
-      "90/8.2",
-      "2 x 3”",
-      "90x90",
-      "5.10"
+      "90 × 8,2",
+      "2 × 3″",
+      "90 × 90",
+      "5,10"
      ],
      [
       "MJ270110/10",
-      "110/10.0",
-      "2 x 4”",
-      "110x110",
-      "6.90"
+      "110 × 10,0",
+      "2 × 4″",
+      "110 × 110",
+      "6,90"
      ],
      [
       "MJ270125/114",
-      "125/11.4",
-      "2 x 4”",
-      "125x125",
-      "9.95"
+      "125 × 11,4",
+      "2 × 4″",
+      "125 × 125",
+      "9,95"
+     ]
+    ],
+    "riadky_cs": [
+     [
+      "MJ27025/23",
+      "25 × 2,3",
+      "2 × 3/4″",
+      "25 × 25",
+      "0,35"
+     ],
+     [
+      "MJ27032/29",
+      "32 × 2,9",
+      "2 × 1″",
+      "32 × 32",
+      "0,45"
+     ],
+     [
+      "MJ27040/37",
+      "40 × 3,7",
+      "2 × 1 1/4″",
+      "40 × 40",
+      "0,80"
+     ],
+     [
+      "MJ27050/46",
+      "50 × 4,6",
+      "2 × 1 1/2″",
+      "50 × 50",
+      "1,35"
+     ],
+     [
+      "MJ27063/58",
+      "63 × 5,8",
+      "2 × 2″",
+      "63 × 63",
+      "2,10"
+     ],
+     [
+      "MJ27075/68",
+      "75 × 6,8",
+      "2 × 2 1/2″",
+      "75 × 75",
+      "2,90"
+     ],
+     [
+      "MJ27090/82",
+      "90 × 8,2",
+      "2 × 3″",
+      "90 × 90",
+      "5,10"
+     ],
+     [
+      "MJ270110/10",
+      "110 × 10,0",
+      "2 × 4″",
+      "110 × 110",
+      "6,90"
+     ],
+     [
+      "MJ270125/114",
+      "125 × 11,4",
+      "2 × 4″",
+      "125 × 125",
+      "9,95"
      ]
     ]
    }
@@ -205,14 +374,16 @@
  },
  {
   "id": "pe-x-x-pe-x-koleno-spojky-vykurovanie",
-  "slug": "pe-x-x-pe-x-koleno-spojky-vykurovanie",
+  "slug": "rohova-spojka-pe-x-pe-x-vykurovanie-a-cool",
+  "slug_cs": "rohova-spojka-pe-x-pe-x-vytapeni-a-cool",
   "skupina": "pe-x-spojky-vykurovanie-a-cool",
   "kategoria": "spojky",
-  "nazov": "PE-X x PE-X Koleno spojky Vykurovanie",
-  "nazov_cs": "PE-X x PE-X Koleno spojky Vytápění",
+  "poradie": 3,
+  "nazov": "Rohová spojka PE-X × PE-X, vykurovanie a COOL",
+  "nazov_cs": "Rohová spojka PE-X × PE-X, vytápění a COOL",
   "nazov_watts": "PE-X x PE-X Koleno spojky Vykurovanie",
-  "popis": "Kolenová spojka na použitie v potrubných systémoch vybavených dopravnými rúrami na vykurovanie, studenú alebo chladiacu vodu.Spojka má dlhú nosnú rúrku pre optimálne upnutie, kónické pripojenie vonkajšieho závitu a upínací krúžok so skrutkou z nehrdzavejúcej ocele. Priložený diaľkový ovládač uľahčuje montáž spojky.Pre podzemné prípojky sa odporúča použitie izolačnej súpravy pre kolená so zmršťovacími krytmi alebo koncovkami EPDM.Pokyny na montáž: pozri náš inštalačný manuál.",
-  "popis_cs": "Kolenová spojka pro použití v potrubních systémech vybavených dopravními trubkami na vytápění, studenou nebo chladicí vodu. Spojka má dlouhou nosnou trubku pro optimální upnutí, kónické připojení vnějšího závitu a upínací kroužek se šroubem z nerezavějící oceli. Přiložený dálkový ovladač usnadňuje montáž spojky. Pro podzemní přípojky se doporučuje použití izolační soupravy pro kolena se smršťovacími kryty nebo koncovkami EPDM. Pokyny pro montáž: viz náš instalační manuál.",
+  "popis": "Svorná rohová spojka 90° na zmenu smeru nosnej rúry PE-X tam, kde nestačí polomer ohybu potrubia. Pre vykurovanie a rozvody studenej alebo chladiacej vody.",
+  "popis_cs": "Svěrná rohová spojka 90° ke změně směru nosné trubky PE-X tam, kde nestačí poloměr ohybu potrubí. Pro vytápění a rozvody studené nebo chladicí vody.",
   "subory": [
    {
     "nazov": "Katalóg Microflex (SK)",
@@ -224,66 +395,134 @@
   "pocet_variantov": 9,
   "tabulky": [
    {
-    "head": [
-     "Art. No.",
-     "PE-X dout/s (mm)",
-     "Thread (inch)",
-     "ø Outer Diameter of Pipe (mm)"
+    "hlavicky": [
+     "Obj. číslo",
+     "Rúra PE-X, Ø × hrúbka",
+     "Závit",
+     "Pripojenie, Ø rúr"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Trubka PE-X, Ø × tloušťka",
+     "Závit",
+     "Připojení, Ø trubek"
+    ],
+    "jednotky": [
+     null,
+     "mm",
+     null,
+     "mm"
+    ],
+    "riadky": [
      [
       "MJ9025/23",
-      "25/2.3",
-      "2 x 3/4\"",
-      "25 x 25"
+      "25 × 2,3",
+      "2 × 3/4″",
+      "25 × 25"
      ],
      [
       "MJ9032/29",
-      "32/2.9",
-      "2 x 1\"",
-      "32 x 32"
+      "32 × 2,9",
+      "2 × 1″",
+      "32 × 32"
      ],
      [
       "MJ9040/37",
-      "40/3.7",
-      "2 x 1 1/4\"",
-      "40 x 40"
+      "40 × 3,7",
+      "2 × 1 1/4″",
+      "40 × 40"
      ],
      [
       "MJ9050/46",
-      "50/4.6",
-      "2 x 1 1/2\"",
-      "50 x 50"
+      "50 × 4,6",
+      "2 × 1 1/2″",
+      "50 × 50"
      ],
      [
       "MJ9063/58",
-      "63/5.8",
-      "2 x 2\"",
-      "63 x 63"
+      "63 × 5,8",
+      "2 × 2″",
+      "63 × 63"
      ],
      [
       "MJ9075/68",
-      "75/6.8",
-      "2 x 2 1/2\"",
-      "75 x 75"
+      "75 × 6,8",
+      "2 × 2 1/2″",
+      "75 × 75"
      ],
      [
       "MJ9090/82",
-      "90/8.2",
-      "2 x 3\"",
-      "90 x 90"
+      "90 × 8,2",
+      "2 × 3″",
+      "90 × 90"
      ],
      [
       "MJ90110/100",
-      "110/10.0",
-      "2 x 4\"",
-      "110 x 110"
+      "110 × 10,0",
+      "2 × 4″",
+      "110 × 110"
      ],
      [
       "MJ90125/114",
-      "125/11.4",
-      "2 x 4\"",
-      "125 x 125"
+      "125 × 11,4",
+      "2 × 4″",
+      "125 × 125"
+     ]
+    ],
+    "riadky_cs": [
+     [
+      "MJ9025/23",
+      "25 × 2,3",
+      "2 × 3/4″",
+      "25 × 25"
+     ],
+     [
+      "MJ9032/29",
+      "32 × 2,9",
+      "2 × 1″",
+      "32 × 32"
+     ],
+     [
+      "MJ9040/37",
+      "40 × 3,7",
+      "2 × 1 1/4″",
+      "40 × 40"
+     ],
+     [
+      "MJ9050/46",
+      "50 × 4,6",
+      "2 × 1 1/2″",
+      "50 × 50"
+     ],
+     [
+      "MJ9063/58",
+      "63 × 5,8",
+      "2 × 2″",
+      "63 × 63"
+     ],
+     [
+      "MJ9075/68",
+      "75 × 6,8",
+      "2 × 2 1/2″",
+      "75 × 75"
+     ],
+     [
+      "MJ9090/82",
+      "90 × 8,2",
+      "2 × 3″",
+      "90 × 90"
+     ],
+     [
+      "MJ90110/100",
+      "110 × 10,0",
+      "2 × 4″",
+      "110 × 110"
+     ],
+     [
+      "MJ90125/114",
+      "125 × 11,4",
+      "2 × 4″",
+      "125 × 125"
      ]
     ]
    }
@@ -293,14 +532,16 @@
  },
  {
   "id": "pe-x-spojka-kurenie-cool-6-16bar",
-  "slug": "pe-x-spojka-kurenie-cool-6-16bar",
+  "slug": "prechodova-spojka-pe-x-s-vonkajsim-zavitom-vykurovanie-a-cool",
+  "slug_cs": "prechodova-spojka-pe-x-s-vnejsim-zavitem-vytapeni-a-cool",
   "skupina": "pe-x-spojky-vykurovanie-a-cool",
   "kategoria": "spojky",
-  "nazov": "PE-X spojka kúrenie / COOL - 6 / 16bar",
-  "nazov_cs": "PE-X spojka topení / COOL - 6 / 16bar",
+  "poradie": 4,
+  "nazov": "Prechodová spojka PE-X s vonkajším závitom, vykurovanie a COOL",
+  "nazov_cs": "Přechodová spojka PE-X s vnějším závitem, vytápění a COOL",
   "nazov_watts": "PE-X spojka kúrenie / COOL - 6 / 16bar",
-  "popis": "Priama spojka pre použitie v potrubných systémoch vybavených dopravnými rúrami pre vykurovanie, studenú alebo chladiacu vodu.Spojka má dlhú nosnú rúrku pre optimálne upnutie, kónické pripojenie vonkajšieho závitu a upínací krúžok so skrutkou z nehrdzavejúcej ocele. Priložený diaľkový ovládač uľahčuje montáž spojky.Pokyny na montáž: pozrite si našu príručku na inštaláciu",
-  "popis_cs": "Přímá spojka pro použití v potrubních systémech vybavených dopravními trubkami pro vytápění, studenou nebo chladicí vodu. Spojka má dlouhou nosnou trubku pro optimální upnutí, kónické připojení vnějšího závitu a upínací kroužek se šroubem z nerezavějící oceli. Přiložený dálkový ovladač usnadňuje montáž spojky. Pokyny pro montáž: podívejte si naši příručku pro instalaci",
+  "popis": "Prechod z nosnej rúry PE-X na závit, najčastejšie v kotolni alebo pri tepelnom čerpadle. Dlhá nosná rúrka pre pevné uchytenie, objímka so skrutkou z nehrdzavejúcej ocele a oceľová vložka pre ľahkú montáž. Vykurovanie 6 bar do 95 °C, COOL 16 bar do 25 °C.",
+  "popis_cs": "Přechod z nosné trubky PE-X na závit, nejčastěji v kotelně nebo u tepelného čerpadla. Dlouhá nosná trubka pro pevné uchycení, objímka se šroubem z nerezové oceli a ocelová vložka pro snadnou montáž. Vytápění 6 bar do 95 °C, COOL 16 bar do 25 °C.",
   "subory": [
    {
     "nazov": "Katalóg Microflex (SK)",
@@ -312,76 +553,155 @@
   "pocet_variantov": 9,
   "tabulky": [
    {
-    "head": [
-     "Art. No.",
-     "PE-X dout/s (mm)",
-     "Thread (inch)",
-     "Ø Outer Diameter of Pipe (mm)",
-     "Weight (kg)"
+    "hlavicky": [
+     "Obj. číslo",
+     "Rúra PE-X, Ø × hrúbka",
+     "Závit",
+     "Pripojenie, Ø rúr",
+     "Hmotnosť"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Trubka PE-X, Ø × tloušťka",
+     "Závit",
+     "Připojení, Ø trubek",
+     "Hmotnost"
+    ],
+    "jednotky": [
+     null,
+     "mm",
+     null,
+     "mm",
+     "kg"
+    ],
+    "riadky": [
      [
       "MJ3413425/23",
-      "25/2.3",
-      "3/4”M",
+      "25 × 2,3",
+      "3/4″M",
       "25",
-      "0.22"
+      "0,22"
      ],
      [
       "MJ3414432/29",
-      "32/2.9",
-      "1”M",
+      "32 × 2,9",
+      "1″M",
       "32",
-      "0.35"
+      "0,35"
      ],
      [
       "MJ3415440/37",
-      "40/3.7",
-      "1 1/4”M",
+      "40 × 3,7",
+      "1 1/4″M",
       "40",
-      "0.61"
+      "0,61"
      ],
      [
       "MJ3416450/46",
-      "50/4.6",
-      "1 1/2”M",
+      "50 × 4,6",
+      "1 1/2″M",
       "50",
-      "0.82"
+      "0,82"
      ],
      [
       "MJ341263/5",
-      "63/5.8",
-      "2”M",
+      "63 × 5,8",
+      "2″M",
       "63",
-      "1.39"
+      "1,39"
      ],
      [
       "MJ34121275/68",
-      "75/6.8",
-      "2 1/2”M",
+      "75 × 6,8",
+      "2 1/2″M",
       "75",
-      "1.80"
+      "1,80"
      ],
      [
       "MJ341390/82",
-      "90/8.2",
-      "3”M",
+      "90 × 8,2",
+      "3″M",
       "90",
-      "2.98"
+      "2,98"
      ],
      [
       "MJ3414110/10",
-      "110/10.0",
-      "4”M",
+      "110 × 10,0",
+      "4″M",
       "110",
-      "3.77"
+      "3,77"
      ],
      [
       "MJ3414125/114",
-      "125/11.4",
-      "4”M",
+      "125 × 11,4",
+      "4″M",
       "125",
-      "4.75"
+      "4,75"
+     ]
+    ],
+    "riadky_cs": [
+     [
+      "MJ3413425/23",
+      "25 × 2,3",
+      "3/4″M",
+      "25",
+      "0,22"
+     ],
+     [
+      "MJ3414432/29",
+      "32 × 2,9",
+      "1″M",
+      "32",
+      "0,35"
+     ],
+     [
+      "MJ3415440/37",
+      "40 × 3,7",
+      "1 1/4″M",
+      "40",
+      "0,61"
+     ],
+     [
+      "MJ3416450/46",
+      "50 × 4,6",
+      "1 1/2″M",
+      "50",
+      "0,82"
+     ],
+     [
+      "MJ341263/5",
+      "63 × 5,8",
+      "2″M",
+      "63",
+      "1,39"
+     ],
+     [
+      "MJ34121275/68",
+      "75 × 6,8",
+      "2 1/2″M",
+      "75",
+      "1,80"
+     ],
+     [
+      "MJ341390/82",
+      "90 × 8,2",
+      "3″M",
+      "90",
+      "2,98"
+     ],
+     [
+      "MJ3414110/10",
+      "110 × 10,0",
+      "4″M",
+      "110",
+      "3,77"
+     ],
+     [
+      "MJ3414125/114",
+      "125 × 11,4",
+      "4″M",
+      "125",
+      "4,75"
      ]
     ]
    }
@@ -391,14 +711,16 @@
  },
  {
   "id": "zvarove-koncovky-spojky-a-cool-6-16bar-s6",
-  "slug": "zvarove-koncovky-spojky-a-cool-6-16bar-s6",
+  "slug": "spojka-pe-x-na-navarenie-vykurovanie-a-cool",
+  "slug_cs": "spojka-pe-x-k-navareni-vytapeni-a-cool",
   "skupina": "pe-x-spojky-vykurovanie-a-cool",
   "kategoria": "spojky",
-  "nazov": "Zvarové koncovky spojky a COOL - 6 / 16bar S6",
-  "nazov_cs": "Svarové koncovky spojky a COOL - 6 / 16bar S6",
+  "poradie": 5,
+  "nazov": "Spojka PE-X na navarenie, vykurovanie a COOL",
+  "nazov_cs": "Spojka PE-X k navaření, vytápění a COOL",
   "nazov_watts": "Zvarové koncovky spojky a COOL - 6 / 16bar S6",
-  "popis": "Priama spojka z mosadze s oceľovým zvarovým koncom pre použitie v potrubných systémoch vybavených dopravou na vykurovanie, studenú alebo chladiacu vodu.Spojka má dlhú nosnú rúrku pre optimálne upnutie, kónické pripojenie vonkajšieho závitu a upínací krúžok so skrutkou z nehrdzavejúcej ocele. Priložený diaľkový ovládač uľahčuje montáž spojky.Z dôvodu zvarového konca je možné spojku spojiť s existujúcou oceľovou rúrkou. Zliatina ocele (st37-2) je vhodná na elektronické zváranie.Pokyny na montáž: pozri náš inštalačný manuál.",
-  "popis_cs": "Přímá spojka z mosazi s ocelovým svarovým koncem pro použití v potrubních systémech vybavených dopravou na vytápění, studenou nebo chladicí vodu. Spojka má dlouhou nosnou trubku pro optimální upnutí, kónické připojení vnějšího závitu a upínací kroužek se šroubem z nerezavějící oceli. Přiložený dálkový ovladač usnadňuje montáž spojky. Z důvodu svarového konce je možné spojku spojit s existující ocelovou trubkou. Slitina oceli (st37-2) je vhodná na elektronické svařování. Pokyny pro montáž: viz náš instalační manuál.",
+  "popis": "Priama mosadzná spojka s oceľovým koncom, ktorý sa navarí na oceľové potrubie. Vhodná na napojenie Microflexu na existujúci oceľový rozvod vykurovania, studenej alebo chladiacej vody.",
+  "popis_cs": "Přímá mosazná spojka s ocelovým koncem, který se navaří na ocelové potrubí. Vhodná k napojení Microflexu na stávající ocelový rozvod vytápění, studené nebo chladicí vody.",
   "subory": [
    {
     "nazov": "Katalóg Microflex (SK)",
@@ -410,66 +732,134 @@
   "pocet_variantov": 9,
   "tabulky": [
    {
-    "head": [
-     "Art. No.",
-     "PE-X dext/s (mm)",
-     "Weld-end dext (mm)",
-     "Weld-end dint (mm)< /td>"
+    "hlavicky": [
+     "Obj. číslo",
+     "Rúra PE-X, Ø × hrúbka",
+     "Koniec na navarenie, Ø vonk.",
+     "Koniec na navarenie, Ø vnút."
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Trubka PE-X, Ø × tloušťka",
+     "Konec k navaření, Ø vnější",
+     "Konec k navaření, Ø vnitřní"
+    ],
+    "jednotky": [
+     null,
+     "mm",
+     "mm",
+     "mm"
+    ],
+    "riadky": [
      [
       "MJ3412725/23L",
-      "25/2.3",
-      "26.90",
-      "21.50"
+      "25 × 2,3",
+      "26,90",
+      "21,50"
      ],
      [
       "MJ3413332/29L",
-      "32/2.9",
-      "33.70",
-      "27.00"
+      "32 × 2,9",
+      "33,70",
+      "27,00"
      ],
      [
       "MJ3414240/37L",
-      "40/3.7",
-      "42.40",
-      "36.00"
+      "40 × 3,7",
+      "42,40",
+      "36,00"
      ],
      [
       "MJ3414550/46L",
-      "50/4.6",
-      "48.30",
-      "42.00"
+      "50 × 4,6",
+      "48,30",
+      "42,00"
      ],
      [
       "MJ3415763/58L",
-      "63/5.8",
-      "60.30",
-      "53.00"
+      "63 × 5,8",
+      "60,30",
+      "53,00"
      ],
      [
       "MJ3417675/68L",
-      "75/6.8",
-      "76.10",
-      "68.00"
+      "75 × 6,8",
+      "76,10",
+      "68,00"
      ],
      [
       "MJ3418990/82L",
-      "90/8.2",
-      "88.90",
-      "80.00"
+      "90 × 8,2",
+      "88,90",
+      "80,00"
      ],
      [
       "MJ341110110/10L",
-      "110/10.0",
-      "114.30",
-      "105.00"
+      "110 × 10,0",
+      "114,30",
+      "105,00"
      ],
      [
       "MJ341114125/114L",
-      "125/11.4",
-      "114.30",
-      "105.00"
+      "125 × 11,4",
+      "114,30",
+      "105,00"
+     ]
+    ],
+    "riadky_cs": [
+     [
+      "MJ3412725/23L",
+      "25 × 2,3",
+      "26,90",
+      "21,50"
+     ],
+     [
+      "MJ3413332/29L",
+      "32 × 2,9",
+      "33,70",
+      "27,00"
+     ],
+     [
+      "MJ3414240/37L",
+      "40 × 3,7",
+      "42,40",
+      "36,00"
+     ],
+     [
+      "MJ3414550/46L",
+      "50 × 4,6",
+      "48,30",
+      "42,00"
+     ],
+     [
+      "MJ3415763/58L",
+      "63 × 5,8",
+      "60,30",
+      "53,00"
+     ],
+     [
+      "MJ3417675/68L",
+      "75 × 6,8",
+      "76,10",
+      "68,00"
+     ],
+     [
+      "MJ3418990/82L",
+      "90 × 8,2",
+      "88,90",
+      "80,00"
+     ],
+     [
+      "MJ341110110/10L",
+      "110 × 10,0",
+      "114,30",
+      "105,00"
+     ],
+     [
+      "MJ341114125/114L",
+      "125 × 11,4",
+      "114,30",
+      "105,00"
      ]
     ]
    }
@@ -478,103 +868,17 @@
   "stiahnute": "2026-09-21"
  },
  {
-  "id": "microflex-pe-x-spojky-vykurovanie",
-  "slug": "microflex-pe-x-spojky-vykurovanie",
-  "skupina": "pe-x-spojky-vykurovanie-a-cool",
-  "kategoria": "spojky",
-  "nazov": "Microflex PE-X spojky vykurovanie",
-  "nazov_cs": "Microflex PE-X spojky vytápění",
-  "nazov_watts": "Microflex PE-X spojky vykurovanie",
-  "popis": "Priama spojka na použitie v potrubných systémoch vybavených dopravnými rúrami na aplikácie v oblasti vykurovacej, studenej alebo chladiacej vody.Spojka má dlhú nosnú rúrku pre optimálne upnutie, kužeľové pripojenie vonkajšieho závitu a upínací krúžok so skrutkou z nehrdzavejúcej ocele. Priložená diaľková doska uľahčuje montáž spojky.Pokyny na montáž: pozrite si náš technický manuál.",
-  "popis_cs": "Přímá spojka pro použití v potrubních systémech vybavených dopravními trubkami na aplikace v oblasti topné, studené nebo chladicí vody. Spojka má dlouhou nosnou trubku pro optimální upnutí, kuželové připojení vnějšího závitu a upínací kroužek se šroubem z nerezavějící oceli. Přiložená dálková deska usnadňuje montáž spojky. Pokyny pro montáž: viz náš technický manuál.",
-  "subory": [
-   {
-    "nazov": "Katalóg Microflex (SK)",
-    "typ": "PDF",
-    "jazyk": "sk",
-    "url": "https://www.watts.eu/sk/technical-support/data-sheet/microflex/10127"
-   }
-  ],
-  "pocet_variantov": 9,
-  "tabulky": [
-   {
-    "head": [
-     "Art. No.",
-     "PE-X dout/S (mm)",
-     "Rozmer (inch)",
-     "Váha(kg)"
-    ],
-    "rows": [
-     [
-      "MJ3413425/23",
-      "25/2.3",
-      "3/4\" M",
-      "0.22"
-     ],
-     [
-      "MJ3414432/29",
-      "32/2.9",
-      "1\" M",
-      "0.35"
-     ],
-     [
-      "MJ3415440/37",
-      "40/3.7",
-      "1 1/4\" M",
-      "0.61"
-     ],
-     [
-      "MJ3416450/46",
-      "50/4.6",
-      "1 1/2\" M",
-      "0.82"
-     ],
-     [
-      "MJ341263/58",
-      "63/5.8",
-      "2\" M",
-      "1.39"
-     ],
-     [
-      "MJ34121275/68",
-      "75/6.8",
-      "2 1/2\" M",
-      "1.80"
-     ],
-     [
-      "MJ341390/82",
-      "90/8.2",
-      "3\" M",
-      "2.98"
-     ],
-     [
-      "MJ3414110/100",
-      "110/10.0",
-      "4\" M",
-      "3.77"
-     ],
-     [
-      "MJ3414125/114",
-      "125/11.4",
-      "4\" M",
-      "4.75"
-     ]
-    ]
-   }
-  ],
-  "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/pe-x-couplings-for-heating-and-cool-pipes/the-male-fittings",
-  "stiahnute": "2026-09-21"
- },
- {
   "id": "sanitarne-spojky-microflex-pe-x",
-  "slug": "sanitarne-spojky-microflex-pe-x",
+  "slug": "prechodova-spojka-pe-x-s-vonkajsim-zavitom-sanita",
+  "slug_cs": "prechodova-spojka-pe-x-s-vnejsim-zavitem-sanita",
   "skupina": "pe-x-spojky-sanita",
   "kategoria": "spojky",
-  "nazov": "Sanitárne spojky Microflex PE-X",
-  "nazov_cs": "Sanitární spojky Microflex PE-X",
+  "poradie": 1,
+  "nazov": "Prechodová spojka PE-X s vonkajším závitom, sanita",
+  "nazov_cs": "Přechodová spojka PE-X s vnějším závitem, sanita",
   "nazov_watts": "Sanitárne spojky Microflex PE-X",
-  "popis": "Priama spojka pre použitie v potrubných systémoch vybavených dopravnými rúrami pre sanitárne, studené alebo horúce vody.Spojka má dlhú nosnú rúrku pre optimálne upnutie, kónické pripojenie vonkajšieho závitu a upínací krúžok so skrutkou z nehrdzavejúcej ocele. Priložený diaľkový ovládač uľahčuje montáž spojky.Pokyny na montáž: pozri náš inštalačný manuál.",
-  "popis_cs": "Přímá spojka pro použití v potrubních systémech vybavených dopravními trubkami pro sanitární, studené nebo horké vody. Spojka má dlouhou nosnou trubku pro optimální upnutí, kónické připojení vnějšího závitu a upínací kroužek se šroubem z nerezavějící oceli. Přiložený dálkový ovladač usnadňuje montáž spojky. Pokyny pro montáž: viz náš instalační manuál.",
+  "popis": "Prechod zo sanitárnej nosnej rúry PE-Xa na závit pri rozvode teplej a studenej pitnej vody. Pre rúry SDR 7,4 do 10 bar a 95 °C.",
+  "popis_cs": "Přechod ze sanitární nosné trubky PE-Xa na závit u rozvodu teplé a studené pitné vody. Pro trubky SDR 7,4 do 10 bar a 95 °C.",
   "subory": [
    {
     "nazov": "Brožúra Predizolované ohybné potrubia Microflex (EN)",
@@ -592,66 +896,134 @@
   "pocet_variantov": 9,
   "tabulky": [
    {
-    "head": [
-     "Art. No.",
-     "PE-X dout/s (mm)",
-     "Thread (inch)",
-     "Weight (kg)"
+    "hlavicky": [
+     "Obj. číslo",
+     "Rúra PE-X, Ø × hrúbka",
+     "Závit",
+     "Hmotnosť"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Trubka PE-X, Ø × tloušťka",
+     "Závit",
+     "Hmotnost"
+    ],
+    "jednotky": [
+     null,
+     "mm",
+     null,
+     "kg"
+    ],
+    "riadky": [
      [
       "MJ3413420/28",
-      "20/2.8",
-      "3/4”M",
-      "0.17"
+      "20 × 2,8",
+      "3/4″M",
+      "0,17"
      ],
      [
       "MJ3413425/35",
-      "25/3.5",
-      "3/4”M",
-      "0.22"
+      "25 × 3,5",
+      "3/4″M",
+      "0,22"
      ],
      [
       "MJ3414432/44",
-      "32/4.4",
-      "1”M",
-      "0.35"
+      "32 × 4,4",
+      "1″M",
+      "0,35"
      ],
      [
       "MJ3415440/55",
-      "40/5.5",
-      "11/4”M",
-      "0.59"
+      "40 × 5,5",
+      "11/4″M",
+      "0,59"
      ],
      [
       "MJ3416450/69",
-      "50/6.9",
-      "11/2”M",
-      "0.90"
+      "50 × 6,9",
+      "11/2″M",
+      "0,90"
      ],
      [
       "MJ341263/87",
-      "63/8.7",
-      "2”M",
-      "1.47"
+      "63 × 8,7",
+      "2″M",
+      "1,47"
      ],
      [
       "MJ34121275/103",
-      "75/10.3",
-      "21/2”M",
-      "1.80"
+      "75 × 10,3",
+      "21/2″M",
+      "1,80"
      ],
      [
       "MJ341390/123",
-      "90/12.3",
-      "3”M",
-      "2.98"
+      "90 × 12,3",
+      "3″M",
+      "2,98"
      ],
      [
       "MJ3414110/151",
-      "110/15.1",
-      "4”M",
-      "3.77"
+      "110 × 15,1",
+      "4″M",
+      "3,77"
+     ]
+    ],
+    "riadky_cs": [
+     [
+      "MJ3413420/28",
+      "20 × 2,8",
+      "3/4″M",
+      "0,17"
+     ],
+     [
+      "MJ3413425/35",
+      "25 × 3,5",
+      "3/4″M",
+      "0,22"
+     ],
+     [
+      "MJ3414432/44",
+      "32 × 4,4",
+      "1″M",
+      "0,35"
+     ],
+     [
+      "MJ3415440/55",
+      "40 × 5,5",
+      "11/4″M",
+      "0,59"
+     ],
+     [
+      "MJ3416450/69",
+      "50 × 6,9",
+      "11/2″M",
+      "0,90"
+     ],
+     [
+      "MJ341263/87",
+      "63 × 8,7",
+      "2″M",
+      "1,47"
+     ],
+     [
+      "MJ34121275/103",
+      "75 × 10,3",
+      "21/2″M",
+      "1,80"
+     ],
+     [
+      "MJ341390/123",
+      "90 × 12,3",
+      "3″M",
+      "2,98"
+     ],
+     [
+      "MJ3414110/151",
+      "110 × 15,1",
+      "4″M",
+      "3,77"
      ]
     ]
    }
@@ -661,14 +1033,16 @@
  },
  {
   "id": "pe-x-x-pe-x-sanitarne-zariadenie",
-  "slug": "pe-x-x-pe-x-sanitarne-zariadenie",
+  "slug": "priama-spojka-pe-x-pe-x-sanita",
+  "slug_cs": "prima-spojka-pe-x-pe-x-sanita",
   "skupina": "pe-x-spojky-sanita",
   "kategoria": "spojky",
-  "nazov": "PE-X x PE-X sanitárne zariadenie",
-  "nazov_cs": "PE-X x PE-X sanitární zařízení",
+  "poradie": 2,
+  "nazov": "Priama spojka PE-X × PE-X, sanita",
+  "nazov_cs": "Přímá spojka PE-X × PE-X, sanita",
   "nazov_watts": "PE-X x PE-X sanitárne zariadenie",
-  "popis": "Spojka PE-X-PE-X na použitie v potrubných systémoch vybavených dopravnými rúrami pre sanitárne, studené alebo teplovodné aplikácie. Spojka má dlhú nosnú rúrku pre optimálne upnutie, kónické pripojenie vonkajšieho závitu a upínací krúžok so skrutkou z nehrdzavejúcej ocele. Priložený diaľkový ovládač uľahčuje montáž spojky. Pre podzemné prípojky sa odporúča použitie priamej izolačnej súpravy so zmršťovacími krytmi alebo koncovými krytmi EPDM. Pokyny na montáž: pozri náš inštalačný manuál.",
-  "popis_cs": "Spojka PE-X-PE-X pro použití v potrubních systémech vybavených dopravními trubkami pro sanitární, studené nebo teplovodní aplikace. Spojka má dlouhou nosnou trubku pro optimální upnutí, kónické připojení vnějšího závitu a upínací kroužek se šroubem z nerezavějící oceli. Přiložený dálkový ovladač usnadňuje montáž spojky. Pro podzemní přípojky se doporučuje použití přímé izolační soupravy se smršťovacími kryty nebo koncovými kryty EPDM. Pokyny pro montáž: viz náš instalační manuál.",
+  "popis": "Svorná spojka, ktorá spojí dve sanitárne nosné rúry PE-Xa pri rozvode teplej a studenej pitnej vody. Pre rúry SDR 7,4 do 10 bar a 95 °C.",
+  "popis_cs": "Svěrná spojka, která spojí dvě sanitární nosné trubky PE-Xa u rozvodu teplé a studené pitné vody. Pro trubky SDR 7,4 do 10 bar a 95 °C.",
   "subory": [
    {
     "nazov": "Katalóg Microflex (SK)",
@@ -680,60 +1054,122 @@
   "pocet_variantov": 8,
   "tabulky": [
    {
-    "head": [
-     "Art. No.",
-     "PE-X dout/s (mm)",
-     "Thread (inch)",
-     "Ø Outer Diameter of Pipe (mm)"
+    "hlavicky": [
+     "Obj. číslo",
+     "Rúra PE-X, Ø × hrúbka",
+     "Závit",
+     "Pripojenie, Ø rúr"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Trubka PE-X, Ø × tloušťka",
+     "Závit",
+     "Připojení, Ø trubek"
+    ],
+    "jednotky": [
+     null,
+     "mm",
+     null,
+     "mm"
+    ],
+    "riadky": [
      [
       "MJ27025/35",
-      "25/3.5",
-      "2x3/4”",
-      "25x25"
+      "25 × 3,5",
+      "2 × 3/4″",
+      "25 × 25"
      ],
      [
       "MJ27032/44",
-      "32/4.4",
-      "2x1”",
-      "32x32"
+      "32 × 4,4",
+      "2 × 1″",
+      "32 × 32"
      ],
      [
       "MJ27040/55",
-      "40/5.5",
-      "2x1 1/4”",
-      "40x40"
+      "40 × 5,5",
+      "2 × 1 1/4″",
+      "40 × 40"
      ],
      [
       "MJ27050/69",
-      "50/6.9",
-      "2x1",
-      "50x50"
+      "50 × 6,9",
+      "2 × 1",
+      "50 × 50"
      ],
      [
       "MJ27063/87",
-      "63/8.7",
-      "2x2” 1/2”",
-      "63x63"
+      "63 × 8,7",
+      "2 × 2″ 1/2″",
+      "63 × 63"
      ],
      [
       "MJ27075/103",
-      "75/10.3",
-      "2x1 1/2”",
-      "75x75"
+      "75 × 10,3",
+      "2 × 1 1/2″",
+      "75 × 75"
      ],
      [
       "MJ27090/123",
-      "90/12.3",
-      "2x3”",
-      "90x90"
+      "90 × 12,3",
+      "2 × 3″",
+      "90 × 90"
      ],
      [
       "MJ270110/151",
-      "110/15.1",
-      "2x4”",
-      "110x110"
+      "110 × 15,1",
+      "2 × 4″",
+      "110 × 110"
+     ]
+    ],
+    "riadky_cs": [
+     [
+      "MJ27025/35",
+      "25 × 3,5",
+      "2 × 3/4″",
+      "25 × 25"
+     ],
+     [
+      "MJ27032/44",
+      "32 × 4,4",
+      "2 × 1″",
+      "32 × 32"
+     ],
+     [
+      "MJ27040/55",
+      "40 × 5,5",
+      "2 × 1 1/4″",
+      "40 × 40"
+     ],
+     [
+      "MJ27050/69",
+      "50 × 6,9",
+      "2 × 1",
+      "50 × 50"
+     ],
+     [
+      "MJ27063/87",
+      "63 × 8,7",
+      "2 × 2″ 1/2″",
+      "63 × 63"
+     ],
+     [
+      "MJ27075/103",
+      "75 × 10,3",
+      "2 × 1 1/2″",
+      "75 × 75"
+     ],
+     [
+      "MJ27090/123",
+      "90 × 12,3",
+      "2 × 3″",
+      "90 × 90"
+     ],
+     [
+      "MJ270110/151",
+      "110 × 15,1",
+      "2 × 4″",
+      "110 × 110"
      ]
     ]
    }
@@ -743,72 +1179,136 @@
  },
  {
   "id": "sanitarne-kolenne-spojky-pe-x-x-pe-x",
-  "slug": "sanitarne-kolenne-spojky-pe-x-x-pe-x",
+  "slug": "rohova-spojka-pe-x-pe-x-sanita",
+  "slug_cs": "rohova-spojka-pe-x-pe-x-sanita",
   "skupina": "pe-x-spojky-sanita",
   "kategoria": "spojky",
-  "nazov": "Sanitárne kolenné spojky PE-X x PE-X",
-  "nazov_cs": "Sanitární kolenová spojka PE-X x PE-X",
+  "poradie": 3,
+  "nazov": "Rohová spojka PE-X × PE-X, sanita",
+  "nazov_cs": "Rohová spojka PE-X × PE-X, sanita",
   "nazov_watts": "Sanitárne kolenné spojky PE-X x PE-X",
-  "popis": "Kolenová spojka na použitie v potrubných systémoch vybavených dopravnými rúrami pre aplikácie v sanitárnej, studenej alebo horúcej vode. Spojka má dlhú nosnú rúrku pre optimálne upnutie, kužeľové pripojenie vonkajšieho závitu a upínací krúžok so skrutkou z nehrdzavejúcej ocele. Priložená diaľková doska uľahčuje montáž spojky. Pri podzemných prípojkách sa odporúča použiť súpravu kolennej izolácie so zmršťovacími krytmi alebo koncovkami EPDM. Pokyny na montáž: pozrite si náš inštalačný manuál.",
-  "popis_cs": "Kolenová spojka pro použití v potrubních systémech vybavených transportními trubkami pro sanitární, studenou nebo horkou vodu. Spojka má dlouhou nosnou trubku pro optimální upnutí, kuželové připojení vnějšího závitu a upínací kroužek se šroubem z nerezové oceli. Přiložená dálková deska usnadňuje montáž spojky. Pro podzemní připojení se doporučuje použití soupravy pro izolaci kolen se smršťovacími krytkami nebo koncovkami EPDM. Pokyny k montáži: viz náš instalační manuál.",
+  "popis": "Svorná rohová spojka 90° pre sanitárne nosné rúry PE-Xa na teplú a studenú pitnú vodu. Pre rúry SDR 7,4 do 10 bar a 95 °C.",
+  "popis_cs": "Svěrná rohová spojka 90° pro sanitární nosné trubky PE-Xa na teplou a studenou pitnou vodu. Pro trubky SDR 7,4 do 10 bar a 95 °C.",
   "subory": [],
   "pocet_variantov": 8,
   "tabulky": [
    {
-    "head": [
-     "Art. No.",
-     "PE-X dout/s (mm)",
-     "Thread (inch)",
-     "Ø Outer Diameter of Pipe (mm)"
+    "hlavicky": [
+     "Obj. číslo",
+     "Rúra PE-X, Ø × hrúbka",
+     "Závit",
+     "Pripojenie, Ø rúr"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Trubka PE-X, Ø × tloušťka",
+     "Závit",
+     "Připojení, Ø trubek"
+    ],
+    "jednotky": [
+     null,
+     "mm",
+     null,
+     "mm"
+    ],
+    "riadky": [
      [
       "MJ9025/35",
-      "25/3.5",
-      "2x3/4”",
-      "25x25"
+      "25 × 3,5",
+      "2 × 3/4″",
+      "25 × 25"
      ],
      [
       "MJ9032/44",
-      "32/4.4",
-      "2x1”",
-      "32x32"
+      "32 × 4,4",
+      "2 × 1″",
+      "32 × 32"
      ],
      [
       "MJ9040/55",
-      "40/5.5",
-      "2x1 1/4”",
-      "40x40"
+      "40 × 5,5",
+      "2 × 1 1/4″",
+      "40 × 40"
      ],
      [
       "MJ9050/69",
-      "50/6.9",
-      "2x1 1/2”",
-      "50x50"
+      "50 × 6,9",
+      "2 × 1 1/2″",
+      "50 × 50"
      ],
      [
       "MJ9063/87",
-      "63/8.7",
-      "2x2”",
-      "63x63"
+      "63 × 8,7",
+      "2 × 2″",
+      "63 × 63"
      ],
      [
       "MJ9075/103",
-      "75/10.3",
-      "2x2 1/2”",
-      "75x75"
+      "75 × 10,3",
+      "2 × 2 1/2″",
+      "75 × 75"
      ],
      [
       "MJ9090/123",
-      "90/12.3",
-      "2x3”",
-      "90x90"
+      "90 × 12,3",
+      "2 × 3″",
+      "90 × 90"
      ],
      [
       "MJ90110/151",
-      "110/15.1",
-      "2x4”",
-      "110x110"
+      "110 × 15,1",
+      "2 × 4″",
+      "110 × 110"
+     ]
+    ],
+    "riadky_cs": [
+     [
+      "MJ9025/35",
+      "25 × 3,5",
+      "2 × 3/4″",
+      "25 × 25"
+     ],
+     [
+      "MJ9032/44",
+      "32 × 4,4",
+      "2 × 1″",
+      "32 × 32"
+     ],
+     [
+      "MJ9040/55",
+      "40 × 5,5",
+      "2 × 1 1/4″",
+      "40 × 40"
+     ],
+     [
+      "MJ9050/69",
+      "50 × 6,9",
+      "2 × 1 1/2″",
+      "50 × 50"
+     ],
+     [
+      "MJ9063/87",
+      "63 × 8,7",
+      "2 × 2″",
+      "63 × 63"
+     ],
+     [
+      "MJ9075/103",
+      "75 × 10,3",
+      "2 × 2 1/2″",
+      "75 × 75"
+     ],
+     [
+      "MJ9090/123",
+      "90 × 12,3",
+      "2 × 3″",
+      "90 × 90"
+     ],
+     [
+      "MJ90110/151",
+      "110 × 15,1",
+      "2 × 4″",
+      "110 × 110"
      ]
     ]
    }
@@ -818,14 +1318,16 @@
  },
  {
   "id": "3-x-pe-x-t-spojka-sanitarna",
-  "slug": "3-x-pe-x-t-spojka-sanitarna",
+  "slug": "t-spojka-3-pe-x-sanita",
+  "slug_cs": "t-spojka-3-pe-x-sanita",
   "skupina": "pe-x-spojky-sanita",
   "kategoria": "spojky",
-  "nazov": "3 x PE-X T-spojka sanitárna",
-  "nazov_cs": "3 x PE-X T-spojka sanitární",
+  "poradie": 4,
+  "nazov": "T-spojka 3 × PE-X, sanita",
+  "nazov_cs": "T-spojka 3 × PE-X, sanita",
   "nazov_watts": "3 x PE-X T-spojka sanitárna",
-  "popis": "Spojka typu T na použitie v potrubných systémoch vybavených dopravnými rúrami pre sanitárne, studené alebo teplovodné aplikácie.Spojka má dlhú nosnú rúrku pre optimálne upnutie, kónické pripojenie vonkajšieho závitu a upínací krúžok so skrutkou z nehrdzavejúcej ocele. Priložený diaľkový ovládač uľahčuje montáž spojky.Pre podzemné prípojky sa odporúča použitie izolačnej súpravy T so zmršťovacími krytmi alebo koncovými krytmi EPDM.Pokyny na montáž: pozri náš inštalačný manuál.",
-  "popis_cs": "Spojka typu T pro použití v potrubních systémech vybavených dopravními trubkami pro sanitární, studené nebo teplovodní aplikace. Spojka má dlouhou nosnou trubku pro optimální upnutí, kónické připojení vnějšího závitu a upínací kroužek se šroubem z nerezavějící oceli. Přiložený dálkový ovladač usnadňuje montáž spojky. Pro podzemní přípojky se doporučuje použití izolační soupravy T se smršťovacími kryty nebo koncovými kryty EPDM. Pokyny pro montáž: viz náš instalační manuál.",
+  "popis": "Svorná T-spojka na odbočenie zo sanitárnej nosnej rúry PE-Xa na teplú a studenú pitnú vodu. Pre rúry SDR 7,4 do 10 bar a 95 °C.",
+  "popis_cs": "Svěrná T-spojka k odbočení ze sanitární nosné trubky PE-Xa na teplou a studenou pitnou vodu. Pro trubky SDR 7,4 do 10 bar a 95 °C.",
   "subory": [
    {
     "nazov": "Katalóg Microflex (SK)",
@@ -837,78 +1339,158 @@
   "pocet_variantov": 11,
   "tabulky": [
    {
-    "head": [
-     "Art. No.",
-     "PE-X dout/s (mm)",
-     "Thread (inch)",
-     "ø Outer Diameter of Pipe (mm)"
+    "hlavicky": [
+     "Obj. číslo",
+     "Rúra PE-X, Ø × hrúbka",
+     "Závit",
+     "Pripojenie, Ø rúr"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Trubka PE-X, Ø × tloušťka",
+     "Závit",
+     "Připojení, Ø trubek"
+    ],
+    "jednotky": [
+     null,
+     "mm",
+     null,
+     "mm"
+    ],
+    "riadky": [
      [
       "MJ13025/35",
-      "25/3.5",
-      "3x3/4”",
-      "25x25x25"
+      "25 × 3,5",
+      "3 × 3/4″",
+      "25 × 25 × 25"
      ],
      [
       "MJ13032/44",
-      "32/4.4",
-      "3x1”",
-      "32x32x32"
+      "32 × 4,4",
+      "3 × 1″",
+      "32 × 32 × 32"
      ],
      [
       "MJ13040/55",
-      "40/5.5+32/4.4",
-      "2x11/4”+ 1x1”",
-      "40x32x40"
+      "40 × 5,5+32 × 4,4",
+      "2 × 11/4″+ 1 × 1″",
+      "40 × 32 × 40"
      ],
      [
       "MJ1304032/55",
-      "40/5.5",
-      "3x11/4”",
-      "40x40x40"
+      "40 × 5,5",
+      "3 × 11/4″",
+      "40 × 40 × 40"
      ],
      [
       "MJ13050/69",
-      "50/6.9+40/5.5",
-      "2x11/2“+1x11/4”",
-      "50x40x50"
+      "50 × 6,9+40 × 5,5",
+      "2 × 11/2“+1 × 11/4″",
+      "50 × 40 × 50"
      ],
      [
       "MJ13063/87",
-      "50/6.9",
-      "3x11/2”",
-      "50x50x50"
+      "50 × 6,9",
+      "3 × 11/2″",
+      "50 × 50 × 50"
      ],
      [
       "MJ1306350/87",
-      "63/8.7+50/6.9",
-      "2x2”+1x11/2”",
-      "63x50x63"
+      "63 × 8,7+50 × 6,9",
+      "2 × 2″+1 × 11/2″",
+      "63 × 50 × 63"
      ],
      [
       "MJ1305040/69",
-      "63/8.7",
-      "3x2”",
-      "63x63x63"
+      "63 × 8,7",
+      "3 × 2″",
+      "63 × 63 × 63"
      ],
      [
       "MJ13075/103",
-      "75/10.3",
-      "3x21/2”",
-      "75x75x75"
+      "75 × 10,3",
+      "3 × 21/2″",
+      "75 × 75 × 75"
      ],
      [
       "MJ13090/123",
-      "90/12.3",
-      "3x3”",
-      "90x90x90"
+      "90 × 12,3",
+      "3 × 3″",
+      "90 × 90 × 90"
      ],
      [
       "MJ130110/151",
-      "110/15.1",
-      "3x4”",
-      "110x110x110"
+      "110 × 15,1",
+      "3 × 4″",
+      "110 × 110 × 110"
+     ]
+    ],
+    "riadky_cs": [
+     [
+      "MJ13025/35",
+      "25 × 3,5",
+      "3 × 3/4″",
+      "25 × 25 × 25"
+     ],
+     [
+      "MJ13032/44",
+      "32 × 4,4",
+      "3 × 1″",
+      "32 × 32 × 32"
+     ],
+     [
+      "MJ13040/55",
+      "40 × 5,5+32 × 4,4",
+      "2 × 11/4″+ 1 × 1″",
+      "40 × 32 × 40"
+     ],
+     [
+      "MJ1304032/55",
+      "40 × 5,5",
+      "3 × 11/4″",
+      "40 × 40 × 40"
+     ],
+     [
+      "MJ13050/69",
+      "50 × 6,9+40 × 5,5",
+      "2 × 11/2“+1 × 11/4″",
+      "50 × 40 × 50"
+     ],
+     [
+      "MJ13063/87",
+      "50 × 6,9",
+      "3 × 11/2″",
+      "50 × 50 × 50"
+     ],
+     [
+      "MJ1306350/87",
+      "63 × 8,7+50 × 6,9",
+      "2 × 2″+1 × 11/2″",
+      "63 × 50 × 63"
+     ],
+     [
+      "MJ1305040/69",
+      "63 × 8,7",
+      "3 × 2″",
+      "63 × 63 × 63"
+     ],
+     [
+      "MJ13075/103",
+      "75 × 10,3",
+      "3 × 21/2″",
+      "75 × 75 × 75"
+     ],
+     [
+      "MJ13090/123",
+      "90 × 12,3",
+      "3 × 3″",
+      "90 × 90 × 90"
+     ],
+     [
+      "MJ130110/151",
+      "110 × 15,1",
+      "3 × 4″",
+      "110 × 110 × 110"
      ]
     ]
    }
@@ -918,14 +1500,16 @@
  },
  {
   "id": "fixny-bod",
-  "slug": "fixny-bod",
+  "slug": "pevny-bod-mfp",
+  "slug_cs": "pevny-bod-mfp",
   "skupina": "prislusenstvo-spojok",
   "kategoria": "spojky",
-  "nazov": "Fixný bod",
-  "nazov_cs": "Fixní bod",
+  "poradie": 1,
+  "nazov": "Pevný bod MFP",
+  "nazov_cs": "Pevný bod MFP",
   "nazov_watts": "Fixný bod",
-  "popis": "Vhodné pre aplikácie, kde je potrebné kotviť konce rúrok. Aby sa absorbovali možné účinky tepelnej rozťažnosti / zmršťovania dopravných potrubí PEX-a, musia byť nainštalované pevné body. Nepoužívanie fixných bodov môže mať za následok vážne poškodenie.",
-  "popis_cs": "Vhodné pro aplikace, kde je třeba kotvit konce trubek. Aby absorbovaly možné účinky tepelné roztažnosti / smršťování dopravních potrubí PEX-a, musí být nainstalovány pevné body. Nepoužívání fixních bodů může mít za následek vážné poškození.",
+  "popis": "Ukotví koniec nosnej rúry PE-Xa, aby zachytil jej rozťahovanie a zmršťovanie pri zmene teploty. Podľa výrobcu môže vynechanie pevných bodov viesť k vážnemu poškodeniu rozvodu.",
+  "popis_cs": "Ukotví konec nosné trubky PE-Xa, aby zachytil její roztahování a smršťování při změně teploty. Podle výrobce může vynechání pevných bodů vést k vážnému poškození rozvodu.",
   "subory": [
    {
     "nazov": "Katalóg Microflex (SK)",
@@ -937,42 +1521,84 @@
   "pocet_variantov": 7,
   "tabulky": [
    {
-    "head": [
-     "Art. No.",
-     "Závit (DN)"
+    "hlavicky": [
+     "Obj. číslo",
+     "Závit"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Závit"
+    ],
+    "jednotky": [
+     null,
+     null
+    ],
+    "riadky": [
      [
       "MFP34",
-      "3/4\" MF"
+      "3/4″ MF"
      ],
      [
       "MFP44",
-      "1\" MF"
+      "1″ MF"
      ],
      [
       "MFP 54",
-      "1 1/4\" MF"
+      "1 1/4″ MF"
      ],
      [
       "MFP64",
-      "1 1/2\" MF"
+      "1 1/2″ MF"
      ],
      [
       "MFP2",
-      "2\" MF"
+      "2″ MF"
      ],
      [
       "MFP212",
-      "2 1/2\" MF"
+      "2 1/2″ MF"
      ],
      [
       "MFP3",
-      "3\" MF"
+      "3″ MF"
      ],
      [
       "MFP4",
-      "4\" MF"
+      "4″ MF"
+     ]
+    ],
+    "riadky_cs": [
+     [
+      "MFP34",
+      "3/4″ MF"
+     ],
+     [
+      "MFP44",
+      "1″ MF"
+     ],
+     [
+      "MFP 54",
+      "1 1/4″ MF"
+     ],
+     [
+      "MFP64",
+      "1 1/2″ MF"
+     ],
+     [
+      "MFP2",
+      "2″ MF"
+     ],
+     [
+      "MFP212",
+      "2 1/2″ MF"
+     ],
+     [
+      "MFP3",
+      "3″ MF"
+     ],
+     [
+      "MFP4",
+      "4″ MF"
      ]
     ]
    }
@@ -982,14 +1608,16 @@
  },
  {
   "id": "objimka-obal",
-  "slug": "objimka-obal",
+  "slug": "objimka-z-bronzu",
+  "slug_cs": "objimka-z-bronzu",
   "skupina": "prislusenstvo-spojok",
   "kategoria": "spojky",
-  "nazov": "Objímka/Obal",
-  "nazov_cs": "Objímka / Obal",
+  "poradie": 2,
+  "nazov": "Objímka z bronzu",
+  "nazov_cs": "Objímka z bronzu",
   "nazov_watts": "Objímka/Obal",
-  "popis": "Objímka z bronzu s paralelným vnútorným závitom podľa ISO 228.",
-  "popis_cs": "Objímka z bronzu s paralelním vnitřním závitem podle ISO 228.",
+  "popis": "Bronzová objímka s rovnobežným vnútorným závitom podľa ISO 228 na spojenie dvoch závitových dielov.",
+  "popis_cs": "Bronzová objímka s válcovým vnitřním závitem podle ISO 228 ke spojení dvou závitových dílů.",
   "subory": [
    {
     "nazov": "Brožúra Predizolované ohybné potrubia Microflex (EN)",
@@ -1007,42 +1635,84 @@
   "pocet_variantov": 8,
   "tabulky": [
    {
-    "head": [
-     "Art. No.",
-     "Závit (DN)"
+    "hlavicky": [
+     "Obj. číslo",
+     "Závit"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Závit"
+    ],
+    "jednotky": [
+     null,
+     null
+    ],
+    "riadky": [
      [
       "VW27034",
-      "3/4”FF"
+      "3/4″FF"
      ],
      [
       "VW27044",
-      "1”FF"
+      "1″FF"
      ],
      [
       "VW27054",
-      "1 1/4”FF"
+      "1 1/4″FF"
      ],
      [
       "VW27064",
-      "1 1/2”FF"
+      "1 1/2″FF"
      ],
      [
       "VW2702",
-      "2”FF"
+      "2″FF"
      ],
      [
       "VW270212",
-      "2 1/2”FF"
+      "2 1/2″FF"
      ],
      [
       "VW2703",
-      "3”FF"
+      "3″FF"
      ],
      [
       "VW2704",
-      "4”FF"
+      "4″FF"
+     ]
+    ],
+    "riadky_cs": [
+     [
+      "VW27034",
+      "3/4″FF"
+     ],
+     [
+      "VW27044",
+      "1″FF"
+     ],
+     [
+      "VW27054",
+      "1 1/4″FF"
+     ],
+     [
+      "VW27064",
+      "1 1/2″FF"
+     ],
+     [
+      "VW2702",
+      "2″FF"
+     ],
+     [
+      "VW270212",
+      "2 1/2″FF"
+     ],
+     [
+      "VW2703",
+      "3″FF"
+     ],
+     [
+      "VW2704",
+      "4″FF"
      ]
     ]
    }
@@ -1052,14 +1722,16 @@
  },
  {
   "id": "koleno-90",
-  "slug": "koleno-90",
+  "slug": "koleno-90-z-bronzu",
+  "slug_cs": "koleno-90-z-bronzu",
   "skupina": "prislusenstvo-spojok",
   "kategoria": "spojky",
-  "nazov": "Koleno 90 °",
-  "nazov_cs": "Koleno 90 °",
+  "poradie": 3,
+  "nazov": "Koleno 90° z bronzu",
+  "nazov_cs": "Koleno 90° z bronzu",
   "nazov_watts": "Koleno 90 °",
-  "popis": "Koleno z bronzu s paralelným vnútorným závitom podľa ISO 228.",
-  "popis_cs": "Koleno z bronzu s paralelním vnitřním závitem podle ISO 228.",
+  "popis": "Bronzové koleno s rovnobežným vnútorným závitom podľa ISO 228.",
+  "popis_cs": "Bronzové koleno s válcovým vnitřním závitem podle ISO 228.",
   "subory": [
    {
     "nazov": "Brožúra Predizolované ohybné potrubia Microflex (EN)",
@@ -1077,42 +1749,84 @@
   "pocet_variantov": 8,
   "tabulky": [
    {
-    "head": [
-     "Art. No.",
-     "Závit (DN)"
+    "hlavicky": [
+     "Obj. číslo",
+     "Závit"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Závit"
+    ],
+    "jednotky": [
+     null,
+     null
+    ],
+    "riadky": [
      [
       "VW9034",
-      "3/4”FF"
+      "3/4″FF"
      ],
      [
       "VW9044",
-      "1”FF"
+      "1″FF"
      ],
      [
       "VW9054",
-      "1 1/4”FF"
+      "1 1/4″FF"
      ],
      [
       "VW9064",
-      "1 1/2”FF"
+      "1 1/2″FF"
      ],
      [
       "VW902",
-      "2”FF"
+      "2″FF"
      ],
      [
       "VW90212",
-      "2 1/2”FF"
+      "2 1/2″FF"
      ],
      [
       "VW903",
-      "3”FF"
+      "3″FF"
      ],
      [
       "VW904",
-      "4”FF"
+      "4″FF"
+     ]
+    ],
+    "riadky_cs": [
+     [
+      "VW9034",
+      "3/4″FF"
+     ],
+     [
+      "VW9044",
+      "1″FF"
+     ],
+     [
+      "VW9054",
+      "1 1/4″FF"
+     ],
+     [
+      "VW9064",
+      "1 1/2″FF"
+     ],
+     [
+      "VW902",
+      "2″FF"
+     ],
+     [
+      "VW90212",
+      "2 1/2″FF"
+     ],
+     [
+      "VW903",
+      "3″FF"
+     ],
+     [
+      "VW904",
+      "4″FF"
      ]
     ]
    }
@@ -1123,13 +1837,15 @@
  {
   "id": "t-kus-z-bronzu",
   "slug": "t-kus-z-bronzu",
+  "slug_cs": "t-kus-z-bronzu",
   "skupina": "prislusenstvo-spojok",
   "kategoria": "spojky",
+  "poradie": 4,
   "nazov": "T-kus z bronzu",
   "nazov_cs": "T-kus z bronzu",
   "nazov_watts": "T-kus z bronzu",
-  "popis": "T-kus z bronzu s paralelným vnútorným závitom podľa ISO 228.",
-  "popis_cs": "T-kus z bronzu s paralelním vnitřním závitem podle ISO 228.",
+  "popis": "Bronzový T-kus s rovnobežným vnútorným závitom podľa ISO 228.",
+  "popis_cs": "Bronzový T-kus s válcovým vnitřním závitem podle ISO 228.",
   "subory": [
    {
     "nazov": "Brožúra Predizolované ohybné potrubia Microflex (EN)",
@@ -1147,50 +1863,86 @@
   "pocet_variantov": 8,
   "tabulky": [
    {
-    "head": [
-     "Art. No.",
-     "Závit (DN)"
+    "hlavicky": [
+     "Obj. číslo",
+     "Závit"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Závit"
+    ],
+    "jednotky": [
+     null,
+     null
+    ],
+    "riadky": [
      [
       "VW13034",
-      "3/4”FFF"
+      "3/4″FFF"
      ],
      [
       "VW13044",
-      "1”FFF"
+      "1″FFF"
      ],
      [
       "VW13054",
-      "1 1/4”FFF"
+      "1 1/4″FFF"
      ],
      [
       "VW13064",
-      "1 1/2”FFF"
+      "1 1/2″FFF"
      ],
      [
       "VW1302",
-      "2”FFF"
+      "2″FFF"
      ],
      [
       "VW130212",
-      "2 1/2”FFF"
+      "2 1/2″FFF"
      ],
      [
       "VW1303",
-      "3”FFF"
+      "3″FFF"
      ],
      [
       "VW1304",
-      "4”FFF"
+      "4″FFF"
+     ]
+    ],
+    "riadky_cs": [
+     [
+      "VW13034",
+      "3/4″FFF"
+     ],
+     [
+      "VW13044",
+      "1″FFF"
+     ],
+     [
+      "VW13054",
+      "1 1/4″FFF"
+     ],
+     [
+      "VW13064",
+      "1 1/2″FFF"
+     ],
+     [
+      "VW1302",
+      "2″FFF"
+     ],
+     [
+      "VW130212",
+      "2 1/2″FFF"
+     ],
+     [
+      "VW1303",
+      "3″FFF"
+     ],
+     [
+      "VW1304",
+      "4″FFF"
      ]
     ]
-   },
-   {
-    "head": [
-     ""
-    ],
-    "rows": []
    }
   ],
   "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/accessories/tee-f-f-f-microflex",
@@ -1199,13 +1951,15 @@
  {
   "id": "vsuvka-z-poniklovanej-mosadze",
   "slug": "vsuvka-z-poniklovanej-mosadze",
+  "slug_cs": "vsuvka-z-poniklovane-mosazi",
   "skupina": "prislusenstvo-spojok",
   "kategoria": "spojky",
+  "poradie": 5,
   "nazov": "Vsuvka z poniklovanej mosadze",
   "nazov_cs": "Vsuvka z poniklované mosazi",
   "nazov_watts": "Vsuvka z poniklovanej mosadze",
-  "popis": "Vsuvka z poniklovanej mosadze s kónickým závitom podľa ISO 7.",
-  "popis_cs": "Vsuvka z poniklované mosazi s kónickým závitem dle ISO 7.",
+  "popis": "Vsuvka z poniklovanej mosadze s kužeľovým závitom podľa ISO 7.",
+  "popis_cs": "Vsuvka z poniklované mosazi s kuželovým závitem podle ISO 7.",
   "subory": [
    {
     "nazov": "Katalóg Microflex (SK)",
@@ -1217,42 +1971,84 @@
   "pocet_variantov": 8,
   "tabulky": [
    {
-    "head": [
-     "Art. No.",
-     "Závit (DN)"
+    "hlavicky": [
+     "Obj. číslo",
+     "Závit"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Závit"
+    ],
+    "jednotky": [
+     null,
+     null
+    ],
+    "riadky": [
      [
       "VW28034",
-      "3/4”M"
+      "3/4″M"
      ],
      [
       "VW28044",
-      "1”M"
+      "1″M"
      ],
      [
       "VW28054",
-      "1 1/4”M"
+      "1 1/4″M"
      ],
      [
       "VW28064",
-      "1 1/2”M"
+      "1 1/2″M"
      ],
      [
       "VW2802",
-      "2”M"
+      "2″M"
      ],
      [
       "VW280212",
-      "2 1/2”M"
+      "2 1/2″M"
      ],
      [
       "VW2803",
-      "3”M"
+      "3″M"
      ],
      [
       "VW2804",
-      "4”M"
+      "4″M"
+     ]
+    ],
+    "riadky_cs": [
+     [
+      "VW28034",
+      "3/4″M"
+     ],
+     [
+      "VW28044",
+      "1″M"
+     ],
+     [
+      "VW28054",
+      "1 1/4″M"
+     ],
+     [
+      "VW28064",
+      "1 1/2″M"
+     ],
+     [
+      "VW2802",
+      "2″M"
+     ],
+     [
+      "VW280212",
+      "2 1/2″M"
+     ],
+     [
+      "VW2803",
+      "3″M"
+     ],
+     [
+      "VW2804",
+      "4″M"
      ]
     ]
    }
@@ -1262,14 +2058,16 @@
  },
  {
   "id": "redukcne-puzdro",
-  "slug": "redukcne-puzdro",
+  "slug": "redukcia-m-f-z-mosadze",
+  "slug_cs": "redukce-m-f-z-mosazi",
   "skupina": "prislusenstvo-spojok",
   "kategoria": "spojky",
-  "nazov": "Redukčné puzdro",
-  "nazov_cs": "Redukční pouzdro",
+  "poradie": 6,
+  "nazov": "Redukcia M × F z mosadze",
+  "nazov_cs": "Redukce M × F z mosazi",
   "nazov_watts": "Redukčné puzdro",
-  "popis": "Redukčné puzdro z mosadze s paralelným vonkajším a vnútorným závitom podľa ISO 228.",
-  "popis_cs": "Redukční pouzdro z mosazi s paralelním vnějším a vnitřním závitem dle ISO 228.",
+  "popis": "Mosadzná redukcia s rovnobežným vonkajším a vnútorným závitom podľa ISO 228 na prechod medzi dvoma rozmermi závitu.",
+  "popis_cs": "Mosazná redukce s válcovým vnějším a vnitřním závitem podle ISO 228 k přechodu mezi dvěma rozměry závitu.",
   "subory": [
    {
     "nazov": "Katalóg Microflex (SK)",
@@ -1281,94 +2079,188 @@
   "pocet_variantov": 21,
   "tabulky": [
    {
-    "head": [
-     "Art. No.",
-     "Závit (DN)"
+    "hlavicky": [
+     "Obj. číslo",
+     "Závit"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Závit"
+    ],
+    "jednotky": [
+     null,
+     null
+    ],
+    "riadky": [
      [
       "VW2414434",
-      "1”Mx3/4”F"
+      "1″Mx3/4″F"
      ],
      [
       "VW2415434",
-      "1 1/4”Mx3/4”F"
+      "1 1/4″Mx3/4″F"
      ],
      [
       "VW2415444",
-      "1 1/4”Mx1”F"
+      "1 1/4″Mx1″F"
      ],
      [
       "VW2416434",
-      "1 1/2”Mx3/4”F"
+      "1 1/2″Mx3/4″F"
      ],
      [
       "VW2416444",
-      "1 1/2”Mx1”F"
+      "1 1/2″Mx1″F"
      ],
      [
       "VW2416454",
-      "1 1/2”Mx11/4”F"
+      "1 1/2″Mx11/4″F"
      ],
      [
       "VW241234",
-      "2”Mx3/4”F"
+      "2″Mx3/4″F"
      ],
      [
       "VW241244",
-      "2”Mx1”F"
+      "2″Mx1″F"
      ],
      [
       "VW241254",
-      "2”Mx11/4”F"
+      "2″Mx11/4″F"
      ],
      [
       "VW241264",
-      "2”Mx11/2”F"
+      "2″Mx11/2″F"
      ],
      [
       "VW24121254",
-      "2 1/2”Mx11/4”F"
+      "2 1/2″Mx11/4″F"
      ],
      [
       "VW24121264",
-      "2 1/2”Mx11/2”F"
+      "2 1/2″Mx11/2″F"
      ],
      [
       "VW2412122",
-      "2 1/2”Mx2”F"
+      "2 1/2″Mx2″F"
      ],
      [
       "VW241344",
-      "3”Mx1”F"
+      "3″Mx1″F"
      ],
      [
       "VW241354",
-      "3”Mx11/4”F"
+      "3″Mx11/4″F"
      ],
      [
       "VW241364",
-      "3”Mx11/2”F"
+      "3″Mx11/2″F"
      ],
      [
       "VW24132",
-      "3”Mx2”F"
+      "3″Mx2″F"
      ],
      [
       "VW2413212",
-      "3”Mx21/2”F"
+      "3″Mx21/2″F"
      ],
      [
       "VW24142",
-      "4”Mx2”F"
+      "4″Mx2″F"
      ],
      [
       "VW2414212",
-      "4”Mx21/2”F"
+      "4″Mx21/2″F"
      ],
      [
       "VW24143",
-      "4”Mx3”F"
+      "4″Mx3″F"
+     ]
+    ],
+    "riadky_cs": [
+     [
+      "VW2414434",
+      "1″Mx3/4″F"
+     ],
+     [
+      "VW2415434",
+      "1 1/4″Mx3/4″F"
+     ],
+     [
+      "VW2415444",
+      "1 1/4″Mx1″F"
+     ],
+     [
+      "VW2416434",
+      "1 1/2″Mx3/4″F"
+     ],
+     [
+      "VW2416444",
+      "1 1/2″Mx1″F"
+     ],
+     [
+      "VW2416454",
+      "1 1/2″Mx11/4″F"
+     ],
+     [
+      "VW241234",
+      "2″Mx3/4″F"
+     ],
+     [
+      "VW241244",
+      "2″Mx1″F"
+     ],
+     [
+      "VW241254",
+      "2″Mx11/4″F"
+     ],
+     [
+      "VW241264",
+      "2″Mx11/2″F"
+     ],
+     [
+      "VW24121254",
+      "2 1/2″Mx11/4″F"
+     ],
+     [
+      "VW24121264",
+      "2 1/2″Mx11/2″F"
+     ],
+     [
+      "VW2412122",
+      "2 1/2″Mx2″F"
+     ],
+     [
+      "VW241344",
+      "3″Mx1″F"
+     ],
+     [
+      "VW241354",
+      "3″Mx11/4″F"
+     ],
+     [
+      "VW241364",
+      "3″Mx11/2″F"
+     ],
+     [
+      "VW24132",
+      "3″Mx2″F"
+     ],
+     [
+      "VW2413212",
+      "3″Mx21/2″F"
+     ],
+     [
+      "VW24142",
+      "4″Mx2″F"
+     ],
+     [
+      "VW2414212",
+      "4″Mx21/2″F"
+     ],
+     [
+      "VW24143",
+      "4″Mx3″F"
      ]
     ]
    }
@@ -1379,13 +2271,15 @@
  {
   "id": "priruba-so-zavitom-z-pozinkovanej-ocele",
   "slug": "priruba-so-zavitom-z-pozinkovanej-ocele",
+  "slug_cs": "priruba-se-zavitem-z-pozinkovane-oceli",
   "skupina": "prislusenstvo-spojok",
   "kategoria": "spojky",
+  "poradie": 7,
   "nazov": "Príruba so závitom z pozinkovanej ocele",
   "nazov_cs": "Příruba se závitem z pozinkované oceli",
   "nazov_watts": "Príruba so závitom z pozinkovanej ocele",
-  "popis": "Príruba so závitom z pozinkovanej ocele.",
-  "popis_cs": "Příruba se závitem z pozinkované oceli.",
+  "popis": "Príruba so závitom z pozinkovanej ocele na prírubové pripojenie rozvodu.",
+  "popis_cs": "Příruba se závitem z pozinkované oceli pro přírubové připojení rozvodu.",
   "subory": [
    {
     "nazov": "Katalóg Microflex (SK)",
@@ -1397,42 +2291,84 @@
   "pocet_variantov": 8,
   "tabulky": [
    {
-    "head": [
-     "Art. No.",
-     "Závit (DN)"
+    "hlavicky": [
+     "Obj. číslo",
+     "Závit"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Závit"
+    ],
+    "jednotky": [
+     null,
+     null
+    ],
+    "riadky": [
      [
       "MDF34",
-      "3/4”F"
+      "3/4″F"
      ],
      [
       "MDF44",
-      "1”F"
+      "1″F"
      ],
      [
       "MDF54",
-      "1 1/4”F"
+      "1 1/4″F"
      ],
      [
       "MDF64",
-      "1 1/2”F"
+      "1 1/2″F"
      ],
      [
       "MDF2",
-      "2”F"
+      "2″F"
      ],
      [
       "MDF212",
-      "2 1/2”F"
+      "2 1/2″F"
      ],
      [
       "MDF3",
-      "3”F"
+      "3″F"
      ],
      [
       "MDF4",
-      "4”F"
+      "4″F"
+     ]
+    ],
+    "riadky_cs": [
+     [
+      "MDF34",
+      "3/4″F"
+     ],
+     [
+      "MDF44",
+      "1″F"
+     ],
+     [
+      "MDF54",
+      "1 1/4″F"
+     ],
+     [
+      "MDF64",
+      "1 1/2″F"
+     ],
+     [
+      "MDF2",
+      "2″F"
+     ],
+     [
+      "MDF212",
+      "2 1/2″F"
+     ],
+     [
+      "MDF3",
+      "3″F"
+     ],
+     [
+      "MDF4",
+      "4″F"
      ]
     ]
    }
@@ -1442,14 +2378,16 @@
  },
  {
   "id": "zatka",
-  "slug": "zatka",
+  "slug": "zatka-z-mosadze",
+  "slug_cs": "zatka-z-mosazi",
   "skupina": "prislusenstvo-spojok",
   "kategoria": "spojky",
-  "nazov": "Zátka",
-  "nazov_cs": "Zátka",
+  "poradie": 8,
+  "nazov": "Zátka z mosadze",
+  "nazov_cs": "Zátka z mosazi",
   "nazov_watts": "Zátka",
-  "popis": "Mosadzná zátka (M) s priamym závitom podľa ISO 228.",
-  "popis_cs": "Mosazná zátka (M) s přímým závitem podle ISO 228.",
+  "popis": "Mosadzná zátka s vonkajším rovnobežným závitom podľa ISO 228.",
+  "popis_cs": "Mosazná zátka s vnějším válcovým závitem podle ISO 228.",
   "subory": [
    {
     "nazov": "Katalóg Microflex (SK)",
@@ -1461,42 +2399,84 @@
   "pocet_variantov": 8,
   "tabulky": [
    {
-    "head": [
-     "Kód",
-     "Závit (inch)"
+    "hlavicky": [
+     "Obj. číslo",
+     "Závit"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Závit"
+    ],
+    "jednotky": [
+     null,
+     null
+    ],
+    "riadky": [
      [
       "VW29034",
-      "3/4”M"
+      "3/4″M"
      ],
      [
       "VW29044",
-      "1”M"
+      "1″M"
      ],
      [
       "VW29054",
-      "1 1/4”M"
+      "1 1/4″M"
      ],
      [
       "VW29064",
-      "1 1/2”M"
+      "1 1/2″M"
      ],
      [
       "VW2902",
-      "2”M"
+      "2″M"
      ],
      [
       "VW290212",
-      "2 1/2”M"
+      "2 1/2″M"
      ],
      [
       "VW2903",
-      "3”M"
+      "3″M"
      ],
      [
       "VW2904",
-      "4”M"
+      "4″M"
+     ]
+    ],
+    "riadky_cs": [
+     [
+      "VW29034",
+      "3/4″M"
+     ],
+     [
+      "VW29044",
+      "1″M"
+     ],
+     [
+      "VW29054",
+      "1 1/4″M"
+     ],
+     [
+      "VW29064",
+      "1 1/2″M"
+     ],
+     [
+      "VW2902",
+      "2″M"
+     ],
+     [
+      "VW290212",
+      "2 1/2″M"
+     ],
+     [
+      "VW2903",
+      "3″M"
+     ],
+     [
+      "VW2904",
+      "4″M"
      ]
     ]
    }
@@ -1506,14 +2486,16 @@
  },
  {
   "id": "uzatvaraci-ventil",
-  "slug": "uzatvaraci-ventil",
+  "slug": "gulovy-kohut",
+  "slug_cs": "kulovy-kohout",
   "skupina": "prislusenstvo-spojok",
   "kategoria": "spojky",
-  "nazov": "Uzatvárací ventil",
-  "nazov_cs": "Uzavírací ventil",
+  "poradie": 9,
+  "nazov": "Guľový kohút",
+  "nazov_cs": "Kulový kohout",
   "nazov_watts": "Uzatvárací ventil",
-  "popis": "Vsuvka z poniklovanej mosadze s vonkajším závitom.",
-  "popis_cs": "Vsuvka z poniklované mosazi s vnějším závitem.",
+  "popis": "Guľový kohút so závitovým pripojením na uzavretie vetvy rozvodu. Rozmery závitov sú v tabuľke.",
+  "popis_cs": "Kulový kohout se závitovým připojením k uzavření větve rozvodu. Rozměry závitů jsou v tabulce.",
   "subory": [
    {
     "nazov": "Brožúra Predizolované ohybné potrubia Microflex (EN)",
@@ -1531,42 +2513,84 @@
   "pocet_variantov": 8,
   "tabulky": [
    {
-    "head": [
-     "Art. No.",
-     "Závit (DN)"
+    "hlavicky": [
+     "Obj. číslo",
+     "Závit"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Závit"
+    ],
+    "jednotky": [
+     null,
+     null
+    ],
+    "riadky": [
      [
       "VW35034",
-      "3/4”M"
+      "3/4″M"
      ],
      [
       "VW35044",
-      "1”M"
+      "1″M"
      ],
      [
       "VW35054",
-      "1 1/4”M"
+      "1 1/4″M"
      ],
      [
       "VW35064",
-      "1 1/2”M"
+      "1 1/2″M"
      ],
      [
       "VW3502",
-      "2”M"
+      "2″M"
      ],
      [
       "VW350212",
-      "2 1/2”M"
+      "2 1/2″M"
      ],
      [
       "VW3503",
-      "3”M"
+      "3″M"
      ],
      [
       "VW3504",
-      "4”M"
+      "4″M"
+     ]
+    ],
+    "riadky_cs": [
+     [
+      "VW35034",
+      "3/4″M"
+     ],
+     [
+      "VW35044",
+      "1″M"
+     ],
+     [
+      "VW35054",
+      "1 1/4″M"
+     ],
+     [
+      "VW35064",
+      "1 1/2″M"
+     ],
+     [
+      "VW3502",
+      "2″M"
+     ],
+     [
+      "VW350212",
+      "2 1/2″M"
+     ],
+     [
+      "VW3503",
+      "3″M"
+     ],
+     [
+      "VW3504",
+      "4″M"
      ]
     ]
    }
@@ -1576,23 +2600,95 @@
  },
  {
   "id": "uzatvara-prach-na-jednom-potrubi",
-  "slug": "uzatvara-prach-na-jednom-potrubi",
+  "slug": "protiprachova-krytka-ms-pre-uno",
+  "slug_cs": "protiprachova-krytka-ms-pro-uno",
   "skupina": "koncovky-a-redukcie",
   "kategoria": "prislusenstvo",
-  "nazov": "Uzatvára prach na jednom potrubí",
-  "nazov_cs": "Uzavírá prach na jednom potrubí",
+  "poradie": 1,
+  "nazov": "Protiprachová krytka MS pre UNO",
+  "nazov_cs": "Protiprachová krytka MS pro UNO",
   "nazov_watts": "Uzatvára prach na jednom potrubí",
-  "popis": null,
-  "popis_cs": null,
+  "popis": "Uzavrie koniec potrubia s jednou rúrou, aby sa do izolácie a rúry nedostala nečistota a vlhkosť. Podľa postupu výrobcu sa nasadzuje hneď po rozvinutí potrubia.",
+  "popis_cs": "Uzavře konec potrubí s jednou trubkou, aby se do izolace a trubky nedostala nečistota a vlhkost. Podle postupu výrobce se nasazuje hned po rozvinutí potrubí.",
   "subory": [],
   "pocet_variantov": 15,
   "tabulky": [
    {
-    "head": [
-     "Kód",
-     "Popis"
+    "hlavicky": [
+     "Obj. číslo",
+     "Plášť / rúra"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Plášť / trubka"
+    ],
+    "jednotky": [
+     null,
+     "mm"
+    ],
+    "riadky": [
+     [
+      "MS7525",
+      "75/25"
+     ],
+     [
+      "MS7532",
+      "75/32"
+     ],
+     [
+      "MS9032",
+      "90/32"
+     ],
+     [
+      "MS9040",
+      "90/40"
+     ],
+     [
+      "MS12540",
+      "125/40"
+     ],
+     [
+      "MS12550",
+      "125/50"
+     ],
+     [
+      "MS12563",
+      "125/63"
+     ],
+     [
+      "MS16040",
+      "160/40"
+     ],
+     [
+      "MS16050",
+      "160/50"
+     ],
+     [
+      "MS16063",
+      "160/63"
+     ],
+     [
+      "MS16075",
+      "160/75"
+     ],
+     [
+      "MS16090",
+      "160/90"
+     ],
+     [
+      "MS20075",
+      "200/75"
+     ],
+     [
+      "MS20090",
+      "200/90"
+     ],
+     [
+      "MS200110",
+      "200/110"
+     ]
+    ],
+    "riadky_cs": [
      [
       "MS7525",
       "75/25"
@@ -1661,54 +2757,98 @@
  },
  {
   "id": "uzatvara-prach-na-dvojitom-potrubi",
-  "slug": "uzatvara-prach-na-dvojitom-potrubi",
+  "slug": "protiprachova-krytka-msd-pre-duo",
+  "slug_cs": "protiprachova-krytka-msd-pro-duo",
   "skupina": "koncovky-a-redukcie",
   "kategoria": "prislusenstvo",
-  "nazov": "Uzatvára prach na dvojitom potrubí",
-  "nazov_cs": "Uzavírá prach na dvojitém potrubí",
+  "poradie": 2,
+  "nazov": "Protiprachová krytka MSD pre DUO",
+  "nazov_cs": "Protiprachová krytka MSD pro DUO",
   "nazov_watts": "Uzatvára prach na dvojitom potrubí",
-  "popis": null,
-  "popis_cs": null,
+  "popis": "Uzavrie koniec potrubia s dvoma rúrami, aby sa do izolácie a rúr nedostala nečistota a vlhkosť. Podľa postupu výrobcu sa nasadzuje hneď po rozvinutí potrubia.",
+  "popis_cs": "Uzavře konec potrubí se dvěma trubkami, aby se do izolace a trubek nedostala nečistota a vlhkost. Podle postupu výrobce se nasazuje hned po rozvinutí potrubí.",
   "subory": [],
   "pocet_variantov": 8,
   "tabulky": [
    {
-    "head": [
-     "Kód",
-     "Popis"
+    "hlavicky": [
+     "Obj. číslo",
+     "Plášť / rúra"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Plášť / trubka"
+    ],
+    "jednotky": [
+     null,
+     "mm"
+    ],
+    "riadky": [
      [
       "MSD12525",
-      "125/2x25"
+      "125/2 × 25"
      ],
      [
       "MSD12532",
-      "125/2x32"
+      "125/2 × 32"
      ],
      [
       "MSD16025",
-      "160/2x25"
+      "160/2 × 25"
      ],
      [
       "MSD16032",
-      "160/2x32"
+      "160/2 × 32"
      ],
      [
       "MSD16040",
-      "160/2x40"
+      "160/2 × 40"
      ],
      [
       "MSD16050",
-      "160/2x50"
+      "160/2 × 50"
      ],
      [
       "MSD20050",
-      "200/2x50"
+      "200/2 × 50"
      ],
      [
       "MSD20063",
-      "200/2x63"
+      "200/2 × 63"
+     ]
+    ],
+    "riadky_cs": [
+     [
+      "MSD12525",
+      "125/2 × 25"
+     ],
+     [
+      "MSD12532",
+      "125/2 × 32"
+     ],
+     [
+      "MSD16025",
+      "160/2 × 25"
+     ],
+     [
+      "MSD16032",
+      "160/2 × 32"
+     ],
+     [
+      "MSD16040",
+      "160/2 × 40"
+     ],
+     [
+      "MSD16050",
+      "160/2 × 50"
+     ],
+     [
+      "MSD20050",
+      "200/2 × 50"
+     ],
+     [
+      "MSD20063",
+      "200/2 × 63"
      ]
     ]
    }
@@ -1718,38 +2858,66 @@
  },
  {
   "id": "uzatvara-prach-na-potrubi-quadro",
-  "slug": "uzatvara-prach-na-potrubi-quadro",
+  "slug": "protiprachova-krytka-msq-pre-quadro",
+  "slug_cs": "protiprachova-krytka-msq-pro-quadro",
   "skupina": "koncovky-a-redukcie",
   "kategoria": "prislusenstvo",
-  "nazov": "Uzatvára prach na potrubí quadro",
-  "nazov_cs": "Uzavírá prach na potrubí quadro",
+  "poradie": 3,
+  "nazov": "Protiprachová krytka MSQ pre QUADRO",
+  "nazov_cs": "Protiprachová krytka MSQ pro QUADRO",
   "nazov_watts": "Uzatvára prach na potrubí quadro",
-  "popis": null,
-  "popis_cs": null,
+  "popis": "Uzavrie koniec potrubia QUADRO so štyrmi rúrami počas skladovania a pokládky.",
+  "popis_cs": "Uzavře konec potrubí QUADRO se čtyřmi trubkami během skladování a pokládky.",
   "subory": [],
   "pocet_variantov": 4,
   "tabulky": [
    {
-    "head": [
-     "Kód",
-     "Popis"
+    "hlavicky": [
+     "Obj. číslo",
+     "Plášť / rúra"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Plášť / trubka"
+    ],
+    "jednotky": [
+     null,
+     "mm"
+    ],
+    "riadky": [
      [
       "MSQ160252520",
-      "160/2x25+25+20"
+      "160/2 × 25+25+20"
      ],
      [
       "MSQ160322520",
-      "160/2x32+25+20"
+      "160/2 × 32+25+20"
      ],
      [
       "MSQ160323225",
-      "160/2x32+32+25"
+      "160/2 × 32+32+25"
      ],
      [
       "MSQ200404028",
-      "200/2x40+40+28"
+      "200/2 × 40+40+28"
+     ]
+    ],
+    "riadky_cs": [
+     [
+      "MSQ160252520",
+      "160/2 × 25+25+20"
+     ],
+     [
+      "MSQ160322520",
+      "160/2 × 32+25+20"
+     ],
+     [
+      "MSQ160323225",
+      "160/2 × 32+32+25"
+     ],
+     [
+      "MSQ200404028",
+      "200/2 × 40+40+28"
      ]
     ]
    }
@@ -1759,54 +2927,98 @@
  },
  {
   "id": "teplom-zmrstitelne-hlavice-pre-uno-rurku",
-  "slug": "teplom-zmrstitelne-hlavice-pre-uno-rurku",
+  "slug": "zmrstovacia-krytka-mk-pre-uno",
+  "slug_cs": "smrstovaci-krytka-mk-pro-uno",
   "skupina": "koncovky-a-redukcie",
   "kategoria": "prislusenstvo",
-  "nazov": "Teplom zmrštiteľné hlavice pre UNO rúrku",
-  "nazov_cs": "Teplem smrštitelné hlavice pro UNO trubku",
+  "poradie": 4,
+  "nazov": "Zmršťovacia krytka MK pre UNO",
+  "nazov_cs": "Smršťovací krytka MK pro UNO",
   "nazov_watts": "Teplom zmrštiteľné hlavice pre UNO rúrku",
-  "popis": "Používajú sa na zabránenie vniknutiu vody medzi vonkajší plášť a izolovanú nosnú rúru.",
-  "popis_cs": "Používají se k zabránění vniknutí vody mezi vnější plášť a izolovanou nosnou troubu.",
+  "popis": "Teplom zmrštiteľná krytka na koniec potrubia s jednou rúrou. Zabráni vniknutiu vody medzi vonkajší plášť a izolovanú nosnú rúru.",
+  "popis_cs": "Teplem smrštitelná krytka na konec potrubí s jednou trubkou. Zabrání vniknutí vody mezi vnější plášť a izolovanou nosnou trubku.",
   "subory": [],
   "pocet_variantov": 8,
   "tabulky": [
    {
-    "head": [
-     "Kód",
-     "Popis"
+    "hlavicky": [
+     "Obj. číslo",
+     "Plášť / rúra"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Plášť / trubka"
+    ],
+    "jednotky": [
+     null,
+     "mm"
+    ],
+    "riadky": [
      [
       "MK2000",
-      "MICROFLEX 75/25"
+      "75/25"
      ],
      [
       "MK2100",
-      "MICROFLEX 75-90/32"
+      "75-90/32"
      ],
      [
       "MK2060",
-      "MICROFLEX 125/25"
+      "125/25"
      ],
      [
       "MK2200",
-      "MICROFLEX 125/32-40"
+      "125/32-40"
      ],
      [
       "MK2400",
-      "MICROFLEX 125/50-63"
+      "125/50-63"
      ],
      [
       "MK2340",
-      "MICROFLEX 160/32-40-50"
+      "160/32-40-50"
      ],
      [
       "MK2500",
-      "MICROFLEX 160/63-75-90"
+      "160/63-75-90"
      ],
      [
       "MK2600",
-      "MICROFLEX 200/75-90-110"
+      "200/75-90-110"
+     ]
+    ],
+    "riadky_cs": [
+     [
+      "MK2000",
+      "75/25"
+     ],
+     [
+      "MK2100",
+      "75-90/32"
+     ],
+     [
+      "MK2060",
+      "125/25"
+     ],
+     [
+      "MK2200",
+      "125/32-40"
+     ],
+     [
+      "MK2400",
+      "125/50-63"
+     ],
+     [
+      "MK2340",
+      "160/32-40-50"
+     ],
+     [
+      "MK2500",
+      "160/63-75-90"
+     ],
+     [
+      "MK2600",
+      "200/75-90-110"
      ]
     ]
    }
@@ -1816,46 +3028,82 @@
  },
  {
   "id": "teplom-zmrstitelne-hlavice-pre-rurku-duo",
-  "slug": "teplom-zmrstitelne-hlavice-pre-rurku-duo",
+  "slug": "zmrstovacia-krytka-mk-pre-duo",
+  "slug_cs": "smrstovaci-krytka-mk-pro-duo",
   "skupina": "koncovky-a-redukcie",
   "kategoria": "prislusenstvo",
-  "nazov": "Teplom zmrštiteľné hlavice pre rúrku DUO",
-  "nazov_cs": "Teplem smrštitelné hlavice pro trubku DUO",
+  "poradie": 5,
+  "nazov": "Zmršťovacia krytka MK pre DUO",
+  "nazov_cs": "Smršťovací krytka MK pro DUO",
   "nazov_watts": "Teplom zmrštiteľné hlavice pre rúrku DUO",
-  "popis": "Používajú sa na zabránenie vniknutiu vody medzi vonkajší plášť a izolované nosné rúry.",
-  "popis_cs": "Používají se k zabránění vniknutí vody mezi vnější plášť a izolované nosné trubky.",
+  "popis": "Teplom zmrštiteľná krytka na koniec potrubia s dvoma rúrami. Zabráni vniknutiu vody medzi vonkajší plášť a izolované nosné rúry.",
+  "popis_cs": "Teplem smrštitelná krytka na konec potrubí se dvěma trubkami. Zabrání vniknutí vody mezi vnější plášť a izolované nosné trubky.",
   "subory": [],
   "pocet_variantov": 6,
   "tabulky": [
    {
-    "head": [
-     "Kód",
-     "Popis"
+    "hlavicky": [
+     "Obj. číslo",
+     "Plášť / rúra"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Plášť / trubka"
+    ],
+    "jednotky": [
+     null,
+     "mm"
+    ],
+    "riadky": [
      [
       "MK3250-P604",
-      "MICROFLEX 125/25х20-32х25"
+      "125/25 × 20-32 × 25"
      ],
      [
       "MK3280",
-      "MICROFLEX 125/32х32"
+      "125/32 × 32"
      ],
      [
       "MK3350-01",
-      "MICROFLEX 160/2x25-2х32"
+      "160/2 × 25-2 × 32"
      ],
      [
       "MK3350-02",
-      "MICROFLEX 160/2x40"
+      "160/2 × 40"
      ],
      [
       "MK3350-03",
-      "MICROFLEX 160-200/2x50"
+      "160-200/2 × 50"
      ],
      [
       "MK3350-05",
-      "MICROFLEX 200/2х63"
+      "200/2 × 63"
+     ]
+    ],
+    "riadky_cs": [
+     [
+      "MK3250-P604",
+      "125/25 × 20-32 × 25"
+     ],
+     [
+      "MK3280",
+      "125/32 × 32"
+     ],
+     [
+      "MK3350-01",
+      "160/2 × 25-2 × 32"
+     ],
+     [
+      "MK3350-02",
+      "160/2 × 40"
+     ],
+     [
+      "MK3350-03",
+      "160-200/2 × 50"
+     ],
+     [
+      "MK3350-05",
+      "200/2 × 63"
      ]
     ]
    }
@@ -1865,14 +3113,16 @@
  },
  {
   "id": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach",
-  "slug": "dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach",
+  "slug": "gumova-krytka-epdm-pre-uno",
+  "slug_cs": "pryzova-krytka-epdm-pro-uno",
   "skupina": "koncovky-a-redukcie",
   "kategoria": "prislusenstvo",
-  "nazov": "Dokončenie uzáverov EPDM na jednotlivých potrubiach",
-  "nazov_cs": "Dokončení uzávěrů EPDM na jednotlivých potrubích",
+  "poradie": 6,
+  "nazov": "Gumová krytka EPDM pre UNO",
+  "nazov_cs": "Pryžová krytka EPDM pro UNO",
   "nazov_watts": "Dokončenie uzáverov EPDM na jednotlivých potrubiach",
-  "popis": null,
-  "popis_cs": null,
+  "popis": "Gumová koncová krytka z EPDM na potrubie s jednou rúrou. Obj. čísla pre jednotlivé rozmery sú v katalógu výrobcu pri každom rade.",
+  "popis_cs": "Pryžová koncová krytka z EPDM na potrubí s jednou trubkou. Obj. čísla pro jednotlivé rozměry jsou v katalogu výrobce u každé řady.",
   "subory": [
    {
     "nazov": "Katalóg Microflex (SK)",
@@ -1888,14 +3138,16 @@
  },
  {
   "id": "dokoncenie-uzaverov-epdm-na-dvojitych-potrubiach",
-  "slug": "dokoncenie-uzaverov-epdm-na-dvojitych-potrubiach",
+  "slug": "gumova-krytka-epdm-pre-duo",
+  "slug_cs": "pryzova-krytka-epdm-pro-duo",
   "skupina": "koncovky-a-redukcie",
   "kategoria": "prislusenstvo",
-  "nazov": "Dokončenie uzáverov EPDM na dvojitých potrubiach",
-  "nazov_cs": "Dokončení uzávěrů EPDM na dvojitých potrubích",
+  "poradie": 7,
+  "nazov": "Gumová krytka EPDM pre DUO",
+  "nazov_cs": "Pryžová krytka EPDM pro DUO",
   "nazov_watts": "Dokončenie uzáverov EPDM na dvojitých potrubiach",
-  "popis": null,
-  "popis_cs": null,
+  "popis": "Gumová koncová krytka z EPDM na potrubie s dvoma rúrami. Obj. čísla pre jednotlivé rozmery sú v katalógu výrobcu pri každom rade.",
+  "popis_cs": "Pryžová koncová krytka z EPDM na potrubí se dvěma trubkami. Obj. čísla pro jednotlivé rozměry jsou v katalogu výrobce u každé řady.",
   "subory": [
    {
     "nazov": "Katalóg Microflex (SK)",
@@ -1911,14 +3163,16 @@
  },
  {
   "id": "dokoncenie-uzaverov-epdm-na-potrubiach-quadro",
-  "slug": "dokoncenie-uzaverov-epdm-na-potrubiach-quadro",
+  "slug": "gumova-krytka-epdm-pre-quadro",
+  "slug_cs": "pryzova-krytka-epdm-pro-quadro",
   "skupina": "koncovky-a-redukcie",
   "kategoria": "prislusenstvo",
-  "nazov": "Dokončenie uzáverov EPDM na potrubiach quadro",
-  "nazov_cs": "Dokončení uzávěrů EPDM na potrubích quadro",
+  "poradie": 8,
+  "nazov": "Gumová krytka EPDM pre QUADRO",
+  "nazov_cs": "Pryžová krytka EPDM pro QUADRO",
   "nazov_watts": "Dokončenie uzáverov EPDM na potrubiach quadro",
-  "popis": null,
-  "popis_cs": null,
+  "popis": "Gumová koncová krytka z EPDM na potrubie QUADRO. Obj. čísla sú v katalógu výrobcu pri rade QUADRO.",
+  "popis_cs": "Pryžová koncová krytka z EPDM na potrubí QUADRO. Obj. čísla jsou v katalogu výrobce u řady QUADRO.",
   "subory": [
    {
     "nazov": "Katalóg Microflex (SK)",
@@ -1934,14 +3188,16 @@
  },
  {
   "id": "pripojovacia-sada-pre-microflex-cool-s-vykurovacou-paskou",
-  "slug": "pripojovacia-sada-pre-microflex-cool-s-vykurovacou-paskou",
+  "slug": "pripojovacia-sada-pre-vyhrievaci-kabel-cool",
+  "slug_cs": "pripojovaci-sada-pro-topny-kabel-cool",
   "skupina": "izolacne-sady",
   "kategoria": "prislusenstvo",
-  "nazov": "Pripojovacia sada pre MICROFLEX COOL s vykurovacou páskou",
-  "nazov_cs": "Připojovací sada pro Microflex COOL s topnou páskou",
+  "poradie": 1,
+  "nazov": "Pripojovacia sada pre vyhrievací kábel COOL",
+  "nazov_cs": "Připojovací sada pro topný kabel COOL",
   "nazov_watts": "Pripojovacia sada pre MICROFLEX COOL s vykurovacou páskou",
-  "popis": null,
-  "popis_cs": null,
+  "popis": "Na pripojenie vyhrievacieho kábla v potrubí Microflex COOL. Priestorový termostat MVTH vypína kábel podľa teploty, aby nebol stále pod napätím, spojovacia skrinka MVBOX a izolačné sady MVKIT pre 10 alebo 18 W/m.",
+  "popis_cs": "K připojení topného kabelu v potrubí Microflex COOL. Prostorový termostat MVTH vypíná kabel podle teploty, aby nebyl stále pod napětím, spojovací skříňka MVBOX a izolační sady MVKIT pro 10 nebo 18 W/m.",
   "subory": [
    {
     "nazov": "Brožúra Predizolované ohybné potrubia Microflex (EN)",
@@ -1959,11 +3215,19 @@
   "pocet_variantov": 8,
   "tabulky": [
    {
-    "head": [
-     "Výrobné číslo",
+    "hlavicky": [
+     "Obj. číslo",
      "Popis"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Popis"
+    ],
+    "jednotky": [
+     null,
+     null
+    ],
+    "riadky": [
      [
       "MVTH",
       "Termostat"
@@ -1996,6 +3260,40 @@
       "MVKITT18W",
       "1 x MVBOX + 3 x MVKITGR18W"
      ]
+    ],
+    "riadky_cs": [
+     [
+      "MVTH",
+      "Termostat"
+     ],
+     [
+      "MVBOX",
+      "Rozvodná skříňka"
+     ],
+     [
+      "MVKITGR10W",
+      "Izolační sada do 10 W"
+     ],
+     [
+      "MVKITGR18W",
+      "Izolační sada do 18 W"
+     ],
+     [
+      "MVKITM10W",
+      "1 x MVBOX + 2 x MVKITGR10W"
+     ],
+     [
+      "MVKITM18W",
+      "1 x MVBOX + 2 x MVKITGR18W"
+     ],
+     [
+      "MVKITT10W",
+      "1 x MVBOX + 3 x MVKITGR10W"
+     ],
+     [
+      "MVKITT18W",
+      "1 x MVBOX + 3 x MVKITGR18W"
+     ]
     ]
    }
   ],
@@ -2004,27 +3302,46 @@
  },
  {
   "id": "redukcia-pre-izolovanu-supravu-t-kusu",
-  "slug": "redukcia-pre-izolovanu-supravu-t-kusu",
+  "slug": "redukcia-pre-izolacnu-sadu-t-kusu",
+  "slug_cs": "redukce-pro-izolacni-sadu-t-kusu",
   "skupina": "izolacne-sady",
   "kategoria": "prislusenstvo",
-  "nazov": "Redukcia pre izolovanú súpravu T-kusu",
-  "nazov_cs": "Redukce pro izolovanou soupravu T-kusu",
+  "poradie": 2,
+  "nazov": "Redukcia pre izolačnú sadu T-kusu",
+  "nazov_cs": "Redukce pro izolační sadu T-kusu",
   "nazov_watts": "Redukcia pre izolovanú súpravu T-kusu",
-  "popis": "Používa sa tam, kde je rozdiel v priemere pri prechode príliš veľký. Redukcie pozostávajú z vonkajšieho plášťa s vnútornou izoláciou a zmenšovacím puzdrom. Redukcia je vtlačená do izolovanej súpravy T-kusa.",
-  "popis_cs": "Používá se tam, kde je rozdíl v průměru při přechodu příliš velký. Redukce sestávají z vnějšího pláště s vnitřní izolací a zmenšovacím pouzdrem. Redukce je vtlačena do izolované soupravy T-kusu.",
+  "popis": "Použije sa, keď je v odbočke príliš veľký rozdiel priemerov plášťov. Tvorí ju vonkajší plášť s vnútornou izoláciou a redukčným puzdrom.",
+  "popis_cs": "Použije se, když je v odbočce příliš velký rozdíl průměrů plášťů. Tvoří ji vnější plášť s vnitřní izolací a redukčním pouzdrem.",
   "subory": [],
   "pocet_variantov": 1,
   "tabulky": [
    {
-    "head": [
-     "Kód",
-     "Popis",
-     "Váha (kg)"
+    "hlavicky": [
+     "Obj. číslo",
+     "Plášť / rúra",
+     "Hmotnosť"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Plášť / trubka",
+     "Hmotnost"
+    ],
+    "jednotky": [
+     null,
+     "mm",
+     "kg"
+    ],
+    "riadky": [
      [
       "MR24116075",
-      "160 to 75/90 reduction",
+      "160 na 75/90",
+      "1,40"
+     ]
+    ],
+    "riadky_cs": [
+     [
+      "MR24116075",
+      "160 na 75/90",
       "1,40"
      ]
     ]
@@ -2035,14 +3352,16 @@
  },
  {
   "id": "inspekcna-komora",
-  "slug": "inspekcna-komora",
+  "slug": "revizna-sachta-mis",
+  "slug_cs": "revizni-sachta-mis",
   "skupina": "izolacne-sady",
   "kategoria": "prislusenstvo",
-  "nazov": "Inšpekčná komora",
-  "nazov_cs": "Inspekční komora",
+  "poradie": 3,
+  "nazov": "Revízna šachta MIS",
+  "nazov_cs": "Revizní šachta MIS",
   "nazov_watts": "Inšpekčná komora",
-  "popis": "Používa sa na pripojenie potrubí Uno, Duo a Quadro. Revízna komora HDPE má 6 prípojných miest, umožňuje pripojenie rôznych potrubí a integráciu uzatváracích ventilov. Sada obsahuje kontrolnú komoru, veko, skrutky z nehrdzavejúcej ocele, súpravu tesnenia a montážny návod. Teplom zmrštiteľné čiapky sa objednávajú osobitne!",
-  "popis_cs": "Používá se k připojení potrubí Uno, Duo a Quadro. Revizní komora HDPE má 6 přípojných míst, umožňuje připojení různých potrubí a integraci uzavíracích ventilů. Sada obsahuje kontrolní komoru, víko, šrouby z nerezové oceli, soupravu těsnění a montážní návod. Teplem smrštitelné čepice se objednávají zvlášť!",
+  "popis": "Revízna šachta z HDPE so šiestimi prípojnými miestami pre potrubia UNO, DUO a QUADRO. Umožňuje odbočky, uzatváracie armatúry a neskoršiu kontrolu spojov. Teplom zmrštiteľné návleky sa objednávajú samostatne.",
+  "popis_cs": "Revizní šachta z HDPE se šesti přípojnými místy pro potrubí UNO, DUO a QUADRO. Umožňuje odbočky, uzavírací armatury a pozdější kontrolu spojů. Teplem smrštitelné návleky se objednávají samostatně.",
   "subory": [
    {
     "nazov": "Katalóg Microflex (SK)",
@@ -2054,17 +3373,40 @@
   "pocet_variantov": 0,
   "tabulky": [
    {
-    "head": [
-     "Kód",
-     "Microflex pipe with casing dout (mm)",
-     "Diameter MIS (mm)",
-     "H (mm)",
-     "Váha (kg)"
+    "hlavicky": [
+     "Obj. číslo",
+     "Plášť potrubia Ø",
+     "Priemer šachty",
+     "Výška H",
+     "Hmotnosť"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Plášť potrubí Ø",
+     "Průměr šachty",
+     "Výška H",
+     "Hmotnost"
+    ],
+    "jednotky": [
+     null,
+     "mm",
+     "mm",
+     "mm",
+     "kg"
+    ],
+    "riadky": [
      [
       "MIS",
-      "200/160/125мм",
+      "200/160/125",
+      "810",
+      "770",
+      "35,00"
+     ]
+    ],
+    "riadky_cs": [
+     [
+      "MIS",
+      "200/160/125",
       "810",
       "770",
       "35,00"
@@ -2077,14 +3419,16 @@
  },
  {
   "id": "izolovana-sada-s-dvojitym-t-kusom",
-  "slug": "izolovana-sada-s-dvojitym-t-kusom",
+  "slug": "izolacna-sada-dvojiteho-t-kusu",
+  "slug_cs": "izolacni-sada-dvojiteho-t-kusu",
   "skupina": "izolacne-sady",
   "kategoria": "prislusenstvo",
-  "nazov": "Izolovaná sada s dvojitým T-kusom",
-  "nazov_cs": "Izolovaná sada s dvojitým T-kusem",
+  "poradie": 4,
+  "nazov": "Izolačná sada dvojitého T-kusu",
+  "nazov_cs": "Izolační sada dvojitého T-kusu",
   "nazov_watts": "Izolovaná sada s dvojitým T-kusom",
-  "popis": "Zaručuje úplnú izoláciu a utesnenie odbočných spojení medzi rúrkami Uno, Duo a Quadro. Sada obsahuje 2 polovice z HDPE, izoláciu z minerálnej vlny, tesniacu sadu, skrutky z nehrdzavejúcej ocele a montážny návod. Teplom zmrštiteľné čiapky sa objednávajú osobitne!",
-  "popis_cs": "Zaručuje naprostou izolaci a utěsnění odbočných spojení mezi trubkami Uno, Duo a Quadro. Sada obsahuje 2 poloviny z HDPE, izolaci z minerální vlny, těsnicí sadu, šrouby z nerezové oceli a montážní návod. Teplem smrštitelné čepice se objednávají zvlášť!",
+  "popis": "Zaizoluje a utesní dvojitú odbočku medzi potrubiami UNO, DUO a QUADRO pod zemou. Obsahuje dve polovice z HDPE, izoláciu z minerálnej vlny a tesnenia. Teplom zmrštiteľné návleky sa objednávajú samostatne.",
+  "popis_cs": "Zaizoluje a utěsní dvojitou odbočku mezi potrubími UNO, DUO a QUADRO pod zemí. Obsahuje dvě poloviny z HDPE, izolaci z minerální vlny a těsnění. Teplem smrštitelné návleky se objednávají samostatně.",
   "subory": [
    {
     "nazov": "Katalóg Microflex (SK)",
@@ -2096,18 +3440,44 @@
   "pocet_variantov": 1,
   "tabulky": [
    {
-    "head": [
-     "Kód",
-     "Microflex pipe with casing dout (mm)",
-     "L (mm)",
-     "W (mm)",
-     "H (mm)",
-     "Váha (kg)"
+    "hlavicky": [
+     "Obj. číslo",
+     "Plášť potrubia Ø",
+     "Dĺžka L",
+     "Šírka W",
+     "Výška H",
+     "Hmotnosť"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Plášť potrubí Ø",
+     "Délka L",
+     "Šířka W",
+     "Výška H",
+     "Hmotnost"
+    ],
+    "jednotky": [
+     null,
+     "mm",
+     "mm",
+     "mm",
+     "mm",
+     "kg"
+    ],
+    "riadky": [
      [
       "MDT201612",
-      "200/160/125мм",
+      "200/160/125",
+      "1170",
+      "1200",
+      "270",
+      "21,50"
+     ]
+    ],
+    "riadky_cs": [
+     [
+      "MDT201612",
+      "200/160/125",
       "1170",
       "1200",
       "270",
@@ -2121,30 +3491,48 @@
  },
  {
   "id": "izolovana-suprava-i-kus",
-  "slug": "izolovana-suprava-i-kus",
+  "slug": "izolacna-sada-priameho-spoja",
+  "slug_cs": "izolacni-sada-primeho-spoje",
   "skupina": "izolacne-sady",
   "kategoria": "prislusenstvo",
-  "nazov": "Izolovaná súprava I-kus",
-  "nazov_cs": "Izolovaná souprava I-kus",
+  "poradie": 5,
+  "nazov": "Izolačná sada priameho spoja",
+  "nazov_cs": "Izolační sada přímého spoje",
   "nazov_watts": "Izolovaná súprava I-kus",
-  "popis": "Zaručuje úplnú izoláciu a utesnenie priamych predĺžení rúr Uno, Duo a Quadro. Sada obsahuje 2 polovice z HDPE, izoláciu z minerálnej vlny, tesniacu sadu, skrutky z nehrdzavejúcej ocele a montážny návod. Teplom zmrštiteľné čiapky sa objednávajú osobitne!",
-  "popis_cs": "Zaručuje naprostou izolaci a utěsnění přímých prodloužení trubek Uno, Duo a Quadro. Sada obsahuje 2 poloviny z HDPE, izolaci z minerální vlny, těsnicí sadu, šrouby z nerezové oceli a montážní návod. Teplem smrštitelné čepice se objednávají zvlášť!",
+  "popis": "Zaizoluje a utesní priamy spoj potrubí UNO, DUO a QUADRO pod zemou. Obsahuje dve polovice z HDPE, izoláciu z minerálnej vlny a tesnenia. Teplom zmrštiteľné návleky sa objednávajú samostatne.",
+  "popis_cs": "Zaizoluje a utěsní přímý spoj potrubí UNO, DUO a QUADRO pod zemí. Obsahuje dvě poloviny z HDPE, izolaci z minerální vlny a těsnění. Teplem smrštitelné návleky se objednávají samostatně.",
   "subory": [],
   "pocet_variantov": 2,
   "tabulky": [
    {
-    "head": [
-     "Kód",
-     "Microflex pipe with casing dout (mm)",
-     "L (mm)",
-     "W (mm)",
-     "H (mm)",
-     "Váha(kg)"
+    "hlavicky": [
+     "Obj. číslo",
+     "Plášť potrubia Ø",
+     "Dĺžka L",
+     "Šírka W",
+     "Výška H",
+     "Hmotnosť"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Plášť potrubí Ø",
+     "Délka L",
+     "Šířka W",
+     "Výška H",
+     "Hmotnost"
+    ],
+    "jednotky": [
+     null,
+     "mm",
+     "mm",
+     "mm",
+     "mm",
+     "kg"
+    ],
+    "riadky": [
      [
       "MM129075",
-      "125/90/75мм",
+      "125/90/75",
       "960",
       "290",
       "200",
@@ -2152,7 +3540,25 @@
      ],
      [
       "MM201612",
-      "200/160/125мм",
+      "200/160/125",
+      "1170",
+      "345",
+      "270",
+      "8,00"
+     ]
+    ],
+    "riadky_cs": [
+     [
+      "MM129075",
+      "125/90/75",
+      "960",
+      "290",
+      "200",
+      "5,50"
+     ],
+     [
+      "MM201612",
+      "200/160/125",
       "1170",
       "345",
       "270",
@@ -2166,50 +3572,96 @@
  },
  {
   "id": "izolacna-sada-i-variant",
-  "slug": "izolacna-sada-i-variant",
+  "slug": "izolacna-sada-priameho-spoja-rurova",
+  "slug_cs": "izolacni-sada-primeho-spoje-trubkova",
   "skupina": "izolacne-sady",
   "kategoria": "prislusenstvo",
-  "nazov": "Izolačná sada I variant",
-  "nazov_cs": "Izolační sada I variant",
+  "poradie": 6,
+  "nazov": "Izolačná sada priameho spoja, rúrová",
+  "nazov_cs": "Izolační sada přímého spoje, trubková",
   "nazov_watts": "Izolačná sada I variant",
-  "popis": "Zaručuje úplnú izoláciu a utesnenie priamych predĺžení rúr Uno, Duo a Quadro. Súprava obsahuje hladké čierne HDPE potrubie, izoláciu z minerálnej vlny, 2 zmršťovacie objímky, lepiacu pásku a montážny návod.",
-  "popis_cs": "Zaručuje naprostou izolaci a utěsnění přímých prodloužení trubek Uno, Duo a Quadro. Souprava obsahuje hladké černé HDPE potrubí, izolaci z minerální vlny, 2 smršťovací objímky, lepicí pásku a montážní návod.",
+  "popis": "Zaizoluje a utesní priamy spoj potrubí UNO, DUO a QUADRO. Sada obsahuje hladkú čiernu rúru z HDPE a izoláciu z minerálnej vlny.",
+  "popis_cs": "Zaizoluje a utěsní přímý spoj potrubí UNO, DUO a QUADRO. Sada obsahuje hladkou černou trubku z HDPE a izolaci z minerální vlny.",
   "subory": [],
   "pocet_variantov": 4,
   "tabulky": [
    {
-    "head": [
-     "Kód",
-     "Microflex pipe with casing dout (mm)",
-     "L (mm)",
-     "MM insulation kit dout (mm)",
-     "Váha (kg)"
+    "hlavicky": [
+     "Obj. číslo",
+     "Plášť potrubia Ø",
+     "Dĺžka L",
+     "Sada Ø vonk.",
+     "Hmotnosť"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Plášť potrubí Ø",
+     "Délka L",
+     "Sada Ø vnější",
+     "Hmotnost"
+    ],
+    "jednotky": [
+     null,
+     "mm",
+     "mm",
+     "mm",
+     "kg"
+    ],
+    "riadky": [
      [
       "MM75/90",
-      "75/90мм",
+      "75/90",
       "700",
       "110",
       "1,45"
      ],
      [
       "MM125",
-      "125мм",
+      "125",
       "850",
       "140",
       "2,50"
      ],
      [
       "MM160",
-      "160мм",
+      "160",
       "1000",
       "180",
       "5,45"
      ],
      [
       "MM200",
-      "200мм",
+      "200",
+      "1000",
+      "225",
+      "7,15"
+     ]
+    ],
+    "riadky_cs": [
+     [
+      "MM75/90",
+      "75/90",
+      "700",
+      "110",
+      "1,45"
+     ],
+     [
+      "MM125",
+      "125",
+      "850",
+      "140",
+      "2,50"
+     ],
+     [
+      "MM160",
+      "160",
+      "1000",
+      "180",
+      "5,45"
+     ],
+     [
+      "MM200",
+      "200",
       "1000",
       "225",
       "7,15"
@@ -2222,14 +3674,16 @@
  },
  {
   "id": "izolovana-suprava-t-kusu",
-  "slug": "izolovana-suprava-t-kusu",
+  "slug": "izolacna-sada-t-kusu",
+  "slug_cs": "izolacni-sada-t-kusu",
   "skupina": "izolacne-sady",
   "kategoria": "prislusenstvo",
-  "nazov": "Izolovaná súprava T-kusu",
-  "nazov_cs": "Izolovaná souprava T-kusu",
+  "poradie": 7,
+  "nazov": "Izolačná sada T-kusu",
+  "nazov_cs": "Izolační sada T-kusu",
   "nazov_watts": "Izolovaná súprava T-kusu",
-  "popis": "Zaručuje úplnú izoláciu a utesnenie odbočných spojov medzi rúrkami Uno, Duo a Quadro. Sada obsahuje 2 polovice z HDPE, izoláciu z minerálnej vlny, tesniacu sadu, skrutky z nehrdzavejúcej ocele a montážny návod. Teplom zmrštiteľné čiapky sa objednávajú osobitne!",
-  "popis_cs": "Zaručuje naprostou izolaci a utěsnění odbočných spojů mezi trubkami Uno, Duo a Quadro. Sada obsahuje 2 poloviny z HDPE, izolaci z minerální vlny, těsnicí sadu, šrouby z nerezové oceli a montážní návod. Teplem smrštitelné čepice se objednávají zvlášť!",
+  "popis": "Zaizoluje a utesní odbočku medzi potrubiami UNO, DUO a QUADRO pod zemou. Obsahuje dve polovice z HDPE, izoláciu z minerálnej vlny a tesnenia. Teplom zmrštiteľné návleky sa objednávajú samostatne.",
+  "popis_cs": "Zaizoluje a utěsní odbočku mezi potrubími UNO, DUO a QUADRO pod zemí. Obsahuje dvě poloviny z HDPE, izolaci z minerální vlny a těsnění. Teplem smrštitelné návleky se objednávají samostatně.",
   "subory": [
    {
     "nazov": "Katalóg Microflex (SK)",
@@ -2241,18 +3695,34 @@
   "pocet_variantov": 2,
   "tabulky": [
    {
-    "head": [
-     "Kód",
-     "Microflex pipe with casing dout (mm)",
-     "L (mm)",
-     "W (mm)",
-     "H (mm)",
-     "Váha (kg)"
+    "hlavicky": [
+     "Obj. číslo",
+     "Plášť potrubia Ø",
+     "Dĺžka L",
+     "Šírka W",
+     "Výška H",
+     "Hmotnosť"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Plášť potrubí Ø",
+     "Délka L",
+     "Šířka W",
+     "Výška H",
+     "Hmotnost"
+    ],
+    "jednotky": [
+     null,
+     "mm",
+     "mm",
+     "mm",
+     "mm",
+     "kg"
+    ],
+    "riadky": [
      [
       "MT129075",
-      "125/90/75мм",
+      "125/90/75",
       "960",
       "590",
       "200",
@@ -2260,7 +3730,25 @@
      ],
      [
       "MT201612",
-      "200/160/125мм",
+      "200/160/125",
+      "1170",
+      "750",
+      "270",
+      "11,65"
+     ]
+    ],
+    "riadky_cs": [
+     [
+      "MT129075",
+      "125/90/75",
+      "960",
+      "590",
+      "200",
+      "7,50"
+     ],
+     [
+      "MT201612",
+      "200/160/125",
       "1170",
       "750",
       "270",
@@ -2274,14 +3762,16 @@
  },
  {
   "id": "zateplene-koleno-90",
-  "slug": "zateplene-koleno-90",
+  "slug": "izolacna-sada-kolena-90",
+  "slug_cs": "izolacni-sada-kolena-90",
   "skupina": "izolacne-sady",
   "kategoria": "prislusenstvo",
-  "nazov": "Zateplené koleno 90 °",
-  "nazov_cs": "Zateplené koleno 90 °",
+  "poradie": 8,
+  "nazov": "Izolačná sada kolena 90°",
+  "nazov_cs": "Izolační sada kolena 90°",
   "nazov_watts": "Zateplené koleno 90 °",
-  "popis": "Zaručuje úplnú izoláciu a utesnenie kolmých spojení medzi rúrkami Uno, Duo a Quadro. Sada obsahuje 2 polovice z HDPE, izoláciu z minerálnej vlny, tesniacu sadu, skrutky z nehrdzavejúcej ocele a montážny návod. Teplom zmrštiteľné čiapky sa objednávajú osobitne!",
-  "popis_cs": "Zaručuje naprostou izolaci a utěsnění kolmých spojení mezi trubkami Uno, Duo a Quadro. Sada obsahuje 2 poloviny z HDPE, izolaci z minerální vlny, těsnicí sadu, šrouby z nerezové oceli a montážní návod. Teplem smrštitelné čepice se objednávají zvlášť!",
+  "popis": "Zaizoluje a utesní pravouhlé spojenie potrubí UNO, DUO a QUADRO pod zemou. Obsahuje dve polovice z HDPE, izoláciu z minerálnej vlny a tesnenia.",
+  "popis_cs": "Zaizoluje a utěsní pravoúhlé spojení potrubí UNO, DUO a QUADRO pod zemí. Obsahuje dvě poloviny z HDPE, izolaci z minerální vlny a těsnění.",
   "subory": [
    {
     "nazov": "Katalóg Microflex (SK)",
@@ -2293,15 +3783,41 @@
   "pocet_variantov": 1,
   "tabulky": [
    {
-    "head": [
-     "Kód",
-     "Microflex pipe with casing dout (mm)",
-     "L (mm)",
-     "W (mm)",
-     "H (mm)",
-     "Váha (kg)"
+    "hlavicky": [
+     "Obj. číslo",
+     "Plášť potrubia Ø",
+     "Dĺžka L",
+     "Šírka W",
+     "Výška H",
+     "Hmotnosť"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Plášť potrubí Ø",
+     "Délka L",
+     "Šířka W",
+     "Výška H",
+     "Hmotnost"
+    ],
+    "jednotky": [
+     null,
+     "mm",
+     "mm",
+     "mm",
+     "mm",
+     "kg"
+    ],
+    "riadky": [
+     [
+      "MH201612",
+      "200/160/125",
+      "740",
+      "740",
+      "270",
+      "7,50"
+     ]
+    ],
+    "riadky_cs": [
      [
       "MH201612",
       "200/160/125",
@@ -2318,14 +3834,16 @@
  },
  {
   "id": "izolovana-suprava-na-pripojenie-y",
-  "slug": "izolovana-suprava-na-pripojenie-y",
+  "slug": "izolacna-sada-y-kusu",
+  "slug_cs": "izolacni-sada-y-kusu",
   "skupina": "izolacne-sady",
   "kategoria": "prislusenstvo",
-  "nazov": "Izolovaná súprava na pripojenie Y",
-  "nazov_cs": "Izolovaná souprava pro připojení Y",
+  "poradie": 9,
+  "nazov": "Izolačná sada Y-kusu",
+  "nazov_cs": "Izolační sada Y-kusu",
   "nazov_watts": "Izolovaná súprava na pripojenie Y",
-  "popis": "Zaručuje úplnú izoláciu a utesnenie priamych predĺžení medzi rúrkami 1 Quadro a 2 Duo alebo 1 Duo až 2 Uno. Sada obsahuje 2 polovice z HDPE, izoláciu z minerálnej vlny, tesniacu sadu, skrutky z nehrdzavejúcej ocele a montážny návod.",
-  "popis_cs": "Zaručuje naprostou izolaci a utěsnění přímých prodloužení mezi trubkami 1 Quadro a 2 Duo nebo 1 Duo až 2 Uno. Sada obsahuje 2 poloviny z HDPE, izolaci z minerální vlny, těsnicí sadu, šrouby z nerezové oceli a montážní návod.",
+  "popis": "Zaizoluje a utesní prechod z jedného potrubia na dve: z QUADRO na dve DUO alebo z DUO na dve UNO. Obsahuje dve polovice z HDPE, izoláciu z minerálnej vlny a tesnenia.",
+  "popis_cs": "Zaizoluje a utěsní přechod z jednoho potrubí na dvě: z QUADRO na dvě DUO nebo z DUO na dvě UNO. Obsahuje dvě poloviny z HDPE, izolaci z minerální vlny a těsnění.",
   "subory": [
    {
     "nazov": "Katalóg Microflex (SK)",
@@ -2337,15 +3855,41 @@
   "pocet_variantov": 1,
   "tabulky": [
    {
-    "head": [
-     "Kód",
-     "Microflex pipe with casing dout (mm)",
-     "L (mm)",
-     "W (mm)",
-     "H (mm)",
-     "Váha (kg)"
+    "hlavicky": [
+     "Obj. číslo",
+     "Plášť potrubia Ø",
+     "Dĺžka L",
+     "Šírka W",
+     "Výška H",
+     "Hmotnosť"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Plášť potrubí Ø",
+     "Délka L",
+     "Šířka W",
+     "Výška H",
+     "Hmotnost"
+    ],
+    "jednotky": [
+     null,
+     "mm",
+     "mm",
+     "mm",
+     "mm",
+     "kg"
+    ],
+    "riadky": [
+     [
+      "MBR201612",
+      "200/160/125",
+      "1170",
+      "460",
+      "230",
+      "7,00"
+     ]
+    ],
+    "riadky_cs": [
      [
       "MBR201612",
       "200/160/125",
@@ -2362,27 +3906,47 @@
  },
  {
   "id": "mhm-zmrstovacia-buzirka-na-opravu",
-  "slug": "mhm-zmrstovacia-buzirka-na-opravu",
+  "slug": "navlek-mhm-na-opravu-plasta",
+  "slug_cs": "navlek-mhm-na-opravu-plaste",
   "skupina": "opravne-a-vystrazne-pasky",
   "kategoria": "prislusenstvo",
-  "nazov": "MHM Zmršťovacia bužírka na opravu",
-  "nazov_cs": "MHM Smršťovací bužírka na opravu",
+  "poradie": 1,
+  "nazov": "Návlek MHM na opravu plášťa",
+  "nazov_cs": "Návlek MHM na opravu pláště",
   "nazov_watts": "MHM Zmršťovacia bužírka na opravu",
-  "popis": "Priechodka steny MMDV obsahuje profilovanú HDPE rúrku a zmršťovaciu manžetu. Po zamurovaní potrubia (vyčnievajúceho 10 cm zo steny) sa potrubie Microflex privedie a utesní pomocou zmršťovacej manžety. Minimálna hrúbka steny je 40 cm.",
-  "popis_cs": "Průchodka stěny MMDV obsahuje profilovanou HDPE trubku a smršťovací manžetu. Po zazdění potrubí (vyčnívajícího 10 cm ze stěny) se potrubí Microflex přivede a utěsní pomocí smršťovací manžety. Minimální tloušťka stěny je 40 cm.",
+  "popis": "Teplom zmrštiteľný návlek na opravu náhodného lokálneho poškodenia vonkajšieho plášťa.",
+  "popis_cs": "Teplem smrštitelný návlek na opravu náhodného místního poškození vnějšího pláště.",
   "subory": [],
-  "pocet_variantov": 4,
+  "pocet_variantov": 3,
   "tabulky": [
    {
-    "head": [
-     "Kód",
-     "Popis"
+    "hlavicky": [
+     "Obj. číslo",
+     "Plášť potrubia Ø"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Plášť potrubí Ø"
+    ],
+    "jednotky": [
+     null,
+     "mm"
+    ],
+    "riadky": [
      [
-      "MMDV75/90",
-      "75/90"
+      "MHM125",
+      "125"
      ],
+     [
+      "MHM160",
+      "160"
+     ],
+     [
+      "MHM235",
+      "200"
+     ]
+    ],
+    "riadky_cs": [
      [
       "MHM125",
       "125"
@@ -2404,32 +3968,56 @@
  {
   "id": "opravna-paska",
   "slug": "opravna-paska",
+  "slug_cs": "opravna-paska",
   "skupina": "opravne-a-vystrazne-pasky",
   "kategoria": "prislusenstvo",
-  "nazov": "Opravna páska",
-  "nazov_cs": "Opravna páska",
+  "poradie": 2,
+  "nazov": "Opravná páska",
+  "nazov_cs": "Opravná páska",
   "nazov_watts": "Opravna páska",
-  "popis": "Používa sa na opravu náhodných miestnych poškodení vonkajšieho krytu.",
-  "popis_cs": "Používá se na opravu náhodných místních poškození vnějšího krytu.",
+  "popis": "Na opravu náhodného lokálneho poškodenia vonkajšieho plášťa: páska nanášaná za studena alebo teplom zmrštiteľná páska.",
+  "popis_cs": "Na opravu náhodného místního poškození vnějšího pláště: páska nanášená za studena nebo teplem smrštitelná páska.",
   "subory": [],
   "pocet_variantov": 2,
   "tabulky": [
    {
-    "head": [
-     "Kód",
-     "Opravna páska",
-     "L x W (m)"
+    "hlavicky": [
+     "Obj. číslo",
+     "Druh",
+     "Dĺžka × šírka"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Druh",
+     "Délka × šířka"
+    ],
+    "jednotky": [
+     null,
+     null,
+     "m"
+    ],
+    "riadky": [
      [
       "MHK150",
       "Páska nanášaná za studena",
-      "10 x 0,15"
+      "10 × 0,15"
      ],
      [
       "MHB200",
       "Teplom zmrštiteľná páska",
-      "10 x 0.20"
+      "10 × 0,20"
+     ]
+    ],
+    "riadky_cs": [
+     [
+      "MHK150",
+      "Páska nanášená za studena",
+      "10 × 0,15"
+     ],
+     [
+      "MHB200",
+      "Teplem smrštitelná páska",
+      "10 × 0,20"
      ]
     ]
    }
@@ -2440,22 +4028,32 @@
  {
   "id": "vystrazna-paska",
   "slug": "vystrazna-paska",
+  "slug_cs": "vystrazna-paska",
   "skupina": "opravne-a-vystrazne-pasky",
   "kategoria": "prislusenstvo",
+  "poradie": 3,
   "nazov": "Výstražná páska",
   "nazov_cs": "Výstražná páska",
   "nazov_watts": "Výstražná páska",
-  "popis": "Používa sa na zobrazenie umiestnenia podzemných potrubí počas výkopových prác. Páska sa umiestni do zákopov nad predizolovanou rúrou.",
-  "popis_cs": "Používá se k zobrazení umístění podzemních potrubí během výkopových prací. Páska se umístí do zákopů nad předizolovaného troubou.",
+  "popis": "Označí trasu podzemného potrubia pri neskorších výkopoch. Podľa postupu výrobcu sa kladie do výkopu nad potrubie po prvej vrstve zásypu.",
+  "popis_cs": "Označí trasu podzemního potrubí při pozdějších výkopech. Podle postupu výrobce se klade do výkopu nad potrubí po první vrstvě zásypu.",
   "subory": [],
   "pocet_variantov": 2,
   "tabulky": [
    {
-    "head": [
-     "Kód",
-     "Výstražná páska"
+    "hlavicky": [
+     "Obj. číslo",
+     "Nápis"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Nápis"
+    ],
+    "jednotky": [
+     null,
+     null
+    ],
+    "riadky": [
      [
       "MTRW",
       "Pozor: vodovodné potrubie (červené)"
@@ -2463,6 +4061,16 @@
      [
       "MTRB",
       "Pozor: vodovodné potrubie s vykurovacím káblom (modré)"
+     ]
+    ],
+    "riadky_cs": [
+     [
+      "MTRW",
+      "Pozor: vodovodní potrubí (červená)"
+     ],
+     [
+      "MTRB",
+      "Pozor: vodovodní potrubí s topným kabelem (modrá)"
      ]
     ]
    }
@@ -2472,14 +4080,16 @@
  },
  {
   "id": "micro-seal-pre-tlakovu-vodu",
-  "slug": "micro-seal-pre-tlakovu-vodu",
+  "slug": "tesnenie-micro-seal-prestup-stenou-pre-tlakovu-vodu",
+  "slug_cs": "tesneni-micro-seal-prostup-stenou-pro-tlakovou-vodu",
   "skupina": "prestupy-stenou",
   "kategoria": "prislusenstvo",
-  "nazov": "MICRO SEAL (pre tlakovú vodu)",
-  "nazov_cs": "MICRO SEAL (pro tlakovou vodu)",
+  "poradie": 1,
+  "nazov": "Tesnenie MICRO SEAL, prestup stenou pre tlakovú vodu",
+  "nazov_cs": "Těsnění MICRO SEAL, prostup stěnou pro tlakovou vodu",
   "nazov_watts": "MICRO SEAL (pre tlakovú vodu)",
-  "popis": "Toto tlakové vodotesné stenové tesnenie je možné nanášať priamo do vyvŕtaných otvorov a zamurovaných, plastových a vláknocementových priechodiek.Reťazec Micro Seal obsahuje množstvo článkov, ktoré sa pri utiahnutí roztiahnu a vytvoria veľmi tesné utesnenie.",
-  "popis_cs": "Toto tlakové vodotěsné stěnové těsnění lze nanášet přímo do vyvrtaných otvorů a zazděných, plastových a vláknocementových průchodek. Řetězec Micro Seal obsahuje množství článků, které se při utažení roztáhnou a vytvoří velmi těsné utěsnění.",
+  "popis": "Vodotesné tesnenie z článkov EPDM sa osadí priamo do vyvŕtaného otvoru alebo do zamurovanej plastovej či vláknocementovej priechodky a utiahne sa skrutkami.",
+  "popis_cs": "Vodotěsné těsnění z článků EPDM se osadí přímo do vyvrtaného otvoru nebo do zazděné plastové či vláknocementové průchodky a utáhne se šrouby.",
   "subory": [
    {
     "nazov": "Katalóg Microflex (SK)",
@@ -2491,77 +4101,157 @@
   "pocet_variantov": 0,
   "tabulky": [
    {
-    "head": [
-     "Kód",
-     "Otvor v stene (mm)",
-     "Micro seal Size Rubber A (mm)",
-     "Micro Seal size Length bolts B (mm)"
+    "hlavicky": [
+     "Obj. číslo",
+     "Otvor v stene",
+     "Guma A",
+     "Dĺžka skrutiek B"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Otvor ve stěně",
+     "Pryž A",
+     "Délka šroubů B"
+    ],
+    "jednotky": [
+     null,
+     "mm",
+     "mm",
+     "mm"
+    ],
+    "riadky": [
      [
       "9LS200",
-      "100 - 102",
-      "43,00",
+      "100–102",
+      "43",
       "75"
      ],
      [
       "7LS300",
-      "110 - 115",
-      "62,00",
+      "110–115",
+      "62",
       "100"
      ],
      [
       "8LS300",
-      "128 - 132",
-      "62,00",
+      "128–132",
+      "62",
       "100"
      ],
      [
       "9LS315",
-      "134 - 136",
-      "62,00",
+      "134–136",
+      "62",
       "100"
      ],
      [
       "7LS475",
-      "194 - 210",
-      "84,00",
+      "194–210",
+      "84",
       "135"
      ],
      [
       "6LS325",
-      "175 - 180",
-      "65,00",
+      "175–180",
+      "65",
       "125"
      ],
      [
       "7LS400",
-      "240 - 245",
-      "86,00",
+      "240–245",
+      "86",
       "135"
      ],
      [
       "13LS300",
-      "200 - 202",
-      "62,00",
+      "200–202",
+      "62",
       "100"
      ],
      [
       "9LS325",
-      "250 - 255",
-      "65,00",
+      "250–255",
+      "65",
       "125"
      ],
      [
       "8LS400",
-      "275 - 282",
-      "86,00",
+      "275–282",
+      "86",
       "135"
      ],
      [
       "10LS575",
-      "301 - 320",
-      "96,00",
+      "301–320",
+      "96",
+      "145"
+     ]
+    ],
+    "riadky_cs": [
+     [
+      "9LS200",
+      "100–102",
+      "43",
+      "75"
+     ],
+     [
+      "7LS300",
+      "110–115",
+      "62",
+      "100"
+     ],
+     [
+      "8LS300",
+      "128–132",
+      "62",
+      "100"
+     ],
+     [
+      "9LS315",
+      "134–136",
+      "62",
+      "100"
+     ],
+     [
+      "7LS475",
+      "194–210",
+      "84",
+      "135"
+     ],
+     [
+      "6LS325",
+      "175–180",
+      "65",
+      "125"
+     ],
+     [
+      "7LS400",
+      "240–245",
+      "86",
+      "135"
+     ],
+     [
+      "13LS300",
+      "200–202",
+      "62",
+      "100"
+     ],
+     [
+      "9LS325",
+      "250–255",
+      "65",
+      "125"
+     ],
+     [
+      "8LS400",
+      "275–282",
+      "86",
+      "135"
+     ],
+     [
+      "10LS575",
+      "301–320",
+      "96",
       "145"
      ]
     ]
@@ -2572,14 +4262,16 @@
  },
  {
   "id": "priechodka-steny-mmdv-pre-vodu-bez-tlaku",
-  "slug": "priechodka-steny-mmdv-pre-vodu-bez-tlaku",
+  "slug": "stenova-priechodka-mmdv-netlakova-voda",
+  "slug_cs": "stenova-pruchodka-mmdv-beztlakova-voda",
   "skupina": "prestupy-stenou",
   "kategoria": "prislusenstvo",
-  "nazov": "Priechodka steny MMDV (pre vodu bez tlaku)",
-  "nazov_cs": "Průchodka stěny MMDV (pro vodu bez tlaku)",
+  "poradie": 2,
+  "nazov": "Stenová priechodka MMDV, netlaková voda",
+  "nazov_cs": "Stěnová průchodka MMDV, beztlaková voda",
   "nazov_watts": "Priechodka steny MMDV (pre vodu bez tlaku)",
-  "popis": "Priechodka steny MMDV obsahuje profilovanú HDPE rúrku a zmršťovaciu manžetu. Po zamurovaní potrubia (vyčnievajúceho 10 cm zo steny) sa potrubie Microflex privedie a utesní pomocou zmršťovacej manžety. Minimálna hrúbka steny je 40 cm.",
-  "popis_cs": "Průchodka stěny MMDV obsahuje profilovanou HDPE trubku a smršťovací manžetu. Po zazdění potrubí (vyčnívajícího 10 cm ze stěny) se potrubí Microflex přivede a utěsní pomocí smršťovací manžety. Minimální tloušťka stěny je 40 cm.",
+  "popis": "Profilovaná rúra z HDPE so zmršťovacou manžetou. Priechodka sa zamuruje, potrubie Microflex cez ňu prejde a manžeta ho utesní.",
+  "popis_cs": "Profilovaná trubka z HDPE se smršťovací manžetou. Průchodka se zazdí, potrubí Microflex jí projde a manžeta ho utěsní.",
   "subory": [
    {
     "nazov": "Katalóg Microflex (SK)",
@@ -2591,44 +4283,76 @@
   "pocet_variantov": 4,
   "tabulky": [
    {
-    "head": [
-     "Kód",
-     "Rúrka Microflex s doutom plášťa (mm)",
-     "Nástenné priechodné potrubie dout (mm)",
-     "Otvor na stenu (mm)"
+    "hlavicky": [
+     "Obj. číslo",
+     "Plášť potrubia Ø",
+     "Priechodka Ø vonk.",
+     "Otvor v stene"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Plášť potrubí Ø",
+     "Průchodka Ø vnější",
+     "Otvor ve stěně"
+    ],
+    "jednotky": [
+     null,
+     "mm",
+     "mm",
+     "mm"
+    ],
+    "riadky": [
      [
       "MMDV75/90",
-      "75/90мм",
+      "75/90",
       "110",
       "210"
      ],
      [
       "MMDV125",
-      "125мм",
+      "125",
       "160",
       "260"
      ],
      [
       "MMDV160",
-      "160мм",
+      "160",
       "200",
       "300"
      ],
      [
       "MMDV200",
-      "200мм",
+      "200",
+      "235",
+      "350"
+     ]
+    ],
+    "riadky_cs": [
+     [
+      "MMDV75/90",
+      "75/90",
+      "110",
+      "210"
+     ],
+     [
+      "MMDV125",
+      "125",
+      "160",
+      "260"
+     ],
+     [
+      "MMDV160",
+      "160",
+      "200",
+      "300"
+     ],
+     [
+      "MMDV200",
+      "200",
       "235",
       "350"
      ]
     ]
-   },
-   {
-    "head": [
-     ""
-    ],
-    "rows": []
    }
   ],
   "zdroj_url": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/wall-feed-throughs/wall-feed-throuhg-mmvd",
@@ -2636,14 +4360,16 @@
  },
  {
   "id": "tesnenie-na-prienik-na-stenu-micro-press",
-  "slug": "tesnenie-na-prienik-na-stenu-micro-press",
+  "slug": "tesnenie-micro-press-prestup-stenou",
+  "slug_cs": "tesneni-micro-press-prostup-stenou",
   "skupina": "prestupy-stenou",
   "kategoria": "prislusenstvo",
-  "nazov": "Tesnenie na prienik na stenu MICRO PRESS",
-  "nazov_cs": "Těsnění na průnik na stěnu MICRO PRESS",
+  "poradie": 3,
+  "nazov": "Tesnenie MICRO PRESS, prestup stenou",
+  "nazov_cs": "Těsnění MICRO PRESS, prostup stěnou",
   "nazov_watts": "Tesnenie na prienik na stenu MICRO PRESS",
-  "popis": "Penetrácia steny Tesnenie MICRO PRESS pre predizolovaný potrubný systém s plášťom z PE. Verzie pre všetky veľkosti a priemery rúrok Microflex: 2x40 a 1x40 mm. Extra mäkká guma pre nízky uťahovací moment s malým nebezpečenstvom deformácie rúr. Schválenie MFPA do 5 barov. Ľahká inštalácia umožňujúca pohyb potrubia.",
-  "popis_cs": "Penetrace stěny Těsnění MICRO PRESS pro předizolovaného potrubní systém s pláštěm z PE. Verze pro všechny velikosti a průměry trubek Microflex: 2x40 a 1x40 mm. Extra měkká guma pro nízký utahovací moment s malým nebezpečím deformace trubek. Schválení MFPA do 5 barů. Snadná instalace umožňující pohyb potrubí.",
+  "popis": "Tesnenie prestupu stenou pre predizolované potrubie s plášťom z PE, vo verziách pre všetky priemery plášťov Microflex.",
+  "popis_cs": "Těsnění prostupu stěnou pro předizolované potrubí s pláštěm z PE, ve verzích pro všechny průměry plášťů Microflex.",
   "subory": [
    {
     "nazov": "Katalóg Microflex (SK)",
@@ -2655,12 +4381,49 @@
   "pocet_variantov": 5,
   "tabulky": [
    {
-    "head": [
-     "Kód",
-     "Outer casing Ø out (mm)",
-     "Core hole/ wallsleeve (mm)"
+    "hlavicky": [
+     "Obj. číslo",
+     "Plášť potrubia Ø",
+     "Otvor v stene"
     ],
-    "rows": [
+    "hlavicky_cs": [
+     "Obj. číslo",
+     "Plášť potrubí Ø",
+     "Otvor ve stěně"
+    ],
+    "jednotky": [
+     null,
+     "mm",
+     "mm"
+    ],
+    "riadky": [
+     [
+      "M10627",
+      "75",
+      "125"
+     ],
+     [
+      "M10634",
+      "90",
+      "150"
+     ],
+     [
+      "M10643",
+      "125",
+      "200"
+     ],
+     [
+      "M10653",
+      "160",
+      "250"
+     ],
+     [
+      "M10657",
+      "200",
+      "250"
+     ]
+    ],
+    "riadky_cs": [
      [
       "M10627",
       "75",

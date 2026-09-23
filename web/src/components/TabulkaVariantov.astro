@@ -70,7 +70,7 @@ const maVykon = ma('vykon_kw');
           <tr data-rury={priemery(v).join(' ')} data-izolacia={v.izolacia ?? ''}>
             <td class="code"><span class="tv-kod-obal">
               <span class="tv-kod">{v.obj_cislo}</span>
-              <button type="button" class="tv-kopia" data-kopia={v.obj_cislo} aria-label={`${tx.kopirovat} ${v.obj_cislo}`} title={tx.kopirovat}><Ikona nazov="copy" velkost={15} /></button>
+              <button type="button" class="kopia" data-kopia={v.obj_cislo} aria-label={`${tx.kopirovat} ${v.obj_cislo}`} title={tx.kopirovat}><Ikona nazov="copy" velkost={15} /></button>
             </span></td>
             {maRuru && <td class:list={['right', { viac: ruraText(v).includes('+') }]} data-l={ui.tabulka.rura}>{ruraText(v)}</td>}
             {ma('dn') && <td data-l={ui.tabulka.dn}>{v.dn ?? ''}</td>}
@@ -95,7 +95,6 @@ const maVykon = ma('vykon_kw');
     {!ma('plast_mm') && <p>{tx.bezPlasta}</p>}
     <p>{zKatalogu ? tx.zdrojStrana(strany[0]) : <>{ui.common.zdroj} {datum(stiahnute, lang)}. <a href={zdroj} target="_blank" rel="noopener">{ui.common.strankaVyrobcu}</a>.</>}</p>
   </div>
-  <p class="tv-toast" role="status" aria-live="polite" data-toast data-text={tx.skopirovane('{k}')}></p>
 </div>
 
 <style>
@@ -111,10 +110,6 @@ const maVykon = ma('vykon_kw');
   .tv-tab tbody tr[hidden] { display: none; }
   .tv-tab td.code { padding-block: 8px; }
   .tv-kod-obal { display: flex; align-items: center; gap: 6px; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 15px; letter-spacing: 0.01em; color: var(--color-blue-900); }
-  .tv-kopia { display: inline-grid; place-items: center; width: 30px; height: 30px; border: 0; border-radius: 8px; background: transparent; color: var(--color-ink-soft); cursor: pointer; opacity: 0.55; transition: opacity 150ms var(--ease-soft), background-color 150ms var(--ease-soft), color 150ms var(--ease-soft); }
-  tr:hover .tv-kopia, .tv-kopia:focus-visible { opacity: 1; }
-  .tv-kopia:hover { background: var(--color-blue-100); color: var(--color-blue-700); }
-  .tv-kopia.ok { opacity: 1; color: #1f8a4c; }
   .tv-iz { display: inline-flex; align-items: center; gap: 7px; }
   .tv-iz::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--color-grey-300); }
   .tv-iz.zos::before { background: var(--color-blue-700); box-shadow: 0 0 0 3px rgb(0 93 185 / 0.15); }
@@ -123,8 +118,6 @@ const maVykon = ma('vykon_kw');
 
   .tv-pozn { padding: 14px 26px 22px; border-top: 1px solid rgb(10 42 94 / 0.08); font-size: 13px; line-height: 1.5; color: var(--color-ink-soft); }
   .tv-pozn p + p { margin-top: 4px; }
-  .tv-toast { position: fixed; left: 50%; bottom: 24px; z-index: 60; transform: translate(-50%, 16px); padding: 10px 18px; border-radius: 12px; background: var(--color-blue-900); color: #fff; font-size: 14px; font-weight: 500; box-shadow: 0 16px 40px -12px rgb(11 27 51 / 0.5); opacity: 0; pointer-events: none; transition: opacity 200ms var(--ease-soft), transform 200ms var(--ease-soft); }
-  .tv-toast.on { opacity: 1; transform: translate(-50%, 0); }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 
   /* Mobil: variant ako karta, obj. číslo a e-shop na jednom riadku, údaje v dvoch stĺpcoch. */
@@ -143,8 +136,7 @@ const maVykon = ma('vykon_kw');
     .tv-tab td.code { grid-column: 1 / 3; padding: 0; }
     .tv-kod-obal { font-size: 17px; }
     .tv-tab td.tv-shop { grid-column: 3; grid-row: 1; justify-self: end; align-self: center; white-space: nowrap; }
-    .tv-kopia { opacity: 1; }
-    .tv-pozn { padding: 14px 18px 20px; }
+      .tv-pozn { padding: 14px 18px 20px; }
   }
 </style>
 
@@ -155,7 +147,6 @@ const maVykon = ma('vykon_kw');
       tv.dataset.init = '1';
       const riadky = [...tv.querySelectorAll<HTMLTableRowElement>('tbody tr')];
       const pocet = tv.querySelector<HTMLElement>('[data-pocet]');
-      const toast = tv.querySelector<HTMLElement>('[data-toast]');
       const stav = { rura: '', izolacia: '' };
       const obnov = () => {
         let n = 0;
@@ -172,21 +163,6 @@ const maVykon = ma('vykon_kw');
           stav[kluc] = b.dataset[kluc] ?? '';
           tv.querySelectorAll<HTMLButtonElement>(`[data-${kluc}]`).forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
           obnov();
-        });
-      });
-      let casovac = 0;
-      tv.querySelectorAll<HTMLButtonElement>('[data-kopia]').forEach((b) => {
-        b.addEventListener('click', async () => {
-          const kod = b.dataset.kopia ?? '';
-          try { await navigator.clipboard.writeText(kod); } catch { return; }
-          b.classList.add('ok');
-          setTimeout(() => b.classList.remove('ok'), 1400);
-          if (toast) {
-            toast.textContent = (toast.dataset.text ?? '').replace('{k}', kod);
-            toast.classList.add('on');
-            clearTimeout(casovac);
-            casovac = window.setTimeout(() => toast.classList.remove('on'), 1800);
-          }
         });
       });
     });

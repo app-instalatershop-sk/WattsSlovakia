@@ -1,0 +1,11 @@
+---
+import Produkt from '../../templates/Produkt.astro';
+import { getCollection } from 'astro:content';
+import { kategoriaPodlaSlugu } from '../../lib/katalog';
+export async function getStaticPaths() {
+  const k = (await kategoriaPodlaSlugu('spojky'))!;
+  return (await getCollection('produkty')).map((p) => p.data).filter((p) => p.kategoria === k.id).map((p) => ({ params: { produkt: p.slug }, props: { k, p } }));
+}
+const { k, p } = Astro.props;
+---
+<Produkt lang="sk" k={k} p={p} />

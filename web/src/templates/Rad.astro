@@ -13,6 +13,8 @@ import Ikona from '../components/Ikona.astro';
 import TabulkaVariantov from '../components/TabulkaVariantov.astro';
 import Subory from '../components/Subory.astro';
 import KartaReferencie from '../components/KartaReferencie.astro';
+import CastiStranky from '../components/CastiStranky.astro';
+import Kopirovanie from '../components/Kopirovanie.astro';
 import { kategorie, radyKategorie, variantyRadu, cestaKategorie, cestaRadu, cestaProduktu, alternatyRadu, kKratky, rNazov, rKratky, rMedium, rOznacenie, pNazov, cislo, rozsah, rozsahRur, tlakText, type Kategoria, type Rad } from '../lib/katalog';
 import { piktogram, fotkaRadu, detail } from '../lib/obrazky';
 import { sadzba } from '../lib/sadzba';
@@ -106,11 +108,7 @@ const productLd = [{
   </Hlava>
 
   <div class="telo">
-    {casti.length > 2 && (
-      <nav class="casti" aria-label={tx.navLabel} data-casti>
-        <ul>{casti.map((c) => <li><a href={`#${c.id}`}>{c.text}</a></li>)}</ul>
-      </nav>
-    )}
+    {casti.length > 2 && <CastiStranky casti={casti} label={tx.navLabel} />}
 
     <section class="wrap cast" id="varianty" aria-labelledby="h-var">
       <div class="s-hlava">
@@ -200,6 +198,7 @@ const productLd = [{
     <p class="wrap oznacenie"><span>{tx.oznacenie}:</span> {rOznacenie(r, lang)}</p>
   </div>
   <Zaver lang={lang} />
+  <Kopirovanie lang={lang} />
 </Base>
 
 <style>
@@ -209,13 +208,6 @@ const productLd = [{
   .hlava-sestry { margin-top: 20px; font-size: 14.5px; color: var(--color-ink-soft); }
   .hlava-sestry a { font-weight: 600; }
 
-  /* Časti stránky: plávajúci pás pod hlavičkou, aktívna časť sa podsvieti. */
-  .casti { position: sticky; top: 74px; z-index: 12; display: flex; justify-content: center; margin: -8px var(--gutter) 40px; pointer-events: none; }
-  .casti ul { pointer-events: auto; display: flex; gap: 4px; padding: 5px; border-radius: 14px; background: rgb(255 255 255 / 0.82); backdrop-filter: saturate(1.5) blur(12px); -webkit-backdrop-filter: saturate(1.5) blur(12px); box-shadow: 0 1px 0 rgb(10 42 94 / 0.06), 0 14px 34px -18px rgb(10 42 94 / 0.45); overflow-x: auto; scrollbar-width: none; max-width: 100%; }
-  .casti a { display: block; padding: 9px 14px; border-radius: 10px; color: var(--color-ink-soft); font-weight: 500; font-size: 14.5px; white-space: nowrap; transition: color 150ms var(--ease-soft), background-color 200ms var(--ease-soft); }
-  .casti a:hover { color: var(--color-ink); }
-  .casti a.on { background: var(--color-blue-900); color: #fff; }
-  .cast { scroll-margin-top: 150px; }
 
   .prazdne { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; padding: 28px; }
 
@@ -269,37 +261,7 @@ const productLd = [{
   .oznacenie { margin-top: 56px !important; font-size: 13px; color: var(--color-ink-soft); }
   .oznacenie span { color: var(--color-ink); font-weight: 500; }
 
-  @media (max-width: 900px) { .stavba, .refs { grid-template-columns: minmax(0, 1fr); } .casti { justify-content: flex-start; margin-inline: 0; padding-inline: var(--gutter); } }
+  @media (max-width: 900px) { .stavba, .refs { grid-template-columns: minmax(0, 1fr); } }
   @media (max-width: 760px) { .lupy { padding-left: 0; } .lupa { grid-template-columns: 76px minmax(0, 1fr); gap: 16px; align-items: start; padding: 18px; } .lupa-okno { width: 76px; height: 76px; margin: 0; box-shadow: 0 0 0 4px #fff, 0 0 0 6px var(--ring), 0 14px 26px -12px rgb(11 27 51 / 0.5); } .stavba-foto + .lupy { margin-top: -16px; } }
-  @media (max-width: 760px) { .casti { top: 66px; margin-bottom: 28px; } .casti a { padding: 8px 12px; font-size: 14px; } .stavba-karta { padding: 22px 20px 18px; } .dl-harok { padding: 4px 18px 8px; } .cast { scroll-margin-top: 130px; } }
+  @media (max-width: 760px) { .stavba-karta { padding: 22px 20px 18px; } .dl-harok { padding: 4px 18px 8px; } }
 </style>
-
-<script>
-  function initCasti() {
-    const nav = document.querySelector<HTMLElement>('[data-casti]');
-    if (!nav || nav.dataset.init) return;
-    nav.dataset.init = '1';
-    const odkazy = [...nav.querySelectorAll<HTMLAnchorElement>('a')];
-    const casti = odkazy.map((a) => document.querySelector<HTMLElement>(a.getAttribute('href')!)).filter((x): x is HTMLElement => Boolean(x));
-    const ul = nav.querySelector<HTMLElement>('ul')!;
-    let predtym: HTMLElement | undefined;
-    const aktivuj = () => {
-      const y = window.scrollY + window.innerHeight * 0.3;
-      let akt = casti[0];
-      for (const c of casti) if (c.getBoundingClientRect().top + window.scrollY <= y) akt = c;
-      if (akt === predtym) return;
-      predtym = akt;
-      odkazy.forEach((a) => {
-        const on = a.getAttribute('href') === `#${akt?.id}`;
-        a.classList.toggle('on', on);
-        if (on) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
-        // Na úzkej obrazovke sa pás posunie tak, aby aktívna časť bola viditeľná.
-        if (on && ul.scrollWidth > ul.clientWidth) ul.scrollTo({ left: a.offsetLeft - (ul.clientWidth - a.offsetWidth) / 2, behavior: 'smooth' });
-      });
-    };
-    window.addEventListener('scroll', aktivuj, { passive: true });
-    aktivuj();
-  }
-  initCasti();
-  document.addEventListener('astro:page-load', initCasti);
-</script>

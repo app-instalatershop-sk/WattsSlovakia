@@ -1,0 +1,39 @@
+---
+/**
+ * Kopírovanie obj. čísla: každé tlačidlo s data-kopia na stránke skopíruje svoj kód do schránky
+ * a krátko ukáže potvrdenie. Stačí raz na stránku (tabuľka variantov aj tabuľka produktu).
+ */
+import { stranky } from '../content/stranky';
+import type { Lang } from '../i18n/ui';
+interface Props { lang: Lang }
+const tx = stranky(Astro.props.lang).rad;
+---
+<p class="kopia-toast" role="status" aria-live="polite" data-kopia-toast data-text={tx.skopirovane('{k}')}></p>
+
+<style>
+  .kopia-toast { position: fixed; left: 50%; bottom: 24px; z-index: 60; transform: translate(-50%, 16px); padding: 10px 18px; border-radius: 12px; background: var(--color-blue-900); color: #fff; font-size: 14px; font-weight: 500; box-shadow: 0 16px 40px -12px rgb(11 27 51 / 0.5); opacity: 0; pointer-events: none; transition: opacity 200ms var(--ease-soft), transform 200ms var(--ease-soft); }
+  .kopia-toast.on { opacity: 1; transform: translate(-50%, 0); }
+  :global(.kopia) { display: inline-grid; place-items: center; width: 30px; height: 30px; border: 0; border-radius: 8px; background: transparent; color: var(--color-ink-soft); cursor: pointer; opacity: 0.55; transition: opacity 150ms var(--ease-soft), background-color 150ms var(--ease-soft), color 150ms var(--ease-soft); }
+  :global(tr:hover .kopia), :global(.kopia:focus-visible) { opacity: 1; }
+  :global(.kopia:hover) { background: var(--color-blue-100); color: var(--color-blue-700); }
+  :global(.kopia.ok) { opacity: 1; color: #1f8a4c; }
+  @media (max-width: 760px) { :global(.kopia) { opacity: 1; } }
+</style>
+
+<script>
+  let casovac = 0;
+  document.addEventListener('click', async (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-kopia]');
+    if (!b) return;
+    const kod = b.dataset.kopia ?? '';
+    try { await navigator.clipboard.writeText(kod); } catch { return; }
+    b.classList.add('ok');
+    setTimeout(() => b.classList.remove('ok'), 1400);
+    const toast = document.querySelector<HTMLElement>('[data-kopia-toast]');
+    if (!toast) return;
+    toast.textContent = (toast.dataset.text ?? '').replace('{k}', kod);
+    toast.classList.add('on');
+    clearTimeout(casovac);
+    casovac = window.setTimeout(() => toast.classList.remove('on'), 1800);
+  });
+</script>

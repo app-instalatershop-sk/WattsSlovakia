@@ -1,0 +1,51 @@
+---
+/**
+ * Plávajúci pás s časťami stránky pod hlavičkou. Aktívna časť sa podsvieti podľa posúvania;
+ * na úzkej obrazovke sa pás posunie tak, aby bola aktívna časť viditeľná. Sekcie potrebujú id
+ * a triedu .cast (odsadenie pri skoku na kotvu).
+ */
+interface Props { casti: { id: string; text: string }[]; label: string }
+const { casti, label } = Astro.props;
+---
+<nav class="casti" aria-label={label} data-casti>
+  <ul>{casti.map((c) => <li><a href={`#${c.id}`}>{c.text}</a></li>)}</ul>
+</nav>
+
+<style>
+  .casti { position: sticky; top: 74px; z-index: 12; display: flex; justify-content: center; margin: -8px var(--gutter) 40px; pointer-events: none; }
+  .casti ul { pointer-events: auto; display: flex; gap: 4px; padding: 5px; border-radius: 14px; background: rgb(255 255 255 / 0.82); backdrop-filter: saturate(1.5) blur(12px); -webkit-backdrop-filter: saturate(1.5) blur(12px); box-shadow: 0 1px 0 rgb(10 42 94 / 0.06), 0 14px 34px -18px rgb(10 42 94 / 0.45); overflow-x: auto; scrollbar-width: none; max-width: 100%; }
+  .casti a { display: block; padding: 9px 14px; border-radius: 10px; color: var(--color-ink-soft); font-weight: 500; font-size: 14.5px; white-space: nowrap; transition: color 150ms var(--ease-soft), background-color 200ms var(--ease-soft); }
+  .casti a:hover { color: var(--color-ink); }
+  .casti a.on { background: var(--color-blue-900); color: #fff; }
+  @media (max-width: 900px) { .casti { justify-content: flex-start; margin-inline: 0; padding-inline: var(--gutter); } }
+  @media (max-width: 760px) { .casti { top: 66px; margin-bottom: 28px; } .casti a { padding: 8px 12px; font-size: 14px; } }
+</style>
+
+<script>
+  function initCasti() {
+    const nav = document.querySelector<HTMLElement>('[data-casti]');
+    if (!nav || nav.dataset.init) return;
+    nav.dataset.init = '1';
+    const ul = nav.querySelector<HTMLElement>('ul')!;
+    const odkazy = [...nav.querySelectorAll<HTMLAnchorElement>('a')];
+    const casti = odkazy.map((a) => document.querySelector<HTMLElement>(a.getAttribute('href')!)).filter((x): x is HTMLElement => Boolean(x));
+    let predtym: HTMLElement | undefined;
+    const aktivuj = () => {
+      const y = window.scrollY + window.innerHeight * 0.3;
+      let akt = casti[0];
+      for (const c of casti) if (c.getBoundingClientRect().top + window.scrollY <= y) akt = c;
+      if (akt === predtym) return;
+      predtym = akt;
+      odkazy.forEach((a) => {
+        const on = a.getAttribute('href') === `#${akt?.id}`;
+        a.classList.toggle('on', on);
+        if (on) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+        if (on && ul.scrollWidth > ul.clientWidth) ul.scrollTo({ left: a.offsetLeft - (ul.clientWidth - a.offsetWidth) / 2, behavior: 'smooth' });
+      });
+    };
+    window.addEventListener('scroll', aktivuj, { passive: true });
+    aktivuj();
+  }
+  initCasti();
+  document.addEventListener('astro:page-load', initCasti);
+</script>

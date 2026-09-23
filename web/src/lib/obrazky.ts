@@ -19,3 +19,7 @@ export const piktogram = (subor: string | null | undefined) => najdi(piktogramy,
 export const fotka = (subor: string | null | undefined) => najdi(fotky, subor);
 export const detail = (subor: string | null | undefined) => najdi(detaily, subor);
 export const fotkaReferencie = (subor: string | null | undefined) => najdi(referencie, subor);
+
+/** Fotky spojok a príslušenstva z galérie watts.eu (biele pozadie), podľa id produktu. */
+const produkty = import.meta.glob<{ default: ImageMetadata }>('/src/assets/produkty/*.jpg', { eager: true });
+export const fotkaProduktu = (id: string) => najdi(produkty, `${id}.jpg`);

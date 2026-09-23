@@ -254,6 +254,15 @@ def _bunka(text, stlpec):
     s = re.sub(r'(\d)\s+-\s+(\d)', '\\1–\\2', s)  # rozsah „100 - 102“ → „100–102“
     if stlpec == 'Rúra PE-X, Ø × hrúbka':
         s = re.sub(r'(\d+)\s*/\s*(\d+(?:,\d+)?)', r'\1 × \2', s)
+    # závity: „11/2“ → „1 1/2″“, „3/4″FF“ → „3/4″ FF“, „1″Mx3/4″F“ → „1″ M × 3/4″ F“
+    s = s.replace('“', '″')
+    s = re.sub(r'(?<![\d/])(\d)(1/[24])″', r'\1 \2″', s)
+    s = re.sub(r'(\d)″ 1/2″', r'\1 1/2″', s)
+    s = re.sub(r'″\s*(FFF|FF|MF|MM|M|F)(?=\s|x|×|$)', r'″ \1', s)
+    s = re.sub(r'″ ([MF]+)\s*[x×]\s*', r'″ \1 × ', s)
+    s = re.sub(r'\s*\+\s*', ' + ', s)
+    if stlpec == 'Závit' and re.fullmatch(r'\d × \d', s):
+        s += '″'  # „2 × 1“ bez značky palca
     s = s.replace(' to ', ' na ').replace(' reduction', '')
     return s
 

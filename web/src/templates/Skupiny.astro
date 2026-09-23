@@ -1,45 +1,90 @@
 ---
+/**
+ * Spojky alebo príslušenstvo: hlava s obrazom montáže, plávajúca navigácia po skupinách, v každej
+ * skupine karty produktov s fotkou výrobcu. Na konci odkaz na druhú polovicu dielov a záver.
+ */
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import { radyKategorie, alternatyKategorie, kNazov, kKratky, kPopis, rNazov, pNazov, type Kategoria } from '../lib/katalog';
-import { fotkaRadu } from '../lib/obrazky';
-import { type Lang, t } from '../i18n/ui';
+import Hlava from '../components/Hlava.astro';
+import Zaver from '../components/Zaver.astro';
+import Ikona from '../components/Ikona.astro';
+import CastiStranky from '../components/CastiStranky.astro';
+import KartaProduktu from '../components/KartaProduktu.astro';
+import { kategorie, radyKategorie, alternatyKategorie, cestaKategorie, cestaProduktu, kNazov, kKratky, kPopis, rNazov, rKratky, type Kategoria } from '../lib/katalog';
+import { kodyProduktu, kratkyNazovSkupiny } from '../lib/produkty';
+import { fotka } from '../lib/obrazky';
+import { sadzba } from '../lib/sadzba';
+import { stranky } from '../content/stranky';
+import type { Lang } from '../i18n/ui';
 
 interface Props { lang: Lang; k: Kategoria }
 const { lang, k } = Astro.props;
-const ui = t(lang);
+const tx = stranky(lang).skupiny;
+const jeSpojky = k.typ === 'spojky';
 const skupiny = await radyKategorie(k.id);
-const produkty = (await getCollection('produkty')).map((p) => p.data).filter((p) => p.kategoria === k.id);
+const produkty = (await getCollection('produkty')).map((p) => p.data).filter((p) => p.kategoria === k.id).sort((a, b) => a.poradie - b.poradie);
+const druha = (await kategorie()).find((x) => x.typ === (jeSpojky ? 'prislusenstvo' : 'spojky'))!;
+const pocetKodov = produkty.reduce((n, p) => n + kodyProduktu(p).length, 0);
+const fakty: [string, string][] = [
+  ['Produkty', String(produkty.length)],
+  ['Obj. čísla', String(pocetKodov)],
+  ...(jeSpojky ? tx.faktSpojky : tx.faktPrislusenstvo),
+];
+const obraz = fotka(jeSpojky ? 'montaz-odbocka.jpg' : 'vykop-spojky.jpg');
+const casti = skupiny.map((s) => ({ id: s.id, text: kratkyNazovSkupiny(rNazov(s, lang)) }));
+const druhaObraz = fotka(jeSpojky ? 'vykop-spojky.jpg' : 'montaz-odbocka.jpg');
 ---
-<Base lang={lang} alternates={alternatyKategorie(k)} title={kNazov(k, lang)} description={kPopis(k, lang)} aktivna="potrubia" drobceky={[{ text: kKratky(k, lang) }]}>
-  <div class="wrap">
-    <div class="head"><h1>{kNazov(k, lang)}</h1><p class="lead">{kPopis(k, lang)}</p></div>
-    <div class="groups">
-      {skupiny.map((s) => { const img = fotkaRadu(s.fotka); const ps = produkty.filter((p) => p.skupina === s.id); return (
-        <section class="group" aria-labelledby={`h-${s.id}`}>
-          <div class="plate">{img && <Image src={img} alt="" widths={[240, 480]} sizes="200px" />}</div>
-          <div>
-            <h2 id={`h-${s.id}`}>{rNazov(s, lang)}</h2>
-            <ul class="products">
-              {ps.map((p) => <li><span>{pNazov(p, lang)}</span>{p.pocet_variantov > 0 && <span class="muted">{ui.sklonovanie.dimenzii(p.pocet_variantov)}</span>}</li>)}
-            </ul>
-            <p class="small muted">{ui.skupiny.pripravujeme} <a href={lang === 'cs' ? s.zdroj_url.replace('/sk/', '/cz/') : s.zdroj_url} target="_blank" rel="noopener">{ui.skupiny.naWatts}</a>.</p>
-          </div>
-        </section>
-      ); })}
-    </div>
+<Base lang={lang} alternates={alternatyKategorie(k)} title={kNazov(k, lang)} description={kPopis(k, lang)} aktivna="potrubia" drobceky={[{ text: kKratky(k, lang) }]} vizualneDrobceky={false}>
+  <Hlava lang={lang} nadpis={kNazov(k, lang)} drobceky={[{ text: kKratky(k, lang) }]} lead={kPopis(k, lang)} obraz={obraz} obrazAlt={jeSpojky ? tx.fotoSpojky : tx.fotoPrislusenstvo} druh={jeSpojky ? 'biely' : 'foto'} obrazMax={jeSpojky ? 620 : 760}>
+    <dl class="hlava-fakty">{fakty.map(([dt, dd]) => <div><dt>{dt}</dt><dd>{dd}</dd></div>)}</dl>
+  </Hlava>
+
+  <div class="telo">
+    {casti.length > 2 && <CastiStranky casti={casti} label={stranky(lang).rad.navLabel} />}
+    {skupiny.map((s) => { const ps = produkty.filter((p) => p.skupina === s.id); return (
+      <section class="wrap cast" id={s.id} aria-labelledby={`h-${s.id}`}>
+        <div class="s-hlava">
+          <h2 id={`h-${s.id}`}>{rNazov(s, lang)}</h2>
+          {rKratky(s, lang) && <p>{sadzba(rKratky(s, lang)!)}</p>}
+        </div>
+        <div class="produkty">
+          {ps.map((p) => <KartaProduktu p={p} href={cestaProduktu(p, k, lang)} lang={lang} />)}
+        </div>
+      </section>
+    ); })}
+
+    <section class="wrap">
+      <a class="harok druha" href={cestaKategorie(druha, lang)}>
+        {druhaObraz && <span class="druha-foto"><Image src={druhaObraz} alt="" widths={[480, 760]} sizes="(max-width: 760px) 100vw, 40vw" /></span>}
+        <span class="druha-text">
+          <span class="druha-nad">{jeSpojky ? tx.ineSkupiny.spojky : tx.ineSkupiny.prislusenstvo}</span>
+          <span class="druha-nazov">{kNazov(druha, lang)}</span>
+          <span class="druha-p">{jeSpojky ? tx.ineSkupinyP.spojky : tx.ineSkupinyP.prislusenstvo}</span>
+          <span class="odkaz">{kKratky(druha, lang)} <Ikona nazov="arrow-right" velkost={16} /></span>
+        </span>
+      </a>
+    </section>
   </div>
+  <Zaver lang={lang} />
 </Base>
 
 <style>
-  .head { padding-block: 12px 32px; display: flex; flex-direction: column; gap: 16px; }
-  .groups { display: flex; flex-direction: column; gap: 24px; padding-bottom: 48px; }
-  .group { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 32px; padding: 24px 0; border-top: var(--line); align-items: start; }
-  .group .plate { aspect-ratio: 1; border-radius: var(--radius-l); }
-  .group h2 { font-size: 22px; margin-bottom: 12px; }
-  .products li { display: flex; justify-content: space-between; gap: 16px; padding: 10px 0; border-bottom: var(--line); font-size: 15px; }
-  .products li:last-child { border-bottom: 0; }
-  .small { font-size: 13px; margin-top: 12px; }
-  @media (max-width: 760px) { .group { grid-template-columns: 1fr; } .group .plate { max-width: 200px; } }
+  .hlava-fakty { display: flex; flex-wrap: wrap; gap: 14px 30px; margin: 26px 0 0; }
+  .hlava-fakty dt { font-size: 13px; color: var(--color-ink-soft); }
+  .hlava-fakty dd { margin: 2px 0 0; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: clamp(17px, 0.6vw + 13px, 21px); letter-spacing: -0.01em; color: var(--color-blue-900); font-variant-numeric: tabular-nums; }
+
+  .produkty { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 24px; }
+
+  .druha { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; overflow: hidden; color: var(--color-ink); }
+  .druha:hover { color: var(--color-ink); }
+  .druha-foto { align-self: stretch; }
+  .druha-foto :global(img) { display: block; width: 100%; height: 100%; min-height: 260px; object-fit: cover; transition: transform 700ms var(--ease-soft); }
+  .druha:hover .druha-foto :global(img) { transform: scale(1.03); }
+  .druha-text { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 36px 44px; }
+  .druha-nad { font-size: 12.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--color-blue-700); }
+  .druha-nazov { font-family: var(--font-display); font-weight: 700; font-size: clamp(24px, 1.2vw + 16px, 32px); letter-spacing: -0.02em; line-height: 1.15; }
+  .druha-p { color: var(--color-ink-soft); max-width: 34em; }
+  .druha .odkaz { margin-top: 8px; }
+  @media (max-width: 760px) { .produkty { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; } .druha { grid-template-columns: minmax(0, 1fr); } .druha-foto :global(img) { min-height: 0; aspect-ratio: 16 / 9; } .druha-text { padding: 24px 22px 28px; } }
 </style>

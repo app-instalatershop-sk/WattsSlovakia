@@ -121,7 +121,7 @@ const drobceky = [{ text: ui.nav.potrubia, href: route(lang, 'potrubia') }, { te
           ); })}
           <div class="harok skupina skupina-trasa">
             <h3>{tx.dalsie}</h3>
-            <ul>{trasa.map((s) => { const kp = katProduktu(s.kategoria); return <li><a href={`${cestaKategorie(kp, lang)}#h-${s.id}`}><span>{rNazov(s, lang)}</span><Ikona nazov="chevron-right" velkost={16} /></a></li>; })}</ul>
+            <ul>{trasa.map((s) => { const kp = katProduktu(s.kategoria); return <li><a href={`${cestaKategorie(kp, lang)}#${s.id}`}><span>{rNazov(s, lang)}</span><Ikona nazov="chevron-right" velkost={16} /></a></li>; })}</ul>
           </div>
         </div>
       </section>

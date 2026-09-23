@@ -156,6 +156,9 @@
   .telo { position: relative; background: linear-gradient(180deg, var(--zem-1) 0%, var(--zem-2) 45%, var(--zem-3) 100%); padding: 48px 0 calc(var(--sikmina-zaver) + 88px); }
   .telo > .wrap + .wrap, .telo > section + section { margin-top: 88px; }
   /* Hárok: biela plocha pre tabuľky a zoznamy na modrom tele, jemne nadvihnutá. */
+  /* Sekcia, na ktorú skáče plávajúca navigácia častí: hlavička a pás častí ju neprekryjú. */
+  .cast { scroll-margin-top: 150px; }
+  @media (max-width: 760px) { .cast { scroll-margin-top: 130px; } }
   .harok { background: #fff; border-radius: 18px; box-shadow: 0 1px 0 rgb(10 42 94 / 0.05), 0 26px 60px -38px rgb(10 42 94 / 0.45); }
   /* Nadpis sekcie vnútornej stránky: nadpis, popis pod ním a odkaz vpravo. */
   .s-hlava { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px 32px; align-items: end; margin-bottom: 28px; }

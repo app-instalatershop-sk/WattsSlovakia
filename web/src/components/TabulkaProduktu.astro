@@ -1,0 +1,67 @@
+---
+/**
+ * Tabuľka obj. čísel spojky alebo dielu príslušenstva z vyčistenej tabuľky výrobcu (hlavičky a jednotky
+ * z data/produkty_texty.py). Prvý stĺpec je obj. číslo s kopírovaním, posledný odkaz do e-shopu.
+ * Pod 760 px je riadok karta, ako pri variantoch potrubia.
+ */
+import Ikona from './Ikona.astro';
+import { stranky } from '../content/stranky';
+import { type Lang, t, ESHOP_SEARCH } from '../i18n/ui';
+
+interface Tabulka { hlavicky: string[]; hlavicky_cs: string[]; jednotky: (string | null)[]; riadky: string[][]; riadky_cs: string[][] }
+interface Props { tabulka: Tabulka; lang: Lang }
+const { tabulka, lang } = Astro.props;
+const ui = t(lang);
+const tx = stranky(lang).rad;
+const hlavicky = lang === 'cs' ? tabulka.hlavicky_cs : tabulka.hlavicky;
+const riadky = lang === 'cs' ? tabulka.riadky_cs : tabulka.riadky;
+// Číselné stĺpce zarovnané doprava: bunky sú čísla, rozmery alebo závity.
+const cisla = hlavicky.map((_, i) => i > 0 && riadky.every((r) => !r[i] || /^[\d\s,.×x+–/″Ø~-]+$/.test(r[i])));
+---
+<div class="tp-obal">
+  <table class="data tp">
+    <thead>
+      <tr>
+        {hlavicky.map((h, i) => <th scope="col" class:list={{ right: cisla[i] }}>{h}{tabulka.jednotky[i] && <small>{tabulka.jednotky[i]}</small>}</th>)}
+        <th scope="col"><span class="sr">{ui.tabulka.eshop}</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      {riadky.map((r) => (
+        <tr>
+          <td class="code"><span class="tp-kod">
+            <span>{r[0]}</span>
+            <button type="button" class="kopia" data-kopia={r[0]} aria-label={`${tx.kopirovat} ${r[0]}`} title={tx.kopirovat}><Ikona nazov="copy" velkost={15} /></button>
+          </span></td>
+          {r.slice(1).map((c, j) => <td class:list={{ right: cisla[j + 1], dlhy: c.length > 22 }} data-l={`${hlavicky[j + 1]}${tabulka.jednotky[j + 1] ? `, ${tabulka.jednotky[j + 1]}` : ''}`}>{c}</td>)}
+          <td class="tp-shop"><a href={ESHOP_SEARCH + encodeURIComponent(r[0])} target="_blank" rel="noopener">{ui.common.doEshopu} <Ikona nazov="external-link" velkost={14} /></a></td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .tp-obal { overflow-x: auto; scrollbar-width: thin; padding: 4px 12px 8px; }
+  .tp th { background: #fff; }
+  .tp th, .tp td { padding: 13px 14px; }
+  .tp td.code { padding-block: 8px; }
+  .tp td.dlhy { white-space: normal; min-width: 16em; }
+  .tp-kod { display: flex; align-items: center; gap: 6px; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 15px; letter-spacing: 0.01em; color: var(--color-blue-900); white-space: nowrap; }
+  .tp-shop a { display: inline-flex; align-items: center; gap: 6px; font-weight: 500; color: var(--color-blue-700); white-space: nowrap; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  @media (max-width: 760px) {
+    .tp-obal { padding: 0; overflow: visible; }
+    .tp, .tp tbody { display: block; }
+    .tp thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .tp tbody tr { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 12px; padding: 14px 18px 16px; border-bottom: 1px solid rgb(10 42 94 / 0.08); }
+    .tp tbody tr:hover { background: transparent; }
+    .tp td { display: block; padding: 0; border: 0; white-space: normal; text-align: left; font-size: 14.5px; }
+    .tp td[data-l]::before { content: attr(data-l); display: block; font-size: 11.5px; line-height: 1.3; color: var(--color-ink-soft); margin-bottom: 1px; }
+    .tp td:empty { display: none; }
+    .tp td.code { grid-column: 1 / 3; padding: 0; }
+    .tp-kod { font-size: 17px; }
+    .tp td.tp-shop { grid-column: 3; grid-row: 1; justify-self: end; align-self: center; }
+    .tp td.dlhy { grid-column: 1 / -1; min-width: 0; }
+  }
+</style>

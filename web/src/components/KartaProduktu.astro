@@ -1,0 +1,55 @@
+---
+/**
+ * Karta spojky alebo dielu príslušenstva: fotka výrobcu na bielom, názov, prvá veta popisu
+ * a počet obj. čísel. Celá karta vedie na stránku produktu.
+ */
+import { Image } from 'astro:assets';
+import Ikona from './Ikona.astro';
+import { fotkaProduktu } from '../lib/obrazky';
+import { sadzba } from '../lib/sadzba';
+import { pNazov, pPopis, type Produkt } from '../lib/katalog';
+import { faktyProduktu, kodyProduktu, prvaVeta } from '../lib/produkty';
+import { stranky } from '../content/stranky';
+import type { Lang } from '../i18n/ui';
+
+interface Props { p: Produkt; href: string; lang: Lang; maly?: boolean }
+const { p, href, lang, maly = false } = Astro.props;
+const tx = stranky(lang).skupiny;
+const img = fotkaProduktu(p.id);
+const kody = kodyProduktu(p).length;
+const fakt = faktyProduktu(p, lang).find(([k]) => k !== stranky(lang).produkt.pocet);
+---
+<a class:list={['kp harok', { 'kp-maly': maly }]} href={href}>
+  <span class="kp-foto">{img && <Image src={img} alt="" widths={[240, 400, 560]} sizes={maly ? '160px' : '(max-width: 760px) 44vw, 280px'} />}</span>
+  <span class="kp-text">
+    <span class="kp-nazov">{sadzba(pNazov(p, lang))}</span>
+    {!maly && <span class="kp-popis">{sadzba(prvaVeta(pPopis(p, lang)))}</span>}
+    <span class="kp-meta">
+      <span>{kody ? tx.objCisel(kody) : tx.bezTabulky}</span>
+      {fakt && !maly && <span>{fakt[1]}</span>}
+    </span>
+  </span>
+  <Ikona nazov="arrow-right" velkost={18} class="kp-sipka" />
+</a>
+
+<style>
+  .kp { position: relative; display: flex; flex-direction: column; color: var(--color-ink); overflow: hidden; transition: transform 250ms var(--ease-soft), box-shadow 250ms var(--ease-soft); }
+  .kp:hover { color: var(--color-ink); transform: translateY(-3px); box-shadow: 0 1px 0 rgb(10 42 94 / 0.05), 0 34px 60px -34px rgb(10 42 94 / 0.55); }
+  /* Fotka má pevný rámček 4 : 3, aby nadpisy všetkých kariet začínali v rovnakej výške. */
+  .kp-foto { position: relative; display: block; aspect-ratio: 4 / 3; background: #fff; }
+  .kp-foto :global(img) { position: absolute; inset: 18px 22px 4px; width: calc(100% - 44px); height: calc(100% - 22px); object-fit: contain; mix-blend-mode: multiply; transition: transform 500ms var(--ease-soft); }
+  .kp:hover .kp-foto :global(img) { transform: scale(1.04); }
+  .kp-text { display: flex; flex-direction: column; gap: 6px; padding: 8px 22px 20px; flex: 1; }
+  .kp-nazov { font-weight: 600; font-size: 17px; line-height: 1.3; padding-right: 22px; }
+  .kp-popis { font-size: 14px; line-height: 1.5; color: var(--color-ink-soft); }
+  .kp-meta { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: auto; padding-top: 10px; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 14px; color: var(--color-blue-900); }
+  .kp :global(.kp-sipka) { position: absolute; right: 18px; bottom: 20px; color: var(--color-blue-700); transition: transform 200ms var(--ease-soft); }
+  .kp:hover :global(.kp-sipka) { transform: translateX(3px); }
+  .kp-maly { flex-direction: row; align-items: center; }
+  .kp-maly .kp-foto { flex: none; width: 108px; aspect-ratio: 1; }
+  .kp-maly .kp-foto :global(img) { inset: 10px; width: calc(100% - 20px); height: calc(100% - 20px); }
+  .kp-maly .kp-text { padding: 14px 44px 14px 4px; }
+  .kp-maly .kp-nazov { font-size: 15.5px; padding-right: 0; }
+  .kp-maly .kp-meta { padding-top: 4px; font-size: 13px; }
+  .kp-maly :global(.kp-sipka) { bottom: auto; top: 50%; margin-top: -9px; }
+</style>

@@ -3,6 +3,7 @@
  * Článok poradne: hlava s obrazom, text na hárku a vedľa neho lepkavý obsah článku, zdroj
  * v katalógu a súvisiace stránky. Bloky (odsek, postup, zoznam, tabuľka, fakty) sú v content/clanky.ts.
  */
+import { getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Hlava from '../components/Hlava.astro';
 import Zaver from '../components/Zaver.astro';
@@ -23,13 +24,14 @@ const druh = c.obraz.endsWith('.png') ? 'render' : c.obraz === 'rez-render.jpg' 
 const id = (h: string) => h.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 const ostatne = clanky(lang).filter((x) => x.slug !== c.slug);
 const drobceky = [{ text: tx.poradna, href: route(lang, 'poradna') }, { text: c.nazov }];
+const ldObraz = obraz ? (await getImage({ src: obraz, width: 1000, format: 'webp' })).src : undefined;
 const ld = [{
   '@context': 'https://schema.org', '@type': 'Article', headline: c.nazov, description: c.perex, inLanguage: lang,
   author: { '@type': 'Organization', name: 'Ohrievacia Technika, s. r. o.' }, publisher: { '@type': 'Organization', name: 'Microflex Slovensko' },
-  ...(obraz ? { image: new URL(obraz.src, Astro.site).href } : {}),
+  ...(ldObraz ? { image: new URL(ldObraz, Astro.site).href } : {}),
 }];
 ---
-<Base lang={lang} alternates={alternatyClanku(i)} title={c.nazov} description={c.perex} aktivna="poradna" drobceky={drobceky} vizualneDrobceky={false} jsonLd={ld}>
+<Base lang={lang} alternates={alternatyClanku(i)} title={c.nazov} description={`${c.perex} ${tx.katalog(c.strany)}.`} aktivna="poradna" drobceky={drobceky} vizualneDrobceky={false} jsonLd={ld}>
   <Hlava lang={lang} nadpis={c.nazov} drobceky={drobceky} pred={tx.citanie(c.minut)} lead={c.perex} obraz={obraz} obrazAlt={c.obrazAlt} druh={druh} obrazMax={640} />
 
   <div class="telo">

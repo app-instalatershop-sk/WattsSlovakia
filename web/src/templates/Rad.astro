@@ -4,7 +4,7 @@
  * variantov, stavba potrubia pod lupou s parametrami a montážou z katalógu, podklady na stiahnutie,
  * referencie a spojky s príslušenstvom k radu. Na konci záver s kúpou a kontaktom.
  */
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Hlava from '../components/Hlava.astro';
@@ -85,13 +85,17 @@ const casti = [
 ];
 
 const eshop = ESHOP_SEARCH + encodeURIComponent(model);
-const meta = (kratky ?? obsah?.popis[0] ?? nazov).slice(0, 155);
+// Popis pre vyhľadávače: čo rad je, jeho čísla a počet dimenzií (Base ho zarovná na 120 až 160 znakov).
+const cs = lang === 'cs';
+const faktyVeta = [tlakText(r) && `${ui.rad.tlak} ${tlakText(r)}`, ruraRozsah && `${cs ? 'nosná trubka' : 'nosná rúra'} ${ruraRozsah}`, plastRozsah && `plášť ${plastRozsah}`].filter(Boolean).join(', ');
+const meta = [`${model}: ${kratky ?? obsah?.popis[0] ?? ''}`, faktyVeta && `${faktyVeta}.`, varianty.length && `${tx.pocetDim(varianty.length)} ${cs ? 's obj. čísly' : 's obj. číslami'}.`].filter(Boolean).join(' ');
+const ldObraz = pikto ? (await getImage({ src: pikto, width: 800, format: 'webp' })).src : undefined;
 const drobceky = [{ text: ui.nav.potrubia, href: route(lang, 'potrubia') }, { text: kKratky(k, lang), href: cestaKategorie(k, lang) }, { text: model }];
 const productLd = [{
   '@context': 'https://schema.org', '@type': 'ProductGroup', name: nazov, alternateName: rOznacenie(r, lang), description: meta,
   brand: { '@type': 'Brand', name: 'Microflex' }, manufacturer: { '@type': 'Organization', name: 'Watts' },
   url: new URL(cestaRadu(k, r, lang), Astro.site).href, productGroupID: r.slug,
-  ...(pikto ? { image: new URL(pikto.src, Astro.site).href } : {}),
+  ...(ldObraz ? { image: new URL(ldObraz, Astro.site).href } : {}),
   hasVariant: varianty.map((v) => ({ '@type': 'Product', sku: v.obj_cislo, mpn: v.obj_cislo, name: `${model} ${v.obj_cislo}` })),
 }];
 ---

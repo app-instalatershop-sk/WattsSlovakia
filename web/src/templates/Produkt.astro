@@ -4,7 +4,7 @@
  * obj. čísel s kopírovaním a odkazom do e-shopu, rady potrubia, ku ktorým diel patrí, a ďalšie
  * diely zo skupiny. Na konci záver s kúpou a kontaktom.
  */
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Hlava from '../components/Hlava.astro';
@@ -37,12 +37,13 @@ const surodenci = (await getCollection('produkty')).map((x) => x.data).filter((x
 const spolocny = kody.length > 1 ? kody.reduce((a, b) => { let i = 0; while (i < a.length && a[i] === b[i]) i++; return a.slice(0, i); }) : kody[0] ?? '';
 const eshop = ESHOP_SEARCH + encodeURIComponent(spolocny.replace(/[^A-Z0-9]+$/i, '').length >= 3 ? spolocny.replace(/[^A-Z0-9]+$/i, '') : nazov);
 const drobceky = [{ text: kKratky(k, lang), href: cestaKategorie(k, lang) }, { text: kratkyNazovSkupiny(rNazov(skupina, lang)), href: `${cestaKategorie(k, lang)}#${skupina.id}` }, { text: nazov }];
-const meta = (popis ?? nazov).slice(0, 155);
+const meta = popis ?? nazov;
+const ldObraz = img ? (await getImage({ src: img, width: 800, format: 'webp' })).src : undefined;
 const ld = [{
   '@context': 'https://schema.org', '@type': kody.length > 1 ? 'ProductGroup' : 'Product', name: nazov, description: meta,
   brand: { '@type': 'Brand', name: 'Microflex' }, manufacturer: { '@type': 'Organization', name: 'Watts' },
   url: new URL(cestaProduktu(p, k, lang), Astro.site).href,
-  ...(img ? { image: new URL(img.src, Astro.site).href } : {}),
+  ...(ldObraz ? { image: new URL(ldObraz, Astro.site).href } : {}),
   ...(kody.length > 1 ? { productGroupID: p.slug, hasVariant: kody.map((c) => ({ '@type': 'Product', sku: c, mpn: c, name: `${nazov} ${c}` })) } : kody.length ? { sku: kody[0], mpn: kody[0] } : {}),
 }];
 ---

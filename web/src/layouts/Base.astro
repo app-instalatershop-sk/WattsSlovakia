@@ -4,6 +4,8 @@ import { ClientRouter } from 'astro:transitions';
 import Hlavicka from '../components/Hlavicka.astro';
 import Paticka from '../components/Paticka.astro';
 import { type Lang, type Alternates, LOCALE, t, route } from '../i18n/ui';
+import { titulok, popisMeta } from '../lib/seo';
+import { ogObrazok } from '../lib/og';
 
 interface Drobcek { text: string; href?: string }
 interface Props {
@@ -23,7 +25,11 @@ const { lang, alternates, title, description, aktivna, drobceky = [], jsonLd = [
 const ui = t(lang);
 const site = Astro.site ?? new URL('https://microflex.sk');
 const canonical = new URL(Astro.url.pathname, site).href;
-const fullTitle = title === ui.site.name ? title : `${title} | ${ui.site.name}`;
+const fullTitle = titulok(title, ui.site.name);
+const popis = popisMeta(description, lang);
+// Náhľad pri zdieľaní: vlastný obrázok stránky z registra (lib/og.ts), inak predvolený pre jazyk.
+const ogCesta = ogImage ?? (await ogObrazok(Astro.url.pathname, lang));
+const ogAlt = `${title}, ${ui.site.name}`;
 
 const organizacia = {
   '@context': 'https://schema.org',
@@ -49,7 +55,7 @@ const ld = [organizacia, ...(breadcrumbs ? [breadcrumbs] : []), ...jsonLd];
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>{fullTitle}</title>
-    <meta name="description" content={description} />
+    <meta name="description" content={popis} />
     <link rel="canonical" href={canonical} />
     {robots && <meta name="robots" content={robots} />}
     <link rel="alternate" hreflang="sk" href={new URL(alternates.sk, site).href} />
@@ -59,11 +65,15 @@ const ld = [organizacia, ...(breadcrumbs ? [breadcrumbs] : []), ...jsonLd];
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={fullTitle} />
-    <meta property="og:description" content={description} />
+    <meta property="og:description" content={popis} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content={LOCALE[lang].replace('-', '_')} />
     <meta property="og:site_name" content={ui.site.name} />
-    {ogImage && <meta property="og:image" content={new URL(ogImage, site).href} />}
+    <meta property="og:image" content={new URL(ogCesta, site).href} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="generator" content={Astro.generator} />
     <script type="application/ld+json" set:html={JSON.stringify(ld)} />
     <ClientRouter />

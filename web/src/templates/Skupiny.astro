@@ -35,7 +35,7 @@ const obraz = fotka(jeSpojky ? 'montaz-odbocka.jpg' : 'vykop-spojky.jpg');
 const casti = skupiny.map((s) => ({ id: s.id, text: kratkyNazovSkupiny(rNazov(s, lang)) }));
 const druhaObraz = fotka(jeSpojky ? 'vykop-spojky.jpg' : 'montaz-odbocka.jpg');
 ---
-<Base lang={lang} alternates={alternatyKategorie(k)} title={kNazov(k, lang)} description={kPopis(k, lang)} aktivna="potrubia" drobceky={[{ text: kKratky(k, lang) }]} vizualneDrobceky={false}>
+<Base lang={lang} alternates={alternatyKategorie(k)} title={kNazov(k, lang)} description={`${kPopis(k, lang)} ${tx.produktov(produkty.length)} a ${tx.objCisel(pocetKodov)} s fotkou a tabuľkou rozmerov.`} aktivna="potrubia" drobceky={[{ text: kKratky(k, lang) }]} vizualneDrobceky={false}>
   <Hlava lang={lang} nadpis={kNazov(k, lang)} drobceky={[{ text: kKratky(k, lang) }]} lead={kPopis(k, lang)} obraz={obraz} obrazAlt={jeSpojky ? tx.fotoSpojky : tx.fotoPrislusenstvo} druh={jeSpojky ? 'biely' : 'foto'} obrazMax={jeSpojky ? 620 : 760}>
     <dl class="hlava-fakty">{fakty.map(([dt, dd]) => <div><dt>{dt}</dt><dd>{dd}</dd></div>)}</dl>
   </Hlava>

@@ -233,13 +233,13 @@ Domov v4 (23. 9. 2026, zadanie Juraja „najpútavejší dizajn, kľudne asymetr
 
 ```
 +----------------------------------------------------------------------------+
-| PREDIZOLOVANÉ POTRUBIA MICROFLEX® |                                        |
-| Flexibilné potrubie.  (os šírky)  |   render rezu, 4 rúry, cez pravý okraj |
-| Precízne riešenie.                |   obrazovky, bez rámu                  |
-| Pre vykurovanie, pitnú vodu, …    |                                        |
+| PREDIZOLOVANÉ POTRUBIA MICROFLEX® |   Ø 75 až 200 mm        od 0,20 m      |
+| Flexibilné potrubie.  (os šírky)  |   plášť z HDPE          polomer ohybu  |
+| Precízne riešenie.                |        ●──── render rezu ────●         |
+| Pre vykurovanie, pitnú vodu, …    |   (kružnice za rezom, odlesk, myš)     |
 | [Vybrať potrubie ↓]  Stiahnuť katalóg PDF, 19 MB ↓                         |
-|----------------------------------------------------------------------------|
-| od 0,20 m | 25 až 125 mm | 6 / 10 / 16 bar | 12        pás čísel z dát      |
+|                                   |   ● 25 až 125 mm, nosné rúry na 6,     |
+|                                   |     10 alebo 16 bar                    |
 +----------------------------------------------------------------------------+
 | Výber podľa použitia / Každý projekt má svoje potrubie.   (svetlý pás)      |
 | ▌Vykurovanie      4 rady |        mäkké svetlo štúdia                      |
@@ -277,19 +277,35 @@ vedie na výber podľa použitia priamo pod ním (kotva `#vyber`, sprievodca `/v
 stránka) a podčiarknutý odkaz otvára katalóg PDF výrobcu s veľkosťou súboru. Veta o partnerstve
 v hero nie je, lebo to isté aj s logom hovorí horný pás. Render má strop 1 180 px.
 
+Hero v5 (Juraj 23. 9.: „grafika veľmi jednoduchá, ničím nezaujme; tabuľka pod tým vyzerá
+neprofesionálne, netuším, aký má zmysel“): **pás čísel pod hero je zrušený, čísla sú technické popisy
+priamo pri renderi.** Bod leží na tom, čo číslo opisuje (okraj plášťa: Ø 75 až 200 mm, spodná žltá
+rúra: 25 až 125 mm a tlak, zvlnené telo: polomer ohybu od 0,20 m), čiara vedie k štítku. Hodnoty sú
+z dát. Súradnice bodov sú v percentách obrázka, takže sedia pri každej šírke; na telefóne majú
+kratšie čiary. Za rezom sú jemné sústredné kružnice ako na výkrese prierezu, po načítaní raz prejde
+po plášti pás svetla (maska je samotný render) a výrobok sa pri pohybe myši nepatrne posunie.
+Poradie po načítaní: nadpis sa roztiahne, render dosadne, objavia sa body, čiary a štítky.
+
 Katalóg na domove (Juraj 22. 9. 2026, podľa jeho vlastného návrhu, v4 prekomponované): záložky =
 kategórie, v paneli veľké rendery radov. V4 z nich robí **register** vľavo (ako palcový register
 tlačeného katalógu: názov a počet radov, vybraná kategória má žltú značku, farbu jadra rúry) a
 **štúdio** vpravo: rendery stoja na spoločnej podlahe s tieňom, popisy sú zarovnané doľava a začínajú
-na jednej linke (podmriežka). Pri jednom rade je popis vedľa renderu. Popis vybranej kategórie a
-vyhotovenia PRIMO sú v ľavom stĺpci pod registrom. Rad dostane render len vtedy, keď má vlastný.
-Záložky sú prepínače bez skriptu a obsah všetkých panelov je v HTML kvôli vyhľadávačom.
+na jednej linke (podmriežka). Pri jednom rade je popis vedľa renderu. Popis vybranej kategórie je
+v ľavom stĺpci pod registrom. Záložky sú prepínače bez skriptu a obsah všetkých panelov je v HTML
+kvôli vyhľadávačom.
 
-Rodina: render prechádza cez švík z pásu katalógu a za pravý okraj obrazovky. Namiesto troch
-rovnakých stĺpcov faktov je **stavba potrubia ako rez v typografii**: tri vrstvy vnorené do seba,
-farba linky je farba vrstvy na renderi (modrý plášť, sivá pena, žltá nosná rúra). Pozor na fakty:
-spoločná je stavba, nie materiál rúry. COOL má nosnú rúru PE 100 do 16 bar, ostatné PE-Xa
-(katalóg s. 8 až 18).
+Počet radov v registri musí sedieť s tým, čo je vidieť (Juraj 23. 9.: „sú 4 rady, ukázané sú len 2“).
+Rady, ktoré zdieľajú render so súrodencom (PRIMO), preto majú vlastný riadok s názvom, odkazom
+a odlišnosťou pod renderom základného radu: „Užší plášť pri tej istej rúre“ (katalóg s. 8 proti 9
+a 10 proti 11; vlastný obrázok PRIMO nemá ani výrobca, fotka PRIMO DUO je tá istá ako DUO).
+
+Rodina: render prechádza cez švík z pásu katalógu a za pravý okraj obrazovky. Pod ním je **stavba
+potrubia ako balenie**: tri plochy vnorené do seba, modrá (plášť) obsahuje sivú (pena) a tá žltú
+(nosná rúra). Každá má kruhový detail skutočného materiálu vyrezaný z renderu výrobcu
+(`web/src/assets/detaily/`, zdroj `rad-duo-kurenie.png`). Na počítači idú plochy zľava doprava cez
+celú šírku ako rez od plášťa k rúre, na tablete a telefóne pod sebou (Juraj 23. 9.: „balenie je
+rozumná voľba, len grafika je slabá, tri čiarky“). Pozor na fakty: spoločná je stavba, nie materiál
+rúry. COOL má nosnú rúru PE 100 do 16 bar, ostatné PE-Xa (katalóg s. 8 až 18).
 
 Pokládka (nová sekcia v4): jediné miesto s obrázkom vľavo. Fotka kotúča má čisto bielu plochu,
 násobením splynie so svetlým pásom a text leží v jeho vnútri. Obsah je z katalógu výrobcu: časy
@@ -312,6 +328,13 @@ stránku jednotvárnou. Ten istý motív sa neopakuje v tej istej forme; rez rú
 a v rodine, ale zakaždým v inej úlohe (výrobok, voľba radu, porovnanie vrstiev). Pravidlá, podľa
 ktorých hodnotíme: Vignelli (disciplína, jedno ohnisko), Müller-Brockmann (mriežka 12 stĺpcov),
 Tufte (dátový atrament), Refactoring UI (popis k nadpisu, nekvalitná fotka len ako náhľad).
+
+Hlavička (23. 9., Juraj: „vyzerá ako AI z minulého roka“): znak M so žltým bodom (jadro rúry)
+a nápis; Potrubia otvárajú panel so všetkými piatimi systémami, ich rendermi a radmi, pod nimi
+spojky, príslušenstvo, celý katalóg a katalóg PDF; pod položkou, na ktorej je myš alebo aktuálna
+stránka, sa posúva žltá značka; hľadanie je pole s ikonou a skratkou Ctrl K (⌘ K); E-shop je tmavé
+tlačidlo, lebo je cieľom webu. Pod 1 100 px je všetko v menu (predtým na tablete navigácia zmizla
+bez náhrady), mobilné menu má hľadanie a systémy s malými rendermi.
 
 Sadzba: texty domova prechádzajú funkciou `sadzba()` (`web/src/lib/sadzba.ts`), ktorá dá
 nezlomiteľnú medzeru za jednopísmenové predložky a spojky, medzi číslo a jednotku (95 °C, 16 bar,

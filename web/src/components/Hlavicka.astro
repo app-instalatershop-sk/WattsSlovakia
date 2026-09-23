@@ -1,13 +1,33 @@
 ---
+/**
+ * Hlavička: horný pás s partnerstvom a jazykmi, pod ním lepkavá hlavička. Potrubia otvárajú panel
+ * so všetkými piatimi systémami a ich rendermi, ostatné položky sú odkazy. Pod položkou, na ktorej je
+ * myš alebo aktuálna stránka, sa posúva žltá značka. Hľadanie má skratku Ctrl K (⌘ K na Macu).
+ */
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
 import Ikona from './Ikona.astro';
 import WattsLogo from './WattsLogo.astro';
-import { type Lang, type Alternates, ESHOP, t, route, LANGS } from '../i18n/ui';
+import { kategorie, cestaKategorie, kKratky, rNazov, type Kategoria } from '../lib/katalog';
+import { piktogram } from '../lib/obrazky';
+import { type Lang, type Alternates, ESHOP, KATALOG_PDF, t, route, LANGS } from '../i18n/ui';
 
 interface Props { lang: Lang; alternates: Alternates; aktivna?: 'potrubia' | 'vyber' | 'stiahnut' | 'firmy' | 'poradna' }
 const { lang, alternates, aktivna } = Astro.props;
 const ui = t(lang);
+
+const kats = await kategorie();
+const rady = (await getCollection('rady')).map((r) => r.data);
+const potrubia = kats.filter((k) => k.typ === 'potrubie');
+const diely = kats.filter((k) => k.typ !== 'potrubie');
+/** Rady kategórie bez značky a bez upresnenia: „UNO, DUO, UNO PRIMO, PRIMO DUO“. */
+const radyKat = (k: Kategoria) => rady
+  .filter((r) => r.kategoria === k.id)
+  .sort((a, b) => a.poradie - b.poradie)
+  .map((r) => rNazov(r, lang).split(',')[0].trim().replace(/^Microflex\s+/i, ''))
+  .join(', ');
+
 const polozky = [
-  { id: 'potrubia', text: ui.nav.potrubia, href: route(lang, 'potrubia') },
   { id: 'vyber', text: ui.nav.vyber, href: route(lang, 'vyber') },
   { id: 'stiahnut', text: ui.nav.stiahnut, href: route(lang, 'stiahnut') },
   { id: 'firmy', text: ui.nav.firmy, href: route(lang, 'firmy') },
@@ -34,24 +54,78 @@ const polozky = [
 <header class="hdr" id="hdr">
   <div class="wrap hdr-in">
     <a class="brand" href={route(lang, 'domov')} aria-label={ui.site.name}>
+      <span class="brand-znak" aria-hidden="true">M</span>
       <span class="brand-name">Microflex</span>
       <span class="brand-sub">{ui.site.sub}</span>
     </a>
-    <nav class="nav" aria-label={ui.nav.hlavna}>
-      {polozky.map((p) => <a href={p.href} aria-current={aktivna === p.id ? 'page' : undefined}>{p.text}</a>)}
+
+    <nav class="nav" id="nav" aria-label={ui.nav.hlavna}>
+      <button class="nav-link nav-mega" id="mega-btn" type="button" aria-expanded="false" aria-controls="mega" aria-current={aktivna === 'potrubia' ? 'page' : undefined}>
+        {ui.nav.potrubia}<Ikona nazov="chevron-down" velkost={16} />
+      </button>
+      {polozky.map((p) => <a class="nav-link" href={p.href} aria-current={aktivna === p.id ? 'page' : undefined}>{p.text}</a>)}
+      <span class="nav-ind" aria-hidden="true"></span>
     </nav>
+
     <form class="search" role="search" action={route(lang, 'hladat')} method="get">
-      <input id="q" name="q" type="search" placeholder={ui.search.placeholder} aria-label={ui.search.label} autocomplete="off" />
-      <button type="submit"><Ikona nazov="search" velkost={18} />{ui.search.button}</button>
+      <Ikona nazov="search" velkost={18} />
+      <input id="q" name="q" type="search" placeholder={ui.search.placeholder} aria-label={ui.search.label} autocomplete="off" aria-keyshortcuts="Control+K Meta+K" />
+      <kbd class="search-kbd" aria-hidden="true">Ctrl K</kbd>
+      <button type="submit" class="vizualne-skryte">{ui.search.button}</button>
     </form>
-    <a class="eshop" href={ESHOP} target="_blank" rel="noopener">{ui.nav.eshop} <Ikona nazov="external-link" velkost={16} /></a>
-    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav" id="menu-btn" data-open={ui.nav.menu} data-close={ui.nav.zavriet}>{ui.nav.menu}</button>
+
+    <a class="eshop" href={ESHOP} target="_blank" rel="noopener">{ui.nav.eshop}<Ikona nazov="external-link" velkost={16} /></a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav" id="menu-btn">
+      <Ikona nazov="menu" velkost={20} class="i-menu" /><Ikona nazov="x" velkost={20} class="i-x" /><span data-open={ui.nav.menu} data-close={ui.nav.zavriet}>{ui.nav.menu}</span>
+    </button>
   </div>
-  <nav id="mobile-nav" class="mnav" hidden aria-label={ui.nav.hlavna}>
-    {polozky.map((p) => <a href={p.href}>{p.text}</a>)}
-    <a href={ESHOP}>{ui.nav.eshop} instalatershop.sk</a>
-    <div class="mnav-langs">{LANGS.map((l) => <a href={alternates[l]} hreflang={l} lang={l} aria-current={l === lang ? 'page' : undefined}>{ui.jazyk[l]}</a>)}</div>
-  </nav>
+
+  {/* Panel Potrubia: päť systémov s rendermi, pod nimi diely a katalóg. */}
+  <div class="mega" id="mega" hidden>
+    <div class="wrap mega-in">
+      <ul class="mega-kat">
+        {potrubia.map((k) => { const img = piktogram(k.piktogram); return (
+          <li>
+            <a class="mega-k" href={cestaKategorie(k, lang)}>
+              <span class="mega-obj">{img && <Image src={img} alt="" widths={[240, 400]} sizes="200px" loading="lazy" class="mega-img" />}</span>
+              <strong>{kKratky(k, lang)}</strong>
+              <span>{radyKat(k)}</span>
+            </a>
+          </li>
+        ); })}
+      </ul>
+      <div class="mega-pata">
+        <div class="mega-diely">
+          {diely.map((k) => <a href={cestaKategorie(k, lang)}>{kKratky(k, lang)}<Ikona nazov="chevron-right" velkost={16} /></a>)}
+          <a href={route(lang, 'potrubia')}>{ui.nav.celyKatalog}<Ikona nazov="chevron-right" velkost={16} /></a>
+        </div>
+        <a class="mega-pdf" href={KATALOG_PDF} target="_blank" rel="noopener"><Ikona nazov="download" velkost={18} />{ui.nav.katalogPdf}</a>
+      </div>
+    </div>
+  </div>
+
+  {/* Mobilné menu: hľadanie, systémy s malými rendermi, ostatné odkazy, e-shop a jazyk. */}
+  <div id="mobile-nav" class="mnav" hidden>
+    <div class="wrap mnav-in">
+      <form class="search search-m" role="search" action={route(lang, 'hladat')} method="get">
+        <Ikona nazov="search" velkost={18} />
+        <input name="q" type="search" placeholder={ui.search.placeholder} aria-label={ui.search.label} autocomplete="off" />
+        <button type="submit" class="vizualne-skryte">{ui.search.button}</button>
+      </form>
+      <p class="mnav-nadpis">{ui.nav.potrubia}</p>
+      <ul class="mnav-kat">
+        {potrubia.map((k) => { const img = piktogram(k.piktogram); return (
+          <li><a href={cestaKategorie(k, lang)}>{img && <Image src={img} alt="" widths={[120, 200]} sizes="64px" loading="lazy" class="mnav-img" />}<span>{kKratky(k, lang)}</span></a></li>
+        ); })}
+      </ul>
+      <ul class="mnav-odkazy">
+        {diely.map((k) => <li><a href={cestaKategorie(k, lang)}>{kKratky(k, lang)}</a></li>)}
+        {polozky.map((p) => <li><a href={p.href}>{p.text}</a></li>)}
+      </ul>
+      <a class="eshop eshop-m" href={ESHOP} target="_blank" rel="noopener">{ui.nav.eshop} instalatershop.sk<Ikona nazov="external-link" velkost={16} /></a>
+      <div class="mnav-langs">{LANGS.map((l) => <a href={alternates[l]} hreflang={l} lang={l} aria-current={l === lang ? 'page' : undefined}>{ui.jazyk[l]}</a>)}</div>
+    </div>
+  </div>
 </header>
 
 <style>
@@ -66,34 +140,104 @@ const polozky = [
   .langs a[aria-current] { color: #fff; border-bottom-color: var(--color-yellow-500); }
   .langs .sep { width: 1px; height: 12px; background: rgb(255 255 255 / 0.3); }
 
-  .hdr { position: sticky; top: 0; z-index: 20; background: rgb(255 255 255 / 0.92); backdrop-filter: saturate(1.4) blur(10px); -webkit-backdrop-filter: saturate(1.4) blur(10px); border-bottom: var(--line); transition: box-shadow 250ms var(--ease-soft); }
-  .hdr.is-scrolled { box-shadow: 0 2px 14px rgb(11 27 51 / 0.08); }
-  .hdr-in { display: flex; align-items: center; gap: 32px; min-height: var(--hdr-h); transition: min-height 250ms var(--ease-soft); }
-  .hdr.is-scrolled .hdr-in { min-height: 60px; }
-  .brand { display: inline-flex; align-items: center; gap: 12px; color: var(--color-ink); }
-  .brand-name { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 700; font-size: 22px; letter-spacing: -0.01em; line-height: 1; }
-  .brand-sub { font-size: 13px; color: var(--color-ink-soft); border-left: var(--line); padding-left: 12px; line-height: 1; }
-  .nav { display: flex; gap: 24px; margin-left: 8px; flex: none; }
-  .nav a { color: var(--color-ink); font-weight: 500; padding: 6px 0; border-bottom: 2px solid transparent; white-space: nowrap; transition: border-color 150ms var(--ease-soft); }
-  .nav a:hover, .nav a[aria-current] { border-bottom-color: var(--color-blue-700); color: var(--color-ink); }
-  .search { margin-left: auto; display: flex; align-items: stretch; height: 44px; border: var(--line); border-radius: var(--radius-s); overflow: hidden; background: var(--color-white); min-width: 0; transition: border-color 150ms var(--ease-soft), box-shadow 150ms var(--ease-soft); }
-  .search:focus-within { border-color: var(--color-blue-700); box-shadow: 0 0 0 2px var(--color-blue-100); }
-  .search input { border: 0; padding: 0 14px; width: 260px; max-width: 36vw; font: inherit; font-size: 15px; color: var(--color-ink); outline: none; min-width: 0; background: transparent; }
-  .search input::placeholder { color: #7a8494; }
-  .search button { border: 0; background: linear-gradient(180deg, #1467c1 0%, var(--color-blue-700) 100%); color: #fff; padding: 0 16px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: background-color 150ms var(--ease-soft); }
-  .search button:hover { background: var(--color-blue-800); }
-  .eshop { display: inline-flex; align-items: center; gap: 8px; font-weight: 500; color: var(--color-blue-700); white-space: nowrap; }
-  .menu-btn { display: none; margin-left: auto; height: 44px; padding: 0 14px; border: var(--line); border-radius: var(--radius-s); background: var(--color-white); color: var(--color-ink); font-weight: 500; cursor: pointer; }
-  .mnav { display: flex; flex-direction: column; border-top: var(--line); padding: 4px var(--gutter) 12px; background: var(--color-white); }
-  .mnav a { padding: 14px 0; color: var(--color-ink); font-weight: 500; border-bottom: var(--line); }
-  .mnav-langs { display: flex; gap: 24px; padding-top: 8px; }
-  .mnav-langs a { border-bottom: 0; color: var(--color-ink-soft); }
+  .hdr { position: sticky; top: 0; z-index: 20; background: rgb(255 255 255 / 0.86); backdrop-filter: saturate(1.6) blur(14px); -webkit-backdrop-filter: saturate(1.6) blur(14px); box-shadow: 0 1px 0 rgb(10 42 94 / 0.08); transition: box-shadow 250ms var(--ease-soft), background-color 250ms var(--ease-soft); }
+  .hdr.is-scrolled, .hdr.is-open { background: rgb(255 255 255 / 0.96); box-shadow: 0 1px 0 rgb(10 42 94 / 0.08), 0 10px 30px -12px rgb(11 27 51 / 0.18); }
+  .hdr-in { display: flex; align-items: center; gap: 28px; min-height: 76px; transition: min-height 250ms var(--ease-soft); }
+  .hdr.is-scrolled .hdr-in { min-height: 62px; }
+
+  /* Značka: znak M ako favicon a nápis v Archive, podtitul oddelený vlasovou čiarou. */
+  .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--color-ink); flex: none; }
+  .brand-znak { display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 9px; background: linear-gradient(150deg, #1467c1 0%, var(--color-blue-900) 100%); color: #fff; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 700; font-size: 19px; line-height: 1; box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.2), 0 4px 10px -4px rgb(10 42 94 / 0.6); position: relative; overflow: hidden; }
+  /* Žltý bod = jadro rúry. Jediná žltá v hlavičke okrem značky pod položkou. */
+  .brand-znak::after { content: ""; position: absolute; right: 6px; bottom: 6px; width: 6px; height: 6px; border-radius: 50%; background: var(--color-yellow-500); }
+  .brand-name { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 700; font-size: 22px; letter-spacing: -0.015em; line-height: 1; }
+  .brand-sub { font-size: 13px; color: var(--color-ink-soft); border-left: var(--line); padding-left: 10px; line-height: 1; }
+
+  /* Navigácia so žltou značkou, ktorá sa posúva pod položku. */
+  .nav { position: relative; display: flex; align-items: center; gap: 2px; margin-left: 4px; flex: none; }
+  .nav-link { position: relative; display: inline-flex; align-items: center; gap: 4px; height: 40px; padding: 0 12px; border: 0; border-radius: 10px; background: transparent; color: var(--color-ink); font: 500 15px/1 var(--font-text); white-space: nowrap; cursor: pointer; transition: color 150ms var(--ease-soft), background-color 150ms var(--ease-soft); }
+  .nav-link:hover { color: var(--color-blue-700); background: rgb(0 93 185 / 0.06); }
+  .nav-link[aria-current] { color: var(--color-blue-700); }
+  .nav-mega :global(svg) { transition: transform 250ms var(--ease-soft); opacity: .7; }
+  .nav-mega[aria-expanded="true"] { color: var(--color-blue-700); background: rgb(0 93 185 / 0.08); }
+  .nav-mega[aria-expanded="true"] :global(svg) { transform: rotate(180deg); }
+  .nav-ind { position: absolute; left: 0; bottom: -18px; height: 3px; width: var(--w, 0); border-radius: 2px; background: var(--color-yellow-500); transform: translateX(var(--x, 0)); opacity: var(--o, 0); transition: transform 320ms var(--ease-soft), width 320ms var(--ease-soft), opacity 200ms var(--ease-soft), bottom 250ms var(--ease-soft); pointer-events: none; }
+  .hdr.is-scrolled .nav-ind { bottom: -11px; }
+
+  /* Hľadanie: pole s ikonou a skratkou, bez ťažkého tlačidla. Enter odošle. */
+  .search { position: relative; margin-left: auto; display: flex; align-items: center; height: 44px; min-width: 0; border-radius: 999px; background: #f1f5fa; box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.06); transition: box-shadow 150ms var(--ease-soft), background-color 150ms var(--ease-soft); }
+  .search:hover { box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.16); }
+  .search:focus-within { background: #fff; box-shadow: inset 0 0 0 1px var(--color-blue-700), 0 0 0 4px rgb(0 93 185 / 0.12); }
+  .search > :global(.icon) { position: absolute; left: 14px; color: #6b7686; pointer-events: none; }
+  .search input { width: 272px; max-width: 30vw; height: 100%; border: 0; padding: 0 58px 0 42px; background: transparent; font: inherit; font-size: 15px; color: var(--color-ink); outline: none; min-width: 0; transition: width 250ms var(--ease-soft); }
+  .search input:focus { width: 320px; }
+  .search input::placeholder { color: #7a8494; font-size: 14.5px; }
+  .search input::-webkit-search-cancel-button { display: none; }
+  .search-kbd { position: absolute; right: 10px; padding: 3px 7px; border-radius: 6px; background: #fff; box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.14), 0 1px 0 rgb(10 42 94 / 0.12); font: 500 11.5px/1.2 var(--font-text); color: #6b7686; letter-spacing: .02em; pointer-events: none; transition: opacity 150ms var(--ease-soft); }
+  .search:focus-within .search-kbd { opacity: 0; }
+
+  /* E-shop je cieľ webu, preto tlačidlo, nie odkaz. */
+  .eshop { display: inline-flex; align-items: center; gap: 8px; height: 42px; padding: 0 18px; border-radius: 999px; background: linear-gradient(180deg, #123a7c 0%, var(--color-blue-900) 100%); color: #fff; font-weight: 500; font-size: 15px; white-space: nowrap; box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.14), 0 6px 14px -8px rgb(10 42 94 / 0.7); transition: background-color 150ms var(--ease-soft), transform 120ms var(--ease-soft); flex: none; }
+  .eshop:hover { color: #fff; background: linear-gradient(180deg, #1467c1 0%, var(--color-blue-700) 100%); }
+  .eshop:active { transform: scale(0.98); }
+  .eshop :global(svg) { width: 16px; height: 16px; opacity: .8; }
+
+  .menu-btn { display: none; margin-left: auto; height: 42px; padding: 0 14px; border: 0; border-radius: 999px; background: #f1f5fa; box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.08); color: var(--color-ink); font: 500 15px/1 var(--font-text); cursor: pointer; align-items: center; gap: 8px; }
+  .menu-btn[aria-expanded="true"] { background: var(--color-blue-900); color: #fff; }
+  .menu-btn :global(.i-x), .menu-btn[aria-expanded="true"] :global(.i-menu) { display: none; }
+  .menu-btn[aria-expanded="true"] :global(.i-x) { display: inline-block; }
+
+  .vizualne-skryte { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+  /* Panel Potrubia */
+  .mega { position: absolute; left: 0; right: 0; top: 100%; background: #fff; box-shadow: 0 1px 0 rgb(10 42 94 / 0.08) inset, 0 28px 50px -24px rgb(11 27 51 / 0.35); }
+  .mega:not([hidden]) { animation: mega 260ms var(--ease-soft) both; }
+  @keyframes mega { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+  .mega-in { padding-block: 28px 22px; }
+  .mega-kat { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+  .mega-k { display: flex; flex-direction: column; gap: 4px; height: 100%; padding: 14px 16px 18px; border-radius: 16px; color: var(--color-ink); background: linear-gradient(180deg, #f5f8fc 0%, #edf2f9 100%); transition: background-color 200ms var(--ease-soft), box-shadow 200ms var(--ease-soft); }
+  .mega-k:hover { color: var(--color-ink); background: linear-gradient(180deg, #eef4fc 0%, #e2ecf8 100%); box-shadow: inset 0 0 0 1px rgb(0 93 185 / 0.18); }
+  .mega-obj { display: block; height: 118px; margin: -4px 0 8px; filter: drop-shadow(0 14px 14px rgb(11 27 51 / 0.2)); transition: transform 350ms var(--ease-soft); }
+  .mega-k:hover .mega-obj { transform: translateY(-4px); }
+  .mega-obj :global(.mega-img) { width: 100%; height: 100%; object-fit: contain; object-position: center bottom; }
+  .mega-k strong { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 16.5px; line-height: 1.25; letter-spacing: -0.01em; transition: color 150ms var(--ease-soft); }
+  .mega-k:hover strong { color: var(--color-blue-700); }
+  .mega-k > span:last-child { font-size: 13px; line-height: 1.45; color: var(--color-ink-soft); }
+  .mega-pata { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; margin-top: 18px; padding-top: 16px; border-top: var(--line); }
+  .mega-diely { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+  .mega-diely a { display: inline-flex; align-items: center; gap: 2px; font-weight: 500; font-size: 15px; }
+  .mega-pdf { display: inline-flex; align-items: center; gap: 8px; font-weight: 500; font-size: 15px; }
+
+  /* Mobilné menu */
+  .mnav { border-top: 1px solid rgb(10 42 94 / 0.08); background: #fff; max-height: calc(100dvh - 62px); overflow-y: auto; }
+  .mnav:not([hidden]) { animation: mega 240ms var(--ease-soft) both; }
+  .mnav-in { padding-block: 16px 24px; display: flex; flex-direction: column; gap: 18px; }
+  .search-m { margin-left: 0; width: 100%; }
+  .search-m input { width: 100%; max-width: none; padding-right: 16px; }
+  .search-m input:focus { width: 100%; }
+  .mnav-nadpis { font-size: 13px; font-weight: 600; color: var(--color-ink-soft); margin-bottom: -8px; }
+  .mnav-kat { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .mnav-kat a { display: flex; align-items: center; gap: 10px; padding: 8px 12px 8px 8px; border-radius: 14px; background: linear-gradient(180deg, #f5f8fc 0%, #edf2f9 100%); color: var(--color-ink); font-weight: 500; font-size: 14.5px; line-height: 1.25; min-height: 64px; }
+  .mnav-kat :global(.mnav-img) { width: 56px; height: 48px; object-fit: contain; flex: none; filter: drop-shadow(0 6px 6px rgb(11 27 51 / 0.2)); }
+  .mnav-odkazy a { display: block; padding: 13px 0; border-bottom: 1px solid rgb(10 42 94 / 0.08); color: var(--color-ink); font-weight: 500; }
+  .eshop-m { justify-content: center; height: 48px; }
+  .mnav-langs { display: flex; gap: 24px; }
+  .mnav-langs a { color: var(--color-ink-soft); font-weight: 500; }
   .mnav-langs a[aria-current] { color: var(--color-blue-700); }
-  @media (max-width: 1100px) { .nav { display: none; } .search input { width: 200px; } }
+
+  @media (max-width: 1240px) { .search input { width: 232px; padding-right: 16px; } .search input:focus { width: 256px; } .search-kbd { display: none; } .nav-link { padding: 0 10px; } .hdr-in { gap: 20px; } }
+  /* Pod 1 100 px navigácia do menu; hľadanie a e-shop ostávajú, kým je miesto. */
+  @media (max-width: 1100px) {
+    .nav, .mega { display: none; }
+    .menu-btn { display: inline-flex; margin-left: 0; }
+    .search { margin-left: auto; }
+  }
   @media (max-width: 760px) {
-    .hdr-in { gap: 16px; }
-    .search, .eshop { display: none; }
-    .menu-btn { display: inline-flex; align-items: center; }
+    .hdr-in { gap: 12px; min-height: 64px; }
+    .hdr-in > .search, .hdr-in > .eshop { display: none; }
+    .menu-btn { margin-left: auto; }
+    .brand-znak { width: 30px; height: 30px; font-size: 17px; border-radius: 8px; }
+    .brand-name { font-size: 20px; }
     .partner span { display: none; }
   }
 </style>
@@ -101,9 +245,14 @@ const polozky = [
 <script>
   function initHlavicka() {
     const hdr = document.getElementById('hdr');
-    const btn = document.getElementById('menu-btn');
-    const nav = document.getElementById('mobile-nav');
     if (!hdr) return;
+    // Pri prechode stránok (ClientRouter) sa hlavička vymení; staré poslucháče na dokumente zrušíme.
+    const w = window as unknown as { __hlavicka?: AbortController };
+    w.__hlavicka?.abort();
+    const ac = new AbortController();
+    w.__hlavicka = ac;
+    const signal = ac.signal;
+
     // Hysteréza: zmenšiť až po 72 px, vrátiť až pod 12 px. Zmena výšky tak nikdy neprekročí vlastnú hranicu.
     let scrolled = false;
     const onScroll = () => {
@@ -112,15 +261,77 @@ const polozky = [
       else if (scrolled && y < 12) { scrolled = false; hdr.classList.remove('is-scrolled'); }
     };
     onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    if (btn && nav) {
-      btn.addEventListener('click', () => {
-        const open = nav.hidden;
-        nav.hidden = !open;
-        btn.setAttribute('aria-expanded', String(open));
-        btn.textContent = open ? (btn.dataset.close ?? 'Zavrieť') : (btn.dataset.open ?? 'Menu');
+    window.addEventListener('scroll', onScroll, { passive: true, signal });
+
+    // Žltá značka pod položkou: ide za myšou alebo fokusom, inak sa vráti k aktuálnej stránke.
+    const nav = document.getElementById('nav');
+    const ind = nav?.querySelector<HTMLElement>('.nav-ind');
+    const odkazy = nav ? Array.from(nav.querySelectorAll<HTMLElement>('.nav-link')) : [];
+    const aktualna = () => odkazy.find((a) => a.hasAttribute('aria-current') || a.getAttribute('aria-expanded') === 'true');
+    const znacka = (el?: HTMLElement) => {
+      if (!ind) return;
+      if (!el) { ind.style.setProperty('--o', '0'); return; }
+      ind.style.setProperty('--x', `${el.offsetLeft + 12}px`);
+      ind.style.setProperty('--w', `${el.offsetWidth - 24}px`);
+      ind.style.setProperty('--o', '1');
+    };
+    odkazy.forEach((a) => { a.addEventListener('pointerenter', () => znacka(a)); a.addEventListener('focus', () => znacka(a)); });
+    nav?.addEventListener('pointerleave', () => znacka(aktualna()));
+    znacka(aktualna());
+
+    // Panel Potrubia: myšou sa otvorí pri prejdení, klikom a klávesnicou prepína, Esc zatvorí.
+    const btn = document.getElementById('mega-btn');
+    const mega = document.getElementById('mega');
+    let casovac = 0;
+    const nastav = (otvor: boolean) => {
+      if (!btn || !mega) return;
+      if (otvor === !mega.hidden) return;
+      mega.hidden = !otvor;
+      btn.setAttribute('aria-expanded', String(otvor));
+      hdr.classList.toggle('is-open', otvor);
+      znacka(otvor ? btn : aktualna());
+    };
+    if (btn && mega) {
+      const mys = window.matchMedia('(pointer: fine)').matches;
+      btn.addEventListener('click', () => nastav(mega.hidden));
+      if (mys) {
+        const otvorNeskor = () => { clearTimeout(casovac); casovac = window.setTimeout(() => nastav(true), 90); };
+        const zatvorNeskor = () => { clearTimeout(casovac); casovac = window.setTimeout(() => nastav(false), 200); };
+        btn.addEventListener('pointerenter', otvorNeskor);
+        btn.addEventListener('pointerleave', zatvorNeskor);
+        mega.addEventListener('pointerenter', () => clearTimeout(casovac));
+        mega.addEventListener('pointerleave', zatvorNeskor);
+      }
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !mega.hidden) { nastav(false); btn.focus(); } }, { signal });
+      document.addEventListener('pointerdown', (e) => { if (!mega.hidden && !hdr.contains(e.target as Node)) nastav(false); }, { signal });
+    }
+
+    // Mobilné menu
+    const menuBtn = document.getElementById('menu-btn');
+    const mnav = document.getElementById('mobile-nav');
+    if (menuBtn && mnav) {
+      const popis = menuBtn.querySelector<HTMLElement>('span[data-open]');
+      menuBtn.addEventListener('click', () => {
+        const otvor = mnav.hidden;
+        mnav.hidden = !otvor;
+        menuBtn.setAttribute('aria-expanded', String(otvor));
+        hdr.classList.toggle('is-open', otvor);
+        if (popis) popis.textContent = otvor ? (popis.dataset.close ?? '') : (popis.dataset.open ?? '');
       });
     }
+
+    // Ctrl K / ⌘ K: skok do hľadania. Na Macu sa ukáže ⌘.
+    const q = document.getElementById('q') as HTMLInputElement | null;
+    const kbd = hdr.querySelector<HTMLElement>('.search-kbd');
+    if (kbd && /Mac|iPhone|iPad/.test(navigator.platform)) kbd.textContent = '⌘ K';
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        const viditelne = q && q.offsetParent !== null;
+        if (!viditelne && menuBtn && mnav && mnav.hidden) menuBtn.click();
+        const ciel = viditelne ? q : mnav?.querySelector<HTMLInputElement>('input');
+        if (ciel) { e.preventDefault(); ciel.focus(); }
+      }
+    }, { signal });
   }
   initHlavicka();
   document.addEventListener('astro:after-swap', initHlavicka);

@@ -1,11 +1,11 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Ikona from '../components/Ikona.astro';
 import Katalog from '../components/Katalog.astro';
 import { kategorie, cislo, rozsah } from '../lib/katalog';
-import { fotka } from '../lib/obrazky';
+import { fotka, detail } from '../lib/obrazky';
 import { sadzba } from '../lib/sadzba';
 import { type Lang, t, route, staticAlternates, KATALOG_PDF } from '../i18n/ui';
 
@@ -22,22 +22,33 @@ const potrubia = kats.filter((k) => k.typ === 'potrubie');
 const radyPotrubi = rady.filter((r) => potrubia.some((k) => k.id === r.kategoria));
 const variantyPotrubi = varianty.filter((v) => radyPotrubi.some((r) => r.id === v.rad));
 
-// Fakty z dát, nie z hlavy.
+// Čísla pri renderi v hero sú z dát, nie z hlavy.
 const polomery = variantyPotrubi.map((v) => v.polomer_ohybu_m).filter((x): x is number => typeof x === 'number');
 const faktPolomer = `${ui.common.od} ${cislo(Math.min(...polomery), 2)} m`;
 const faktRura = rozsah(variantyPotrubi.map((v) => v.rura?.d), 'mm', lang);
+const faktPlast = `Ø ${rozsah(variantyPotrubi.map((v) => v.plast_mm), 'mm', lang)}`;
 const tlaky = [...new Set(radyPotrubi.map((r) => r.tlak_bar).filter((x): x is number => typeof x === 'number'))].sort((a, b) => a - b);
-const faktTlak = tlaky.map((x) => `${x}`).join(' / ') + ' bar';
-const faktRady = String(radyPotrubi.length);
+const faktTlak = h.popisy.tlak(tlaky.map((x) => `${x}`));
 
 const heroRez = fotka('hero-rez-duo.png')!;
 const rodina = fotka('rodina-potrubi.png')!;
 const kotuc = fotka('kotuc.jpg')!;
 const vykop = fotka('vykop-spojky.jpg')!;
 const [plast, izolacia, rura] = h.vrstvy;
+const [dPlast, dPena, dRura] = ['vrstva-plast.jpg', 'vrstva-pena.jpg', 'vrstva-rura.jpg'].map((f) => detail(f)!);
+// Odlesk po plášti: maska je samotný render, svetlo tak prejde len po výrobku, nie po pozadí.
+const leskMaska = (await getImage({ src: heroRez, width: 760, format: 'webp' })).src;
+/* Popisy na renderi: bod (x, y v % obrázka) leží na tom, čo číslo opisuje; smer určuje, kam ide čiara.
+   Súradnice sú zmerané na hero-rez-duo.png (1517 × 1037): horný okraj plášťa pri reze,
+   spodná žltá rúra a zvlnené telo. Smer „dole“ drží popis mimo textového stĺpca. */
+const popisy = [
+  { x: 27, y: 31, smer: 'hore', d: 118, dm: 34, hodnota: faktPlast, text: h.popisy.plast },
+  { x: 14, y: 81, smer: 'dole', d: 50, dm: 22, hodnota: faktRura, text: faktTlak },
+  { x: 67, y: 25, smer: 'hore', d: 84, dm: 30, hodnota: faktPolomer, text: h.popisy.polomer },
+];
 ---
 <Base lang={lang} alternates={staticAlternates('domov')} title={ui.domov.title} description={ui.domov.description}>
-  <section class="hero" aria-labelledby="h-hero">
+  <section class="hero" aria-labelledby="h-hero" data-mys>
     <div class="wrap hero-in">
       <div class="hero-text">
         {/* Kľúčové slovo ostáva v nadpise, len v tichom riadku nad sloganom. */}
@@ -53,19 +64,22 @@ const [plast, izolacia, rura] = h.vrstvy;
         </div>
       </div>
       <div class="hero-product">
-        <Image src={heroRez} alt={h.heroAlt} widths={[760, 1140, 1517]} sizes="(max-width: 760px) 100vw, 62vw" loading="eager" fetchpriority="high" />
+        <div class="hero-stage">
+          <Image src={heroRez} alt={h.heroAlt} widths={[760, 1140, 1517]} sizes="(max-width: 760px) 100vw, 62vw" loading="eager" fetchpriority="high" class="hero-img" />
+          <span class="lesk" aria-hidden="true" style={`--maska: url("${leskMaska}")`}></span>
+          <ul class="popisy" aria-label={h.popisy.label}>
+            {popisy.map((p, i) => (
+              <li class={`popis popis-${p.smer}`} style={`--x: ${p.x}%; --y: ${p.y}%; --d: ${p.d}px; --dm: ${p.dm}px; --i: ${i}`}>
+                <span class="bod" aria-hidden="true"></span>
+                <span class="ciara" aria-hidden="true"></span>
+                <span class="stitok"><strong>{p.hodnota}</strong><span>{sadzba(p.text)}</span></span>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   </section>
-
-  <div class="wrap">
-    <dl class="facts-bar">
-      <div><dd>{faktPolomer}</dd><dt>{h.facts.polomer}</dt></div>
-      <div><dd>{faktRura}</dd><dt>{h.facts.rura}</dt></div>
-      <div><dd>{faktTlak}</dd><dt>{h.facts.tlak}</dt></div>
-      <div><dd>{faktRady}</dd><dt>{h.facts.rady}</dt></div>
-    </dl>
-  </div>
 
   <Katalog lang={lang} />
 
@@ -74,23 +88,34 @@ const [plast, izolacia, rura] = h.vrstvy;
       <div class="rodina-text">
         <h2 id="h-rodina">{h.rodinaH2}</h2>
         <p class="lead">{sadzba(h.rodinaP)}</p>
-        {/* Vrstvy sú vnorené do seba ako v reze: izolácia je v plášti, rúra v izolácii.
-            Farba linky je farba vrstvy na renderi vedľa: modrý plášť, sivá pena, žltá rúra. */}
-        <ol class="vrstvy" aria-label={h.vrstvyLabel} data-reveal-seq>
-          <li class="v v-plast" data-seq>
-            <h3>{plast[0]}</h3><p>{sadzba(plast[1])}</p>
-            <ol>
-              <li class="v v-pena" data-seq>
-                <h3>{izolacia[0]}</h3><p>{sadzba(izolacia[1])}</p>
-                <ol>
-                  <li class="v v-rura" data-seq><h3>{rura[0]}</h3><p>{sadzba(rura[1])}</p></li>
-                </ol>
-              </li>
-            </ol>
-          </li>
-        </ol>
       </div>
       <div class="rodina-wrap"><Image src={rodina} alt={h.rodinaAlt} widths={[800, 1200, 1633]} sizes="(max-width: 1100px) 100vw, 64vw" class="rodina-img" data-parallax="0.06" /></div>
+      {/* Vrstvy sú vnorené do seba ako v reze: izolácia je v plášti, rúra v izolácii.
+          Na počítači idú zľava doprava od plášťa k rúre, na mobile pod sebou. */}
+      <ol class="vrstvy" aria-label={h.vrstvyLabel} data-reveal-seq>
+        <li class="v v-plast" data-seq>
+          <div class="v-hlava">
+            <Image src={dPlast} alt="" width={84} height={84} densities={[1, 2]} class="v-foto" />
+            <div><h3>{plast[0]}</h3><p>{sadzba(plast[1])}</p></div>
+          </div>
+          <ol>
+            <li class="v v-pena" data-seq>
+              <div class="v-hlava">
+                <Image src={dPena} alt="" width={72} height={72} densities={[1, 2]} class="v-foto" />
+                <div><h3>{izolacia[0]}</h3><p>{sadzba(izolacia[1])}</p></div>
+              </div>
+              <ol>
+                <li class="v v-rura" data-seq>
+                  <div class="v-hlava">
+                    <Image src={dRura} alt="" width={60} height={60} densities={[1, 2]} class="v-foto" />
+                    <div><h3>{rura[0]}</h3><p>{sadzba(rura[1])}</p></div>
+                  </div>
+                </li>
+              </ol>
+            </li>
+          </ol>
+        </li>
+      </ol>
     </div>
   </section>
 
@@ -189,18 +214,44 @@ const [plast, izolacia, rura] = h.vrstvy;
   .hero-product { position: relative; z-index: 2; margin-left: -9%;
     margin-right: calc(min(calc(-1 * var(--gutter)), calc((var(--container-site) - 100vw) / 2)) - 64px);
     pointer-events: none; animation: settle 1300ms 120ms var(--ease-soft) both; }
-  .hero-product :global(img) { width: 100%; max-width: 1180px; height: auto; display: block; margin-inline: auto; filter: drop-shadow(0 38px 46px rgb(11 27 51 / 0.2)); }
+  .hero-product :global(.hero-img) { width: 100%; height: auto; display: block; filter: drop-shadow(0 38px 46px rgb(11 27 51 / 0.2)); }
+  /* Štúdio má presne rozmer obrázka: body popisov sú v percentách obrázka a sedia pri každej šírke.
+     Pri pohybe myši sa výrobok jemne posunie a pootočí, text stojí. */
+  .hero-stage { position: relative; max-width: 1180px; margin-inline: auto; transform: translate3d(calc(var(--mx, 0) * 12px), calc(var(--my, 0) * 8px), 0) rotate(calc(var(--mx, 0) * -0.6deg)); transition: transform 900ms var(--ease-soft); }
+  /* Za rezom sústredné kružnice ako na technickom výkrese prierezu, stredom v reze rúry. */
+  .hero-stage::before { content: ""; position: absolute; left: 27%; top: 60%; width: 160%; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; z-index: -1; pointer-events: none;
+    background: repeating-radial-gradient(circle, rgb(10 42 94 / 0.075) 0 1px, rgb(10 42 94 / 0) 1.5px 46px);
+    -webkit-mask-image: radial-gradient(circle, #000 14%, transparent 58%); mask-image: radial-gradient(circle, #000 14%, transparent 58%);
+    animation: kruhy 1600ms 300ms var(--ease-soft) both; }
+  @keyframes kruhy { from { opacity: 0; transform: translate(-50%, -50%) scale(0.92); } to { opacity: 1; transform: translate(-50%, -50%); } }
   @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
   @keyframes settle { from { opacity: 0; transform: translate(40px, 0) rotate(-1.5deg) scale(1.02); } to { opacity: 1; transform: none; } }
 
-  /* Kľúčové čísla nie sú karty. Je to pás na mriežke stránky: prvý údaj lícuje s nadpisom
-     hero, oddeľujú ich len vlasové čiary a číslo nesie váhu, nie rámček. */
-  .facts-bar { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: var(--line); margin: 48px 0 0; position: relative; z-index: 2; animation: rise 640ms 420ms var(--ease-soft) both; }
-  .facts-bar > div { display: flex; flex-direction: column; gap: 8px; padding: 30px 36px; border-left: var(--line); min-width: 0; }
-  .facts-bar > div:first-child { border-left: 0; padding-left: 0; }
-  .facts-bar > div:last-child { padding-right: 0; }
-  .facts-bar dd { margin: 0; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: clamp(25px, 2vw, 36px); line-height: 1.02; letter-spacing: -0.025em; color: var(--color-blue-900); font-variant-numeric: tabular-nums; white-space: nowrap; }
-  .facts-bar dt { font-size: 14px; color: var(--color-ink-soft); }
+  /* Odlesk: pás svetla raz prejde po plášti. Maska je render, takže svetlo nejde po pozadí. */
+  .lesk { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen; opacity: 0.9;
+    -webkit-mask: var(--maska) center / 100% 100% no-repeat; mask: var(--maska) center / 100% 100% no-repeat;
+    background: linear-gradient(105deg, rgb(255 255 255 / 0) 40%, rgb(190 215 255 / 0.42) 50%, rgb(255 255 255 / 0) 60%) no-repeat;
+    background-size: 260% 100%; background-position: 135% 0; animation: lesk 2200ms 1100ms cubic-bezier(0.45, 0, 0.25, 1) both; }
+  @keyframes lesk { from { background-position: 135% 0; } to { background-position: -35% 0; } }
+
+  /* Technické popisy: bod leží na tom, čo číslo opisuje, čiara vedie k štítku. Prídu po nadpise. */
+  .popisy { position: absolute; inset: 0; margin: 0; padding: 0; pointer-events: none; }
+  .popis { --dd: var(--d); position: absolute; left: var(--x); top: var(--y); width: 0; height: 0; }
+  .bod { position: absolute; left: -6px; top: -6px; width: 12px; height: 12px; border-radius: 50%; background: #fff; border: 2px solid var(--color-blue-900); box-shadow: 0 0 0 5px rgb(255 255 255 / 0.5), 0 2px 8px rgb(11 27 51 / 0.3); animation: bod 420ms var(--ease-soft) both; animation-delay: calc(1250ms + var(--i) * 170ms); }
+  .ciara { position: absolute; background: linear-gradient(var(--smer, 0deg), rgb(10 42 94 / 0.7), rgb(10 42 94 / 0.35)); }
+  .stitok { position: absolute; display: flex; flex-direction: column; gap: 3px; white-space: nowrap; }
+  .stitok strong { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: clamp(18px, 1.3vw + 2px, 25px); line-height: 1.05; letter-spacing: -0.02em; color: var(--color-blue-900); font-variant-numeric: tabular-nums; }
+  .stitok span { font-size: 13px; line-height: 1.35; color: var(--color-ink-soft); }
+  .popis-hore .ciara { left: -0.5px; bottom: 7px; width: 1px; height: var(--dd); transform-origin: bottom; animation: ciaraY 520ms var(--ease-soft) both; animation-delay: calc(1330ms + var(--i) * 170ms); }
+  .popis-hore .stitok { left: -1px; bottom: calc(var(--dd) + 16px); animation: rise 560ms var(--ease-soft) both; animation-delay: calc(1520ms + var(--i) * 170ms); }
+  .popis-dole .ciara { left: -0.5px; top: 7px; width: 1px; height: var(--dd); transform-origin: top; animation: ciaraY 520ms var(--ease-soft) both; animation-delay: calc(1330ms + var(--i) * 170ms); }
+  .popis-dole .stitok { left: -1px; top: calc(var(--dd) + 14px); animation: rise 560ms var(--ease-soft) both; animation-delay: calc(1520ms + var(--i) * 170ms); }
+  .popis-vlavo .ciara { --smer: 90deg; right: 7px; top: -0.5px; height: 1px; width: var(--dd); transform-origin: right; animation: ciaraX 520ms var(--ease-soft) both; animation-delay: calc(1330ms + var(--i) * 170ms); }
+  .popis-vlavo .stitok { right: calc(var(--dd) + 16px); top: 0; align-items: flex-end; text-align: right; animation: odlava 560ms var(--ease-soft) both; animation-delay: calc(1520ms + var(--i) * 170ms); }
+  @keyframes bod { from { opacity: 0; transform: scale(0.3); } to { opacity: 1; transform: none; } }
+  @keyframes ciaraY { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+  @keyframes ciaraX { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @keyframes odlava { from { opacity: 0; transform: translate(10px, -50%); } to { opacity: 1; transform: translate(0, -50%); } }
 
   /* ---------- Rodina: render prechádza cez švík z modrého pásu do bielej ---------- */
   .rodina { background: var(--color-white); padding-top: 0; padding-bottom: 96px; overflow-x: clip; overflow-y: visible; }
@@ -212,16 +263,22 @@ const [plast, izolacia, rura] = h.vrstvy;
   .rodina-wrap { width: max(146%, calc(104% + var(--bleed) + 24px)); max-width: none; margin: -196px 0 0 -4%; position: relative; z-index: 2; filter: drop-shadow(0 28px 36px rgb(11 27 51 / 0.2)); }
   .rodina-wrap :global(.rodina-img) { width: 100%; height: auto; display: block; -webkit-mask-image: linear-gradient(to top right, #000 66%, transparent 97%); mask-image: linear-gradient(to top right, #000 66%, transparent 97%); }
 
-  /* Stavba potrubia ako rez v typografii: každá vrstva je vnorená v predchádzajúcej. */
-  .vrstvy { margin-top: 40px; }
-  .vrstvy ol { margin-top: 20px; }
-  .v { position: relative; padding-left: 22px; }
-  .v::before { content: ""; position: absolute; left: 0; top: 4px; bottom: 0; width: 3px; border-radius: 2px; }
-  .v-plast::before { background: var(--color-blue-700); }
-  .v-pena::before { background: #9aa3ae; }
-  .v-rura::before { background: var(--color-yellow-500); bottom: 4px; }
-  .v h3 { font-size: 18px; line-height: 1.3; margin-bottom: 4px; }
-  .v p { font-size: 15px; color: var(--color-ink-soft); max-width: 34em; }
+  /* Stavba potrubia ako balenie: každá vrstva je plocha vnorená v predchádzajúcej, s detailom
+     skutočného materiálu. Farba plochy a krúžku je farba vrstvy: modrý plášť, sivá pena, žltá rúra.
+     Na počítači idú vnorené plochy zľava doprava, takže blok pripomína rez od plášťa k rúre. */
+  .vrstvy { grid-column: 1 / -1; margin-top: -16px; position: relative; }
+  .vrstvy ol { margin: 0; }
+  .v { --ring: var(--color-blue-700); position: relative; border-radius: 26px; }
+  .v-plast { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 22px; padding: 22px; background: linear-gradient(140deg, #eaf1fb 0%, #d9e6f6 100%); box-shadow: inset 0 0 0 1px rgb(0 93 185 / 0.16), 0 24px 50px -30px rgb(10 42 94 / 0.45); }
+  .v-pena { --ring: #8e97a3; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; height: 100%; padding: 20px; border-radius: 21px; background: linear-gradient(140deg, #f8f9fb 0%, #eceef2 100%); box-shadow: inset 0 0 0 1px rgb(74 85 104 / 0.14); }
+  .v-rura { --ring: var(--color-yellow-500); height: 100%; padding: 18px; border-radius: 16px; background: linear-gradient(140deg, #fffcf0 0%, #fff3c7 100%); box-shadow: inset 0 0 0 1px rgb(214 170 0 / 0.35); }
+  .v > ol, .v > ol > li { height: 100%; }
+  .v-hlava { display: flex; flex-direction: column; gap: 14px; align-items: flex-start; padding: 4px 4px 6px; }
+  .v :global(.v-foto) { display: block; width: 84px; height: 84px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 3px #fff, 0 0 0 5px var(--ring), 0 10px 20px -6px rgb(11 27 51 / 0.35); }
+  .v-pena :global(.v-foto) { width: 72px; height: 72px; }
+  .v-rura :global(.v-foto) { width: 60px; height: 60px; }
+  .v h3 { font-size: 19px; line-height: 1.25; margin-bottom: 6px; }
+  .v p { font-size: 14.5px; line-height: 1.55; color: var(--color-ink-soft); max-width: 34em; }
 
   /* ---------- Pokládka: kotúč vľavo cez okraj obrazovky, text v jeho vnútri ---------- */
   .pokladka { position: relative; overflow: hidden; padding-top: 112px; padding-bottom: 232px; isolation: isolate; }
@@ -301,15 +358,16 @@ const [plast, izolacia, rura] = h.vrstvy;
 
   /* ---------- Tablet ---------- */
   @media (max-width: 1100px) {
-    .facts-bar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .facts-bar > div:nth-child(3) { border-left: 0; padding-left: 0; }
-    .facts-bar > div:nth-child(2) { padding-right: 0; }
-    .facts-bar > div:nth-child(n + 3) { border-top: var(--line); }
     .hero-in { grid-template-columns: minmax(0, 46fr) minmax(0, 54fr); }
     .hero h1 { font-size: clamp(34px, 3.4vw + 10px, 50px); }
     .rodina-grid { grid-template-columns: 1fr; }
     .rodina-wrap { width: 100%; margin: -120px 0 0; grid-row: 1; }
     .rodina-text { padding-top: 24px; }
+    .v-plast, .v-pena { display: block; }
+    .v-plast { padding: 18px; } .v-pena { padding: 16px; } .v-rura { padding: 14px; }
+    .v > ol { margin-top: 14px; height: auto; }
+    .v > ol > li { height: auto; }
+    .v-hlava { flex-direction: row; align-items: center; gap: 16px; padding: 0; }
     .refs-photo { grid-column: 1 / -1; margin-left: 0; }
     .refs-text { grid-column: 1 / -1; grid-row: 2; padding-top: 16px; }
     .b2b-text, .b2b-list { grid-column: 1 / -1; }
@@ -334,12 +392,19 @@ const [plast, izolacia, rura] = h.vrstvy;
     .hero h1 { font-size: clamp(30px, 8.2vw, 44px); text-wrap: wrap; }
     .hero .lead { margin-top: 18px; font-size: 17px; }
     .hero-actions { margin-top: 26px; }
-    .hero-product { margin: 8px 0 0; margin-right: calc(-1 * var(--gutter)); margin-left: calc(-1 * var(--gutter)); justify-self: stretch; }
-    .facts-bar { margin-top: 28px; }
-    .facts-bar > div { padding: 20px 18px; }
-    .facts-bar > div:nth-child(odd) { padding-left: 0; }
-    .facts-bar > div:nth-child(even) { padding-right: 0; }
-    .facts-bar dd { font-size: clamp(19px, 5.4vw, 25px); }
+    .hero-product { margin: 44px 0 0; margin-right: calc(-1 * var(--gutter)); margin-left: calc(-1 * var(--gutter)); justify-self: stretch; }
+    .hero { padding-bottom: 52px; }
+    /* Popisy na telefóne: kratšie čiary a menšie písmo, aby sa zmestili okolo renderu. */
+    .popis { --dd: var(--dm); }
+    .v-plast { padding: 14px; } .v-pena { padding: 12px; } .v-rura { padding: 12px; }
+    .v-hlava { gap: 12px; }
+    .v :global(.v-foto) { width: 56px; height: 56px; }
+    .v-pena :global(.v-foto) { width: 50px; height: 50px; }
+    .v-rura :global(.v-foto) { width: 44px; height: 44px; }
+    .v h3 { font-size: 17px; }
+    .v p { font-size: 14px; }
+    .stitok strong { font-size: 16px; }
+    .stitok span { font-size: 11.5px; }
     .rodina { padding-bottom: 64px; }
     .rodina-wrap { margin-top: -72px; }
     .vrstvy { margin-top: 32px; }

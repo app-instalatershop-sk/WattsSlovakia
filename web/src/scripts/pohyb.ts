@@ -8,6 +8,7 @@
  *  data-otacaj="-4 3"     prvok sa pri prechode sekciou pootočí z prvého uhla na druhý (stupne)
  *  data-rozvin            premenná --rozvin ide s rolovaním od 0 po 1 a položky <li>, ku ktorým
  *                         dorazila, dostanú triedu is-on (rúra pri krokoch pokládky)
+ *  data-mys               prvok dostáva --mx a --my (−1 až 1) podľa polohy myši; len pri myši
  *
  * Bez JavaScriptu je všetko viditeľné (nepriehľadnosť sa sťahuje až tu). Pri „obmedziť pohyb“ sa nič nehýbe.
  */
@@ -66,6 +67,27 @@ function init() {
       offset: ['start end', 'end start'],
     });
   });
+
+  // Myš: prvok dostane --mx a --my od −1 po 1 podľa polohy kurzora. Len pri myši, nie pri dotyku.
+  if (window.matchMedia('(pointer: fine)').matches) {
+    document.querySelectorAll<HTMLElement>('[data-mys]:not([data-mys-on])').forEach((el) => {
+      el.dataset.mysOn = '1';
+      let snimka = 0;
+      el.addEventListener('pointermove', (e) => {
+        cancelAnimationFrame(snimka);
+        snimka = requestAnimationFrame(() => {
+          const r = el.getBoundingClientRect();
+          el.style.setProperty('--mx', (((e.clientX - r.left) / r.width) * 2 - 1).toFixed(3));
+          el.style.setProperty('--my', (((e.clientY - r.top) / r.height) * 2 - 1).toFixed(3));
+        });
+      });
+      el.addEventListener('pointerleave', () => {
+        cancelAnimationFrame(snimka);
+        el.style.setProperty('--mx', '0');
+        el.style.setProperty('--my', '0');
+      });
+    });
+  }
 
   document.querySelectorAll<HTMLElement>('[data-rozvin]:not([data-done])').forEach((wrap) => {
     wrap.dataset.done = '1';

@@ -196,3 +196,16 @@ Technické poznámky pre ďalšie stránky:
   6C, 7A, 8A a 9A z nej sú v domove.
 - Tlak pre QUADRO (6 bar vykurovacie a 10 bar sanitárne rúry) a HP (nie je v slovenskom katalógu)
   v dátach chýba; pás čísel ich nezapočítava.
+
+## 9. Pripomienky k v4 a úpravy (23. 9. 2026)
+
+| Pripomienka Juraja | Príčina | Úprava |
+|---|---|---|
+| Katalóg: „niekde sú 4 rady, ukázané sú len 2“ | vyhotovenia PRIMO boli len v riadku textu | každý rad má v štúdiu vlastný riadok s názvom a odkazom; PRIMO pod renderom základného radu s odlišnosťou „užší plášť pri tej istej rúre“ |
+| Hero: „grafika veľmi jednoduchá, ničím nezaujme“ | jeden render na svetlom poli bez ďalšej vrstvy | technické popisy pri renderi, sústredné kružnice za rezom, odlesk po plášti, jemný pohyb za myšou |
+| Pás čísel: „vyzerá neprofesionálne, netuším, aký má zmysel“ | čísla bez vzťahu k tomu, čo opisujú | pás zrušený, čísla sú popisy s bodom priamo na mieste, ktoré opisujú |
+| Rodina: „balenie je rozumná voľba, grafika slabá, tri čiarky“ | vnorenie ukazovali len tri farebné čiary | vnorené plochy vo farbách vrstiev so skutočnými detailmi materiálu, na počítači zľava doprava ako rez |
+| Navigácia: „vyzerá ako AI z minulého roka“ | text vedľa textu, ťažké modré tlačidlo hľadania | znak M, panel Potrubia s rendermi piatich systémov, klzná žltá značka, pole hľadania so skratkou, E-shop ako tlačidlo |
+
+Nájdené pri tom: na tablete (760 až 1 100 px) navigácia zmizla a tlačidlo Menu sa neukázalo; tlačidlo
+Menu po otvorení stratilo ikonu a nezmenilo text. Obe chyby sú opravené.

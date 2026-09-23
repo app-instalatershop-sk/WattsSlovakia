@@ -27,9 +27,6 @@ const diely = kats.filter((k) => k.typ !== 'potrubie');
 
 /** Názov radu bez upresnenia za čiarkou: „Microflex UNO, vykurovanie 6 bar“ → „Microflex UNO“. */
 const model = (r: Rad) => rNazov(r, lang).split(',')[0].trim();
-/** Model bez značky: „Microflex UNO PRIMO“ → „UNO PRIMO“. */
-const bezZnacky = (r: Rad) => model(r).replace(/^Microflex\s+/i, '');
-
 /** Tichý riadok pod názvom: počet dimenzií a rozsah plášťa z dát, inak odkaz na katalóg. */
 function udaje(r: Rad): string {
   const vv = varianty.filter((v) => v.rad === r.id);
@@ -37,18 +34,21 @@ function udaje(r: Rad): string {
   const plast = rozsah(vv.map((v) => v.plast_mm), 'mm', lang);
   return `${ui.sklonovanie.dimenzii(vv.length)}, ${h.plast} ${plast}`;
 }
+/** Čím sa vyhotovenie líši od základného radu. PRIMO je tá istá rúra v užšom plášti (katalóg s. 8 až 11). */
+const odlisnost = (r: Rad) => (/PRIMO/i.test(model(r)) ? h.primo : h.rury(r.pocet_rur ?? 1));
 
+/** Dlaždica = jeden render a všetky rady, ktoré ho zdieľajú. Počet radov v registri tak sedí
+    s tým, čo je vidieť, a ten istý obrázok sa neopakuje dvakrát vedľa seba. */
+type Dlazdica = { rad: Rad; vyhotovenia: Rad[] };
 function panel(k: Kategoria) {
   const rr = rady.filter((r) => r.kategoria === k.id).sort((a, b) => a.poradie - b.poradie);
-  const videne = new Set<string>();
-  const dlazdice: Rad[] = [];
-  const dalsie: Rad[] = [];
+  const dlazdice: Dlazdica[] = [];
   for (const r of rr) {
-    // Dve dlaždice s tým istým renderom by boli len opakovanie, preto ide vyhotovenie do textu.
-    if (r.piktogram && !videne.has(r.piktogram)) { videne.add(r.piktogram); dlazdice.push(r); }
-    else dalsie.push(r);
+    const spolocna = r.piktogram ? dlazdice.find((d) => d.rad.piktogram === r.piktogram) : undefined;
+    if (spolocna) spolocna.vyhotovenia.push(r);
+    else dlazdice.push({ rad: r, vyhotovenia: [] });
   }
-  return { kat: k, pocet: rr.length, dlazdice, dalsie };
+  return { kat: k, pocet: rr.length, dlazdice };
 }
 const panely = potrubia.map(panel);
 const skupiny = (k: Kategoria) => rady.filter((r) => r.kategoria === k.id).sort((a, b) => a.poradie - b.poradie);
@@ -74,30 +74,27 @@ const skupiny = (k: Kategoria) => rady.filter((r) => r.kategoria === k.id).sort(
           <div class="t-panel" role="group" aria-label={kKratky(p.kat, lang)}>
             <div class="t-info">
               <p>{sadzba(kPopis(p.kat, lang))}</p>
-              {p.dalsie.length > 0 && (
-                <p class="dalsie">
-                  {h.ajVo}{' '}
-                  {p.dalsie.map((r, i) => (
-                    <>
-                      {i > 0 && (i === p.dalsie.length - 1 ? ` ${ui.common.a} ` : ', ')}
-                      <a href={cestaRadu(p.kat, r, lang)}>{bezZnacky(r)}</a>
-                    </>
-                  ))}.
-                </p>
-              )}
             </div>
             <div class="studio" data-pocet={p.dlazdice.length}>
-              {p.dlazdice.map((r) => { const img = piktogram(r.piktogram); return (
-                <a class="rad" href={cestaRadu(p.kat, r, lang)}>
-                  <span class="rad-obj">
-                    {img && <Image src={img} alt={`${model(r)} v reze`} widths={[420, 640, 900]} sizes="(max-width: 760px) 78vw, (max-width: 1100px) 44vw, 34vw" class="rad-img" />}
-                  </span>
-                  <span class="rad-txt">
-                    <strong>{sadzba(model(r))}</strong>
-                    <span class="rad-rury">{h.rury(r.pocet_rur ?? 1)}</span>
-                    <span class="rad-data">{sadzba(udaje(r))}</span>
-                  </span>
-                </a>
+              {p.dlazdice.map(({ rad: r, vyhotovenia }) => { const img = piktogram(r.piktogram); const href = cestaRadu(p.kat, r, lang); return (
+                <div class="rad">
+                  <a class="rad-obj" href={href} tabindex="-1" aria-hidden="true">
+                    {img && <Image src={img} alt="" widths={[420, 640, 900]} sizes="(max-width: 760px) 78vw, (max-width: 1100px) 44vw, 34vw" class="rad-img" />}
+                  </a>
+                  <div class="rad-txt">
+                    <a class="rad-hlavny" href={href}>
+                      <strong>{sadzba(model(r))}</strong>
+                      <span class="rad-rury">{h.rury(r.pocet_rur ?? 1)}</span>
+                      <span class="rad-data">{sadzba(udaje(r))}</span>
+                    </a>
+                    {vyhotovenia.map((v) => (
+                      <a class="rad-vyh" href={cestaRadu(p.kat, v, lang)}>
+                        <strong>{sadzba(model(v))}</strong>
+                        <span>{sadzba(odlisnost(v))}</span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
               ); })}
             </div>
           </div>
@@ -155,8 +152,6 @@ const skupiny = (k: Kategoria) => rady.filter((r) => r.kategoria === k.id).sort(
   .kat-taby:has(.t-lbl:nth-of-type(6) input:checked) .t-panel:nth-of-type(6) { display: grid; }
 
   .t-info { grid-column: 1; grid-row: 2; padding: 24px 24px 32px 20px; color: var(--color-ink-soft); max-width: 30em; animation: panel 420ms var(--ease-soft) both; }
-  .t-info .dalsie { margin-top: 12px; font-size: 15px; }
-  .t-info .dalsie a { font-weight: 500; }
 
   /* Štúdio: mäkké svetlo za výrobkami. Podmriežka dáva všetkým radom dva spoločné riadky:
      rendery stoja na jednej podlahe a popisy začínajú na jednej linke, aj keď má názov dva riadky. */
@@ -176,12 +171,18 @@ const skupiny = (k: Kategoria) => rady.filter((r) => r.kategoria === k.id).sort(
   .rad-obj :global(.rad-img) { width: 100%; height: auto; aspect-ratio: 5 / 4; object-fit: contain; object-position: center bottom; display: block;
     -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 22%), linear-gradient(to top left, #000 78%, transparent 99%); -webkit-mask-composite: source-in;
     mask-image: linear-gradient(to right, transparent 0%, #000 22%), linear-gradient(to top left, #000 78%, transparent 99%); mask-composite: intersect; }
-  .rad:hover .rad-obj { transform: translateY(-6px); }
-  .rad-txt { display: flex; flex-direction: column; gap: 2px; align-self: start; padding-top: 22px; border-top: 1px solid rgb(10 42 94 / 0.14); margin-top: 18px; }
-  .rad strong { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 22px; line-height: 1.2; letter-spacing: -0.01em; color: var(--color-ink); transition: color 150ms var(--ease-soft); }
-  .rad:hover strong { color: var(--color-blue-700); }
+  .rad:has(a:hover) .rad-obj { transform: translateY(-6px); }
+  .rad-txt { display: flex; flex-direction: column; align-self: start; padding-top: 22px; border-top: 1px solid rgb(10 42 94 / 0.14); margin-top: 18px; }
+  .rad-hlavny { display: flex; flex-direction: column; gap: 2px; color: var(--color-ink); }
+  .rad-hlavny strong { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 22px; line-height: 1.2; letter-spacing: -0.01em; color: var(--color-ink); transition: color 150ms var(--ease-soft); }
+  .rad-hlavny:hover strong, .rad:has(.rad-obj:hover) .rad-hlavny strong { color: var(--color-blue-700); }
   .rad-rury { font-size: 15px; color: var(--color-ink-soft); }
   .rad-data { font-size: 14px; color: #7a8494; font-variant-numeric: tabular-nums; }
+  /* Vyhotovenie so spoločným renderom: vlastný riadok s názvom a tým, čím sa líši. */
+  .rad-vyh { display: flex; flex-direction: column; gap: 1px; margin-top: 14px; padding-top: 12px; border-top: 1px solid rgb(10 42 94 / 0.1); color: var(--color-ink); }
+  .rad-vyh strong { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 17px; line-height: 1.25; letter-spacing: -0.005em; transition: color 150ms var(--ease-soft); }
+  .rad-vyh span { font-size: 14px; color: var(--color-ink-soft); }
+  .rad-vyh:hover strong { color: var(--color-blue-700); }
   @keyframes panel { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
   .diely { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px 28px; margin-top: 56px; padding-top: 28px; border-top: var(--line); }

@@ -41,7 +41,7 @@
        za okraj; 100vw obsahuje aj posuvník, preto sekcia s presahom potrebuje overflow-x: clip. */
     --bleed: calc(var(--gutter) + max(0px, (100vw - var(--container-site)) / 2));
     --line: 1px solid var(--color-grey-300);
-    --hdr-h: 72px;
+    --hdr-h: 76px;
     interpolate-size: allow-keywords;
   }
   /* Rozbaľovanie <details> plynulo tam, kde to prehliadač vie; inde sa otvorí hneď. */

@@ -8,6 +8,7 @@ import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import Ikona from './Ikona.astro';
 import WattsLogo from './WattsLogo.astro';
+import MicroflexLogo from './MicroflexLogo.astro';
 import { kategorie, cestaKategorie, kKratky, rNazov, type Kategoria } from '../lib/katalog';
 import { piktogram } from '../lib/obrazky';
 import { type Lang, type Alternates, ESHOP, KATALOG_PDF, t, route, LANGS } from '../i18n/ui';
@@ -54,8 +55,7 @@ const polozky = [
 <header class="hdr" id="hdr">
   <div class="wrap hdr-in">
     <a class="brand" href={route(lang, 'domov')} aria-label={ui.site.name}>
-      <span class="brand-znak" aria-hidden="true">M</span>
-      <span class="brand-name">Microflex</span>
+      <MicroflexLogo height={21} popis={null} class="brand-logo" />
       <span class="brand-sub">{ui.site.sub}</span>
     </a>
 
@@ -145,13 +145,12 @@ const polozky = [
   .hdr-in { display: flex; align-items: center; gap: 28px; min-height: 76px; transition: min-height 250ms var(--ease-soft); }
   .hdr.is-scrolled .hdr-in { min-height: 62px; }
 
-  /* Značka: znak M ako favicon a nápis v Archive, podtitul oddelený vlasovou čiarou. */
-  .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--color-ink); flex: none; }
-  .brand-znak { display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 9px; background: linear-gradient(150deg, #1467c1 0%, var(--color-blue-900) 100%); color: #fff; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 700; font-size: 19px; line-height: 1; box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.2), 0 4px 10px -4px rgb(10 42 94 / 0.6); position: relative; overflow: hidden; }
-  /* Žltý bod = jadro rúry. Jediná žltá v hlavičke okrem značky pod položkou. */
-  .brand-znak::after { content: ""; position: absolute; right: 6px; bottom: 6px; width: 6px; height: 6px; border-radius: 50%; background: var(--color-yellow-500); }
-  .brand-name { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 700; font-size: 22px; letter-spacing: -0.015em; line-height: 1; }
-  .brand-sub { font-size: 13px; color: var(--color-ink-soft); border-left: var(--line); padding-left: 10px; line-height: 1; }
+  /* Značka: oficiálne logo MICROFLEX® (vektor z katalógu Watts) a náš doplnok Slovensko za vlasovou
+     čiarou. Pri rolovaní sa logo zmenší spolu s hlavičkou. */
+  .brand { display: inline-flex; align-items: center; gap: 12px; color: var(--color-ink); flex: none; }
+  .brand :global(.brand-logo) { transition: height 250ms var(--ease-soft); }
+  .hdr.is-scrolled .brand { --logo-h: 19px; }
+  .brand-sub { font-size: 14px; font-weight: 500; color: var(--color-ink-soft); border-left: var(--line); padding-left: 12px; line-height: 1; }
 
   /* Navigácia so žltou značkou, ktorá sa posúva pod položku. */
   .nav { position: relative; display: flex; align-items: center; gap: 2px; margin-left: 4px; flex: none; }
@@ -236,8 +235,9 @@ const polozky = [
     .hdr-in { gap: 12px; min-height: 64px; }
     .hdr-in > .search, .hdr-in > .eshop { display: none; }
     .menu-btn { margin-left: auto; }
-    .brand-znak { width: 30px; height: 30px; font-size: 17px; border-radius: 8px; }
-    .brand-name { font-size: 20px; }
+    .brand { gap: 10px; }
+    .brand, .hdr.is-scrolled .brand { --logo-h: 17px; }
+    .brand-sub { font-size: 13px; padding-left: 10px; }
     .partner span { display: none; }
   }
 </style>

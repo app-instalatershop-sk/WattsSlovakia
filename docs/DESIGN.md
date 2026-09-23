@@ -172,7 +172,19 @@ piktogram nie je, stačí text.
 
 Ak budeme neskôr chcieť jednotnú kreslenú sadu (napr. pre favicon a veľmi malé veľkosti),
 zadáme ju grafikovi so zadaním: 9 radov + spojky + príslušenstvo, mriežka 24 px, jeden štýl
-ťahu, testované v 16, 24 a 48 px. Dovtedy favicon = písmeno M v Archive na modrej.
+ťahu, testované v 16, 24 a 48 px.
+
+### Logo
+
+Od 23. 9. 2026 (Juraj: „logo sa mi nepáči, urob nové alebo použi ich nejaké“) je v hlavičke
+a pätičke **oficiálne logo MICROFLEX®**. Nie je to nápis v našom písme: je to vektor vytiahnutý
+z katalógu Watts (s. 3, nad heslom „Flexibility, all the way.“), farba #074EA2, v pätičke biele.
+Súbor `web/src/assets/loga/microflex.svg`, komponent `MicroflexLogo.astro`, archív so zdrojom
+v `podklady/watts/loga/microflex-logo.svg`. Za logom je vlasová čiara a náš doplnok „Slovensko“
+v písme IBM Plex Sans, spolu teda „Microflex Slovensko“. Logo sa nemení, neprefarbuje (okrem bielej
+na tmavom) a nedopĺňa o grafiku; značka ® ostáva vždy. Veľkosť v hlavičke 21 px, po zmenšení 19 px,
+na telefóne 17 px. Favicon je písmeno M z tohto loga, biele na modrej #074EA2 (`web/public/favicon.svg`).
+Predchádzajúci znak „M v štvorci so žltým bodom“ a nápis v Archive sú zrušené.
 
 ### Rebrovaný vzor
 
@@ -363,8 +375,8 @@ a v rodine, ale zakaždým v inej úlohe (výrobok, voľba radu, porovnanie vrst
 ktorých hodnotíme: Vignelli (disciplína, jedno ohnisko), Müller-Brockmann (mriežka 12 stĺpcov),
 Tufte (dátový atrament), Refactoring UI (popis k nadpisu, nekvalitná fotka len ako náhľad).
 
-Hlavička (23. 9., Juraj: „vyzerá ako AI z minulého roka“): znak M so žltým bodom (jadro rúry)
-a nápis; Potrubia otvárajú panel so všetkými piatimi systémami, ich rendermi a radmi, pod nimi
+Hlavička (23. 9., Juraj: „vyzerá ako AI z minulého roka“): oficiálne logo MICROFLEX® a doplnok
+Slovensko (kap. 6, Logo); Potrubia otvárajú panel so všetkými piatimi systémami, ich rendermi a radmi, pod nimi
 spojky, príslušenstvo, celý katalóg a katalóg PDF; pod položkou, na ktorej je myš alebo aktuálna
 stránka, sa posúva žltá značka; hľadanie je pole s ikonou a skratkou Ctrl K (⌘ K); E-shop je tmavé
 tlačidlo, lebo je cieľom webu. Pod 1 100 px je všetko v menu (predtým na tablete navigácia zmizla
@@ -538,8 +550,9 @@ kód. Makety vieme robiť ako artefakty v Claude, takže ich Juraj otvorí v pre
   máme** (dlhodobá spolupráca, sme popredný e-shop pre ich produkty; potvrdil Juraj 21. 9. 2026).
   Logá, fotky a PDF od výrobcu zbierame v `podklady/watts/` (zdroj a licenčná poznámka v README
   priečinka). Vlastné makro fotky odrezkov ostávajú cieľom, lebo ich nemá nikto iný.
-- **Web musí byť na prvý pohľad náš, nie web Watts.** V hlavičke je náš názov (pracovne
-  „Microflex Slovensko“, ❔ definitívny názov), logo Watts ako výrobca v sekcii „Výrobca“ a v pätičke.
+- **Web musí byť na prvý pohľad náš, nie web Watts.** V hlavičke je oficiálne logo MICROFLEX®
+  s naším doplnkom „Slovensko“ (rozhodnutie Juraja 23. 9. 2026, kap. 6), logo Watts ako výrobca
+  v hornom páse s vetou o partnerstve a v pätičke.
   V pätičke prevádzkovateľ s úplnými údajmi (firma za instalatershop.sk, sídlo, IČO), kontakt
   a veta „Predaj zabezpečuje instalatershop.sk“.
 - Označenie „autorizovaný predajca“ alebo „oficiálny partner“: presné znenie dohodnúť s Watts. ❔
@@ -626,7 +639,7 @@ pri rolovaní, čo zatiaľ nechceme. Prechody stránok riešime natívnym View T
 
 ### 16.5 Drobnosti, ktoré si ľudia všimnú podvedome
 
-- Favicon a ikony aplikácie (M v Archive na modrej), obrázok pre zdieľanie (OG) s renderom radu.
+- Favicon a ikony aplikácie (písmeno M z oficiálneho loga MICROFLEX® na modrej), obrázok pre zdieľanie (OG) s renderom radu.
 - Tlačová šablóna tabuľky variantov (inštalatéri si tlačia obj. čísla).
 - Vlastný posuvník v širokých tabuľkách, jemné oddelenie zamrznutého stĺpca tieňom.
 - Stránka 404 v našom dizajne s hľadaním a odkazmi na kategórie.

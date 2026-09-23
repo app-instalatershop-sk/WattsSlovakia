@@ -14,6 +14,7 @@ Zdrojové adresy každého súboru sú v `watts/manifest.json`.
 | `Microflex-brozura-EN-2026-05.pdf` | Brožúra Pre-insulated flexible pipes Microflex, anglicky, máj 2026, 1 MB. Novšie texty a fotky. |
 | `loga/watts-logo.png` | Logo Watts z hlavičky webu, 571 × 108 px, priehľadné PNG. |
 | `loga/watts-logo-4c.eps` | Logo Watts vo vektore (4C), originál výrobcu. |
+| `loga/microflex-logo.svg` | Oficiálne logo MICROFLEX® vo vektore, farba #074EA2. Vytiahnuté z katalógu `Microflex-katalog-SK.pdf`, s. 3 (PyMuPDF `get_drawings`, výplne v modrej loga nad heslom), bez hesla „Flexibility, all the way.“. Overené proti vykresleniu PDF. |
 | `banner/microflex-banner-2025-09.jpg` | Hero banner Microflex z domovskej stránky watts.eu, 8000 × 3025 px (render rezu potrubia na modrej). |
 | `fotky/microflex-prierez-vykop.jpg` | Skutočná fotka rezu DUO na kotúči, 500 × 500 px. Použitá v makete hero s popiskami. |
 | `fotky/microflex-vykop-spojky.jpg` | Skutočná fotka výkopu s potrubím a spojkami, 1600 × 1066 px, originál 1 MB. Hero fotka makety. |
@@ -22,8 +23,9 @@ Zdrojové adresy každého súboru sú v `watts/manifest.json`.
 | `fotky-referencie/` | Náhľady referencií (škola, Považská Bystrica), malé. Väčšie verzie treba vypýtať od Watts. |
 | `fotky-katalog/` | Veľké obrázky vytiahnuté z PDF katalógu: kotúč (2105 px), rodina potrubí UNO/DUO/QUADRO/COOL (`s06`), rendery montáže a prestupu stenou (`s35`), rez výkopom s uložením (`s37`), graf tlakovej skúšky (`s41`). |
 
-**Logo Microflex neexistuje ako samostatná značka.** Na obale katalógu je „Microflex - Katalóg“ len
-textom v písme Helvetica Neue. Náš nápis „Microflex Slovensko“ v písme Archivo je preto v poriadku.
+**Logo Microflex existuje** (oprava 23. 9. 2026): je na s. 3 katalógu, nad heslom „Flexibility, all the
+way.“. Na obale katalógu je „Microflex - Katalóg“ len textom, preto sa 21. 9. prehliadlo. Web používa
+toto oficiálne logo s doplnkom „Slovensko“.
 
 **Ako podklady obnoviť alebo doplniť:** HTML stránky watts.eu vracajú skriptom chybu 403, sťahovanie ide
 cez prehliadač (Playwright, `fetch` v kontexte stránky). Originál obrázka dostaneme, keď v adrese

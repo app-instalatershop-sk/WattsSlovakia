@@ -1,5 +1,6 @@
 ---
 import WattsLogo from './WattsLogo.astro';
+import MicroflexLogo from './MicroflexLogo.astro';
 import { kategorie, cestaKategorie, kKratky } from '../lib/katalog';
 import { type Lang, t, route } from '../i18n/ui';
 interface Props { lang: Lang }
@@ -10,7 +11,7 @@ const kats = await kategorie();
 <footer class="ftr">
   <div class="wrap ftr-in">
     <div>
-      <a class="brand" href={route(lang, 'domov')}><span class="brand-name">Microflex</span><span class="brand-sub">{ui.site.sub}</span></a>
+      <a class="brand" href={route(lang, 'domov')} aria-label={ui.site.name}><MicroflexLogo height={22} farba="biela" popis={null} /><span class="brand-sub">{ui.site.sub}</span></a>
       <p class="muted" style="max-width:32em">{ui.footer.popis} <a href="https://www.instalatershop.sk/">instalatershop.sk</a>.</p>
       <div class="vyrobca">
         <WattsLogo height={20} farba="biela" />
@@ -53,9 +54,8 @@ const kats = await kategorie();
   .ftr a { color: #fff; }
   .ftr a:hover { color: var(--color-yellow-500); }
   .ftr li { padding: 4px 0; font-size: 15px; }
-  .brand { display: inline-flex; align-items: center; gap: 12px; color: #fff; margin-bottom: 12px; }
-  .brand-name { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 700; font-size: 22px; letter-spacing: -0.01em; line-height: 1; }
-  .brand-sub { font-size: 13px; color: var(--color-on-dark-muted); border-left: 1px solid rgb(255 255 255 / 0.3); padding-left: 12px; line-height: 1; }
+  .brand { display: inline-flex; align-items: center; gap: 12px; color: #fff; margin-bottom: 16px; }
+  .brand-sub { font-size: 14px; font-weight: 500; color: var(--color-on-dark-muted); border-left: 1px solid rgb(255 255 255 / 0.3); padding-left: 12px; line-height: 1; }
   .ftr .muted { color: var(--color-on-dark-muted); }
   .vyrobca { display: flex; align-items: center; gap: 16px; margin-top: 24px; padding-top: 20px; border-top: 1px solid rgb(255 255 255 / 0.18); font-size: 14px; max-width: 32em; }
   .ftr-bottom { border-top: 1px solid rgb(255 255 255 / 0.18); padding-block: 16px; font-size: 13px; color: var(--color-on-dark-muted); display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }

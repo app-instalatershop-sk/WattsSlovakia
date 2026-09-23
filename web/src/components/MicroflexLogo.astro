@@ -1,0 +1,21 @@
+---
+/**
+ * Oficiálne logo MICROFLEX® ako vektor: cesty vytiahnuté z katalógu Watts (s. 3), použitie so súhlasom
+ * Watts. Farba ide z CSS (currentColor): pôvodná modrá #074EA2 alebo biela na tmavom. Veľkosť určuje
+ * výška obalu; šírka sa dopočíta z pomeru loga. Rodič môže výšku prepísať premennou --logo-h
+ * (napr. menšie logo v zmenšenej hlavičke), inline štýl s --mf-h je len predvolená hodnota.
+ * V odkaze, ktorý má vlastný popis, je logo skryté pred čítačkou (popis={null}).
+ */
+import logo from '../assets/loga/microflex.svg?raw';
+interface Props { height?: number; farba?: 'original' | 'biela'; class?: string; popis?: string | null }
+const { height = 20, farba = 'original', class: cls = '', popis = 'Microflex' } = Astro.props;
+const svg = logo.replace('<svg ', popis ? `<svg role="img" aria-label="${popis}" ` : '<svg aria-hidden="true" focusable="false" ');
+---
+<span class={`mflogo mflogo-${farba} ${cls}`} style={`--mf-h: ${height}px`} set:html={svg} />
+
+<style>
+  .mflogo { display: inline-flex; height: var(--logo-h, var(--mf-h)); line-height: 0; flex: none; }
+  .mflogo :global(svg) { display: block; height: 100%; width: auto; overflow: visible; }
+  .mflogo-original { color: #074ea2; }
+  .mflogo-biela { color: #ffffff; }
+</style>

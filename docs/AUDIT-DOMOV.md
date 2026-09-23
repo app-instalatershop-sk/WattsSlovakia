@@ -214,3 +214,18 @@ Doplnok 23. 9.: kóty v hero boli pri širšej obrazovke na plášti a zle čita
 v pevných pixeloch, zatiaľ čo render rástol. Teraz rastú s obrázkom a štítky majú podklad. Kružnice
 a tieň rúry sa orezávali na spodnej hrane hero, ktorá ležala cez šikmý pás katalógu; hero už zvislo
 neorezáva a kružnice doznejú nad pásom.
+
+## 10. Hadovito a zostup pod zem (23. 9. 2026)
+
+Juraj: „druhá časť stránky, tá asymetria sa mi naozaj páči, veci pekne rozdelené a nadväzujú; chcem
+takú celú stránku s hero, ktoré do toho zapadne a vizuálne vedie nadol.“ Prvý pokus (obsah s číslami
+kapitol, čísla nad nadpismi, koľajnica pri okraji) bol omyl, Juraj myslel vizuálne vedenie. Na otázku
+s dvomi možnosťami vybral:
+
+- **Hadovito:** hlavné obrázky sa striedajú vpravo a vľavo (hero, katalóg, rodina, pokládka, výkop).
+  Jediná zmena rozloženia je v katalógu: štúdio s rendermi je vľavo, nadpis a register vpravo.
+- **Zostup pod zem:** pozadie domova plynulo tmavne od bielej cez štyri svetlomodré tóny po
+  tmavomodrú; rodina už nie je biela, preto vrstvy potrubia dostali svetlú plochu s modrým lemom.
+
+Meranie: texty radov v štúdiu začínajú na línii mriežky (147 px pri 1 536 px) pri jednom aj troch
+radoch; bez vodorovného rolovania pri 390, 1 024 a 1 536 px.

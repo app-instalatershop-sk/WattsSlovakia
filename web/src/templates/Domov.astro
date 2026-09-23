@@ -119,7 +119,7 @@ const popisy = [
     </div>
   </section>
 
-  <section class="section band-soft pokladka" aria-labelledby="h-pokladka">
+  <section class="section pokladka" aria-labelledby="h-pokladka">
     {/* Fotka kotúča má čisto bielu plochu: násobením splynie s pásom a text sedí vo vnútri kotúča. */}
     <div class="kotuc-obal">
       <Image src={kotuc} alt={h.pokladkaAlt} widths={[900, 1400, 2000]} sizes="(max-width: 760px) 120vw, 76vw" class="kotuc" data-otacaj="-4 3" />
@@ -282,7 +282,7 @@ const popisy = [
   @keyframes pulz { 0% { opacity: 0.9; transform: scale(0.6); } 100% { opacity: 0; transform: scale(2.4); } }
 
   /* ---------- Rodina: render prechádza cez švík z modrého pásu do bielej ---------- */
-  .rodina { background: var(--color-white); padding-top: 0; padding-bottom: 96px; overflow-x: clip; overflow-y: visible; }
+  .rodina { background: linear-gradient(180deg, var(--zem-2) 0%, var(--zem-3) 100%); padding-top: 0; padding-bottom: 96px; overflow-x: clip; overflow-y: visible; }
   .rodina-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px; align-items: start; }
   .rodina-text { padding-top: 64px; }
   .rodina-text h2 { margin-bottom: 16px; }
@@ -297,7 +297,8 @@ const popisy = [
   .vrstvy { grid-column: 1 / -1; margin-top: -16px; position: relative; }
   .vrstvy ol { margin: 0; }
   .v { --ring: var(--color-blue-700); position: relative; border-radius: 26px; }
-  .v-plast { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 22px; padding: 22px; background: linear-gradient(140deg, #eaf1fb 0%, #d9e6f6 100%); box-shadow: inset 0 0 0 1px rgb(0 93 185 / 0.16), 0 24px 50px -30px rgb(10 42 94 / 0.45); }
+  /* Na modrom podklade je plášť svetlá plocha s modrým lemom, farbu nesie detail plášťa. */
+  .v-plast { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 22px; padding: 22px; background: linear-gradient(140deg, #ffffff 0%, #f2f7fd 100%); box-shadow: inset 0 0 0 1.5px rgb(0 93 185 / 0.3), 0 28px 60px -32px rgb(10 42 94 / 0.55); }
   .v-pena { --ring: #8e97a3; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; height: 100%; padding: 20px; border-radius: 21px; background: linear-gradient(140deg, #f8f9fb 0%, #eceef2 100%); box-shadow: inset 0 0 0 1px rgb(74 85 104 / 0.14); }
   .v-rura { --ring: var(--color-yellow-500); height: 100%; padding: 18px; border-radius: 16px; background: linear-gradient(140deg, #fffcf0 0%, #fff3c7 100%); box-shadow: inset 0 0 0 1px rgb(214 170 0 / 0.35); }
   .v > ol, .v > ol > li { height: 100%; }
@@ -309,7 +310,7 @@ const popisy = [
   .v p { font-size: 14.5px; line-height: 1.55; color: var(--color-ink-soft); max-width: 34em; }
 
   /* ---------- Pokládka: kotúč vľavo cez okraj obrazovky, text v jeho vnútri ---------- */
-  .pokladka { position: relative; overflow: hidden; padding-top: 112px; padding-bottom: 232px; isolation: isolate; }
+  .pokladka { position: relative; overflow: hidden; padding-top: 112px; padding-bottom: 232px; isolation: isolate; background: linear-gradient(180deg, var(--zem-3) 0%, var(--zem-4) 100%); }
   /* Obal je celá plocha sekcie: maska na ňom rozpustí kotúč hore aj dole v páse, nech je obrázok
      akokoľvek vysoký. Násobenie je tiež na obale, lebo obrázok v samostatnej vrstve by sa miešal
      len s prázdnom a biela by ostala biela. */

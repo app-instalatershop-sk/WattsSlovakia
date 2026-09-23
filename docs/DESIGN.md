@@ -100,6 +100,9 @@ Základ je prevzatý z CSS premenných watts.eu (`--primary #005db9`, `--dark-pr
 **Pravidlá:**
 - Na jednej stránke najviac tri pozadia: biela, jeden svetlomodrý pás (`--blue-100` alebo
   `--blue-50`) a jeden tmavý blok (`--blue-900`, spravidla pätička alebo Pre firmy).
+  Výnimka je domov (Juraj 23. 9. 2026, „zostup pod zem“): pozadie od hero po pätičku plynulo tmavne
+  cez štyri tóny `--zem-1` až `--zem-4` (global.css) do tmavomodrej; koniec jednej sekcie je začiatok
+  ďalšej, takže medzi pásmi nie je biela ani schod.
 - Žiadne prechody (gradienty) okrem tmavého presahu cez hero fotku kvôli čitateľnosti textu.
 - Zelená a červená sú výlučne stavové, nikdy dekoratívne.
 - Kontrast: `--blue-700` na bielej 6,3 : 1, `--ink` na `--yellow-500` 12 : 1, `--ink` na
@@ -241,13 +244,14 @@ Domov v4 (23. 9. 2026, zadanie Juraja „najpútavejší dizajn, kľudne asymetr
 |                                   |   ● 25 až 125 mm, nosné rúry na 6,     |
 |                                   |     10 alebo 16 bar                    |
 +----------------------------------------------------------------------------+
-| Výber podľa použitia / Každý projekt má svoje potrubie.   (svetlý pás)      |
-| ▌Vykurovanie      4 rady |        mäkké svetlo štúdia                      |
-|  Teplá a studená  3 rady |   [render UNO]        [render DUO]              |
-|  …                       |   ────────────── spoločná podlaha ───────────── |
-| popis kategórie,         |   Microflex UNO       Microflex DUO             |
-| Aj vo vyhotovení PRIMO   |   Jedna rúra v plášti Dve rúry v plášti         |
-| Celý katalóg potrubí ↗   |   16 dimenzií, plášť  8 dimenzií, plášť         |
+|   mäkké svetlo štúdia (vybieha za ľavý okraj) | VÝBER PODĽA POUŽITIA        |
+|   [render UNO]        [render DUO]            | Každý projekt má            |
+|   ─────────── spoločná podlaha ───────────    | svoje potrubie.             |
+|   Microflex UNO       Microflex DUO           | ▌Vykurovanie       4 rady   |
+|   Jedna rúra v plášti Dve rúry v plášti       |  Teplá a studená   3 rady   |
+|   16 dimenzií, plášť  8 dimenzií, plášť       |  …                          |
+|   Microflex UNO PRIMO Microflex PRIMO DUO     | popis kategórie             |
+|   Užší plášť …        Užší plášť …            | Celý katalóg potrubí ↗      |
 | Spojky a príslušenstvo: skupiny dielov ako odkazy                          |
 +--------------------------+-------------------------------------------------+
 | Päť systémov, jedna rodina.       |   render rodiny cez švík pásu, za      |
@@ -303,11 +307,13 @@ Navigácia po stránke s číslami kapitol (obsah v hero, čísla nad nadpismi, 
 vizuálne. Pri nejasnom zadaní sa pýtať.
 
 Katalóg na domove (Juraj 22. 9. 2026, podľa jeho vlastného návrhu, v4 prekomponované): záložky =
-kategórie, v paneli veľké rendery radov. V4 z nich robí **register** vľavo (ako palcový register
+kategórie, v paneli veľké rendery radov. V4 z nich robí **register** (ako palcový register na okraji
 tlačeného katalógu: názov a počet radov, vybraná kategória má žltú značku, farbu jadra rúry) a
-**štúdio** vpravo: rendery stoja na spoločnej podlahe s tieňom, popisy sú zarovnané doľava a začínajú
-na jednej linke (podmriežka). Pri jednom rade je popis vedľa renderu. Popis vybranej kategórie je
-v ľavom stĺpci pod registrom. Záložky sú prepínače bez skriptu a obsah všetkých panelov je v HTML
+**štúdio**: rendery stoja na spoločnej podlahe s tieňom, popisy sú zarovnané doľava a začínajú na
+jednej linke (podmriežka). Od 23. 9. (hadovito) je štúdio vľavo na mriežke 7 / 5 a nadpis, register
+a popis vybranej kategórie vpravo, ako výber pri výrobku v e-shope. Za ľavý okraj obrazovky vybieha
+len svetlo štúdia; telá rúr sú orezané už v renderoch výrobcu, preto ich za okraj nepúšťame. Pri
+jednom rade je render väčší (72 % štúdia) a popis pod ním ako pri ostatných. Záložky sú prepínače bez skriptu a obsah všetkých panelov je v HTML
 kvôli vyhľadávačom.
 
 Počet radov v registri musí sedieť s tým, čo je vidieť (Juraj 23. 9.: „sú 4 rady, ukázané sú len 2“).
@@ -337,8 +343,14 @@ farbu ako začiatok pätičky.
 
 Zásada domova (Juraj 21. 9. 2026): každá sekcia má inú úlohu aj inú formu. V4: produkt ako monument
 (hero), register a štúdio (katalóg), render a typografický rez (rodina), postup s číslami (pokládka),
-fotka cez hranu (referencie), tmavý zoznam podkladov (Pre firmy). Ukotvenie sa strieda: obrázok
-vpravo, register a štúdio, render vpravo cez švík, kotúč vľavo, fotka vpravo cez šikmú hranu.
+fotka cez hranu (referencie), tmavý zoznam podkladov (Pre firmy).
+
+**Hadovito** (Juraj 23. 9. 2026, výber z dvoch možností): hlavný obrázok sekcie sa strieda vpravo
+a vľavo a oko ide cikcak nadol, ako potrubie položené hadovito vo výkope (katalóg Watts s. 37):
+render rezu vpravo → rendery radov vľavo → rodina vpravo → kotúč vľavo → výkop vpravo. Text je vždy
+na opačnej strane. Každý obrázok prekračuje okraj obrazovky alebo hranu sekcie a vedie do ďalšej:
+render hero pretína šikmú hranu pásu katalógu, rodina stúpa do pásu katalógu, výkop pretína šikmú
+hranu podzemia. Vedenie nadol je vizuálne, nie navigáciou s číslami (tá bola skúsená a zrušená).
 Pravidlo „text vľavo, obrázok vpravo v celej stránke rovnako“ z auditu 21. 9. už neplatí, robilo
 stránku jednotvárnou. Ten istý motív sa neopakuje v tej istej forme; rez rúry je v hero, v štúdiu
 a v rodine, ale zakaždým v inej úlohe (výrobok, voľba radu, porovnanie vrstiev). Pravidlá, podľa

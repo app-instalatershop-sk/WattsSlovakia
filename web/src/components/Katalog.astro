@@ -1,8 +1,9 @@
 ---
 /**
- * Katalóg na domove: výber podľa použitia. Vľavo register kategórií ako palcový register tlačeného
- * katalógu, pod ním popis vybranej kategórie. Vpravo „štúdio“: rendery radov stoja na jednej
- * podlahe ako výrobky pri fotení. Záložky sú prepínače (radio + label), fungujú bez skriptu a obsah
+ * Katalóg na domove: výber podľa použitia. Vľavo „štúdio“: rendery radov stoja na jednej podlahe ako
+ * výrobky pri fotení, svetlo štúdia vybieha za ľavý okraj obrazovky (stránka je zložená hadovito,
+ * obrázky sa striedajú vpravo a vľavo). Vpravo nadpis a register kategórií ako palcový register na okraji
+ * tlačeného katalógu, pod ním popis vybranej kategórie. Záložky sú prepínače (radio + label), fungujú bez skriptu a obsah
  * všetkých panelov je v HTML kvôli vyhľadávačom. Rad dostane render len vtedy, keď má vlastný;
  * vyhotovenia, ktoré zdieľajú render so súrodencom (PRIMO), sú vymenované v popise.
  */
@@ -55,10 +56,11 @@ const skupiny = (k: Kategoria) => rady.filter((r) => r.kategoria === k.id).sort(
 ---
 <section id="vyber" class="section katalog" aria-labelledby="h-kat">
   <div class="wrap">
-    <p class="kicker">{h.katalogKicker}</p>
-    <h2 id="h-kat">{h.katalogH2}</h2>
-
     <div class="kat-taby">
+      <div class="kat-hlava">
+        <p class="kicker">{h.katalogKicker}</p>
+        <h2 id="h-kat">{h.katalogH2}</h2>
+      </div>
       <div class="t-list" role="radiogroup" aria-labelledby="h-kat">
         {panely.map((p, i) => (
           <label class="t-lbl">
@@ -121,16 +123,17 @@ const skupiny = (k: Kategoria) => rady.filter((r) => r.kategoria === k.id).sort(
      zhora prechádza cez švík do bielej sekcie pod ním. */
   .katalog { position: relative; isolation: isolate; margin-top: calc(-1 * var(--presah-hero)); padding-top: calc(var(--presah-hero) + 84px); padding-bottom: 200px; scroll-margin-top: calc(72px - var(--presah-hero)); overflow-x: clip; }
   .kicker { font-size: 12.5px; letter-spacing: .09em; text-transform: uppercase; color: var(--color-blue-700); font-weight: 600; margin-bottom: 10px; }
-  .katalog::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, #dde8f6 0%, var(--color-blue-50) 240px, var(--color-blue-50) 100%); clip-path: polygon(0 var(--presah-hero), 100% 0, 100% 100%, 0 100%); }
-  .katalog h2 { font-size: clamp(28px, 2.2vw + 14px, 42px); margin-bottom: 44px; }
+  .katalog::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, var(--zem-1) 0%, var(--zem-2) 100%); clip-path: polygon(0 var(--presah-hero), 100% 0, 100% 100%, 0 100%); }
+  .katalog h2 { font-size: clamp(28px, 2.2vw + 14px, 42px); margin-bottom: 32px; }
 
-  /* Dva stĺpce na mriežke 4 / 8. Panely sú podmriežka cez celú šírku, takže popis vybranej kategórie
-     sedí vľavo pod registrom a rendery vpravo, hoci patria do toho istého panela. */
-  .kat-taby { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); grid-template-rows: auto auto 1fr; column-gap: 24px; }
-  .t-list { grid-column: 1; grid-row: 1; position: relative; z-index: 2; border-top: var(--line); }
+  /* Dva stĺpce na mriežke 7 / 5. Panely sú podmriežka cez celú šírku, takže popis vybranej kategórie
+     sedí vpravo pod registrom a rendery vľavo, hoci patria do toho istého panela. */
+  .kat-taby { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); grid-template-rows: auto auto auto 1fr; column-gap: 56px; }
+  .kat-hlava { grid-column: 2; grid-row: 1; position: relative; z-index: 2; }
+  .t-list { grid-column: 2; grid-row: 2; position: relative; z-index: 2; border-top: var(--line); }
   .t-panely { grid-column: 1 / -1; grid-row: 1 / -1; display: grid; grid-template-columns: subgrid; grid-template-rows: subgrid; }
   .t-panel { grid-column: 1 / -1; grid-row: 1 / -1; display: none; grid-template-columns: subgrid; grid-template-rows: subgrid; }
-  .vsetko { grid-column: 1; grid-row: 3; align-self: end; justify-self: start; position: relative; z-index: 2; display: inline-flex; align-items: center; gap: 6px; font-weight: 500; border-bottom: 1px solid currentColor; padding-bottom: 2px; }
+  .vsetko { grid-column: 2; grid-row: 4; align-self: end; justify-self: start; position: relative; z-index: 2; display: inline-flex; align-items: center; gap: 6px; font-weight: 500; border-bottom: 1px solid currentColor; padding-bottom: 2px; }
   .vsetko :global(svg) { width: 16px; height: 16px; }
 
   /* Register: riadok = kategória a počet radov. Vybraná má žltú značku, farbu jadra rúry. */
@@ -154,19 +157,19 @@ const skupiny = (k: Kategoria) => rady.filter((r) => r.kategoria === k.id).sort(
   .kat-taby:has(.t-lbl:nth-of-type(5) input:checked) .t-panel:nth-of-type(5),
   .kat-taby:has(.t-lbl:nth-of-type(6) input:checked) .t-panel:nth-of-type(6) { display: grid; }
 
-  .t-info { grid-column: 1; grid-row: 2; padding: 24px 24px 32px 20px; color: var(--color-ink-soft); max-width: 30em; animation: panel 420ms var(--ease-soft) both; }
+  .t-info { grid-column: 2; grid-row: 3; padding: 24px 24px 32px 20px; color: var(--color-ink-soft); max-width: 30em; animation: panel 420ms var(--ease-soft) both; }
 
   /* Štúdio: mäkké svetlo za výrobkami. Podmriežka dáva všetkým radom dva spoločné riadky:
      rendery stoja na jednej podlahe a popisy začínajú na jednej linke, aj keď má názov dva riadky. */
-  .studio { grid-column: 2; grid-row: 1 / -1; position: relative; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); grid-template-rows: 1fr auto; column-gap: 28px; align-content: end; padding-left: 16px; min-height: 480px; }
-  .studio::before { content: ""; position: absolute; inset: -56px -8% 36px 4%; background: radial-gradient(50% 58% at 56% 50%, #ffffff 0%, rgb(255 255 255 / 0.55) 42%, rgb(255 255 255 / 0) 72%); pointer-events: none; }
+  /* Rendery stoja na mriežke, za ľavý okraj obrazovky vybieha len svetlo štúdia. Telá rúr sú orezané
+     už v samotných renderoch výrobcu, preto ich za okraj nepúšťame. */
+  .studio { grid-column: 1; grid-row: 1 / -1; position: relative; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); grid-template-rows: 1fr auto; column-gap: 28px; align-content: end; min-height: 520px; }
+  .studio::before { content: ""; position: absolute; inset: -40px -4% 36px calc(-1 * var(--bleed)); background: radial-gradient(52% 60% at 58% 50%, #ffffff 0%, rgb(255 255 255 / 0.6) 42%, rgb(255 255 255 / 0) 72%); pointer-events: none; }
   .rad { position: relative; grid-row: span 2; display: grid; grid-template-rows: subgrid; color: var(--color-ink); animation: panel 520ms var(--ease-soft) both; }
   .rad:nth-child(2) { animation-delay: 70ms; }
   .rad:nth-child(3) { animation-delay: 140ms; }
-  /* Jeden rad: render vľavo, popis vedľa neho pri podlahe. */
-  .studio[data-pocet="1"] .rad { display: flex; align-items: flex-end; gap: 8px; }
-  .studio[data-pocet="1"] .rad-obj { flex: 0 0 66%; }
-  .studio[data-pocet="1"] .rad-txt { padding-bottom: 36px; border-top: 0; margin-top: 0; }
+  /* Jeden rad: väčší render, popis pod ním ako pri ostatných. */
+  .studio[data-pocet="1"] { grid-auto-columns: minmax(0, 72%); }
   /* Tieň nesie obal a masku obrázok. Maska a tieň na jednom prvku by tieň orezali na hranu boxu. */
   .rad-obj { position: relative; display: block; align-self: end; filter: drop-shadow(0 26px 26px rgb(11 27 51 / 0.2)); transition: transform 400ms var(--ease-soft); }
   .rad-obj::after { content: ""; position: absolute; left: 14%; right: 6%; bottom: -6px; height: 22px; border-radius: 50%; background: radial-gradient(closest-side, rgb(10 42 94 / 0.22), rgb(10 42 94 / 0)); z-index: -1; }
@@ -197,8 +200,9 @@ const skupiny = (k: Kategoria) => rady.filter((r) => r.kategoria === k.id).sort(
   /* Pod 1 100 px: register je vodorovný pás záložiek, popis pod ním, rendery ako koľajnica na posun prstom. */
   @media (max-width: 1100px) {
     .katalog { padding-bottom: 140px; }
-    .kat-taby { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto auto auto; }
-    .t-list { display: flex; gap: 4px; border-top: 0; border-bottom: var(--line); overflow-x: auto; scrollbar-width: none; margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); }
+    .kat-taby { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto auto auto auto; }
+    .kat-hlava { grid-column: 1; grid-row: 1; }
+    .t-list { grid-column: 1; grid-row: 2; display: flex; gap: 4px; border-top: 0; border-bottom: var(--line); overflow-x: auto; scrollbar-width: none; margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); }
     .t-list::-webkit-scrollbar { display: none; }
     .t-lbl { flex: none; padding: 12px 16px 14px; border-bottom: 2px solid transparent; margin-bottom: -1px; }
     .t-lbl:first-child { padding-left: 0; }
@@ -207,9 +211,9 @@ const skupiny = (k: Kategoria) => rady.filter((r) => r.kategoria === k.id).sort(
     .t-nazov { font-size: 17px; }
     .t-pocet { display: none; }
     .t-panel { grid-row: 1 / -1; }
-    .t-info { grid-column: 1; grid-row: 2; padding: 20px 0 8px; }
-    .studio { grid-column: 1; grid-row: 3; padding: 24px 0 0; min-height: 0; }
-    .vsetko { grid-row: 4; margin-top: 28px; }
+    .t-info { grid-column: 1; grid-row: 3; padding: 20px 0 8px; }
+    .studio { grid-column: 1; grid-row: 4; margin-left: 0; padding: 24px 0 0; min-height: 0; }
+    .vsetko { grid-column: 1; grid-row: 5; margin-top: 28px; }
   }
   @media (max-width: 760px) {
     .katalog { padding-top: calc(var(--presah-hero) + 52px); padding-bottom: 100px; }
@@ -220,9 +224,6 @@ const skupiny = (k: Kategoria) => rady.filter((r) => r.kategoria === k.id).sort(
     .studio::before { display: none; }
     .rad { scroll-snap-align: start; }
     .studio[data-pocet="1"] { grid-auto-columns: 100%; }
-    .studio[data-pocet="1"] .rad { display: grid; grid-template-rows: subgrid; }
-    .studio[data-pocet="1"] .rad-obj { flex: none; }
-    .studio[data-pocet="1"] .rad-txt { padding-bottom: 0; border-top: 1px solid rgb(10 42 94 / 0.14); margin-top: 18px; }
     .diely h3 { width: 100%; }
   }
 </style>

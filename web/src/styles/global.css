@@ -43,6 +43,12 @@
     --line: 1px solid var(--color-grey-300);
     /* O koľko sa pás katalógu podsunie pod spodok hero; zároveň výška jeho šikmej hrany. */
     --presah-hero: clamp(56px, 8vw, 132px);
+    /* Zostup pod zem: pozadia domova zhora nadol tmavnú. Koniec jednej sekcie je začiatok ďalšej,
+       takže medzi modrými pásmi nie je biela ani schod; hranu majú len šikmé prechody. */
+    --zem-1: #e9f0f9;
+    --zem-2: #e1ebf7;
+    --zem-3: #d8e5f5;
+    --zem-4: #cddff2;
     --hdr-h: 76px;
     interpolate-size: allow-keywords;
   }

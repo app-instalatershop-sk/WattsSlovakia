@@ -229,3 +229,15 @@ s dvomi možnosťami vybral:
 
 Meranie: texty radov v štúdiu začínajú na línii mriežky (147 px pri 1 536 px) pri jednom aj troch
 radoch; bez vodorovného rolovania pri 390, 1 024 a 1 536 px.
+
+## 11. Stavba potrubia: rez pod lupou (23. 9. 2026)
+
+Juraj: „popis aj fotka rodiny sa mi páčia, ale dolná časť, ktorá má vysvetliť, čo je v sebe a ako to
+funguje, nie je vôbec pekná; opýtaj sa, akým štýlom to riešiť.“ Na výber boli tri štýly: rez pod lupou,
+zoom pri rolovaní (ako produktové stránky Apple) a technický výkres v mierke. Vybral **rez pod lupou**.
+Nové fotky detailov pošle neskôr, dovtedy sú v lupách výrezy z podkladov Watts
+(`web/src/assets/detaily/vrstva-*.jpg`; stačí ich prepísať súbormi s rovnakým názvom).
+
+Zistenie pri podkladoch: z Watts máme ostrú makro fotku len plášťa (katalóg s. 5, CMYK, po naivnom
+prevode prežiarená, preto tónovaná na odtieň renderov 229°). Pena a rúra sú len v renderoch a pri
+väčšom zväčšení sú mäkké, preto je lupa 168 px a nie väčšia.

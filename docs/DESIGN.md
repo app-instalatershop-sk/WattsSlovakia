@@ -321,13 +321,19 @@ Rady, ktoré zdieľajú render so súrodencom (PRIMO), preto majú vlastný riad
 a odlišnosťou pod renderom základného radu: „Užší plášť pri tej istej rúre“ (katalóg s. 8 proti 9
 a 10 proti 11; vlastný obrázok PRIMO nemá ani výrobca, fotka PRIMO DUO je tá istá ako DUO).
 
-Rodina: render prechádza cez švík z pásu katalógu a za pravý okraj obrazovky. Pod ním je **stavba
-potrubia ako balenie**: tri plochy vnorené do seba, modrá (plášť) obsahuje sivú (pena) a tá žltú
-(nosná rúra). Každá má kruhový detail skutočného materiálu vyrezaný z renderu výrobcu
-(`web/src/assets/detaily/`, zdroj `rad-duo-kurenie.png`). Na počítači idú plochy zľava doprava cez
-celú šírku ako rez od plášťa k rúre, na tablete a telefóne pod sebou (Juraj 23. 9.: „balenie je
-rozumná voľba, len grafika je slabá, tri čiarky“). Pozor na fakty: spoločná je stavba, nie materiál
-rúry. COOL má nosnú rúru PE 100 do 16 bar, ostatné PE-Xa (katalóg s. 8 až 18).
+Rodina: render prechádza cez švík z pásu katalógu a za pravý okraj obrazovky. Pod ním je **rez pod
+lupou** (Juraj 23. 9. vybral z troch štýlov; balenie z vnorených plôch bolo „vôbec nie pekné“): na
+prvej rúre renderu sú tri body (žltá nosná rúra, pena, hrana plášťa) a od nich vedú tenké čiary
+k trom kruhovým lupám v rade pod rúrami. Lupa zväčší materiál vrstvy, prstenec má farbu vrstvy
+(žltá, sivá, modrá) a sklo jemný odlesk. Pri lupe je názov, jedno kľúčové číslo z katalógu (PE-Xa do
+95 °C, λ 0,0372 W/m·K pri 40 °C, dvojitá stena) a veta, na čo vrstva slúži. Poradie je od jadra po
+plášť, body idú v tom istom poradí zľava doprava, takže sa čiary nekrížia. Čiary kreslí skript
+z polohy v rozložení a nakreslia sa, keď lupy prídu do okna. Pod 1 100 px je text medzi fotkou
+a lupami, čiary by ho križovali: body a čiary sú skryté a lupy stoja samostatne (na telefóne pod
+sebou s lupou vľavo). Zábery v lupách sú dočasné výrezy z podkladov Watts (makro plášťa z katalógu
+tónované na farbu renderov, pena a rúra z renderu DUO); nahradia ich fotky odrezku, ktoré Juraj
+pošle. Pozor na fakty: spoločná je stavba, nie materiál rúry. COOL má nosnú rúru PE 100 do 16 bar,
+ostatné PE-Xa (katalóg s. 8 až 18).
 
 Pokládka (nová sekcia v4): jediné miesto s obrázkom vľavo. Fotka kotúča má čisto bielu plochu,
 násobením splynie so svetlým pásom a text leží v jeho vnútri. Obsah je z katalógu výrobcu: časy

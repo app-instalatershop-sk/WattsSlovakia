@@ -3,7 +3,6 @@
  *
  *  data-reveal            prvok sa pri vstupe do okna zdvihne a zjaví
  *  data-reveal-group      jeho deti prídu odstupňovane po 70 ms
- *  data-reveal-seq        potomkovia s data-seq prídu v poradí dokumentu (aj vnorení, zvonka dnu)
  *  data-parallax="0.12"   prvok sa pri rolovaní jemne posúva (podiel z výšky rodiča)
  *  data-otacaj="-4 3"     prvok sa pri prechode sekciou pootočí z prvého uhla na druhý (stupne)
  *  data-rozvin            premenná --rozvin ide s rolovaním od 0 po 1 a položky <li>, ku ktorým
@@ -35,15 +34,6 @@ function init() {
     kids.forEach((k) => (k.style.opacity = '0'));
     inView(group, () => {
       animate(kids, { opacity: [0, 1], y: [18, 0] }, { duration: 0.55, delay: stagger(0.07), ease: EASE });
-    }, { margin: MARGIN });
-  });
-
-  document.querySelectorAll<HTMLElement>('[data-reveal-seq]:not([data-done])').forEach((root) => {
-    root.dataset.done = '1';
-    const kids = Array.from(root.querySelectorAll<HTMLElement>('[data-seq]'));
-    kids.forEach((k) => (k.style.opacity = '0'));
-    inView(root, () => {
-      animate(kids, { opacity: [0, 1], x: [-10, 0] }, { duration: 0.6, delay: stagger(0.18), ease: EASE });
     }, { margin: MARGIN });
   });
 

@@ -34,8 +34,12 @@ const heroRez = fotka('hero-rez-duo.png')!;
 const rodina = fotka('rodina-potrubi.png')!;
 const kotuc = fotka('kotuc.jpg')!;
 const vykop = fotka('vykop-spojky.jpg')!;
-const [plast, izolacia, rura] = h.vrstvy;
-const [dPlast, dPena, dRura] = ['vrstva-plast.jpg', 'vrstva-pena.jpg', 'vrstva-rura.jpg'].map((f) => detail(f)!);
+/* Rez pod lupou: tri vrstvy od jadra po plášť. Bod (x, y v % renderu rodiny) leží na prvej rúre
+   (DUO vykurovanie): žltá nosná rúra, pena vpravo od nej, plášť na hrane rezu. Zmerané na siluete
+   rodina-potrubi.png; body idú zľava doprava v tom istom poradí ako lupy, takže sa čiary nekrížia.
+   Zábery v lupách sú dočasne výrezy z podkladov Watts, nahradia ich fotky odrezku. */
+const polohyBodov: Record<string, [number, number]> = { rura: [11.5, 71], pena: [17, 68], plast: [20.4, 64] };
+const lupy = h.lupy.map((l) => ({ ...l, img: detail(`vrstva-${l.id}.jpg`)!, bod: polohyBodov[l.id] }));
 // Odlesk po plášti: maska je samotný render, svetlo tak prejde len po výrobku, nie po pozadí.
 const leskMaska = (await getImage({ src: heroRez, width: 760, format: 'webp' })).src;
 /* Popisy na renderi: bod leží na tom, čo číslo opisuje (okraj plášťa, spodná žltá rúra, zvlnené telo),
@@ -89,33 +93,23 @@ const popisy = [
         <h2 id="h-rodina">{h.rodinaH2}</h2>
         <p class="lead">{sadzba(h.rodinaP)}</p>
       </div>
-      <div class="rodina-wrap"><Image src={rodina} alt={h.rodinaAlt} widths={[800, 1200, 1633]} sizes="(max-width: 1100px) 100vw, 64vw" class="rodina-img" data-parallax="0.06" /></div>
-      {/* Vrstvy sú vnorené do seba ako v reze: izolácia je v plášti, rúra v izolácii.
-          Na počítači idú zľava doprava od plášťa k rúre, na mobile pod sebou. */}
-      <ol class="vrstvy" aria-label={h.vrstvyLabel} data-reveal-seq>
-        <li class="v v-plast" data-seq>
-          <div class="v-hlava">
-            <Image src={dPlast} alt="" width={84} height={84} densities={[1, 2]} class="v-foto" />
-            <div><h3>{plast[0]}</h3><p>{sadzba(plast[1])}</p></div>
-          </div>
-          <ol>
-            <li class="v v-pena" data-seq>
-              <div class="v-hlava">
-                <Image src={dPena} alt="" width={72} height={72} densities={[1, 2]} class="v-foto" />
-                <div><h3>{izolacia[0]}</h3><p>{sadzba(izolacia[1])}</p></div>
-              </div>
-              <ol>
-                <li class="v v-rura" data-seq>
-                  <div class="v-hlava">
-                    <Image src={dRura} alt="" width={60} height={60} densities={[1, 2]} class="v-foto" />
-                    <div><h3>{rura[0]}</h3><p>{sadzba(rura[1])}</p></div>
-                  </div>
-                </li>
-              </ol>
-            </li>
-          </ol>
-        </li>
-      </ol>
+      <div class="rodina-obraz" data-lupy-obraz>
+        <div class="rodina-wrap"><Image src={rodina} alt={h.rodinaAlt} widths={[800, 1200, 1633]} sizes="(max-width: 1100px) 100vw, 64vw" class="rodina-img" /></div>
+        {lupy.map((l) => <span class="lupa-bod" data-bod={l.id} style={`--x: ${l.bod[0]}%; --y: ${l.bod[1]}%`} aria-hidden="true"></span>)}
+      </div>
+      {/* Rez pod lupou: každá lupa zväčší jednu vrstvu prvej rúry a čiara ju spojí s miestom na nej.
+          Čiary kreslí skript nižšie podľa skutočnej polohy bodov a líp; bez skriptu ostanú lupy s textom. */}
+      <svg class="lupy-ciary" data-lupy-ciary aria-hidden="true"></svg>
+      <ul class="lupy" aria-label={h.lupyLabel} data-reveal-group>
+        {lupy.map((l) => (
+          <li class={`lupa lupa-${l.id}`} data-lupa={l.id}>
+            <span class="lupa-okno"><Image src={l.img} alt="" width={168} height={168} densities={[1, 2]} /></span>
+            <h3>{l.nazov}</h3>
+            <p class="lupa-kluc">{sadzba(l.kluc)}</p>
+            <p>{sadzba(l.text)}</p>
+          </li>
+        ))}
+      </ul>
     </div>
   </section>
 
@@ -181,6 +175,66 @@ const popisy = [
     </section>
   </div>
 </Base>
+
+<script>
+  /* Čiary od bodu na rúre k lupe. Počíta sa z polohy v rozložení (offsetLeft a offsetTop), nie
+     z getBoundingClientRect, aby ich nerozhodil pohyb lúp pri zjavení. Kreslí sa len tam, kde je
+     čiara v CSS viditeľná (od 1 101 px). */
+  function initLupy() {
+    const svg = document.querySelector<SVGSVGElement>('[data-lupy-ciary]');
+    const grid = svg?.parentElement as HTMLElement | null;
+    if (!svg || !grid) return;
+    const w = window as unknown as { __lupy?: AbortController };
+    w.__lupy?.abort();
+    const ac = new AbortController();
+    w.__lupy = ac;
+    const NS = 'http://www.w3.org/2000/svg';
+    const poloha = (el: HTMLElement) => {
+      let x = 0, y = 0, n: HTMLElement | null = el;
+      while (n && n !== grid) { x += n.offsetLeft; y += n.offsetTop; n = n.offsetParent as HTMLElement | null; }
+      return { x, y };
+    };
+    const kresli = () => {
+      if (getComputedStyle(svg).display === 'none') return;
+      svg.setAttribute('viewBox', `0 0 ${grid.offsetWidth} ${grid.offsetHeight}`);
+      svg.replaceChildren();
+      grid.querySelectorAll<HTMLElement>('[data-lupa]').forEach((li) => {
+        const bod = grid.querySelector<HTMLElement>(`[data-bod="${li.dataset.lupa}"]`);
+        const okno = li.querySelector<HTMLElement>('.lupa-okno');
+        if (!bod || !okno) return;
+        const b = poloha(bod), o = poloha(okno);
+        const bx = b.x + bod.offsetWidth / 2, by = b.y + bod.offsetHeight / 2;
+        const r = okno.offsetWidth / 2, ox = o.x + r, oy = o.y + r;
+        const dx = bx - ox, dy = by - oy, d = Math.hypot(dx, dy) || 1;
+        // Od okraja bodu po okraj lupy (za bielym a farebným prstencom).
+        const x1 = bx - (dx / d) * 11, y1 = by - (dy / d) * 11;
+        const x2 = ox + (dx / d) * (r + 10), y2 = oy + (dy / d) * (r + 10);
+        for (const trieda of ['lupa-halo', 'lupa-ciara']) {
+          const path = document.createElementNS(NS, 'path');
+          path.setAttribute('d', `M${x1.toFixed(1)} ${y1.toFixed(1)} L${x2.toFixed(1)} ${y2.toFixed(1)}`);
+          path.setAttribute('pathLength', '1');
+          path.setAttribute('class', trieda);
+          svg.appendChild(path);
+        }
+      });
+    };
+    let snimka = 0;
+    const naplanuj = () => { cancelAnimationFrame(snimka); snimka = requestAnimationFrame(kresli); };
+    window.addEventListener('resize', naplanuj, { signal: ac.signal });
+    document.fonts?.ready.then(naplanuj);
+    grid.querySelectorAll('img').forEach((img) => img.addEventListener('load', naplanuj, { once: true, signal: ac.signal }));
+    kresli();
+    // Čiary sa nakreslia, keď sa lupy objavia v okne.
+    const lupyEl = grid.querySelector('.lupy');
+    if (lupyEl && 'IntersectionObserver' in window) {
+      const io = new IntersectionObserver((z) => { if (z.some((e) => e.isIntersecting)) { svg.classList.add('is-on'); io.disconnect(); } }, { rootMargin: '0px 0px -15% 0px' });
+      io.observe(lupyEl);
+      ac.signal.addEventListener('abort', () => io.disconnect());
+    } else svg.classList.add('is-on');
+  }
+  initLupy();
+  document.addEventListener('astro:page-load', initLupy);
+</script>
 
 <style>
   /* ---------- Hero: svetlé pole, farbu nesie výrobok ---------- */
@@ -283,31 +337,34 @@ const popisy = [
 
   /* ---------- Rodina: render prechádza cez švík z modrého pásu do bielej ---------- */
   .rodina { background: linear-gradient(180deg, var(--zem-2) 0%, var(--zem-3) 100%); padding-top: 0; padding-bottom: 96px; overflow-x: clip; overflow-y: visible; }
-  .rodina-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px; align-items: start; }
+  .rodina-grid { position: relative; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px; align-items: start; }
   .rodina-text { padding-top: 64px; }
   .rodina-text h2 { margin-bottom: 16px; }
   .rodina-text .lead { max-width: 30em; }
   /* Render je veľký a vždy dobehne za pravý okraj obrazovky, aj na širokom monitore. */
-  .rodina-wrap { width: max(146%, calc(104% + var(--bleed) + 24px)); max-width: none; margin: -196px 0 0 -4%; position: relative; z-index: 2; filter: drop-shadow(0 28px 36px rgb(11 27 51 / 0.2)); }
+  .rodina-obraz { width: max(146%, calc(104% + var(--bleed) + 24px)); max-width: none; margin: -196px 0 0 -4%; position: relative; z-index: 2; }
+  .rodina-wrap { filter: drop-shadow(0 28px 36px rgb(11 27 51 / 0.2)); }
   .rodina-wrap :global(.rodina-img) { width: 100%; height: auto; display: block; -webkit-mask-image: linear-gradient(to top right, #000 66%, transparent 97%); mask-image: linear-gradient(to top right, #000 66%, transparent 97%); }
 
-  /* Stavba potrubia ako balenie: každá vrstva je plocha vnorená v predchádzajúcej, s detailom
-     skutočného materiálu. Farba plochy a krúžku je farba vrstvy: modrý plášť, sivá pena, žltá rúra.
-     Na počítači idú vnorené plochy zľava doprava, takže blok pripomína rez od plášťa k rúre. */
-  .vrstvy { grid-column: 1 / -1; margin-top: -16px; position: relative; }
-  .vrstvy ol { margin: 0; }
-  .v { --ring: var(--color-blue-700); position: relative; border-radius: 26px; }
-  /* Na modrom podklade je plášť svetlá plocha s modrým lemom, farbu nesie detail plášťa. */
-  .v-plast { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 22px; padding: 22px; background: linear-gradient(140deg, #ffffff 0%, #f2f7fd 100%); box-shadow: inset 0 0 0 1.5px rgb(0 93 185 / 0.3), 0 28px 60px -32px rgb(10 42 94 / 0.55); }
-  .v-pena { --ring: #8e97a3; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; height: 100%; padding: 20px; border-radius: 21px; background: linear-gradient(140deg, #f8f9fb 0%, #eceef2 100%); box-shadow: inset 0 0 0 1px rgb(74 85 104 / 0.14); }
-  .v-rura { --ring: var(--color-yellow-500); height: 100%; padding: 18px; border-radius: 16px; background: linear-gradient(140deg, #fffcf0 0%, #fff3c7 100%); box-shadow: inset 0 0 0 1px rgb(214 170 0 / 0.35); }
-  .v > ol, .v > ol > li { height: 100%; }
-  .v-hlava { display: flex; flex-direction: column; gap: 14px; align-items: flex-start; padding: 4px 4px 6px; }
-  .v :global(.v-foto) { display: block; width: 84px; height: 84px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 3px #fff, 0 0 0 5px var(--ring), 0 10px 20px -6px rgb(11 27 51 / 0.35); }
-  .v-pena :global(.v-foto) { width: 72px; height: 72px; }
-  .v-rura :global(.v-foto) { width: 60px; height: 60px; }
-  .v h3 { font-size: 19px; line-height: 1.25; margin-bottom: 6px; }
-  .v p { font-size: 14.5px; line-height: 1.55; color: var(--color-ink-soft); max-width: 34em; }
+  /* Rez pod lupou. Bod na rúre, čiara a lupa so zväčšeným materiálom. Farba prstenca lupy je farba
+     vrstvy: žltá rúra, sivá pena, modrý plášť. Lupy stoja v rade pod rúrami, zľava od jadra po plášť. */
+  .lupa-bod { position: absolute; z-index: 3; left: var(--x); top: var(--y); width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%; background: #fff; box-shadow: inset 0 0 0 3px var(--color-blue-900), 0 0 0 4px rgb(255 255 255 / 0.55), 0 3px 10px rgb(11 27 51 / 0.35); }
+  .lupy-ciary { position: absolute; inset: 0; z-index: 3; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+  .lupy-ciary :global(.lupa-halo) { fill: none; stroke: rgb(255 255 255 / 0.75); stroke-width: 4.5; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 900ms var(--ease-soft); }
+  .lupy-ciary :global(.lupa-ciara) { fill: none; stroke: rgb(10 42 94 / 0.6); stroke-width: 1.5; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 900ms var(--ease-soft); }
+  .lupy-ciary.is-on :global(path) { stroke-dashoffset: 0; }
+  /* Rad lúp začína pod voľným miestom pod rúrami (spodok renderu je priehľadný), preto záporný okraj. */
+  .lupy { grid-column: 1 / -1; position: relative; z-index: 4; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; width: 60%; margin: -24px 0 0 22%; }
+  .lupa { --ring: var(--color-blue-700); display: flex; flex-direction: column; align-items: flex-start; }
+  .lupa-rura { --ring: #e0b400; }
+  .lupa-pena { --ring: #8e97a3; }
+  .lupa-okno { position: relative; display: block; width: 168px; height: 168px; margin-bottom: 20px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 5px #fff, 0 0 0 7px var(--ring), 0 24px 44px -18px rgb(11 27 51 / 0.55); }
+  .lupa-okno :global(img) { display: block; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+  /* Sklo lupy: odlesk hore vľavo a tieň pri okraji, aby záber pôsobil zväčšene, nie ako nálepka. */
+  .lupa-okno::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(70% 55% at 30% 18%, rgb(255 255 255 / 0.36), rgb(255 255 255 / 0) 62%); box-shadow: inset 0 -12px 26px rgb(11 27 51 / 0.28), inset 0 0 0 1px rgb(11 27 51 / 0.12); pointer-events: none; }
+  .lupa h3 { font-size: 19px; line-height: 1.25; margin-bottom: 4px; }
+  .lupa-kluc { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 17px; line-height: 1.3; letter-spacing: -0.01em; color: var(--color-blue-900); margin-bottom: 8px; }
+  .lupa p:last-child { font-size: 14.5px; line-height: 1.55; color: var(--color-ink-soft); max-width: 30em; }
 
   /* ---------- Pokládka: kotúč vľavo cez okraj obrazovky, text v jeho vnútri ---------- */
   .pokladka { position: relative; overflow: hidden; padding-top: 112px; padding-bottom: 232px; isolation: isolate; background: linear-gradient(180deg, var(--zem-3) 0%, var(--zem-4) 100%); }
@@ -390,13 +447,12 @@ const popisy = [
     .hero-in { grid-template-columns: minmax(0, 46fr) minmax(0, 54fr); }
     .hero h1 { font-size: clamp(34px, 3.4vw + 10px, 50px); }
     .rodina-grid { grid-template-columns: 1fr; }
-    .rodina-wrap { width: 100%; margin: -120px 0 0; grid-row: 1; }
+    .rodina-obraz { width: 100%; margin: -120px 0 0; grid-row: 1; }
     .rodina-text { padding-top: 24px; }
-    .v-plast, .v-pena { display: block; }
-    .v-plast { padding: 18px; } .v-pena { padding: 16px; } .v-rura { padding: 14px; }
-    .v > ol { margin-top: 14px; height: auto; }
-    .v > ol > li { height: auto; }
-    .v-hlava { flex-direction: row; align-items: center; gap: 16px; padding: 0; }
+    /* Pod 1 100 px je text medzi fotkou a lupami, čiary by ho križovali: lupy stoja samostatne. */
+    .lupa-bod, .lupy-ciary { display: none; }
+    .lupy { width: 100%; margin: 36px 0 0; gap: 24px; }
+    .lupa-okno { width: 132px; height: 132px; }
     .refs-photo { grid-column: 1 / -1; margin-left: 0; }
     .refs-text { grid-column: 1 / -1; grid-row: 2; padding-top: 16px; }
     .b2b-text, .b2b-list { grid-column: 1 / -1; }
@@ -424,16 +480,15 @@ const popisy = [
     .hero-product { margin: 44px 0 0; margin-right: calc(-1 * var(--gutter)); margin-left: calc(-1 * var(--gutter)); justify-self: stretch; }
     .hero { padding-bottom: 28px; }
     /* Popisy na telefóne: kratšie čiary a menšie písmo, aby sa zmestili okolo renderu. */
-    .v-plast { padding: 14px; } .v-pena { padding: 12px; } .v-rura { padding: 12px; }
-    .v-hlava { gap: 12px; }
-    .v :global(.v-foto) { width: 56px; height: 56px; }
-    .v-pena :global(.v-foto) { width: 50px; height: 50px; }
-    .v-rura :global(.v-foto) { width: 44px; height: 44px; }
-    .v h3 { font-size: 17px; }
-    .v p { font-size: 14px; }
+    .lupy { grid-template-columns: 1fr; gap: 20px; }
+    .lupa { display: grid; grid-template-columns: 92px minmax(0, 1fr); column-gap: 18px; align-items: start; }
+    .lupa-okno { grid-row: 1 / span 3; width: 92px; height: 92px; margin: 4px 0 0; box-shadow: 0 0 0 4px #fff, 0 0 0 6px var(--ring), 0 14px 26px -12px rgb(11 27 51 / 0.5); }
+    .lupa h3 { font-size: 17px; }
+    .lupa-kluc { font-size: 15px; margin-bottom: 4px; }
+    .lupa p:last-child { font-size: 14px; }
     .rodina { padding-bottom: 64px; }
-    .rodina-wrap { margin-top: -72px; }
-    .vrstvy { margin-top: 32px; }
+    .rodina-obraz { margin-top: -72px; }
+    .lupy { margin-top: 28px; }
     /* Kotúč ide nad text ako pás, jeho vnútro je pod ním. */
     .pokladka { padding-bottom: 168px; }
     .kroky-obal { margin-top: 32px; }

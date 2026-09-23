@@ -91,12 +91,13 @@ const sk = {
     // COOL má nosnú rúru PE 100, nie PE-Xa (katalóg s. 16 až 18). Spoločná je stavba, nie materiál rúry.
     rodinaP: 'UNO a DUO pre vykurovanie a pitnú vodu, QUADRO pre všetko v jednom plášti, COOL pre chlad, HP pre tepelné čerpadlá. Všetky majú rovnakú stavbu z troch vrstiev.',
     rodinaAlt: 'Rodina potrubí Microflex: UNO, DUO, QUADRO a COOL vedľa seba',
-    vrstvyLabel: 'Stavba potrubia od plášťa po nosnú rúru',
-    vrstvy: [
-      ['Plášť z HDPE', 'Zvlnený, s dvojitou stenou a uzavretými komorami. Dáva potrubiu ohybnosť a chráni izoláciu pred tlakom zeminy, nárazmi aj UV žiarením.'],
-      ['Izolácia z PE-X peny', 'Sieťovaný polyetylén s uzavretými bunkami, bez freónov. Nasiakavosť pod 1 % podľa ISO 2896, izolačné vlastnosti drží po celú životnosť.'],
-      ['Nosná rúra', 'PE-Xa podľa EN ISO 15875 pre vykurovanie a pitnú vodu do 95 °C, pri vykurovaní s kyslíkovou bariérou podľa DIN 4726. PE 100 podľa EN ISO 12201 pre studenú a chladenú vodu do 16 bar.'],
-    ] as [string, string][],
+    // Rez pod lupou: od jadra po plášť. Zdroj: katalóg Watts s. 8 až 18 a 38, brožúra Watts 2026 s. 2.
+    lupyLabel: 'Z čoho je potrubie, od nosnej rúry po plášť',
+    lupy: [
+      { id: 'rura', nazov: 'Nosná rúra', kluc: 'PE-Xa do 95 °C', text: 'Vedie vykurovaciu, pitnú aj chladenú vodu. PE-Xa podľa EN ISO 15875, pri vykurovaní s kyslíkovou bariérou; na chlad PE 100.' },
+      { id: 'pena', nazov: 'Izolácia z PE-X peny', kluc: 'λ 0,0372 W/m·K pri 40 °C', text: 'Drží teplotu média po celej trase. Uzavreté bunky bez freónov, nasiakavosť pod 1 % podľa ISO 2896.' },
+      { id: 'plast', nazov: 'Plášť z HDPE', kluc: 'dvojitá stena', text: 'Chráni izoláciu pred vodou, tlakom zeminy aj nárazmi. Zvlnenie s dvojitou stenou dáva potrubiu ohybnosť.' },
+    ],
     // Časy a postup: katalóg Watts Microflex, s. 36 (doba inštalácie) a s. 37 (zemné práce).
     pokladkaH2: 'Sto metrov za štyridsať minút.',
     pokladkaP: 'Za toľko podľa katalógu výrobcu položia traja montážnici stometrový kotúč Microflex UNO alebo DUO v menších dimenziách. Bez zvárania, bez predizolovaných kolien a bez špeciálneho náradia.',
@@ -261,11 +262,11 @@ const cs: typeof sk = {
     rodinaH2: 'Pět systémů, jedna rodina.',
     rodinaP: 'UNO a DUO pro vytápění a pitnou vodu, QUADRO pro všechno v jednom plášti, COOL pro chlad, HP pro tepelná čerpadla. Všechny mají stejnou stavbu ze tří vrstev.',
     rodinaAlt: 'Rodina potrubí Microflex: UNO, DUO, QUADRO a COOL vedle sebe',
-    vrstvyLabel: 'Stavba potrubí od pláště po nosnou trubku',
-    vrstvy: [
-      ['Plášť z HDPE', 'Zvlněný, s dvojitou stěnou a uzavřenými komorami. Dává potrubí ohebnost a chrání izolaci před tlakem zeminy, nárazy i UV zářením.'],
-      ['Izolace z PE-X pěny', 'Síťovaný polyetylen s uzavřenými buňkami, bez freonů. Nasákavost pod 1 % podle ISO 2896, izolační vlastnosti drží po celou životnost.'],
-      ['Nosná trubka', 'PE-Xa podle EN ISO 15875 pro vytápění a pitnou vodu do 95 °C, u vytápění s kyslíkovou bariérou podle DIN 4726. PE 100 podle EN ISO 12201 pro studenou a chlazenou vodu do 16 bar.'],
+    lupyLabel: 'Z čeho je potrubí, od nosné trubky po plášť',
+    lupy: [
+      { id: 'rura', nazov: 'Nosná trubka', kluc: 'PE-Xa do 95 °C', text: 'Vede topnou, pitnou i chlazenou vodu. PE-Xa podle EN ISO 15875, u vytápění s kyslíkovou bariérou; pro chlad PE 100.' },
+      { id: 'pena', nazov: 'Izolace z PE-X pěny', kluc: 'λ 0,0372 W/m·K při 40 °C', text: 'Drží teplotu média po celé trase. Uzavřené buňky bez freonů, nasákavost pod 1 % podle ISO 2896.' },
+      { id: 'plast', nazov: 'Plášť z HDPE', kluc: 'dvojitá stěna', text: 'Chrání izolaci před vodou, tlakem zeminy i nárazy. Zvlnění s dvojitou stěnou dává potrubí ohebnost.' },
     ],
     pokladkaH2: 'Sto metrů za čtyřicet minut.',
     pokladkaP: 'Za tuto dobu podle katalogu výrobce položí tři montážníci stometrový kotouč Microflex UNO nebo DUO v menších dimenzích. Bez svařování, bez předizolovaných kolen a bez speciálního nářadí.',

@@ -13,7 +13,7 @@ import Ikona from '../components/Ikona.astro';
 import TabulkaProduktu from '../components/TabulkaProduktu.astro';
 import KartaProduktu from '../components/KartaProduktu.astro';
 import Kopirovanie from '../components/Kopirovanie.astro';
-import { kategorie, cestaKategorie, cestaRadu, cestaProduktu, alternatyProduktu, kKratky, rNazov, pNazov, pPopis, datum, tlakText, type Kategoria, type Produkt } from '../lib/katalog';
+import { kategorie, cestaKategorie, cestaRadu, cestaProduktu, alternatyProduktu, kKratky, rNazov, pNazov, pPopis, datum, tlakText, kotvaKodu, type Kategoria, type Produkt } from '../lib/katalog';
 import { faktyProduktu, kodyProduktu, radyProduktu, prvaVeta, kratkyNazovSkupiny } from '../lib/produkty';
 import { fotkaProduktu, piktogram } from '../lib/obrazky';
 import { stranky } from '../content/stranky';
@@ -36,7 +36,7 @@ const radyVsetky = (await getCollection('rady')).map((x) => x.data).filter((x) =
 const potrubiaUrl: Record<string, string> = {};
 if (p.pouzitie) for (const v of (await getCollection('varianty')).map((x) => x.data)) {
   const rv = radyVsetky.find((x) => x.id === v.rad);
-  if (rv && !potrubiaUrl[v.obj_cislo]) potrubiaUrl[v.obj_cislo] = `${cestaRadu(vsetkyKat.find((x) => x.id === rv.kategoria)!, rv, lang)}#varianty`;
+  if (rv && !potrubiaUrl[v.obj_cislo]) potrubiaUrl[v.obj_cislo] = `${cestaRadu(vsetkyKat.find((x) => x.id === rv.kategoria)!, rv, lang)}#${kotvaKodu(v.obj_cislo)}`;
 }
 const surodenci = (await getCollection('produkty')).map((x) => x.data).filter((x) => x.skupina === p.skupina && x.id !== p.id).sort((a, b) => a.poradie - b.poradie);
 

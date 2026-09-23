@@ -24,6 +24,9 @@ export const pPopis = (p: Produkt, lang: Lang) => (lang === 'cs' ? p.popis_cs ??
 
 /* ---------- Cesty ---------- */
 
+/** Kotva riadku s obj. číslom v tabuľke (#MD12532C, #MJ13032/29): hľadanie a sprievodca vedú priamo naň. */
+export const kotvaKodu = (kod: string) => kod.replace(/\s+/g, '');
+
 export function cestaKategorie(k: Kategoria, lang: Lang): string {
   if (k.typ === 'spojky') return ROUTES[lang].spojky;
   if (k.typ === 'prislusenstvo') return ROUTES[lang].prislusenstvo;

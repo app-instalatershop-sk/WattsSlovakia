@@ -11,7 +11,7 @@ export const KATALOG_PDF = 'https://www.watts.eu/dfsmedia/0533DBBA-1771-4B1A-B58
 const sk = {
   site: { name: 'Microflex Slovensko', sub: 'Slovensko', tagline: 'Predizolované ohybné potrubie Microflex pre Slovensko' },
   nav: { potrubia: 'Potrubia', vyber: 'Výber potrubia', stiahnut: 'Na stiahnutie', firmy: 'Pre firmy', poradna: 'Poradňa', eshop: 'E-shop', menu: 'Menu', zavriet: 'Zavrieť', hlavna: 'Hlavná navigácia', domov: 'Domov', celyKatalog: 'Celý katalóg potrubí', katalogPdf: 'Katalóg PDF, 19 MB' },
-  search: { placeholder: 'Obj. číslo, rad, dimenzia', label: 'Hľadať v katalógu', button: 'Hľadať' },
+  search: { placeholder: 'Obj. číslo, rad, dimenzia', label: 'Hľadať v katalógu', button: 'Hľadať', vsetky: 'Všetky výsledky', nic: 'Nič sme nenašli. Skúste obj. číslo, rad alebo sprievodcu výberom.', ciastocne: 'Presnú zhodu sme nenašli. Najbližšie:', sprievodca: 'Sprievodca výberom potrubia', skupiny: { rad: 'Rad', kod: 'Obj. číslo', diel: 'Diel', stranka: 'Stránka' } },
   partner: { kratke: 'Oficiálny partner', veta: 'Oficiálny partner Watts pre Microflex na Slovensku', vyrobca: 'Výrobca' },
   jazyk: { prepnut: 'Jazyk', sk: 'Slovensky', cs: 'Česky' },
   crumbs: { label: 'Kde ste' },
@@ -171,7 +171,7 @@ const sk = {
 const cs: typeof sk = {
   site: { name: 'Microflex Slovensko', sub: 'Slovensko', tagline: 'Předizolované ohebné potrubí Microflex' },
   nav: { potrubia: 'Potrubí', vyber: 'Výběr potrubí', stiahnut: 'Ke stažení', firmy: 'Pro firmy', poradna: 'Poradna', eshop: 'E-shop', menu: 'Menu', zavriet: 'Zavřít', hlavna: 'Hlavní navigace', domov: 'Domů', celyKatalog: 'Celý katalog potrubí', katalogPdf: 'Katalog PDF, 19 MB, slovensky' },
-  search: { placeholder: 'Obj. číslo, řada, dimenze', label: 'Hledat v katalogu', button: 'Hledat' },
+  search: { placeholder: 'Obj. číslo, řada, dimenze', label: 'Hledat v katalogu', button: 'Hledat', vsetky: 'Všechny výsledky', nic: 'Nic jsme nenašli. Zkuste obj. číslo, řadu nebo průvodce výběrem.', ciastocne: 'Přesnou shodu jsme nenašli. Nejbližší:', sprievodca: 'Průvodce výběrem potrubí', skupiny: { rad: 'Řada', kod: 'Obj. číslo', diel: 'Díl', stranka: 'Stránka' } },
   partner: { kratke: 'Oficiální partner', veta: 'Oficiální partner Watts pro Microflex na Slovensku', vyrobca: 'Výrobce' },
   jazyk: { prepnut: 'Jazyk', sk: 'Slovensky', cs: 'Česky' },
   crumbs: { label: 'Kde jste' },

@@ -351,7 +351,7 @@ const obrazky = await Promise.all(systemy.map(async ({ k }) => { const p = pikto
         ${stitok ? `<span class="vy-stitok${jemny ? ' jemny' : ''}">${esc(stitok)}</span>` : ''}
         <div class="vy-kod">${esc(v.o)}<button type="button" class="kopia" data-kopia="${esc(v.o)}" aria-label="${esc(v.o)}">${copy}</button><small>${esc(rad.model)}</small></div>
         <dl class="vy-udaje">${u.map(([a, b]) => `<div><dt>${esc(a)}</dt><dd>${esc(b)}</dd></div>`).join('')}</dl>
-        <div class="vy-odkazy"><a href="${esc(rad.url)}#varianty">${esc(tx.rad)} ${sipka}</a><a href="${esc(v.e)}" target="_blank" rel="noopener">${esc(tx.eshop)} ${ext}</a></div>
+        <div class="vy-odkazy"><a href="${esc(rad.url)}#${encodeURIComponent(v.o.replace(/\s+/g, ''))}">${esc(tx.rad)} ${sipka}</a><a href="${esc(v.e)}" target="_blank" rel="noopener">${esc(tx.eshop)} ${ext}</a></div>
         <button type="button" class="vy-zoznam" data-zoznam="${esc(v.o)}">${esc(tx.zoznamBtn)} ${sipka}</button>
       </article>`;
     }

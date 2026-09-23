@@ -69,3 +69,29 @@ plochy pri snímke celej stránky vznikajú animáciami pri posune, pri skutočn
 3. Kontakt a Referencie v menu a pätičke (č. 5 a 6), hlavné tlačidlo domova do sprievodcu (č. 7).
 4. E-shop (č. 1): dočasne dopyt pri kódoch, ktoré e-shop nenájde; natrvalo priame odkazy z exportu, keď odpovie manažér.
 5. Sprievodca a mobil (č. 8 a 9), potom nízka priorita.
+
+## 5. Opravené 23. 9. večer: hľadanie (č. 2, 3 a 4)
+
+- **Hodnotenie** je v `web/src/lib/hladanie-klient.ts`, spoločné pre stránku Hľadanie aj hlavičku. Slovo
+  sa hľadá od začiatku slova: celé, bez koncovky (čerpadlo = čerpadlá) alebo cez synonymum (kúrenie,
+  kotol, biomasa = vykurovanie; TÚV, pitná = sanita; chladenie = COOL; odbočka = T-spojka; prechodka =
+  prestup; koncovka = krytka; 5/4 = 1 1/4″). Výplňové slová (na, pre, do) sa vynechajú, všeobecné
+  (potrubie, Microflex, rúra) nie sú povinné. Rozmery bez medzier („25x2.3“ = „25 × 2,3“), nikdy nie
+  uprostred čísla („32“ nenájde M9032C). Keď nič nesedí so všetkými slovami, ukáže sa „Presnú zhodu sme
+  nenašli. Najbližšie:“ s výsledkami pre časť slov.
+- **Index** (`lib/hladanie.ts`) má navyše popisy kategórií a radov, DN, rozmer a závit každého obj. čísla
+  dielu, štyri články poradne a položku E-shop (cena, dostupnosť, nákup). 431 položiek, 12,5 KB po kompresii.
+- **Výsledok:** zo 103 skúšobných dotazov nevrátia nič 2 (bazén, doprava; web o nich nič nemá), predtým
+  34 zo 98. Česká verzia rovnako (topení, průchodka, prohlášení o shodě).
+- **Našepkávač** v hlavičke a v mobilnom menu (`lib/naseptavac.ts`): po dvoch znakoch šesť výsledkov
+  s druhom (Rad, Obj. číslo, Diel, Stránka) a odkaz na všetky; šípky, Enter, Esc; vzor ARIA combobox.
+  Na mobile lupa vedľa Menu otvorí menu s kurzorom v poli; do 420 px je tlačidlo menu len ikona, aby sa
+  hlavička zmestila (375 px bez posunu do strany).
+- **Kotva na riadok:** každý riadok tabuľky variantov a dielov má id podľa obj. čísla (`kotvaKodu`,
+  `#MD12532C`, `#MJ13032/29`). Vedú naň výsledky hľadania, „Tabuľka radu“ v sprievodcovi, „Pre potrubie“
+  na stránke dielu a „Stránka dielu“ v príslušenstve variantu. Riadok sa zvýrazní žltým pruhom, posunie
+  do stredu obrazovky a pri potrubí sa rozbalí príslušenstvo.
+- Kontrola: build, `data/kontrola_webu.py` 0 chýb, všetkých 862 odkazov z indexov SK a CS vedie na
+  existujúcu stránku a riadok, produkčný build overený v prehliadači.
+
+Zostáva: č. 1 (e-shop, čaká na manažéra), 5 až 12.

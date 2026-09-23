@@ -15,29 +15,31 @@ const { lang } = Astro.props;
 const tx = {
   sk: {
     title: 'Hľadanie', desc: 'Hľadanie v potrubiach, spojkách a príslušenstve Microflex podľa obj. čísla, radu, dimenzie alebo názvu.',
-    lead: 'Obj. číslo, rad, dimenzia alebo názov dielu. Napríklad M9032C, DUO 125/32, T-spojka alebo výstražná páska.',
+    lead: 'Obj. číslo, rad, dimenzia, názov dielu alebo bežné slová. Napríklad M9032C, DUO 125/32, kúrenie alebo T-spojka.',
     placeholder: 'Obj. číslo, rad, dimenzia', hladat: 'Hľadať',
     skupiny: { rad: 'Rady potrubia', kod: 'Obj. čísla', diel: 'Spojky a príslušenstvo', stranka: 'Stránky' },
     vysledkov: (n: number) => (n === 1 ? '1 výsledok' : n >= 2 && n <= 4 ? `${n} výsledky` : `${n} výsledkov`),
     pre: 'pre', viac: (n: number) => `Zobraziť ďalšie (${n})`,
     nic: 'Nič sme nenašli.', nicP: 'Skúste kratší výraz, obj. číslo bez medzier alebo len rad (UNO, DUO, QUADRO). Pomôžeme aj telefonicky.',
-    skuste: 'Skúste napríklad', navrhy: ['M9032C', 'DUO 125/32', 'QUADRO', 'T-spojka', 'izolačná sada', 'MFP'],
-    kontakt: 'Kontakt',
+    skuste: 'Skúste napríklad', navrhy: ['M9032C', 'DUO 125/32', 'kúrenie', 'tepelné čerpadlo', 'T-spojka', 'izolačná sada'],
+    kontakt: 'Kontakt', sprievodca: 'Sprievodca výberom',
+    ciastocne: 'Presnú zhodu sme nenašli. Najbližšie:',
   },
   cs: {
     title: 'Hledání', desc: 'Hledání v potrubí, spojkách a příslušenství Microflex podle obj. čísla, řady, dimenze nebo názvu.',
-    lead: 'Obj. číslo, řada, dimenze nebo název dílu. Například M9032C, DUO 125/32, T-spojka nebo výstražná páska.',
+    lead: 'Obj. číslo, řada, dimenze, název dílu nebo běžná slova. Například M9032C, DUO 125/32, topení nebo T-spojka.',
     placeholder: 'Obj. číslo, řada, dimenze', hladat: 'Hledat',
     skupiny: { rad: 'Řady potrubí', kod: 'Obj. čísla', diel: 'Spojky a příslušenství', stranka: 'Stránky' },
     vysledkov: (n: number) => (n === 1 ? '1 výsledek' : n >= 2 && n <= 4 ? `${n} výsledky` : `${n} výsledků`),
     pre: 'pro', viac: (n: number) => `Zobrazit další (${n})`,
     nic: 'Nic jsme nenašli.', nicP: 'Zkuste kratší výraz, obj. číslo bez mezer nebo jen řadu (UNO, DUO, QUADRO). Pomůžeme i telefonicky.',
-    skuste: 'Zkuste například', navrhy: ['M9032C', 'DUO 125/32', 'QUADRO', 'T-spojka', 'izolační sada', 'MFP'],
-    kontakt: 'Kontakt',
+    skuste: 'Zkuste například', navrhy: ['M9032C', 'DUO 125/32', 'topení', 'tepelné čerpadlo', 'T-spojka', 'izolační sada'],
+    kontakt: 'Kontakt', sprievodca: 'Průvodce výběrem',
+    ciastocne: 'Přesnou shodu jsme nenašli. Nejbližší:',
   },
 }[lang];
 const index = lang === 'cs' ? '/cs/hledat/index.json' : '/hladat/index.json';
-const texty = { skupiny: tx.skupiny, vysledkov: [tx.vysledkov(1), tx.vysledkov(2), tx.vysledkov(5)], pre: tx.pre, viac: tx.viac(0) };
+const texty = { skupiny: tx.skupiny, vysledkov: [tx.vysledkov(1), tx.vysledkov(2), tx.vysledkov(5)], pre: tx.pre, viac: tx.viac(0), ciastocne: tx.ciastocne };
 ---
 <Base lang={lang} alternates={staticAlternates('hladat')} title={tx.title} description={tx.desc} drobceky={[{ text: tx.title }]} vizualneDrobceky={false} robots="noindex, follow">
   <Hlava lang={lang} nadpis={tx.title} drobceky={[{ text: tx.title }]} lead={tx.lead}>
@@ -53,11 +55,15 @@ const texty = { skupiny: tx.skupiny, vysledkov: [tx.vysledkov(1), tx.vysledkov(2
     <section class="wrap" aria-live="polite">
       <p class="hl-stav" data-hl-stav></p>
       <template data-hl-ikona><Ikona nazov="chevron-right" velkost={16} /></template>
+      <template data-hl-ikona-ext><Ikona nazov="external-link" velkost={15} /></template>
       <div class="hl-vysledky" data-hl-vysledky data-index={index} data-texty={JSON.stringify(texty)}></div>
       <div class="harok hl-nic" data-hl-nic hidden>
         <h2>{tx.nic}</h2>
         <p>{tx.nicP}</p>
-        <a class="odkaz" href={route(lang, 'kontakt')}>{tx.kontakt} <Ikona nazov="arrow-right" velkost={16} /></a>
+        <p class="hl-nic-odkazy">
+          <a class="odkaz" href={route(lang, 'vyber')}>{tx.sprievodca} <Ikona nazov="arrow-right" velkost={16} /></a>
+          <a class="odkaz" href={route(lang, 'kontakt')}>{tx.kontakt} <Ikona nazov="arrow-right" velkost={16} /></a>
+        </p>
       </div>
     </section>
   </div>
@@ -92,37 +98,13 @@ const texty = { skupiny: tx.skupiny, vysledkov: [tx.vysledkov(1), tx.vysledkov(2
   .hl-nic { padding: 28px 30px; max-width: 640px; }
   .hl-nic h2 { font-size: 22px; }
   .hl-nic p { margin: 8px 0 16px; color: var(--color-ink-soft); }
+  .hl-nic .hl-nic-odkazy { display: flex; flex-wrap: wrap; gap: 10px 28px; margin: 0; }
   @media (max-width: 900px) { .hl-vysledky { grid-template-columns: minmax(0, 1fr); } }
   @media (max-width: 760px) { .hl-form { padding-left: 46px; } .hl-form > :global(.icon) { left: 14px; } .hl-form .btn { padding-inline: 16px; } .hl-vysledky :global(.hl-sk) { padding: 18px 18px 10px; } }
 </style>
 
 <script>
-  type Polozka = { s: 'rad' | 'kod' | 'diel' | 'stranka'; n: string; d: string; u: string; k?: string };
-  // Bez diakritiky a veľkých písmen, „×“ ako „x“, pomlčky a lomky ako oddelovače slov.
-  const norm = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/×/g, 'x').replace(/[‐–—]/g, '-');
-  const kompakt = (s: string) => norm(s).replace(/[\s\-_.]/g, '');
-  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
-
-  function zvyrazni(text: string, slova: string[]): string {
-    const n = norm(text);
-    const znacky = new Array(text.length).fill(false);
-    for (const w of slova) { if (w.length < 2) continue; let i = n.indexOf(w); while (i >= 0) { for (let j = i; j < i + w.length; j++) znacky[j] = true; i = n.indexOf(w, i + w.length); } }
-    let out = '', on = false;
-    for (let i = 0; i < text.length; i++) { if (znacky[i] !== on) { out += znacky[i] ? '<mark>' : '</mark>'; on = znacky[i]; } out += esc(text[i]); }
-    return out + (on ? '</mark>' : '');
-  }
-
-  function skore(p: Polozka, dotaz: string, slova: string[]): number {
-    const n = norm(p.n), nk = kompakt(p.n), dk = kompakt(dotaz);
-    if (p.s === 'kod') { if (nk === dk) return 1000; if (dk.length >= 3 && nk.startsWith(dk)) return 600 - nk.length; }
-    const vsetko = `${n} ${norm(p.d)} ${norm(p.k ?? '')}`;
-    let s = 0;
-    for (const w of slova) {
-      if (!vsetko.includes(w) && !kompakt(vsetko).includes(w.replace(/[\s\-_.]/g, ''))) return 0;
-      s += n.includes(w) ? (n.startsWith(w) || n.includes(` ${w}`) ? 30 : 20) : 8;
-    }
-    return s + (p.s === 'rad' ? 12 : p.s === 'diel' ? 8 : p.s === 'stranka' ? 4 : 0) - n.length / 100;
-  }
+  import { hladaj, zvyrazni, esc, nacitajIndex, type Skupina } from '../lib/hladanie-klient';
 
   async function initHladanie() {
     const kont = document.querySelector<HTMLElement>('[data-hl-vysledky]');
@@ -130,6 +112,7 @@ const texty = { skupiny: tx.skupiny, vysledkov: [tx.vysledkov(1), tx.vysledkov(2
     kont.dataset.init = '1';
     const texty = JSON.parse(kont.dataset.texty!);
     const ikona = document.querySelector<HTMLTemplateElement>('[data-hl-ikona]')?.innerHTML ?? '';
+    const ikonaExt = document.querySelector<HTMLTemplateElement>('[data-hl-ikona-ext]')?.innerHTML ?? '';
     const stav = document.querySelector<HTMLElement>('[data-hl-stav]')!;
     const nic = document.querySelector<HTMLElement>('[data-hl-nic]')!;
     const vstup = document.querySelector<HTMLInputElement>('[data-hl-q]')!;
@@ -137,28 +120,31 @@ const texty = { skupiny: tx.skupiny, vysledkov: [tx.vysledkov(1), tx.vysledkov(2
     const q0 = new URLSearchParams(location.search).get('q') ?? '';
     vstup.value = q0;
     if (!q0) vstup.focus();
-    let index: Polozka[] = [];
-    try { index = await (await fetch(kont.dataset.index!)).json(); } catch { return; }
+    let index: Awaited<ReturnType<typeof nacitajIndex>> = [];
+    try { index = await nacitajIndex(kont.dataset.index!); } catch { return; }
     const tvar = (n: number) => texty.vysledkov[n === 1 ? 0 : n >= 2 && n <= 4 ? 1 : 2].replace(/^\d+/, String(n));
 
-    function hladaj(q: string) {
+    function vypis(q: string) {
       const dotaz = q.trim();
       kont.innerHTML = '';
       nic.hidden = true;
       if (!dotaz) { stav.textContent = ''; return; }
-      const slova = norm(dotaz).split(/\s+/).filter(Boolean);
-      const najdene = index.map((p) => ({ p, s: skore(p, dotaz, slova) })).filter((x) => x.s > 0).sort((a, b) => b.s - a.s);
-      stav.innerHTML = `<strong>${tvar(najdene.length)}</strong> ${texty.pre} „${esc(dotaz)}“`;
+      const { vysledky: najdene, ciastocne, terminy } = hladaj(index, dotaz);
+      stav.innerHTML = ciastocne
+        ? `${esc(texty.ciastocne)} <strong>${tvar(najdene.length)}</strong> ${texty.pre} „${esc(dotaz)}“`
+        : `<strong>${tvar(najdene.length)}</strong> ${texty.pre} „${esc(dotaz)}“`;
       if (!najdene.length) { nic.hidden = false; return; }
       // Skupiny v poradí podľa najlepšieho výsledku: pri obj. čísle idú prvé kódy, pri názve diely.
-      const poradie = (['kod', 'rad', 'diel', 'stranka'] as const).filter((s) => najdene.some((x) => x.p.s === s))
-        .sort((a, b) => Math.max(...najdene.filter((x) => x.p.s === b).map((x) => x.s)) - Math.max(...najdene.filter((x) => x.p.s === a).map((x) => x.s)));
+      const najlepsie = (s: Skupina) => Math.max(...najdene.filter((x) => x.p.s === s).map((x) => x.s));
+      const poradie = (['kod', 'rad', 'diel', 'stranka'] as const).filter((s) => najdene.some((x) => x.p.s === s)).sort((a, b) => najlepsie(b) - najlepsie(a));
       for (const s of poradie) {
         const v = najdene.filter((x) => x.p.s === s);
-        if (!v.length) continue;
         const sek = document.createElement('div');
         sek.className = `harok hl-sk hl-${s}`;
-        const riadok = (p: Polozka) => `<a href="${esc(p.u)}"><span class="hl-n">${zvyrazni(p.n, slova)}</span>${ikona}${p.d ? `<span class="hl-d">${zvyrazni(p.d, slova)}</span>` : ''}</a>`;
+        const riadok = (p: (typeof v)[number]['p']) => {
+          const von = /^https?:/.test(p.u);
+          return `<a href="${esc(p.u)}"${von ? ' target="_blank" rel="noopener"' : ''}><span class="hl-n">${zvyrazni(p.n, terminy)}</span>${von ? ikonaExt : ikona}${p.d ? `<span class="hl-d">${zvyrazni(p.d, terminy)}</span>` : ''}</a>`;
+        };
         const prve = 8;
         sek.innerHTML = `<h2>${esc(texty.skupiny[s])}<span>${v.length}</span></h2>${v.slice(0, prve).map((x) => riadok(x.p)).join('')}`;
         if (v.length > prve) {
@@ -170,18 +156,18 @@ const texty = { skupiny: tx.skupiny, vysledkov: [tx.vysledkov(1), tx.vysledkov(2
         kont.appendChild(sek);
       }
     }
-    hladaj(q0);
+    vypis(q0);
     let casovac = 0;
     vstup.addEventListener('input', () => {
       clearTimeout(casovac);
       casovac = window.setTimeout(() => {
         const u = new URL(location.href);
         if (vstup.value.trim()) u.searchParams.set('q', vstup.value.trim()); else u.searchParams.delete('q');
-        history.replaceState(null, '', u);
-        hladaj(vstup.value);
+        history.replaceState(history.state, '', u);
+        vypis(vstup.value);
       }, 120);
     });
-    form.addEventListener('submit', (e) => { e.preventDefault(); hladaj(vstup.value); });
+    form.addEventListener('submit', (e) => { e.preventDefault(); vypis(vstup.value); });
   }
   initHladanie();
   document.addEventListener('astro:page-load', initHladanie);

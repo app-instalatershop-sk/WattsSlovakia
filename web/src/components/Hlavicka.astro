@@ -2,7 +2,8 @@
 /**
  * Hlavička: horný pás s partnerstvom a jazykmi, pod ním lepkavá hlavička. Potrubia otvárajú panel
  * so všetkými piatimi systémami a ich rendermi, ostatné položky sú odkazy. Pod položkou, na ktorej je
- * myš alebo aktuálna stránka, sa posúva žltá značka. Hľadanie má skratku Ctrl K (⌘ K na Macu).
+ * myš alebo aktuálna stránka, sa posúva žltá značka. Hľadanie má skratku Ctrl K (⌘ K na Macu) a našepkávač
+ * (lib/naseptavac.ts), na mobile lupu vedľa Menu, ktorá otvorí menu s poľom hľadania.
  */
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
@@ -34,6 +35,10 @@ const polozky = [
   { id: 'firmy', text: ui.nav.firmy, href: route(lang, 'firmy') },
   { id: 'poradna', text: ui.nav.poradna, href: route(lang, 'poradna') },
 ] as const;
+
+// Našepkávač: index hľadania a texty pre skript.
+const nasIndex = `${route(lang, 'hladat')}index.json`;
+const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, ciastocne: ui.search.ciastocne, sprievodca: ui.search.sprievodca, skupiny: ui.search.skupiny, sprievodcaUrl: route(lang, 'vyber') });
 ---
 <!-- Horný pás nie je prilepený: odroluje prirodzene, hlavička pod ním ostáva. -->
 <div class="topbar">
@@ -67,14 +72,17 @@ const polozky = [
       <span class="nav-ind" aria-hidden="true"></span>
     </nav>
 
-    <form class="search" role="search" action={route(lang, 'hladat')} method="get">
+    <form class="search" role="search" action={route(lang, 'hladat')} method="get" data-index={nasIndex} data-texty={nasTexty}>
       <Ikona nazov="search" velkost={18} />
-      <input id="q" name="q" type="search" placeholder={ui.search.placeholder} aria-label={ui.search.label} autocomplete="off" aria-keyshortcuts="Control+K Meta+K" />
+      <input id="q" name="q" type="search" placeholder={ui.search.placeholder} aria-label={ui.search.label} autocomplete="off" aria-keyshortcuts="Control+K Meta+K" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="nas-d" />
       <kbd class="search-kbd" aria-hidden="true">Ctrl K</kbd>
       <button type="submit" class="vizualne-skryte">{ui.search.button}</button>
+      <div class="nas" data-nas hidden><p class="nas-pozn" data-nas-pozn hidden></p><div role="listbox" id="nas-d" aria-label={ui.search.label}></div></div>
+      <template data-nas-ext><Ikona nazov="external-link" velkost={14} /></template>
     </form>
 
     <a class="eshop" href={ESHOP} target="_blank" rel="noopener">{ui.nav.eshop}<Ikona nazov="external-link" velkost={16} /></a>
+    <button class="hl-btn" type="button" id="hl-btn" aria-label={ui.search.label} aria-controls="mobile-nav"><Ikona nazov="search" velkost={20} /></button>
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav" id="menu-btn">
       <Ikona nazov="menu" velkost={20} class="i-menu" /><Ikona nazov="x" velkost={20} class="i-x" /><span data-open={ui.nav.menu} data-close={ui.nav.zavriet}>{ui.nav.menu}</span>
     </button>
@@ -107,10 +115,12 @@ const polozky = [
   {/* Mobilné menu: hľadanie, systémy s malými rendermi, ostatné odkazy, e-shop a jazyk. */}
   <div id="mobile-nav" class="mnav" hidden>
     <div class="wrap mnav-in">
-      <form class="search search-m" role="search" action={route(lang, 'hladat')} method="get">
+      <form class="search search-m" role="search" action={route(lang, 'hladat')} method="get" data-index={nasIndex} data-texty={nasTexty}>
         <Ikona nazov="search" velkost={18} />
-        <input name="q" type="search" placeholder={ui.search.placeholder} aria-label={ui.search.label} autocomplete="off" />
+        <input name="q" type="search" placeholder={ui.search.placeholder} aria-label={ui.search.label} autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="nas-m" />
         <button type="submit" class="vizualne-skryte">{ui.search.button}</button>
+        <div class="nas" data-nas hidden><p class="nas-pozn" data-nas-pozn hidden></p><div role="listbox" id="nas-m" aria-label={ui.search.label}></div></div>
+        <template data-nas-ext><Ikona nazov="external-link" velkost={14} /></template>
       </form>
       <p class="mnav-nadpis">{ui.nav.potrubia}</p>
       <ul class="mnav-kat">
@@ -175,12 +185,29 @@ const polozky = [
   .search-kbd { position: absolute; right: 10px; padding: 3px 7px; border-radius: 6px; background: #fff; box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.14), 0 1px 0 rgb(10 42 94 / 0.12); font: 500 11.5px/1.2 var(--font-text); color: #6b7686; letter-spacing: .02em; pointer-events: none; transition: opacity 150ms var(--ease-soft); }
   .search:focus-within .search-kbd { opacity: 0; }
 
+  /* Našepkávač: biela karta pod poľom, šesť výsledkov a odkaz na všetky. Obsah vkladá skript, preto :global. */
+  .nas { position: absolute; top: calc(100% + 10px); right: 0; z-index: 30; width: min(480px, calc(100vw - 32px)); max-height: min(70vh, 560px); overflow-y: auto; padding: 8px; border-radius: 18px; background: #fff; box-shadow: 0 0 0 1px rgb(10 42 94 / 0.08), 0 28px 50px -20px rgb(11 27 51 / 0.45); text-align: left; }
+  .nas[hidden] { display: none; }
+  .nas-pozn { padding: 8px 12px 6px; font-size: 13.5px; line-height: 1.45; color: var(--color-ink-soft); }
+  .nas :global(.nas-o) { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 2px 12px; padding: 10px 12px; border-radius: 12px; color: var(--color-ink); transition: background-color 120ms var(--ease-soft); }
+  .nas :global(.nas-o:hover), .nas :global(.nas-o[aria-selected="true"]) { background: var(--color-blue-50); color: var(--color-ink); }
+  .nas :global(.nas-n) { font-weight: 600; font-size: 15px; line-height: 1.35; }
+  .nas :global(.nas-kod .nas-n) { font-family: var(--font-display); font-stretch: 112.5%; color: var(--color-blue-900); letter-spacing: 0.01em; }
+  .nas :global(.nas-s) { font-size: 12px; color: var(--color-ink-soft); white-space: nowrap; }
+  .nas :global(.nas-d) { grid-column: 1 / -1; font-size: 13.5px; line-height: 1.4; color: var(--color-ink-soft); }
+  .nas :global(.nas-o > .icon) { grid-column: 2; grid-row: 1; justify-self: end; color: var(--color-blue-700); }
+  .nas :global(.nas-o:has(> .icon) .nas-s) { display: none; }
+  .nas :global(.nas-vsetky) { margin-top: 4px; border-top: 1px solid rgb(10 42 94 / 0.08); border-radius: 0 0 12px 12px; }
+  .nas :global(.nas-vsetky .nas-n) { font-weight: 500; font-size: 14.5px; color: var(--color-blue-700); }
+  .nas :global(mark) { background: rgb(247 201 0 / 0.35); color: inherit; border-radius: 3px; padding: 0 1px; }
+
   /* E-shop je cieľ webu, preto tlačidlo, nie odkaz. */
   .eshop { display: inline-flex; align-items: center; gap: 8px; height: 42px; padding: 0 18px; border-radius: 999px; background: linear-gradient(180deg, #123a7c 0%, var(--color-blue-900) 100%); color: #fff; font-weight: 500; font-size: 15px; white-space: nowrap; box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.14), 0 6px 14px -8px rgb(10 42 94 / 0.7); transition: background-color 150ms var(--ease-soft), transform 120ms var(--ease-soft); flex: none; }
   .eshop:hover { color: #fff; background: linear-gradient(180deg, #1467c1 0%, var(--color-blue-700) 100%); }
   .eshop:active { transform: scale(0.98); }
   .eshop :global(svg) { width: 16px; height: 16px; opacity: .8; }
 
+  .hl-btn { display: none; flex: none; align-items: center; justify-content: center; width: 42px; height: 42px; border: 0; border-radius: 999px; background: #f1f5fa; box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.08); color: var(--color-ink); cursor: pointer; }
   .menu-btn { display: none; margin-left: auto; height: 42px; padding: 0 14px; border: 0; border-radius: 999px; background: #f1f5fa; box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.08); color: var(--color-ink); font: 500 15px/1 var(--font-text); cursor: pointer; align-items: center; gap: 8px; }
   .menu-btn[aria-expanded="true"] { background: var(--color-blue-900); color: #fff; }
   .menu-btn :global(.i-x), .menu-btn[aria-expanded="true"] :global(.i-menu) { display: none; }
@@ -214,6 +241,7 @@ const polozky = [
   .search-m { margin-left: 0; width: 100%; }
   .search-m input { width: 100%; max-width: none; padding-right: 16px; }
   .search-m input:focus { width: 100%; }
+  .search-m .nas { left: 0; right: 0; width: auto; top: calc(100% + 8px); max-height: 60vh; }
   .mnav-nadpis { font-size: 13px; font-weight: 600; color: var(--color-ink-soft); margin-bottom: -8px; }
   .mnav-kat { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
   .mnav-kat a { display: flex; align-items: center; gap: 10px; padding: 8px 12px 8px 8px; border-radius: 14px; background: linear-gradient(180deg, #f5f8fc 0%, #edf2f9 100%); color: var(--color-ink); font-weight: 500; font-size: 14.5px; line-height: 1.25; min-height: 64px; }
@@ -234,15 +262,23 @@ const polozky = [
   @media (max-width: 760px) {
     .hdr-in { gap: 12px; min-height: 64px; }
     .hdr-in > .search, .hdr-in > .eshop { display: none; }
-    .menu-btn { margin-left: auto; }
+    .hl-btn { display: inline-flex; margin-left: auto; }
+    .menu-btn { margin-left: 0; }
     .brand { gap: 10px; }
     .brand, .hdr.is-scrolled .brand { --logo-h: 17px; }
     .brand-sub { font-size: 13px; padding-left: 10px; }
     .partner span { display: none; }
   }
+  /* Úzky telefón: logo, lupa a menu sa zmestia len s tlačidlom menu bez textu (text ostáva pre čítačky). */
+  @media (max-width: 420px) {
+    .menu-btn { width: 42px; padding: 0; justify-content: center; position: relative; }
+    .menu-btn span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  }
 </style>
 
 <script>
+  import { pripojNaseptavac } from '../lib/naseptavac';
+
   function initHlavicka() {
     const hdr = document.getElementById('hdr');
     if (!hdr) return;
@@ -319,6 +355,16 @@ const polozky = [
         if (popis) popis.textContent = otvor ? (popis.dataset.close ?? '') : (popis.dataset.open ?? '');
       });
     }
+
+    // Našepkávač v hlavičke aj v mobilnom menu.
+    hdr.querySelectorAll<HTMLFormElement>('form[data-index]').forEach(pripojNaseptavac);
+
+    // Lupa na mobile: otvorí menu a dá fokus do poľa hľadania.
+    const mInput = mnav?.querySelector<HTMLInputElement>('input[name="q"]');
+    document.getElementById('hl-btn')?.addEventListener('click', () => {
+      if (mnav?.hidden) menuBtn?.click();
+      mInput?.focus();
+    });
 
     // Ctrl K / ⌘ K: skok do hľadania. Na Macu sa ukáže ⌘.
     const q = document.getElementById('q') as HTMLInputElement | null;

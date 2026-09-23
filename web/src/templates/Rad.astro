@@ -15,7 +15,7 @@ import Subory from '../components/Subory.astro';
 import KartaReferencie from '../components/KartaReferencie.astro';
 import CastiStranky from '../components/CastiStranky.astro';
 import Kopirovanie from '../components/Kopirovanie.astro';
-import { kategorie, radyKategorie, variantyRadu, cestaKategorie, cestaRadu, cestaProduktu, alternatyRadu, kKratky, rNazov, rKratky, rMedium, rOznacenie, pNazov, cislo, rozsah, rozsahRur, tlakText, type Kategoria, type Rad } from '../lib/katalog';
+import { kategorie, radyKategorie, variantyRadu, cestaKategorie, cestaRadu, cestaProduktu, alternatyRadu, kKratky, rNazov, rKratky, rMedium, rOznacenie, pNazov, cislo, rozsah, rozsahRur, tlakText, kotvaKodu, type Kategoria, type Rad } from '../lib/katalog';
 import { piktogram, fotkaRadu, detail } from '../lib/obrazky';
 import { sadzba } from '../lib/sadzba';
 import { obsahRadu } from '../content/rady';
@@ -74,6 +74,9 @@ const skupinyRel = [...new Set(suvisiace.map((p) => p.skupina))].map((sid) => ({
 })).filter((g) => g.s);
 const katProduktu = (id: string) => vsetkyKat.find((x) => x.id === id)!;
 const dielyUrl = Object.fromEntries(produkty.map((p) => [p.id, cestaProduktu(p, katProduktu(p.kategoria), lang)]));
+// Obj. číslo dielu → jeho riadok v tabuľke dielu (príslušenstvo pod variantom vedie priamo naň).
+const kodyDielov = Object.fromEntries(produkty.flatMap((p) => p.tabulky.flatMap((t) => t.riadky.map((x) => x[0]))
+  .filter(Boolean).map((kod) => [`${p.id}|${kod}`, `${dielyUrl[p.id]}#${kotvaKodu(kod)}`])));
 
 const refs = referencie(lang).filter((x) => x.rad === r.slug || (x.rad === null && x.kategoria === k.id)).sort((a, b) => Number(b.rad === r.slug) - Number(a.rad === r.slug)).slice(0, 2);
 
@@ -121,7 +124,7 @@ const productLd = [{
         <p>{varianty.length ? <>{tx.pocetDim(varianty.length)}{zosilnene ? tx.zosilnenych(zosilnene) : ''}. {tx.variantyP}</> : tx.chybaju(model, obsah?.strana ?? null)}</p>
       </div>
       {varianty.length > 0 ? (
-        <div class="harok"><TabulkaVariantov varianty={varianty} zdroj={r.zdroj_url} stiahnute={r.stiahnute} lang={lang} primoZaklad={primoZaklad} diely={dielyUrl} /></div>
+        <div class="harok"><TabulkaVariantov varianty={varianty} zdroj={r.zdroj_url} stiahnute={r.stiahnute} lang={lang} primoZaklad={primoZaklad} diely={dielyUrl} kodyDielov={kodyDielov} /></div>
       ) : (
         <div class="harok prazdne">
           <a class="btn btn-yellow" href={KATALOG_PDF} target="_blank" rel="noopener">{tx.otvoritKatalog} <Ikona nazov="download" velkost={18} /></a>

@@ -192,7 +192,7 @@ Technické poznámky pre ďalšie stránky:
 
 - Nadpis hero ostal podľa predlohy („Flexibilné potrubie. Precízne riešenie.“). Z rozboru hero ostáva
   návrh „Potrubie, ktoré sa ohne okolo prekážky.“; rozhodnutie je na Jurajovi.
-- Pracovnú stránku `/navrhy/hero/` treba po schválení zmazať; body 2A, 3A, 4 (kotva na výber), 5B,
+- Pracovná stránka `/navrhy/hero/` je zmazaná (23. 9. 2026); body 2A, 3A, 4 (kotva na výber), 5B,
   6C, 7A, 8A a 9A z nej sú v domove.
 - Tlak pre QUADRO (6 bar vykurovacie a 10 bar sanitárne rúry) a HP (nie je v slovenskom katalógu)
   v dátach chýba; pás čísel ich nezapočítava.

@@ -286,6 +286,22 @@ kratšie čiary. Za rezom sú jemné sústredné kružnice ako na výkrese prier
 po plášti pás svetla (maska je samotný render) a výrobok sa pri pohybe myši nepatrne posunie.
 Poradie po načítaní: nadpis sa roztiahne, render dosadne, objavia sa body, čiary a štítky.
 
+Kóty v5.1 (Juraj 23. 9.: „v hero to nevidno dobre, tie kóty“): štítok s číslom leží vždy v prázdnom
+mieste okolo výrobku, nikdy na plášti, a má mliečne pozadie s rozmazaním, aby bol čitateľný na
+každom podklade. Celá vrstva kót rastie s obrázkom: štúdio je kontajner (`container-type:
+inline-size`) a dĺžky čiar aj veľkosť písma sú v `cqw`, takže pri 1 280 aj 1 920 px sedia rovnako.
+Overené meraním: žiadny štítok sa nedotkne renderu pri 390, 1 280, 1 536 ani 1 920 px.
+
+Prechod hero → katalóg: pás katalógu sa podsunie pod spodok hero (`--presah-hero`) a má šikmú hornú
+hranu ako tmavá časť dole; render sedí na spodku hero a jeho dolná časť hranu pretína. Hero orezáva
+len vodorovne (`overflow-x: clip`), zvislo nie, takže tieň rúry mäkko dopadne na pás a nikde nevznikne
+ostrá hrana. Kružnice za rezom doznejú ešte nad šikmou hranou, cez pás neprechádzajú (Juraj 23. 9.:
+„sivé kruhy prelínajú šikmú vrstvu, robí to sivý tieň a odrezanie“).
+
+Navigácia po stránke s číslami kapitol (obsah v hero, čísla nad nadpismi, koľajnica pri okraji) bola
+23. 9. skúsená a zrušená: Juraj nemyslel skutočnú navigáciu, ale aby stránka oko viedla nadol
+vizuálne. Pri nejasnom zadaní sa pýtať.
+
 Katalóg na domove (Juraj 22. 9. 2026, podľa jeho vlastného návrhu, v4 prekomponované): záložky =
 kategórie, v paneli veľké rendery radov. V4 z nich robí **register** vľavo (ako palcový register
 tlačeného katalógu: názov a počet radov, vybraná kategória má žltú značku, farbu jadra rúry) a

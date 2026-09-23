@@ -38,13 +38,13 @@ const [plast, izolacia, rura] = h.vrstvy;
 const [dPlast, dPena, dRura] = ['vrstva-plast.jpg', 'vrstva-pena.jpg', 'vrstva-rura.jpg'].map((f) => detail(f)!);
 // Odlesk po plášti: maska je samotný render, svetlo tak prejde len po výrobku, nie po pozadí.
 const leskMaska = (await getImage({ src: heroRez, width: 760, format: 'webp' })).src;
-/* Popisy na renderi: bod (x, y v % obrázka) leží na tom, čo číslo opisuje; smer určuje, kam ide čiara.
-   Súradnice sú zmerané na hero-rez-duo.png (1517 × 1037): horný okraj plášťa pri reze,
-   spodná žltá rúra a zvlnené telo. Smer „dole“ drží popis mimo textového stĺpca. */
+/* Popisy na renderi: bod leží na tom, čo číslo opisuje (okraj plášťa, spodná žltá rúra, zvlnené telo),
+   štítok v prázdnom mieste okolo výrobku. Polohy a dĺžky čiar sú v CSS podľa id, zmerané na siluete
+   hero-rez-duo.png; dĺžky sú v cqw (percentá šírky štúdia), takže celá vrstva rastie s obrázkom. */
 const popisy = [
-  { x: 27, y: 31, smer: 'hore', d: 118, dm: 34, hodnota: faktPlast, text: h.popisy.plast },
-  { x: 14, y: 81, smer: 'dole', d: 50, dm: 22, hodnota: faktRura, text: faktTlak },
-  { x: 67, y: 25, smer: 'hore', d: 84, dm: 30, hodnota: faktPolomer, text: h.popisy.polomer },
+  { id: 'plast', hodnota: faktPlast, text: h.popisy.plast },
+  { id: 'rura', hodnota: faktRura, text: faktTlak },
+  { id: 'ohyb', hodnota: faktPolomer, text: h.popisy.polomer },
 ];
 ---
 <Base lang={lang} alternates={staticAlternates('domov')} title={ui.domov.title} description={ui.domov.description}>
@@ -69,7 +69,7 @@ const popisy = [
           <span class="lesk" aria-hidden="true" style={`--maska: url("${leskMaska}")`}></span>
           <ul class="popisy" aria-label={h.popisy.label}>
             {popisy.map((p, i) => (
-              <li class={`popis popis-${p.smer}`} style={`--x: ${p.x}%; --y: ${p.y}%; --d: ${p.d}px; --dm: ${p.dm}px; --i: ${i}`}>
+              <li class={`popis popis-${p.id}`} style={`--i: ${i}`}>
                 <span class="bod" aria-hidden="true"></span>
                 <span class="ciara" aria-hidden="true"></span>
                 <span class="stitok"><strong>{p.hodnota}</strong><span>{sadzba(p.text)}</span></span>
@@ -184,13 +184,16 @@ const popisy = [
 
 <style>
   /* ---------- Hero: svetlé pole, farbu nesie výrobok ---------- */
-  .hero { position: relative; display: flex; align-items: center; min-height: clamp(540px, 70vh, 720px); overflow: hidden; z-index: 1; color: var(--color-ink);
+  /* Spodných --presah pixelov hero je bez pozadia: je pod nimi šikmá horná hrana pásu katalógu,
+     ktorú spodok renderu pretína, rovnako ako fotka z výkopu pretína hranu podzemia. */
+  .hero { --presah: var(--presah-hero); position: relative; display: flex; align-items: center; min-height: clamp(540px, 70vh, 720px); overflow-x: clip; z-index: 1; color: var(--color-ink);
     background:
       linear-gradient(to bottom, rgb(255 255 255 / 0) 62%, #ffffff 100%),
       radial-gradient(52% 62% at 76% 52%, rgb(0 93 185 / 0.08) 0%, rgb(0 93 185 / 0) 72%),
-      linear-gradient(158deg, #ffffff 0%, #fafbfd 46%, #eef2f7 100%); }
-  .hero-in { position: relative; width: 100%; display: grid; grid-template-columns: minmax(0, 44fr) minmax(0, 56fr); align-items: center; gap: 24px; }
-  .hero-text { max-width: 620px; padding-block: 72px; display: flex; flex-direction: column; align-items: flex-start; position: relative; z-index: 3; }
+      linear-gradient(158deg, #ffffff 0%, #fafbfd 46%, #eef2f7 100%);
+    background-size: 100% calc(100% - var(--presah)); background-repeat: no-repeat; }
+  .hero-in { position: relative; width: 100%; display: grid; grid-template-columns: minmax(0, 44fr) minmax(0, 56fr); grid-template-areas: "text obraz"; column-gap: 24px; }
+  .hero-text { grid-area: text; align-self: center; max-width: 620px; padding-block: 72px; display: flex; flex-direction: column; align-items: flex-start; position: relative; z-index: 3; }
   .hero-text > * { animation: rise 680ms var(--ease-soft) both; }
   .hero-text > :nth-child(2) { animation-delay: 220ms; }
   .hero-text > :nth-child(3) { animation-delay: 320ms; }
@@ -211,19 +214,24 @@ const popisy = [
   .hero-odkaz :global(svg) { transition: transform 200ms var(--ease-soft); }
   .hero-odkaz:hover :global(svg) { transform: translateY(2px); }
   /* Rúra prekračuje pravý okraj obsahovej mriežky až za okraj obrazovky. */
-  .hero-product { position: relative; z-index: 2; margin-left: -9%;
+  /* Render sedí na spodku hero, takže jeho dolná časť pretne šikmú hranu pásu katalógu. */
+  .hero-product { grid-area: obraz; position: relative; z-index: 2; align-self: end; margin-left: -9%;
     margin-right: calc(min(calc(-1 * var(--gutter)), calc((var(--container-site) - 100vw) / 2)) - 64px);
     pointer-events: none; animation: settle 1300ms 120ms var(--ease-soft) both; }
-  .hero-product :global(.hero-img) { width: 100%; height: auto; display: block; filter: drop-shadow(0 38px 46px rgb(11 27 51 / 0.2)); }
+  .hero-product :global(.hero-img) { width: 100%; height: auto; display: block; filter: drop-shadow(0 30px 36px rgb(11 27 51 / 0.17)); }
   /* Štúdio má presne rozmer obrázka: body popisov sú v percentách obrázka a sedia pri každej šírke.
      Pri pohybe myši sa výrobok jemne posunie a pootočí, text stojí. */
-  .hero-stage { position: relative; max-width: 1180px; margin-inline: auto; transform: translate3d(calc(var(--mx, 0) * 12px), calc(var(--my, 0) * 8px), 0) rotate(calc(var(--mx, 0) * -0.6deg)); transition: transform 900ms var(--ease-soft); }
-  /* Za rezom sústredné kružnice ako na technickom výkrese prierezu, stredom v reze rúry. */
-  .hero-stage::before { content: ""; position: absolute; left: 27%; top: 60%; width: 160%; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; z-index: -1; pointer-events: none;
-    background: repeating-radial-gradient(circle, rgb(10 42 94 / 0.075) 0 1px, rgb(10 42 94 / 0) 1.5px 46px);
-    -webkit-mask-image: radial-gradient(circle, #000 14%, transparent 58%); mask-image: radial-gradient(circle, #000 14%, transparent 58%);
+  .hero-stage { position: relative; max-width: 1180px; margin-inline: auto; container-type: inline-size; transform: translate3d(calc(var(--mx, 0) * 12px), calc(var(--my, 0) * 8px), 0); transition: transform 900ms var(--ease-soft); }
+  /* Za rezom sústredné kružnice ako na výkrese prierezu, stredom v reze rúry (27 % a 60 % štúdia).
+     Zdola doznejú ešte nad šikmou hranou pásu katalógu, aby cez ňu neprechádzali. */
+  .hero-stage::before { content: ""; position: absolute; inset: -15% -40% 0 -50%; z-index: -1; pointer-events: none;
+    background: repeating-radial-gradient(circle at 40.5% 65%, rgb(10 42 94 / 0.075) 0 1px, rgb(10 42 94 / 0) 1.5px 46px);
+    -webkit-mask-image: radial-gradient(circle at 40.5% 65%, #000 12%, transparent 50%), linear-gradient(to bottom, #000 40%, transparent calc(100% - var(--presah-hero) - 32px));
+    -webkit-mask-composite: source-in;
+    mask-image: radial-gradient(circle at 40.5% 65%, #000 12%, transparent 50%), linear-gradient(to bottom, #000 40%, transparent calc(100% - var(--presah-hero) - 32px));
+    mask-composite: intersect;
     animation: kruhy 1600ms 300ms var(--ease-soft) both; }
-  @keyframes kruhy { from { opacity: 0; transform: translate(-50%, -50%) scale(0.92); } to { opacity: 1; transform: translate(-50%, -50%); } }
+  @keyframes kruhy { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: none; } }
   @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
   @keyframes settle { from { opacity: 0; transform: translate(40px, 0) rotate(-1.5deg) scale(1.02); } to { opacity: 1; transform: none; } }
 
@@ -234,24 +242,44 @@ const popisy = [
     background-size: 260% 100%; background-position: 135% 0; animation: lesk 2200ms 1100ms cubic-bezier(0.45, 0, 0.25, 1) both; }
   @keyframes lesk { from { background-position: 135% 0; } to { background-position: -35% 0; } }
 
-  /* Technické popisy: bod leží na tom, čo číslo opisuje, čiara vedie k štítku. Prídu po nadpise. */
+  /* Technické popisy (kóty): bod leží na tom, čo číslo opisuje, čiara vedie k štítku. Štítok má
+     jemne mliečne pozadie, aby bol čitateľný aj tam, kde sa dotkne výrobku. Prídu po nadpise. */
   .popisy { position: absolute; inset: 0; margin: 0; padding: 0; pointer-events: none; }
-  .popis { --dd: var(--d); position: absolute; left: var(--x); top: var(--y); width: 0; height: 0; }
-  .bod { position: absolute; left: -6px; top: -6px; width: 12px; height: 12px; border-radius: 50%; background: #fff; border: 2px solid var(--color-blue-900); box-shadow: 0 0 0 5px rgb(255 255 255 / 0.5), 0 2px 8px rgb(11 27 51 / 0.3); animation: bod 420ms var(--ease-soft) both; animation-delay: calc(1250ms + var(--i) * 170ms); }
-  .ciara { position: absolute; background: linear-gradient(var(--smer, 0deg), rgb(10 42 94 / 0.7), rgb(10 42 94 / 0.35)); }
-  .stitok { position: absolute; display: flex; flex-direction: column; gap: 3px; white-space: nowrap; }
-  .stitok strong { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: clamp(18px, 1.3vw + 2px, 25px); line-height: 1.05; letter-spacing: -0.02em; color: var(--color-blue-900); font-variant-numeric: tabular-nums; }
-  .stitok span { font-size: 13px; line-height: 1.35; color: var(--color-ink-soft); }
-  .popis-hore .ciara { left: -0.5px; bottom: 7px; width: 1px; height: var(--dd); transform-origin: bottom; animation: ciaraY 520ms var(--ease-soft) both; animation-delay: calc(1330ms + var(--i) * 170ms); }
-  .popis-hore .stitok { left: -1px; bottom: calc(var(--dd) + 16px); animation: rise 560ms var(--ease-soft) both; animation-delay: calc(1520ms + var(--i) * 170ms); }
-  .popis-dole .ciara { left: -0.5px; top: 7px; width: 1px; height: var(--dd); transform-origin: top; animation: ciaraY 520ms var(--ease-soft) both; animation-delay: calc(1330ms + var(--i) * 170ms); }
-  .popis-dole .stitok { left: -1px; top: calc(var(--dd) + 14px); animation: rise 560ms var(--ease-soft) both; animation-delay: calc(1520ms + var(--i) * 170ms); }
-  .popis-vlavo .ciara { --smer: 90deg; right: 7px; top: -0.5px; height: 1px; width: var(--dd); transform-origin: right; animation: ciaraX 520ms var(--ease-soft) both; animation-delay: calc(1330ms + var(--i) * 170ms); }
-  .popis-vlavo .stitok { right: calc(var(--dd) + 16px); top: 0; align-items: flex-end; text-align: right; animation: odlava 560ms var(--ease-soft) both; animation-delay: calc(1520ms + var(--i) * 170ms); }
+  .popis { position: absolute; left: var(--x); top: var(--y); width: 0; height: 0; }
+  .bod { position: absolute; z-index: 2; left: -7px; top: -7px; width: 14px; height: 14px; border-radius: 50%; background: #fff; box-shadow: inset 0 0 0 3px var(--color-blue-900), 0 0 0 4px rgb(255 255 255 / 0.55), 0 3px 10px rgb(11 27 51 / 0.35); animation: bod 420ms var(--ease-soft) both; animation-delay: calc(1250ms + var(--i) * 170ms); }
+  .bod::after { content: ""; position: absolute; inset: -7px; border-radius: 50%; border: 1.5px solid rgb(255 255 255 / 0.95); opacity: 0; animation: pulz 1500ms ease-out 1 both; animation-delay: calc(1650ms + var(--i) * 170ms); }
+  .ciara { position: absolute; left: -0.75px; width: 1.5px; height: var(--l); border-radius: 1px; background: var(--color-blue-900); box-shadow: 0 0 0 1.5px rgb(255 255 255 / 0.55); animation: ciaraY 520ms var(--ease-soft) both; animation-delay: calc(1330ms + var(--i) * 170ms); }
+  .stitok { position: absolute; display: flex; flex-direction: column; gap: clamp(2px, 0.3cqw, 4px); white-space: nowrap;
+    padding: clamp(5px, 0.72cqw, 10px) clamp(8px, 1.05cqw, 14px); border-radius: clamp(8px, 0.9cqw, 12px);
+    background: rgb(255 255 255 / 0.84); -webkit-backdrop-filter: blur(10px) saturate(1.4); backdrop-filter: blur(10px) saturate(1.4);
+    box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.08), 0 14px 30px -16px rgb(11 27 51 / 0.5);
+    animation: rise 560ms var(--ease-soft) both; animation-delay: calc(1520ms + var(--i) * 170ms); }
+  .stitok strong { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: clamp(15px, 2.5cqw, 28px); line-height: 1.05; letter-spacing: -0.02em; color: var(--color-blue-900); font-variant-numeric: tabular-nums; }
+  .stitok span { font-size: clamp(11px, 1.45cqw, 15px); line-height: 1.3; font-weight: 500; color: #3f4b5e; }
+  /* Kam ide čiara a štítok. Počítač: plášť nad rezom, rúra pod ňou doľava, ohyb pod telom doprava. */
+  @media (min-width: 761px) {
+    .popis-plast { --x: 27%; --y: 31%; --l: 10.6cqw; }
+    .popis-rura { --x: 24%; --y: 79.5%; --l: 7.2cqw; }
+    .popis-ohyb { --x: 74%; --y: 56%; --l: 9.2cqw; }
+    .popis-plast .ciara { bottom: 0; transform-origin: bottom; }
+    .popis-plast .stitok { left: -0.75px; bottom: var(--l); border-bottom-left-radius: 2px; }
+    .popis-rura .ciara, .popis-ohyb .ciara { top: 0; transform-origin: top; }
+    .popis-rura .stitok { right: -0.75px; top: var(--l); border-top-right-radius: 2px; align-items: flex-end; text-align: right; }
+    .popis-ohyb .stitok { left: -0.75px; top: var(--l); border-top-left-radius: 2px; }
+  }
+  /* Telefón: plášť a ohyb nad výrobkom, rúra pod ním; štítky sa neprekrývajú ani nevyjdú z displeja. */
+  @media (max-width: 760px) {
+    .popis-plast { --x: 27%; --y: 31%; --l: 14.4cqw; }
+    .popis-rura { --x: 24%; --y: 79.5%; --l: 10.6cqw; }
+    .popis-ohyb { --x: 67%; --y: 25%; --l: 13.7cqw; }
+    .popis-plast .ciara, .popis-ohyb .ciara { bottom: 0; transform-origin: bottom; }
+    .popis-plast .stitok, .popis-ohyb .stitok { left: -0.75px; bottom: var(--l); border-bottom-left-radius: 2px; }
+    .popis-rura .ciara { top: 0; transform-origin: top; }
+    .popis-rura .stitok { left: -0.75px; top: var(--l); border-top-left-radius: 2px; }
+  }
   @keyframes bod { from { opacity: 0; transform: scale(0.3); } to { opacity: 1; transform: none; } }
   @keyframes ciaraY { from { transform: scaleY(0); } to { transform: scaleY(1); } }
-  @keyframes ciaraX { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-  @keyframes odlava { from { opacity: 0; transform: translate(10px, -50%); } to { opacity: 1; transform: translate(0, -50%); } }
+  @keyframes pulz { 0% { opacity: 0.9; transform: scale(0.6); } 100% { opacity: 0; transform: scale(2.4); } }
 
   /* ---------- Rodina: render prechádza cez švík z modrého pásu do bielej ---------- */
   .rodina { background: var(--color-white); padding-top: 0; padding-bottom: 96px; overflow-x: clip; overflow-y: visible; }
@@ -386,16 +414,15 @@ const popisy = [
   /* ---------- Telefón ---------- */
   @media (max-width: 760px) {
     .hero { min-height: 0; }
-    .hero-in { grid-template-columns: 1fr; gap: 8px; }
+    .hero-in { grid-template-columns: 1fr; grid-template-areas: "text" "obraz"; row-gap: 8px; }
     .hero-text { padding-block: 44px 0; max-width: none; }
     /* Na telefóne sa nadpis môže zalomiť, inak by na úzkom displeji pretiekol. */
     .hero h1 { font-size: clamp(30px, 8.2vw, 44px); text-wrap: wrap; }
     .hero .lead { margin-top: 18px; font-size: 17px; }
     .hero-actions { margin-top: 26px; }
     .hero-product { margin: 44px 0 0; margin-right: calc(-1 * var(--gutter)); margin-left: calc(-1 * var(--gutter)); justify-self: stretch; }
-    .hero { padding-bottom: 52px; }
+    .hero { padding-bottom: 28px; }
     /* Popisy na telefóne: kratšie čiary a menšie písmo, aby sa zmestili okolo renderu. */
-    .popis { --dd: var(--dm); }
     .v-plast { padding: 14px; } .v-pena { padding: 12px; } .v-rura { padding: 12px; }
     .v-hlava { gap: 12px; }
     .v :global(.v-foto) { width: 56px; height: 56px; }
@@ -403,8 +430,6 @@ const popisy = [
     .v-rura :global(.v-foto) { width: 44px; height: 44px; }
     .v h3 { font-size: 17px; }
     .v p { font-size: 14px; }
-    .stitok strong { font-size: 16px; }
-    .stitok span { font-size: 11.5px; }
     .rodina { padding-bottom: 64px; }
     .rodina-wrap { margin-top: -72px; }
     .vrstvy { margin-top: 32px; }

@@ -209,3 +209,8 @@ Technické poznámky pre ďalšie stránky:
 
 Nájdené pri tom: na tablete (760 až 1 100 px) navigácia zmizla a tlačidlo Menu sa neukázalo; tlačidlo
 Menu po otvorení stratilo ikonu a nezmenilo text. Obe chyby sú opravené.
+
+Doplnok 23. 9.: kóty v hero boli pri širšej obrazovke na plášti a zle čitateľné, lebo dĺžky čiar boli
+v pevných pixeloch, zatiaľ čo render rástol. Teraz rastú s obrázkom a štítky majú podklad. Kružnice
+a tieň rúry sa orezávali na spodnej hrane hero, ktorá ležala cez šikmý pás katalógu; hero už zvislo
+neorezáva a kružnice doznejú nad pásom.

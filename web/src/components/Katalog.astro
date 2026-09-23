@@ -53,7 +53,7 @@ function panel(k: Kategoria) {
 const panely = potrubia.map(panel);
 const skupiny = (k: Kategoria) => rady.filter((r) => r.kategoria === k.id).sort((a, b) => a.poradie - b.poradie);
 ---
-<section id="vyber" class="section band-soft katalog" aria-labelledby="h-kat">
+<section id="vyber" class="section katalog" aria-labelledby="h-kat">
   <div class="wrap">
     <p class="kicker">{h.katalogKicker}</p>
     <h2 id="h-kat">{h.katalogH2}</h2>
@@ -116,9 +116,12 @@ const skupiny = (k: Kategoria) => rady.filter((r) => r.kategoria === k.id).sort(
 </section>
 
 <style>
-  /* Dole ostáva miesto: render rodiny potrubí zhora prechádza cez švík do bielej sekcie pod ním. */
-  .katalog { padding-top: 96px; padding-bottom: 200px; scroll-margin-top: 24px; overflow-x: clip; }
+  /* Pás sa podsunie pod spodok hero a má šikmú hornú hranu ako podzemie: vľavo začína pod textom hero,
+     vpravo vyššie, takže ju spodok renderu pretína. Dole ostáva miesto pre render rodiny, ktorý
+     zhora prechádza cez švík do bielej sekcie pod ním. */
+  .katalog { position: relative; isolation: isolate; margin-top: calc(-1 * var(--presah-hero)); padding-top: calc(var(--presah-hero) + 84px); padding-bottom: 200px; scroll-margin-top: calc(72px - var(--presah-hero)); overflow-x: clip; }
   .kicker { font-size: 12.5px; letter-spacing: .09em; text-transform: uppercase; color: var(--color-blue-700); font-weight: 600; margin-bottom: 10px; }
+  .katalog::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, #dde8f6 0%, var(--color-blue-50) 240px, var(--color-blue-50) 100%); clip-path: polygon(0 var(--presah-hero), 100% 0, 100% 100%, 0 100%); }
   .katalog h2 { font-size: clamp(28px, 2.2vw + 14px, 42px); margin-bottom: 44px; }
 
   /* Dva stĺpce na mriežke 4 / 8. Panely sú podmriežka cez celú šírku, takže popis vybranej kategórie
@@ -209,7 +212,7 @@ const skupiny = (k: Kategoria) => rady.filter((r) => r.kategoria === k.id).sort(
     .vsetko { grid-row: 4; margin-top: 28px; }
   }
   @media (max-width: 760px) {
-    .katalog { padding-top: 64px; padding-bottom: 100px; }
+    .katalog { padding-top: calc(var(--presah-hero) + 52px); padding-bottom: 100px; }
     .katalog h2 { margin-bottom: 28px; }
     /* scroll-padding drží prvý render na okraji mriežky; bez neho by ho prichytávanie posunulo k hrane displeja. */
     .studio { grid-auto-columns: 78%; column-gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter); scrollbar-width: none; margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); }

@@ -4,7 +4,8 @@
  * obj. čísel s kopírovaním a odkazom do e-shopu, rady potrubia, ku ktorým diel patrí, a ďalšie
  * diely zo skupiny. Na konci záver s kúpou a kontaktom.
  */
-import { Image, getImage } from 'astro:assets';
+import { getImage } from 'astro:assets';
+import Obraz from '../components/Obraz.astro';
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Hlava from '../components/Hlava.astro';
@@ -55,7 +56,7 @@ const ld = [{
 }];
 ---
 <Base lang={lang} alternates={alternatyProduktu(p, k)} title={nazov} description={meta} aktivna="potrubia" drobceky={drobceky} vizualneDrobceky={false} jsonLd={ld}>
-  <Hlava lang={lang} nadpis={nazov} drobceky={drobceky} pred={rNazov(skupina, lang)} lead={popis ?? undefined} obraz={img} obrazAlt={nazov} druh="biely" obrazMax={560}>
+  <Hlava lang={lang} nadpis={nazov} drobceky={drobceky} pred={rNazov(skupina, lang)} lead={popis ?? undefined} obraz={img} obrazAlt={nazov} druh={img?.format === 'webp' ? 'render' : 'biely'} obrazMax={560}>
     {fakty.length > 0 && <dl class="hlava-fakty">{fakty.map(([dt, dd]) => <div><dt>{dt}</dt><dd>{dd}</dd></div>)}</dl>}
     <div class="hlava-akcie">
       {kody.length > 0
@@ -86,7 +87,7 @@ const ld = [{
           {rady.map(({ r, k: kr }) => { const pk = piktogram(r.piktogram); return (
             <li>
               <a class="harok rad" href={cestaRadu(kr, r, lang)}>
-                {pk && <span class="rad-obraz" style={`view-transition-name: rad-${r.id}`}><Image src={pk} alt="" widths={[200, 320]} sizes="150px" /></span>}
+                {pk && <span class="rad-obraz" style={`view-transition-name: rad-${r.id}`}><Obraz src={pk} alt="" widths={[200, 320]} sizes="150px" /></span>}
                 <span class="rad-text">
                   <span class="rad-nazov">{rNazov(r, lang).split(',')[0].trim()}</span>
                   <span class="rad-pod">{[kKratky(kr, lang), tlakText(r)].filter(Boolean).join(', ')}</span>

@@ -4,7 +4,8 @@
  * v kW (vykurovacie rady s výkonom z katalógu) alebo podľa priemeru nosnej rúry. Kroky 1 a 2 sú
  * vykreslené na serveri, výsledok skladá skript z vložených dát. Stav je v adrese (?k=&r=&kw=&d=).
  */
-import { Image, getImage } from 'astro:assets';
+import { getImage } from 'astro:assets';
+import Obraz from '../components/Obraz.astro';
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Hlava from '../components/Hlava.astro';
@@ -114,7 +115,7 @@ const obrazky = await Promise.all(systemy.map(async ({ k }) => { const p = pikto
         <div class="volby-k2" role="radiogroup" aria-labelledby="h-k2" data-pre={k.id} hidden>
           {rr.map((r) => { const p = piktogram(r.piktogram); return (
             <button type="button" class="harok volba-r" role="radio" aria-checked="false" data-r={r.slug} data-kw={varianty.some((v) => v.rad === r.id && v.vykon_kw) ? '1' : ''}>
-              {p && <Image src={p} alt="" widths={[160, 240]} sizes="120px" class="volba-r-img" />}
+              {p && <Obraz src={p} alt="" widths={[160, 240]} sizes="120px" class="volba-r-img" />}
               <span class="volba-r-text">
                 <span class="volba-nazov">{rNazov(r, lang).split(',')[0].trim()}</span>
                 <span class="volba-pod">{[r.pocet_rur ? `${r.pocet_rur} × ${lang === 'cs' ? 'trubka' : 'rúra'}` : '', tlakText(r)].filter(Boolean).join(', ')}</span>

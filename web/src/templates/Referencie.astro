@@ -6,7 +6,8 @@
  * a pri inej fotke sa kóty skryjú, lebo patria len k hlavnej.
  * Obsah je v content/referencie.ts, len fakty zo stránok referencií na watts.eu.
  */
-import { Image, getImage } from 'astro:assets';
+import { getImage } from 'astro:assets';
+import Obraz from '../components/Obraz.astro';
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Hlava from '../components/Hlava.astro';
@@ -66,7 +67,7 @@ const bloky = await Promise.all(refs.map(async (r) => {
           {fotky.length > 1 && (
             <ul class="nahlady">
               {fotky.map((f, j) => (
-                <li><button type="button" aria-pressed={j === 0 ? 'true' : 'false'} data-velka={f.velka} aria-label={tx.fotka(j + 1)}><Image src={f.src} alt="" width={120} height={90} densities={[1, 2]} /></button></li>
+                <li><button type="button" aria-pressed={j === 0 ? 'true' : 'false'} data-velka={f.velka} aria-label={tx.fotka(j + 1)}><Obraz src={f.src} alt="" width={120} height={90} densities={[1, 2]} /></button></li>
               ))}
             </ul>
           )}
@@ -129,6 +130,8 @@ const bloky = await Promise.all(refs.map(async (r) => {
       const hlavna = g.querySelector<HTMLImageElement>('.hlavna img');
       if (!hlavna) return;
       const povodne = { src: hlavna.currentSrc || hlavna.src, srcset: hlavna.getAttribute('srcset') ?? '' };
+      // Scéna je <picture> so zdrojom AVIF, ten by mal prednosť pred zmenou src: pri inej fotke sa vypne.
+      const zdroje = [...(hlavna.closest('picture')?.querySelectorAll('source') ?? [])].map((s) => ({ s, srcset: s.getAttribute('srcset') ?? '' }));
       const tlacidla = [...g.querySelectorAll<HTMLButtonElement>('[data-velka]')];
       tlacidla.forEach((b, i) => b.addEventListener('click', () => {
         if (b.getAttribute('aria-pressed') === 'true') return;
@@ -136,6 +139,7 @@ const bloky = await Promise.all(refs.map(async (r) => {
         hlavna.classList.add('mizne');
         const nova = new window.Image();
         nova.onload = () => {
+          zdroje.forEach(({ s, srcset }) => (i === 0 ? s.setAttribute('srcset', srcset) : s.removeAttribute('srcset')));
           if (i === 0 && povodne.srcset) hlavna.setAttribute('srcset', povodne.srcset); else hlavna.removeAttribute('srcset');
           hlavna.src = nova.src;
           hlavna.classList.remove('mizne');

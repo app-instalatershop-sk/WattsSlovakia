@@ -1,0 +1,91 @@
+/* Vygenerované skriptom data/pisma.py, needitovať ručne. */
+@font-face {
+  font-family: 'Archivo Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  src: url('../fonts/archivo-zaklad.woff2') format('woff2');
+  unicode-range: U+20-7E, U+A0, U+A7, U+A9, U+AB, U+AD-AE, U+B0-B3, U+B5, U+B7, U+BB, U+BD, U+C1, U+C4, U+C9, U+CD, U+D3-D4, U+D6-D8, U+DA, U+DC-DD, U+DF, U+E1, U+E4, U+E9, U+ED, U+F3-F4, U+F6-F8, U+FA, U+FC-FD, U+2009, U+2013-2014, U+2018-201A, U+201C-201E, U+2022, U+2026, U+2032-2033, U+2039-203A, U+20AC, U+2122, U+2191, U+2193, U+2212;
+}
+@font-face {
+  font-family: 'Archivo Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  src: url('../fonts/archivo-rozsirene.woff2') format('woff2');
+  unicode-range: U+104-107, U+10C-10F, U+118-11B, U+139-13A, U+13D-13E, U+141-144, U+147-148, U+150-151, U+154-155, U+158-15B, U+160-161, U+164-165, U+16E-171, U+179-17E;
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url('../fonts/plex-400-zaklad.woff2') format('woff2');
+  unicode-range: U+20-7E, U+A0, U+A7, U+A9, U+AB, U+AD-AE, U+B0-B3, U+B5, U+B7, U+BB, U+BD, U+C1, U+C4, U+C9, U+CD, U+D3-D4, U+D6-D8, U+DA, U+DC-DD, U+DF, U+E1, U+E4, U+E9, U+ED, U+F3-F4, U+F6-F8, U+FA, U+FC-FD, U+2009, U+200B, U+2013-2014, U+2018-201A, U+201C-201E, U+2022, U+2026, U+2032-2033, U+2039-203A, U+20AC, U+2122, U+2191, U+2193, U+2212;
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url('../fonts/plex-400-rozsirene.woff2') format('woff2');
+  unicode-range: U+104-107, U+10C-10F, U+118-11B, U+139-13A, U+13D-13E, U+141-144, U+147-148, U+150-151, U+154-155, U+158-15B, U+160-161, U+164-165, U+16E-171, U+179-17E;
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url('../fonts/plex-400-grecke.woff2') format('woff2');
+  unicode-range: U+394, U+3A9, U+3BB-3BC;
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url('../fonts/plex-500-zaklad.woff2') format('woff2');
+  unicode-range: U+20-7E, U+A0, U+A7, U+A9, U+AB, U+AD-AE, U+B0-B3, U+B5, U+B7, U+BB, U+BD, U+C1, U+C4, U+C9, U+CD, U+D3-D4, U+D6-D8, U+DA, U+DC-DD, U+DF, U+E1, U+E4, U+E9, U+ED, U+F3-F4, U+F6-F8, U+FA, U+FC-FD, U+2009, U+200B, U+2013-2014, U+2018-201A, U+201C-201E, U+2022, U+2026, U+2032-2033, U+2039-203A, U+20AC, U+2122, U+2191, U+2193, U+2212;
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url('../fonts/plex-500-rozsirene.woff2') format('woff2');
+  unicode-range: U+104-107, U+10C-10F, U+118-11B, U+139-13A, U+13D-13E, U+141-144, U+147-148, U+150-151, U+154-155, U+158-15B, U+160-161, U+164-165, U+16E-171, U+179-17E;
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url('../fonts/plex-500-grecke.woff2') format('woff2');
+  unicode-range: U+394, U+3A9, U+3BB-3BC;
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url('../fonts/plex-600-zaklad.woff2') format('woff2');
+  unicode-range: U+20-7E, U+A0, U+A7, U+A9, U+AB, U+AD-AE, U+B0-B3, U+B5, U+B7, U+BB, U+BD, U+C1, U+C4, U+C9, U+CD, U+D3-D4, U+D6-D8, U+DA, U+DC-DD, U+DF, U+E1, U+E4, U+E9, U+ED, U+F3-F4, U+F6-F8, U+FA, U+FC-FD, U+2009, U+200B, U+2013-2014, U+2018-201A, U+201C-201E, U+2022, U+2026, U+2032-2033, U+2039-203A, U+20AC, U+2122, U+2191, U+2193, U+2212;
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url('../fonts/plex-600-rozsirene.woff2') format('woff2');
+  unicode-range: U+104-107, U+10C-10F, U+118-11B, U+139-13A, U+13D-13E, U+141-144, U+147-148, U+150-151, U+154-155, U+158-15B, U+160-161, U+164-165, U+16E-171, U+179-17E;
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url('../fonts/plex-600-grecke.woff2') format('woff2');
+  unicode-range: U+394, U+3A9, U+3BB-3BC;
+}

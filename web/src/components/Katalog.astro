@@ -7,7 +7,7 @@
  * všetkých panelov je v HTML kvôli vyhľadávačom. Rad dostane render len vtedy, keď má vlastný;
  * vyhotovenia, ktoré zdieľajú render so súrodencom (PRIMO), sú vymenované v popise.
  */
-import { Image } from 'astro:assets';
+import Obraz from './Obraz.astro';
 import { getCollection } from 'astro:content';
 import Ikona from './Ikona.astro';
 import { kategorie, cestaKategorie, cestaRadu, kKratky, kPopis, rNazov, rozsah, type Kategoria, type Rad } from '../lib/katalog';
@@ -80,7 +80,7 @@ const skupiny = (k: Kategoria) => rady.filter((r) => r.kategoria === k.id).sort(
               {p.dlazdice.map(({ rad: r, vyhotovenia }) => { const img = piktogram(r.piktogram); const href = cestaRadu(p.kat, r, lang); return (
                 <div class="rad">
                   <a class="rad-obj" href={href} tabindex="-1" aria-hidden="true" style={`view-transition-name: rad-${r.id}`}>
-                    {img && <Image src={img} alt="" widths={[420, 640, 900]} sizes="(max-width: 760px) 78vw, (max-width: 1100px) 44vw, 34vw" class="rad-img" />}
+                    {img && <Obraz src={img} alt="" widths={[420, 640, 900]} sizes="(max-width: 760px) 78vw, (max-width: 1100px) 44vw, 34vw" class="rad-img" />}
                   </a>
                   <div class="rad-txt">
                     <a class="rad-hlavny" href={href}>

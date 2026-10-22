@@ -3,7 +3,7 @@
  * Poradňa: články o výbere, pokládke, tlakovej skúške a tepelných stratách (content/clanky.ts)
  * a časté otázky zo všetkých systémov (content/faq.ts) s odkazom na systém.
  */
-import { Image } from 'astro:assets';
+import Obraz from '../components/Obraz.astro';
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Hlava from '../components/Hlava.astro';
@@ -56,7 +56,7 @@ const obraz = fotka('vykop-rez.jpg');
         {zoznam.map((c, i) => { const img = fotka(c.obraz); return (
           <li class:list={{ prvy: i === 0 }}>
             <a class="harok clanok-k" href={`${route(lang, 'poradna')}${c.slug}/`}>
-              {img && <span class:list={['clanok-obraz', { render: c.obraz.endsWith('.png') }]}><Image src={img} alt="" widths={[480, 800, 1100]} sizes={i === 0 ? '(max-width: 900px) 100vw, 60vw' : '(max-width: 900px) 100vw, 30vw'} /></span>}
+              {img && <span class:list={['clanok-obraz', { render: c.obraz.endsWith('.png') }]}><Obraz src={img} alt="" widths={[480, 800, 1100]} sizes={i === 0 ? '(max-width: 900px) 100vw, 60vw' : '(max-width: 900px) 100vw, 30vw'} /></span>}
               <span class="clanok-text">
                 <span class="clanok-min">{tx.citanie(c.minut)}</span>
                 <span class="clanok-n">{sadzba(c.nazov)}</span>

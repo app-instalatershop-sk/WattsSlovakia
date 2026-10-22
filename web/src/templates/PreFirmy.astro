@@ -10,7 +10,7 @@ import Hlava from '../components/Hlava.astro';
 import Zaver from '../components/Zaver.astro';
 import Ikona from '../components/Ikona.astro';
 import Scena from '../components/Scena.astro';
-import { Image } from 'astro:assets';
+import Obraz from '../components/Obraz.astro';
 import { FIRMA } from '../content/firma';
 import { referencie } from '../content/referencie';
 import { fotka, fotkaReferencie } from '../lib/obrazky';
@@ -90,11 +90,11 @@ const polia = { meno: tx.meno, firma: tx.firma, email: tx.email, telefon: tx.tel
     {/* Skupiny zákazníkov (Juraj 22. 10. 2026, návrh C): jedna veľká fotka nesie náladu veľkej
         stavby, tri skupiny vedľa nej majú okrúhlu lupu ako vrstvy potrubia na domove. */}
     <section class="wrap pre" aria-label={tx.kratko}>
-      <figure class="pre-velka"><Image src={areal} alt={tx.arealAlt} widths={[640, 960, 1245]} sizes="(max-width: 900px) 100vw, 56vw" /></figure>
+      <figure class="pre-velka"><Obraz src={areal} alt={tx.arealAlt} widths={[640, 960, 1245]} sizes="(max-width: 900px) 100vw, 56vw" /></figure>
       <ul class="pre-zoznam">
         {tx.pre.map((x) => { const f = fotkaPre(x.foto); return (
           <li>
-            <span class="pre-lupa">{f && <Image src={f} alt={x.alt} width={96} height={96} densities={[1, 2]} />}</span>
+            <span class="pre-lupa">{f && <Obraz src={f} alt={x.alt} width={96} height={96} densities={[1, 2]} />}</span>
             <div>
               <h2>{x.h}</h2>
               <p>{sadzba(x.p)}</p>

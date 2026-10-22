@@ -3,7 +3,7 @@
  * Kategória potrubí (systém): hlava s renderom a kľúčovými číslami, karty radov (rady so spoločným
  * renderom ako vyhotovenia pod ním), porovnanie radov, spojky a diely k systému, otázky pred výberom.
  */
-import { Image } from 'astro:assets';
+import Obraz from '../components/Obraz.astro';
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Hlava from '../components/Hlava.astro';
@@ -121,7 +121,7 @@ const drobceky = [{ text: ui.nav.potrubia, href: route(lang, 'potrubia') }, { te
           {spojky.map(({ s, ps }) => { const img = fotkaRadu(s.fotka); return (
             <div class="harok skupina">
               <div class="skupina-hlava">
-                {img && <Image src={img} alt="" width={72} height={72} densities={[1, 2]} class="skupina-ikona" />}
+                {img && <Obraz src={img} alt="" width={72} height={72} densities={[1, 2]} class="skupina-ikona" />}
                 <h3>{rNazov(s, lang)}</h3>
               </div>
               <ul>{ps.map((p) => <li><a href={cestaProduktu(p, katProduktu(p.kategoria), lang)}><span>{pNazov(p, lang)}</span>{p.pocet_variantov > 0 && <span class="pocet">{ui.sklonovanie.dimenzii(p.pocet_variantov)}</span>}</a></li>)}</ul>

@@ -3,7 +3,7 @@
  * Prehľad potrubí: päť systémov hadovito (render striedavo vľavo a vpravo), pod tým všetky rady
  * v jednej porovnávacej tabuľke a vstup do spojok a príslušenstva.
  */
-import { Image } from 'astro:assets';
+import Obraz from '../components/Obraz.astro';
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Hlava from '../components/Hlava.astro';
@@ -78,7 +78,7 @@ const produktySkupiny = (id: string) => produkty.filter((p) => p.skupina === id)
         {potrubia.map((k, i) => { const img = piktogram(k.piktogram); const href = cestaKategorie(k, lang); return (
           <li class:list={['sys', { 'sys-vpravo': i % 2 === 1 }]}>
             <a class="sys-obraz" href={href} tabindex="-1" aria-hidden="true" style={`view-transition-name: kat-${k.id}`}>
-              {img && <Image src={img} alt="" widths={[420, 640, 900]} sizes="(max-width: 900px) 80vw, 40vw" />}
+              {img && <Obraz src={img} alt="" widths={[420, 640, 900]} sizes="(max-width: 900px) 80vw, 40vw" />}
             </a>
             <div class="sys-text">
               <h3><a href={href}>{kNazov(k, lang)}</a></h3>
@@ -128,7 +128,7 @@ const produktySkupiny = (id: string) => produkty.filter((p) => p.skupina === id)
       <div class="diely">
         {diely.map((k) => { const img = fotka(obrazDielov[k.id]); return (
           <article class="diel harok">
-            <a class="diel-obraz" href={cestaKategorie(k, lang)} tabindex="-1" aria-hidden="true">{img && <Image src={img} alt="" widths={[360, 560]} sizes="(max-width: 760px) 80vw, 280px" />}</a>
+            <a class="diel-obraz" href={cestaKategorie(k, lang)} tabindex="-1" aria-hidden="true">{img && <Obraz src={img} alt="" widths={[360, 560]} sizes="(max-width: 760px) 80vw, 280px" />}</a>
             <div class="diel-text">
               <h3><a href={cestaKategorie(k, lang)}>{kKratky(k, lang)}</a></h3>
               <p>{sadzba(kPopis(k, lang))}</p>

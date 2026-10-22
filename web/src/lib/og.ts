@@ -1,6 +1,7 @@
 import { getCollection } from 'astro:content';
 import { cestaKategorie, cestaRadu, cestaProduktu, kNazov, kKratky, rNazov, pNazov, rozsah, rozsahRur, tlakText, tlakyRadov, type Kategoria } from './katalog';
 import { faktyProduktu, kodyProduktu } from './produkty';
+import { fotkaProduktu } from './obrazky';
 import { clanky } from '../content/clanky';
 import { type Lang, route, LANGS } from '../i18n/ui';
 
@@ -85,7 +86,9 @@ async function zostav(): Promise<OgZaznam[]> {
     for (const p of produkty) {
       const k = kat.find((x) => x.id === p.kategoria) as Kategoria;
       const sk = skupiny.find((x) => x.id === p.skupina);
-      out.push({ kluc: klucOg(cestaProduktu(p, k, lang)), lang, nadpis: pNazov(p, lang), pred: sk ? rNazov(sk, lang) : kKratky(k, lang), fakty: faktyProduktu(p, lang).slice(0, 2), obraz: `produkty/${p.id}.jpg`, druh: 'biely' });
+      // Vyrezaný diel (priehľadné WebP) leží na modrej ploche ako render, pôvodná fotka má bielu kartu.
+      const vyrez = fotkaProduktu(p.id)?.format === 'webp';
+      out.push({ kluc: klucOg(cestaProduktu(p, k, lang)), lang, nadpis: pNazov(p, lang), pred: sk ? rNazov(sk, lang) : kKratky(k, lang), fakty: faktyProduktu(p, lang).slice(0, 2), obraz: `produkty/${p.id}.${vyrez ? 'webp' : 'jpg'}`, druh: vyrez ? 'render' : 'biely' });
     }
     for (const c of clanky(lang)) {
       out.push({ kluc: klucOg(`${route(lang, 'poradna')}${c.slug}/`), lang, nadpis: c.nazov, pred: tx.clanok, fakty: [], obraz: `fotky/${c.obraz}`, druh: c.obraz.endsWith('.png') ? 'render' : 'foto' });

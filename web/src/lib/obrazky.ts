@@ -20,6 +20,7 @@ export const fotka = (subor: string | null | undefined) => najdi(fotky, subor);
 export const detail = (subor: string | null | undefined) => najdi(detaily, subor);
 export const fotkaReferencie = (subor: string | null | undefined) => najdi(referencie, subor);
 
-/** Fotky spojok a príslušenstva z galérie watts.eu (biele pozadie), podľa id produktu. */
-const produkty = import.meta.glob<{ default: ImageMetadata }>('/src/assets/produkty/*.jpg', { eager: true });
-export const fotkaProduktu = (id: string) => najdi(produkty, `${id}.jpg`);
+/** Fotky spojok a príslušenstva z galérie watts.eu podľa id produktu: zväčšené a vyrezané z bieleho
+ *  pozadia (priehľadné WebP, data/vylepsi_obrazky.py). Nový diel bez úpravy má pôvodné JPG. */
+const produkty = import.meta.glob<{ default: ImageMetadata }>('/src/assets/produkty/*.{webp,jpg}', { eager: true });
+export const fotkaProduktu = (id: string) => najdi(produkty, `${id}.webp`) ?? najdi(produkty, `${id}.jpg`);

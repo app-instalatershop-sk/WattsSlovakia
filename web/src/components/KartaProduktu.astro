@@ -4,8 +4,12 @@
  * karty, fotka výrobcu stojí na svetlej ploche so svetlom zhora a tieňom pod sebou ako pri fotení
  * výrobkov. Pod ňou názov a počet obj. čísel. Malá verzia (maly) je riadok s menšou plochou vľavo.
  * Celá položka vedie na stránku dielu.
+ *
+ * Vyrezaná fotka (priehľadné WebP) stojí spodkom na čiare podlahy a tieň je ten istý obrázok
+ * sploštený a rozmazaný, takže kopíruje tvar dielu (prehliadač ho sťahuje raz). Diel bez úpravy
+ * (JPG s bielym pozadím) sa so štúdiom násobí ako doteraz.
  */
-import { Image } from 'astro:assets';
+import Obraz from './Obraz.astro';
 import Ikona from './Ikona.astro';
 import { fotkaProduktu } from '../lib/obrazky';
 import { sadzba } from '../lib/sadzba';
@@ -18,11 +22,17 @@ interface Props { p: Produkt; href: string; lang: Lang; maly?: boolean }
 const { p, href, lang, maly = false } = Astro.props;
 const tx = stranky(lang).skupiny;
 const img = fotkaProduktu(p.id);
+const vyrez = img?.format === 'webp';
 const kody = kodyProduktu(p).length;
 const fakt = faktyProduktu(p, lang).find(([k]) => k !== stranky(lang).produkt.pocet);
+const sirky = maly ? [120, 200] : [240, 400, 560];
+const sizes = maly ? '70px' : '(max-width: 760px) 32vw, 200px';
 ---
 <a class:list={['kp', { 'kp-maly': maly }]} href={href}>
-  <span class="kp-podlaha">{img && <Image src={img} alt="" widths={[240, 400, 560]} sizes={maly ? '120px' : '(max-width: 760px) 44vw, 280px'} />}</span>
+  <span class:list={['kp-podlaha', { 'kp-vyrez': vyrez }]}>
+    {img && vyrez && <Obraz src={img} alt="" widths={sirky} sizes={sizes} class="kp-tien" aria-hidden="true" />}
+    {img && <Obraz src={img} alt="" widths={sirky} sizes={sizes} class="kp-obr" />}
+  </span>
   <span class="kp-text">
     <span class="kp-nazov">{sadzba(pNazov(p, lang))}</span>
     <span class="kp-meta">{kody ? tx.objCisel(kody) : tx.bezTabulky}{fakt && !maly && <span>{fakt[1]}</span>}</span>
@@ -37,8 +47,14 @@ const fakt = faktyProduktu(p, lang).find(([k]) => k !== stranky(lang).produkt.po
   .kp-podlaha { position: relative; display: block; aspect-ratio: 1; margin-bottom: 14px; border-radius: 22px; overflow: hidden;
     background: radial-gradient(70% 60% at 50% 35%, #ffffff 0%, #f2f5f9 55%, #e6ecf3 100%); box-shadow: inset 0 -24px 40px -30px rgb(10 42 94 / 0.25); }
   .kp-podlaha::after { content: ""; position: absolute; left: 24%; right: 24%; bottom: 19%; height: 6%; border-radius: 50%; background: radial-gradient(closest-side, rgb(10 42 94 / 0.28), rgb(10 42 94 / 0)); }
-  .kp-podlaha :global(img) { position: absolute; z-index: 1; inset: 12% 14% 18%; width: 72%; height: 70%; object-fit: contain; mix-blend-mode: multiply; transition: transform 500ms var(--ease-soft); }
-  .kp:hover .kp-podlaha :global(img) { transform: translateY(-6px) scale(1.03); }
+  .kp-podlaha :global(img) { position: absolute; z-index: 1; inset: 12% 14% 18%; width: 72%; height: 70%; object-fit: contain; mix-blend-mode: multiply; transition: transform 500ms var(--ease-soft), opacity 500ms var(--ease-soft); }
+  .kp:hover .kp-podlaha :global(.kp-obr) { transform: translateY(-6px) scale(1.03); }
+  /* Vyrezaný diel: spodok na čiare podlahy, pod ním mäkký tieň z jeho tvaru a slabý rozptýlený ovál. */
+  .kp-vyrez::after { bottom: 20%; height: 5%; opacity: 0.5; }
+  .kp-vyrez :global(img) { inset: 14% 14% 21%; height: 65%; object-position: 50% 100%; mix-blend-mode: normal; }
+  /* Výrez má 3 % priehľadný okraj, preto tieň sedí o kúsok vyššie, na čiare, kde diel naozaj stojí. */
+  .kp-vyrez :global(.kp-tien) { z-index: 0; transform-origin: 50% 97%; transform: scaleY(0.14); filter: brightness(0) blur(var(--tien-blur, 8px)); opacity: 0.22; }
+  .kp:hover .kp-vyrez :global(.kp-tien) { transform: scale(0.94, 0.12); opacity: 0.15; }
   .kp-text { display: flex; flex-direction: column; gap: 4px; }
   .kp-nazov { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 17px; line-height: 1.25; transition: color 150ms var(--ease-soft); }
   .kp:hover .kp-nazov { color: var(--color-blue-700); }
@@ -49,6 +65,8 @@ const fakt = faktyProduktu(p, lang).find(([k]) => k !== stranky(lang).produkt.po
   .kp-maly:hover { background: #fff; }
   .kp-maly .kp-podlaha { flex: none; width: 96px; margin-bottom: 0; border-radius: 14px; }
   .kp-maly .kp-podlaha::after { bottom: 14%; }
+  .kp-maly .kp-vyrez { --tien-blur: 3px; }
+  .kp-maly .kp-vyrez::after { bottom: 20%; }
   .kp-maly .kp-nazov { font-size: 15.5px; }
   .kp-maly .kp-meta { font-size: 13px; }
   .kp :global(.kp-sipka) { position: absolute; right: 16px; top: 50%; margin-top: -9px; color: var(--color-blue-700); transition: transform 200ms var(--ease-soft); }

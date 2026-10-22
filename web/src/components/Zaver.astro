@@ -5,7 +5,7 @@
  * cez šikmú hranu do svetlého tela a vpravo za okraj obrazovky; kontakt je jeden pokojný riadok
  * (Juraj 22. 10. 2026, návrh B). Spodok má farbu začiatku pätičky, záver a pätička sú jeden celok.
  */
-import { Image } from 'astro:assets';
+import Obraz from './Obraz.astro';
 import Ikona from './Ikona.astro';
 import { FIRMA, firma } from '../content/firma';
 import { stranky } from '../content/stranky';
@@ -29,7 +29,7 @@ const alt = lang === 'cs' ? 'Kotouče potrubí Microflex připravené na stavbě
         <a class="btn btn-ghost-light" href={`${route(lang, 'firmy')}#dopyt`}>{z.dopyt}</a>
       </div>
     </div>
-    <figure class="zaver-foto"><Image src={kotuce} alt={alt} widths={[640, 895]} sizes="(max-width: 900px) 100vw, 50vw" /></figure>
+    <figure class="zaver-foto"><Obraz src={kotuce} alt={alt} widths={[640, 895]} sizes="(max-width: 900px) 100vw, 50vw" /></figure>
   </div>
   {kontakt && (
     <div class="wrap zaver-kontakt">

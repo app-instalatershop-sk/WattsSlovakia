@@ -5,7 +5,7 @@
  * stránky a hero domova. Pod ním názov, počet rúr a dimenzií, jedna veta a vyhotovenia, ktoré
  * zdieľajú render (PRIMO). V úzkej karte kóta polomeru ustúpi, aby sa štítky neprekrývali.
  */
-import { Image } from 'astro:assets';
+import Obraz from './Obraz.astro';
 import Ikona from './Ikona.astro';
 import Koty from './Koty.astro';
 import { piktogram } from '../lib/obrazky';
@@ -36,7 +36,7 @@ const pod = [rad.pocet_rur ? ui.home.rury(rad.pocet_rur) : '', varianty.length ?
 <article class="karta">
   <a class="karta-studio" href={href} tabindex="-1" aria-hidden="true">
     <span class="karta-stage" style={`view-transition-name: rad-${rad.id}`}>
-      {img && <Image src={img} alt="" widths={[480, 720, 960]} sizes="(max-width: 900px) 92vw, 44vw" />}
+      {img && <Obraz src={img} alt="" widths={[480, 720, 960]} sizes="(max-width: 900px) 92vw, 44vw" />}
       <Koty koty={koty} label={ui.home.popisy.label} />
     </span>
   </a>

@@ -5,7 +5,7 @@
  * s veľkou skratkou formátu. Pod dokumentom druh a doplnok („Výkres DWG“ + „DUO a DUO PRIMO …“).
  * Katalóg vedie priamo na PDF, ostatné na stránku podkladu na watts.eu.
  */
-import { Image } from 'astro:assets';
+import Obraz from './Obraz.astro';
 import { popisSuboru, type Subor } from '../lib/subory';
 import { fotka } from '../lib/obrazky';
 import { type Lang, KATALOG_PDF } from '../i18n/ui';
@@ -22,7 +22,7 @@ const polozky = subory.map((s) => { const p = popisSuboru(s, lang); return { ...
     <li>
       <a class="dok" href={p.url} target="_blank" rel="noopener">
         {p.obalka ? (
-          <span class="list"><Image src={p.obalka} alt="" widths={[240, 460]} sizes="(max-width: 760px) 44vw, 220px" /></span>
+          <span class="list"><Obraz src={p.obalka} alt="" widths={[240, 460]} sizes="(max-width: 760px) 44vw, 220px" /></span>
         ) : (
           <span class:list={['list', 'format', `format-${p.druh}`]}><b>{p.typ}</b>{p.meta && <em>{p.meta}</em>}</span>
         )}

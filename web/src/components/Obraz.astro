@@ -1,0 +1,30 @@
+---
+/**
+ * Obrázok webu: AVIF (na našich obrázkoch 36 až 79 % veľkosti WebP), prehliadač bez AVIF dostane
+ * WebP. Rozhranie je rovnaké ako <Image> z astro:assets (src, alt, widths, densities, sizes, loading,
+ * class …), triedy a štýly idú na <img>. <picture> nemá vlastný box (global.css: display: contents),
+ * rozloženie je rovnaké ako pri samotnom <img>.
+ *
+ * Kvalita AVIF: fotky 60, aby ostala textúra zeminy a zvlnenie plášťa; rendery a vyrezané diely 50
+ * (rozdiel oproti WebP okom nevidno). Porovnanie 22. 10. 2026 pri dvojnásobnom zväčšení.
+ */
+import { getImage, type LocalImageProps } from 'astro:assets';
+import type { ImageMetadata, UnresolvedImageTransform } from 'astro';
+
+type Props = LocalImageProps;
+
+const props = Astro.props;
+const src = props.src as ImageMetadata;
+const foto = src.format === 'jpg' || src.format === 'jpeg';
+const [avif, webp] = await Promise.all([
+  getImage({ ...props, format: 'avif', quality: foto ? 60 : 50 } as UnresolvedImageTransform),
+  getImage({ ...props, format: 'webp' } as UnresolvedImageTransform),
+]);
+// Pri hustotách (1x, 2x) obsahuje srcSet len vyššie hustoty, 1x je samotné src (ako v Picture z Astro).
+const srcsetAvif = props.densities || !props.widths ? [avif.src, avif.srcSet.attribute].filter(Boolean).join(', ') : avif.srcSet.attribute;
+const { class: className, ...attributes } = { ...(webp.srcSet.values.length ? { srcset: webp.srcSet.attribute } : {}), ...webp.attributes };
+---
+<picture>
+  <source type="image/avif" srcset={srcsetAvif} sizes={props.sizes} />
+  <img src={webp.src} {...attributes} class={className} />
+</picture>

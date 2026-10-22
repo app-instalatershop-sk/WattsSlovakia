@@ -1,9 +1,7 @@
 /* Microflex Slovensko – globálne štýly. Tokeny podľa docs/DESIGN.md kap. 4–6, správanie kap. 16. */
 @import "tailwindcss";
-@import "@fontsource-variable/archivo/wdth.css";
-@import "@fontsource/ibm-plex-sans/400.css";
-@import "@fontsource/ibm-plex-sans/500.css";
-@import "@fontsource/ibm-plex-sans/600.css";
+/* Archivo (osi šírky a hrúbky) a IBM Plex Sans 400/500/600, len znaky slovenčiny a češtiny (data/pisma.py). */
+@import "./pisma.css";
 
 @theme {
   --color-*: initial;
@@ -68,6 +66,9 @@
   }
   ::selection { background: var(--color-blue-100); }
   img { max-width: 100%; display: block; }
+  /* Obraz.astro (AVIF so záložným WebP) obaľuje <img> do <picture>; ten nemá vlastný box, rozloženie
+     a štýly sa správajú, akoby tam bol len <img>. */
+  picture { display: contents; }
   a { color: var(--color-blue-700); text-decoration: none; transition: color 150ms var(--ease-soft); }
   a:hover { color: var(--color-blue-800); }
   p { margin: 0; text-wrap: pretty; }

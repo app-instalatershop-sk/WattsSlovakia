@@ -1,5 +1,6 @@
 ---
-import { Image, getImage } from 'astro:assets';
+import { getImage } from 'astro:assets';
+import Obraz from '../components/Obraz.astro';
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Ikona from '../components/Ikona.astro';
@@ -60,7 +61,9 @@ const kotyStavenisko: Kota[] = [{ x: 45, y: 76, l: 12, smer: 'hore-vpravo', hodn
 const polohyBodov: Record<string, [number, number]> = { rura: [11.5, 71], pena: [17, 68], plast: [20.4, 64] };
 const lupy = h.lupy.map((l) => ({ ...l, img: detail(`vrstva-${l.id}.jpg`)!, bod: polohyBodov[l.id] }));
 // Odlesk po plášti: maska je samotný render, svetlo tak prejde len po výrobku, nie po pozadí.
-const leskMaska = (await getImage({ src: heroRez, width: 760, format: 'webp' })).src;
+// Ten istý súbor ako 760 px AVIF v srcset obrázka (Obraz.astro), na mobile sa teda nesťahuje druhýkrát.
+// Prehliadač bez AVIF masku nenačíta a odlesk len vynechá.
+const leskMaska = (await getImage({ src: heroRez, width: 760, format: 'avif', quality: 50 })).src;
 /* Popisy na renderi: bod leží na tom, čo číslo opisuje (okraj plášťa, spodná žltá rúra, zvlnené telo),
    štítok v prázdnom mieste okolo výrobku. Polohy a dĺžky čiar sú v CSS podľa id, zmerané na siluete
    hero-rez-duo.png; dĺžky sú v cqw (percentá šírky štúdia), takže celá vrstva rastie s obrázkom. */
@@ -88,7 +91,7 @@ const popisy = [
       </div>
       <div class="hero-product">
         <div class="hero-stage">
-          <Image src={heroRez} alt={h.heroAlt} widths={[760, 1140, 1517]} sizes="(max-width: 760px) 100vw, 62vw" loading="eager" fetchpriority="high" class="hero-img" />
+          <Obraz src={heroRez} alt={h.heroAlt} widths={[760, 1140, 1517]} sizes="(max-width: 760px) 100vw, 62vw" loading="eager" fetchpriority="high" class="hero-img" />
           <span class="lesk" aria-hidden="true" style={`--maska: url("${leskMaska}")`}></span>
           <ul class="popisy" aria-label={h.popisy.label}>
             {popisy.map((p, i) => (
@@ -113,7 +116,7 @@ const popisy = [
         <p class="lead">{sadzba(h.rodinaP)}</p>
       </div>
       <div class="rodina-obraz" data-lupy-obraz>
-        <div class="rodina-wrap"><Image src={rodina} alt={h.rodinaAlt} widths={[800, 1200, 1633]} sizes="(max-width: 1100px) 100vw, 64vw" class="rodina-img" /></div>
+        <div class="rodina-wrap"><Obraz src={rodina} alt={h.rodinaAlt} widths={[800, 1200, 1633]} sizes="(max-width: 1100px) 100vw, 64vw" class="rodina-img" /></div>
         {lupy.map((l) => <span class="lupa-bod" data-bod={l.id} style={`--x: ${l.bod[0]}%; --y: ${l.bod[1]}%`} aria-hidden="true"></span>)}
       </div>
       {/* Rez pod lupou: každá lupa zväčší jednu vrstvu prvej rúry a čiara ju spojí s miestom na nej.
@@ -122,7 +125,7 @@ const popisy = [
       <ul class="lupy" aria-label={h.lupyLabel} data-reveal-group>
         {lupy.map((l) => (
           <li class={`lupa lupa-${l.id}`} data-lupa={l.id}>
-            <span class="lupa-okno"><Image src={l.img} alt="" width={168} height={168} densities={[1, 2]} /></span>
+            <span class="lupa-okno"><Obraz src={l.img} alt="" width={168} height={168} densities={[1, 2]} /></span>
             <h3>{l.nazov}</h3>
             <p class="lupa-kluc">{sadzba(l.kluc)}</p>
             <p>{sadzba(l.text)}</p>
@@ -135,7 +138,7 @@ const popisy = [
   <section class="section pokladka" aria-labelledby="h-pokladka">
     {/* Fotka kotúča má čisto bielu plochu: násobením splynie s pásom a text sedí vo vnútri kotúča. */}
     <div class="kotuc-obal">
-      <Image src={kotuc} alt={h.pokladkaAlt} widths={[900, 1400, 2000]} sizes="(max-width: 760px) 120vw, 76vw" class="kotuc" data-otacaj="-4 3" />
+      <Obraz src={kotuc} alt={h.pokladkaAlt} widths={[900, 1400, 2000]} sizes="(max-width: 760px) 120vw, 76vw" class="kotuc" data-otacaj="-4 3" />
     </div>
     <div class="wrap pokladka-grid">
       <div class="pokladka-text">
@@ -210,7 +213,7 @@ const popisy = [
       </ul>
       {/* Jediné miesto pre konfigurátor trasy (samostatná etapa). Kým nie je hotový, vedie k dopytu. */}
       <aside class="konfigurator" aria-labelledby="h-konf" data-konfigurator>
-        <div class="konf-obraz"><Image src={trasa} alt="" widths={[480, 720]} sizes="(max-width: 900px) 100vw, 34vw" /></div>
+        <div class="konf-obraz"><Obraz src={trasa} alt="" widths={[480, 720]} sizes="(max-width: 900px) 100vw, 34vw" /></div>
         <div class="konf-telo">
           <p class="konf-stav">{h.konfigurator.stav}</p>
           <h3 id="h-konf">{h.konfigurator.h}</h3>
@@ -332,7 +335,9 @@ const popisy = [
     animation: kruhy 1600ms 300ms var(--ease-soft) both; }
   @keyframes kruhy { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: none; } }
   @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-  @keyframes settle { from { opacity: 0; transform: translate(40px, 0) rotate(-1.5deg) scale(1.02); } to { opacity: 1; transform: none; } }
+  /* Bez priehľadnosti: render je najväčší prvok obrazovky (LCP) a prehliadač ho započíta, až keď
+     je viditeľný. Na mobile tak čakal aj na písma a obrázky pod ním. Pohyb ostáva. */
+  @keyframes settle { from { transform: translate(40px, 0) rotate(-1.5deg) scale(1.02); } to { transform: none; } }
 
   /* Odlesk: pás svetla raz prejde po plášti. Maska je render, takže svetlo nejde po pozadí. */
   .lesk { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen; opacity: 0.9;

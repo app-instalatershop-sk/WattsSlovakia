@@ -11,7 +11,9 @@ const SITE = 'https://microflex.sk';
 export default defineConfig({
   site: SITE,
   trailingSlash: 'always',
-  build: { format: 'directory' },
+  // Štýly priamo v HTML: na mobile každý samostatný súbor CSS zdržal prvé vykreslenie (Lighthouse
+  // 22. 10. 2026 odhadol 1,8 s). Po kompresii je to 20 až 23 kB na stránku.
+  build: { format: 'directory', inlineStylesheets: 'always' },
   i18n: {
     defaultLocale: 'sk',
     locales: ['sk', 'cs'],

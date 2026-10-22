@@ -4,7 +4,8 @@
  * variantov, stavba potrubia pod lupou s parametrami a montážou z katalógu, podklady na stiahnutie,
  * referencie a spojky s príslušenstvom k radu. Na konci záver s kúpou a kontaktom.
  */
-import { Image, getImage } from 'astro:assets';
+import { getImage } from 'astro:assets';
+import Obraz from '../components/Obraz.astro';
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Hlava from '../components/Hlava.astro';
@@ -160,7 +161,7 @@ const productLd = [{
         <ol class="lupy" aria-label={tx.stavbaH2}>
           {vrstvy.map((l) => (
             <li class={`lupa lupa-${l.id}`}>
-              <span class="lupa-okno"><Image src={l.img} alt="" width={168} height={168} densities={[1, 2]} /></span>
+              <span class="lupa-okno"><Obraz src={l.img} alt="" width={168} height={168} densities={[1, 2]} /></span>
               <h3>{l.nazov}</h3>
               {l.kluc && <p class="lupa-kluc">{sadzba(l.kluc)}</p>}
               <p class="lupa-text">{sadzba(l.text)}</p>
@@ -202,7 +203,7 @@ const productLd = [{
           {skupinyRel.map(({ s, ps }) => { const img = fotkaRadu(s.fotka); return (
             <div class="harok rel-skupina">
               <div class="rel-hlava">
-                {img && <span class="rel-ikona"><Image src={img} alt="" width={64} height={64} densities={[1, 2]} /></span>}
+                {img && <span class="rel-ikona"><Obraz src={img} alt="" width={64} height={64} densities={[1, 2]} /></span>}
                 <h3>{rNazov(s, lang)}</h3>
               </div>
               <ul>{ps.map((p) => <li><a href={cestaProduktu(p, katProduktu(p.kategoria), lang)}><span>{pNazov(p, lang)}</span><Ikona nazov="chevron-right" velkost={16} /></a></li>)}</ul>

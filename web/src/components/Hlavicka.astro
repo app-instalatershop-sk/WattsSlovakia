@@ -5,7 +5,7 @@
  * myš alebo aktuálna stránka, sa posúva žltá značka. Hľadanie má skratku Ctrl K (⌘ K na Macu) a našepkávač
  * (lib/naseptavac.ts), na mobile lupu vedľa Menu, ktorá otvorí menu s poľom hľadania.
  */
-import { Image } from 'astro:assets';
+import Obraz from './Obraz.astro';
 import { getCollection } from 'astro:content';
 import Ikona from './Ikona.astro';
 import WattsLogo from './WattsLogo.astro';
@@ -103,7 +103,7 @@ const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, 
         {potrubia.map((k) => { const img = piktogram(k.piktogram); return (
           <li>
             <a class="mega-k" href={cestaKategorie(k, lang)}>
-              <span class="mega-obj">{img && <Image src={img} alt="" widths={[240, 400]} sizes="200px" loading="lazy" class="mega-img" />}</span>
+              <span class="mega-obj">{img && <Obraz src={img} alt="" widths={[240, 400]} sizes="200px" loading="lazy" class="mega-img" />}</span>
               <strong>{kKratky(k, lang)}</strong>
               <span>{radyKat(k)}</span>
             </a>
@@ -133,7 +133,7 @@ const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, 
       <p class="mnav-nadpis">{ui.nav.potrubia}</p>
       <ul class="mnav-kat">
         {potrubia.map((k) => { const img = piktogram(k.piktogram); return (
-          <li><a href={cestaKategorie(k, lang)}>{img && <Image src={img} alt="" widths={[120, 200]} sizes="64px" loading="lazy" class="mnav-img" />}<span>{kKratky(k, lang)}</span></a></li>
+          <li><a href={cestaKategorie(k, lang)}>{img && <Obraz src={img} alt="" widths={[120, 200]} sizes="64px" loading="lazy" class="mnav-img" />}<span>{kKratky(k, lang)}</span></a></li>
         ); })}
       </ul>
       <ul class="mnav-odkazy">

@@ -14,7 +14,7 @@
  *  rozlozenie="studio"  nadpis hore, popis a akcie vpravo od neho, render pod nimi takmer cez celú
  *                       šírku ako vo fotoštúdiu (rady, systémy, Potrubia; Juraj 22. 10. 2026, návrh B)
  */
-import { Image } from 'astro:assets';
+import Obraz from './Obraz.astro';
 import type { ImageMetadata } from 'astro';
 import Koty from './Koty.astro';
 import { sadzba } from '../lib/sadzba';
@@ -53,7 +53,7 @@ const maBok = Astro.slots.has('bok');
   <div class="hs-studio">
     <div class="hs-stage" style={`--obraz-max: ${obrazMax}px`}>
       <div class:list={['hs-obraz', { 'ma-prechod': prechod }]} style={prechod ? `view-transition-name: ${prechod}` : undefined}>
-        <Image src={obraz} alt={obrazAlt} widths={[700, 1000, 1300]} sizes={`(max-width: 760px) 100vw, ${obrazMax}px`} loading="eager" fetchpriority="high" />
+        <Obraz src={obraz} alt={obrazAlt} widths={[700, 1000, 1300]} sizes={`(max-width: 760px) 100vw, ${obrazMax}px`} loading="eager" fetchpriority="high" />
         <Koty koty={koty} label={kotyLabel} />
       </div>
     </div>
@@ -75,7 +75,7 @@ const maBok = Astro.slots.has('bok');
     {obraz && (
       <div class:list={['hlava-obraz', { 'ma-prechod': prechod }]} style={`--obraz-max: ${obrazMax}px${prechod ? `; view-transition-name: ${prechod}` : ''}`}>
         <div class="hlava-stage">
-          <Image src={obraz} alt={obrazAlt} widths={[560, 900, 1300]} sizes="(max-width: 760px) 100vw, 52vw" loading="eager" fetchpriority="high" />
+          <Obraz src={obraz} alt={obrazAlt} widths={[560, 900, 1300]} sizes="(max-width: 760px) 100vw, 52vw" loading="eager" fetchpriority="high" />
           <Koty koty={koty} label={kotyLabel} />
         </div>
       </div>
@@ -119,7 +119,8 @@ const maBok = Astro.slots.has('bok');
   .hlava-bok { position: relative; z-index: 2; }
   /* Render s menom prechodu priletí z predošlej stránky, vlastný vstup by sa s preletom bil. */
   .hlava-obraz.ma-prechod { animation: none; }
-  @keyframes hlava-obraz { from { opacity: 0; transform: translateX(28px); } to { opacity: 1; transform: none; } }
+  /* Obraz hlavy je prvok LCP: len pohyb, bez priehľadnosti (prehliadač by ho započítal až po prelínaní). */
+  @keyframes hlava-obraz { from { transform: translateX(28px); } to { transform: none; } }
 
   /* ---------- Štúdio: nadpis hore, render pod ním ako vo fotoštúdiu ---------- */
   /* Svetlo štúdia je za výrobkom (radiálny prechod), podlaha tmavne do farby tela stránky. */
@@ -138,7 +139,7 @@ const maBok = Astro.slots.has('bok');
   .hs-obraz :global(img) { display: block; width: 100%; height: auto; filter: drop-shadow(0 40px 46px rgb(11 27 51 / 0.22)); }
   /* Tieň na podlahe štúdia pod výrobkom. */
   .hs-stage::before { content: ""; position: absolute; left: 18%; right: 6%; bottom: 7%; height: 12%; border-radius: 50%; background: radial-gradient(closest-side, rgb(10 42 94 / 0.2), rgb(10 42 94 / 0)); }
-  @keyframes hlava-studio { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+  @keyframes hlava-studio { from { transform: translateY(24px); } to { transform: none; } }
 
   @media (max-width: 900px) {
     .hlava { min-height: 0; }

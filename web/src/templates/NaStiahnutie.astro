@@ -4,7 +4,7 @@
  * a environmentálne vyhlásenie. Zoznam sa skladá z podkladov radov a produktov (data/normalize.py),
  * rovnaký súbor sa zobrazí raz.
  */
-import { Image } from 'astro:assets';
+import Obraz from '../components/Obraz.astro';
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Hlava from '../components/Hlava.astro';
@@ -78,7 +78,7 @@ const katRadu = (r: Rad) => kat.find((k) => k.id === r.kategoria)!;
       <a class="odkaz" href="#vykresy">{tx.vykresyH2} <Ikona nazov="arrow-down" velkost={16} /></a>
     </div>
     <a slot="bok" class="obalka" href={KATALOG_PDF} target="_blank" rel="noopener" aria-label={tx.stiahnut}>
-      <Image src={obalka} alt={tx.obalka} widths={[320, 480, 640]} sizes="(max-width: 900px) 60vw, 320px" loading="eager" />
+      <Obraz src={obalka} alt={tx.obalka} widths={[320, 480, 640]} sizes="(max-width: 900px) 60vw, 320px" loading="eager" />
     </a>
   </Hlava>
 

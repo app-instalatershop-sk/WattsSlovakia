@@ -12,11 +12,11 @@ import Zaver from '../components/Zaver.astro';
 import Ikona from '../components/Ikona.astro';
 import TabulkaVariantov from '../components/TabulkaVariantov.astro';
 import Subory from '../components/Subory.astro';
-import KartaReferencie from '../components/KartaReferencie.astro';
+import Scena from '../components/Scena.astro';
 import CastiStranky from '../components/CastiStranky.astro';
 import Kopirovanie from '../components/Kopirovanie.astro';
 import { kategorie, radyKategorie, variantyRadu, cestaKategorie, cestaRadu, cestaProduktu, alternatyRadu, kKratky, rNazov, rKratky, rMedium, rOznacenie, pNazov, cislo, rozsah, rozsahRur, tlakText, kotvaKodu, type Kategoria, type Rad } from '../lib/katalog';
-import { piktogram, fotkaRadu, detail } from '../lib/obrazky';
+import { piktogram, fotkaRadu, detail, fotkaReferencie } from '../lib/obrazky';
 import { kotyRenderu } from '../lib/koty';
 import { sadzba } from '../lib/sadzba';
 import { obsahRadu } from '../content/rady';
@@ -34,8 +34,6 @@ const nazov = rNazov(r, lang);
 const model = nazov.split(',')[0].trim();
 const kratky = rKratky(r, lang);
 const pikto = piktogram(r.piktogram);
-const foto = fotkaRadu(r.fotka);
-const fotoOk = foto && foto.width >= 500;
 
 // Rady s rovnakým renderom v kategórii (UNO a UNO PRIMO): PRIMO preberá príslušenstvo základného radu.
 const radyKat = await radyKategorie(k.id);
@@ -113,7 +111,7 @@ const productLd = [{
 }];
 ---
 <Base lang={lang} alternates={alternatyRadu(k, r)} title={nazov} description={meta} aktivna="potrubia" drobceky={drobceky} vizualneDrobceky={false} jsonLd={productLd}>
-  <Hlava lang={lang} nadpis={nazov} drobceky={drobceky} pred={[kKratky(k, lang), ruryText].filter(Boolean).join(', ')} lead={kratky ?? undefined} obraz={pikto} obrazAlt={ui.rad.fotoAlt(nazov)} obrazMax={640} prechod={`rad-${r.id}`} koty={kotyHlavy} kotyLabel={ui.home.popisy.label}>
+  <Hlava lang={lang} nadpis={nazov} drobceky={drobceky} pred={[kKratky(k, lang), ruryText].filter(Boolean).join(', ')} lead={kratky ?? undefined} obraz={pikto} obrazAlt={ui.rad.fotoAlt(nazov)} obrazMax={860} prechod={`rad-${r.id}`} koty={kotyHlavy} kotyLabel={ui.home.popisy.label} rozlozenie="studio">
     {faktyHlavy.length > 0 && <dl class="hlava-fakty">{faktyHlavy.map(([dt, dd]) => <div><dt>{dt}</dt><dd>{dd}</dd></div>)}</dl>}
     <div class="hlava-akcie">
       <a class="btn btn-yellow" href="#varianty">{tx.vybrat} <Ikona nazov="arrow-down" velkost={18} /></a>
@@ -144,54 +142,56 @@ const productLd = [{
 
     {obsah && (
       <section class="wrap cast" id="stavba" aria-labelledby="h-stavba">
+        {/* Stavba (Juraj 22. 10. 2026, návrh B): render s kótami je veľký v hlave, tu sú vrstvy ako
+            lupy v rade ako na domove, popis a pokojné zoznamy parametrov a montáže vedľa seba. */}
         <div class="stavba">
           <div class="stavba-text">
             <h2 id="h-stavba">{tx.stavbaH2}</h2>
             {obsah.popis.map((p) => <p class="stavba-popis">{sadzba(p)}</p>)}
-            <div class="harok stavba-karta">
-              <h3>{tx.parametreH3}</h3>
-              <dl class="parametre">{obsah.parametre.map(([dt, dd]) => <div><dt>{dt}</dt><dd>{sadzba(dd)}</dd></div>)}</dl>
-              <h3>{tx.montazH3}</h3>
-              <ul class="montaz">{obsah.montaz.map((m) => <li><Ikona nazov="check" velkost={18} /><span>{sadzba(m)}</span></li>)}</ul>
-              {obsah.strana && <p class="stavba-zdroj"><a href={KATALOG_PDF} target="_blank" rel="noopener">{tx.stranaKat(obsah.strana)}</a></p>}
-            </div>
           </div>
-          <div class="stavba-obraz">
-            {fotoOk && (
-              <figure class="stavba-foto">
-                <Image src={foto!} alt={ui.rad.fotoAlt(nazov)} widths={[480, 760, 1000]} sizes="(max-width: 900px) 90vw, 44vw" />
-              </figure>
-            )}
-            <ol class="lupy" aria-label={tx.stavbaH2}>
-              {vrstvy.map((l) => (
-                <li class={`lupa lupa-${l.id}`}>
-                  <span class="lupa-okno"><Image src={l.img} alt="" width={120} height={120} densities={[1, 2]} /></span>
-                  <div>
-                    <h3>{l.nazov}</h3>
-                    {l.kluc && <p class="lupa-kluc">{sadzba(l.kluc)}</p>}
-                    <p class="lupa-text">{sadzba(l.text)}</p>
-                  </div>
-                </li>
-              ))}
-            </ol>
+          <div class="stavba-zoznamy">
+            <h3>{tx.parametreH3}</h3>
+            <dl class="parametre">{obsah.parametre.map(([dt, dd]) => <div><dt>{dt}</dt><dd>{sadzba(dd)}</dd></div>)}</dl>
+            <h3>{tx.montazH3}</h3>
+            <ul class="montaz">{obsah.montaz.map((m) => <li><Ikona nazov="check" velkost={18} /><span>{sadzba(m)}</span></li>)}</ul>
+            {obsah.strana && <p class="stavba-zdroj"><a href={KATALOG_PDF} target="_blank" rel="noopener">{tx.stranaKat(obsah.strana)}</a></p>}
           </div>
         </div>
+        <ol class="lupy" aria-label={tx.stavbaH2}>
+          {vrstvy.map((l) => (
+            <li class={`lupa lupa-${l.id}`}>
+              <span class="lupa-okno"><Image src={l.img} alt="" width={168} height={168} densities={[1, 2]} /></span>
+              <h3>{l.nazov}</h3>
+              {l.kluc && <p class="lupa-kluc">{sadzba(l.kluc)}</p>}
+              <p class="lupa-text">{sadzba(l.text)}</p>
+            </li>
+          ))}
+        </ol>
       </section>
     )}
 
     {r.subory.length > 0 && (
       <section class="wrap cast" id="stiahnut" aria-labelledby="h-dl">
         <div class="s-hlava"><h2 id="h-dl">{ui.rad.dlH2}</h2><p>{tx.dlP}</p><a href={route(lang, 'stiahnut')}>{ui.nav.stiahnut} <Ikona nazov="arrow-right" velkost={16} /></a></div>
-        <div class="harok dl-harok"><Subory subory={r.subory} lang={lang} /></div>
+        <Subory subory={r.subory} lang={lang} />
       </section>
     )}
 
     {refs.length > 0 && (
       <section class="wrap cast" id="referencie" aria-labelledby="h-ref">
         <div class="s-hlava"><h2 id="h-ref">{tx.refH2}</h2><p>{tx.refP}</p><a href={route(lang, 'referencie')}>{tx.refVsetky} <Ikona nazov="arrow-right" velkost={16} /></a></div>
-        <div class:list={['refs', { 'refs-1': refs.length === 1 }]}>
-          {refs.map((x, i) => <KartaReferencie r={x} lang={lang} velka={refs.length === 1 || i === 0} />)}
-        </div>
+        {/* Referencia ako scéna s kótou (Juraj 22. 10. 2026, návrh E), druhá zrkadlovo. */}
+        {refs.map((x, i) => (
+          <article class:list={['ref', { 'ref-vpravo': i % 2 === 1 }]} aria-labelledby={`h-ref-${x.id}`}>
+            <Scena class="ref-scena" obraz={fotkaReferencie(x.scena?.fotka ?? x.fotky[0])!} alt={x.nazov} koty={x.scena?.koty ?? []} label={ui.home.projektyKoty} widths={[640, 900, 1200]} sizes="(max-width: 900px) 100vw, 56vw" />
+            <div class="ref-text">
+              <p class="ref-kde">{x.miesto}, {x.kedy}</p>
+              <h3 id={`h-ref-${x.id}`}>{sadzba(x.nazov)}</h3>
+              <dl class="ref-fakty">{x.fakty.slice(0, 2).map(([dt, dd]) => <div><dt>{dt}</dt><dd>{sadzba(dd)}</dd></div>)}</dl>
+              <a class="odkaz" href={`${route(lang, 'referencie')}#${x.id}`}>{ui.home.projektyViac} <Ikona nazov="arrow-right" velkost={16} /></a>
+            </div>
+          </article>
+        ))}
       </section>
     )}
 
@@ -228,14 +228,15 @@ const productLd = [{
 
   .prazdne { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; padding: 28px; }
 
-  .stavba { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 40px 56px; align-items: start; }
+  .stavba { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: 32px 72px; align-items: start; }
   .stavba h2 { font-size: clamp(26px, 1.4vw + 17px, 36px); letter-spacing: -0.02em; }
   .stavba-popis { margin-top: 16px; font-size: 17px; line-height: 1.6; max-width: 36em; }
-  .stavba-karta { margin-top: 32px; padding: 26px 28px 22px; }
-  .stavba-karta h3 { font-size: 17px; font-weight: 600; color: var(--color-ink); }
-  .stavba-karta h3 + * { margin-top: 12px; }
-  .stavba-karta * + h3 { margin-top: 26px; }
-  .parametre > div { display: flex; justify-content: space-between; gap: 16px; padding: 9px 0; border-bottom: 1px solid rgb(10 42 94 / 0.08); }
+  .stavba-zoznamy h3 { font-size: 17px; font-weight: 600; color: var(--color-ink); }
+  .stavba-zoznamy h3 + * { margin-top: 12px; }
+  .stavba-zoznamy * + h3 { margin-top: 28px; }
+  /* Parametre bez vlasových čiar: riadky na jemných plochách. */
+  .parametre { display: grid; gap: 4px; margin: 0; }
+  .parametre > div { display: flex; justify-content: space-between; gap: 16px; padding: 9px 14px; border-radius: 10px; background: rgb(255 255 255 / 0.7); }
   .parametre dt { color: var(--color-ink-soft); font-size: 15px; }
   .parametre dd { margin: 0; text-align: right; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 16px; color: var(--color-blue-900); }
   .montaz li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; font-size: 15px; line-height: 1.5; }
@@ -244,27 +245,32 @@ const productLd = [{
   .stavba-zdroj { margin-top: 20px; font-size: 13px; }
   .stavba-zdroj a { color: var(--color-ink-soft); border-bottom: 1px solid currentColor; }
 
-  /* Fotka radu splynie s pozadím (biele pozadie katalógu), lupy pod ňou prekrývajú jej spodok. */
-  .stavba-obraz { position: relative; }
-  .stavba-foto { margin: -20px 0 0; mix-blend-mode: multiply; }
-  .stavba-foto :global(img) { display: block; width: min(100%, 620px); height: auto; margin-inline: auto; -webkit-mask-image: radial-gradient(70% 70% at 50% 50%, #000 60%, transparent 100%); mask-image: radial-gradient(70% 70% at 50% 50%, #000 60%, transparent 100%); }
-  .stavba-foto + .lupy { margin-top: -110px; }
-  /* Lupy: kruh so zväčšeným materiálom presahuje ľavý okraj karty, text vedľa neho. */
-  .lupy { position: relative; display: grid; gap: 18px; padding-left: 44px; }
-  .lupa { --ring: var(--color-blue-700); display: grid; grid-template-columns: 68px minmax(0, 1fr); gap: 26px; align-items: center; padding: 20px 26px 20px 0; border-radius: 18px; background: #fff; box-shadow: 0 1px 0 rgb(10 42 94 / 0.05), 0 26px 50px -34px rgb(10 42 94 / 0.5); }
+  /* Lupy v rade ako na domove: od nosnej rúry po plášť, prstenec vo farbe vrstvy. */
+  .lupy { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; margin-top: 52px; }
+  .lupa { --ring: var(--color-blue-700); display: flex; flex-direction: column; align-items: flex-start; }
   .lupa-rura { --ring: #e0b400; }
   .lupa-pena { --ring: #8e97a3; }
-  .lupa-okno { position: relative; display: block; width: 112px; height: 112px; margin-left: -44px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 5px #fff, 0 0 0 7px var(--ring), 0 20px 36px -16px rgb(11 27 51 / 0.55); }
+  .lupa-okno { position: relative; display: block; width: 168px; height: 168px; margin-bottom: 20px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 5px #fff, 0 0 0 7px var(--ring), 0 24px 44px -18px rgb(11 27 51 / 0.55); }
   .lupa-okno :global(img) { display: block; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-  .lupa-okno::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(70% 55% at 30% 18%, rgb(255 255 255 / 0.36), rgb(255 255 255 / 0) 62%); box-shadow: inset 0 -10px 22px rgb(11 27 51 / 0.28), inset 0 0 0 1px rgb(11 27 51 / 0.12); pointer-events: none; }
-  .lupa h3 { font-size: 18px; line-height: 1.25; }
-  .lupa-kluc { margin-top: 3px; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 16px; line-height: 1.3; color: var(--color-blue-900); }
-  .lupa-text { margin-top: 6px; font-size: 14.5px; line-height: 1.55; color: var(--color-ink-soft); max-width: 44em; }
+  .lupa-okno::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(70% 55% at 30% 18%, rgb(255 255 255 / 0.36), rgb(255 255 255 / 0) 62%); box-shadow: inset 0 -12px 26px rgb(11 27 51 / 0.28), inset 0 0 0 1px rgb(11 27 51 / 0.12); pointer-events: none; }
+  .lupa h3 { font-size: 19px; line-height: 1.25; }
+  .lupa-kluc { margin-top: 4px; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 16px; line-height: 1.3; color: var(--color-blue-900); }
+  .lupa-text { margin-top: 8px; font-size: 14.5px; line-height: 1.55; color: var(--color-ink-soft); max-width: 30em; }
 
-  .dl-harok { padding: 8px 28px 12px; }
-
-  .refs { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 32px 40px; align-items: start; }
-  .refs-1 { grid-template-columns: minmax(0, 760px); }
+  /* Referencia ako scéna s kótou: fotka cez okraj obrazovky, text vedľa; druhá zrkadlovo. */
+  .ref { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 32px 56px; align-items: center; }
+  .ref + .ref { margin-top: 72px; }
+  .ref :global(.ref-scena) { margin-left: calc(-1 * var(--bleed)); }
+  .ref :global(.ref-scena .scena-img) { border-radius: 0 20px 20px 0; box-shadow: 0 36px 70px -36px rgb(11 27 51 / 0.6); }
+  .ref-vpravo { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+  .ref-vpravo :global(.ref-scena) { order: 2; margin-left: 0; margin-right: calc(-1 * var(--bleed)); }
+  .ref-vpravo :global(.ref-scena .scena-img) { border-radius: 20px 0 0 20px; }
+  .ref-kde { font-size: 15px; font-weight: 500; color: var(--color-blue-700); }
+  .ref-text h3 { margin-top: 8px; font-size: clamp(24px, 1.2vw + 16px, 32px); line-height: 1.15; letter-spacing: -0.015em; }
+  .ref-fakty { display: grid; gap: 6px; margin: 20px 0 22px; }
+  .ref-fakty > div { display: grid; grid-template-columns: 9em minmax(0, 1fr); gap: 12px; padding: 11px 14px; border-radius: 12px; background: rgb(255 255 255 / 0.7); }
+  .ref-fakty dt { color: var(--color-ink-soft); font-size: 14.5px; }
+  .ref-fakty dd { margin: 0; font-weight: 600; }
 
   .rel { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; align-items: start; }
   .rel-skupina { padding: 22px 24px 16px; }
@@ -278,7 +284,6 @@ const productLd = [{
   .oznacenie { margin-top: 56px !important; font-size: 13px; color: var(--color-ink-soft); }
   .oznacenie span { color: var(--color-ink); font-weight: 500; }
 
-  @media (max-width: 900px) { .stavba, .refs { grid-template-columns: minmax(0, 1fr); } }
-  @media (max-width: 760px) { .lupy { padding-left: 0; } .lupa { grid-template-columns: 76px minmax(0, 1fr); gap: 16px; align-items: start; padding: 18px; } .lupa-okno { width: 76px; height: 76px; margin: 0; box-shadow: 0 0 0 4px #fff, 0 0 0 6px var(--ring), 0 14px 26px -12px rgb(11 27 51 / 0.5); } .stavba-foto + .lupy { margin-top: -16px; } }
-  @media (max-width: 760px) { .stavba-karta { padding: 22px 20px 18px; } .dl-harok { padding: 4px 18px 8px; } }
+  @media (max-width: 900px) { .stavba, .ref, .ref-vpravo { grid-template-columns: minmax(0, 1fr); } .lupy { grid-template-columns: minmax(0, 1fr); gap: 24px; } .ref :global(.ref-scena), .ref-vpravo :global(.ref-scena) { order: 0; margin-inline: calc(-1 * var(--gutter)); } .ref :global(.ref-scena .scena-img), .ref-vpravo :global(.ref-scena .scena-img) { border-radius: 0; } }
+  @media (max-width: 760px) { .lupa { display: grid; grid-template-columns: 92px minmax(0, 1fr); column-gap: 18px; } .lupa-okno { grid-row: 1 / span 3; width: 92px; height: 92px; margin: 4px 0 0; } }
 </style>

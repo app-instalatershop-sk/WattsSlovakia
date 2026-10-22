@@ -21,7 +21,7 @@ const { koty, label } = Astro.props;
 {koty.length > 0 && (
   <ul class="koty" aria-label={label} data-koty>
     {koty.map((k, i) => (
-      <li class={`kota s-${k.smer} sm-${k.smerM ?? k.smer}`} style={`--x: ${k.x}%; --y: ${k.y}%; --l: ${k.l}; --i: ${i}`}>
+      <li class={`kota s-${k.smer} sm-${k.smerM ?? k.smer}${k.kod ? ` k-${k.kod}` : ''}`} style={`--x: ${k.x}%; --y: ${k.y}%; --l: ${k.l}; --i: ${i}`}>
         <span class="bod" aria-hidden="true"></span>
         <span class="ciara" aria-hidden="true"></span>
         <span class="stitok"><strong>{k.hodnota}</strong><span>{sadzba(k.text)}</span></span>

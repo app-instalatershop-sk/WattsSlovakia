@@ -1,41 +1,57 @@
 ---
 /**
- * Podklady výrobcu na stiahnutie (odkazy na watts.eu). Názvy z watts.eu sú dlhé a zmiešané s angličtinou,
- * preto sa zobrazujú ako druh podkladu a doplnok („Výkres DWG“ + „UNO & UNO PRIMO heating and cooling“).
+ * Podklady výrobcu na stiahnutie ako dokumenty na stole (Juraj 22. 10. 2026, návrh B): katalóg
+ * a brožúra so skutočnou obálkou (prvá strana PDF), výkresy, vyhlásenia a EPD ako list papiera
+ * s veľkou skratkou formátu. Pod dokumentom druh a doplnok („Výkres DWG“ + „DUO a DUO PRIMO …“).
+ * Katalóg vedie priamo na PDF, ostatné na stránku podkladu na watts.eu.
  */
-import Ikona from './Ikona.astro';
+import { Image } from 'astro:assets';
 import { popisSuboru, type Subor } from '../lib/subory';
+import { fotka } from '../lib/obrazky';
 import { type Lang, KATALOG_PDF } from '../i18n/ui';
 interface Props { subory: Subor[]; lang: Lang }
 const { subory, lang } = Astro.props;
-const popis = (s: Subor) => popisSuboru(s, lang);
-// Katalóg a technický list prvé, potom výkresy, vyhlásenia a brožúra.
-const poradie = (p: { typ: string; nazov: string }) => (/Katal|Technick/.test(p.nazov) ? 0 : p.typ === 'DWG' || p.typ === 'DXF' ? 1 : p.typ === 'EPD' ? 3 : /Brož/.test(p.nazov) ? 4 : 2);
-// Katalóg vedie priamo na PDF, nie na stránku podkladu na watts.eu.
-const polozky = subory.map((s) => { const p = popis(s); return { ...p, url: p.druh === 'katalog' ? KATALOG_PDF : s.url }; }).sort((a, b) => poradie(a) - poradie(b));
+// Katalóg a brožúra prvé (majú obálku), potom technické listy, výkresy, vyhlásenia a EPD.
+const poradie: Record<string, number> = { katalog: 0, brozura: 1, list: 2, vykres: 3, zhoda: 4, iny: 5, epd: 6 };
+const obalky: Partial<Record<string, ReturnType<typeof fotka>>> = { katalog: fotka('katalog-obalka.jpg'), brozura: fotka('brozura-obalka.jpg') };
+const polozky = subory.map((s) => { const p = popisSuboru(s, lang); return { ...p, url: p.druh === 'katalog' ? KATALOG_PDF : s.url, obalka: obalky[p.druh] }; })
+  .sort((a, b) => poradie[a.druh] - poradie[b.druh]);
 ---
-<ul class="subory">
+<ul class="stol">
   {polozky.map((p) => (
     <li>
-      <a class="subor" href={p.url} target="_blank" rel="noopener">
-        <span class:list={['typ', `typ-${p.typ.toLowerCase()}`]}>{p.typ}</span>
-        <span class="text"><span class="nazov">{p.nazov}</span>{p.meta && <span class="meta">{p.meta}</span>}</span>
-        <Ikona nazov="download" velkost={20} class="dl" />
+      <a class="dok" href={p.url} target="_blank" rel="noopener">
+        {p.obalka ? (
+          <span class="list"><Image src={p.obalka} alt="" widths={[240, 460]} sizes="(max-width: 760px) 44vw, 220px" /></span>
+        ) : (
+          <span class:list={['list', 'format', `format-${p.druh}`]}><b>{p.typ}</b>{p.meta && <em>{p.meta}</em>}</span>
+        )}
+        <strong>{p.nazov}</strong>
+        {p.meta && p.obalka && <span class="meta">{p.meta}</span>}
       </a>
     </li>
   ))}
 </ul>
 
 <style>
-  .subory { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 32px; }
-  .subor { display: grid; grid-template-columns: 48px minmax(0, 1fr) auto; gap: 16px; align-items: center; padding: 14px 4px; border-bottom: 1px solid rgb(10 42 94 / 0.08); color: var(--color-ink); transition: color 150ms var(--ease-soft); }
-  .subor:hover { color: var(--color-blue-700); }
-  .typ { width: 48px; height: 56px; border-radius: 6px 14px 6px 6px; display: grid; place-items: end center; padding-bottom: 8px; font-family: var(--font-display); font-stretch: 112.5%; font-size: 11.5px; font-weight: 700; letter-spacing: 0.04em; color: #fff; background: linear-gradient(160deg, #1467c1 0%, var(--color-blue-900) 100%); box-shadow: 0 10px 18px -10px rgb(10 42 94 / 0.6), inset 0 1px 0 rgb(255 255 255 / 0.25); transition: transform 200ms var(--ease-soft); }
-  .typ-dwg, .typ-dxf { background: linear-gradient(160deg, #3d4f66 0%, #1b2a3d 100%); }
-  .typ-epd { background: linear-gradient(160deg, #2f8f5b 0%, #1d6340 100%); }
-  .subor:hover .typ { transform: translateY(-2px); }
-  .nazov { display: block; font-weight: 600; }
-  .meta { display: block; font-size: 13.5px; color: var(--color-ink-soft); margin-top: 1px; }
-  .subor :global(.dl) { color: var(--color-blue-700); }
-  @media (max-width: 760px) { .subory { grid-template-columns: minmax(0, 1fr); } }
+  .stol { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 36px 28px; align-items: end; }
+  .dok { display: flex; flex-direction: column; gap: 4px; color: var(--color-ink); }
+  .dok strong { margin-top: 18px; font-family: var(--font-display); font-stretch: 112.5%; font-size: 17px; line-height: 1.25; transition: color 150ms var(--ease-soft); }
+  .dok:hover { color: var(--color-ink); }
+  .dok:hover strong { color: var(--color-blue-700); }
+  .meta { font-size: 14px; color: var(--color-ink-soft); }
+  /* Dokument ako list papiera: pomer A4, tieň, striedavo jemne natočený; pri prejdení sa zdvihne a narovná. */
+  .list { position: relative; display: block; aspect-ratio: 210 / 297; border-radius: 4px; overflow: hidden; background: #fff; box-shadow: 0 1px 0 rgb(10 42 94 / 0.08), 0 28px 44px -26px rgb(11 27 51 / 0.55); transform: rotate(var(--r, 0deg)); transition: transform 350ms var(--ease-soft), box-shadow 350ms var(--ease-soft); }
+  .stol li:nth-child(odd) .list { --r: -1.2deg; }
+  .stol li:nth-child(even) .list { --r: 1deg; }
+  .dok:hover .list { transform: translateY(-8px) rotate(0deg); box-shadow: 0 1px 0 rgb(10 42 94 / 0.08), 0 40px 60px -28px rgb(11 27 51 / 0.6); }
+  .list :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .format { display: flex; flex-direction: column; justify-content: flex-end; padding: 18px; color: #fff; background: linear-gradient(160deg, #1467c1 0%, var(--color-blue-900) 100%); }
+  .format b { font-family: var(--font-display); font-stretch: 125%; font-weight: 700; font-size: clamp(30px, 2.4vw, 42px); line-height: 1; letter-spacing: -0.02em; }
+  .format em { font-style: normal; margin-top: 12px; font-size: 12.5px; line-height: 1.4; opacity: 0.88; }
+  /* Zahnutý roh listu. */
+  .format::before { content: ""; position: absolute; top: 0; right: 0; width: 34px; height: 34px; background: linear-gradient(225deg, var(--zem-2) 50%, rgb(255 255 255 / 0.35) 50%); }
+  .format-vykres { background: linear-gradient(160deg, #3d4f66 0%, #1b2a3d 100%); }
+  .format-epd { background: linear-gradient(160deg, #2f8f5b 0%, #1d6340 100%); }
+  @media (max-width: 760px) { .stol { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 20px; } }
 </style>

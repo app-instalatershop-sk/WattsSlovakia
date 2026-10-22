@@ -11,6 +11,8 @@ type Smer = 'hore-vpravo' | 'hore-vlavo' | 'dole-vpravo' | 'dole-vlavo';
 export interface Kota {
   x: number; y: number; l: number; smer: Smer; smerM?: Smer;
   hodnota: string; text: string;
+  /** Čo kóta opisuje (plast, rura, ohyb); karta ju podľa toho môže v úzkom poli skryť. */
+  kod?: string;
 }
 
 type Bod = [number, number];
@@ -34,8 +36,8 @@ export function kotyRenderu(
   const b = piktogram ? BODY[piktogram] : undefined;
   if (!b) return [];
   const out: Kota[] = [];
-  if (h.plast) out.push({ x: b.plast[0], y: b.plast[1], l: 8, smer: 'hore-vpravo', smerM: 'hore-vlavo', hodnota: h.plast[0], text: h.plast[1] });
-  if (h.rura) out.push({ x: b.rura[0], y: b.rura[1], l: 6, smer: 'dole-vlavo', hodnota: h.rura[0], text: h.rura[1] });
-  if (h.ohyb) out.push({ x: b.ohyb[0], y: b.ohyb[1], l: 7, smer: 'dole-vpravo', hodnota: h.ohyb[0], text: h.ohyb[1] });
+  if (h.plast) out.push({ x: b.plast[0], y: b.plast[1], l: 8, smer: 'hore-vpravo', smerM: 'hore-vlavo', hodnota: h.plast[0], text: h.plast[1], kod: 'plast' });
+  if (h.rura) out.push({ x: b.rura[0], y: b.rura[1], l: 6, smer: 'dole-vlavo', hodnota: h.rura[0], text: h.rura[1], kod: 'rura' });
+  if (h.ohyb) out.push({ x: b.ohyb[0], y: b.ohyb[1], l: 7, smer: 'dole-vpravo', hodnota: h.ohyb[0], text: h.ohyb[1], kod: 'ohyb' });
   return out;
 }

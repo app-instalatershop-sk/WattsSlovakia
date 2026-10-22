@@ -6,6 +6,7 @@ import Ikona from '../components/Ikona.astro';
 import Katalog from '../components/Katalog.astro';
 import Scena from '../components/Scena.astro';
 import { referencie } from '../content/referencie';
+import type { Kota } from '../lib/koty';
 import { kategorie, cislo, rozsah } from '../lib/katalog';
 import { fotka, detail, fotkaReferencie } from '../lib/obrazky';
 import { sadzba } from '../lib/sadzba';
@@ -49,6 +50,9 @@ const orangeScena = fotkaReferencie(sOrange.fotka)!;
 const povazskaScena = fotkaReferencie(sPovazska.fotka)!;
 const kotyOrange = sOrange.koty;
 const kotyPovazska = sPovazska.koty;
+// Stavenisko so žeriavom: rúra v popredí (modré pixely pri 45 % šírky ležia na 76 % výšky fotky).
+const stavenisko = fotkaReferencie('povazska-3.jpg')!;
+const kotyStavenisko: Kota[] = [{ x: 45, y: 76, l: 12, smer: 'hore-vpravo', hodnota: pp.stavenisko.kota[0], text: pp.stavenisko.kota[1] }];
 /* Rez pod lupou: tri vrstvy od jadra po plášť. Bod (x, y v % renderu rodiny) leží na prvej rúre
    (DUO vykurovanie): žltá nosná rúra, pena vpravo od nej, plášť na hrane rezu. Zmerané na siluete
    rodina-potrubi.png; body idú zľava doprava v tom istom poradí ako lupy, takže sa čiary nekrížia.
@@ -156,29 +160,34 @@ const popisy = [
   {/* Podzemie: posledný úsek stránky je tmavý ako zem, do ktorej potrubie ide. Fotka prvého
       projektu prekračuje šikmú hranu, takže svetlá a tmavá časť nie sú dva bloky, ale jeden prechod. */}
   <div class="podzemie">
-    <section class="projekty" aria-labelledby="h-projekty">
-      {/* Projekty idú hadovito ako zvyšok domova: prvá scéna vpravo, druhá vľavo. Čísla stoja na fotke. */}
-      <article class="wrap proj proj-a" aria-labelledby="h-proj-orange">
-        <Scena class="proj-scena" obraz={orangeScena} alt={po.alt} koty={kotyOrange} label={h.projektyKoty} widths={[760, 1000, 1200]} sizes="(max-width: 900px) 100vw, 66vw" />
-        <div class="proj-text">
-          <h2 id="h-projekty">{h.projektyH2}</h2>
-          <p class="proj-uvod">{sadzba(h.projektyP)}</p>
+    {/* Projekty ako mozaika (Juraj 22. 10. 2026, návrh C): veľký výkop vľavo, kotolňa a stavenisko
+        vpravo nad sebou, každá fotka s jednou kótou; texty oboch projektov pod mozaikou. Keď príde
+        fotka veľkej stavby od 2 400 px, prvá fotka pôjde cez celú šírku (návrh B). */}
+    <section class="projekty wrap" aria-labelledby="h-projekty">
+      <div class="proj-hlava">
+        <h2 id="h-projekty">{h.projektyH2}</h2>
+        <p class="proj-uvod">{sadzba(h.projektyP)}</p>
+      </div>
+      <div class="proj-mozaika">
+        <Scena class="pm-a" obraz={orangeScena} alt={po.alt} koty={kotyOrange} label={h.projektyKoty} widths={[760, 1000, 1200]} sizes="(max-width: 900px) 100vw, 62vw" />
+        <Scena class="pm-b" obraz={povazskaScena} alt={pp.alt} koty={kotyPovazska} label={h.projektyKoty} widths={[480, 895]} sizes="(max-width: 900px) 100vw, 36vw" />
+        <Scena class="pm-c" obraz={stavenisko} alt={pp.stavenisko.alt} koty={kotyStavenisko} label={h.projektyKoty} widths={[480, 895]} sizes="(max-width: 900px) 100vw, 36vw" />
+      </div>
+      <div class="proj-texty">
+        <article class="proj-text" aria-labelledby="h-proj-orange">
           <p class="proj-kde">{po.kde}</p>
           <h3 id="h-proj-orange">{sadzba(po.h3)}</h3>
           <p>{sadzba(po.p)}</p>
           <a class="proj-odkaz" href={`${route(lang, 'referencie')}#orange`}>{h.projektyViac}</a>
-        </div>
-      </article>
-      <article class="wrap proj proj-b" aria-labelledby="h-proj-povazska">
-        <Scena class="proj-scena" obraz={povazskaScena} alt={pp.alt} koty={kotyPovazska} label={h.projektyKoty} widths={[640, 895]} sizes="(max-width: 900px) 100vw, 56vw" />
-        <div class="proj-text">
+        </article>
+        <article class="proj-text" aria-labelledby="h-proj-povazska">
           <p class="proj-kde">{pp.kde}</p>
           <h3 id="h-proj-povazska">{sadzba(pp.h3)}</h3>
           <p>{sadzba(pp.p)}</p>
           <a class="proj-odkaz" href={`${route(lang, 'referencie')}#povazska-bystrica`}>{h.projektyViac}</a>
-          <a class="proj-vsetky" href={route(lang, 'referencie')}>{h.projektyVsetky}</a>
-        </div>
-      </article>
+        </article>
+      </div>
+      <p class="proj-vsetky-obal"><a class="proj-vsetky" href={route(lang, 'referencie')}>{h.projektyVsetky}</a></p>
     </section>
 
     <section class="podpora wrap" aria-labelledby="h-podpora">
@@ -448,35 +457,29 @@ const popisy = [
   .podzemie a:not(.btn) { color: #fff; }
   .podzemie a:not(.btn):hover { color: var(--color-yellow-500); }
 
-  /* ---------- Projekty: scény zo stavieb s kótami, hadovito vpravo a vľavo ---------- */
-  .projekty { position: relative; }
-  .proj { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 24px; align-items: end; }
-  .proj + .proj { margin-top: 128px; align-items: center; }
-  /* Fotka prvého projektu vystupuje nad šikmú hranu do svetlého pásu a vpravo za okraj obrazovky. */
-  .proj-a :global(.proj-scena) { grid-column: 5 / 13; grid-row: 1; margin: -176px calc(-1 * var(--bleed)) 0 0; z-index: 1; }
-  .proj-a .proj-text { grid-column: 1 / 5; grid-row: 1; padding-bottom: 4px; }
-  .proj-b :global(.proj-scena) { grid-column: 1 / 8; grid-row: 1; margin-left: calc(-1 * var(--bleed)); }
-  .proj-b .proj-text { grid-column: 9 / 13; grid-row: 1; }
-  .proj :global(.scena-img) { box-shadow: 0 40px 80px -34px rgb(2 10 30 / 0.75); filter: saturate(0.94) contrast(1.03); }
-  .proj-a :global(.scena-img) { border-radius: 18px 0 0 18px; }
-  .proj-b :global(.scena-img) { border-radius: 0 18px 18px 0; }
-  /* Výkop sa otvorí: pri rolovaní sa fotka roztvorí zhora aj zdola, tam kde to prehliadač vie. */
+  /* ---------- Projekty: mozaika troch fotiek s kótami (návrh C) ---------- */
+  .projekty { position: relative; padding-top: 24px; }
+  .proj-hlava { position: relative; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 20px 56px; align-items: end; }
+  .proj-hlava h2 { font-size: clamp(30px, 2.2vw + 14px, 46px); line-height: 1.06; letter-spacing: -0.025em; max-width: 12em; }
+  .proj-uvod { color: var(--color-on-dark-muted); font-size: 17px; line-height: 1.55; max-width: 26em; }
+  /* Šírky stĺpcov sú vypočítané tak, aby výška veľkej fotky (3 : 2) sedela s dvomi menšími (16 : 9) nad sebou. */
+  .proj-mozaika { position: relative; display: grid; grid-template-columns: minmax(0, 1.765fr) minmax(0, 1fr); grid-template-rows: auto auto; gap: 24px; margin-top: 40px; }
+  .proj-mozaika :global(.pm-a) { grid-row: 1 / span 2; }
+  .proj-mozaika :global(.scena-img) { border-radius: 16px; box-shadow: 0 34px 70px -34px rgb(2 10 30 / 0.8); filter: saturate(0.94) contrast(1.03); }
+  /* Výkop sa otvorí: pri rolovaní sa veľká fotka roztvorí zhora aj zdola, tam kde to prehliadač vie. */
   @supports (animation-timeline: view()) {
     @media (prefers-reduced-motion: no-preference) {
-      .proj :global(.proj-scena) { animation: vykop linear both; animation-timeline: view(); animation-range: entry 0% cover 38%; }
+      .proj-mozaika :global(.pm-a) { animation: vykop linear both; animation-timeline: view(); animation-range: entry 0% cover 38%; }
     }
   }
-  @keyframes vykop { from { clip-path: inset(9% 0 9% 0); } to { clip-path: inset(0 0 0 0); } }
-
+  @keyframes vykop { from { clip-path: inset(8% 0 8% 0 round 16px); } to { clip-path: inset(0 0 0 0 round 16px); } }
+  .proj-texty { position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 56px; margin-top: 36px; }
   .proj-text { display: flex; flex-direction: column; align-items: flex-start; }
-  .proj-text h2 { font-size: clamp(30px, 2.2vw + 14px, 46px); line-height: 1.06; letter-spacing: -0.025em; max-width: 10em; }
-  .proj-uvod { margin-top: 18px; color: var(--color-on-dark-muted); font-size: 17px; line-height: 1.55; max-width: 26em; }
-  .proj-kde { margin-top: 40px; font-size: 15px; font-weight: 500; color: #8fb9ec; }
-  .proj-b .proj-kde { margin-top: 0; }
+  .proj-kde { font-size: 15px; font-weight: 500; color: #8fb9ec; }
   .proj-text h3 { margin-top: 8px; font-size: clamp(22px, 0.9vw + 15px, 28px); line-height: 1.15; letter-spacing: -0.015em; color: #fff; max-width: 14em; }
   .proj-text h3 + p { margin-top: 12px; color: var(--color-on-dark-muted); font-size: 15.5px; line-height: 1.6; max-width: 30em; }
   .proj-odkaz, .proj-vsetky { margin-top: 18px; font-weight: 500; border-bottom: 1px solid rgb(255 255 255 / 0.5); padding-bottom: 2px; }
-  .proj-vsetky { margin-top: 36px; }
+  .proj-vsetky-obal { position: relative; margin-top: 32px; }
 
   /* ---------- Projektová podpora a miesto pre konfigurátor ---------- */
   .podpora { position: relative; margin-top: 136px; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; row-gap: 48px; align-items: start; }
@@ -517,9 +520,7 @@ const popisy = [
     .lupa-bod, .lupy-ciary { display: none; }
     .lupy { width: 100%; margin: 36px 0 0; gap: 24px; }
     .lupa-okno { width: 132px; height: 132px; }
-    .proj-a :global(.proj-scena) { grid-column: 1 / -1; margin-left: 0; }
-    .proj-a .proj-text, .proj-b .proj-text { grid-column: 1 / -1; grid-row: 2; padding-top: 12px; }
-    .proj-b :global(.proj-scena) { grid-column: 1 / -1; margin-right: 0; }
+    .proj-hlava, .proj-texty { grid-template-columns: minmax(0, 1fr); }
     .podpora-hlava, .podpora-sluzby, .istota { grid-column: 1 / -1; grid-row: auto; }
     .konfigurator { grid-column: 1 / -1; grid-row: auto; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; }
     .konf-obraz :global(img) { aspect-ratio: auto; height: 100%; }
@@ -562,11 +563,9 @@ const popisy = [
     .pokladka { padding-bottom: 168px; }
     .kroky-obal { margin-top: 32px; }
     .podzemie { padding-bottom: 88px; }
-    .proj-a :global(.proj-scena) { margin: -112px calc(-1 * var(--gutter)) 0; }
-    .proj-b :global(.proj-scena) { margin-inline: calc(-1 * var(--gutter)); }
-    .proj :global(.scena-img), .proj-a :global(.scena-img), .proj-b :global(.scena-img) { border-radius: 0; }
-    .proj + .proj { margin-top: 88px; }
-    .proj-kde { margin-top: 28px; }
+    .proj-mozaika { grid-template-columns: minmax(0, 1fr); margin-inline: calc(-1 * var(--gutter)); gap: 12px; }
+    .proj-mozaika :global(.pm-a) { grid-row: auto; }
+    .proj-mozaika :global(.scena-img) { border-radius: 0; }
     .podpora { margin-top: 96px; row-gap: 40px; }
     .podpora-sluzby { grid-template-columns: minmax(0, 1fr); gap: 28px; }
     .konfigurator { display: block; }

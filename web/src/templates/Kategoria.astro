@@ -83,7 +83,7 @@ const trasa = naTrasu.map((sid) => skupiny.find((x) => x.id === sid)!).filter(Bo
 const drobceky = [{ text: ui.nav.potrubia, href: route(lang, 'potrubia') }, { text: kKratky(k, lang) }];
 ---
 <Base lang={lang} alternates={alternatyKategorie(k)} title={kNazov(k, lang)} description={kPopis(k, lang)} aktivna="potrubia" drobceky={drobceky} vizualneDrobceky={false} jsonLd={faqLd}>
-  <Hlava lang={lang} nadpis={kNazov(k, lang)} drobceky={drobceky} lead={kPopis(k, lang)} obraz={pikto} obrazAlt={ui.kategoria.piktoAlt(kKratky(k, lang))} obrazMax={600} prechod={`kat-${k.id}`} koty={kotyHlavy} kotyLabel={ui.home.popisy.label}>
+  <Hlava lang={lang} nadpis={kNazov(k, lang)} drobceky={drobceky} lead={kPopis(k, lang)} obraz={pikto} obrazAlt={ui.kategoria.piktoAlt(kKratky(k, lang))} obrazMax={860} prechod={`kat-${k.id}`} koty={kotyHlavy} kotyLabel={ui.home.popisy.label} rozlozenie="studio">
     {faktyHlavy.length > 0 && <dl class="hlava-fakty">{faktyHlavy.map(([dt, dd]) => <div><dt>{dt}</dt><dd>{dd}</dd></div>)}</dl>}
     <div class="hlava-akcie">
       <a class="btn btn-yellow" href="#rady">{tx.rady} <Ikona nazov="arrow-down" velkost={18} /></a>

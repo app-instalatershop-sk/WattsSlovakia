@@ -697,3 +697,20 @@ a zoznam zmien sú v `docs/AUDIT-PREMIUM.md`. Záväzné pravidlá pre celý web
    dopyt), kým sa nepostaví v samostatnej etape.
 5. **Menu:** Potrubia, Výber potrubia, Referencie, Pre firmy, Podklady, Poradňa; telefón a Kontakt
    v hornom páse.
+
+### 18.1 Varianty vybrané 22. 10. 2026 (Juraj: „ako odporúčaš, daj“)
+
+Pracovná stránka /navrhy/ (zmazaná, v histórii gitu commit be1fafd) ukázala varianty opakovaných častí.
+Na webe je:
+
+| Časť | Variant | Kde v kóde |
+|---|---|---|
+| Hlava radu, systému a Potrubí | štúdio: nadpis hore, popis a akcie vedľa, render takmer cez celú šírku s kótami | `Hlava.astro`, `rozlozenie="studio"` (ostatné stránky ostávajú `vedla`) |
+| Záver vnútorných stránok | fotka kotúčov cez šikmú hranu, kontakt v jednom riadku | `Zaver.astro` |
+| Projekty na domove | mozaika: výkop Orange, kotolňa a stavenisko, každá fotka s kótou | `Domov.astro`; s fotkou od 2 400 px prejsť na fotku cez celú šírku |
+| Karty radov | štúdio s kótami na renderi; v úzkej karte kóta polomeru ustúpi a plášť ide doľava | `KartaRadu.astro` |
+| Diely | na podlahe štúdia bez bielej karty | `KartaProduktu.astro` |
+| Stavba radu | popis a zoznamy vedľa seba, vrstvy ako tri lupy v rade (render s kótami je už v hlave) | `Rad.astro` |
+| Referencia na stránke radu | scéna s kótou, druhá zrkadlovo | `Rad.astro` |
+| Pre firmy | veľká fotka areálu a tri skupiny s lupou | `PreFirmy.astro` |
+| Podklady | dokumenty na stole: obálka katalógu a brožúry, ostatné ako list so skratkou formátu | `Subory.astro` |

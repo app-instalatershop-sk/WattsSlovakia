@@ -9,6 +9,10 @@
  *  druh="foto"    fotka zo stavby (zaoblená, vybieha za pravý okraj)
  * Bez obrazu je hlava nižšia. Slot pod popisom je na tlačidlá alebo údaje, slot "bok" nahrádza obraz.
  * Kóty (koty) stoja priamo na renderi ako v hero domova: plášť, nosná rúra a polomer ohybu z dát stránky.
+ *
+ *  rozlozenie="vedla"   text vľavo, obraz vpravo (fotky, diely, stránky bez renderu)
+ *  rozlozenie="studio"  nadpis hore, popis a akcie vpravo od neho, render pod nimi takmer cez celú
+ *                       šírku ako vo fotoštúdiu (rady, systémy, Potrubia; Juraj 22. 10. 2026, návrh B)
  */
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
@@ -24,11 +28,38 @@ interface Props {
   /** Meno pre prechod medzi stránkami (rad-<id>, kat-<id>): render prilieta z karty na predošlej stránke. */
   prechod?: string;
   koty?: Kota[]; kotyLabel?: string;
+  rozlozenie?: 'vedla' | 'studio';
 }
-const { lang, nadpis, drobceky = [], pred, lead, obraz, obrazAlt = '', druh = 'render', obrazMax = 760, prechod, koty = [], kotyLabel } = Astro.props;
+const { lang, nadpis, drobceky = [], pred, lead, obraz, obrazAlt = '', druh = 'render', obrazMax = 760, prechod, koty = [], kotyLabel, rozlozenie = 'vedla' } = Astro.props;
 const ui = t(lang);
 const maBok = Astro.slots.has('bok');
 ---
+{rozlozenie === 'studio' && obraz ? (
+<section class="hlava hlava-studio">
+  <div class="wrap hs-hore">
+    <div class="hs-text">
+      <ol class="crumbs" aria-label={ui.crumbs.label}>
+        <li><a href={route(lang, 'domov')}>{ui.nav.domov}</a></li>
+        {drobceky.map((d) => (d.href ? <li><a href={d.href}>{d.text}</a></li> : <li aria-current="page">{d.text}</li>))}
+      </ol>
+      {pred && <p class="hlava-pred">{pred}</p>}
+      <h1>{sadzba(nadpis)}</h1>
+    </div>
+    <div class="hs-bok">
+      {lead && <p class="lead">{sadzba(lead)}</p>}
+      <slot />
+    </div>
+  </div>
+  <div class="hs-studio">
+    <div class="hs-stage" style={`--obraz-max: ${obrazMax}px`}>
+      <div class:list={['hs-obraz', { 'ma-prechod': prechod }]} style={prechod ? `view-transition-name: ${prechod}` : undefined}>
+        <Image src={obraz} alt={obrazAlt} widths={[700, 1000, 1300]} sizes={`(max-width: 760px) 100vw, ${obrazMax}px`} loading="eager" fetchpriority="high" />
+        <Koty koty={koty} label={kotyLabel} />
+      </div>
+    </div>
+  </div>
+</section>
+) : (
 <section class:list={['hlava', obraz || maBok ? `hlava-${druh}` : 'hlava-bez']}>
   <div class="wrap hlava-in">
     <div class="hlava-text">
@@ -52,6 +83,7 @@ const maBok = Astro.slots.has('bok');
     {!obraz && maBok && <div class="hlava-bok"><slot name="bok" /></div>}
   </div>
 </section>
+)}
 
 <style>
   .hlava { position: relative; overflow-x: clip; display: flex; align-items: center; min-height: clamp(380px, 50vh, 560px); padding-bottom: calc(var(--presah-hero) * 0.55); color: var(--color-ink);
@@ -89,6 +121,25 @@ const maBok = Astro.slots.has('bok');
   .hlava-obraz.ma-prechod { animation: none; }
   @keyframes hlava-obraz { from { opacity: 0; transform: translateX(28px); } to { opacity: 1; transform: none; } }
 
+  /* ---------- Štúdio: nadpis hore, render pod ním ako vo fotoštúdiu ---------- */
+  /* Svetlo štúdia je za výrobkom (radiálny prechod), podlaha tmavne do farby tela stránky. */
+  .hlava-studio { display: block; min-height: 0; padding: 20px 0 0;
+    background: radial-gradient(46% 52% at 58% 68%, #ffffff 0%, rgb(255 255 255 / 0.6) 45%, rgb(255 255 255 / 0) 75%), linear-gradient(180deg, #ffffff 0%, #f3f6fa 55%, #e8eef6 100%); }
+  .hs-hore { position: relative; z-index: 3; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 20px 56px; align-items: end; }
+  .hlava-studio h1 { font-size: clamp(34px, 3vw + 12px, 64px); line-height: 1.02; letter-spacing: -0.03em; max-width: 12em; }
+  .hs-bok { padding-bottom: 6px; }
+  .hlava-studio .hs-bok .lead { margin-top: 0; max-width: 30em; }
+  .hs-bok > :global(.hlava-akcie) { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; margin-top: 26px; }
+  .hs-studio { position: relative; z-index: 2; margin-top: 4px; }
+  /* Render je odsadený doprava, aby jeho telo nebežalo pod nadpis; spodkom prejde cez šikmú hranu. */
+  .hs-stage { position: relative; width: min(var(--obraz-max), 92vw); margin: 0 auto -52px; padding-left: 8%; }
+  .hs-obraz { position: relative; container-type: inline-size; animation: hlava-studio 1000ms 120ms var(--ease-soft) both; }
+  .hs-obraz.ma-prechod { animation: none; }
+  .hs-obraz :global(img) { display: block; width: 100%; height: auto; filter: drop-shadow(0 40px 46px rgb(11 27 51 / 0.22)); }
+  /* Tieň na podlahe štúdia pod výrobkom. */
+  .hs-stage::before { content: ""; position: absolute; left: 18%; right: 6%; bottom: 7%; height: 12%; border-radius: 50%; background: radial-gradient(closest-side, rgb(10 42 94 / 0.2), rgb(10 42 94 / 0)); }
+  @keyframes hlava-studio { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+
   @media (max-width: 900px) {
     .hlava { min-height: 0; }
     .hlava-in { grid-template-columns: minmax(0, 1fr); }
@@ -96,5 +147,9 @@ const maBok = Astro.slots.has('bok');
     .hlava-obraz { margin: 0 calc(-1 * var(--gutter)) calc(var(--presah-hero) * -0.5); }
     .hlava-stage { margin-inline: auto; max-width: min(var(--obraz-max), 100%); }
     .hlava-foto .hlava-obraz { margin-left: 0; }
+    .hs-hore { grid-template-columns: minmax(0, 1fr); }
+    /* Štítky pod renderom potrebujú miesto: odsadenie hlavy (nie okraj renderu, ten by sa zlúčil cez hlavu). */
+    .hlava-studio { padding-bottom: 64px; }
+    .hs-stage { width: auto; margin: 0 calc(-1 * var(--gutter)); padding-left: 0; }
   }
 </style>

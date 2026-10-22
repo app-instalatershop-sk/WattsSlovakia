@@ -64,7 +64,7 @@ function riadok(r: Rad) {
 const produktySkupiny = (id: string) => produkty.filter((p) => p.skupina === id).length;
 ---
 <Base lang={lang} alternates={staticAlternates('potrubia')} title={ui.potrubia.title} description={ui.potrubia.description} aktivna="potrubia" drobceky={[{ text: ui.nav.potrubia }]} vizualneDrobceky={false}>
-  <Hlava lang={lang} nadpis={ui.potrubia.title} drobceky={[{ text: ui.nav.potrubia }]} lead={ui.potrubia.lead} obraz={rodina} obrazAlt={ui.potrubia.rodinaAlt} obrazMax={980}>
+  <Hlava lang={lang} nadpis={ui.potrubia.title} drobceky={[{ text: ui.nav.potrubia }]} lead={ui.potrubia.lead} obraz={rodina} obrazAlt={ui.potrubia.rodinaAlt} obrazMax={1100} rozlozenie="studio">
     <div class="hlava-akcie">
       <a class="btn btn-yellow" href={route(lang, 'vyber')}>{tx.sprievodca} <Ikona nazov="arrow-right" velkost={18} /></a>
       <a class="odkaz" href={KATALOG_PDF} target="_blank" rel="noopener">{tx.katalog} <Ikona nazov="download" velkost={16} /></a>

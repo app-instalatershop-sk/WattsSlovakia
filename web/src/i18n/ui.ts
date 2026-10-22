@@ -123,6 +123,7 @@ const sk = {
         kde: 'Považská Bystrica, december 2022 až február 2023', h3: '31 budov napojených na jednu kotolňu',
         p: 'Rozvod tepla pre 30 rodinných domov a bytový dom zo spoločnej kotolne na pelety, so štyrmi revíznymi šachtami. Ponuku a dodávku sme zabezpečili s podporou Watts.',
         alt: 'Kotolňa obytného súboru v Považskej Bystrici so zásobníkom peliet a akumulačnými nádržami',
+        stavenisko: { alt: 'Stavenisko obytného súboru v Považskej Bystrici s bagrom a potrubím Microflex', kota: ['31 budov', 'rozvod z jednej kotolne'] as [string, string] },
       },
     },
     // Projektová podpora a miesto pre budúci konfigurátor trasy (samostatná etapa).
@@ -300,6 +301,7 @@ const cs: typeof sk = {
         kde: 'Považská Bystrica, prosinec 2022 až únor 2023', h3: '31 budov napojených na jednu kotelnu',
         p: 'Rozvod tepla pro 30 rodinných domů a bytový dům ze společné kotelny na pelety, se čtyřmi revizními šachtami. Nabídku a dodávku jsme zajistili s podporou Watts.',
         alt: 'Kotelna obytného souboru v Považské Bystrici se zásobníkem pelet a akumulačními nádržemi',
+        stavenisko: { alt: 'Staveniště obytného souboru v Považské Bystrici s bagrem a potrubím Microflex', kota: ['31 budov', 'rozvod z jedné kotelny'] },
       },
     },
     podporaH2: 'U velkého projektu s Vámi od trasy po dodávku.',

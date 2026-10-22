@@ -30,6 +30,7 @@ const tx = {
       { h: 'Montážne firmy', p: 'Materiál na celý výkop v jednej ponuke: potrubie, svorné spojky, koncové krytky, izolačné sady na spoje pod zemou a prestupy stenou.', odkaz: 'Spojky a príslušenstvo', href: 'spojky', foto: 'vykop-spojky.jpg', alt: 'Potrubie Microflex vo výkope s odbočkou a spojkami' },
       { h: 'Veľkoobchod', p: 'Obj. čísla výrobcu pri každej dimenzii a diele, kopírovateľné jedným klikom. Ponuku a dostupnosť pripravíme na dopyt.', odkaz: 'Všetky potrubia', href: 'potrubia', foto: 'povazska-2.jpg', alt: 'Kotúče potrubia Microflex pripravené na stavbe' },
     ],
+    arealAlt: 'Potrubie Microflex vo výkope pred kancelárskym areálom',
     dokazH2: 'Sieť pre 31 budov sme dodali sami.', dokazP: 'Obytný súbor v Považskej Bystrici: 30 rodinných domov a bytový dom na jednej kotolni na pelety, so štyrmi revíznymi šachtami. Ponuku aj dodávku potrubia, pevných bodov, tesnení a príslušenstva sme pripravili s podporou Watts.', dokazOdkaz: 'Celá referencia', dokazVsetky: 'Všetky referencie',
     istotaH2: 'Istota výrobcu',
     dopytH2: 'Dopyt na projekt', dopytP: 'Čím viac o trase viete, tým presnejšia bude ponuka. Stačí aj orientačná dĺžka a médium.',
@@ -53,6 +54,7 @@ const tx = {
       { h: 'Montážní firmy', p: 'Materiál na celý výkop v jedné nabídce: potrubí, svěrné spojky, koncové krytky, izolační sady na spoje pod zemí a prostupy stěnou.', odkaz: 'Spojky a příslušenství', href: 'spojky', foto: 'vykop-spojky.jpg', alt: 'Potrubí Microflex ve výkopu s odbočkou a spojkami' },
       { h: 'Velkoobchod', p: 'Obj. čísla výrobce u každé dimenze a dílu, kopírovatelná jedním klikem. Nabídku a dostupnost připravíme na poptávku.', odkaz: 'Všechna potrubí', href: 'potrubia', foto: 'povazska-2.jpg', alt: 'Kotouče potrubí Microflex připravené na stavbě' },
     ],
+    arealAlt: 'Potrubí Microflex ve výkopu před kancelářským areálem',
     dokazH2: 'Síť pro 31 budov jsme dodali sami.', dokazP: 'Obytný soubor v Považské Bystrici: 30 rodinných domů a bytový dům na jedné kotelně na pelety, se čtyřmi revizními šachtami. Nabídku i dodávku potrubí, pevných bodů, těsnění a příslušenství jsme připravili s podporou Watts.', dokazOdkaz: 'Celá reference', dokazVsetky: 'Všechny reference',
     istotaH2: 'Jistota výrobce',
     dopytH2: 'Poptávka na projekt', dopytP: 'Čím víc o trase víte, tím přesnější bude nabídka. Stačí i orientační délka a médium.',
@@ -71,6 +73,8 @@ const ui = t(lang);
 const obraz = fotka('montaz-budova.jpg');
 // Fotka pri skupine: katalóg a výkop sú medzi fotkami webu, kotúče na stavbe z referencie v Považskej Bystrici.
 const fotkaPre = (f: string) => fotka(f) ?? fotkaReferencie(f);
+// Kancelársky areál s potrubím vo výkope pred budovou (obálka brožúry Watts Microflex 2026).
+const areal = fotka('areal-vykop.jpg')!;
 const povazska = referencie(lang).find((r) => r.id === 'povazska-bystrica')!;
 const polia = { meno: tx.meno, firma: tx.firma, email: tx.email, telefon: tx.telefon, miesto: tx.miesto, medium: tx.medium, potrubie: tx.potrubie, termin: tx.termin, poznamka: tx.poznamka };
 ---
@@ -83,14 +87,19 @@ const polia = { meno: tx.meno, firma: tx.firma, email: tx.email, telefon: tx.tel
   </Hlava>
 
   <div class="telo">
-    <section class="wrap" aria-label={tx.kratko}>
-      <ul class="pre">
+    {/* Skupiny zákazníkov (Juraj 22. 10. 2026, návrh C): jedna veľká fotka nesie náladu veľkej
+        stavby, tri skupiny vedľa nej majú okrúhlu lupu ako vrstvy potrubia na domove. */}
+    <section class="wrap pre" aria-label={tx.kratko}>
+      <figure class="pre-velka"><Image src={areal} alt={tx.arealAlt} widths={[640, 960, 1245]} sizes="(max-width: 900px) 100vw, 56vw" /></figure>
+      <ul class="pre-zoznam">
         {tx.pre.map((x) => { const f = fotkaPre(x.foto); return (
-          <li class="pre-skupina">
-            {f && <span class="pre-foto"><Image src={f} alt={x.alt} widths={[420, 640]} sizes="(max-width: 1000px) 100vw, 30vw" /></span>}
-            <h2>{x.h}</h2>
-            <p>{sadzba(x.p)}</p>
-            <a class="odkaz" href={route(lang, x.href as 'stiahnut')}>{x.odkaz} <Ikona nazov="arrow-right" velkost={16} /></a>
+          <li>
+            <span class="pre-lupa">{f && <Image src={f} alt={x.alt} width={96} height={96} densities={[1, 2]} />}</span>
+            <div>
+              <h2>{x.h}</h2>
+              <p>{sadzba(x.p)}</p>
+              <a class="odkaz" href={route(lang, x.href as 'stiahnut')}>{x.odkaz} <Ikona nazov="arrow-right" velkost={16} /></a>
+            </div>
           </li>
         ); })}
       </ul>
@@ -157,16 +166,21 @@ const polia = { meno: tx.meno, firma: tx.firma, email: tx.email, telefon: tx.tel
 </Base>
 
 <style>
-  /* Skupiny zákazníkov: skutočná fotka, pod ňou text. Bez kariet s rámom, nesie ich materiál na fotke. */
-  .pre { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px 32px; }
-  .pre-skupina { display: flex; flex-direction: column; gap: 12px; }
-  .pre-foto { display: block; margin-bottom: 10px; border-radius: 18px; overflow: hidden; box-shadow: 0 30px 60px -34px rgb(11 27 51 / 0.55); background: var(--zem-3); }
-  .pre-foto :global(img) { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; transition: transform 600ms var(--ease-soft); }
-  .pre-skupina:hover .pre-foto :global(img) { transform: scale(1.03); }
-  .pre-skupina:first-child .pre-foto :global(img) { object-position: 50% 30%; }
-  .pre-skupina h2 { font-size: 24px; letter-spacing: -0.015em; }
-  .pre-skupina p { color: var(--color-ink-soft); }
-  .pre-skupina .odkaz { margin-top: auto; align-self: flex-start; }
+  /* Skupiny zákazníkov: veľká fotka vľavo cez okraj obrazovky, vpravo tri skupiny s lupou. */
+  .pre { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 40px 56px; align-items: center; }
+  .pre-velka { margin: 0 0 0 calc(-1 * var(--bleed)); }
+  .pre-velka :global(img) { display: block; width: 100%; height: auto; aspect-ratio: 5 / 4; object-fit: cover; object-position: 40% 50%; border-radius: 0 22px 22px 0; box-shadow: 0 40px 80px -36px rgb(11 27 51 / 0.6); }
+  .pre-zoznam { display: grid; gap: 34px; }
+  .pre-zoznam li { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 24px; align-items: start; }
+  .pre-zoznam h2 { font-size: 22px; letter-spacing: -0.015em; }
+  .pre-zoznam p { margin-top: 6px; color: var(--color-ink-soft); font-size: 15.5px; line-height: 1.55; }
+  .pre-zoznam .odkaz { margin-top: 10px; }
+  /* Lupa: prstenec vo farbách vrstiev potrubia (jadro, pena, plášť) a odlesk skla. */
+  .pre-lupa { --ring: var(--color-blue-700); position: relative; display: block; width: 96px; height: 96px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 5px #fff, 0 0 0 7px var(--ring), 0 18px 32px -14px rgb(11 27 51 / 0.5); }
+  .pre-zoznam li:nth-child(1) .pre-lupa { --ring: #e0b400; }
+  .pre-zoznam li:nth-child(2) .pre-lupa { --ring: #8e97a3; }
+  .pre-lupa :global(img) { display: block; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+  .pre-lupa::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(70% 55% at 30% 18%, rgb(255 255 255 / 0.35), rgb(255 255 255 / 0) 62%); box-shadow: inset 0 -10px 20px rgb(11 27 51 / 0.25); pointer-events: none; }
 
   /* Dôkaz z vlastnej dodávky: scéna s kótou vľavo cez okraj obrazovky, text vpravo. */
   .dokaz { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 32px 56px; align-items: center; }
@@ -212,7 +226,7 @@ const polia = { meno: tx.meno, firma: tx.firma, email: tx.email, telefon: tx.tel
   .formular .btn { align-self: flex-start; margin-top: 4px; }
   .chyba { color: #c2410c; font-weight: 500; font-size: 14.5px; }
   .formular-pozn { font-size: 13.5px; color: var(--color-ink-soft); }
-  @media (max-width: 1000px) { .pre { grid-template-columns: minmax(0, 1fr); } .pre-foto :global(img) { aspect-ratio: 16 / 9; } }
+  @media (max-width: 900px) { .pre { grid-template-columns: minmax(0, 1fr); } .pre-velka { margin-inline: calc(-1 * var(--gutter)); } .pre-velka :global(img) { border-radius: 0; aspect-ratio: 16 / 10; } }
   @media (max-width: 900px) { .dopyt, .dokaz { grid-template-columns: minmax(0, 1fr); } .dokaz :global(.dokaz-scena) { margin-inline: calc(-1 * var(--gutter)); } .dokaz :global(.dokaz-scena .scena-img) { border-radius: 0; } }
   @media (max-width: 760px) { .riadok { grid-template-columns: minmax(0, 1fr); } .formular { padding: 22px 18px; } }
 </style>

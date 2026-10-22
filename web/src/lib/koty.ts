@@ -1,7 +1,7 @@
 /**
  * Kóty na obrazoch: typ a body na renderoch radov. Rendery Watts majú rovnakú orientáciu (telo
  * vľavo hore, rez vpravo dole), takže každý render má tri body v percentách obrázka:
- *  plast  horný okraj plášťa pri reze      → štítok nad ním vpravo (prázdny horný roh)
+ *  plast  horný okraj plášťa pri reze      → štítok nad ním vpravo (prázdny horný roh), na telefóne vľavo
  *  rura   spodok čela najnižšej nosnej rúry → štítok pod ním doľava
  *  ohyb   spodná hrana zvlneného tela       → štítok pod ňou doprava (prázdny dolný roh)
  * Body vypočítal skript z masiek farieb (pena, jadro, telo) a overili sa na kontrolnom obrázku;
@@ -34,7 +34,7 @@ export function kotyRenderu(
   const b = piktogram ? BODY[piktogram] : undefined;
   if (!b) return [];
   const out: Kota[] = [];
-  if (h.plast) out.push({ x: b.plast[0], y: b.plast[1], l: 8, smer: 'hore-vpravo', hodnota: h.plast[0], text: h.plast[1] });
+  if (h.plast) out.push({ x: b.plast[0], y: b.plast[1], l: 8, smer: 'hore-vpravo', smerM: 'hore-vlavo', hodnota: h.plast[0], text: h.plast[1] });
   if (h.rura) out.push({ x: b.rura[0], y: b.rura[1], l: 6, smer: 'dole-vlavo', hodnota: h.rura[0], text: h.rura[1] });
   if (h.ohyb) out.push({ x: b.ohyb[0], y: b.ohyb[1], l: 7, smer: 'dole-vpravo', hodnota: h.ohyb[0], text: h.ohyb[1] });
   return out;

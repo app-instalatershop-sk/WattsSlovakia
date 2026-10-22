@@ -1,0 +1,58 @@
+---
+import Strana from '../../navrhy/Strana.astro';
+
+const CASTI = [
+  { href: '/navrhy/hlava/', nazov: 'Hlava vnútornej stránky', kde: 'asi 140 stránok', varianty: 'A dnes, B veľké štúdio, C tmavé štúdio, D výrobok na stavbe', odp: 'B', preco: 'výrobok ako hrdina, kóty majú miesto, najväčší rozdiel oproti konkurencii' },
+  { href: '/navrhy/zaver/', nazov: 'Záver vnútornej stránky', kde: 'asi 140 stránok', varianty: 'A dnes, B fotka cez šikmú hranu, C dve cesty', odp: 'B', preco: 'rovnaký motív ako podzemie domova, fotka namiesto tabuľky kontaktov' },
+  { href: '/navrhy/projekty/', nazov: 'Projekty na domove', kde: 'domov', varianty: 'A dnes, B cez celú šírku, C mozaika', odp: 'B', preco: 'mierka veľkej stavby; po dodaní väčšej fotky; dovtedy C' },
+  { href: '/navrhy/karty/', nazov: 'Karty radov a dielov', kde: 'systémy, Potrubia, spojky, príslušenstvo, diely', varianty: 'A dnes, B kóty v karte, C pásy, D porovnanie; E diely dnes, F diely na podlahe štúdia', odp: 'B a F', preco: 'jeden jazyk čísel na celom webe, diely ako katalóg armatúry' },
+  { href: '/navrhy/rad/', nazov: 'Stavba potrubia a referencia radu', kde: '12 radov', varianty: 'A dnes, B kóty na reze a lupy, C vrstvy ako pásy; D referencia dnes, E scéna s kótou', odp: 'B a E', preco: 'podpis domova (rez pod lupou) aj na stránkach radov' },
+  { href: '/navrhy/firmy/', nazov: 'Fotky pri skupinách zákazníkov', kde: 'Pre firmy', varianty: 'A dnes, B schodovito, C veľká fotka a lupy, D fotka cez celú výšku', odp: 'C', preco: 'jedna silná fotka a lupy namiesto troch rovnakých kariet' },
+  { href: '/navrhy/podklady/', nazov: 'Podklady na stiahnutie', kde: '12 radov a Podklady', varianty: 'A dnes, B obálky dokumentov', odp: 'B', preco: 'projektant vidí katalóg a brožúru ako skutočné dokumenty' },
+];
+---
+<Strana cesta="/navrhy/" nadpis="Návrhy: časti, ktoré sa opakujú"
+  popis="Sedem častí, ktoré sa opakujú na mnohých stránkach webu, každá v dvoch až šiestich variantoch zo skutočných dát a fotiek. Pri každej je moje odporúčanie, rozhodnutie je Vaše. Varianty sa dajú kombinovať.">
+  <section class="wrap prehlad">
+    <ol class="casti">
+      {CASTI.map((c) => (
+        <li>
+          <a href={c.href}>
+            <strong>{c.nazov}</strong>
+            <span class="kde">{c.kde}</span>
+            <span class="var">{c.varianty}</span>
+            <span class="odp"><b>Odporúčam {c.odp}</b>: {c.preco}</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+    <div class="poznamky">
+      <h2>Čo platí pre všetky návrhy</h2>
+      <ul>
+        <li>Čísla stoja na obraze pri tom, čo opisujú (kóty), nikde nie je pás čísel s čiarami.</li>
+        <li>Fotky sú skutočné zo stavieb a od Watts. Keď prídu Vaše fotky odrezkov a predajne, vymenia sa na rovnakých miestach.</li>
+        <li>Nové fotky z brožúry Watts 2026: kancelársky areál s potrubím vo výkope (1 245 px) a makro plášťa s dvojitou stenou. Uložené v <code>podklady/watts/fotky-katalog/</code>.</li>
+        <li>Po rozhodnutí sa vybrané varianty prenesú do webu a pracovné stránky /navrhy/ sa zmažú.</li>
+      </ul>
+    </div>
+  </section>
+</Strana>
+
+<style>
+  .prehlad { padding-block: 56px 24px; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 40px 56px; align-items: start; }
+  .casti { display: grid; gap: 12px; counter-reset: c; }
+  .casti a { display: grid; gap: 4px; padding: 20px 24px; border-radius: 18px; background: #fff; color: var(--color-ink); box-shadow: 0 1px 0 rgb(10 42 94 / 0.05), 0 24px 48px -36px rgb(10 42 94 / 0.5); transition: transform 200ms var(--ease-soft), box-shadow 200ms var(--ease-soft); }
+  .casti a:hover { transform: translateY(-2px); box-shadow: 0 1px 0 rgb(10 42 94 / 0.05), 0 34px 60px -36px rgb(10 42 94 / 0.6); }
+  .casti strong { font-family: var(--font-display); font-stretch: 112.5%; font-size: 21px; }
+  .kde { font-size: 14px; color: var(--color-blue-700); font-weight: 500; }
+  .var { font-size: 15px; color: var(--color-ink-soft); }
+  .odp { margin-top: 6px; font-size: 15px; }
+  .odp b { color: #1b8a5a; }
+  .poznamky { position: sticky; top: 100px; padding: 24px 26px; border-radius: 18px; background: var(--color-blue-50); }
+  .poznamky h2 { font-size: 20px; }
+  .poznamky ul { margin-top: 12px; display: grid; gap: 10px; }
+  .poznamky li { position: relative; padding-left: 18px; font-size: 15px; line-height: 1.55; }
+  .poznamky li::before { content: ""; position: absolute; left: 0; top: 9px; width: 8px; height: 8px; border-radius: 50%; background: var(--color-yellow-500); }
+  .poznamky code { font-size: 13px; }
+  @media (max-width: 900px) { .prehlad { grid-template-columns: minmax(0, 1fr); } .poznamky { position: static; } }
+</style>

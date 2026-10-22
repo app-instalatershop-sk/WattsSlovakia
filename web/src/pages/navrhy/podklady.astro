@@ -1,0 +1,90 @@
+---
+import { Image } from 'astro:assets';
+import Strana from '../../navrhy/Strana.astro';
+import Navrh from '../../navrhy/Navrh.astro';
+import Subory from '../../components/Subory.astro';
+import Ikona from '../../components/Ikona.astro';
+import { radDuo } from '../../navrhy/data';
+import { fotka } from '../../lib/obrazky';
+import { KATALOG_PDF } from '../../i18n/ui';
+
+const d = await radDuo();
+const katalog = fotka('katalog-obalka.jpg')!;
+const brozura = fotka('brozura-obalka.jpg')!;
+const url = (re: RegExp) => d.r.subory.find((s) => re.test(s.nazov))?.url ?? '#';
+const VARIANTY = [
+  { pismeno: 'A', nazov: 'Dnes: zoznam súborov so štítkom typu' },
+  { pismeno: 'B', nazov: 'Obálky dokumentov ako na stole' },
+];
+---
+<Strana cesta="/navrhy/podklady/" nadpis="Podklady na stiahnutie" varianty={VARIANTY}
+  popis="Časť „Na stiahnutie“ na stránke radu (katalóg, brožúra, výkresy, vyhlásenie o zhode, EPD). Projektant tu hľadá podklady najčastejšie. Ukážka na rade Microflex DUO."
+  kde="12 radov SK aj CS a stránka Na stiahnutie (Podklady)">
+
+  <Navrh pismeno="A" nazov="Zoznam súborov so štítkom typu" dnes
+    popis="Dva stĺpce riadkov: farebný štítok PDF, DWG alebo EPD, názov, jazyk a ikona stiahnutia." pozadie="linear-gradient(180deg, var(--zem-2), var(--zem-3))">
+    <section class="wrap plocha-pad">
+      <div class="s-hlava"><h2>Na stiahnutie</h2><p>Podklady výrobcu k tomuto radu. Otvoria sa na watts.eu.</p></div>
+      <div class="harok a-harok"><Subory subory={d.r.subory} lang="sk" /></div>
+    </section>
+  </Navrh>
+
+  <Navrh pismeno="B" nazov="Obálky dokumentov ako na stole" odporucam
+    popis="Katalóg a brožúra so skutočnou obálkou (náhľad prvej strany PDF), výkresy a vyhlásenia ako dokumenty s veľkou skratkou formátu. Projektant hneď vidí, čo dostane, a web pôsobí ako tlačený katalóg prémiovej značky."
+    inspiracia="Uponor a Geberit (centrá podkladov s náhľadmi), Vipp (predmety na neutrálnej ploche)" pozadie="linear-gradient(180deg, var(--zem-2), var(--zem-3))">
+    <section class="wrap plocha-pad">
+      <div class="s-hlava"><h2>Na stiahnutie</h2><p>Podklady výrobcu k tomuto radu. Katalóg sa otvorí priamo, ostatné na watts.eu.</p></div>
+      <ul class="b-stol">
+        <li><a class="b-dok" href={KATALOG_PDF} target="_blank" rel="noopener">
+          <span class="b-obalka"><Image src={katalog} alt="" widths={[300, 460]} sizes="230px" /></span>
+          <strong>Katalóg Microflex</strong><span>slovensky, PDF, 19 MB, 44 strán</span>
+        </a></li>
+        <li><a class="b-dok" href={url(/Brož/)} target="_blank" rel="noopener">
+          <span class="b-obalka"><Image src={brozura} alt="" widths={[300, 460]} sizes="230px" /></span>
+          <strong>Brožúra Microflex 2026</strong><span>anglicky, PDF, 4 strany</span>
+        </a></li>
+        <li><a class="b-dok" href={url(/DWG/)} target="_blank" rel="noopener">
+          <span class="b-obalka b-format b-cad"><b>DWG</b><i>DXF</i><em>DUO a DUO PRIMO, vykurovanie a chladenie</em></span>
+          <strong>Výkresy pre projekt</strong><span>DWG a DXF, rez potrubím</span>
+        </a></li>
+        <li><a class="b-dok" href={url(/Vyhlásenie/)} target="_blank" rel="noopener">
+          <span class="b-obalka b-format b-cert"><b>EN</b><i>PDF</i><em>Vyhlásenie o zhode, predizolované potrubie Microflex</em></span>
+          <strong>Vyhlásenie o zhode</strong><span>anglicky, PDF</span>
+        </a></li>
+        <li><a class="b-dok" href={url(/EPD|Ekolog/)} target="_blank" rel="noopener">
+          <span class="b-obalka b-format b-epd"><b>EPD</b><i>do 2031</i><em>Environmentálne vyhlásenie o produkte, platné do 29. 5. 2031</em></span>
+          <strong>Environmentálne vyhlásenie</strong><span>EPD, platné do 29. 5. 2031</span>
+        </a></li>
+      </ul>
+    </section>
+  </Navrh>
+</Strana>
+
+<style>
+  .plocha-pad { padding-block: 72px 88px; }
+  .a-harok { padding: 8px 28px 12px; }
+
+  /* B: obálky dokumentov */
+  .b-stol { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 36px 28px; align-items: end; }
+  .b-dok { display: flex; flex-direction: column; gap: 4px; color: var(--color-ink); }
+  .b-dok strong { margin-top: 18px; font-family: var(--font-display); font-stretch: 112.5%; font-size: 17px; line-height: 1.25; }
+  .b-dok > span:last-child { font-size: 14px; color: var(--color-ink-soft); }
+  .b-dok:hover strong { color: var(--color-blue-700); }
+  /* Dokument ako list papiera: pomer A4, tieň, pri prejdení sa zdvihne a jemne natočí. */
+  .b-obalka { position: relative; display: block; aspect-ratio: 210 / 297; border-radius: 4px; overflow: hidden; background: #fff; box-shadow: 0 1px 0 rgb(10 42 94 / 0.08), 0 2px 0 rgb(255 255 255 / 0.9), 0 28px 44px -26px rgb(11 27 51 / 0.55); transform: rotate(var(--r, 0deg)); transition: transform 350ms var(--ease-soft), box-shadow 350ms var(--ease-soft); }
+  .b-stol li:nth-child(odd) .b-obalka { --r: -1.2deg; }
+  .b-stol li:nth-child(even) .b-obalka { --r: 1deg; }
+  .b-dok:hover .b-obalka { transform: translateY(-8px) rotate(0deg); box-shadow: 0 1px 0 rgb(10 42 94 / 0.08), 0 40px 60px -28px rgb(11 27 51 / 0.6); }
+  .b-obalka :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .b-format { display: flex; flex-direction: column; justify-content: flex-end; padding: 18px; color: #fff; }
+  .b-format b { font-family: var(--font-display); font-stretch: 125%; font-weight: 700; font-size: clamp(30px, 2.4vw, 44px); line-height: 1; letter-spacing: -0.02em; }
+  .b-format i { font-style: normal; margin-top: 6px; font-size: 14px; font-weight: 600; opacity: 0.8; }
+  .b-format em { font-style: normal; margin-top: 14px; font-size: 12.5px; line-height: 1.4; opacity: 0.85; }
+  /* Zahnutý roh listu. */
+  .b-format::before { content: ""; position: absolute; top: 0; right: 0; width: 34px; height: 34px; background: linear-gradient(225deg, var(--zem-3) 50%, rgb(255 255 255 / 0.35) 50%); }
+  .b-cad { background: linear-gradient(160deg, #3d4f66 0%, #1b2a3d 100%); }
+  .b-cert { background: linear-gradient(160deg, #1467c1 0%, var(--color-blue-900) 100%); }
+  .b-epd { background: linear-gradient(160deg, #2f8f5b 0%, #1d6340 100%); }
+  @media (max-width: 1000px) { .b-stol { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (max-width: 760px) { .b-stol { grid-template-columns: repeat(2, minmax(0, 1fr)); } .a-harok { padding: 4px 18px 8px; } }
+</style>

@@ -1,839 +1,879 @@
 {
-  "stiahnute": "2026-09-21T14:01:17.775Z",
-  "poznamka": "Podklady výrobcu Watts (watts.eu, slovenská verzia). Použitie so súhlasom Watts, potvrdil Juraj 21. 9. 2026.",
-  "subory": [
-    {
-      "subor": "podklady/watts/loga/watts-logo.png",
-      "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/659385-source/638791958780000000",
-      "original": "659385_source.png",
-      "typ": "image/png",
-      "bajty": 16401,
-      "sirka": 571,
-      "vyska": 108
-    },
-    {
-      "subor": "podklady/watts/loga/watts-logo-4c.eps",
-      "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/17615-source/639252739090000000",
-      "original": "watts_logo_4C.eps",
-      "typ": "application/postscript",
-      "bajty": 349994,
-      "sirka": null,
-      "vyska": null
-    },
-    {
-      "subor": "podklady/watts/loga/microflex-logo.svg",
-      "zdroj": "podklady/watts/Microflex-katalog-SK.pdf#page=3",
-      "original": "vektorové kresby loga MICROFLEX® na s. 3 katalógu (vytiahnuté 23. 9. 2026)",
-      "typ": "image/svg+xml",
-      "bajty": 5439,
-      "sirka": null,
-      "vyska": null
-    },
-    {
-      "subor": "podklady/watts/fotky/microflex-prierez-vykop.jpg",
-      "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/664525-source/638944104770000000",
-      "original": "664525_source.jpg",
-      "typ": "image/jpeg",
-      "bajty": 232906,
-      "sirka": 500,
-      "vyska": 500
-    },
-    {
-      "subor": "podklady/watts/banner/microflex-banner-2025-09.jpg",
-      "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/664062-source/639110977510000000/banniere-microflex-09-2025",
-      "original": "664062_source.jpg",
-      "typ": "image/jpeg",
-      "bajty": 719175,
-      "sirka": 8000,
-      "vyska": 3025
-    },
-    {
-      "subor": "podklady/watts/fotky/microflex-vykop-spojky.jpg",
-      "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/634538-source/638349590790000000",
-      "original": "634538_source.jpg",
-      "typ": "image/jpeg",
-      "bajty": 1086072,
-      "sirka": 1600,
-      "vyska": 1066
-    },
-    {
-      "subor": "podklady/watts/fotky-kategorie/kategoria-pipes-for-sanitary.png",
-      "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/641368-source/638532761770000000",
-      "original": "641368_source.png",
-      "typ": "image/png",
-      "bajty": 50057,
-      "sirka": 200,
-      "vyska": 200
-    },
-    {
-      "subor": "podklady/watts/fotky-kategorie/kategoria-pipes-for-heating.png",
-      "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/634607-source/638532761680000000",
-      "original": "634607_source.png",
-      "typ": "image/png",
-      "bajty": 52838,
-      "sirka": 200,
-      "vyska": 200
-    },
-    {
-      "subor": "podklady/watts/fotky-referencie/referencia-povazska-bystrica.jpg",
-      "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/634190-source/638779027690000000",
-      "original": "634190_source.jpg",
-      "typ": "image/jpeg",
-      "bajty": 32202,
-      "sirka": 268,
-      "vyska": 150
-    },
-    {
-      "subor": "podklady/watts/fotky-referencie/referencia-skola.png",
-      "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/643091-source/638544867300000000",
-      "original": "643091_source.png",
-      "typ": "image/png",
-      "bajty": 84650,
-      "sirka": 300,
-      "vyska": 169
-    },
-    {
-      "subor": "podklady/watts/fotky-kategorie/kategoria-central-heating-and-sanitary.png",
-      "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/641357-source/638532761770000000",
-      "original": "641357_source.png",
-      "typ": "image/png",
-      "bajty": 47571,
-      "sirka": 200,
-      "vyska": 200
-    },
-    {
-      "subor": "podklady/watts/fotky-rady/rad-1-microflex-uno-6-bar.jpg",
-      "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636687-source/638386906090000000",
-      "original": "636687_source.jpg",
-      "typ": "image/jpeg",
-      "bajty": 63942,
-      "sirka": 1000,
-      "vyska": 1000
-    },
-    {
-      "subor": "podklady/watts/fotky-rady/rad-2-microflex-duo-6-bar.jpg",
-      "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636670-source/638542227000000000",
-      "original": "636670_source.jpg",
-      "typ": "image/jpeg",
-      "bajty": 48600,
-      "sirka": 1000,
-      "vyska": 1000
-    },
-    {
-      "subor": "podklady/watts/fotky-kategorie/kategoria-couplings.png",
-      "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/641361-source/638532761770000000",
-      "original": "641361_source.png",
-      "typ": "image/png",
-      "bajty": 34350,
-      "sirka": 200,
-      "vyska": 200
-    },
-    {
-      "subor": "podklady/watts/fotky-kategorie/kategoria-cold-cold-drinking-water.png",
-      "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/641356-source/638532762240000000",
-      "original": "641356_source.png",
-      "typ": "image/png",
-      "bajty": 53794,
-      "sirka": 200,
-      "vyska": 200
-    },
-    {
-      "subor": "podklady/watts/fotky-kategorie/kategoria-accessories.png",
-      "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/642912-source/638532761930000000",
-      "original": "642912_source.png",
-      "typ": "image/png",
-      "bajty": 43595,
-      "sirka": 500,
-      "vyska": 357
-    },
-    {
-      "subor": "podklady/watts/fotky-rady/rad-4-microflex-quadro.png",
-      "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636686-source/638787510140000000",
-      "original": "636686_source.png",
-      "typ": "image/png",
-      "bajty": 39045,
-      "sirka": 500,
-      "vyska": 500
-    },
-    {
-      "subor": "podklady/watts/fotky-rady/rad-2-single-microflex-uno-primo-6-bar.jpg",
-      "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636688-source/638386969760000000",
-      "original": "636688_source.jpg",
-      "typ": "image/jpeg",
-      "bajty": 49711,
-      "sirka": 1000,
-      "vyska": 1000
-    },
-    {
-      "subor": "podklady/watts/fotky-rady/rad-2-microflex-duo-10-bar.jpg",
-      "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636671-source/638386906070000000",
-      "original": "636671_source.jpg",
-      "typ": "image/jpeg",
-      "bajty": 51056,
-      "sirka": 1000,
-      "vyska": 1000
-    },
-    {
-      "subor": "podklady/watts/fotky-rady/rad-3-microflex-primo-duo-s-10-bar.jpg",
-      "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/637367-source/638386906110000000",
-      "original": "637367_source.jpg",
-      "typ": "image/jpeg",
-      "bajty": 33501,
-      "sirka": 280,
-      "vyska": 280
-    },
-    {
-      "subor": "podklady/watts/fotky-rady/rad-1-microflex-uno-10-bar.jpg",
-      "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636689-source/638386906090000000",
-      "original": "636689_source.jpg",
-      "typ": "image/jpeg",
-      "bajty": 47186,
-      "sirka": 1000,
-      "vyska": 1000
-    },
-    {
-      "subor": "podklady/watts/fotky-rady/rad-pe-x-couplings-for-sanitary-pipes.png",
-      "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/643523-source/638532762010000000",
-      "original": "643523_source.png",
-      "typ": "image/png",
-      "bajty": 37780,
-      "sirka": 200,
-      "vyska": 200
-    },
-    {
-      "subor": "podklady/watts/fotky-rady/rad-pe-x-couplings-for-heating-and-cool-pipes.png",
-      "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/643521-source/638532762010000000",
-      "original": "643521_source.png",
-      "typ": "image/png",
-      "bajty": 26008,
-      "sirka": 200,
-      "vyska": 200
-    },
-    {
-      "subor": "podklady/watts/fotky-rady/rad-2-pipe-system-microflex-cool-ht.png",
-      "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/637643-source/638702986690000000",
-      "original": "637643_source.png",
-      "typ": "image/png",
-      "bajty": 454447,
-      "sirka": 1000,
-      "vyska": 795
-    },
-    {
-      "subor": "podklady/watts/fotky-rady/rad-1-pipe-system-microflex-cool.png",
-      "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/637640-source/638702986630000000",
-      "original": "637640_source.png",
-      "typ": "image/png",
-      "bajty": 524244,
-      "sirka": 1000,
-      "vyska": 729
-    },
-    {
-      "subor": "podklady/watts/fotky-rady/rad-microflex-cool-duo.png",
-      "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/637635-source/638702986520000000",
-      "original": "637635_source.png",
-      "typ": "image/png",
-      "bajty": 585204,
-      "sirka": 1000,
-      "vyska": 729
-    },
-    {
-      "subor": "podklady/watts/fotky-rady/rad-caps-and-reduction-kits.jpg",
-      "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/642849-source/638532761860000000",
-      "original": "642849_source.jpg",
-      "typ": "image/jpeg",
-      "bajty": 13922,
-      "sirka": 280,
-      "vyska": 210
-    },
-    {
-      "subor": "podklady/watts/fotky-rady/rad-repair-and-warning-tapes.jpg",
-      "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/642846-source/638532761860000000",
-      "original": "642846_source.jpg",
-      "typ": "image/jpeg",
-      "bajty": 20442,
-      "sirka": 280,
-      "vyska": 210
-    },
-    {
-      "subor": "podklady/watts/fotky-rady/rad-accessories.png",
-      "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/641384-source/638532761810000000",
-      "original": "641384_source.png",
-      "typ": "image/png",
-      "bajty": 21086,
-      "sirka": 200,
-      "vyska": 200
-    },
-    {
-      "subor": "podklady/watts/fotky-rady/rad-wall-feed-throughs.png",
-      "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/642911-source/638532761930000000",
-      "original": "642911_source.png",
-      "typ": "image/png",
-      "bajty": 39241,
-      "sirka": 500,
-      "vyska": 357
-    },
-    {
-      "subor": "podklady/watts/fotky-referencie/orig/fackov-1.jpg",
-      "zdroj": "https://www.watts.eu/sk/references/microflex-slovakia-single-family",
-      "original": "originál dfsmedia (rendition „source“), stiahnuté 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 255349,
-      "sirka": 640,
-      "vyska": 480
-    },
-    {
-      "subor": "podklady/watts/fotky-referencie/orig/fackov-2.jpg",
-      "zdroj": "https://www.watts.eu/sk/references/microflex-slovakia-single-family",
-      "original": "originál dfsmedia (rendition „source“), stiahnuté 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 224231,
-      "sirka": 640,
-      "vyska": 480
-    },
-    {
-      "subor": "podklady/watts/fotky-referencie/orig/fackov-3.jpg",
-      "zdroj": "https://www.watts.eu/sk/references/microflex-slovakia-single-family",
-      "original": "originál dfsmedia (rendition „source“), stiahnuté 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 1331335,
-      "sirka": 2016,
-      "vyska": 1512
-    },
-    {
-      "subor": "podklady/watts/fotky-referencie/orig/orange-2.jpg",
-      "zdroj": "https://www.watts.eu/sk/references/microflex-in-orange-military-base",
-      "original": "originál dfsmedia (rendition „source“), stiahnuté 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 1015367,
-      "sirka": 1200,
-      "vyska": 1200
-    },
-    {
-      "subor": "podklady/watts/fotky-referencie/orig/orange-3.jpg",
-      "zdroj": "https://www.watts.eu/sk/references/microflex-in-orange-military-base",
-      "original": "originál dfsmedia (rendition „source“), stiahnuté 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 1092302,
-      "sirka": 1200,
-      "vyska": 1200
-    },
-    {
-      "subor": "podklady/watts/fotky-referencie/orig/orange-4.jpg",
-      "zdroj": "https://www.watts.eu/sk/references/microflex-in-orange-military-base",
-      "original": "originál dfsmedia (rendition „source“), stiahnuté 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 848130,
-      "sirka": 1200,
-      "vyska": 1200
-    },
-    {
-      "subor": "podklady/watts/fotky-referencie/orig/orange-5.jpg",
-      "zdroj": "https://www.watts.eu/sk/references/microflex-in-orange-military-base",
-      "original": "originál dfsmedia (rendition „source“), stiahnuté 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 748525,
-      "sirka": 1200,
-      "vyska": 1200
-    },
-    {
-      "subor": "podklady/watts/fotky-referencie/orig/orange-6.jpg",
-      "zdroj": "https://www.watts.eu/sk/references/microflex-in-orange-military-base",
-      "original": "originál dfsmedia (rendition „source“), stiahnuté 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 1035481,
-      "sirka": 1200,
-      "vyska": 1200
-    },
-    {
-      "subor": "podklady/watts/fotky-referencie/orig/povazska-1.jpg",
-      "zdroj": "https://www.watts.eu/sk/references/microflex-big-project-in-pova-bystrica",
-      "original": "originál dfsmedia (rendition „source“), stiahnuté 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 32202,
-      "sirka": 268,
-      "vyska": 150
-    },
-    {
-      "subor": "podklady/watts/fotky-referencie/orig/povazska-2.jpg",
-      "zdroj": "https://www.watts.eu/sk/references/microflex-big-project-in-pova-bystrica",
-      "original": "originál dfsmedia (rendition „source“), stiahnuté 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 114934,
-      "sirka": 895,
-      "vyska": 500
-    },
-    {
-      "subor": "podklady/watts/fotky-referencie/orig/povazska-3.jpg",
-      "zdroj": "https://www.watts.eu/sk/references/microflex-big-project-in-pova-bystrica",
-      "original": "originál dfsmedia (rendition „source“), stiahnuté 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 83182,
-      "sirka": 895,
-      "vyska": 501
-    },
-    {
-      "subor": "podklady/watts/fotky-referencie/orig/povazska-4.jpg",
-      "zdroj": "https://www.watts.eu/sk/references/microflex-big-project-in-pova-bystrica",
-      "original": "originál dfsmedia (rendition „source“), stiahnuté 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 54694,
-      "sirka": 640,
-      "vyska": 358
-    },
-    {
-      "subor": "podklady/watts/fotky-referencie/orig/povazska-5.jpg",
-      "zdroj": "https://www.watts.eu/sk/references/microflex-big-project-in-pova-bystrica",
-      "original": "originál dfsmedia (rendition „source“), stiahnuté 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 154300,
-      "sirka": 640,
-      "vyska": 358
-    },
-    {
-      "subor": "podklady/watts/fotky-referencie/orig/povazska-6.jpg",
-      "zdroj": "https://www.watts.eu/sk/references/microflex-big-project-in-pova-bystrica",
-      "original": "originál dfsmedia (rendition „source“), stiahnuté 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 154920,
-      "sirka": 640,
-      "vyska": 358
-    },
-    {
-      "subor": "podklady/watts/fotky-referencie/orig/povazska-7.jpg",
-      "zdroj": "https://www.watts.eu/sk/references/microflex-big-project-in-pova-bystrica",
-      "original": "originál dfsmedia (rendition „source“), stiahnuté 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 410419,
-      "sirka": 895,
-      "vyska": 501
-    },
-    {
-      "subor": "podklady/watts/fotky-referencie/orig/skola-1.jpg",
-      "zdroj": "https://www.watts.eu/sk/references/microflex-saves-school-year",
-      "original": "originál dfsmedia (rendition „source“), stiahnuté 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 168007,
-      "sirka": 640,
-      "vyska": 480
-    },
-    {
-      "subor": "podklady/watts/fotky-referencie/orig/skola-2.jpg",
-      "zdroj": "https://www.watts.eu/sk/references/microflex-saves-school-year",
-      "original": "originál dfsmedia (rendition „source“), stiahnuté 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 150905,
-      "sirka": 640,
-      "vyska": 480
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/3-x-ohrev-spojky-pe-x-t.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/pe-x-couplings-for-heating-and-cool-pipes/coupling-heating-mj130",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636010-50045/638386906040000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 17585,
-      "sirka": 533,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/pe-x-x-pe-x-spojka-kurenie.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/pe-x-couplings-for-heating-and-cool-pipes/coupling-heating-mj270",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636698-50045/638532761730000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 15733,
-      "sirka": 421,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/pe-x-x-pe-x-koleno-spojky-vykurovanie.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/pe-x-couplings-for-heating-and-cool-pipes/elbow-mj90",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/635838-50045/638875871170000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 19693,
-      "sirka": 533,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/pe-x-spojka-kurenie-cool-6-16bar.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/pe-x-couplings-for-heating-and-cool-pipes/pe-x-coupling-heating-cool-6-16bar-mj341",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636683-50045/638439531500000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 8968,
-      "sirka": 400,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/zvarove-koncovky-spojky-a-cool-6-16bar-s6.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/pe-x-couplings-for-heating-and-cool-pipes/fitting-for-welding-s6",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/635957-50045/638386906040000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 14762,
-      "sirka": 533,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/sanitarne-spojky-microflex-pe-x.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/pe-x-couplings-for-sanitary-pipes/microflex-pe-x-couplings-sanitary",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636683-50045/638439531500000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 8968,
-      "sirka": 400,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/pe-x-x-pe-x-sanitarne-zariadenie.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/pe-x-couplings-for-sanitary-pipes/coupling-sanitary-mj270",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/635839-50045/638386906030000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 17693,
-      "sirka": 533,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/sanitarne-kolenne-spojky-pe-x-x-pe-x.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/pe-x-couplings-for-sanitary-pipes/pe-x-x-pe-x-elbow-coupling-sanitary",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/635837-50045/638386906030000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 19693,
-      "sirka": 533,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/3-x-pe-x-t-spojka-sanitarna.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/pe-x-couplings-for-sanitary-pipes/t-coupling-plumbing",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/641366-50045/638875860620000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 12268,
-      "sirka": 400,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/fixny-bod.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/accessories/anchoring-fixing-threaded-couplings",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636174-50045/638386906040000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 18683,
-      "sirka": 533,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/objimka-obal.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/accessories/nipple-ff-microflex",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636647-50045/638386906060000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 17869,
-      "sirka": 416,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/koleno-90.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/accessories/elbow-ff-microflex",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636303-50045/638386906040000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 18922,
-      "sirka": 394,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/t-kus-z-bronzu.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/accessories/tee-f-f-f-microflex",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636908-50045/638386906090000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 19084,
-      "sirka": 432,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/vsuvka-z-poniklovanej-mosadze.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/accessories/nipple-vw280",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/635887-50045/638386906030000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 16545,
-      "sirka": 533,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/redukcne-puzdro.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/accessories/reducing-bush-vw241",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/635956-50045/638386906040000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 15848,
-      "sirka": 533,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/priruba-so-zavitom-z-pozinkovanej-ocele.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/accessories/flange-mdf",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/635917-50045/638386906040000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 14961,
-      "sirka": 533,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/zatka.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/accessories/brass-plug-vw290",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636690-50045/638386906090000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 12285,
-      "sirka": 400,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/uzatvaraci-ventil.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/accessories/stop-valve-microflex",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636973-50045/638386906090000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 11333,
-      "sirka": 382,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/uzatvara-prach-na-jednom-potrubi.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/caps-and-reduction-kits/dust-cap-ms-uno",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636211-50045/638386906040000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 10369,
-      "sirka": 533,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/uzatvara-prach-na-dvojitom-potrubi.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/caps-and-reduction-kits/dust-cap-msd-duo",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/635888-50045/638386906030000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 10293,
-      "sirka": 533,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/uzatvara-prach-na-potrubi-quadro.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/caps-and-reduction-kits/dust-cap-msq-quadro",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/643121-50045/638440625170000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 12187,
-      "sirka": 599,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/teplom-zmrstitelne-hlavice-pre-uno-rurku.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/caps-and-reduction-kits/heat-shrink-caps-on-single-pipelines",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636414-50045/638386906060000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 10994,
-      "sirka": 400,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/teplom-zmrstitelne-hlavice-pre-rurku-duo.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/caps-and-reduction-kits/dust-cap-msq-duo",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/635830-50045/638386906030000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 12678,
-      "sirka": 533,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/caps-and-reduction-kits/finishing-epdm-caps-on-single-pipelines",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636646-50045/638386906060000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 15810,
-      "sirka": 459,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/dokoncenie-uzaverov-epdm-na-dvojitych-potrubiach.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/caps-and-reduction-kits/finishing-epdm-caps-on-double-pipelines",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636645-50045/638386906060000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 13865,
-      "sirka": 380,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/dokoncenie-uzaverov-epdm-na-potrubiach-quadro.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/caps-and-reduction-kits/finishing-epdm-caps-on-quado-pipelines",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636664-50045/638911231260000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 16901,
-      "sirka": 493,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/pripojovacia-sada-pre-microflex-cool-s-vykurovacou-paskou.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/pipe-insulation-sets/connection-kit-for-microflex-cool-with-heating-tape",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636585-50045/639159160520000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 22588,
-      "sirka": 477,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/redukcia-pre-izolovanu-supravu-t-kusu.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/pipe-insulation-sets/coupling-transient-shrinkage",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/635906-50045/638386906040000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 17886,
-      "sirka": 533,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/inspekcna-komora.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/pipe-insulation-sets/inspection-chamber",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/637404-50045/638386906110000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 21840,
-      "sirka": 533,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/izolovana-sada-s-dvojitym-t-kusom.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/pipe-insulation-sets/insulated-double-t-piece-kit",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636676-50045/638386906090000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 18351,
-      "sirka": 560,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/izolovana-suprava-i-kus.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/pipe-insulation-sets/insulated-i-piece-kit",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636684-50045/638386906090000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 7005,
-      "sirka": 400,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/izolacna-sada-i-variant.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/pipe-insulation-sets/insulated-kit-i-variant",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/635935-50045/638386906040000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 10905,
-      "sirka": 533,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/izolovana-suprava-t-kusu.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/pipe-insulation-sets/insulated-t-piece-kit",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636685-50045/638440625170000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 10101,
-      "sirka": 400,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/zateplene-koleno-90.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/pipe-insulation-sets/insulation-kit-for-90-degree-angles",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636677-50045/638386906090000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 9051,
-      "sirka": 400,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/izolovana-suprava-na-pripojenie-y.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/pipe-insulation-sets/insulation-kit-for-split-pipelines",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636675-50045/638386906090000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 9267,
-      "sirka": 400,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/mhm-zmrstovacia-buzirka-na-opravu.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/repair-and-warning-tapes/mhm-heat-shrinkable-repair-sleeve",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/637657-50045/638702987010000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 8392,
-      "sirka": 400,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/opravna-paska.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/repair-and-warning-tapes/tape-repair",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636354-50045/638470662970000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 11751,
-      "sirka": 533,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/vystrazna-paska.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/repair-and-warning-tapes/tape-signal",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636280-50045/638872234190000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 18608,
-      "sirka": 533,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/micro-seal-pre-tlakovu-vodu.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/wall-feed-throughs/micro-seal",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636666-50045/638386969740000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 25425,
-      "sirka": 560,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/priechodka-steny-mmdv-pre-vodu-bez-tlaku.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/wall-feed-throughs/wall-feed-throuhg-mmvd",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636480-50045/638386906060000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 15634,
-      "sirka": 612,
-      "vyska": 400
-    },
-    {
-      "subor": "podklady/watts/produkty/orig/tesnenie-na-prienik-na-stenu-micro-press.jpg",
-      "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/wall-feed-throughs/wall-penetration-water-under-pressure-chain-micropress",
-      "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636681-50045/638386906090000000",
-      "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
-      "typ": "image/jpeg",
-      "bajty": 13319,
-      "sirka": 400,
-      "vyska": 400
-    }
-  ]
+ "stiahnute": "2026-09-21T14:01:17.775Z",
+ "poznamka": "Podklady výrobcu Watts (watts.eu, slovenská verzia). Použitie so súhlasom Watts, potvrdil Juraj 21. 9. 2026.",
+ "subory": [
+  {
+   "subor": "podklady/watts/loga/watts-logo.png",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/659385-source/638791958780000000",
+   "original": "659385_source.png",
+   "typ": "image/png",
+   "bajty": 16401,
+   "sirka": 571,
+   "vyska": 108
+  },
+  {
+   "subor": "podklady/watts/loga/watts-logo-4c.eps",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/17615-source/639252739090000000",
+   "original": "watts_logo_4C.eps",
+   "typ": "application/postscript",
+   "bajty": 349994,
+   "sirka": null,
+   "vyska": null
+  },
+  {
+   "subor": "podklady/watts/loga/microflex-logo.svg",
+   "zdroj": "podklady/watts/Microflex-katalog-SK.pdf#page=3",
+   "original": "vektorové kresby loga MICROFLEX® na s. 3 katalógu (vytiahnuté 23. 9. 2026)",
+   "typ": "image/svg+xml",
+   "bajty": 5439,
+   "sirka": null,
+   "vyska": null
+  },
+  {
+   "subor": "podklady/watts/fotky/microflex-prierez-vykop.jpg",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/664525-source/638944104770000000",
+   "original": "664525_source.jpg",
+   "typ": "image/jpeg",
+   "bajty": 232906,
+   "sirka": 500,
+   "vyska": 500
+  },
+  {
+   "subor": "podklady/watts/banner/microflex-banner-2025-09.jpg",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/664062-source/639110977510000000/banniere-microflex-09-2025",
+   "original": "664062_source.jpg",
+   "typ": "image/jpeg",
+   "bajty": 719175,
+   "sirka": 8000,
+   "vyska": 3025
+  },
+  {
+   "subor": "podklady/watts/fotky/microflex-vykop-spojky.jpg",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/634538-source/638349590790000000",
+   "original": "634538_source.jpg",
+   "typ": "image/jpeg",
+   "bajty": 1086072,
+   "sirka": 1600,
+   "vyska": 1066
+  },
+  {
+   "subor": "podklady/watts/fotky-kategorie/kategoria-pipes-for-sanitary.png",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/641368-source/638532761770000000",
+   "original": "641368_source.png",
+   "typ": "image/png",
+   "bajty": 50057,
+   "sirka": 200,
+   "vyska": 200
+  },
+  {
+   "subor": "podklady/watts/fotky-kategorie/kategoria-pipes-for-heating.png",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/634607-source/638532761680000000",
+   "original": "634607_source.png",
+   "typ": "image/png",
+   "bajty": 52838,
+   "sirka": 200,
+   "vyska": 200
+  },
+  {
+   "subor": "podklady/watts/fotky-referencie/referencia-povazska-bystrica.jpg",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/634190-source/638779027690000000",
+   "original": "634190_source.jpg",
+   "typ": "image/jpeg",
+   "bajty": 32202,
+   "sirka": 268,
+   "vyska": 150
+  },
+  {
+   "subor": "podklady/watts/fotky-referencie/referencia-skola.png",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/643091-source/638544867300000000",
+   "original": "643091_source.png",
+   "typ": "image/png",
+   "bajty": 84650,
+   "sirka": 300,
+   "vyska": 169
+  },
+  {
+   "subor": "podklady/watts/fotky-kategorie/kategoria-central-heating-and-sanitary.png",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/641357-source/638532761770000000",
+   "original": "641357_source.png",
+   "typ": "image/png",
+   "bajty": 47571,
+   "sirka": 200,
+   "vyska": 200
+  },
+  {
+   "subor": "podklady/watts/fotky-rady/rad-1-microflex-uno-6-bar.jpg",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636687-source/638386906090000000",
+   "original": "636687_source.jpg",
+   "typ": "image/jpeg",
+   "bajty": 63942,
+   "sirka": 1000,
+   "vyska": 1000
+  },
+  {
+   "subor": "podklady/watts/fotky-rady/rad-2-microflex-duo-6-bar.jpg",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636670-source/638542227000000000",
+   "original": "636670_source.jpg",
+   "typ": "image/jpeg",
+   "bajty": 48600,
+   "sirka": 1000,
+   "vyska": 1000
+  },
+  {
+   "subor": "podklady/watts/fotky-kategorie/kategoria-couplings.png",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/641361-source/638532761770000000",
+   "original": "641361_source.png",
+   "typ": "image/png",
+   "bajty": 34350,
+   "sirka": 200,
+   "vyska": 200
+  },
+  {
+   "subor": "podklady/watts/fotky-kategorie/kategoria-cold-cold-drinking-water.png",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/641356-source/638532762240000000",
+   "original": "641356_source.png",
+   "typ": "image/png",
+   "bajty": 53794,
+   "sirka": 200,
+   "vyska": 200
+  },
+  {
+   "subor": "podklady/watts/fotky-kategorie/kategoria-accessories.png",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/642912-source/638532761930000000",
+   "original": "642912_source.png",
+   "typ": "image/png",
+   "bajty": 43595,
+   "sirka": 500,
+   "vyska": 357
+  },
+  {
+   "subor": "podklady/watts/fotky-rady/rad-4-microflex-quadro.png",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636686-source/638787510140000000",
+   "original": "636686_source.png",
+   "typ": "image/png",
+   "bajty": 39045,
+   "sirka": 500,
+   "vyska": 500
+  },
+  {
+   "subor": "podklady/watts/fotky-rady/rad-2-single-microflex-uno-primo-6-bar.jpg",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636688-source/638386969760000000",
+   "original": "636688_source.jpg",
+   "typ": "image/jpeg",
+   "bajty": 49711,
+   "sirka": 1000,
+   "vyska": 1000
+  },
+  {
+   "subor": "podklady/watts/fotky-rady/rad-2-microflex-duo-10-bar.jpg",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636671-source/638386906070000000",
+   "original": "636671_source.jpg",
+   "typ": "image/jpeg",
+   "bajty": 51056,
+   "sirka": 1000,
+   "vyska": 1000
+  },
+  {
+   "subor": "podklady/watts/fotky-rady/rad-3-microflex-primo-duo-s-10-bar.jpg",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/637367-source/638386906110000000",
+   "original": "637367_source.jpg",
+   "typ": "image/jpeg",
+   "bajty": 33501,
+   "sirka": 280,
+   "vyska": 280
+  },
+  {
+   "subor": "podklady/watts/fotky-rady/rad-1-microflex-uno-10-bar.jpg",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636689-source/638386906090000000",
+   "original": "636689_source.jpg",
+   "typ": "image/jpeg",
+   "bajty": 47186,
+   "sirka": 1000,
+   "vyska": 1000
+  },
+  {
+   "subor": "podklady/watts/fotky-rady/rad-pe-x-couplings-for-sanitary-pipes.png",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/643523-source/638532762010000000",
+   "original": "643523_source.png",
+   "typ": "image/png",
+   "bajty": 37780,
+   "sirka": 200,
+   "vyska": 200
+  },
+  {
+   "subor": "podklady/watts/fotky-rady/rad-pe-x-couplings-for-heating-and-cool-pipes.png",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/643521-source/638532762010000000",
+   "original": "643521_source.png",
+   "typ": "image/png",
+   "bajty": 26008,
+   "sirka": 200,
+   "vyska": 200
+  },
+  {
+   "subor": "podklady/watts/fotky-rady/rad-2-pipe-system-microflex-cool-ht.png",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/637643-source/638702986690000000",
+   "original": "637643_source.png",
+   "typ": "image/png",
+   "bajty": 454447,
+   "sirka": 1000,
+   "vyska": 795
+  },
+  {
+   "subor": "podklady/watts/fotky-rady/rad-1-pipe-system-microflex-cool.png",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/637640-source/638702986630000000",
+   "original": "637640_source.png",
+   "typ": "image/png",
+   "bajty": 524244,
+   "sirka": 1000,
+   "vyska": 729
+  },
+  {
+   "subor": "podklady/watts/fotky-rady/rad-microflex-cool-duo.png",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/637635-source/638702986520000000",
+   "original": "637635_source.png",
+   "typ": "image/png",
+   "bajty": 585204,
+   "sirka": 1000,
+   "vyska": 729
+  },
+  {
+   "subor": "podklady/watts/fotky-rady/rad-caps-and-reduction-kits.jpg",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/642849-source/638532761860000000",
+   "original": "642849_source.jpg",
+   "typ": "image/jpeg",
+   "bajty": 13922,
+   "sirka": 280,
+   "vyska": 210
+  },
+  {
+   "subor": "podklady/watts/fotky-rady/rad-repair-and-warning-tapes.jpg",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/642846-source/638532761860000000",
+   "original": "642846_source.jpg",
+   "typ": "image/jpeg",
+   "bajty": 20442,
+   "sirka": 280,
+   "vyska": 210
+  },
+  {
+   "subor": "podklady/watts/fotky-rady/rad-accessories.png",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/641384-source/638532761810000000",
+   "original": "641384_source.png",
+   "typ": "image/png",
+   "bajty": 21086,
+   "sirka": 200,
+   "vyska": 200
+  },
+  {
+   "subor": "podklady/watts/fotky-rady/rad-wall-feed-throughs.png",
+   "zdroj": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/642911-source/638532761930000000",
+   "original": "642911_source.png",
+   "typ": "image/png",
+   "bajty": 39241,
+   "sirka": 500,
+   "vyska": 357
+  },
+  {
+   "subor": "podklady/watts/fotky-referencie/orig/fackov-1.jpg",
+   "zdroj": "https://www.watts.eu/sk/references/microflex-slovakia-single-family",
+   "original": "originál dfsmedia (rendition „source“), stiahnuté 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 255349,
+   "sirka": 640,
+   "vyska": 480
+  },
+  {
+   "subor": "podklady/watts/fotky-referencie/orig/fackov-2.jpg",
+   "zdroj": "https://www.watts.eu/sk/references/microflex-slovakia-single-family",
+   "original": "originál dfsmedia (rendition „source“), stiahnuté 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 224231,
+   "sirka": 640,
+   "vyska": 480
+  },
+  {
+   "subor": "podklady/watts/fotky-referencie/orig/fackov-3.jpg",
+   "zdroj": "https://www.watts.eu/sk/references/microflex-slovakia-single-family",
+   "original": "originál dfsmedia (rendition „source“), stiahnuté 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 1331335,
+   "sirka": 2016,
+   "vyska": 1512
+  },
+  {
+   "subor": "podklady/watts/fotky-referencie/orig/orange-2.jpg",
+   "zdroj": "https://www.watts.eu/sk/references/microflex-in-orange-military-base",
+   "original": "originál dfsmedia (rendition „source“), stiahnuté 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 1015367,
+   "sirka": 1200,
+   "vyska": 1200
+  },
+  {
+   "subor": "podklady/watts/fotky-referencie/orig/orange-3.jpg",
+   "zdroj": "https://www.watts.eu/sk/references/microflex-in-orange-military-base",
+   "original": "originál dfsmedia (rendition „source“), stiahnuté 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 1092302,
+   "sirka": 1200,
+   "vyska": 1200
+  },
+  {
+   "subor": "podklady/watts/fotky-referencie/orig/orange-4.jpg",
+   "zdroj": "https://www.watts.eu/sk/references/microflex-in-orange-military-base",
+   "original": "originál dfsmedia (rendition „source“), stiahnuté 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 848130,
+   "sirka": 1200,
+   "vyska": 1200
+  },
+  {
+   "subor": "podklady/watts/fotky-referencie/orig/orange-5.jpg",
+   "zdroj": "https://www.watts.eu/sk/references/microflex-in-orange-military-base",
+   "original": "originál dfsmedia (rendition „source“), stiahnuté 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 748525,
+   "sirka": 1200,
+   "vyska": 1200
+  },
+  {
+   "subor": "podklady/watts/fotky-referencie/orig/orange-6.jpg",
+   "zdroj": "https://www.watts.eu/sk/references/microflex-in-orange-military-base",
+   "original": "originál dfsmedia (rendition „source“), stiahnuté 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 1035481,
+   "sirka": 1200,
+   "vyska": 1200
+  },
+  {
+   "subor": "podklady/watts/fotky-referencie/orig/povazska-1.jpg",
+   "zdroj": "https://www.watts.eu/sk/references/microflex-big-project-in-pova-bystrica",
+   "original": "originál dfsmedia (rendition „source“), stiahnuté 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 32202,
+   "sirka": 268,
+   "vyska": 150
+  },
+  {
+   "subor": "podklady/watts/fotky-referencie/orig/povazska-2.jpg",
+   "zdroj": "https://www.watts.eu/sk/references/microflex-big-project-in-pova-bystrica",
+   "original": "originál dfsmedia (rendition „source“), stiahnuté 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 114934,
+   "sirka": 895,
+   "vyska": 500
+  },
+  {
+   "subor": "podklady/watts/fotky-referencie/orig/povazska-3.jpg",
+   "zdroj": "https://www.watts.eu/sk/references/microflex-big-project-in-pova-bystrica",
+   "original": "originál dfsmedia (rendition „source“), stiahnuté 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 83182,
+   "sirka": 895,
+   "vyska": 501
+  },
+  {
+   "subor": "podklady/watts/fotky-referencie/orig/povazska-4.jpg",
+   "zdroj": "https://www.watts.eu/sk/references/microflex-big-project-in-pova-bystrica",
+   "original": "originál dfsmedia (rendition „source“), stiahnuté 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 54694,
+   "sirka": 640,
+   "vyska": 358
+  },
+  {
+   "subor": "podklady/watts/fotky-referencie/orig/povazska-5.jpg",
+   "zdroj": "https://www.watts.eu/sk/references/microflex-big-project-in-pova-bystrica",
+   "original": "originál dfsmedia (rendition „source“), stiahnuté 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 154300,
+   "sirka": 640,
+   "vyska": 358
+  },
+  {
+   "subor": "podklady/watts/fotky-referencie/orig/povazska-6.jpg",
+   "zdroj": "https://www.watts.eu/sk/references/microflex-big-project-in-pova-bystrica",
+   "original": "originál dfsmedia (rendition „source“), stiahnuté 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 154920,
+   "sirka": 640,
+   "vyska": 358
+  },
+  {
+   "subor": "podklady/watts/fotky-referencie/orig/povazska-7.jpg",
+   "zdroj": "https://www.watts.eu/sk/references/microflex-big-project-in-pova-bystrica",
+   "original": "originál dfsmedia (rendition „source“), stiahnuté 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 410419,
+   "sirka": 895,
+   "vyska": 501
+  },
+  {
+   "subor": "podklady/watts/fotky-referencie/orig/skola-1.jpg",
+   "zdroj": "https://www.watts.eu/sk/references/microflex-saves-school-year",
+   "original": "originál dfsmedia (rendition „source“), stiahnuté 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 168007,
+   "sirka": 640,
+   "vyska": 480
+  },
+  {
+   "subor": "podklady/watts/fotky-referencie/orig/skola-2.jpg",
+   "zdroj": "https://www.watts.eu/sk/references/microflex-saves-school-year",
+   "original": "originál dfsmedia (rendition „source“), stiahnuté 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 150905,
+   "sirka": 640,
+   "vyska": 480
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/3-x-ohrev-spojky-pe-x-t.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/pe-x-couplings-for-heating-and-cool-pipes/coupling-heating-mj130",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636010-50045/638386906040000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 17585,
+   "sirka": 533,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/pe-x-x-pe-x-spojka-kurenie.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/pe-x-couplings-for-heating-and-cool-pipes/coupling-heating-mj270",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636698-50045/638532761730000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 15733,
+   "sirka": 421,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/pe-x-x-pe-x-koleno-spojky-vykurovanie.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/pe-x-couplings-for-heating-and-cool-pipes/elbow-mj90",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/635838-50045/638875871170000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 19693,
+   "sirka": 533,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/pe-x-spojka-kurenie-cool-6-16bar.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/pe-x-couplings-for-heating-and-cool-pipes/pe-x-coupling-heating-cool-6-16bar-mj341",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636683-50045/638439531500000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 8968,
+   "sirka": 400,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/zvarove-koncovky-spojky-a-cool-6-16bar-s6.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/pe-x-couplings-for-heating-and-cool-pipes/fitting-for-welding-s6",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/635957-50045/638386906040000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 14762,
+   "sirka": 533,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/sanitarne-spojky-microflex-pe-x.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/pe-x-couplings-for-sanitary-pipes/microflex-pe-x-couplings-sanitary",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636683-50045/638439531500000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 8968,
+   "sirka": 400,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/pe-x-x-pe-x-sanitarne-zariadenie.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/pe-x-couplings-for-sanitary-pipes/coupling-sanitary-mj270",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/635839-50045/638386906030000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 17693,
+   "sirka": 533,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/sanitarne-kolenne-spojky-pe-x-x-pe-x.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/pe-x-couplings-for-sanitary-pipes/pe-x-x-pe-x-elbow-coupling-sanitary",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/635837-50045/638386906030000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 19693,
+   "sirka": 533,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/3-x-pe-x-t-spojka-sanitarna.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/pe-x-couplings-for-sanitary-pipes/t-coupling-plumbing",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/641366-50045/638875860620000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 12268,
+   "sirka": 400,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/fixny-bod.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/accessories/anchoring-fixing-threaded-couplings",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636174-50045/638386906040000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 18683,
+   "sirka": 533,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/objimka-obal.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/accessories/nipple-ff-microflex",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636647-50045/638386906060000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 17869,
+   "sirka": 416,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/koleno-90.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/accessories/elbow-ff-microflex",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636303-50045/638386906040000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 18922,
+   "sirka": 394,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/t-kus-z-bronzu.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/accessories/tee-f-f-f-microflex",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636908-50045/638386906090000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 19084,
+   "sirka": 432,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/vsuvka-z-poniklovanej-mosadze.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/accessories/nipple-vw280",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/635887-50045/638386906030000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 16545,
+   "sirka": 533,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/redukcne-puzdro.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/accessories/reducing-bush-vw241",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/635956-50045/638386906040000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 15848,
+   "sirka": 533,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/priruba-so-zavitom-z-pozinkovanej-ocele.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/accessories/flange-mdf",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/635917-50045/638386906040000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 14961,
+   "sirka": 533,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/zatka.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/accessories/brass-plug-vw290",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636690-50045/638386906090000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 12285,
+   "sirka": 400,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/uzatvaraci-ventil.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/couplings/accessories/stop-valve-microflex",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636973-50045/638386906090000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 11333,
+   "sirka": 382,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/uzatvara-prach-na-jednom-potrubi.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/caps-and-reduction-kits/dust-cap-ms-uno",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636211-50045/638386906040000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 10369,
+   "sirka": 533,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/uzatvara-prach-na-dvojitom-potrubi.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/caps-and-reduction-kits/dust-cap-msd-duo",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/635888-50045/638386906030000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 10293,
+   "sirka": 533,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/uzatvara-prach-na-potrubi-quadro.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/caps-and-reduction-kits/dust-cap-msq-quadro",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/643121-50045/638440625170000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 12187,
+   "sirka": 599,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/teplom-zmrstitelne-hlavice-pre-uno-rurku.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/caps-and-reduction-kits/heat-shrink-caps-on-single-pipelines",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636414-50045/638386906060000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 10994,
+   "sirka": 400,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/teplom-zmrstitelne-hlavice-pre-rurku-duo.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/caps-and-reduction-kits/dust-cap-msq-duo",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/635830-50045/638386906030000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 12678,
+   "sirka": 533,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/dokoncenie-uzaverov-epdm-na-jednotlivych-potrubiach.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/caps-and-reduction-kits/finishing-epdm-caps-on-single-pipelines",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636646-50045/638386906060000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 15810,
+   "sirka": 459,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/dokoncenie-uzaverov-epdm-na-dvojitych-potrubiach.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/caps-and-reduction-kits/finishing-epdm-caps-on-double-pipelines",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636645-50045/638386906060000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 13865,
+   "sirka": 380,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/dokoncenie-uzaverov-epdm-na-potrubiach-quadro.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/caps-and-reduction-kits/finishing-epdm-caps-on-quado-pipelines",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636664-50045/638911231260000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 16901,
+   "sirka": 493,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/pripojovacia-sada-pre-microflex-cool-s-vykurovacou-paskou.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/pipe-insulation-sets/connection-kit-for-microflex-cool-with-heating-tape",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636585-50045/639159160520000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 22588,
+   "sirka": 477,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/redukcia-pre-izolovanu-supravu-t-kusu.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/pipe-insulation-sets/coupling-transient-shrinkage",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/635906-50045/638386906040000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 17886,
+   "sirka": 533,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/inspekcna-komora.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/pipe-insulation-sets/inspection-chamber",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/637404-50045/638386906110000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 21840,
+   "sirka": 533,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/izolovana-sada-s-dvojitym-t-kusom.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/pipe-insulation-sets/insulated-double-t-piece-kit",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636676-50045/638386906090000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 18351,
+   "sirka": 560,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/izolovana-suprava-i-kus.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/pipe-insulation-sets/insulated-i-piece-kit",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636684-50045/638386906090000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 7005,
+   "sirka": 400,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/izolacna-sada-i-variant.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/pipe-insulation-sets/insulated-kit-i-variant",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/635935-50045/638386906040000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 10905,
+   "sirka": 533,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/izolovana-suprava-t-kusu.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/pipe-insulation-sets/insulated-t-piece-kit",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636685-50045/638440625170000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 10101,
+   "sirka": 400,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/zateplene-koleno-90.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/pipe-insulation-sets/insulation-kit-for-90-degree-angles",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636677-50045/638386906090000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 9051,
+   "sirka": 400,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/izolovana-suprava-na-pripojenie-y.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/pipe-insulation-sets/insulation-kit-for-split-pipelines",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636675-50045/638386906090000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 9267,
+   "sirka": 400,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/mhm-zmrstovacia-buzirka-na-opravu.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/repair-and-warning-tapes/mhm-heat-shrinkable-repair-sleeve",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/637657-50045/638702987010000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 8392,
+   "sirka": 400,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/opravna-paska.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/repair-and-warning-tapes/tape-repair",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636354-50045/638470662970000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 11751,
+   "sirka": 533,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/vystrazna-paska.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/repair-and-warning-tapes/tape-signal",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636280-50045/638872234190000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 18608,
+   "sirka": 533,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/micro-seal-pre-tlakovu-vodu.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/wall-feed-throughs/micro-seal",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636666-50045/638386969740000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 25425,
+   "sirka": 560,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/priechodka-steny-mmdv-pre-vodu-bez-tlaku.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/wall-feed-throughs/wall-feed-throuhg-mmvd",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636480-50045/638386906060000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 15634,
+   "sirka": 612,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/produkty/orig/tesnenie-na-prienik-na-stenu-micro-press.jpg",
+   "zdroj": "https://www.watts.eu/sk/products/eu/microflex-pre-insulated-piping/accessories/wall-feed-throughs/wall-penetration-water-under-pressure-chain-micropress",
+   "url": "https://www.watts.eu/dfsmedia/0533dbba17714b1ab581ab07a4cbb521/636681-50045/638386906090000000",
+   "original": "obrázok produktu z galérie watts.eu (rendition 50045), stiahnutý 23. 9. 2026 cez prehliadač",
+   "typ": "image/jpeg",
+   "bajty": 13319,
+   "sirka": 400,
+   "vyska": 400
+  },
+  {
+   "subor": "podklady/watts/fotky-katalog/brozura-2026-s1-areal.jpg",
+   "zdroj": "podklady/watts/Microflex-brozura-EN-2026-05.pdf",
+   "url": null,
+   "original": "obrázok vložený v brožúre Watts Microflex EN 2026-05 (obálka: kancelársky areál s potrubím vo výkope), vytiahnutý PyMuPDF 22. 10. 2026",
+   "typ": "image/jpeg",
+   "bajty": 108360,
+   "sirka": 1245,
+   "vyska": 784
+  },
+  {
+   "subor": "podklady/watts/fotky-katalog/brozura-2026-s2-a.jpg",
+   "zdroj": "podklady/watts/Microflex-brozura-EN-2026-05.pdf",
+   "url": null,
+   "original": "obrázok vložený v brožúre Watts Microflex EN 2026-05 (s. 2: ilustrácia použitia na pozemku s detailmi v kruhoch), vytiahnutý PyMuPDF 22. 10. 2026",
+   "typ": "image/jpeg",
+   "bajty": 87280,
+   "sirka": 730,
+   "vyska": 718
+  },
+  {
+   "subor": "podklady/watts/fotky-katalog/brozura-2026-s2-b.jpg",
+   "zdroj": "podklady/watts/Microflex-brozura-EN-2026-05.pdf",
+   "url": null,
+   "original": "obrázok vložený v brožúre Watts Microflex EN 2026-05 (s. 2: pružina, obraz ohybnosti), vytiahnutý PyMuPDF 22. 10. 2026",
+   "typ": "image/jpeg",
+   "bajty": 50943,
+   "sirka": 881,
+   "vyska": 560
+  },
+  {
+   "subor": "podklady/watts/fotky-katalog/brozura-2026-s4-a.jpg",
+   "zdroj": "podklady/watts/Microflex-brozura-EN-2026-05.pdf",
+   "url": null,
+   "original": "obrázok vložený v brožúre Watts Microflex EN 2026-05 (s. 4: makro zvlneného plášťa s dvojitou stenou), vytiahnutý PyMuPDF 22. 10. 2026",
+   "typ": "image/jpeg",
+   "bajty": 24944,
+   "sirka": 672,
+   "vyska": 504
+  }
+ ]
 }

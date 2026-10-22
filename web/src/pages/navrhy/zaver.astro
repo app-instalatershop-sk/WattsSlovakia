@@ -1,0 +1,139 @@
+---
+import { Image } from 'astro:assets';
+import Strana from '../../navrhy/Strana.astro';
+import Navrh from '../../navrhy/Navrh.astro';
+import Zaver from '../../components/Zaver.astro';
+import Ikona from '../../components/Ikona.astro';
+import { FIRMA, firma } from '../../content/firma';
+import { fotkaReferencie } from '../../lib/obrazky';
+import { ESHOP, route } from '../../i18n/ui';
+
+const f = firma('sk');
+const kotuce = fotkaReferencie('povazska-2.jpg')!;
+const vykop = fotkaReferencie('orange-2.jpg')!;
+const dopyt = `${route('sk', 'firmy')}#dopyt`;
+const VARIANTY = [
+  { pismeno: 'A', nazov: 'Dnes: tmavý pás so zoznamom kontaktov' },
+  { pismeno: 'B', nazov: 'Fotka cez šikmú hranu' },
+  { pismeno: 'C', nazov: 'Dve cesty: e-shop alebo projekt' },
+];
+---
+<Strana cesta="/navrhy/zaver/" nadpis="Záver vnútornej stránky" varianty={VARIANTY}
+  popis="Posledný tmavý pás pred pätičkou: kde kúpiť, ako poslať dopyt a kontakt. Nad ním je koniec tela stránky, pod ním začiatok pätičky, aby bolo vidno, ako zapadne."
+  kde="všetky vnútorné stránky okrem domova (asi 140 stránok)">
+
+  <Navrh pismeno="A" nazov="Tmavý pás so zoznamom kontaktov" dnes
+    popis="Nadpis, dve tlačidlá a vpravo telefón, e-mail a predajňa v riadkoch s čiarami. Spodok splýva s pätičkou.">
+    <div class="koniec-tela"></div>
+    <Zaver lang="sk" />
+    <div class="paticka-stub"></div>
+  </Navrh>
+
+  <Navrh pismeno="B" nazov="Fotka cez šikmú hranu" odporucam
+    popis="Rovnaký motív ako podzemie na domove: skutočná fotka (kotúče pripravené na stavbe) vystupuje cez šikmú hranu do svetlého tela a vpravo za okraj obrazovky. Kontakty sú jeden pokojný riadok bez tabuľky."
+    inspiracia="náš domov (fotka z výkopu cez hranu podzemia), Logstor (fotky v mierke)">
+    <div class="koniec-tela"></div>
+    <section class="zb">
+      <div class="wrap zb-in">
+        <div class="zb-text">
+          <h2>Microflex kúpite na instalatershop.sk</h2>
+          <p class="lead">Cenu a dostupnosť každého obj. čísla nájdete v e-shope. Na väčší projekt pošlite dopyt, ozveme sa s ponukou a dostupnosťou.</p>
+          <div class="zb-akcie">
+            <a class="btn btn-yellow" href={ESHOP} target="_blank" rel="noopener">Do e-shopu instalatershop.sk <Ikona nazov="external-link" velkost={18} /></a>
+            <a class="btn btn-ghost-light" href={dopyt}>Poslať dopyt na projekt</a>
+          </div>
+        </div>
+        <figure class="zb-foto"><Image src={kotuce} alt="Kotúče potrubia Microflex pripravené na stavbe" widths={[640, 895]} sizes="(max-width: 900px) 100vw, 50vw" /></figure>
+      </div>
+      <div class="wrap zb-kontakt">
+        <a href={FIRMA.telefonHref}><Ikona nazov="phone" velkost={18} />{FIRMA.telefon}</a>
+        <a href={`mailto:${FIRMA.email}`}><Ikona nazov="mail" velkost={18} />{FIRMA.email}</a>
+        <span><Ikona nazov="map-pin" velkost={18} />{FIRMA.predajna.ulica}, {FIRMA.predajna.mesto}, {f.hodinyKratko}</span>
+      </div>
+    </section>
+    <div class="paticka-stub"></div>
+  </Navrh>
+
+  <Navrh pismeno="C" nazov="Dve cesty: e-shop alebo projekt"
+    popis="Dve veľké plochy so skutočnou fotkou: menšie množstvá kúpite hneď v e-shope, na veľký projekt pošlete trasu. Každý zákazník vidí svoju cestu, kontakt je pod nimi."
+    inspiracia="Porsche (jasná voľba medzi kúpou a konfiguráciou), Brugg (konfigurátor a dopyt ako samostatné vstupy)">
+    <div class="koniec-tela"></div>
+    <section class="zc">
+      <div class="wrap">
+        <h2>Kúpiť hneď, alebo pripraviť projekt?</h2>
+        <div class="zc-cesty">
+          <a class="zc-cesta" href={ESHOP} target="_blank" rel="noopener">
+            <span class="zc-foto"><Image src={kotuce} alt="" widths={[480, 760]} sizes="(max-width: 900px) 100vw, 46vw" /></span>
+            <span class="zc-telo">
+              <strong>Menšie množstvá v e-shope</strong>
+              <span class="zc-p">Cena a dostupnosť každého obj. čísla, objednávka priamo na instalatershop.sk.</span>
+              <span class="btn btn-yellow">Do e-shopu instalatershop.sk <Ikona nazov="external-link" velkost={18} /></span>
+            </span>
+          </a>
+          <a class="zc-cesta" href={dopyt}>
+            <span class="zc-foto"><Image src={vykop} alt="" widths={[480, 760, 1000]} sizes="(max-width: 900px) 100vw, 46vw" /></span>
+            <span class="zc-telo">
+              <strong>Projekt na celú trasu</strong>
+              <span class="zc-p">Pošlite trasu a dĺžky, pripravíme ponuku potrubia, spojok a príslušenstva s dostupnosťou.</span>
+              <span class="btn btn-inverse">Poslať dopyt na projekt</span>
+            </span>
+          </a>
+        </div>
+        <p class="zc-kontakt">
+          <a href={FIRMA.telefonHref}><Ikona nazov="phone" velkost={18} />{FIRMA.telefon}</a>
+          <a href={`mailto:${FIRMA.email}`}><Ikona nazov="mail" velkost={18} />{FIRMA.email}</a>
+          <span><Ikona nazov="map-pin" velkost={18} />{FIRMA.predajna.ulica}, {FIRMA.predajna.mesto}</span>
+        </p>
+      </div>
+    </section>
+    <div class="paticka-stub"></div>
+  </Navrh>
+</Strana>
+
+<style>
+  /* Koniec svetlého tela nad záverom a začiatok pätičky pod ním. */
+  .koniec-tela { height: 150px; background: linear-gradient(180deg, var(--zem-2) 0%, var(--zem-3) 100%); }
+  .paticka-stub { height: 120px; padding-top: 96px; background: linear-gradient(180deg, #0c3272 0%, var(--color-blue-900) 100%); }
+
+  /* ---------- B: fotka cez šikmú hranu ---------- */
+  .zb { --sikmina: var(--sikmina-zaver); position: relative; z-index: 1; margin-top: calc(-1 * var(--sikmina)); margin-bottom: -96px; padding: calc(var(--sikmina) + 40px) 0 112px; color: #fff; }
+  .zb::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, #0e3676 0%, var(--color-blue-900) 55%, #0c3272 100%); clip-path: polygon(0 var(--sikmina), 100% 0, 100% 100%, 0 100%); }
+  .zb-in { position: relative; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 32px 56px; align-items: end; }
+  .zb h2 { color: #fff; font-size: clamp(28px, 1.8vw + 16px, 42px); line-height: 1.08; letter-spacing: -0.02em; max-width: 12em; }
+  .zb .lead { color: var(--color-on-dark-muted); margin-top: 16px; }
+  .zb-akcie { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+  .zb-foto { margin: -200px calc(-1 * var(--bleed)) 0 0; }
+  .zb-foto :global(img) { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; border-radius: 18px 0 0 18px; box-shadow: 0 40px 80px -30px rgb(2 10 30 / 0.7); }
+  .zb-kontakt { position: relative; display: flex; flex-wrap: wrap; gap: 14px 36px; margin-top: 48px; padding-top: 26px; }
+  .zb-kontakt a, .zb-kontakt span { display: inline-flex; align-items: center; gap: 10px; color: #fff; font-weight: 500; }
+  .zb-kontakt span { color: var(--color-on-dark-muted); font-weight: 400; }
+  .zb-kontakt :global(svg) { color: var(--color-yellow-500); }
+
+  /* ---------- C: dve cesty ---------- */
+  .zc { --sikmina: var(--sikmina-zaver); position: relative; z-index: 1; margin-top: calc(-1 * var(--sikmina)); margin-bottom: -96px; padding: calc(var(--sikmina) + 56px) 0 112px; color: #fff; }
+  .zc::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, #0e3676 0%, var(--color-blue-900) 55%, #0c3272 100%); clip-path: polygon(0 var(--sikmina), 100% 0, 100% 100%, 0 100%); }
+  .zc .wrap { position: relative; }
+  .zc h2 { color: #fff; font-size: clamp(28px, 1.8vw + 16px, 42px); letter-spacing: -0.02em; }
+  .zc-cesty { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-top: 32px; }
+  .zc-cesta { display: grid; grid-template-rows: auto 1fr; border-radius: 20px; overflow: hidden; color: #fff; background: linear-gradient(170deg, #154187 0%, #0d3270 100%); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.08), 0 30px 60px -34px rgb(2 10 30 / 0.8); transition: transform 250ms var(--ease-soft), box-shadow 250ms var(--ease-soft); }
+  .zc-cesta:hover { color: #fff; transform: translateY(-4px); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.16), 0 40px 70px -34px rgb(2 10 30 / 0.9); }
+  .zc-foto { display: block; position: relative; }
+  .zc-foto :global(img) { display: block; width: 100%; height: auto; aspect-ratio: 16 / 8; object-fit: cover; transition: transform 700ms var(--ease-soft); }
+  .zc-cesta:hover .zc-foto :global(img) { transform: scale(1.04); }
+  .zc-foto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgb(13 50 112 / 0) 50%, #0f3878 100%); }
+  .zc-telo { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 6px 28px 28px; }
+  .zc-telo strong { font-family: var(--font-display); font-stretch: 112.5%; font-size: clamp(22px, 1vw + 15px, 28px); line-height: 1.15; letter-spacing: -0.015em; }
+  .zc-p { color: var(--color-on-dark-muted); max-width: 30em; }
+  .zc-telo .btn { margin-top: 8px; }
+  .zc-telo .btn-inverse { color: var(--color-blue-900); }
+  .zc-kontakt { display: flex; flex-wrap: wrap; gap: 14px 36px; margin-top: 36px; }
+  .zc-kontakt a, .zc-kontakt span { display: inline-flex; align-items: center; gap: 10px; color: #fff; font-weight: 500; }
+  .zc-kontakt span { color: var(--color-on-dark-muted); font-weight: 400; }
+  .zc-kontakt :global(svg) { color: var(--color-yellow-500); }
+
+  @media (max-width: 900px) {
+    .zb-in, .zc-cesty { grid-template-columns: minmax(0, 1fr); }
+    .zb-foto { grid-row: 1; margin: -150px calc(-1 * var(--gutter)) 8px; }
+    .zb-foto :global(img) { border-radius: 0; }
+  }
+</style>

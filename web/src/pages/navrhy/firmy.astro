@@ -1,0 +1,155 @@
+---
+import { Image } from 'astro:assets';
+import Strana from '../../navrhy/Strana.astro';
+import Navrh from '../../navrhy/Navrh.astro';
+import Ikona from '../../components/Ikona.astro';
+import { fotka, fotkaReferencie } from '../../lib/obrazky';
+import { sadzba } from '../../lib/sadzba';
+import { route } from '../../i18n/ui';
+
+// Skupiny zákazníkov ako na stránke Pre firmy (texty skrátené na ukážku).
+const SKUPINY = [
+  { h: 'Projektanti', p: 'Výkresy DWG a DXF pre každý rad, tabuľky rozmerov a výkonu, tepelné a tlakové straty a vyhlásenia výrobcu na jednom mieste.', odkaz: 'Podklady na stiahnutie', href: route('sk', 'stiahnut'), img: fotka('katalog-obalka.jpg')!, poloha: '50% 22%' },
+  { h: 'Montážne firmy', p: 'Materiál na celý výkop v jednej ponuke: potrubie, svorné spojky, koncové krytky, izolačné sady na spoje pod zemou a prestupy stenou.', odkaz: 'Spojky a príslušenstvo', href: route('sk', 'spojky'), img: fotka('vykop-spojky.jpg')!, poloha: '50% 50%' },
+  { h: 'Veľkoobchod', p: 'Obj. čísla výrobcu pri každej dimenzii a diele, kopírovateľné jedným klikom. Ponuku a dostupnosť pripravíme na dopyt.', odkaz: 'Všetky potrubia', href: route('sk', 'potrubia'), img: fotkaReferencie('povazska-2.jpg')!, poloha: '50% 50%' },
+];
+// Kancelársky areál s potrubím vo výkope pred budovou (obálka brožúry Watts Microflex 2026, 1 245 px).
+const velka = fotka('areal-vykop.jpg')!;
+const stavba = fotkaReferencie('orange-2.jpg')!;
+const VARIANTY = [
+  { pismeno: 'A', nazov: 'Dnes: tri rovnaké fotky nad textom' },
+  { pismeno: 'B', nazov: 'Schodovito, rôzne formáty' },
+  { pismeno: 'C', nazov: 'Jedna veľká fotka a zoznam s lupami' },
+  { pismeno: 'D', nazov: 'Fotka zo stavby cez celú výšku' },
+];
+---
+<Strana cesta="/navrhy/firmy/" nadpis="Fotky pri skupinách zákazníkov" varianty={VARIANTY}
+  popis="Stránka Pre firmy: projektanti, montážne firmy a veľkoobchod. Ako rozložiť fotky, aby nepôsobili ako tri rovnaké karty. Rovnaký vzor by mali aj iné trojice na webe (podklady, služby)."
+  kde="Pre firmy SK a CS; rovnaký vzor ide použiť pri projektovej podpore na domove">
+
+  <Navrh pismeno="A" nazov="Tri rovnaké fotky nad textom" dnes
+    popis="Tri stĺpce, fotka 4 : 3 s tieňom, pod ňou nadpis, text a odkaz." pozadie="linear-gradient(180deg, var(--zem-1), var(--zem-2))">
+    <div class="wrap plocha-pad">
+      <ul class="a-mriezka">
+        {SKUPINY.map((s) => (
+          <li class="a-skupina">
+            <span class="a-foto"><Image src={s.img} alt="" widths={[420, 640]} sizes="30vw" style={`object-position: ${s.poloha}`} /></span>
+            <h2>{s.h}</h2><p>{sadzba(s.p)}</p>
+            <a class="odkaz" href={s.href}>{s.odkaz} <Ikona nazov="arrow-right" velkost={16} /></a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </Navrh>
+
+  <Navrh pismeno="B" nazov="Schodovito, rôzne formáty"
+    popis="Prvá fotka na výšku, druhá na šírku posunutá nižšie, tretia štvorec. Rytmus ako v časopise, oko prechádza zľava doprava a nadol. Fotky sú väčšie a každá má vlastný charakter."
+    inspiracia="Vipp (redakčné stránky s fotkami rôznych formátov)" pozadie="linear-gradient(180deg, var(--zem-1), var(--zem-2))">
+    <div class="wrap plocha-pad">
+      <ul class="b-schody">
+        {SKUPINY.map((s, i) => (
+          <li class={`b-skupina b-${i + 1}`}>
+            <span class="b-foto"><Image src={s.img} alt="" widths={[420, 640, 900]} sizes="34vw" style={`object-position: ${s.poloha}`} /></span>
+            <h2>{s.h}</h2><p>{sadzba(s.p)}</p>
+            <a class="odkaz" href={s.href}>{s.odkaz} <Ikona nazov="arrow-right" velkost={16} /></a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </Navrh>
+
+  <Navrh pismeno="C" nazov="Jedna veľká fotka a zoznam s lupami" odporucam
+    popis="Vľavo jedna silná fotka (kancelársky areál s potrubím vo výkope, z brožúry Watts 2026), za okraj obrazovky. Vpravo tri skupiny pod sebou, každá s okrúhlou lupou ako na domove. Jedna fotka nesie náladu, lupy nesú detail."
+    inspiracia="náš domov (rez pod lupou), Apple (jeden veľký obraz a vedľa zoznam)" pozadie="linear-gradient(180deg, var(--zem-1), var(--zem-2))">
+    <div class="wrap plocha-pad c-rozlozenie">
+      <figure class="c-velka"><Image src={velka} alt="Potrubie Microflex vo výkope pred kancelárskym areálom" widths={[640, 960, 1245]} sizes="(max-width: 900px) 100vw, 56vw" /></figure>
+      <ul class="c-zoznam">
+        {SKUPINY.map((s) => (
+          <li>
+            <span class="c-lupa"><Image src={s.img} alt="" width={96} height={96} densities={[1, 2]} style={`object-position: ${s.poloha}`} /></span>
+            <div><h2>{s.h}</h2><p>{sadzba(s.p)}</p><a class="odkaz" href={s.href}>{s.odkaz} <Ikona nazov="arrow-right" velkost={16} /></a></div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </Navrh>
+
+  <Navrh pismeno="D" nazov="Fotka zo stavby cez celú výšku"
+    popis="Výkop s pažením (Orange) stojí vľavo cez celú výšku sekcie ako stĺp, tri skupiny vedľa v tmavom paneli. Silná nálada veľkej stavby, menej detailu."
+    inspiracia="Logstor (fotky v mierke), Schüco (fotka a text vedľa seba cez celú výšku)">
+    <div class="d-rozlozenie">
+      <figure class="d-foto"><Image src={stavba} alt="Výkop s pažením a dvomi potrubiami Microflex na vojenskej základni v Orange" widths={[640, 960, 1200]} sizes="(max-width: 900px) 100vw, 45vw" /></figure>
+      <div class="d-panel">
+        <h2 class="d-nadpis">Pre koho pripravujeme podklady a ponuky</h2>
+        <ul class="d-zoznam">
+          {SKUPINY.map((s) => (
+            <li><h3>{s.h}</h3><p>{sadzba(s.p)}</p><a href={s.href}>{s.odkaz} <Ikona nazov="arrow-right" velkost={16} /></a></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </Navrh>
+</Strana>
+
+<style>
+  .plocha-pad { padding-block: 72px 88px; }
+  h2 { font-size: 24px; letter-spacing: -0.015em; }
+  .odkaz { align-self: flex-start; }
+
+  /* A: dnes */
+  .a-mriezka { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px 32px; }
+  .a-skupina { display: flex; flex-direction: column; gap: 12px; }
+  .a-skupina p { color: var(--color-ink-soft); }
+  .a-foto { display: block; margin-bottom: 10px; border-radius: 18px; overflow: hidden; box-shadow: 0 30px 60px -34px rgb(11 27 51 / 0.55); }
+  .a-foto :global(img) { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+
+  /* B: schodovito */
+  .b-schody { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 5fr) minmax(0, 4fr); gap: 40px 36px; align-items: start; }
+  .b-skupina { display: flex; flex-direction: column; gap: 12px; }
+  .b-skupina p { color: var(--color-ink-soft); }
+  .b-foto { display: block; margin-bottom: 10px; border-radius: 18px; overflow: hidden; box-shadow: 0 34px 64px -34px rgb(11 27 51 / 0.6); }
+  .b-foto :global(img) { display: block; width: 100%; height: auto; object-fit: cover; }
+  .b-1 .b-foto :global(img) { aspect-ratio: 3 / 4; }
+  .b-2 { margin-top: 120px; }
+  .b-2 .b-foto :global(img) { aspect-ratio: 4 / 3; }
+  .b-3 { margin-top: 56px; }
+  .b-3 .b-foto :global(img) { aspect-ratio: 1; }
+
+  /* C: veľká fotka a lupy */
+  .c-rozlozenie { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 40px 56px; align-items: center; }
+  .c-velka { margin: 0 0 0 calc(-1 * var(--bleed)); }
+  .c-velka :global(img) { display: block; width: 100%; height: auto; aspect-ratio: 5 / 4; object-fit: cover; border-radius: 0 22px 22px 0; box-shadow: 0 40px 80px -36px rgb(11 27 51 / 0.6); }
+  .c-zoznam { display: grid; gap: 34px; }
+  .c-zoznam li { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 24px; align-items: start; }
+  .c-zoznam h2 { font-size: 22px; }
+  .c-zoznam p { margin-top: 6px; color: var(--color-ink-soft); font-size: 15.5px; line-height: 1.55; }
+  .c-zoznam .odkaz { margin-top: 10px; }
+  .c-lupa { position: relative; display: block; width: 96px; height: 96px; border-radius: 50%; box-shadow: 0 0 0 5px #fff, 0 0 0 7px var(--color-blue-700), 0 18px 32px -14px rgb(11 27 51 / 0.5); }
+  .c-zoznam li:nth-child(1) .c-lupa { box-shadow: 0 0 0 5px #fff, 0 0 0 7px var(--color-yellow-500), 0 18px 32px -14px rgb(11 27 51 / 0.5); }
+  .c-zoznam li:nth-child(2) .c-lupa { box-shadow: 0 0 0 5px #fff, 0 0 0 7px #8e97a3, 0 18px 32px -14px rgb(11 27 51 / 0.5); }
+  .c-lupa :global(img) { display: block; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+  .c-lupa::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(70% 55% at 30% 18%, rgb(255 255 255 / 0.35), rgb(255 255 255 / 0) 62%); box-shadow: inset 0 -10px 20px rgb(11 27 51 / 0.25); }
+
+  /* D: fotka cez celú výšku */
+  .d-rozlozenie { display: grid; grid-template-columns: minmax(0, 45fr) minmax(0, 55fr); min-height: 720px; background: linear-gradient(170deg, #0e3676 0%, var(--color-blue-900) 100%); color: #fff; }
+  .d-foto { margin: 0; position: relative; }
+  .d-foto :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; }
+  .d-foto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgb(10 42 94 / 0) 70%, rgb(10 42 94 / 0.9) 100%); }
+  .d-panel { padding: 72px max(var(--gutter), calc((100vw - var(--container-site)) / 2 + var(--gutter))) 72px 64px; }
+  .d-nadpis { color: #fff; font-size: clamp(28px, 1.6vw + 16px, 40px); line-height: 1.1; max-width: 14em; }
+  .d-zoznam { display: grid; gap: 30px; margin-top: 40px; }
+  .d-zoznam li { position: relative; padding-left: 26px; }
+  .d-zoznam li::before { content: ""; position: absolute; left: 0; top: 10px; width: 4px; height: 26px; border-radius: 2px; background: var(--color-yellow-500); }
+  .d-zoznam h3 { color: #fff; font-size: 22px; }
+  .d-zoznam p { margin-top: 6px; color: var(--color-on-dark-muted); max-width: 32em; }
+  .d-zoznam a { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; color: #fff; font-weight: 500; border-bottom: 1px solid rgb(255 255 255 / 0.5); padding-bottom: 2px; }
+
+  @media (max-width: 900px) {
+    .a-mriezka, .b-schody, .c-rozlozenie, .d-rozlozenie { grid-template-columns: minmax(0, 1fr); }
+    .b-2, .b-3 { margin-top: 0; }
+    .c-velka { margin-inline: calc(-1 * var(--gutter)); }
+    .c-velka :global(img) { border-radius: 0; }
+    .d-foto { min-height: 320px; }
+    .d-panel { padding: 40px var(--gutter); }
+  }
+</style>

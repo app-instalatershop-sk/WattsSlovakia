@@ -17,11 +17,12 @@ import arrowRight from 'lucide-static/icons/arrow-right.svg?raw';
 import arrowDown from 'lucide-static/icons/arrow-down.svg?raw';
 import info from 'lucide-static/icons/info.svg?raw';
 import copy from 'lucide-static/icons/copy.svg?raw';
+import mapPin from 'lucide-static/icons/map-pin.svg?raw';
 
 const ikony = {
   search, 'external-link': externalLink, download, 'chevron-right': chevronRight, 'chevron-down': chevronDown,
   'sliders-horizontal': slidersHorizontal, check, phone, mail, menu, x, 'file-text': fileText,
-  'arrow-up-right': arrowUpRight, 'arrow-right': arrowRight, 'arrow-down': arrowDown, info, copy,
+  'arrow-up-right': arrowUpRight, 'arrow-right': arrowRight, 'arrow-down': arrowDown, info, copy, 'map-pin': mapPin,
 } as const;
 
 export type NazovIkony = keyof typeof ikony;

@@ -1,0 +1,234 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import Strana from '../../navrhy/Strana.astro';
+import Navrh from '../../navrhy/Navrh.astro';
+import KartaRadu from '../../components/KartaRadu.astro';
+import KartaProduktu from '../../components/KartaProduktu.astro';
+import Koty from '../../components/Koty.astro';
+import Ikona from '../../components/Ikona.astro';
+import { radyVykurovania, cislaRadu } from '../../navrhy/data';
+import { kategorie, cestaProduktu, pNazov, variantyRadu, type Rad } from '../../lib/katalog';
+import { fotkaProduktu } from '../../lib/obrazky';
+import { kodyProduktu } from '../../lib/produkty';
+import { kotyRenderu } from '../../lib/koty';
+import { sadzba } from '../../lib/sadzba';
+import { t } from '../../i18n/ui';
+
+const ui = t('sk');
+const karty = await radyVykurovania();
+const rady = (await getCollection('rady')).map((x) => x.data);
+// Čísla vyhotovení PRIMO (užší plášť pri tej istej rúre).
+const primo = async (model: string) => {
+  const r = rady.find((x) => x.nazov.split(',')[0].trim() === model) as Rad | undefined;
+  return r ? cislaRadu(r, await variantyRadu(r.id)) : undefined;
+};
+const kartyPlne = await Promise.all(karty.map(async (k) => ({
+  ...k,
+  koty: kotyRenderu(k.r.piktogram, {
+    plast: k.c.plast ? [`Ø ${k.c.plast}`, ui.home.popisy.plast] : undefined,
+    rura: k.c.rura ? [k.c.rura, `${ui.rad.rura.toLowerCase()}, ${k.c.tlak}`] : undefined,
+    ohyb: k.c.polomer ? [k.c.polomer, ui.home.popisy.polomer] : undefined,
+  }),
+  vyhotovenia: await Promise.all(k.vyhotovenia.map(async (v) => ({ ...v, c: await primo(v.model) }))),
+})));
+
+// Diely: PE-X spojky pre vykurovanie a COOL, ako na stránke Spojky.
+const kats = await kategorie();
+const spojky = kats.find((x) => x.id === 'spojky')!;
+const produkty = (await getCollection('produkty')).map((x) => x.data).filter((p) => p.skupina === 'pe-x-spojky-vykurovanie-a-cool').sort((a, b) => a.poradie - b.poradie).slice(0, 4);
+const VARIANTY = [
+  { pismeno: 'A', nazov: 'Dnes: karty s renderom nad hranou' },
+  { pismeno: 'B', nazov: 'Kóty priamo na renderi v karte' },
+  { pismeno: 'C', nazov: 'Vodorovné pásy hadovito' },
+  { pismeno: 'D', nazov: 'Porovnanie modelov vedľa seba' },
+  { pismeno: 'E', nazov: 'Diely: dnes' },
+  { pismeno: 'F', nazov: 'Diely na podlahe štúdia' },
+];
+---
+<Strana cesta="/navrhy/karty/" nadpis="Karty radov a dielov" varianty={VARIANTY}
+  popis="Ako sa na stránke systému ukážu jednotlivé rady (príklad: Vykurovanie, Microflex UNO a DUO s vyhotoveniami PRIMO) a ako sa na stránkach spojok a príslušenstva ukážu diely (príklad: PE-X spojky)."
+  kde="rady: 5 stránok systémov a prehľad Potrubia; diely: Spojky, Príslušenstvo a 41 stránok dielov (Ďalšie v skupine), SK aj CS">
+
+  <Navrh pismeno="A" nazov="Karty s renderom nad hranou" dnes
+    popis="Biela karta, render z nej vystupuje nad horný okraj, pod názvom popis, štyri údaje a vyhotovenia PRIMO." pozadie="linear-gradient(180deg, var(--zem-1), var(--zem-2))">
+    <div class="wrap plocha-pad">
+      <div class="a-karty">{karty.map((k) => <KartaRadu rad={k.r} href={k.href} varianty={k.vv} lang="sk" vyhotovenia={k.vyhotovenia.map((v) => ({ rad: rady.find((x) => x.nazov.split(',')[0].trim() === v.model)!, href: v.href }))} />)}</div>
+    </div>
+  </Navrh>
+
+  <Navrh pismeno="B" nazov="Kóty priamo na renderi v karte" odporucam
+    popis="Rovnaký jazyk ako hlava stránky a hero domova: čísla (plášť, rúra s tlakom, polomer) stoja na výrobku, pod ním len názov, jedna veta a vyhotovenia. Karta je štúdio so svetlom, nie biely papier so zoznamom."
+    inspiracia="Porsche (prehľad modelov s číslami pri aute), náš hero s kótami" pozadie="linear-gradient(180deg, var(--zem-1), var(--zem-2))">
+    <div class="wrap plocha-pad">
+      <div class="b-karty">
+        {kartyPlne.map((k) => (
+          <article class="b-karta">
+            <a class="b-studio" href={k.href} tabindex="-1" aria-hidden="true">
+              <span class="b-stage"><Image src={k.pikto} alt="" widths={[480, 720, 960]} sizes="(max-width: 900px) 92vw, 44vw" /><Koty koty={k.koty} label="Rozmery" /></span>
+            </a>
+            <div class="b-telo">
+              <h3><a href={k.href}>{k.model}</a></h3>
+              <p class="b-pod">{ui.home.rury(k.r.pocet_rur ?? 1)}, {k.c.dimenzii} dimenzií</p>
+              <p class="b-popis">{sadzba(k.kratky)}</p>
+              <div class="b-akcie">
+                <a class="odkaz" href={k.href}>Varianty a obj. čísla <Ikona nazov="arrow-right" velkost={16} /></a>
+                {k.vyhotovenia.map((v) => <a class="b-vyh" href={v.href}>{v.model}<span>{ui.home.primo.toLowerCase()}</span></a>)}
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </Navrh>
+
+  <Navrh pismeno="C" nazov="Vodorovné pásy hadovito"
+    popis="Každý rad má celý riadok: veľký render s kótami vybieha za okraj obrazovky, text na druhej strane, ďalší rad zrkadlovo. Najviac priestoru pre výrobok, stránka je dlhšia."
+    inspiracia="Logstor a Brugg (segmenty so striedanými obrazmi), náš domov (hadovito)" pozadie="linear-gradient(180deg, var(--zem-1), var(--zem-2))">
+    <div class="c-pasy">
+      {kartyPlne.map((k, i) => (
+        <article class:list={['wrap c-pas', { 'c-vpravo': i % 2 === 1 }]}>
+          <div class="c-obraz"><span class="c-stage"><Image src={k.pikto} alt="" widths={[640, 960, 1200]} sizes="(max-width: 900px) 100vw, 58vw" /><Koty koty={k.koty} label="Rozmery" /></span></div>
+          <div class="c-text">
+            <p class="c-pod">{ui.home.rury(k.r.pocet_rur ?? 1)}, {k.c.tlak}</p>
+            <h3><a href={k.href}>{k.model}</a></h3>
+            <p>{sadzba(k.kratky)}</p>
+            <a class="btn btn-secondary" href={k.href}>Varianty a obj. čísla</a>
+            {k.vyhotovenia.length > 0 && <p class="c-vyh">Aj vo vyhotovení {k.vyhotovenia.map((v, j) => <>{j > 0 && ', '}<a href={v.href}>{v.model}</a></>)} s užším plášťom.</p>}
+          </div>
+        </article>
+      ))}
+    </div>
+  </Navrh>
+
+  <Navrh pismeno="D" nazov="Porovnanie modelov vedľa seba"
+    popis="Rendery stoja na spoločnej podlahe, pod každým rovnaké riadky čísel, takže sa porovnávajú na prvý pohľad. Nahradí aj dnešnú tabuľku „Ktorý rad zvoliť“ nižšie na stránke systému (dve veci v jednej)."
+    inspiracia="Porsche (prehľad modelov: rovnaké údaje pod každým autom), Apple (porovnanie modelov)" pozadie="linear-gradient(180deg, var(--zem-1), var(--zem-2))">
+    <div class="wrap plocha-pad">
+      <div class="d-porovnanie" style={`--n: ${kartyPlne.length}`}>
+        <div class="d-podlaha" aria-hidden="true"></div>
+        {kartyPlne.map((k) => (
+          <article class="d-model">
+            <a class="d-obraz" href={k.href} tabindex="-1" aria-hidden="true"><Image src={k.pikto} alt="" widths={[420, 640, 840]} sizes="(max-width: 900px) 80vw, 40vw" /></a>
+            <h3><a href={k.href}>{k.model}</a></h3>
+            <dl class="d-cisla">
+              <div><dt>Rúry v plášti</dt><dd>{k.r.pocet_rur}</dd></div>
+              <div><dt>Nosná rúra</dt><dd>{k.c.rura}</dd></div>
+              <div><dt>Plášť HDPE</dt><dd>Ø {k.c.plast}</dd></div>
+              <div><dt>Polomer ohybu</dt><dd>{k.c.polomer}</dd></div>
+              <div><dt>Prevádzkový tlak</dt><dd>{k.c.tlak}</dd></div>
+            </dl>
+            {k.vyhotovenia.map((v) => v.c && <a class="d-vyh" href={v.href}><strong>{v.model}</strong><span>užší plášť Ø {v.c.plast}</span></a>)}
+            <a class="odkaz" href={k.href}>Varianty a obj. čísla <Ikona nazov="arrow-right" velkost={16} /></a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </Navrh>
+
+  <Navrh pismeno="E" nazov="Diely: biele karty s fotkou" dnes
+    popis="Fotka výrobcu na bielom v rámčeku 4 : 3, názov, prvá veta, počet obj. čísel." pozadie="linear-gradient(180deg, var(--zem-1), var(--zem-2))">
+    <div class="wrap plocha-pad">
+      <div class="e-karty">{produkty.map((p) => <KartaProduktu p={p} href={cestaProduktu(p, spojky, 'sk')} lang="sk" />)}</div>
+    </div>
+  </Navrh>
+
+  <Navrh pismeno="F" nazov="Diely na podlahe štúdia" odporucam
+    popis="Bez bielych kariet: mosadzné diely stoja na svetlej podlahe so svetlom zhora a tieňom pod sebou, ako pri fotení výrobkov. Pod dielom názov a počet obj. čísel v jednom riadku. Pôsobí ako katalóg prémiovej armatúry."
+    inspiracia="Vipp a Teenage Engineering (výrobok na neutrálnej ploche, presná typografia)" pozadie="linear-gradient(180deg, var(--zem-1), var(--zem-2))">
+    <div class="wrap plocha-pad">
+      <div class="f-diely">
+        {produkty.map((p) => { const img = fotkaProduktu(p.id); const n = kodyProduktu(p).length; return (
+          <a class="f-diel" href={cestaProduktu(p, spojky, 'sk')}>
+            <span class="f-podlaha">{img && <Image src={img} alt="" widths={[320, 480, 640]} sizes="(max-width: 760px) 44vw, 280px" />}</span>
+            <span class="f-nazov">{sadzba(pNazov(p, 'sk'))}</span>
+            <span class="f-meta">{n} obj. čísel</span>
+          </a>
+        ); })}
+      </div>
+    </div>
+  </Navrh>
+</Strana>
+
+<style>
+  .plocha-pad { padding-block: 72px 88px; }
+
+  /* A: dnešné karty (rozloženie ako na stránke systému) */
+  .a-karty { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; }
+
+  /* ---------- B: kóty na renderi v karte ---------- */
+  .b-karty { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; }
+  .b-karta { display: flex; flex-direction: column; border-radius: 22px; overflow: hidden; background: #fff; box-shadow: 0 1px 0 rgb(10 42 94 / 0.05), 0 34px 70px -40px rgb(10 42 94 / 0.55); }
+  .b-studio { display: flex; align-items: flex-end; height: 440px; padding: 28px 24px 10px; background: radial-gradient(60% 70% at 55% 55%, #ffffff 0%, #eef3f9 70%, #e3ebf5 100%); }
+  .b-stage { position: relative; display: block; width: 100%; max-width: 520px; margin: 0 auto; container-type: inline-size; }
+  .b-stage :global(img) { display: block; width: 100%; height: auto; filter: drop-shadow(0 24px 26px rgb(11 27 51 / 0.22)); }
+  .b-telo { display: flex; flex-direction: column; gap: 6px; padding: 22px 28px 26px; }
+  .b-telo h3 { font-size: 26px; letter-spacing: -0.015em; }
+  .b-telo h3 a { color: var(--color-ink); }
+  .b-pod { color: var(--color-ink-soft); font-size: 15px; }
+  .b-popis { margin-top: 6px; font-size: 15.5px; max-width: 34em; }
+  .b-akcie { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; margin-top: 16px; }
+  .b-vyh { display: inline-flex; align-items: baseline; gap: 6px; padding: 7px 12px; border-radius: 999px; background: var(--color-blue-50); color: var(--color-ink); font-weight: 600; font-size: 14.5px; }
+  .b-vyh span { font-weight: 400; color: var(--color-ink-soft); font-size: 13px; }
+
+  /* ---------- C: vodorovné pásy ---------- */
+  .c-pasy { padding-block: 48px 96px; overflow-x: clip; }
+  .c-pas { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 24px 56px; align-items: center; }
+  .c-pas + .c-pas { margin-top: 56px; }
+  .c-vpravo { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+  .c-vpravo .c-obraz { order: 2; }
+  .c-obraz { position: relative; margin-left: calc(-1 * var(--bleed)); }
+  .c-vpravo .c-obraz { margin-left: 0; margin-right: calc(-1 * var(--bleed)); }
+  /* Svetlo štúdia za výrobkom dobehne za okraj obrazovky. */
+  .c-obraz::before { content: ""; position: absolute; inset: -6% 0; background: radial-gradient(50% 55% at 55% 55%, #fff 0%, rgb(255 255 255 / 0.5) 45%, rgb(255 255 255 / 0) 72%); }
+  .c-stage { position: relative; display: block; max-width: 760px; margin-left: auto; container-type: inline-size; }
+  .c-vpravo .c-stage { margin-left: 0; margin-right: auto; }
+  .c-stage :global(img) { display: block; width: 100%; height: auto; filter: drop-shadow(0 30px 34px rgb(11 27 51 / 0.22)); }
+  .c-text { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+  .c-pod { color: var(--color-blue-700); font-weight: 500; }
+  .c-text h3 { font-size: clamp(30px, 1.6vw + 18px, 44px); letter-spacing: -0.025em; }
+  .c-text h3 a { color: var(--color-ink); }
+  .c-text > p:not(.c-pod):not(.c-vyh) { font-size: 17px; line-height: 1.6; max-width: 30em; }
+  .c-text .btn { margin-top: 10px; }
+  .c-vyh { margin-top: 8px; font-size: 14.5px; color: var(--color-ink-soft); }
+  .c-vyh a { font-weight: 600; }
+
+  /* ---------- D: porovnanie modelov ---------- */
+  .d-porovnanie { position: relative; display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); column-gap: 40px; }
+  .d-podlaha { position: absolute; left: -4%; right: -4%; top: 0; height: 330px; border-radius: 28px; background: radial-gradient(70% 80% at 50% 60%, #ffffff 0%, #f0f4f9 60%, #e4ecf6 100%); box-shadow: inset 0 -30px 50px -40px rgb(10 42 94 / 0.25); }
+  .d-model { position: relative; display: flex; flex-direction: column; align-items: flex-start; }
+  .d-obraz { display: block; align-self: center; width: min(100%, 440px); height: 300px; margin-bottom: 44px; filter: drop-shadow(0 26px 26px rgb(11 27 51 / 0.24)); }
+  .d-obraz :global(img) { width: 100%; height: 100%; object-fit: contain; object-position: center bottom; }
+  .d-model h3 { font-size: 28px; letter-spacing: -0.02em; }
+  .d-model h3 a { color: var(--color-ink); }
+  .d-cisla { width: 100%; margin: 14px 0 0; display: grid; gap: 10px; }
+  .d-cisla > div { display: flex; flex-direction: column; gap: 1px; }
+  .d-cisla dt { font-size: 13.5px; color: var(--color-ink-soft); }
+  .d-cisla dd { margin: 0; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: clamp(20px, 0.8vw + 14px, 26px); letter-spacing: -0.01em; color: var(--color-blue-900); font-variant-numeric: tabular-nums; }
+  .d-vyh { display: flex; flex-direction: column; margin-top: 18px; padding: 12px 16px; border-radius: 14px; background: rgb(255 255 255 / 0.75); color: var(--color-ink); width: 100%; }
+  .d-vyh strong { font-family: var(--font-display); font-stretch: 112.5%; font-size: 16px; }
+  .d-vyh span { font-size: 14px; color: var(--color-ink-soft); }
+  .d-model .odkaz { margin-top: 18px; }
+
+  /* ---------- E, F: diely ---------- */
+  .e-karty, .f-diely { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
+  .f-diely { gap: 40px 28px; }
+  .f-diel { display: flex; flex-direction: column; gap: 4px; color: var(--color-ink); }
+  .f-podlaha { position: relative; display: block; aspect-ratio: 1; margin-bottom: 14px; border-radius: 22px; background: radial-gradient(70% 60% at 50% 35%, #ffffff 0%, #f2f5f9 55%, #e6ecf3 100%); box-shadow: inset 0 -24px 40px -30px rgb(10 42 94 / 0.25); overflow: hidden; }
+  .f-podlaha::after { content: ""; position: absolute; left: 24%; right: 24%; bottom: 19%; height: 6%; border-radius: 50%; background: radial-gradient(closest-side, rgb(10 42 94 / 0.28), rgb(10 42 94 / 0)); }
+  .f-podlaha :global(img) { position: absolute; z-index: 1; inset: 12% 14% 18%; width: 72%; height: 70%; object-fit: contain; mix-blend-mode: multiply; transition: transform 500ms var(--ease-soft); }
+  .f-diel:hover .f-podlaha :global(img) { transform: translateY(-6px) scale(1.03); }
+  .f-nazov { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 17px; line-height: 1.25; }
+  .f-diel:hover .f-nazov { color: var(--color-blue-700); }
+  .f-meta { font-size: 14px; color: var(--color-ink-soft); }
+
+  @media (max-width: 1000px) { .e-karty, .f-diely { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 900px) {
+    .b-studio { height: auto; }
+    .a-karty, .b-karty, .c-pas, .c-vpravo { grid-template-columns: minmax(0, 1fr); }
+    .c-vpravo .c-obraz { order: 0; }
+    .c-obraz, .c-vpravo .c-obraz { margin-inline: calc(-1 * var(--gutter)); }
+    .d-porovnanie { grid-template-columns: minmax(0, 1fr); row-gap: 56px; }
+    .d-podlaha { display: none; }
+  }
+</style>

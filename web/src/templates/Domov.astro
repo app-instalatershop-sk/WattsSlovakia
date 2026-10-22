@@ -4,10 +4,11 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Ikona from '../components/Ikona.astro';
 import Katalog from '../components/Katalog.astro';
-import { kategorie, cislo, rozsah } from '../lib/katalog';
-import { fotka, detail } from '../lib/obrazky';
-import { sadzba } from '../lib/sadzba';
+import Scena from '../components/Scena.astro';
 import { referencie } from '../content/referencie';
+import { kategorie, cislo, rozsah } from '../lib/katalog';
+import { fotka, detail, fotkaReferencie } from '../lib/obrazky';
+import { sadzba } from '../lib/sadzba';
 import { type Lang, t, route, staticAlternates, KATALOG_PDF } from '../i18n/ui';
 
 interface Props { lang: Lang }
@@ -34,7 +35,20 @@ const faktTlak = h.popisy.tlak(tlaky.map((x) => `${x}`));
 const heroRez = fotka('hero-rez-duo.png')!;
 const rodina = fotka('rodina-potrubi.png')!;
 const kotuc = fotka('kotuc.jpg')!;
-const vykop = fotka('vykop-spojky.jpg')!;
+// Rez výkopom s dvomi potrubiami (render z katalógu Watts): obraz trasy pre kartu konfigurátora.
+const trasa = fotka('vykop-rez.jpg')!;
+
+/* Projekty: dve najväčšie stavby z referencií. Fotka a kóty (číslo na rúre alebo v kotolni) sú
+   v content/referencie.ts, texty pre domov v ui.ts. */
+const po = h.projekty.orange;
+const pp = h.projekty.povazska;
+const refs = referencie(lang);
+const sOrange = refs.find((r) => r.id === 'orange')!.scena!;
+const sPovazska = refs.find((r) => r.id === 'povazska-bystrica')!.scena!;
+const orangeScena = fotkaReferencie(sOrange.fotka)!;
+const povazskaScena = fotkaReferencie(sPovazska.fotka)!;
+const kotyOrange = sOrange.koty;
+const kotyPovazska = sPovazska.koty;
 /* Rez pod lupou: tri vrstvy od jadra po plášť. Bod (x, y v % renderu rodiny) leží na prvej rúre
    (DUO vykurovanie): žltá nosná rúra, pena vpravo od nej, plášť na hrane rezu. Zmerané na siluete
    rodina-potrubi.png; body idú zľava doprava v tom istom poradí ako lupy, takže sa čiary nekrížia.
@@ -64,8 +78,8 @@ const popisy = [
         </h1>
         <p class="lead">{sadzba(h.lead)}</p>
         <div class="hero-actions">
-          <a class="btn btn-yellow" href="#vyber">{h.cta} <Ikona nazov="arrow-down" velkost={18} /></a>
-          <a class="hero-odkaz" href={KATALOG_PDF} target="_blank" rel="noopener">{h.cta2} <span class="meta">{h.cta2Meta}</span> <Ikona nazov="download" velkost={16} /></a>
+          <a class="btn btn-yellow" href={route(lang, 'vyber')}>{h.cta} <Ikona nazov="arrow-right" velkost={18} /></a>
+          <a class="hero-odkaz" href={`${route(lang, 'firmy')}#dopyt`}>{h.cta2}</a>
         </div>
       </div>
       <div class="hero-product">
@@ -139,42 +153,63 @@ const popisy = [
     </div>
   </section>
 
-  {/* Podzemie: posledný úsek stránky je tmavý ako zem, do ktorej potrubie ide. Fotka z výkopu
-      prekračuje šikmú hranu, takže svetlá a tmavá časť nie sú dva bloky, ale jeden prechod. */}
+  {/* Podzemie: posledný úsek stránky je tmavý ako zem, do ktorej potrubie ide. Fotka prvého
+      projektu prekračuje šikmú hranu, takže svetlá a tmavá časť nie sú dva bloky, ale jeden prechod. */}
   <div class="podzemie">
-    <section class="refs" aria-labelledby="h-refs">
-      <div class="wrap refs-grid">
-        <figure class="refs-photo">
-          <Image src={vykop} alt={h.refAlt} widths={[800, 1200, 1600]} sizes="(max-width: 1100px) 100vw, 70vw" />
-        </figure>
-        <div class="refs-text">
-          <h2 id="h-refs">{h.refH2}</h2>
-          <ul class="refs-list" data-reveal-group>
-            {referencie(lang).map((r) => {
-              const f = (re: RegExp) => r.fakty.find(([k]) => re.test(k))?.[1];
-              const pod = [f(/^Potrub/), f(/^D[ĺé]lka|^Dĺžka/)].filter(Boolean).join(', ') || r.fakty[0][1];
-              return <li><a href={`${route(lang, 'referencie')}#${r.id}`}><strong>{r.miesto.split(',')[0]}</strong><span>{sadzba(pod)}</span></a></li>;
-            })}
-          </ul>
-          <p class="refs-pata"><a href={route(lang, 'referencie')}>{h.refVsetky} <Ikona nazov="arrow-up-right" velkost={16} /></a></p>
+    <section class="projekty" aria-labelledby="h-projekty">
+      {/* Projekty idú hadovito ako zvyšok domova: prvá scéna vpravo, druhá vľavo. Čísla stoja na fotke. */}
+      <article class="wrap proj proj-a" aria-labelledby="h-proj-orange">
+        <Scena class="proj-scena" obraz={orangeScena} alt={po.alt} koty={kotyOrange} label={h.projektyKoty} widths={[760, 1000, 1200]} sizes="(max-width: 900px) 100vw, 66vw" />
+        <div class="proj-text">
+          <h2 id="h-projekty">{h.projektyH2}</h2>
+          <p class="proj-uvod">{sadzba(h.projektyP)}</p>
+          <p class="proj-kde">{po.kde}</p>
+          <h3 id="h-proj-orange">{sadzba(po.h3)}</h3>
+          <p>{sadzba(po.p)}</p>
+          <a class="proj-odkaz" href={`${route(lang, 'referencie')}#orange`}>{h.projektyViac}</a>
         </div>
-      </div>
+      </article>
+      <article class="wrap proj proj-b" aria-labelledby="h-proj-povazska">
+        <Scena class="proj-scena" obraz={povazskaScena} alt={pp.alt} koty={kotyPovazska} label={h.projektyKoty} widths={[640, 895]} sizes="(max-width: 900px) 100vw, 56vw" />
+        <div class="proj-text">
+          <p class="proj-kde">{pp.kde}</p>
+          <h3 id="h-proj-povazska">{sadzba(pp.h3)}</h3>
+          <p>{sadzba(pp.p)}</p>
+          <a class="proj-odkaz" href={`${route(lang, 'referencie')}#povazska-bystrica`}>{h.projektyViac}</a>
+          <a class="proj-vsetky" href={route(lang, 'referencie')}>{h.projektyVsetky}</a>
+        </div>
+      </article>
     </section>
 
-    <section class="b2b wrap" aria-labelledby="h-b2b">
-      <div class="b2b-grid">
-        <div class="b2b-text">
-          <h2 id="h-b2b">{h.b2bH2}</h2>
-          <p class="lead">{sadzba(h.b2bP)}</p>
-          <div class="b2b-akcie">
-            <a class="btn btn-inverse" href={route(lang, 'firmy')}>{h.b2bDopyt}</a>
-            <a class="btn btn-ghost-light" href={route(lang, 'stiahnut')}><Ikona nazov="download" velkost={18} />{h.b2bPodklady}</a>
-          </div>
+    <section class="podpora wrap" aria-labelledby="h-podpora">
+      <div class="podpora-hlava">
+        <h2 id="h-podpora">{h.podporaH2}</h2>
+        <p class="lead">{sadzba(h.podporaP)}</p>
+        <div class="podpora-akcie">
+          <a class="btn btn-yellow" href={`${route(lang, 'firmy')}#dopyt`}>{h.podporaDopyt}</a>
+          <a class="btn btn-ghost-light" href={route(lang, 'stiahnut')}><Ikona nazov="download" velkost={18} />{h.podporaPodklady}</a>
         </div>
-        <ul class="b2b-list" data-reveal-group>
-          {h.b2bList.map(([b, s]) => <li><strong>{b}</strong><span>{sadzba(s)}</span></li>)}
-        </ul>
       </div>
+      <ul class="podpora-sluzby">
+        {h.podpora.map((s, i) => (
+          <li>
+            <h3>{s.h}</h3>
+            <p>{sadzba(s.p)}</p>
+            <a href={i === 0 ? route(lang, 'stiahnut') : `${route(lang, 'firmy')}#dopyt`}>{s.odkaz}</a>
+          </li>
+        ))}
+      </ul>
+      {/* Jediné miesto pre konfigurátor trasy (samostatná etapa). Kým nie je hotový, vedie k dopytu. */}
+      <aside class="konfigurator" aria-labelledby="h-konf" data-konfigurator>
+        <div class="konf-obraz"><Image src={trasa} alt="" widths={[480, 720]} sizes="(max-width: 900px) 100vw, 34vw" /></div>
+        <div class="konf-telo">
+          <p class="konf-stav">{h.konfigurator.stav}</p>
+          <h3 id="h-konf">{h.konfigurator.h}</h3>
+          <p>{sadzba(h.konfigurator.p)}</p>
+          <a class="konf-odkaz" href={`${route(lang, 'firmy')}#dopyt`}>{h.konfigurator.odkaz}</a>
+        </div>
+      </aside>
+      <p class="istota">{sadzba(h.istota)}</p>
     </section>
   </div>
 </Base>
@@ -255,7 +290,8 @@ const popisy = [
   .hero-text > :nth-child(2) { animation-delay: 220ms; }
   .hero-text > :nth-child(3) { animation-delay: 320ms; }
   .hero h1 { display: flex; flex-direction: column; font-size: clamp(34px, 2.9vw + 12px, 58px); line-height: 1.03; letter-spacing: -0.03em; text-wrap: nowrap; }
-  .h1-kicker { font-family: var(--font-text); font-stretch: 100%; font-size: 12.5px; font-weight: 600; line-height: 1.4; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-soft); margin-bottom: 20px; }
+  /* Tichý riadok nad sloganom je súčasť H1 kvôli vyhľadávačom; sadzba ako veta, nie verzálky. */
+  .h1-kicker { font-family: var(--font-text); font-stretch: 100%; font-size: 16px; font-weight: 500; line-height: 1.4; letter-spacing: 0; color: var(--color-ink-soft); margin-bottom: 18px; }
   /* Jediný orchestrovaný moment: prvý riadok sa pri načítaní roztiahne po osi šírky písma,
      tak ako sa rozvinie ohybné potrubie. Cieľ je šírka nadpisu, preto animácia nemá koncový stav. */
   .h1-a { color: var(--color-ink); animation: flex 1150ms 60ms var(--ease-soft) both; }
@@ -264,12 +300,9 @@ const popisy = [
   .hero .lead { font-size: 18px; max-width: 30em; margin-top: 22px; }
   .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 30px; margin-top: 34px; }
   .hero-actions .btn :global(svg) { transition: transform 200ms var(--ease-soft); }
-  .hero-actions .btn:hover :global(svg) { transform: translateY(3px); }
-  /* Druhá akcia nie je tlačidlo: nemá súperiť so žltým, len ponúknuť katalóg na stiahnutie. */
+  .hero-actions .btn:hover :global(svg) { transform: translateX(3px); }
+  /* Druhá akcia nie je tlačidlo: nemá súperiť so žltým, len ponúknuť cestu k dopytu na projekt. */
   .hero-odkaz { display: inline-flex; align-items: center; gap: 8px; font-weight: 500; color: var(--color-blue-700); border-bottom: 1px solid currentColor; padding-bottom: 3px; }
-  .hero-odkaz .meta { font-weight: 400; font-size: 14px; color: var(--color-ink-soft); }
-  .hero-odkaz :global(svg) { transition: transform 200ms var(--ease-soft); }
-  .hero-odkaz:hover :global(svg) { transform: translateY(2px); }
   /* Rúra prekračuje pravý okraj obsahovej mriežky až za okraj obrazovky. */
   /* Render sedí na spodku hero, takže jeho dolná časť pretne šikmú hranu pásu katalógu. */
   .hero-product { grid-area: obraz; position: relative; z-index: 2; align-self: end; margin-left: -9%;
@@ -412,38 +445,66 @@ const popisy = [
   /* Spodok končí farbou, ktorou začína pätička, aby medzi nimi nebol schod. */
   .podzemie::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, #0e3676 0%, var(--color-blue-900) 38%, #0b2d66 78%, #0c3272 100%); clip-path: polygon(0 var(--sikmina), 100% 0, 100% 100%, 0 100%); }
   .podzemie h2 { color: #fff; }
-  .podzemie a { color: #fff; }
+  .podzemie a:not(.btn) { color: #fff; }
   .podzemie a:not(.btn):hover { color: var(--color-yellow-500); }
 
-  .refs { position: relative; }
-  .refs-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 24px; align-items: end; }
-  /* Fotka zo stavby vystupuje nad šikmú hranu do svetlého pásu a vpravo za okraj obrazovky. */
-  .refs-photo { grid-column: 5 / 13; grid-row: 1; margin: -176px calc(-1 * var(--bleed)) 0 0; position: relative; z-index: 1; }
-  .refs-photo :global(img) { width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: 55% 60%; display: block; border-radius: var(--radius-l) 0 0 var(--radius-l); box-shadow: 0 30px 60px rgb(4 16 40 / 0.45); }
-  .refs-text { grid-column: 1 / 5; grid-row: 1; padding-bottom: 4px; }
-  .refs-text h2 { font-size: clamp(26px, 1.6vw + 16px, 36px); margin-bottom: 24px; max-width: 9em; }
-  .refs-list li { border-top: 1px solid rgb(255 255 255 / 0.16); }
-  .refs-list li:last-child { border-bottom: 1px solid rgb(255 255 255 / 0.16); }
-  .refs-list a { display: flex; flex-direction: column; gap: 2px; padding: 14px 0; }
-  .refs-list strong { font-weight: 600; transition: color 150ms var(--ease-soft); }
-  .refs-list span { font-size: 14px; color: var(--color-on-dark-muted); }
-  .refs-list a:hover strong { color: var(--color-yellow-500); }
-  .refs-pata { margin-top: 20px; font-size: 15px; }
-  .refs-pata a { display: inline-flex; align-items: center; gap: 6px; font-weight: 500; }
-  .refs-pata :global(svg) { width: 16px; height: 16px; }
+  /* ---------- Projekty: scény zo stavieb s kótami, hadovito vpravo a vľavo ---------- */
+  .projekty { position: relative; }
+  .proj { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 24px; align-items: end; }
+  .proj + .proj { margin-top: 128px; align-items: center; }
+  /* Fotka prvého projektu vystupuje nad šikmú hranu do svetlého pásu a vpravo za okraj obrazovky. */
+  .proj-a :global(.proj-scena) { grid-column: 5 / 13; grid-row: 1; margin: -176px calc(-1 * var(--bleed)) 0 0; z-index: 1; }
+  .proj-a .proj-text { grid-column: 1 / 5; grid-row: 1; padding-bottom: 4px; }
+  .proj-b :global(.proj-scena) { grid-column: 1 / 8; grid-row: 1; margin-left: calc(-1 * var(--bleed)); }
+  .proj-b .proj-text { grid-column: 9 / 13; grid-row: 1; }
+  .proj :global(.scena-img) { box-shadow: 0 40px 80px -34px rgb(2 10 30 / 0.75); filter: saturate(0.94) contrast(1.03); }
+  .proj-a :global(.scena-img) { border-radius: 18px 0 0 18px; }
+  .proj-b :global(.scena-img) { border-radius: 0 18px 18px 0; }
+  /* Výkop sa otvorí: pri rolovaní sa fotka roztvorí zhora aj zdola, tam kde to prehliadač vie. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .proj :global(.proj-scena) { animation: vykop linear both; animation-timeline: view(); animation-range: entry 0% cover 38%; }
+    }
+  }
+  @keyframes vykop { from { clip-path: inset(9% 0 9% 0); } to { clip-path: inset(0 0 0 0); } }
 
-  .b2b { position: relative; margin-top: 96px; }
-  .b2b-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 24px; padding-top: 56px; border-top: 1px solid rgb(255 255 255 / 0.16); }
-  .b2b-text { grid-column: 1 / 7; display: flex; flex-direction: column; gap: 22px; }
-  .b2b-text h2 { font-size: clamp(26px, 1.6vw + 16px, 36px); max-width: 15em; }
-  .b2b-text .lead { color: var(--color-on-dark-muted); }
-  .b2b-akcie { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; }
-  .b2b-akcie .btn-inverse, .b2b-akcie .btn-inverse:hover { color: var(--color-blue-900); }
-  .b2b-list { grid-column: 8 / 13; }
-  .b2b-list li { padding: 14px 0; border-top: 1px solid rgb(255 255 255 / 0.16); display: flex; flex-direction: column; gap: 2px; }
-  .b2b-list li:last-child { border-bottom: 1px solid rgb(255 255 255 / 0.16); }
-  .b2b-list strong { font-weight: 600; }
-  .b2b-list span { color: var(--color-on-dark-muted); font-size: 14px; }
+  .proj-text { display: flex; flex-direction: column; align-items: flex-start; }
+  .proj-text h2 { font-size: clamp(30px, 2.2vw + 14px, 46px); line-height: 1.06; letter-spacing: -0.025em; max-width: 10em; }
+  .proj-uvod { margin-top: 18px; color: var(--color-on-dark-muted); font-size: 17px; line-height: 1.55; max-width: 26em; }
+  .proj-kde { margin-top: 40px; font-size: 15px; font-weight: 500; color: #8fb9ec; }
+  .proj-b .proj-kde { margin-top: 0; }
+  .proj-text h3 { margin-top: 8px; font-size: clamp(22px, 0.9vw + 15px, 28px); line-height: 1.15; letter-spacing: -0.015em; color: #fff; max-width: 14em; }
+  .proj-text h3 + p { margin-top: 12px; color: var(--color-on-dark-muted); font-size: 15.5px; line-height: 1.6; max-width: 30em; }
+  .proj-odkaz, .proj-vsetky { margin-top: 18px; font-weight: 500; border-bottom: 1px solid rgb(255 255 255 / 0.5); padding-bottom: 2px; }
+  .proj-vsetky { margin-top: 36px; }
+
+  /* ---------- Projektová podpora a miesto pre konfigurátor ---------- */
+  .podpora { position: relative; margin-top: 136px; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; row-gap: 48px; align-items: start; }
+  .podpora-hlava { grid-column: 1 / 8; grid-row: 1; }
+  .podpora-hlava h2 { font-size: clamp(28px, 1.9vw + 14px, 42px); line-height: 1.08; letter-spacing: -0.025em; max-width: 14em; }
+  .podpora-hlava .lead { margin-top: 18px; color: var(--color-on-dark-muted); max-width: 32em; }
+  .podpora-akcie { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+  .podpora-sluzby { grid-column: 1 / 8; grid-row: 2; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px; }
+  .podpora-sluzby li { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; padding-top: 22px; position: relative; }
+  /* Krátka žltá značka nad službou: farba jadra rúry, nie čiara cez celú šírku. */
+  .podpora-sluzby li::before { content: ""; position: absolute; top: 0; left: 0; width: 28px; height: 3px; border-radius: 2px; background: var(--color-yellow-500); }
+  .podpora-sluzby h3 { font-size: 20px; line-height: 1.25; color: #fff; }
+  .podpora-sluzby p { color: var(--color-on-dark-muted); font-size: 15px; line-height: 1.6; }
+  .podpora-sluzby a { margin-top: 4px; font-weight: 500; border-bottom: 1px solid rgb(255 255 255 / 0.5); padding-bottom: 2px; }
+  .istota { grid-column: 1 / 8; grid-row: 3; font-size: 14.5px; line-height: 1.65; color: var(--color-on-dark-muted); max-width: 52em; }
+
+  /* Karta konfigurátora: vlastná plocha s obrazom trasy (rez výkopom), stav „pripravujeme“ na žltej. */
+  .konfigurator { grid-column: 9 / 13; grid-row: 1 / span 3; align-self: start; position: relative; overflow: hidden; border-radius: 22px;
+    background: linear-gradient(165deg, #164490 0%, #0d3270 58%, #0a2a5e 100%);
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.09), 0 40px 70px -40px rgb(2 10 30 / 0.85); }
+  .konf-obraz { position: relative; }
+  .konf-obraz :global(img) { display: block; width: 100%; height: auto; aspect-ratio: 16 / 11; object-fit: cover; object-position: 50% 70%; }
+  .konf-obraz::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgb(13 50 112 / 0) 45%, #0f3878 100%); }
+  .konf-telo { position: relative; padding: 4px 28px 30px; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+  .konf-stav { display: inline-flex; align-items: center; height: 28px; padding: 0 12px; border-radius: 999px; background: var(--color-yellow-500); color: var(--color-ink); font-size: 13.5px; font-weight: 600; }
+  .konfigurator h3 { margin-top: 6px; font-size: clamp(24px, 1vw + 16px, 30px); line-height: 1.1; letter-spacing: -0.02em; color: #fff; }
+  .konfigurator p:not(.konf-stav) { color: var(--color-on-dark-muted); font-size: 15.5px; line-height: 1.6; }
+  .konf-odkaz { margin-top: 8px; font-weight: 600; border-bottom: 1px solid rgb(255 255 255 / 0.55); padding-bottom: 2px; }
 
   /* ---------- Tablet ---------- */
   @media (max-width: 1100px) {
@@ -456,9 +517,14 @@ const popisy = [
     .lupa-bod, .lupy-ciary { display: none; }
     .lupy { width: 100%; margin: 36px 0 0; gap: 24px; }
     .lupa-okno { width: 132px; height: 132px; }
-    .refs-photo { grid-column: 1 / -1; margin-left: 0; }
-    .refs-text { grid-column: 1 / -1; grid-row: 2; padding-top: 16px; }
-    .b2b-text, .b2b-list { grid-column: 1 / -1; }
+    .proj-a :global(.proj-scena) { grid-column: 1 / -1; margin-left: 0; }
+    .proj-a .proj-text, .proj-b .proj-text { grid-column: 1 / -1; grid-row: 2; padding-top: 12px; }
+    .proj-b :global(.proj-scena) { grid-column: 1 / -1; margin-right: 0; }
+    .podpora-hlava, .podpora-sluzby, .istota { grid-column: 1 / -1; grid-row: auto; }
+    .konfigurator { grid-column: 1 / -1; grid-row: auto; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; }
+    .konf-obraz :global(img) { aspect-ratio: auto; height: 100%; }
+    .konf-obraz::after { background: linear-gradient(90deg, rgb(13 50 112 / 0) 50%, #0f3878 100%); }
+    .konf-telo { padding: 28px 30px; }
   }
 
   /* Pod 900 px vedľa kotúča nie je miesto: kotúč ide nad text ako pás, vľavo závity, vpravo jeho vnútro. */
@@ -496,9 +562,16 @@ const popisy = [
     .pokladka { padding-bottom: 168px; }
     .kroky-obal { margin-top: 32px; }
     .podzemie { padding-bottom: 88px; }
-    .refs-photo { margin-top: -112px; margin-right: calc(-1 * var(--gutter)); }
-    .refs-photo :global(img) { aspect-ratio: 4 / 3; }
-    .b2b { margin-top: 64px; }
-    .b2b-grid { padding-top: 40px; }
+    .proj-a :global(.proj-scena) { margin: -112px calc(-1 * var(--gutter)) 0; }
+    .proj-b :global(.proj-scena) { margin-inline: calc(-1 * var(--gutter)); }
+    .proj :global(.scena-img), .proj-a :global(.scena-img), .proj-b :global(.scena-img) { border-radius: 0; }
+    .proj + .proj { margin-top: 88px; }
+    .proj-kde { margin-top: 28px; }
+    .podpora { margin-top: 96px; row-gap: 40px; }
+    .podpora-sluzby { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+    .konfigurator { display: block; }
+    .konf-obraz :global(img) { aspect-ratio: 16 / 10; height: auto; }
+    .konf-obraz::after { background: linear-gradient(180deg, rgb(13 50 112 / 0) 45%, #0f3878 100%); }
+    .konf-telo { padding: 4px 22px 26px; }
   }
 </style>

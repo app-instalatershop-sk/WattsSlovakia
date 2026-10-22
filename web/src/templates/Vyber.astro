@@ -117,7 +117,7 @@ const obrazky = await Promise.all(systemy.map(async ({ k }) => { const p = pikto
               {p && <Image src={p} alt="" widths={[160, 240]} sizes="120px" class="volba-r-img" />}
               <span class="volba-r-text">
                 <span class="volba-nazov">{rNazov(r, lang).split(',')[0].trim()}</span>
-                <span class="volba-pod">{[r.pocet_rur ? `${r.pocet_rur} × ${lang === 'cs' ? 'trubka' : 'rúra'}` : '', tlakText(r)].filter(Boolean).join(' · ')}</span>
+                <span class="volba-pod">{[r.pocet_rur ? `${r.pocet_rur} × ${lang === 'cs' ? 'trubka' : 'rúra'}` : '', tlakText(r)].filter(Boolean).join(', ')}</span>
                 {rKratky(r, lang) && <span class="volba-popis">{sadzba(rKratky(r, lang)!)}</span>}
               </span>
             </button>
@@ -422,7 +422,7 @@ const obrazky = await Promise.all(systemy.map(async ({ k }) => { const p = pikto
       const v = data.varianty.find((x) => x.o === stav.v && x.r === stav.r);
       if (!v) return;
       const m = v.m, rad = data.rady[v.r];
-      kor.querySelector<HTMLElement>('[data-k4-pre]')!.innerHTML = `${esc(v.o)}<small>${esc(rad.model)} · ${esc(v.t)}${v.p ? ` · ${esc(tx.plastL.toLowerCase())} ${esc(v.p)} mm` : ''}</small>`;
+      kor.querySelector<HTMLElement>('[data-k4-pre]')!.innerHTML = `${esc(v.o)}<small>${esc(rad.model)}, ${esc(v.t)}${v.p ? `, ${esc(tx.plastL.toLowerCase())} ${esc(v.p)} mm` : ''}</small>`;
       kor.querySelector<HTMLElement>('[data-k4-mfp]')!.hidden = !m.MFP.length;
       if (!stav.l) { zoznamEl.innerHTML = `<p class="k4-prazdny">${esc(tx.prazdny)}</p>`; return; }
       const kon = 2 + stav.t;

@@ -12,6 +12,7 @@ import Ikona from '../components/Ikona.astro';
 import KartaRadu from '../components/KartaRadu.astro';
 import { kategorie, radyKategorie, cestaKategorie, cestaRadu, cestaProduktu, alternatyKategorie, kNazov, kKratky, kPopis, rNazov, pNazov, cislo, rozsah, rozsahRur, tlakyRadov, tlakText, datum, type Kategoria, type Rad, type Variant } from '../lib/katalog';
 import { piktogram, fotkaRadu } from '../lib/obrazky';
+import { kotyRenderu } from '../lib/koty';
 import { sadzba } from '../lib/sadzba';
 import { faq } from '../content/faq';
 import { stranky } from '../content/stranky';
@@ -50,6 +51,13 @@ const fakty: [string, string][] = [
   ...(varianty.length ? [[ui.kategoria.plast, rozsah(varianty.map((v) => v.plast_mm), 'mm', lang)] as [string, string]] : []),
   ...(polomery.length ? [[ui.kategoria.polomer, `${ui.common.od} ${cislo(Math.min(...polomery), 2)} m`] as [string, string]] : []),
 ];
+// Kóty na renderi systému, rovnako ako na stránke radu; zoznam faktov ostáva len bez nich.
+const kotyHlavy = kotyRenderu(k.piktogram, {
+  plast: varianty.length ? [`Ø ${rozsah(varianty.map((v) => v.plast_mm), 'mm', lang)}`, ui.home.popisy.plast] : undefined,
+  rura: varianty.length ? [rozsahRur(varianty, lang), [ui.kategoria.rura.toLowerCase(), tlaky.length ? `${tlaky.join(' / ')} bar` : ''].filter(Boolean).join(', ')] : undefined,
+  ohyb: polomery.length ? [`${ui.common.od} ${cislo(Math.min(...polomery), 2)} m`, ui.home.popisy.polomer] : undefined,
+});
+const faktyHlavy = kotyHlavy.length >= 2 ? [] : fakty;
 
 const pk = '–';
 const riadky: Array<[string, (r: Rad, vs: Variant[]) => string]> = [
@@ -75,8 +83,8 @@ const trasa = naTrasu.map((sid) => skupiny.find((x) => x.id === sid)!).filter(Bo
 const drobceky = [{ text: ui.nav.potrubia, href: route(lang, 'potrubia') }, { text: kKratky(k, lang) }];
 ---
 <Base lang={lang} alternates={alternatyKategorie(k)} title={kNazov(k, lang)} description={kPopis(k, lang)} aktivna="potrubia" drobceky={drobceky} vizualneDrobceky={false} jsonLd={faqLd}>
-  <Hlava lang={lang} nadpis={kNazov(k, lang)} drobceky={drobceky} lead={kPopis(k, lang)} obraz={pikto} obrazAlt={ui.kategoria.piktoAlt(kKratky(k, lang))} obrazMax={600}>
-    {fakty.length > 0 && <dl class="hlava-fakty">{fakty.map(([dt, dd]) => <div><dt>{dt}</dt><dd>{dd}</dd></div>)}</dl>}
+  <Hlava lang={lang} nadpis={kNazov(k, lang)} drobceky={drobceky} lead={kPopis(k, lang)} obraz={pikto} obrazAlt={ui.kategoria.piktoAlt(kKratky(k, lang))} obrazMax={600} prechod={`kat-${k.id}`} koty={kotyHlavy} kotyLabel={ui.home.popisy.label}>
+    {faktyHlavy.length > 0 && <dl class="hlava-fakty">{faktyHlavy.map(([dt, dd]) => <div><dt>{dt}</dt><dd>{dd}</dd></div>)}</dl>}
     <div class="hlava-akcie">
       <a class="btn btn-yellow" href="#rady">{tx.rady} <Ikona nazov="arrow-down" velkost={18} /></a>
       <a class="odkaz" href={route(lang, 'vyber')}>{tx.sprievodca} <Ikona nazov="arrow-right" velkost={16} /></a>

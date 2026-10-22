@@ -10,8 +10,8 @@ export const KATALOG_PDF = 'https://www.watts.eu/dfsmedia/0533DBBA-1771-4B1A-B58
 
 const sk = {
   site: { name: 'Microflex Slovensko', sub: 'Slovensko', tagline: 'Predizolované ohybné potrubie Microflex pre Slovensko' },
-  nav: { potrubia: 'Potrubia', vyber: 'Výber potrubia', stiahnut: 'Na stiahnutie', firmy: 'Pre firmy', poradna: 'Poradňa', eshop: 'E-shop', menu: 'Menu', zavriet: 'Zavrieť', hlavna: 'Hlavná navigácia', domov: 'Domov', celyKatalog: 'Celý katalóg potrubí', katalogPdf: 'Katalóg PDF, 19 MB' },
-  search: { placeholder: 'Obj. číslo, rad, dimenzia', label: 'Hľadať v katalógu', button: 'Hľadať', vsetky: 'Všetky výsledky', nic: 'Nič sme nenašli. Skúste obj. číslo, rad alebo sprievodcu výberom.', ciastocne: 'Presnú zhodu sme nenašli. Najbližšie:', sprievodca: 'Sprievodca výberom potrubia', skupiny: { rad: 'Rad', kod: 'Obj. číslo', diel: 'Diel', stranka: 'Stránka' } },
+  nav: { potrubia: 'Potrubia', vyber: 'Výber potrubia', stiahnut: 'Na stiahnutie', firmy: 'Pre firmy', poradna: 'Poradňa', referencie: 'Referencie', kontakt: 'Kontakt', podklady: 'Podklady', eshop: 'E-shop', menu: 'Menu', zavriet: 'Zavrieť', hlavna: 'Hlavná navigácia', domov: 'Domov', celyKatalog: 'Celý katalóg potrubí', katalogPdf: 'Katalóg PDF, 19 MB' },
+  search: { placeholder: 'Obj. číslo, rad', label: 'Hľadať v katalógu', button: 'Hľadať', vsetky: 'Všetky výsledky', nic: 'Nič sme nenašli. Skúste obj. číslo, rad alebo sprievodcu výberom.', ciastocne: 'Presnú zhodu sme nenašli. Najbližšie:', sprievodca: 'Sprievodca výberom potrubia', skupiny: { rad: 'Rad', kod: 'Obj. číslo', diel: 'Diel', stranka: 'Stránka' } },
   partner: { kratke: 'Oficiálny partner', veta: 'Oficiálny partner Watts pre Microflex na Slovensku', vyrobca: 'Výrobca' },
   jazyk: { prepnut: 'Jazyk', sk: 'Slovensky', cs: 'Česky' },
   crumbs: { label: 'Kde ste' },
@@ -67,7 +67,8 @@ const sk = {
     heroKicker: 'Predizolované potrubia Microflex®',
     h1a: 'Flexibilné potrubie.', h1b: 'Precízne riešenie.',
     lead: 'Pre vykurovanie, pitnú vodu, chladenie a tepelné čerpadlá.',
-    cta: 'Vybrať potrubie', cta2: 'Stiahnuť katalóg', cta2Meta: 'PDF, 19 MB',
+    // Hlavná akcia vedie do sprievodcu (rovnako ako položka menu), druhá k dopytu na projekt.
+    cta: 'Vybrať potrubie', cta2: 'Dopyt na projekt',
     heroAlt: 'Rez predizolovaným potrubím Microflex so štyrmi rúrami: zvlnený plášť, izolácia a nosné rúry',
     popisy: {
       label: 'Rozmery a vlastnosti potrubia na obrázku',
@@ -75,7 +76,6 @@ const sk = {
       polomer: 'polomer ohybu',
       tlak: (xs: string[]) => `nosné rúry na ${xs.length > 1 ? `${xs.slice(0, -1).join(', ')} alebo ${xs[xs.length - 1]}` : xs[0]} bar`,
     },
-    katalogKicker: 'Výber podľa použitia',
     katalogH2: 'Každý projekt má svoje potrubie.',
     rury: (n: number) => (n === 1 ? 'Jedna rúra v plášti' : n === 2 ? 'Dve rúry v plášti' : n === 4 ? 'Štyri rúry v plášti' : `${n} rúry v plášti`),
     plast: 'plášť',
@@ -107,17 +107,39 @@ const sk = {
     zataz: ['až 60 t', 'unesie potrubie uložené v hĺbke 0,5 až 6 m'] as [string, string],
     pokladkaZdroj: 'Časy sú približné, bez dopravy a výkopu.',
     pokladkaOdkaz: 'Celý postup v katalógu výrobcu',
-    refH2: 'Kde už Microflex leží', refVsetky: 'Všetky referencie',
-    refAlt: 'Potrubie Microflex vo výkope so spojkami',
-    b2bH2: 'Pre projektantov, montážne firmy a veľkoobchod',
-    b2bP: 'Technické listy, výkresy DWG a DXF, vyhlásenia o zhode a environmentálna deklarácia na jednom mieste. Na projekt pošlite dopyt, ozveme sa s ponukou a dostupnosťou.',
-    b2bDopyt: 'Poslať dopyt na projekt', b2bPodklady: 'Podklady na stiahnutie',
-    b2bList: [
-      ['Technické listy a katalóg', 'PDF pre každý rad, katalóg Microflex'],
-      ['BIM a CAD', 'DWG a DXF pre UNO, DUO, QUADRO a COOL'],
-      ['Vyhlásenia a deklarácie', 'Vyhlásenie o zhode, environmentálna deklarácia EPD'],
-      ['Veľkoobchodný kontakt', 'Obchodné oddelenie'],
-    ] as [string, string][],
+    // Projekty: veľké stavby s kótami priamo na fotke. Fakty z referencií na watts.eu (content/referencie.ts).
+    projektyH2: 'Projekty, ktoré už ležia v zemi.',
+    projektyP: 'Rozvody tepla medzi budovami areálov a obytných súborov, od kotolne po poslednú prípojku.',
+    projektyVsetky: 'Všetky referencie',
+    projektyKoty: 'Údaje o stavbe na fotke',
+    projektyViac: 'Celá referencia',
+    projekty: {
+      orange: {
+        kde: 'Orange, Francúzsko, október 2022', h3: '800 metrov namiesto starej oceľovej siete',
+        p: 'Staré oceľové potrubie, ktoré viedlo teplú vodu z hlavnej kotolne do budov vojenskej základne, nahradil Microflex UNO.',
+        alt: 'Dve potrubia Microflex UNO vedú hadovito výkopom k budovám vojenskej základne v Orange',
+      },
+      povazska: {
+        kde: 'Považská Bystrica, december 2022 až február 2023', h3: '31 budov napojených na jednu kotolňu',
+        p: 'Rozvod tepla pre 30 rodinných domov a bytový dom zo spoločnej kotolne na pelety, so štyrmi revíznymi šachtami. Ponuku a dodávku sme zabezpečili s podporou Watts.',
+        alt: 'Kotolňa obytného súboru v Považskej Bystrici so zásobníkom peliet a akumulačnými nádržami',
+      },
+    },
+    // Projektová podpora a miesto pre budúci konfigurátor trasy (samostatná etapa).
+    podporaH2: 'Pri veľkom projekte s Vami od trasy po dodávku.',
+    podporaP: 'Projektantom dodáme podklady, montážnym firmám celý materiál na trasu v jednej ponuke. Pri väčších sieťach pomáha aj technická podpora výrobcu.',
+    podporaDopyt: 'Poslať dopyt na projekt', podporaPodklady: 'Podklady na stiahnutie',
+    podpora: [
+      { h: 'Podklady pre projektantov', p: 'Výkresy DWG a DXF, tabuľky rozmerov a výkonov, tepelné straty, vyhlásenia o zhode a environmentálna deklarácia EPD.', odkaz: 'Na stiahnutie' },
+      { h: 'Materiál na celú trasu', p: 'Potrubie, svorné spojky, izolačné sady na spoje pod zemou, prestupy stenou a krytky v jednej ponuke s dostupnosťou.', odkaz: 'Dopyt na projekt' },
+    ],
+    konfigurator: {
+      stav: 'Pripravujeme', h: 'Konfigurátor trasy',
+      p: 'Zadáte trasu, dĺžky, odbočky a prestupy. Spočítame potrubie, spojky a príslušenstvo a pripravíme návrh na stiahnutie.',
+      odkaz: 'Zatiaľ nám pošlite trasu',
+    },
+    // Katalóg Watts Microflex s. 3 a 4 (od roku 1994, ISO 9001), s. 8 až 15 (normy rúr), s. 34 (certifikáty).
+    istota: 'Microflex vyrába predizolované potrubie od roku 1994, dnes ako značka skupiny Watts. Výroba je certifikovaná podľa ISO 9001, nosné rúry podľa EN ISO 15875 s kyslíkovou bariérou podľa DIN 4726. Potrubie má certifikáty skúšobní v Belgicku, Nemecku, Dánsku, Holandsku, Francúzsku, Švédsku, Spojenom kráľovstve a USA.',
   },
   potrubia: {
     title: 'Predizolované potrubia Microflex',
@@ -170,8 +192,8 @@ const sk = {
 
 const cs: typeof sk = {
   site: { name: 'Microflex Slovensko', sub: 'Slovensko', tagline: 'Předizolované ohebné potrubí Microflex' },
-  nav: { potrubia: 'Potrubí', vyber: 'Výběr potrubí', stiahnut: 'Ke stažení', firmy: 'Pro firmy', poradna: 'Poradna', eshop: 'E-shop', menu: 'Menu', zavriet: 'Zavřít', hlavna: 'Hlavní navigace', domov: 'Domů', celyKatalog: 'Celý katalog potrubí', katalogPdf: 'Katalog PDF, 19 MB, slovensky' },
-  search: { placeholder: 'Obj. číslo, řada, dimenze', label: 'Hledat v katalogu', button: 'Hledat', vsetky: 'Všechny výsledky', nic: 'Nic jsme nenašli. Zkuste obj. číslo, řadu nebo průvodce výběrem.', ciastocne: 'Přesnou shodu jsme nenašli. Nejbližší:', sprievodca: 'Průvodce výběrem potrubí', skupiny: { rad: 'Řada', kod: 'Obj. číslo', diel: 'Díl', stranka: 'Stránka' } },
+  nav: { potrubia: 'Potrubí', vyber: 'Výběr potrubí', stiahnut: 'Ke stažení', firmy: 'Pro firmy', poradna: 'Poradna', referencie: 'Reference', kontakt: 'Kontakt', podklady: 'Podklady', eshop: 'E-shop', menu: 'Menu', zavriet: 'Zavřít', hlavna: 'Hlavní navigace', domov: 'Domů', celyKatalog: 'Celý katalog potrubí', katalogPdf: 'Katalog PDF, 19 MB, slovensky' },
+  search: { placeholder: 'Obj. číslo, řada', label: 'Hledat v katalogu', button: 'Hledat', vsetky: 'Všechny výsledky', nic: 'Nic jsme nenašli. Zkuste obj. číslo, řadu nebo průvodce výběrem.', ciastocne: 'Přesnou shodu jsme nenašli. Nejbližší:', sprievodca: 'Průvodce výběrem potrubí', skupiny: { rad: 'Řada', kod: 'Obj. číslo', diel: 'Díl', stranka: 'Stránka' } },
   partner: { kratke: 'Oficiální partner', veta: 'Oficiální partner Watts pro Microflex na Slovensku', vyrobca: 'Výrobce' },
   jazyk: { prepnut: 'Jazyk', sk: 'Slovensky', cs: 'Česky' },
   crumbs: { label: 'Kde jste' },
@@ -227,7 +249,7 @@ const cs: typeof sk = {
     heroKicker: 'Předizolované potrubí Microflex®',
     h1a: 'Flexibilní potrubí.', h1b: 'Precizní řešení.',
     lead: 'Pro vytápění, pitnou vodu, chlazení a tepelná čerpadla.',
-    cta: 'Vybrat potrubí', cta2: 'Stáhnout katalog', cta2Meta: 'PDF, 19 MB, slovensky',
+    cta: 'Vybrat potrubí', cta2: 'Poptávka na projekt',
     heroAlt: 'Řez předizolovaným potrubím Microflex se čtyřmi trubkami: zvlněný plášť, izolace a nosné trubky',
     popisy: {
       label: 'Rozměry a vlastnosti potrubí na obrázku',
@@ -235,7 +257,6 @@ const cs: typeof sk = {
       polomer: 'poloměr ohybu',
       tlak: (xs: string[]) => `nosné trubky na ${xs.length > 1 ? `${xs.slice(0, -1).join(', ')} nebo ${xs[xs.length - 1]}` : xs[0]} bar`,
     },
-    katalogKicker: 'Výběr podle použití',
     katalogH2: 'Každý projekt má své potrubí.',
     rury: (n: number) => (n === 1 ? 'Jedna trubka v plášti' : n === 2 ? 'Dvě trubky v plášti' : n === 4 ? 'Čtyři trubky v plášti' : `${n} trubky v plášti`),
     plast: 'plášť',
@@ -264,17 +285,36 @@ const cs: typeof sk = {
     zataz: ['až 60 t', 'unese potrubí uložené v hloubce 0,5 až 6 m'],
     pokladkaZdroj: 'Časy jsou přibližné, bez dopravy a výkopu.',
     pokladkaOdkaz: 'Celý postup v katalogu výrobce',
-    refH2: 'Kde už Microflex leží', refVsetky: 'Všechny reference',
-    refAlt: 'Potrubí Microflex ve výkopu se spojkami',
-    b2bH2: 'Pro projektanty, montážní firmy a velkoobchod',
-    b2bP: 'Technické listy, výkresy DWG a DXF, prohlášení o shodě a environmentální deklarace na jednom místě. Na projekt pošlete poptávku, ozveme se s nabídkou a dostupností.',
-    b2bDopyt: 'Poslat poptávku na projekt', b2bPodklady: 'Podklady ke stažení',
-    b2bList: [
-      ['Technické listy a katalog', 'PDF pro každou řadu, katalog Microflex'],
-      ['BIM a CAD', 'DWG a DXF pro UNO, DUO, QUADRO a COOL'],
-      ['Prohlášení a deklarace', 'Prohlášení o shodě, environmentální deklarace EPD'],
-      ['Velkoobchodní kontakt', 'Obchodní oddělení'],
+    projektyH2: 'Projekty, které už leží v zemi.',
+    projektyP: 'Rozvody tepla mezi budovami areálů a obytných souborů, od kotelny po poslední přípojku.',
+    projektyVsetky: 'Všechny reference',
+    projektyKoty: 'Údaje o stavbě na fotce',
+    projektyViac: 'Celá reference',
+    projekty: {
+      orange: {
+        kde: 'Orange, Francie, říjen 2022', h3: '800 metrů místo staré ocelové sítě',
+        p: 'Staré ocelové potrubí, které vedlo teplou vodu z hlavní kotelny do budov vojenské základny, nahradil Microflex UNO.',
+        alt: 'Dvě potrubí Microflex UNO vedou hadovitě výkopem k budovám vojenské základny v Orange',
+      },
+      povazska: {
+        kde: 'Považská Bystrica, prosinec 2022 až únor 2023', h3: '31 budov napojených na jednu kotelnu',
+        p: 'Rozvod tepla pro 30 rodinných domů a bytový dům ze společné kotelny na pelety, se čtyřmi revizními šachtami. Nabídku a dodávku jsme zajistili s podporou Watts.',
+        alt: 'Kotelna obytného souboru v Považské Bystrici se zásobníkem pelet a akumulačními nádržemi',
+      },
+    },
+    podporaH2: 'U velkého projektu s Vámi od trasy po dodávku.',
+    podporaP: 'Projektantům dodáme podklady, montážním firmám celý materiál na trasu v jedné nabídce. U větších sítí pomáhá i technická podpora výrobce.',
+    podporaDopyt: 'Poslat poptávku na projekt', podporaPodklady: 'Podklady ke stažení',
+    podpora: [
+      { h: 'Podklady pro projektanty', p: 'Výkresy DWG a DXF, tabulky rozměrů a výkonů, tepelné ztráty, prohlášení o shodě a environmentální deklarace EPD.', odkaz: 'Ke stažení' },
+      { h: 'Materiál na celou trasu', p: 'Potrubí, svěrné spojky, izolační sady na spoje pod zemí, prostupy stěnou a krytky v jedné nabídce s dostupností.', odkaz: 'Poptávka na projekt' },
     ],
+    konfigurator: {
+      stav: 'Připravujeme', h: 'Konfigurátor trasy',
+      p: 'Zadáte trasu, délky, odbočky a prostupy. Spočítáme potrubí, spojky a příslušenství a připravíme návrh ke stažení.',
+      odkaz: 'Zatím nám pošlete trasu',
+    },
+    istota: 'Microflex vyrábí předizolované potrubí od roku 1994, dnes jako značka skupiny Watts. Výroba je certifikovaná podle ISO 9001, nosné trubky podle EN ISO 15875 s kyslíkovou bariérou podle DIN 4726. Potrubí má certifikáty zkušeben v Belgii, Německu, Dánsku, Nizozemsku, Francii, Švédsku, Spojeném království a USA.',
   },
   potrubia: {
     title: 'Předizolované potrubí Microflex',

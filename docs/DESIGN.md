@@ -677,3 +677,23 @@ shadcn/ui ako ostrovy Reactu + Motion je navrhovaná kombinácia) odomyká väč
 2. Tri HTML makety s reálnym obsahom: domov, kategória Potrubia pre vykurovanie, rad Microflex UNO
    6 bar. Každá v dvoch variantoch písma nadpisov. Porovnať vedľa watts.eu.
 3. Po schválení makiet a tokenov: rozhodnutie o stacku a hostingu (samostatný dokument).
+
+## 18. Prémiová etapa pre veľké projekty (22. 10. 2026)
+
+Juraj: „prémiová značka pre ľudí, ktorí chcú tieto produkty na veľké stavby“. Rozbor, benchmark
+a zoznam zmien sú v `docs/AUDIT-PREMIUM.md`. Záväzné pravidlá pre celý web:
+
+1. **Kóta namiesto pásu čísel.** Kľúčové číslo stojí na obraze pri tom, čo opisuje: bod, čiara,
+   mliečny štítok (číslo Archivo 118 % šírky, popis Plex). Komponent `components/Koty.astro`,
+   body renderov radov `lib/koty.ts`, fotky zo stavieb `components/Scena.astro`
+   (`content/referencie.ts` → `scena`). Hlava radu a systému ukáže zoznam faktov len vtedy, keď
+   sú na obraze menej ako dve kóty.
+2. **Žiadne verzálkové nadpisky ani bodky medzi údajmi.** Tichý riadok nad nadpisom je veta
+   v normálnej sadzbe (napr. „Vykurovanie, dve rúry“), údaje oddeľuje čiarka.
+3. **Prechody medzi stránkami:** hlavička a horný pás stoja, obsah vystúpi, render s menom
+   `rad-<id>` alebo `kat-<id>` preletí z karty do hlavy. Meno musí byť na stránke jedinečné.
+4. **Domov, podzemie:** sekcia Projekty (najväčšie stavby s kótami, hadovito) a projektová
+   podpora. Na domove je jediné miesto pre **konfigurátor trasy** (karta „Pripravujeme“, vedie na
+   dopyt), kým sa nepostaví v samostatnej etape.
+5. **Menu:** Potrubia, Výber potrubia, Referencie, Pre firmy, Podklady, Poradňa; telefón a Kontakt
+   v hornom páse.

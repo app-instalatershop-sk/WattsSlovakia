@@ -42,7 +42,7 @@ export async function indexHladania(lang: Lang): Promise<Polozka[]> {
 
   for (const r of rady.filter((x) => !x.je_skupina)) {
     const k = katId(r.kategoria);
-    out.push({ s: 'rad', n: rNazov(r, lang), d: [kNazov(k, lang), tlakText(r)].filter(Boolean).join(' · '), u: cestaRadu(k, r, lang), k: [r.nazov_watts, r.nazov, rKratky(r, lang)].filter(Boolean).join(' ') });
+    out.push({ s: 'rad', n: rNazov(r, lang), d: [kNazov(k, lang), tlakText(r)].filter(Boolean).join(', '), u: cestaRadu(k, r, lang), k: [r.nazov_watts, r.nazov, rKratky(r, lang)].filter(Boolean).join(' ') });
   }
 
   for (const v of varianty) {
@@ -51,7 +51,7 @@ export async function indexHladania(lang: Lang): Promise<Polozka[]> {
     const k = katId(r.kategoria);
     const model = rNazov(r, lang).split(',')[0].trim();
     const rura = ruraText(v);
-    const d = [model, rura && `${cs ? 'trubka' : 'rúra'} ${rura}`, v.plast_mm && `plášť ${cislo(v.plast_mm)} mm`].filter(Boolean).join(' · ');
+    const d = [model, rura && `${cs ? 'trubka' : 'rúra'} ${rura}`, v.plast_mm && `plášť ${cislo(v.plast_mm)} mm`].filter(Boolean).join(', ');
     // „125/32“, „125/2x32“: bežný zápis dimenzie plášť/rúry v objednávkach; „DN 25“ z tabuľky výrobcu
     const d0 = v.rura?.d ?? (rura.match(/\d{2,3}/)?.[0] ?? '');
     const pocet = r.pocet_rur && r.pocet_rur > 1 ? `${r.pocet_rur}x` : '';
@@ -74,7 +74,7 @@ export async function indexHladania(lang: Lang): Promise<Polozka[]> {
         if (!kod || videne.has(kod)) continue;
         videne.add(kod);
         const rozmer = rozmerRiadku(tab, riadok, lang);
-        out.push({ s: 'kod', n: kod, d: [pNazov(p, lang), rozmer].filter(Boolean).join(' · '), u: `${cesta}#${kotvaKodu(kod)}`, k: riadok.slice(1).map((c, i) => `${hlavicky[i + 1] ?? ''} ${c}`).join(' ') });
+        out.push({ s: 'kod', n: kod, d: [pNazov(p, lang), rozmer].filter(Boolean).join(', '), u: `${cesta}#${kotvaKodu(kod)}`, k: riadok.slice(1).map((c, i) => `${hlavicky[i + 1] ?? ''} ${c}`).join(' ') });
       }
     }
   }

@@ -12,9 +12,10 @@ import WattsLogo from './WattsLogo.astro';
 import MicroflexLogo from './MicroflexLogo.astro';
 import { kategorie, cestaKategorie, kKratky, rNazov, type Kategoria } from '../lib/katalog';
 import { piktogram } from '../lib/obrazky';
+import { FIRMA } from '../content/firma';
 import { type Lang, type Alternates, ESHOP, KATALOG_PDF, t, route, LANGS } from '../i18n/ui';
 
-interface Props { lang: Lang; alternates: Alternates; aktivna?: 'potrubia' | 'vyber' | 'stiahnut' | 'firmy' | 'poradna' }
+interface Props { lang: Lang; alternates: Alternates; aktivna?: 'potrubia' | 'vyber' | 'referencie' | 'stiahnut' | 'firmy' | 'poradna' | 'kontakt' }
 const { lang, alternates, aktivna } = Astro.props;
 const ui = t(lang);
 
@@ -29,10 +30,12 @@ const radyKat = (k: Kategoria) => rady
   .map((r) => rNazov(r, lang).split(',')[0].trim().replace(/^Microflex\s+/i, ''))
   .join(', ');
 
+// Referencie sú v menu kvôli projektantom a dodávateľom veľkých stavieb (audit prvého dojmu, č. 6).
 const polozky = [
   { id: 'vyber', text: ui.nav.vyber, href: route(lang, 'vyber') },
-  { id: 'stiahnut', text: ui.nav.stiahnut, href: route(lang, 'stiahnut') },
+  { id: 'referencie', text: ui.nav.referencie, href: route(lang, 'referencie') },
   { id: 'firmy', text: ui.nav.firmy, href: route(lang, 'firmy') },
+  { id: 'stiahnut', text: ui.nav.podklady, href: route(lang, 'stiahnut') },
   { id: 'poradna', text: ui.nav.poradna, href: route(lang, 'poradna') },
 ] as const;
 
@@ -41,12 +44,17 @@ const nasIndex = `${route(lang, 'hladat')}index.json`;
 const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, ciastocne: ui.search.ciastocne, sprievodca: ui.search.sprievodca, skupiny: ui.search.skupiny, sprievodcaUrl: route(lang, 'vyber') });
 ---
 <!-- Horný pás nie je prilepený: odroluje prirodzene, hlavička pod ním ostáva. -->
-<div class="topbar">
+<div class="topbar" transition:name="horny-pas" transition:animate="none">
   <div class="wrap topbar-in">
     <a class="partner" href={route(lang, 'kontakt')} aria-label={ui.partner.veta}>
       <span>{ui.partner.veta}</span>
       <WattsLogo height={14} farba="biela" />
     </a>
+    {/* Kontakt je vždy na očiach: telefón na jeden ťuk a stránka kontaktu (audit prvého dojmu, č. 5). */}
+    <div class="topbar-kontakt">
+      <a class="topbar-tel" href={FIRMA.telefonHref}><Ikona nazov="phone" velkost={14} />{FIRMA.telefon}</a>
+      <a href={route(lang, 'kontakt')} aria-current={aktivna === 'kontakt' ? 'page' : undefined}>{ui.nav.kontakt}</a>
+    </div>
     <nav class="langs" aria-label={ui.jazyk.prepnut}>
       {LANGS.map((l, i) => (
         <>
@@ -57,7 +65,7 @@ const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, 
     </nav>
   </div>
 </div>
-<header class="hdr" id="hdr">
+<header class="hdr" id="hdr" transition:name="hlavicka" transition:animate="none">
   <div class="wrap hdr-in">
     <a class="brand" href={route(lang, 'domov')} aria-label={ui.site.name}>
       <MicroflexLogo height={21} popis={null} class="brand-logo" />
@@ -131,7 +139,9 @@ const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, 
       <ul class="mnav-odkazy">
         {diely.map((k) => <li><a href={cestaKategorie(k, lang)}>{kKratky(k, lang)}</a></li>)}
         {polozky.map((p) => <li><a href={p.href}>{p.text}</a></li>)}
+        <li><a href={route(lang, 'kontakt')}>{ui.nav.kontakt}</a></li>
       </ul>
+      <a class="mnav-tel" href={FIRMA.telefonHref}><Ikona nazov="phone" velkost={18} />{FIRMA.telefon}</a>
       <a class="eshop eshop-m" href={ESHOP} target="_blank" rel="noopener">{ui.nav.eshop} instalatershop.sk<Ikona nazov="external-link" velkost={16} /></a>
       <div class="mnav-langs">{LANGS.map((l) => <a href={alternates[l]} hreflang={l} lang={l} aria-current={l === lang ? 'page' : undefined}>{ui.jazyk[l]}</a>)}</div>
     </div>
@@ -144,6 +154,12 @@ const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, 
   .partner { display: inline-flex; align-items: center; gap: 12px; color: #fff; white-space: nowrap; }
   .partner:hover { color: var(--color-yellow-500); }
   .partner :global(svg) { display: block; }
+  .topbar-kontakt { margin-left: auto; display: inline-flex; align-items: center; gap: 20px; }
+  .topbar-kontakt a { color: var(--color-on-dark-muted); font-weight: 500; white-space: nowrap; }
+  .topbar-kontakt a:hover, .topbar-kontakt a[aria-current] { color: #fff; }
+  .topbar-tel { display: inline-flex; align-items: center; gap: 7px; color: #fff !important; font-variant-numeric: tabular-nums; }
+  .topbar-tel :global(svg) { opacity: .75; }
+  .topbar-kontakt + .langs { padding-left: 20px; border-left: 1px solid rgb(255 255 255 / 0.22); }
   .langs { display: inline-flex; align-items: center; gap: 10px; }
   .langs a { color: var(--color-on-dark-muted); font-weight: 500; letter-spacing: .04em; padding: 2px 0; border-bottom: 1px solid transparent; }
   .langs a:hover { color: #fff; }
@@ -247,12 +263,15 @@ const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, 
   .mnav-kat a { display: flex; align-items: center; gap: 10px; padding: 8px 12px 8px 8px; border-radius: 14px; background: linear-gradient(180deg, #f5f8fc 0%, #edf2f9 100%); color: var(--color-ink); font-weight: 500; font-size: 14.5px; line-height: 1.25; min-height: 64px; }
   .mnav-kat :global(.mnav-img) { width: 56px; height: 48px; object-fit: contain; flex: none; filter: drop-shadow(0 6px 6px rgb(11 27 51 / 0.2)); }
   .mnav-odkazy a { display: block; padding: 13px 0; border-bottom: 1px solid rgb(10 42 94 / 0.08); color: var(--color-ink); font-weight: 500; }
+  .mnav-tel { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; font-size: 17px; color: var(--color-blue-900); font-variant-numeric: tabular-nums; }
   .eshop-m { justify-content: center; height: 48px; }
   .mnav-langs { display: flex; gap: 24px; }
   .mnav-langs a { color: var(--color-ink-soft); font-weight: 500; }
   .mnav-langs a[aria-current] { color: var(--color-blue-700); }
 
-  @media (max-width: 1240px) { .search input { width: 232px; padding-right: 16px; } .search input:focus { width: 256px; } .search-kbd { display: none; } .nav-link { padding: 0 10px; } .hdr-in { gap: 20px; } }
+  /* Šesť položiek menu: pod 1 500 px skratka Ctrl K ustúpi, aby sa pole zmestilo celé. */
+  @media (max-width: 1500px) { .search input { padding-right: 16px; } .search-kbd { display: none; } .nav-link { padding: 0 10px; } .hdr-in { gap: 22px; } }
+  @media (max-width: 1240px) { .search input { width: 232px; } .search input:focus { width: 256px; } .hdr-in { gap: 16px; } .nav-link { padding: 0 8px; font-size: 14.5px; } }
   /* Pod 1 100 px navigácia do menu; hľadanie a e-shop ostávajú, kým je miesto. */
   @media (max-width: 1100px) {
     .nav, .mega { display: none; }
@@ -268,6 +287,9 @@ const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, 
     .brand, .hdr.is-scrolled .brand { --logo-h: 17px; }
     .brand-sub { font-size: 13px; padding-left: 10px; }
     .partner span { display: none; }
+    /* Na telefóne ostáva v páse len číslo; stránka Kontakt je v menu. */
+    .topbar-kontakt a:not(.topbar-tel) { display: none; }
+    .topbar-kontakt + .langs { padding-left: 14px; }
   }
   /* Úzky telefón: logo, lupa a menu sa zmestia len s tlačidlom menu bez textu (text ostáva pre čítačky). */
   @media (max-width: 420px) {

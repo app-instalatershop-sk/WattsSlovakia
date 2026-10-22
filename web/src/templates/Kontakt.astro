@@ -44,7 +44,7 @@ const ld = [{
   openingHours: FIRMA.hodinySchema,
 }];
 ---
-<Base lang={lang} alternates={staticAlternates('kontakt')} title={tx.title} description={tx.desc} drobceky={[{ text: tx.title }]} vizualneDrobceky={false} jsonLd={ld}>
+<Base lang={lang} alternates={staticAlternates('kontakt')} title={tx.title} description={tx.desc} aktivna="kontakt" drobceky={[{ text: tx.title }]} vizualneDrobceky={false} jsonLd={ld}>
   <Hlava lang={lang} nadpis={tx.title} drobceky={[{ text: tx.title }]} lead={tx.lead}>
     <div slot="bok" class="harok vizitka">
       <a class="vizitka-tel" href={FIRMA.telefonHref}><Ikona nazov="phone" velkost={22} /><span><small>{tx.telefon}</small>{FIRMA.telefon}</span></a>
@@ -111,7 +111,7 @@ const ld = [{
 
   .predajna { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: stretch; }
   .karta { display: flex; flex-direction: column; gap: 12px; padding: 26px 28px; color: var(--color-ink); }
-  .karta h3 { font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-blue-700); }
+  .karta h3 { font-size: 15px; font-weight: 600; color: var(--color-blue-700); }
   .adresa { font-size: 18px; line-height: 1.55; font-weight: 500; }
   .karta .odkaz { margin-top: auto; align-self: flex-start; }
   .hodiny > div { display: flex; justify-content: space-between; gap: 16px; padding: 9px 0; border-bottom: 1px solid rgb(10 42 94 / 0.08); }

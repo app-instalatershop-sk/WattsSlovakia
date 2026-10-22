@@ -58,7 +58,6 @@ const skupiny = (k: Kategoria) => rady.filter((r) => r.kategoria === k.id).sort(
   <div class="wrap">
     <div class="kat-taby">
       <div class="kat-hlava">
-        <p class="kicker">{h.katalogKicker}</p>
         <h2 id="h-kat">{h.katalogH2}</h2>
       </div>
       <div class="t-list" role="radiogroup" aria-labelledby="h-kat">
@@ -80,7 +79,7 @@ const skupiny = (k: Kategoria) => rady.filter((r) => r.kategoria === k.id).sort(
             <div class="studio" data-pocet={p.dlazdice.length}>
               {p.dlazdice.map(({ rad: r, vyhotovenia }) => { const img = piktogram(r.piktogram); const href = cestaRadu(p.kat, r, lang); return (
                 <div class="rad">
-                  <a class="rad-obj" href={href} tabindex="-1" aria-hidden="true">
+                  <a class="rad-obj" href={href} tabindex="-1" aria-hidden="true" style={`view-transition-name: rad-${r.id}`}>
                     {img && <Image src={img} alt="" widths={[420, 640, 900]} sizes="(max-width: 760px) 78vw, (max-width: 1100px) 44vw, 34vw" class="rad-img" />}
                   </a>
                   <div class="rad-txt">
@@ -122,7 +121,6 @@ const skupiny = (k: Kategoria) => rady.filter((r) => r.kategoria === k.id).sort(
      vpravo vyššie, takže ju spodok renderu pretína. Dole ostáva miesto pre render rodiny, ktorý
      zhora prechádza cez švík do bielej sekcie pod ním. */
   .katalog { position: relative; isolation: isolate; margin-top: calc(-1 * var(--presah-hero)); padding-top: calc(var(--presah-hero) + 84px); padding-bottom: 200px; scroll-margin-top: calc(72px - var(--presah-hero)); overflow-x: clip; }
-  .kicker { font-size: 12.5px; letter-spacing: .09em; text-transform: uppercase; color: var(--color-blue-700); font-weight: 600; margin-bottom: 10px; }
   .katalog::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, var(--zem-1) 0%, var(--zem-2) 100%); clip-path: polygon(0 var(--presah-hero), 100% 0, 100% 100%, 0 100%); }
   .katalog h2 { font-size: clamp(28px, 2.2vw + 14px, 42px); margin-bottom: 32px; }
 

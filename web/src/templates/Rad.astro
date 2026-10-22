@@ -17,6 +17,7 @@ import CastiStranky from '../components/CastiStranky.astro';
 import Kopirovanie from '../components/Kopirovanie.astro';
 import { kategorie, radyKategorie, variantyRadu, cestaKategorie, cestaRadu, cestaProduktu, alternatyRadu, kKratky, rNazov, rKratky, rMedium, rOznacenie, pNazov, cislo, rozsah, rozsahRur, tlakText, kotvaKodu, type Kategoria, type Rad } from '../lib/katalog';
 import { piktogram, fotkaRadu, detail } from '../lib/obrazky';
+import { kotyRenderu } from '../lib/koty';
 import { sadzba } from '../lib/sadzba';
 import { obsahRadu } from '../content/rady';
 import { referencie } from '../content/referencie';
@@ -54,6 +55,14 @@ const fakty: [string, string][] = [
   ...(plastRozsah ? [[ui.rad.plast, plastRozsah] as [string, string]] : []),
   ...(polomery.length ? [[ui.rad.polomer, `${ui.common.od} ${cislo(Math.min(...polomery), 2)} m`] as [string, string]] : []),
 ];
+// Kóty na renderi v hlave: plášť, nosná rúra s tlakom a polomer ohybu stoja pri tom, čo opisujú.
+// Keď sú na obraze aspoň dve, zoznam faktov pod nadpisom sa nezobrazí (čísla by boli dvakrát).
+const kotyHlavy = kotyRenderu(r.piktogram, {
+  plast: plastRozsah ? [`Ø ${plastRozsah}`, ui.home.popisy.plast] : undefined,
+  rura: ruraRozsah ? [`${r.pocet_rur && r.pocet_rur > 1 && varianty.some((v) => v.rura) ? `${r.pocet_rur} × ` : ''}${ruraRozsah}`, [ui.rad.rura.toLowerCase(), tlakText(r)].filter(Boolean).join(', ')] : undefined,
+  ohyb: polomery.length ? [`${ui.common.od} ${cislo(Math.min(...polomery), 2)} m`, ui.home.popisy.polomer] : undefined,
+});
+const faktyHlavy = kotyHlavy.length >= 2 ? [] : fakty;
 
 // Stavba pod lupou: kľúčové číslo plášťa berie rozsah z tabuľky, nosnej rúry aj priemery.
 const vrstvy = obsah ? (['rura', 'pena', 'plast'] as const).map((id) => {
@@ -104,8 +113,8 @@ const productLd = [{
 }];
 ---
 <Base lang={lang} alternates={alternatyRadu(k, r)} title={nazov} description={meta} aktivna="potrubia" drobceky={drobceky} vizualneDrobceky={false} jsonLd={productLd}>
-  <Hlava lang={lang} nadpis={nazov} drobceky={drobceky} pred={[kKratky(k, lang), ruryText].filter(Boolean).join(' · ')} lead={kratky ?? undefined} obraz={pikto} obrazAlt={ui.rad.fotoAlt(nazov)} obrazMax={640}>
-    {fakty.length > 0 && <dl class="hlava-fakty">{fakty.map(([dt, dd]) => <div><dt>{dt}</dt><dd>{dd}</dd></div>)}</dl>}
+  <Hlava lang={lang} nadpis={nazov} drobceky={drobceky} pred={[kKratky(k, lang), ruryText].filter(Boolean).join(', ')} lead={kratky ?? undefined} obraz={pikto} obrazAlt={ui.rad.fotoAlt(nazov)} obrazMax={640} prechod={`rad-${r.id}`} koty={kotyHlavy} kotyLabel={ui.home.popisy.label}>
+    {faktyHlavy.length > 0 && <dl class="hlava-fakty">{faktyHlavy.map(([dt, dd]) => <div><dt>{dt}</dt><dd>{dd}</dd></div>)}</dl>}
     <div class="hlava-akcie">
       <a class="btn btn-yellow" href="#varianty">{tx.vybrat} <Ikona nazov="arrow-down" velkost={18} /></a>
       <a class="odkaz" href={eshop} target="_blank" rel="noopener">{tx.kupit} <Ikona nazov="external-link" velkost={16} /></a>
@@ -223,7 +232,7 @@ const productLd = [{
   .stavba h2 { font-size: clamp(26px, 1.4vw + 17px, 36px); letter-spacing: -0.02em; }
   .stavba-popis { margin-top: 16px; font-size: 17px; line-height: 1.6; max-width: 36em; }
   .stavba-karta { margin-top: 32px; padding: 26px 28px 22px; }
-  .stavba-karta h3 { font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-blue-700); }
+  .stavba-karta h3 { font-size: 17px; font-weight: 600; color: var(--color-ink); }
   .stavba-karta h3 + * { margin-top: 12px; }
   .stavba-karta * + h3 { margin-top: 26px; }
   .parametre > div { display: flex; justify-content: space-between; gap: 16px; padding: 9px 0; border-bottom: 1px solid rgb(10 42 94 / 0.08); }

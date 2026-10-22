@@ -1,6 +1,7 @@
 ---
 /**
- * Pre firmy: čo dostanú projektanti, montážne firmy a veľkoobchod, podklady a dopyt na projekt.
+ * Pre firmy: čo dostanú projektanti, montážne firmy a veľkoobchod, dôkaz z vlastnej dodávky (sieť pre
+ * 31 budov s kótou na fotke), istota výrobcu, podklady a dopyt na projekt.
  * Web nemá server: formulár z vyplnených polí zloží e-mail na FIRMA.emailDopyt a otvorí ho
  * v e-mailovom programe (mailto). Parameter ?rad= predvyplní potrubie (odkazy zo stránok radov).
  */
@@ -8,10 +9,13 @@ import Base from '../layouts/Base.astro';
 import Hlava from '../components/Hlava.astro';
 import Zaver from '../components/Zaver.astro';
 import Ikona from '../components/Ikona.astro';
+import Scena from '../components/Scena.astro';
+import { Image } from 'astro:assets';
 import { FIRMA } from '../content/firma';
-import { fotka } from '../lib/obrazky';
+import { referencie } from '../content/referencie';
+import { fotka, fotkaReferencie } from '../lib/obrazky';
 import { sadzba } from '../lib/sadzba';
-import { type Lang, route, staticAlternates } from '../i18n/ui';
+import { type Lang, t, route, staticAlternates } from '../i18n/ui';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -19,13 +23,15 @@ const tx = {
   sk: {
     title: 'Pre projektantov, montážne firmy a veľkoobchod', kratko: 'Pre firmy',
     desc: 'Podklady na projekt s potrubím Microflex, ponuka materiálu na celú trasu a dopyt na projekt. Výkresy DWG a DXF, katalóg, vyhlásenia o zhode.',
-    lead: 'Podklady na projekt, materiál na celú trasu od potrubia po prestupy stenou a ponuka s dostupnosťou. Pošlite dopyt, ozveme sa.',
+    lead: 'Podklady na projekt, materiál na celú trasu od potrubia po prestupy stenou a ponuka s dostupnosťou. Pri väčších sieťach aj s technickou podporou výrobcu.',
     foto: 'Potrubie Microflex vstupuje cez stenu do budovy, pripojenie k zdroju tepla',
     pre: [
-      { h: 'Projektanti', p: 'Výkresy DWG a DXF pre každý rad, tabuľky rozmerov a výkonu, tepelné a tlakové straty a vyhlásenia výrobcu na jednom mieste.', odkaz: 'Podklady na stiahnutie', href: 'stiahnut' },
-      { h: 'Montážne firmy', p: 'Materiál na celý výkop v jednej ponuke: potrubie, svorné spojky, koncové krytky, izolačné sady na spoje pod zemou a prestupy stenou.', odkaz: 'Spojky a príslušenstvo', href: 'spojky' },
-      { h: 'Veľkoobchod', p: 'Obj. čísla výrobcu pri každej dimenzii a diele, kopírovateľné jedným klikom. Ponuku a dostupnosť pripravíme na dopyt.', odkaz: 'Všetky potrubia', href: 'potrubia' },
+      { h: 'Projektanti', p: 'Výkresy DWG a DXF pre každý rad, tabuľky rozmerov a výkonu, tepelné a tlakové straty a vyhlásenia výrobcu na jednom mieste.', odkaz: 'Podklady na stiahnutie', href: 'stiahnut', foto: 'katalog-obalka.jpg', alt: 'Katalóg Microflex od výrobcu Watts' },
+      { h: 'Montážne firmy', p: 'Materiál na celý výkop v jednej ponuke: potrubie, svorné spojky, koncové krytky, izolačné sady na spoje pod zemou a prestupy stenou.', odkaz: 'Spojky a príslušenstvo', href: 'spojky', foto: 'vykop-spojky.jpg', alt: 'Potrubie Microflex vo výkope s odbočkou a spojkami' },
+      { h: 'Veľkoobchod', p: 'Obj. čísla výrobcu pri každej dimenzii a diele, kopírovateľné jedným klikom. Ponuku a dostupnosť pripravíme na dopyt.', odkaz: 'Všetky potrubia', href: 'potrubia', foto: 'povazska-2.jpg', alt: 'Kotúče potrubia Microflex pripravené na stavbe' },
     ],
+    dokazH2: 'Sieť pre 31 budov sme dodali sami.', dokazP: 'Obytný súbor v Považskej Bystrici: 30 rodinných domov a bytový dom na jednej kotolni na pelety, so štyrmi revíznymi šachtami. Ponuku aj dodávku potrubia, pevných bodov, tesnení a príslušenstva sme pripravili s podporou Watts.', dokazOdkaz: 'Celá referencia', dokazVsetky: 'Všetky referencie',
+    istotaH2: 'Istota výrobcu',
     dopytH2: 'Dopyt na projekt', dopytP: 'Čím viac o trase viete, tým presnejšia bude ponuka. Stačí aj orientačná dĺžka a médium.',
     meno: 'Meno a priezvisko', firma: 'Firma', email: 'E-mail', telefon: 'Telefón', miesto: 'Miesto stavby',
     medium: 'Čo potrubím povediete', media: ['Vykurovanie', 'Teplá a studená voda', 'Vykurovanie aj teplá voda', 'Studená alebo chladená voda', 'Tepelné čerpadlo', 'Neviem, poraďte'],
@@ -40,13 +46,15 @@ const tx = {
   cs: {
     title: 'Pro projektanty, montážní firmy a velkoobchod', kratko: 'Pro firmy',
     desc: 'Podklady pro projekt s potrubím Microflex, nabídka materiálu na celou trasu a poptávka na projekt. Výkresy DWG a DXF, katalog, prohlášení o shodě.',
-    lead: 'Podklady pro projekt, materiál na celou trasu od potrubí po prostupy stěnou a nabídka s dostupností. Pošlete poptávku, ozveme se.',
+    lead: 'Podklady pro projekt, materiál na celou trasu od potrubí po prostupy stěnou a nabídka s dostupností. U větších sítí i s technickou podporou výrobce.',
     foto: 'Potrubí Microflex vstupuje stěnou do budovy, připojení ke zdroji tepla',
     pre: [
-      { h: 'Projektanti', p: 'Výkresy DWG a DXF pro každou řadu, tabulky rozměrů a výkonu, tepelné a tlakové ztráty a prohlášení výrobce na jednom místě.', odkaz: 'Podklady ke stažení', href: 'stiahnut' },
-      { h: 'Montážní firmy', p: 'Materiál na celý výkop v jedné nabídce: potrubí, svěrné spojky, koncové krytky, izolační sady na spoje pod zemí a prostupy stěnou.', odkaz: 'Spojky a příslušenství', href: 'spojky' },
-      { h: 'Velkoobchod', p: 'Obj. čísla výrobce u každé dimenze a dílu, kopírovatelná jedním klikem. Nabídku a dostupnost připravíme na poptávku.', odkaz: 'Všechna potrubí', href: 'potrubia' },
+      { h: 'Projektanti', p: 'Výkresy DWG a DXF pro každou řadu, tabulky rozměrů a výkonu, tepelné a tlakové ztráty a prohlášení výrobce na jednom místě.', odkaz: 'Podklady ke stažení', href: 'stiahnut', foto: 'katalog-obalka.jpg', alt: 'Katalog Microflex od výrobce Watts' },
+      { h: 'Montážní firmy', p: 'Materiál na celý výkop v jedné nabídce: potrubí, svěrné spojky, koncové krytky, izolační sady na spoje pod zemí a prostupy stěnou.', odkaz: 'Spojky a příslušenství', href: 'spojky', foto: 'vykop-spojky.jpg', alt: 'Potrubí Microflex ve výkopu s odbočkou a spojkami' },
+      { h: 'Velkoobchod', p: 'Obj. čísla výrobce u každé dimenze a dílu, kopírovatelná jedním klikem. Nabídku a dostupnost připravíme na poptávku.', odkaz: 'Všechna potrubí', href: 'potrubia', foto: 'povazska-2.jpg', alt: 'Kotouče potrubí Microflex připravené na stavbě' },
     ],
+    dokazH2: 'Síť pro 31 budov jsme dodali sami.', dokazP: 'Obytný soubor v Považské Bystrici: 30 rodinných domů a bytový dům na jedné kotelně na pelety, se čtyřmi revizními šachtami. Nabídku i dodávku potrubí, pevných bodů, těsnění a příslušenství jsme připravili s podporou Watts.', dokazOdkaz: 'Celá reference', dokazVsetky: 'Všechny reference',
+    istotaH2: 'Jistota výrobce',
     dopytH2: 'Poptávka na projekt', dopytP: 'Čím víc o trase víte, tím přesnější bude nabídka. Stačí i orientační délka a médium.',
     meno: 'Jméno a příjmení', firma: 'Firma', email: 'E-mail', telefon: 'Telefon', miesto: 'Místo stavby',
     medium: 'Co potrubím povedete', media: ['Vytápění', 'Teplá a studená voda', 'Vytápění i teplá voda', 'Studená nebo chlazená voda', 'Tepelné čerpadlo', 'Nevím, poraďte'],
@@ -59,7 +67,11 @@ const tx = {
     kontaktH3: 'Raději telefonicky?',
   },
 }[lang];
+const ui = t(lang);
 const obraz = fotka('montaz-budova.jpg');
+// Fotka pri skupine: katalóg a výkop sú medzi fotkami webu, kotúče na stavbe z referencie v Považskej Bystrici.
+const fotkaPre = (f: string) => fotka(f) ?? fotkaReferencie(f);
+const povazska = referencie(lang).find((r) => r.id === 'povazska-bystrica')!;
 const polia = { meno: tx.meno, firma: tx.firma, email: tx.email, telefon: tx.telefon, miesto: tx.miesto, medium: tx.medium, potrubie: tx.potrubie, termin: tx.termin, poznamka: tx.poznamka };
 ---
 <Base lang={lang} alternates={staticAlternates('firmy')} title={tx.title} description={tx.desc} aktivna="firmy" drobceky={[{ text: tx.kratko }]} vizualneDrobceky={false}>
@@ -73,14 +85,32 @@ const polia = { meno: tx.meno, firma: tx.firma, email: tx.email, telefon: tx.tel
   <div class="telo">
     <section class="wrap" aria-label={tx.kratko}>
       <ul class="pre">
-        {tx.pre.map((x) => (
-          <li class="harok pre-karta">
+        {tx.pre.map((x) => { const f = fotkaPre(x.foto); return (
+          <li class="pre-skupina">
+            {f && <span class="pre-foto"><Image src={f} alt={x.alt} widths={[420, 640]} sizes="(max-width: 1000px) 100vw, 30vw" /></span>}
             <h2>{x.h}</h2>
             <p>{sadzba(x.p)}</p>
             <a class="odkaz" href={route(lang, x.href as 'stiahnut')}>{x.odkaz} <Ikona nazov="arrow-right" velkost={16} /></a>
           </li>
-        ))}
+        ); })}
       </ul>
+    </section>
+
+    {/* Dôkaz z vlastnej dodávky: kotolňa siete pre 31 budov s kótou výkonu, rovnaká scéna ako na domove. */}
+    <section class="wrap dokaz" aria-labelledby="h-dokaz">
+      {povazska.scena && <Scena class="dokaz-scena" obraz={fotkaReferencie(povazska.scena.fotka)!} alt={povazska.nazov} koty={povazska.scena.koty} label={ui.home.projektyKoty} widths={[640, 895]} sizes="(max-width: 900px) 100vw, 52vw" />}
+      <div class="dokaz-text">
+        <h2 id="h-dokaz">{tx.dokazH2}</h2>
+        <p>{sadzba(tx.dokazP)}</p>
+        <div class="dokaz-odkazy">
+          <a class="odkaz" href={`${route(lang, 'referencie')}#povazska-bystrica`}>{tx.dokazOdkaz} <Ikona nazov="arrow-right" velkost={16} /></a>
+          <a class="odkaz odkaz-tichy" href={route(lang, 'referencie')}>{tx.dokazVsetky}</a>
+        </div>
+        <div class="istota">
+          <h3>{tx.istotaH2}</h3>
+          <p>{sadzba(ui.home.istota)}</p>
+        </div>
+      </div>
     </section>
 
     <section class="wrap cast dopyt" id="dopyt" aria-labelledby="h-dopyt">
@@ -127,11 +157,28 @@ const polia = { meno: tx.meno, firma: tx.firma, email: tx.email, telefon: tx.tel
 </Base>
 
 <style>
-  .pre { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
-  .pre-karta { display: flex; flex-direction: column; gap: 12px; padding: 30px 30px 26px; }
-  .pre-karta h2 { font-size: 24px; letter-spacing: -0.015em; }
-  .pre-karta p { color: var(--color-ink-soft); }
-  .pre-karta .odkaz { margin-top: auto; align-self: flex-start; }
+  /* Skupiny zákazníkov: skutočná fotka, pod ňou text. Bez kariet s rámom, nesie ich materiál na fotke. */
+  .pre { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px 32px; }
+  .pre-skupina { display: flex; flex-direction: column; gap: 12px; }
+  .pre-foto { display: block; margin-bottom: 10px; border-radius: 18px; overflow: hidden; box-shadow: 0 30px 60px -34px rgb(11 27 51 / 0.55); background: var(--zem-3); }
+  .pre-foto :global(img) { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; transition: transform 600ms var(--ease-soft); }
+  .pre-skupina:hover .pre-foto :global(img) { transform: scale(1.03); }
+  .pre-skupina:first-child .pre-foto :global(img) { object-position: 50% 30%; }
+  .pre-skupina h2 { font-size: 24px; letter-spacing: -0.015em; }
+  .pre-skupina p { color: var(--color-ink-soft); }
+  .pre-skupina .odkaz { margin-top: auto; align-self: flex-start; }
+
+  /* Dôkaz z vlastnej dodávky: scéna s kótou vľavo cez okraj obrazovky, text vpravo. */
+  .dokaz { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 32px 56px; align-items: center; }
+  .dokaz :global(.dokaz-scena) { margin-left: calc(-1 * var(--bleed)); }
+  .dokaz :global(.dokaz-scena .scena-img) { border-radius: 0 20px 20px 0; box-shadow: 0 36px 70px -36px rgb(11 27 51 / 0.6); }
+  .dokaz-text h2 { font-size: clamp(28px, 1.6vw + 17px, 40px); letter-spacing: -0.02em; line-height: 1.1; }
+  .dokaz-text > p { margin-top: 16px; font-size: 16.5px; line-height: 1.6; max-width: 32em; }
+  .dokaz-odkazy { display: flex; flex-wrap: wrap; gap: 12px 26px; margin-top: 20px; }
+  .odkaz-tichy { color: var(--color-ink-soft); }
+  .istota { margin-top: 32px; padding: 20px 22px; border-radius: 16px; background: rgb(255 255 255 / 0.72); }
+  .istota h3 { font-size: 16px; }
+  .istota p { margin-top: 6px; font-size: 14.5px; line-height: 1.6; color: var(--color-ink-soft); }
 
   .dopyt { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 32px 56px; align-items: start; }
   .dopyt h2 { font-size: clamp(28px, 1.6vw + 17px, 40px); letter-spacing: -0.02em; }
@@ -165,8 +212,8 @@ const polia = { meno: tx.meno, firma: tx.firma, email: tx.email, telefon: tx.tel
   .formular .btn { align-self: flex-start; margin-top: 4px; }
   .chyba { color: #c2410c; font-weight: 500; font-size: 14.5px; }
   .formular-pozn { font-size: 13.5px; color: var(--color-ink-soft); }
-  @media (max-width: 1000px) { .pre { grid-template-columns: minmax(0, 1fr); } }
-  @media (max-width: 900px) { .dopyt { grid-template-columns: minmax(0, 1fr); } }
+  @media (max-width: 1000px) { .pre { grid-template-columns: minmax(0, 1fr); } .pre-foto :global(img) { aspect-ratio: 16 / 9; } }
+  @media (max-width: 900px) { .dopyt, .dokaz { grid-template-columns: minmax(0, 1fr); } .dokaz :global(.dokaz-scena) { margin-inline: calc(-1 * var(--gutter)); } .dokaz :global(.dokaz-scena .scena-img) { border-radius: 0; } }
   @media (max-width: 760px) { .riadok { grid-template-columns: minmax(0, 1fr); } .formular { padding: 22px 18px; } }
 </style>
 

@@ -31,7 +31,7 @@ const udaje: [string, string][] = varianty.length ? [
 ] : [];
 ---
 <article class="karta harok">
-  <a class="karta-obraz" href={href} tabindex="-1" aria-hidden="true">
+  <a class="karta-obraz" href={href} tabindex="-1" aria-hidden="true" style={`view-transition-name: rad-${rad.id}`}>
     {img && <Image src={img} alt="" widths={[360, 560, 800]} sizes="(max-width: 760px) 80vw, 30vw" />}
   </a>
   <h3><a href={href}>{model}</a></h3>

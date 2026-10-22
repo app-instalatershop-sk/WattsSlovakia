@@ -13,7 +13,7 @@ interface Props {
   alternates: Alternates;
   title: string;
   description: string;
-  aktivna?: 'potrubia' | 'vyber' | 'stiahnut' | 'firmy' | 'poradna';
+  aktivna?: 'potrubia' | 'vyber' | 'referencie' | 'stiahnut' | 'firmy' | 'poradna' | 'kontakt';
   drobceky?: Drobcek[];
   jsonLd?: Record<string, unknown>[];
   ogImage?: string;
@@ -48,6 +48,12 @@ const breadcrumbs = drobceky.length
     }
   : null;
 const ld = [organizacia, ...(breadcrumbs ? [breadcrumbs] : []), ...jsonLd];
+
+/* Prechod medzi stránkami: hlavička stojí, obsah starej stránky rýchlo zmizne a nový vystúpi.
+   Rendery s rovnakým menom (transition:name) medzitým preletia na svoje miesto na novej stránke.
+   Kľúčové snímky sú v global.css, pri „obmedziť pohyb“ ich prehliadač nespustí. */
+const prechod = { old: { name: 'mfx-von', duration: '160ms', easing: 'cubic-bezier(0.4, 0, 1, 1)', fillMode: 'both' }, new: { name: 'mfx-dnu', duration: '440ms', easing: 'cubic-bezier(0.2, 0.7, 0.2, 1)', delay: '40ms', fillMode: 'both' } };
+const stranka = { forwards: prechod, backwards: prechod };
 ---
 <!doctype html>
 <html lang={lang}>
@@ -88,10 +94,10 @@ const ld = [organizacia, ...(breadcrumbs ? [breadcrumbs] : []), ...jsonLd];
         </ol>
       </div>
     )}
-    <main id="obsah">
+    <main id="obsah" transition:animate={stranka}>
       <slot />
     </main>
-    <Paticka lang={lang} />
+    <div class="paticka-obal" transition:animate={stranka}><Paticka lang={lang} /></div>
     <script src="../scripts/pohyb.ts"></script>
   </body>
 </html>

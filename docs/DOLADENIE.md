@@ -318,6 +318,35 @@ podpisový pohyb = živé kóty, v čo najlepšej podobe. Body nižšie ostávaj
 | B4 Skutočné náhľady dokumentov | **čaká na Watts**: automatické sťahovanie z watts.eu je zablokované, preto otázka č. 18 pre manažéra | |
 | Meranie | Lighthouse mobil: domov 92, rad 93, diel 93, CLS 0; pozornosť: `docs/POZORNOST.md` | |
 
+## 8. Vlastný 3D model ako základ dizajnu (26. 10. 2026)
+
+Juraj: „Urob naozaj ako reálne, čo najväčšia kvalita. Keď urobíme prvý model dobre, dáme ďalšie
+a použijeme to ako dizajn pre stránku, dá nám to naozaj neobmedzené možnosti.“
+
+**Postup:** najprv jeden model (Microflex DUO, MD16032C) na úroveň produktovej fotky, až potom ďalšie rady.
+Ladí sa podľa **skutočných fotiek**, nie podľa renderov Watts: tie sú samy počítačová grafika. Vzory:
+`podklady/watts/fotky-katalog/katalog-s06-x53.jpeg` (štúdiová fotka celej rodiny s rezmi: farba plášťa,
+pena, rúry, svetlo), `katalog-s05-x46.jpeg` (makro plášťa: priesvitný HDPE, dvojitá stena, stopy po
+vytláčaní), `web/src/assets/fotky/prierez-duo.jpg` (rez DUO zo stavby: hrubé steny rúr, potlač, otrep).
+Skript `data/blender/potrubie.py` stavia model z `web/src/data/varianty.json`, ku každému renderu ukladá
+polohy kľúčových bodov (stred rezu, okraj plášťa, rúry) pre automatické kóty. Postup s obrázkami:
+`data/_3d/ukazka/postup.html` (len lokálne, obsahuje rendery Watts).
+
+| # | Čo z modelu | Kde na webe | Prínos |
+|---|---|---|---|
+| 1 | Štúdiové zábery všetkých radov s celým telom v rovnakom svetle | hlavy 12 radov a 5 systémov, katalóg na domove, karty | jeden obrazový jazyk namiesto renderov s orezaným telom |
+| 2 | Presný render ku každej dimenzii (91 variantov potrubia) | živé kóty: výber priemeru prepne obraz na presný prierez, kóty sa posunú samy | v odbore nikto; zákazník vidí svoju rúru |
+| 3 | Rozložený rez (sekvencia snímok) | stránka radu „Z čoho je potrubie“ alebo domov | podpisový pohyb webu |
+| 4 | Makrá plášťa, peny a rúry | lupy na domove a pri stavbe radu | skutočný detail namiesto dočasných výrezov |
+| 5 | Kotúč z rozmerov katalógu (priemer, šírka) | pokládka, tabuľka variantov | rozmery kotúča ako kóty na obraze |
+| 6 | Všetky rady v skutočnej mierke vedľa seba | Potrubia, porovnanie radov | rozdiel 75 a 200 mm vidno na prvý pohľad |
+| 7 | Technická ilustrácia výkopu (lôžko, zásyp, páska podľa katalógu s. 37) | Poradňa, pokládka | návod v štýle výkresu, nie falošná fotka |
+| 8 | Obrázky pre zdieľanie a Google Obrázky ku každému obj. číslu | OG náhľady, štruktúrované dáta | presný obraz pri vyhľadávaní obj. čísla |
+| 9 | Model na otáčanie v prehliadači (neskôr, three.js) | konfigurátor trasy | interakcia, načítanie len na klik |
+
+Výpočet: náhľad pod 1 s, štúdiový render 1 600 px asi 9 s na grafickej karte notebooku (RTX 5070 Laptop),
+finálna kvalita viac. Rad 91 renderov teda trvá desiatky minút, nie dni.
+
 ## Zdroje
 
 Overené 26. 10. 2026.

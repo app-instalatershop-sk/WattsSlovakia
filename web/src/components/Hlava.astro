@@ -63,7 +63,7 @@ const leskMaska = rozlozenie === 'studio' && zdrojMasky && zdrojMasky.format !==
       <slot />
     </div>
   </div>
-  <div class="hs-studio">
+  <div class:list={['hs-studio', { 'hs-vedla-volby': z3d && Astro.slots.has('nad-obrazom') }]}>
     {/* Ovládanie nad renderom (živé kóty na stránke radu): pod nadpisom, priamo nad výrobkom. */}
     {Astro.slots.has('nad-obrazom') && <div class="wrap hs-volba"><slot name="nad-obrazom" /></div>}
     <div class="hs-stage" style={`--obraz-max: ${obrazMax}px`}>
@@ -176,6 +176,17 @@ const leskMaska = rozlozenie === 'studio' && zdrojMasky && zdrojMasky.format !==
   /* Tieň na podlahe štúdia pod výrobkom. */
   .hs-stage::before { content: ""; position: absolute; left: 18%; right: 6%; bottom: 7%; height: 12%; border-radius: 50%; background: radial-gradient(closest-side, rgb(10 42 94 / 0.2), rgb(10 42 94 / 0)); }
   @keyframes hlava-studio { from { transform: translateY(24px); } to { transform: none; } }
+  /* Render 3D modelu (čelný záber, vyšší ako široký) pri výbere dimenzie: dva stĺpce, výber vľavo pod
+     nadpisom, render vpravo od vrchu štúdia. Výber aj celý rez s kótami sú tak naraz na prvej obrazovke
+     (1 440 × 900) a klik v lište mení obraz hneď vedľa. Stĺpce sa neprekrývajú: riadok s obj. číslom
+     po výbere nezasiahne do plášťa. */
+  @media (min-width: 1101px) {
+    .hs-vedla-volby { display: grid; grid-template-columns: minmax(0, 1fr) min(660px, 52vw); column-gap: 40px; align-items: start;
+      max-width: var(--container-site); margin-inline: auto; padding-inline: var(--gutter); }
+    .hs-vedla-volby .hs-volba { padding-inline: 0; margin-inline: 0; }
+    .hs-vedla-volby .hs-stage { width: auto; margin: 0 0 -52px; padding-left: 0; }
+    .hs-vedla-volby :global(.volba-riadok) { flex-direction: column; align-items: flex-start; gap: 10px; }
+  }
 
   @media (max-width: 900px) {
     .hlava { min-height: 0; }

@@ -109,12 +109,15 @@ const maPlast = skupiny.some((g) => g.vs.length > 1);
   .volba-seg { position: relative; display: flex; gap: 2px; max-width: 100%; padding: 4px; border-radius: var(--radius-l); overflow-x: auto; scrollbar-width: none;
     background: rgb(255 255 255 / 0.86); box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.1), var(--elev-1); }
   .volba-seg::-webkit-scrollbar { display: none; }
+  /* Na počítači sa lišta v úzkom stĺpci (hlava s renderom 3D modelu) zalomí, nie posúva: posúvanie bez
+     posuvníka by myš neobjavila. Jazdec ide aj na druhý riadok. Telefón ostáva posúvateľný riadok. */
+  @media (min-width: 761px) { .volba-seg { flex-wrap: wrap; overflow: visible; } }
   .volba-seg :global(button) { position: relative; z-index: 1; flex: none; min-width: 44px; height: 40px; padding: 0 13px; border: 0; border-radius: var(--radius-m); background: transparent;
     font: 600 15px/1 var(--font-display); font-stretch: 112.5%; font-variant-numeric: tabular-nums; color: var(--color-ink); cursor: pointer; white-space: nowrap;
     transition: color 200ms var(--ease-soft); }
   .volba-seg :global(button[data-k=""]) { font: 500 15px/1 var(--font-text); }
   .volba-seg :global(button[aria-pressed="true"]) { color: #fff; }
-  .volba-jazdec { position: absolute; z-index: 0; top: 4px; left: 0; height: 40px; width: 0; border-radius: var(--radius-m); background: linear-gradient(180deg, #123a7a 0%, var(--color-blue-900) 100%);
+  .volba-jazdec { position: absolute; z-index: 0; top: 0; left: 0; height: 40px; width: 0; border-radius: var(--radius-m); background: linear-gradient(180deg, #123a7a 0%, var(--color-blue-900) 100%);
     box-shadow: var(--elev-1); transition: transform 460ms var(--ease-pruzina), width 460ms var(--ease-pruzina); }
   .volba-jazdec.bez-pohybu { transition: none; }
   @media (hover: hover) and (pointer: fine) {
@@ -127,7 +130,7 @@ const maPlast = skupiny.some((g) => g.vs.length > 1);
   .volba-detail { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; }
   .volba-seg-2 { padding: 3px; border-radius: var(--radius-l); }
   .volba-seg-2 :global(button) { height: 34px; padding: 0 12px; border-radius: var(--radius-m); font: 500 14px/1 var(--font-text); }
-  .volba-seg-2 .volba-jazdec { top: 3px; height: 34px; border-radius: var(--radius-m); }
+  .volba-seg-2 .volba-jazdec { height: 34px; border-radius: var(--radius-m); }
   .volba-obj { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--color-ink-soft); }
   .volba-obj strong { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 16px; letter-spacing: 0.01em; color: var(--color-blue-900); }
   .volba-obj :global(.kopia) { opacity: 1; }
@@ -241,7 +244,7 @@ const maPlast = skupiny.some((g) => g.vs.length > 1);
       if (!j || !b) return;
       j.classList.toggle('bez-pohybu', hned || reduce);
       j.style.width = `${b.offsetWidth}px`;
-      j.style.transform = `translateX(${b.offsetLeft}px)`;
+      j.style.transform = `translate(${b.offsetLeft}px, ${b.offsetTop}px)`;
       if (hned) requestAnimationFrame(() => j.classList.remove('bez-pohybu'));
       const vpravo = b.offsetLeft + b.offsetWidth - s.clientWidth;
       if (vpravo > s.scrollLeft || b.offsetLeft < s.scrollLeft) s.scrollTo({ left: Math.max(0, b.offsetLeft - 24), behavior: reduce || hned ? 'auto' : 'smooth' });

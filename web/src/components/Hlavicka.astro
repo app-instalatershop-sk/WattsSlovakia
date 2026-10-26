@@ -166,7 +166,7 @@ const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, 
   .langs a[aria-current] { color: #fff; border-bottom-color: var(--color-yellow-500); }
   .langs .sep { width: 1px; height: 12px; background: rgb(255 255 255 / 0.3); }
 
-  .hdr { position: sticky; top: 0; z-index: 20; background: rgb(255 255 255 / 0.86); backdrop-filter: saturate(1.6) blur(14px); -webkit-backdrop-filter: saturate(1.6) blur(14px); box-shadow: 0 1px 0 rgb(10 42 94 / 0.08); transition: box-shadow 250ms var(--ease-soft), background-color 250ms var(--ease-soft); }
+  .hdr { position: sticky; top: 0; z-index: 20; background: rgb(255 255 255 / 0.86); -webkit-backdrop-filter: saturate(1.6) blur(14px); backdrop-filter: saturate(1.6) blur(14px); box-shadow: 0 1px 0 rgb(10 42 94 / 0.08); transition: box-shadow 250ms var(--ease-soft), background-color 250ms var(--ease-soft); }
   .hdr.is-scrolled, .hdr.is-open { background: rgb(255 255 255 / 0.96); box-shadow: 0 1px 0 rgb(10 42 94 / 0.08), var(--elev-2); }
   .hdr-in { display: flex; align-items: center; gap: 28px; min-height: 76px; transition: min-height 250ms var(--ease-soft); }
   .hdr.is-scrolled .hdr-in { min-height: 62px; }

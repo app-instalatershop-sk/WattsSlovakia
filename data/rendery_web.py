@@ -33,8 +33,9 @@ DATA = REPO / 'web' / 'src' / 'data'
 SIRKA = {'rady': 1400, 'hlavy': 1800, 'varianty': 1400, 'hero': 2600, 'rodina': 2400, 'makra': 1200}
 OKRAJ = 0.025
 # Kde merať spodnú hranu tela pre kótu polomeru ohybu (podiel šírky obrázka od ľavého konca výrobku).
-# Hero má rez vľavo a telo ide doprava za okraj, preto ďalej vpravo.
-OHYB_X = {'hero': 0.74}
+# Hero má rez vľavo a telo ide doprava za okraj: bod v strede tela, aby štítok vpravo od neho
+# nevyšiel z obrazovky na mobile ani pri 1 024 px.
+OHYB_X = {'hero': 0.6}
 # Skupiny, ktorých výrobok vybieha za pravý okraj (hero): vpravo sa neorezáva a neodsadzuje.
 BEZ_OREZU_VPRAVO = {'hero'}
 # Čelné zábery hláv a variantov majú spoločný rámec (zjednotenie obrysov všetkých): pri výbere dimenzie

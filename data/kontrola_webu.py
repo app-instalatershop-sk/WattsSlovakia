@@ -2,7 +2,8 @@
 
 Použitie:  python data/kontrola_webu.py
 Hlási: interné odkazy na neexistujúce stránky alebo súbory, kotvy (#id), ktoré na cieľovej stránke
-nie sú, titulky nad 60 znakov, popisy mimo 120 až 160 znakov a stránky bez náhľadového obrázka (og:image).
+nie sú, titulky nad 60 znakov, popisy mimo 120 až 160 znakov, stránky bez náhľadového obrázka (og:image)
+a vlastnosti v hotovom CSS len s predponou -webkit- (Chrome a Firefox ich nepoznajú).
 Na konci stráž tokenov v zdrojoch web/src (docs/DOLADENIE.md, A1): zaoblenie mimo var(--radius-*),
 tieň s výškou mimo var(--elev-*) a veľkosť písma mimo škály.
 """
@@ -65,6 +66,19 @@ for k, n in chyby.most_common(30):
 print(f'titulky nad 60 znakov: {len(dlhe_titulky)}', *[f'\n  {n} {t}' for n, t in sorted(dlhe_titulky, reverse=True)[:10]])
 print(f'popisy mimo 120–160 znakov: {len(zle_popisy)}', *[f'\n  {n} {u}' for n, u in zle_popisy[:10]])
 print(f'bez og:image: {len(bez_og)}', *[f'\n  {u}' for u in bez_og[:10]])
+
+# Minifikátor CSS pri poradí „štandardná vlastnosť, potom -webkit-“ nechá len verziu s predponou.
+# Tak 26. 10. 2026 zmizlo rozmazanie hlavičky v Chrome a Firefoxe; predpona patrí pred štandardnú.
+css = list(stranky.values())
+for koren, _, subory in os.walk(os.path.join(D, '_astro')):
+    css += [open(os.path.join(koren, f), encoding='utf-8').read() for f in subory if f.endswith('.css')]
+len_predpona = set()
+for s in css:
+    for blok in re.findall(r'\{([^{}]*)\}', s):
+        for v in re.findall(r'-webkit-(backdrop-filter|mask-image|mask-size|mask-position|mask-repeat|user-select)\s*:', blok):
+            if not re.search(rf'(?<![-\w]){v}\s*:', blok):
+                len_predpona.add(f'-webkit-{v} v {{{blok[:90]}}}')
+print(f'vlastnosti len s predponou -webkit-: {len(len_predpona)}', *[f'\n  {x}' for x in sorted(len_predpona)[:8]])
 
 # Stráž tokenov v zdrojoch: hodnoty mimo zaoblení, úrovní hĺbky a škály písma (global.css, DOLADENIE A1).
 SRC = os.path.join(os.path.dirname(D), 'src')

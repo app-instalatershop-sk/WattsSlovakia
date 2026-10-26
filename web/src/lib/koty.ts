@@ -44,14 +44,16 @@ export function kotyRenderu(piktogram: string | null | undefined, h: Hodnoty): K
 export function kotyRenderu3d(druh: 'rady' | 'hlavy' | 'varianty' | 'hero', id: string | null | undefined, h: Hodnoty): Kota[] | null {
   const b = id ? (rendery as Record<string, Record<string, Partial<Record<'plast' | 'rura' | 'ohyb', Bod>>>>)[druh]?.[id] : undefined;
   if (!b?.plast || !b.rura || !b.ohyb) return null;
-  return kotyZBodov({ plast: b.plast, rura: b.rura, ohyb: b.ohyb }, h);
+  // Čelný záber (hlavy, varianty): bod ohybu je pri ľavom konci tela, na telefóne by jeho štítok pod ním
+  // narazil do štítku rúry, preto ide nad bod (cez telo plášťa).
+  return kotyZBodov({ plast: b.plast, rura: b.rura, ohyb: b.ohyb }, h, druh === 'hlavy' || druh === 'varianty' ? 'hore-vpravo' : undefined);
 }
 
-function kotyZBodov(b: { plast: Bod; rura: Bod; ohyb: Bod } | undefined, h: Hodnoty): Kota[] {
+function kotyZBodov(b: { plast: Bod; rura: Bod; ohyb: Bod } | undefined, h: Hodnoty, ohybM?: Smer): Kota[] {
   if (!b) return [];
   const out: Kota[] = [];
   if (h.plast) out.push({ x: b.plast[0], y: b.plast[1], l: 8, smer: 'hore-vpravo', smerM: 'hore-vlavo', hodnota: h.plast[0], text: h.plast[1], kod: 'plast' });
   if (h.rura) out.push({ x: b.rura[0], y: b.rura[1], l: 6, smer: 'dole-vlavo', hodnota: h.rura[0], text: h.rura[1], kod: 'rura' });
-  if (h.ohyb) out.push({ x: b.ohyb[0], y: b.ohyb[1], l: 7, smer: 'dole-vpravo', hodnota: h.ohyb[0], text: h.ohyb[1], kod: 'ohyb' });
+  if (h.ohyb) out.push({ x: b.ohyb[0], y: b.ohyb[1], l: 7, smer: 'dole-vpravo', smerM: ohybM, hodnota: h.ohyb[0], text: h.ohyb[1], kod: 'ohyb' });
   return out;
 }

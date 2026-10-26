@@ -97,7 +97,7 @@ const popisy = [
           <a class="hero-odkaz" href={`${route(lang, 'firmy')}#dopyt`}>{h.cta2}</a>
         </div>
       </div>
-      <div class="hero-product">
+      <div class:list={['hero-product', { je3d: hero3d }]}>
         <div class:list={['hero-stage', { je3d: hero3d }]} style={heroBody?.stred ? `--kx: ${((heroBody.stred[0] + 50) / 190 * 100).toFixed(1)}%; --ky: ${((heroBody.stred[1] + 15) / 115 * 100).toFixed(1)}%` : undefined}>
           <Obraz src={heroRez} alt={h.heroAlt} widths={[760, 1140, 1517]} sizes="(max-width: 760px) 100vw, 62vw" loading="eager" fetchpriority="high" class="hero-img" />
           <span class="lesk" aria-hidden="true" style={`--maska: url("${leskMaska}")`}></span>
@@ -262,6 +262,9 @@ const popisy = [
   .hero-product :global(.hero-img) { width: 100%; height: auto; display: block; filter: drop-shadow(0 30px 36px rgb(11 27 51 / 0.17)); }
   /* Render 3D modelu má vlastný kontaktný tieň. */
   .hero-stage.je3d :global(.hero-img) { filter: none; }
+  /* Render 3D modelu má rez tesne pri ľavom okraji: bez presahu do stĺpca textu, inak by sa pri 1 536 až
+     1 920 px rez dotkol nadpisu (meranie po riadkoch: medzera aspoň 32 px pri 1 024 až 2 560 px). */
+  @media (min-width: 761px) { .hero-product.je3d { margin-left: 0; } }
   /* Štúdio má presne rozmer obrázka: body popisov sú v percentách obrázka a sedia pri každej šírke.
      Pri pohybe myši sa výrobok jemne posunie a pootočí, text stojí. */
   .hero-stage { position: relative; max-width: 1180px; margin-inline: auto; container-type: inline-size; transform: translate3d(calc(var(--mx, 0) * 12px), calc(var(--my, 0) * 8px), 0); transition: transform 900ms var(--ease-soft); }

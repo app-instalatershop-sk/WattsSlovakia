@@ -216,9 +216,297 @@
   "rad-cool-vyhrievaci-kabel.png": "microflex-cool-s-vyhrievacim-kablom",
   "rad-cool-duo.png": "microflex-cool-duo"
  },
- "hlavy": {},
+ "hlavy": {
+  "microflex-cool-duo": {
+   "pomer": 1.1227,
+   "rad": "microflex-cool-duo",
+   "obj_cislo": "MD16040PE",
+   "plast": [
+    49.96,
+    18.13
+   ],
+   "rura": [
+    69.14,
+    74.81
+   ],
+   "ohyb": [
+    14.45,
+    50.13
+   ],
+   "stred": [
+    60.97,
+    48.58
+   ],
+   "polomer": 28.87
+  },
+  "microflex-cool-s-vyhrievacim-kablom": {
+   "pomer": 1.1227,
+   "rad": "microflex-cool-s-vyhrievacim-kablom",
+   "obj_cislo": "MV12550PE",
+   "plast": [
+    49.96,
+    18.13
+   ],
+   "rura": [
+    69.08,
+    67.17
+   ],
+   "ohyb": [
+    14.45,
+    50.13
+   ],
+   "stred": [
+    60.97,
+    48.58
+   ],
+   "polomer": 28.87
+  },
+  "microflex-cool": {
+   "pomer": 1.1227,
+   "rad": "microflex-cool",
+   "obj_cislo": "M9040PE",
+   "plast": [
+    49.96,
+    18.13
+   ],
+   "rura": [
+    70.39,
+    69.6
+   ],
+   "ohyb": [
+    14.45,
+    50.13
+   ],
+   "stred": [
+    60.97,
+    48.58
+   ],
+   "polomer": 28.87
+  },
+  "microflex-duo-10-bar": {
+   "pomer": 1.1227,
+   "rad": "microflex-duo-10-bar",
+   "obj_cislo": "MD1603225SWI",
+   "plast": [
+    49.96,
+    18.13
+   ],
+   "rura": [
+    67.84,
+    67.27
+   ],
+   "ohyb": [
+    14.45,
+    50.13
+   ],
+   "stred": [
+    60.97,
+    48.58
+   ],
+   "polomer": 28.87
+  },
+  "microflex-duo-6-bar": {
+   "pomer": 1.1227,
+   "rad": "microflex-duo-6-bar",
+   "obj_cislo": "MD16032C",
+   "plast": [
+    49.96,
+    18.13
+   ],
+   "rura": [
+    68.39,
+    69.93
+   ],
+   "ohyb": [
+    14.45,
+    50.13
+   ],
+   "stred": [
+    60.97,
+    48.58
+   ],
+   "polomer": 28.87
+  },
+  "microflex-hp": {
+   "pomer": 1.1227,
+   "rad": "microflex-hp",
+   "obj_cislo": "MQ16032C3225E",
+   "plast": [
+    49.96,
+    18.13
+   ],
+   "rura": [
+    71.96,
+    67.85
+   ],
+   "ohyb": [
+    14.45,
+    50.13
+   ],
+   "stred": [
+    60.97,
+    48.58
+   ],
+   "polomer": 28.87
+  },
+  "microflex-primo-duo-10-bar": {
+   "pomer": 1.1227,
+   "rad": "microflex-primo-duo-10-bar",
+   "obj_cislo": "MD1253225S",
+   "plast": [
+    49.96,
+    18.13
+   ],
+   "rura": [
+    64.79,
+    70.24
+   ],
+   "ohyb": [
+    14.45,
+    50.13
+   ],
+   "stred": [
+    60.97,
+    48.58
+   ],
+   "polomer": 28.87
+  },
+  "microflex-primo-duo-6-bar": {
+   "pomer": 1.1227,
+   "rad": "microflex-primo-duo-6-bar",
+   "obj_cislo": "MD12532C",
+   "plast": [
+    49.96,
+    18.13
+   ],
+   "rura": [
+    69.08,
+    75.28
+   ],
+   "ohyb": [
+    14.45,
+    50.13
+   ],
+   "stred": [
+    60.97,
+    48.58
+   ],
+   "polomer": 28.87
+  },
+  "microflex-quadro": {
+   "pomer": 1.1227,
+   "rad": "microflex-quadro",
+   "obj_cislo": "MQ16032C2520S",
+   "plast": [
+    49.96,
+    18.13
+   ],
+   "rura": [
+    70.22,
+    64.87
+   ],
+   "ohyb": [
+    14.45,
+    50.13
+   ],
+   "stred": [
+    60.97,
+    48.58
+   ],
+   "polomer": 28.87
+  },
+  "microflex-uno-10-bar": {
+   "pomer": 1.1227,
+   "rad": "microflex-uno-10-bar",
+   "obj_cislo": "M12550S",
+   "plast": [
+    49.96,
+    18.13
+   ],
+   "rura": [
+    69.08,
+    67.17
+   ],
+   "ohyb": [
+    14.45,
+    50.13
+   ],
+   "stred": [
+    60.97,
+    48.58
+   ],
+   "polomer": 28.87
+  },
+  "microflex-uno-6-bar": {
+   "pomer": 1.1227,
+   "rad": "microflex-uno-6-bar",
+   "obj_cislo": "M12532C",
+   "plast": [
+    49.96,
+    18.13
+   ],
+   "rura": [
+    66.43,
+    60.49
+   ],
+   "ohyb": [
+    14.45,
+    50.13
+   ],
+   "stred": [
+    60.97,
+    48.58
+   ],
+   "polomer": 28.87
+  },
+  "microflex-uno-primo-6-bar": {
+   "pomer": 1.1227,
+   "rad": "microflex-uno-primo-6-bar",
+   "obj_cislo": "M12550C",
+   "plast": [
+    49.96,
+    18.13
+   ],
+   "rura": [
+    69.08,
+    67.17
+   ],
+   "ohyb": [
+    14.45,
+    50.13
+   ],
+   "stred": [
+    60.97,
+    48.58
+   ],
+   "polomer": 28.87
+  }
+ },
  "varianty": {},
- "hero": {},
+ "hero": {
+  "duo": {
+   "pomer": 1.4592,
+   "rad": "microflex-duo-6-bar",
+   "obj_cislo": "MD16032C",
+   "plast": [
+    10.85,
+    30.58
+   ],
+   "rura": [
+    6.77,
+    74.0
+   ],
+   "ohyb": [
+    64.19,
+    52.11
+   ],
+   "stred": [
+    16.74,
+    56.99
+   ],
+   "polomer": 16.4
+  }
+ },
  "rodina": {},
  "makra": {}
 }

@@ -73,3 +73,10 @@ Správa s mapami: `data/_pozornost/2026-10-26-1307/index.html` (10 stránok, des
 - **Tmavý horný pás** s partnerstvom Watts a telefónom má 8 až 13 %. Svetlý pás by ubral len 1 až 2 body, takže
   kvôli pozornosti ho meniť netreba.
 - **Kóty na renderoch** dostanú 0,4 až 2,5 %: sú to detaily na druhý pohľad, nie prvý dojem.
+
+## Overené úpravy
+
+- **26. 10. 2026, väčšie hlavné tlačidlo a kratšie drobčeky na mobile** (`docs/PLAN-ZLEPSENIA.md` krok 5):
+  test variantov sa po stavbe potvrdil. Tlačidlo na mobile 4,4–6,7 % → 5,7–8,2 % (domov 4,7 → 7,2 %),
+  na desktope +0,4 až 0,7 bodu; drobčeky na stránke dielu na mobile 15,3 → 10,6 % a tlačidlo tam 2,9 → 4,9 %.
+  Väčší nadpis na podstránkach (variant B) sa neurobil: pridal by len plochu, na jednotku plochy rovnaký účinok.

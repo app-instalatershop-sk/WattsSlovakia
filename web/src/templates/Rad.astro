@@ -115,7 +115,7 @@ const productLd = [{
   <Hlava lang={lang} nadpis={nazov} drobceky={drobceky} pred={[kKratky(k, lang), ruryText].filter(Boolean).join(', ')} lead={kratky ?? undefined} obraz={pikto} obrazAlt={ui.rad.fotoAlt(nazov)} obrazMax={860} prechod={`rad-${r.id}`} koty={kotyHlavy} kotyLabel={ui.home.popisy.label} rozlozenie="studio">
     {faktyHlavy.length > 0 && <dl class="hlava-fakty">{faktyHlavy.map(([dt, dd]) => <div><dt>{dt}</dt><dd>{dd}</dd></div>)}</dl>}
     <div class="hlava-akcie">
-      <a class="btn btn-yellow" href="#varianty">{tx.vybrat} <Ikona nazov="arrow-down" velkost={18} /></a>
+      <a class="btn btn-yellow btn-lg" href="#varianty">{tx.vybrat} <Ikona nazov="arrow-down" velkost={18} /></a>
       <a class="odkaz" href={eshop} target="_blank" rel="noopener">{tx.kupit} <Ikona nazov="external-link" velkost={16} /></a>
     </div>
     {sestry.length > 0 && (

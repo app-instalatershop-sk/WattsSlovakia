@@ -60,8 +60,8 @@ const ld = [{
     {fakty.length > 0 && <dl class="hlava-fakty">{fakty.map(([dt, dd]) => <div><dt>{dt}</dt><dd>{dd}</dd></div>)}</dl>}
     <div class="hlava-akcie">
       {kody.length > 0
-        ? <a class="btn btn-yellow" href="#tabulka">{tx.tabulka} <Ikona nazov="arrow-down" velkost={18} /></a>
-        : <a class="btn btn-yellow" href={KATALOG_PDF} target="_blank" rel="noopener">{tx.otvoritKatalog} <Ikona nazov="download" velkost={18} /></a>}
+        ? <a class="btn btn-yellow btn-lg" href="#tabulka">{tx.tabulka} <Ikona nazov="arrow-down" velkost={18} /></a>
+        : <a class="btn btn-yellow btn-lg" href={KATALOG_PDF} target="_blank" rel="noopener">{tx.otvoritKatalog} <Ikona nazov="download" velkost={18} /></a>}
       <a class="odkaz" href={eshop} target="_blank" rel="noopener">{tx.hladat} <Ikona nazov="external-link" velkost={16} /></a>
     </div>
   </Hlava>

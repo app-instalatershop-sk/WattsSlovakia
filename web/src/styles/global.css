@@ -137,6 +137,12 @@
   .btn-yellow { background: linear-gradient(180deg, #f8d123 0%, var(--color-yellow-500) 100%); color: var(--color-ink); box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35); }
   .btn-yellow:hover { background: linear-gradient(180deg, #efc70c 0%, #e3b800 100%); color: var(--color-ink); }
   .btn-sm { height: 36px; padding: 0 14px; font-size: 14px; }
+  /* Hlavné tlačidlo v hlave stránky, jedno na stránku (docs/PLAN-ZLEPSENIA.md krok 5): väčšie tlačidlo
+     dostalo v meraní pozornosti na mobile o 1,2 až 2,5 bodu viac. Ostatné tlačidlá ostávajú .btn. */
+  .btn-lg { height: 56px; padding: 0 30px; font-size: 18px; font-weight: 600;
+    transition: background-color 150ms var(--ease-soft), border-color 150ms var(--ease-soft), color 150ms var(--ease-soft), transform 120ms var(--ease-soft), box-shadow 200ms var(--ease-soft); }
+  .btn-yellow.btn-lg { box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), 0 12px 24px -12px rgb(176 138 0 / 0.65); }
+  .btn-yellow.btn-lg:hover { box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), 0 14px 26px -12px rgb(176 138 0 / 0.8); }
 
   /* Karty a plochy */
   .card {
@@ -221,6 +227,15 @@
   .crumbs a { color: var(--color-ink-soft); }
   .crumbs a:hover { color: var(--color-blue-700); }
   .crumbs li + li::before { content: "/"; margin-right: 8px; color: var(--color-grey-300); }
+  /* Na mobile len odkaz o úroveň vyššie, „‹ Príslušenstvo spojok“ (krok 5): celá cesta sa pri dieloch
+     a článkoch zalomila do dvoch riadkov a brala 15 % pozornosti prvej obrazovky. Ostatné položky sú len
+     vizuálne skryté, čítačka obrazovky prečíta celú cestu. Dotyková plocha odkazu má aspoň 44 px. */
+  @media (max-width: 760px) {
+    .crumbs { position: relative; }
+    .crumbs li:not(:nth-last-child(2)) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    .crumbs li:nth-last-child(2)::before { content: "‹"; content: "‹" / ""; margin-right: 6px; color: var(--color-ink-soft); }
+    .crumbs a { display: inline-block; padding-block: 12px; margin-block: -12px; }
+  }
 
   /* Ikony */
   .icon { width: 20px; height: 20px; flex: none; }

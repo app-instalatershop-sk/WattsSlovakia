@@ -128,3 +128,14 @@ na snímkach pred a po nezmenil a meranie pozornosti na stránke dielu na mobile
 4. Lighthouse na mobile pre domov a stránku dielu (čakám bez zmeny, 90 a viac).
 5. Pravidlá do `docs/DESIGN.md` (veľkosť hlavného tlačidla, drobčeky na mobile), sem „Hotové“ s dátumom,
    commit bez pushu.
+
+**Hotové 26. 10.:** `.btn-lg` v `global.css` a na 9 hlavných tlačidlách v hlave (Produkt v oboch vetvách),
+drobčeky na mobile v `global.css` pri `.crumbs`. Pri revízii pred stavbou dve zmeny oproti plánu: ostatné
+položky drobčekov sú na mobile len vizuálne skryté (čítačka prečíta celú cestu, nie `display: none`)
+a „‹“ má prázdny alternatívny text; k prechodom tlačidla pribudol tieň, aby pri prejdení myšou neskočil.
+Overené pri 1440, 390 a 360 px: tlačidlá 56 px, druhé tlačidlo Stiahnuť katalóg PDF v tele ostalo 48 px,
+desktop drobčeky bez zmeny, na mobile jeden riadok (diel a článok 79 → 50 px, hlava dielu o 29 px vyššie),
+nič nepreteká. Pri 360 px sa na dieli odkaz Hľadať v e-shope zalomí pod tlačidlo (pri 390 px nie).
+Pozornosť po stavbe: tlačidlo na mobile 4,4–6,7 % → 5,7–8,2 % (domov 4,7 → 7,2 %, diel 2,9 → 4,9 %),
+na desktope +0,4 až 0,7 bodu, drobčeky na dieli na mobile 15,3 → 10,6 %. Lighthouse mobil: domov 92,
+diel 93, ten istý diel bez kroku 5 tiež 93 (rovnaké FCP aj LCP), CLS 0. Kontrola webu: 0 chybných odkazov.

@@ -400,7 +400,12 @@ Každá vnútorná stránka má rovnakú kostru, aby web pôsobil ako celok:
   spojky, príslušenstvo): pás pod hlavičkou, aktívna časť tmavomodrá.
 - **Záver** (`components/Zaver.astro`): tmavý pás so šikmou hranou, e-shop, dopyt a kontakt,
   splýva s pätičkou.
-- Jedno žlté tlačidlo na obrazovku (hlavná akcia), ostatné odkazy `.odkaz`.
+- Jedno žlté tlačidlo na obrazovku (hlavná akcia), ostatné odkazy `.odkaz`. Hlavné tlačidlo v hlave stránky
+  je veľké (`.btn-yellow.btn-lg`: 56 px, písmo 18 px a 600, jemný žltý tieň), ostatné tlačidlá ostávajú 48 px.
+  Podklad: meranie pozornosti 26. 10. 2026, na mobile o 1 až 2,5 bodu viac pozornosti (`docs/POZORNOST.md`).
+- Drobčeky: na desktope celá cesta, na mobile (do 760 px) len odkaz o úroveň vyššie „‹ Rodič“; ostatné
+  položky sú vizuálne skryté, čítačka obrazovky ich prečíta. Celá cesta na dieloch a článkoch sa na mobile
+  zalomila do dvoch riadkov a brala 15 % pozornosti prvej obrazovky.
 - Tabuľky obj. čísel: kopírovanie jedným klikom, odkaz do e-shopu v riadku, na mobile karta
   s tromi stĺpcami údajov.
 

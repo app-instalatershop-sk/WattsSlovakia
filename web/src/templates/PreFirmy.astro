@@ -81,7 +81,7 @@ const polia = { meno: tx.meno, firma: tx.firma, email: tx.email, telefon: tx.tel
 <Base lang={lang} alternates={staticAlternates('firmy')} title={tx.title} description={tx.desc} aktivna="firmy" drobceky={[{ text: tx.kratko }]} vizualneDrobceky={false}>
   <Hlava lang={lang} nadpis={tx.title} drobceky={[{ text: tx.kratko }]} lead={tx.lead} obraz={obraz} obrazAlt={tx.foto} druh="foto">
     <div class="hlava-akcie">
-      <a class="btn btn-yellow" href="#dopyt">{tx.dopytH2} <Ikona nazov="arrow-down" velkost={18} /></a>
+      <a class="btn btn-yellow btn-lg" href="#dopyt">{tx.dopytH2} <Ikona nazov="arrow-down" velkost={18} /></a>
       <a class="odkaz" href={route(lang, 'stiahnut')}>{tx.pre[0].odkaz} <Ikona nazov="arrow-right" velkost={16} /></a>
     </div>
   </Hlava>

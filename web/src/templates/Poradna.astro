@@ -44,7 +44,7 @@ const obraz = fotka('vykop-rez.jpg');
 <Base lang={lang} alternates={staticAlternates('poradna')} title={tx.title} description={tx.desc} aktivna="poradna" drobceky={[{ text: tx.title }]} vizualneDrobceky={false}>
   <Hlava lang={lang} nadpis={tx.title} drobceky={[{ text: tx.title }]} lead={tx.lead} obraz={obraz} obrazAlt={tx.foto} druh="foto" obrazMax={620}>
     <div class="hlava-akcie">
-      <a class="btn btn-yellow" href="#clanky">{tx.clankyH2} <Ikona nazov="arrow-down" velkost={18} /></a>
+      <a class="btn btn-yellow btn-lg" href="#clanky">{tx.clankyH2} <Ikona nazov="arrow-down" velkost={18} /></a>
       <a class="odkaz" href={route(lang, 'vyber')}>{tx.sprievodca} <Ikona nazov="arrow-right" velkost={16} /></a>
     </div>
   </Hlava>

@@ -74,7 +74,7 @@ const katRadu = (r: Rad) => kat.find((k) => k.id === r.kategoria)!;
 <Base lang={lang} alternates={staticAlternates('stiahnut')} title={tx.title} description={tx.desc} aktivna="stiahnut" drobceky={[{ text: tx.title }]} vizualneDrobceky={false}>
   <Hlava lang={lang} nadpis={tx.title} drobceky={[{ text: tx.title }]} lead={tx.lead}>
     <div class="hlava-akcie">
-      <a class="btn btn-yellow" href={KATALOG_PDF} target="_blank" rel="noopener">{tx.stiahnut} <Ikona nazov="download" velkost={18} /></a>
+      <a class="btn btn-yellow btn-lg" href={KATALOG_PDF} target="_blank" rel="noopener">{tx.stiahnut} <Ikona nazov="download" velkost={18} /></a>
       <a class="odkaz" href="#vykresy">{tx.vykresyH2} <Ikona nazov="arrow-down" velkost={16} /></a>
     </div>
     <a slot="bok" class="obalka" href={KATALOG_PDF} target="_blank" rel="noopener" aria-label={tx.stiahnut}>

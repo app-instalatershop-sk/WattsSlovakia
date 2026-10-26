@@ -1,38 +1,48 @@
 {
  "rady": {
   "microflex-cool-duo": {
-   "pomer": 1.3718,
+   "pomer": 1.3681,
    "rad": "microflex-cool-duo",
    "obj_cislo": "MD16040PE",
    "plast": [
-    64.98,
-    27.54
+    65.44,
+    27.67
    ],
    "rura": [
-    83.43,
-    76.52
+    82.91,
+    76.43
    ],
    "ohyb": [
-    13.84,
-    51.37
-   ]
+    13.74,
+    51.61
+   ],
+   "stred": [
+    71.94,
+    52.64
+   ],
+   "polomer": 17.1
   },
   "microflex-cool-s-vyhrievacim-kablom": {
-   "pomer": 1.3898,
+   "pomer": 1.3386,
    "rad": "microflex-cool-s-vyhrievacim-kablom",
    "obj_cislo": "MV12550PE",
    "plast": [
-    63.42,
-    27.7
+    66.65,
+    27.69
    ],
    "rura": [
-    77.05,
-    68.1
+    81.14,
+    69.08
    ],
    "ohyb": [
-    14.17,
-    51.22
-   ]
+    14.28,
+    51.58
+   ],
+   "stred": [
+    73.22,
+    52.44
+   ],
+   "polomer": 17.31
   },
   "microflex-cool": {
    "pomer": 1.3612,
@@ -49,7 +59,12 @@
    "ohyb": [
     13.76,
     51.87
-   ]
+   ],
+   "stred": [
+    72.96,
+    53.05
+   ],
+   "polomer": 17.42
   },
   "microflex-duo-10-bar": {
    "pomer": 1.312,
@@ -66,7 +81,12 @@
    "ohyb": [
     14.25,
     52.33
-   ]
+   ],
+   "stred": [
+    76.21,
+    53.51
+   ],
+   "polomer": 18.23
   },
   "microflex-duo-6-bar": {
    "pomer": 1.3459,
@@ -83,7 +103,12 @@
    "ohyb": [
     13.97,
     52.03
-   ]
+   ],
+   "stred": [
+    73.93,
+    53.14
+   ],
+   "polomer": 17.64
   },
   "microflex-hp": {
    "pomer": 1.3547,
@@ -100,41 +125,56 @@
    "ohyb": [
     13.8,
     52.16
-   ]
+   ],
+   "stred": [
+    73.9,
+    53.42
+   ],
+   "polomer": 17.69
   },
   "microflex-primo-duo-10-bar": {
-   "pomer": 1.3189,
+   "pomer": 1.3289,
    "rad": "microflex-primo-duo-10-bar",
    "obj_cislo": "MD1253225S",
    "plast": [
-    69.23,
-    27.99
+    69.24,
+    28.02
    ],
    "rura": [
-    82.99,
-    74.0
+    82.5,
+    74.48
    ],
    "ohyb": [
-    14.13,
-    52.45
-   ]
+    13.96,
+    52.68
+   ],
+   "stred": [
+    76.19,
+    54.01
+   ],
+   "polomer": 18.32
   },
   "microflex-primo-duo-6-bar": {
-   "pomer": 1.3648,
+   "pomer": 1.3587,
    "rad": "microflex-primo-duo-6-bar",
    "obj_cislo": "MD12532C",
    "plast": [
-    65.18,
-    27.59
+    65.95,
+    27.7
    ],
    "rura": [
-    84.37,
-    77.2
+    83.48,
+    76.91
    ],
    "ohyb": [
-    13.98,
-    51.33
-   ]
+    13.85,
+    51.66
+   ],
+   "stred": [
+    72.5,
+    52.69
+   ],
+   "polomer": 17.23
   },
   "microflex-quadro": {
    "pomer": 1.3404,
@@ -151,7 +191,12 @@
    "ohyb": [
     13.92,
     52.31
-   ]
+   ],
+   "stred": [
+    74.84,
+    53.58
+   ],
+   "polomer": 17.93
   },
   "microflex-uno-10-bar": {
    "pomer": 1.3218,
@@ -168,7 +213,12 @@
    "ohyb": [
     14.1,
     52.55
-   ]
+   ],
+   "stred": [
+    76.22,
+    53.78
+   ],
+   "polomer": 18.28
   },
   "microflex-uno-6-bar": {
    "pomer": 1.3362,
@@ -185,7 +235,12 @@
    "ohyb": [
     13.74,
     52.92
-   ]
+   ],
+   "stred": [
+    76.41,
+    54.43
+   ],
+   "polomer": 18.47
   },
   "microflex-uno-primo-6-bar": {
    "pomer": 1.348,
@@ -202,7 +257,12 @@
    "ohyb": [
     13.83,
     52.29
-   ]
+   ],
+   "stred": [
+    74.45,
+    53.52
+   ],
+   "polomer": 17.84
   }
  },
  "piktogramy": {
@@ -508,5 +568,21 @@
   }
  },
  "rodina": {},
- "makra": {}
+ "makra": {
+  "pena": {
+   "pomer": 1.0
+  },
+  "plast": {
+   "pomer": 1.0
+  },
+  "rura-biela": {
+   "pomer": 1.0
+  },
+  "rura-cierna": {
+   "pomer": 1.0
+  },
+  "rura-zlta": {
+   "pomer": 1.0
+  }
+ }
 }

@@ -259,6 +259,9 @@ const maPlast = skupiny.some((g) => g.vs.length > 1);
       seg2.querySelectorAll<HTMLButtonElement>('button').forEach((b, i) => b.setAttribute('aria-pressed', String(i === vi)));
       if (!seg2.hidden) posunJazdec(seg2, ineSk || !opts.animuj);
 
+      // Pás svetla prejde po plášti ako potvrdenie, že sa výrobok „prepočítal“.
+      const lesk = hlava.querySelector<HTMLElement>('[data-lesk]');
+      if (lesk && opts.animuj && !reduce) lesk.animate([{ backgroundPosition: '135% 0' }, { backgroundPosition: '-35% 0' }], { duration: 1300, easing: 'cubic-bezier(0.45, 0, 0.25, 1)' });
       prepis(koty.plast.hodnota, v?.kp ?? koty.plast.hodnota?.dataset.povodna ?? '', opts.animuj, koty.plast.li);
       prepis(koty.plast.text, v?.kpt ?? koty.plast.text?.dataset.povodna ?? '', false);
       prepis(koty.rura.hodnota, v?.kr ?? koty.rura.hodnota?.dataset.povodna ?? '', opts.animuj, koty.rura.li);

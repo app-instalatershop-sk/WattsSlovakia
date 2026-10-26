@@ -279,8 +279,11 @@ const productLd = [{
   .rel { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; align-items: start; }
   .rel-skupina { padding: 22px 24px 16px; }
   .rel-hlava { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
-  .rel-ikona { flex: none; width: 56px; height: 56px; display: grid; place-items: center; border-radius: var(--radius-l); background: linear-gradient(160deg, #f3f7fc 0%, #e6eef8 100%); mix-blend-mode: multiply; }
-  .rel-ikona :global(img) { width: 48px; height: 48px; object-fit: contain; }
+  /* Diel stojí na podlahe ako v kartách dielov, nie v štvorčeku ako ikona (znak šablóny, DOLADENIE 2.5).
+     Fotky Watts majú biele pozadie, násobenie ho na bielom hárku skryje; tieň dopadu je elipsa pod dielom. */
+  .rel-ikona { position: relative; flex: none; width: 68px; height: 68px; display: grid; place-items: center; mix-blend-mode: multiply; }
+  .rel-ikona::before { content: ""; position: absolute; left: 12%; right: 12%; bottom: 3px; height: 9px; border-radius: 50%; background: radial-gradient(closest-side, rgb(10 42 94 / 0.22), rgb(10 42 94 / 0)); }
+  .rel-ikona :global(img) { position: relative; width: 64px; height: 64px; object-fit: contain; }
   .rel-skupina h3 { font-size: 18px; }
   .rel-skupina li a { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid rgb(10 42 94 / 0.08); font-size: 15px; font-weight: 500; }
   .rel-skupina :global(.icon) { color: var(--color-blue-700); flex: none; }

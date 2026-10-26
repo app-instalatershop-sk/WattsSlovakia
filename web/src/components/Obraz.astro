@@ -10,6 +10,7 @@
  */
 import { getImage, type LocalImageProps } from 'astro:assets';
 import type { ImageMetadata, UnresolvedImageTransform } from 'astro';
+import nahlady from '../data/nahlady.json';
 
 type Props = LocalImageProps;
 
@@ -23,8 +24,16 @@ const [avif, webp] = await Promise.all([
 // Pri hustotách (1x, 2x) obsahuje srcSet len vyššie hustoty, 1x je samotné src (ako v Picture z Astro).
 const srcsetAvif = props.densities || !props.widths ? [avif.src, avif.srcSet.attribute].filter(Boolean).join(', ') : avif.srcSet.attribute;
 const { class: className, ...attributes } = { ...(webp.srcSet.values.length ? { srcset: webp.srcSet.attribute } : {}), ...webp.attributes };
+// Rozmazaný náhľad fotky (data/nahlady_fotiek.py, asi 220 bajtov): kým sa fotka načíta, je na jej mieste
+// jej farebný odtlačok. Po načítaní sa pozadie zruší, aby pri object-fit: contain nepresvitalo okolo.
+// Meno súboru z adresy: v dev /@fs/…/kotuc.jpg?…, v builde /_astro/kotuc.<hash 8 znakov>.jpg.
+const meno = src.src.split('?')[0].split('/').pop()!.replace(/\.[\w-]{8}(?=\.\w+$)/, '');
+const nahlad = foto ? (nahlady as Record<string, string>)[meno] : undefined;
+const stylNahladu = nahlad ? `background: url(${nahlad}) center / cover no-repeat` : undefined;
 ---
 <picture>
   <source type="image/avif" srcset={srcsetAvif} sizes={props.sizes} />
-  <img src={webp.src} {...attributes} class={className} />
+  {nahlad
+    ? <img src={webp.src} {...attributes} class={className} style={stylNahladu} onload="this.style.background=''" />
+    : <img src={webp.src} {...attributes} class={className} />}
 </picture>

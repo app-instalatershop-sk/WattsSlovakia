@@ -138,7 +138,7 @@ const popisy = [
   <section class="section pokladka" aria-labelledby="h-pokladka">
     {/* Fotka kotúča má čisto bielu plochu: násobením splynie s pásom a text sedí vo vnútri kotúča. */}
     <div class="kotuc-obal">
-      <Obraz src={kotuc} alt={h.pokladkaAlt} widths={[900, 1400, 2000]} sizes="(max-width: 760px) 120vw, 76vw" class="kotuc" data-otacaj="-4 3" />
+      <Obraz src={kotuc} alt={h.pokladkaAlt} widths={[900, 1400, 2000]} sizes="(max-width: 760px) 120vw, 76vw" class="kotuc" />
     </div>
     <div class="wrap pokladka-grid">
       <div class="pokladka-text">
@@ -427,6 +427,16 @@ const popisy = [
   /* Vnútorný okraj kotúča (asi 57 % šírky fotky) leží 150 px pred stĺpcom textu, ktorý začína
      v strede mriežky. Na širokom monitore kotúč rastie, aby vždy dobehol za ľavý okraj obrazovky. */
   .kotuc-obal :global(.kotuc) { --w: max(1180px, calc((50vw - 40px) / 0.57)); position: absolute; width: var(--w); max-width: none; height: auto; left: calc(50% - 150px - 0.57 * var(--w)); top: calc(50% - var(--w) / 2.566); transform-origin: 96% 50%; }
+  /* Kotúč sa pri prechode sekciou pootočí o 7°, akoby sa odvíjal. Pohyb je v CSS na časovej osi sekcie
+     (beží mimo hlavného vlákna, plynulo aj na mobile; predtým Motion scroll()). Kde to prehliadač nevie
+     alebo je zapnuté „obmedziť pohyb“, kotúč stojí. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .pokladka { view-timeline: --pokladka block; }
+      .kotuc-obal :global(.kotuc) { animation: kotuc-otacaj linear both; animation-timeline: --pokladka; animation-range: cover 0% cover 100%; }
+    }
+  }
+  @keyframes kotuc-otacaj { from { rotate: -4deg; } to { rotate: 3deg; } }
   .pokladka-grid { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 24px; }
   .pokladka-text { grid-column: 7 / 13; }
   .pokladka h2 { font-size: clamp(32px, 3vw + 12px, 58px); line-height: 1.04; letter-spacing: -0.03em; max-width: 11em; }
@@ -493,9 +503,9 @@ const popisy = [
   .podpora-hlava .lead { margin-top: 18px; color: var(--color-on-dark-muted); max-width: 32em; }
   .podpora-akcie { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
   .podpora-sluzby { grid-column: 1 / 8; grid-row: 2; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px; }
-  .podpora-sluzby li { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; padding-top: 22px; position: relative; }
+  /* Bez krátkej žltej čiarky nad nadpisom (znak šablóny, DOLADENIE kap. 2.5): žltá patrí jadru rúry a akcii. */
+  .podpora-sluzby li { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; position: relative; }
   /* Krátka žltá značka nad službou: farba jadra rúry, nie čiara cez celú šírku. */
-  .podpora-sluzby li::before { content: ""; position: absolute; top: 0; left: 0; width: 28px; height: 3px; border-radius: 2px; background: var(--color-yellow-500); }
   .podpora-sluzby h3 { font-size: 20px; line-height: 1.25; color: #fff; }
   .podpora-sluzby p { color: var(--color-on-dark-muted); font-size: 15px; line-height: 1.6; }
   .podpora-sluzby a { margin-top: 4px; font-weight: 500; border-bottom: 1px solid rgb(255 255 255 / 0.5); padding-bottom: 2px; }

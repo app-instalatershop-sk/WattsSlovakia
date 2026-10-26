@@ -216,7 +216,11 @@ const idDetailu = (v: Variant) => `pr-${v.obj_cislo.replace(/[^A-Za-z0-9]/g, '')
       }));
       const pocet = tv.querySelector<HTMLElement>('[data-pocet]');
       const stav = { rura: '', izolacia: '' };
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      // Filter (DESIGN kap. 16.1, FLIP): riadky, ktoré ostanú, sa presunú na nové miesto, nové prídu
+      // odstupňovane zdola. Pri „obmedziť pohyb“ sa len prepnú.
       const obnov = () => {
+        const pred = new Map(riadky.filter((r) => !r.hidden).map((r) => [r, r.getBoundingClientRect().top]));
         let n = 0;
         for (const r of riadky) {
           const ok = (!stav.rura || (r.dataset.rury ?? '').split(' ').includes(stav.rura)) && (!stav.izolacia || r.dataset.izolacia === stav.izolacia);
@@ -225,6 +229,18 @@ const idDetailu = (v: Variant) => `pr-${v.obj_cislo.replace(/[^A-Za-z0-9]/g, '')
           if (ok) n++;
         }
         if (pocet) pocet.textContent = (pocet.dataset.sablona ?? '').replace('{n}', String(n)).replace('{z}', String(riadky.length));
+        if (reduce) return;
+        let i = 0;
+        for (const r of riadky) {
+          if (r.hidden) continue;
+          const y0 = pred.get(r);
+          if (y0 === undefined) {
+            r.animate([{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }], { duration: 360, delay: 40 + i++ * 24, easing: 'cubic-bezier(0.2, 0.7, 0.2, 1)', fill: 'backwards' });
+          } else {
+            const dy = y0 - r.getBoundingClientRect().top;
+            if (Math.abs(dy) > 1) r.animate([{ transform: `translateY(${dy}px)` }, { transform: 'none' }], { duration: 420, easing: 'cubic-bezier(0.2, 0.7, 0.2, 1)' });
+          }
+        }
       };
       const nastav = (kluc: 'rura' | 'izolacia', hodnota: string) => {
         stav[kluc] = hodnota;

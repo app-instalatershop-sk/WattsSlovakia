@@ -15,6 +15,7 @@
  *                       šírku ako vo fotoštúdiu (rady, systémy, Potrubia; Juraj 22. 10. 2026, návrh B)
  */
 import Obraz from './Obraz.astro';
+import { getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import Koty from './Koty.astro';
 import { sadzba } from '../lib/sadzba';
@@ -36,9 +37,13 @@ interface Props {
 const { lang, nadpis, drobceky = [], pred, lead, obraz, obrazAlt = '', druh = 'render', obrazMax = 760, prechod, koty = [], kotyLabel, rozlozenie = 'vedla', dozvenie = 'vlavo' } = Astro.props;
 const ui = t(lang);
 const maBok = Astro.slots.has('bok');
+// Odlesk po plášti v štúdiu ako v hero domova: maska je samotný render (AVIF 1000 px, ten istý súbor, ktorý
+// si prehliadač väčšinou vyberie aj na zobrazenie), svetlo tak prejde len po výrobku.
+const leskMaska = rozlozenie === 'studio' && obraz && obraz.format !== 'jpg' && obraz.format !== 'jpeg'
+  ? (await getImage({ src: obraz, width: 1000, format: 'avif', quality: 50 })).src : null;
 ---
 {rozlozenie === 'studio' && obraz ? (
-<section class="hlava hlava-studio">
+<section class="hlava hlava-studio" data-mys>
   <div class="wrap hs-hore">
     <div class="hs-text">
       <ol class="crumbs" aria-label={ui.crumbs.label}>
@@ -58,9 +63,13 @@ const maBok = Astro.slots.has('bok');
     {Astro.slots.has('nad-obrazom') && <div class="wrap hs-volba"><slot name="nad-obrazom" /></div>}
     <div class="hs-stage" style={`--obraz-max: ${obrazMax}px`}>
       <div class:list={['hs-obraz', `dz-${dozvenie}`, { 'ma-prechod': prechod }]} style={prechod ? `view-transition-name: ${prechod}` : undefined}>
-        {/* Tieň nesie obal, dozvenie (maska) je na obrázku: maska na tom istom prvku by tieň orezala. */}
-        <div class="hs-tien"><Obraz src={obraz} alt={obrazAlt} widths={[700, 1000, 1300]} sizes={`(max-width: 760px) 100vw, ${obrazMax}px`} loading="eager" fetchpriority="high" /></div>
-        <Koty koty={koty} label={kotyLabel} />
+        {/* Výrobok sa pri pohybe myši nepatrne posunie (data-mys v pohyb.ts), kóty idú s ním.
+            Tieň nesie obal, dozvenie (maska) je na obrázku: maska na tom istom prvku by tieň orezala. */}
+        <div class="hs-mys">
+          <div class="hs-tien"><Obraz src={obraz} alt={obrazAlt} widths={[700, 1000, 1300]} sizes={`(max-width: 760px) 100vw, ${obrazMax}px`} loading="eager" fetchpriority="high" /></div>
+          {leskMaska && <span class="hs-lesk" aria-hidden="true" style={`--maska: url("${leskMaska}")`} data-lesk></span>}
+          <Koty koty={koty} label={kotyLabel} />
+        </div>
       </div>
     </div>
   </div>
@@ -145,6 +154,14 @@ const maBok = Astro.slots.has('bok');
   .hs-stage { position: relative; width: min(var(--obraz-max), 92vw); margin: 0 auto -52px; padding-left: 8%; }
   .hs-obraz { position: relative; container-type: inline-size; animation: hlava-studio 1000ms 120ms var(--ease-soft) both; }
   .hs-obraz.ma-prechod { animation: none; }
+  /* Živý výrobok ako v hero domova: pri pohybe myši sa nepatrne posunie (s kótami), po načítaní raz
+     prejde po plášti pás svetla; pri výbere dimenzie (VolbaDimenzie) prejde znova. */
+  .hs-mys { position: relative; transform: translate3d(calc(var(--mx, 0) * 8px), calc(var(--my, 0) * 5px), 0); transition: transform 900ms var(--ease-soft); }
+  .hs-lesk { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen; opacity: 0.9;
+    -webkit-mask: var(--maska) center / 100% 100% no-repeat; mask: var(--maska) center / 100% 100% no-repeat;
+    background: linear-gradient(105deg, rgb(255 255 255 / 0) 40%, rgb(190 215 255 / 0.42) 50%, rgb(255 255 255 / 0) 60%) no-repeat;
+    background-size: 260% 100%; background-position: 135% 0; animation: hs-lesk 2200ms 900ms cubic-bezier(0.45, 0, 0.25, 1) both; }
+  @keyframes hs-lesk { from { background-position: 135% 0; } to { background-position: -35% 0; } }
   .hs-tien { filter: drop-shadow(0 40px 46px rgb(11 27 51 / 0.22)); }
   .hs-obraz :global(img) { display: block; width: 100%; height: auto; }
   .dz-vlavo :global(img) { -webkit-mask-image: linear-gradient(to right, transparent 0, #000 12%); mask-image: linear-gradient(to right, transparent 0, #000 12%); }

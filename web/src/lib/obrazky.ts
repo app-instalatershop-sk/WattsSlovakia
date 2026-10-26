@@ -1,4 +1,5 @@
 import type { ImageMetadata } from 'astro';
+import rendery from '../data/rendery.json';
 
 /** Fotky radov a piktogramy skopírované skriptom data/normalize.py do src/assets. */
 const rady = import.meta.glob<{ default: ImageMetadata }>('/src/assets/rady/*.{jpg,jpeg,png}', { eager: true });
@@ -24,3 +25,31 @@ export const fotkaReferencie = (subor: string | null | undefined) => najdi(refer
  *  pozadia (priehľadné WebP, data/vylepsi_obrazky.py). Nový diel bez úpravy má pôvodné JPG. */
 const produkty = import.meta.glob<{ default: ImageMetadata }>('/src/assets/produkty/*.{webp,jpg}', { eager: true });
 export const fotkaProduktu = (id: string) => najdi(produkty, `${id}.webp`) ?? najdi(produkty, `${id}.jpg`);
+
+/**
+ * Rendery vlastného 3D modelu (data/blender, data/rendery_web.py; od 26. 10. 2026 nahrádzajú rendery Watts):
+ *  rady/<id radu>     záber celého potrubia na karty, katalóg, menu, výber a hľadanie
+ *  hlavy/<id radu>    čelný pohľad na rez do hlavy stránky radu a systému
+ *  varianty/<obj. č.> čelný pohľad ku každej dimenzii (živé kóty)
+ *  hero, rodina, makra  hero domova, rodina systémov, makrá vrstiev do líp
+ * Body pre kóty a pomer strán sú v data/rendery.json. Bez 3D renderu sa použije pôvodný piktogram Watts.
+ */
+const rendery3d = import.meta.glob<{ default: ImageMetadata }>('/src/assets/3d/*/*.webp', { eager: true });
+export type Druh3d = 'rady' | 'hlavy' | 'varianty' | 'hero' | 'rodina' | 'makra';
+export const render3d = (druh: Druh3d, id: string | null | undefined) => (id ? najdi(rendery3d, `${druh}/${id}.webp`) : undefined);
+/** Rad, ktorého render zastupuje piktogram Watts (kategória a systém poznajú len piktogram). */
+export const radPiktogramu = (subor: string | null | undefined) => (subor ? (rendery.piktogramy as Record<string, string>)[subor] : undefined);
+/** Render radu (celé potrubie), inak piktogram Watts. */
+export const obrazRadu = (r: { id: string; piktogram: string | null }) => render3d('rady', r.id) ?? piktogram(r.piktogram);
+/** Render systému podľa jeho piktogramu (celé potrubie), inak piktogram Watts. */
+export const obrazPiktogramu = (subor: string | null | undefined) => render3d('rady', radPiktogramu(subor)) ?? piktogram(subor);
+/** Čelný pohľad do hlavy stránky: vlastný záber hlavy, inak celé potrubie, inak piktogram Watts. */
+export const obrazHlavy = (id: string | undefined, subor: string | null | undefined) => render3d('hlavy', id) ?? render3d('rady', id) ?? piktogram(subor);
+/** Či obrázok pochádza z 3D modelu (má celé telo a vlastný tieň: bez masky a bez tieňa z CSS). */
+const mnozina3d = new Set(Object.values(rendery3d).map((m) => m.default));
+export const je3d = (img: ImageMetadata | undefined) => Boolean(img && mnozina3d.has(img));
+/** Maska odlesku k renderu 3D modelu: len výrobok bez tieňa (<meno>-maska.webp vedľa renderu). */
+export const maska3d = (img: ImageMetadata | undefined) => {
+  const kluc = img && Object.keys(rendery3d).find((k) => rendery3d[k].default === img);
+  return kluc ? rendery3d[kluc.replace(/\.webp$/, '-maska.webp')]?.default : undefined;
+};

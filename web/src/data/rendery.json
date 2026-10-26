@@ -1,0 +1,219 @@
+{
+ "rady": {
+  "microflex-cool-duo": {
+   "pomer": 1.3718,
+   "rad": "microflex-cool-duo",
+   "obj_cislo": "MD16040PE",
+   "plast": [
+    64.98,
+    27.54
+   ],
+   "rura": [
+    83.43,
+    76.52
+   ],
+   "ohyb": [
+    13.84,
+    51.37
+   ]
+  },
+  "microflex-cool-s-vyhrievacim-kablom": {
+   "pomer": 1.3898,
+   "rad": "microflex-cool-s-vyhrievacim-kablom",
+   "obj_cislo": "MV12550PE",
+   "plast": [
+    63.42,
+    27.7
+   ],
+   "rura": [
+    77.05,
+    68.1
+   ],
+   "ohyb": [
+    14.17,
+    51.22
+   ]
+  },
+  "microflex-cool": {
+   "pomer": 1.3612,
+   "rad": "microflex-cool",
+   "obj_cislo": "M9040PE",
+   "plast": [
+    66.35,
+    27.73
+   ],
+   "rura": [
+    82.29,
+    72.26
+   ],
+   "ohyb": [
+    13.76,
+    51.87
+   ]
+  },
+  "microflex-duo-10-bar": {
+   "pomer": 1.312,
+   "rad": "microflex-duo-10-bar",
+   "obj_cislo": "MD1603225SWI",
+   "plast": [
+    69.29,
+    27.97
+   ],
+   "rura": [
+    85.27,
+    70.76
+   ],
+   "ohyb": [
+    14.25,
+    52.33
+   ]
+  },
+  "microflex-duo-6-bar": {
+   "pomer": 1.3459,
+   "rad": "microflex-duo-6-bar",
+   "obj_cislo": "MD16032C",
+   "plast": [
+    67.24,
+    27.8
+   ],
+   "rura": [
+    84.16,
+    72.92
+   ],
+   "ohyb": [
+    13.97,
+    52.03
+   ]
+  },
+  "microflex-hp": {
+   "pomer": 1.3547,
+   "rad": "microflex-hp",
+   "obj_cislo": "MQ16032C3225E",
+   "plast": [
+    67.18,
+    27.85
+   ],
+   "rura": [
+    84.45,
+    70.39
+   ],
+   "ohyb": [
+    13.8,
+    52.16
+   ]
+  },
+  "microflex-primo-duo-10-bar": {
+   "pomer": 1.3189,
+   "rad": "microflex-primo-duo-10-bar",
+   "obj_cislo": "MD1253225S",
+   "plast": [
+    69.23,
+    27.99
+   ],
+   "rura": [
+    82.99,
+    74.0
+   ],
+   "ohyb": [
+    14.13,
+    52.45
+   ]
+  },
+  "microflex-primo-duo-6-bar": {
+   "pomer": 1.3648,
+   "rad": "microflex-primo-duo-6-bar",
+   "obj_cislo": "MD12532C",
+   "plast": [
+    65.18,
+    27.59
+   ],
+   "rura": [
+    84.37,
+    77.2
+   ],
+   "ohyb": [
+    13.98,
+    51.33
+   ]
+  },
+  "microflex-quadro": {
+   "pomer": 1.3404,
+   "rad": "microflex-quadro",
+   "obj_cislo": "MQ16032C2520S",
+   "plast": [
+    68.03,
+    27.93
+   ],
+   "rura": [
+    83.78,
+    67.96
+   ],
+   "ohyb": [
+    13.92,
+    52.31
+   ]
+  },
+  "microflex-uno-10-bar": {
+   "pomer": 1.3218,
+   "rad": "microflex-uno-10-bar",
+   "obj_cislo": "M12550S",
+   "plast": [
+    69.28,
+    27.98
+   ],
+   "rura": [
+    84.58,
+    71.12
+   ],
+   "ohyb": [
+    14.1,
+    52.55
+   ]
+  },
+  "microflex-uno-6-bar": {
+   "pomer": 1.3362,
+   "rad": "microflex-uno-6-bar",
+   "obj_cislo": "M12532C",
+   "plast": [
+    69.4,
+    28.1
+   ],
+   "rura": [
+    82.23,
+    65.86
+   ],
+   "ohyb": [
+    13.74,
+    52.92
+   ]
+  },
+  "microflex-uno-primo-6-bar": {
+   "pomer": 1.348,
+   "rad": "microflex-uno-primo-6-bar",
+   "obj_cislo": "M12550C",
+   "plast": [
+    67.68,
+    27.85
+   ],
+   "rura": [
+    82.61,
+    70.78
+   ],
+   "ohyb": [
+    13.83,
+    52.29
+   ]
+  }
+ },
+ "piktogramy": {
+  "rad-uno-kurenie.png": "microflex-uno-6-bar",
+  "rad-uno-sanita.png": "microflex-uno-10-bar",
+  "rad-quadro.png": "microflex-quadro",
+  "rad-cool-uno.png": "microflex-cool",
+  "rad-hp-tepelne-cerpadlo.png": "microflex-hp",
+  "rad-duo-kurenie.png": "microflex-duo-6-bar",
+  "rad-duo-sanita.png": "microflex-duo-10-bar",
+  "rad-cool-vyhrievaci-kabel.png": "microflex-cool-s-vyhrievacim-kablom",
+  "rad-cool-duo.png": "microflex-cool-duo"
+ }
+}

@@ -20,6 +20,7 @@ import type { ImageMetadata } from 'astro';
 import Koty from './Koty.astro';
 import { sadzba } from '../lib/sadzba';
 import type { Kota } from '../lib/koty';
+import { je3d, maska3d } from '../lib/obrazky';
 import { type Lang, t, route } from '../i18n/ui';
 
 interface Drobcek { text: string; href?: string }
@@ -39,8 +40,12 @@ const ui = t(lang);
 const maBok = Astro.slots.has('bok');
 // Odlesk po plášti v štúdiu ako v hero domova: maska je samotný render (AVIF 1000 px, ten istý súbor, ktorý
 // si prehliadač väčšinou vyberie aj na zobrazenie), svetlo tak prejde len po výrobku.
-const leskMaska = rozlozenie === 'studio' && obraz && obraz.format !== 'jpg' && obraz.format !== 'jpeg'
-  ? (await getImage({ src: obraz, width: 1000, format: 'avif', quality: 50 })).src : null;
+// Render 3D modelu má celé telo a vlastný kontaktný tieň: bez doznenia, bez tieňa z CSS a s maskou odlesku
+// bez tieňa (inak by pás svetla prešiel aj po podlahe).
+const z3d = je3d(obraz);
+const zdrojMasky = z3d ? maska3d(obraz) : obraz;
+const leskMaska = rozlozenie === 'studio' && zdrojMasky && zdrojMasky.format !== 'jpg' && zdrojMasky.format !== 'jpeg'
+  ? (await getImage({ src: zdrojMasky, width: 1000, format: z3d ? 'webp' : 'avif', quality: 50 })).src : null;
 ---
 {rozlozenie === 'studio' && obraz ? (
 <section class="hlava hlava-studio" data-mys>
@@ -62,7 +67,7 @@ const leskMaska = rozlozenie === 'studio' && obraz && obraz.format !== 'jpg' && 
     {/* Ovládanie nad renderom (živé kóty na stránke radu): pod nadpisom, priamo nad výrobkom. */}
     {Astro.slots.has('nad-obrazom') && <div class="wrap hs-volba"><slot name="nad-obrazom" /></div>}
     <div class="hs-stage" style={`--obraz-max: ${obrazMax}px`}>
-      <div class:list={['hs-obraz', `dz-${dozvenie}`, { 'ma-prechod': prechod }]} style={prechod ? `view-transition-name: ${prechod}` : undefined}>
+      <div class:list={['hs-obraz', z3d ? 'je3d' : `dz-${dozvenie}`, { 'ma-prechod': prechod }]} style={prechod ? `view-transition-name: ${prechod}` : undefined}>
         {/* Výrobok sa pri pohybe myši nepatrne posunie (data-mys v pohyb.ts), kóty idú s ním.
             Tieň nesie obal, dozvenie (maska) je na obrázku: maska na tom istom prvku by tieň orezala. */}
         <div class="hs-mys">
@@ -163,6 +168,8 @@ const leskMaska = rozlozenie === 'studio' && obraz && obraz.format !== 'jpg' && 
     background-size: 260% 100%; background-position: 135% 0; animation: hs-lesk 2200ms 900ms cubic-bezier(0.45, 0, 0.25, 1) both; }
   @keyframes hs-lesk { from { background-position: 135% 0; } to { background-position: -35% 0; } }
   .hs-tien { filter: drop-shadow(0 40px 46px rgb(11 27 51 / 0.22)); }
+  .je3d .hs-tien { filter: none; }
+  .hs-stage:has(.je3d)::before { display: none; }
   .hs-obraz :global(img) { display: block; width: 100%; height: auto; }
   .dz-vlavo :global(img) { -webkit-mask-image: linear-gradient(to right, transparent 0, #000 12%); mask-image: linear-gradient(to right, transparent 0, #000 12%); }
   .dz-vpravo :global(img) { -webkit-mask-image: linear-gradient(to left, transparent 0, #000 16%); mask-image: linear-gradient(to left, transparent 0, #000 16%); }

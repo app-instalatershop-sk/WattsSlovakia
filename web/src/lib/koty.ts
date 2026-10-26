@@ -7,6 +7,8 @@
  * Body vypočítal skript z masiek farieb (pena, jadro, telo) a overili sa na kontrolnom obrázku;
  * pri HP je ručne opravená rúra (algoritmus vybral čiernu chráničku kábla namiesto žltej rúry).
  */
+import rendery from '../data/rendery.json';
+
 type Smer = 'hore-vpravo' | 'hore-vlavo' | 'dole-vpravo' | 'dole-vlavo';
 export interface Kota {
   x: number; y: number; l: number; smer: Smer; smerM?: Smer;
@@ -28,12 +30,24 @@ const BODY: Record<string, { plast: Bod; rura: Bod; ohyb: Bod }> = {
   'rad-uno-sanita.png': { plast: [62.8, 25.6], rura: [91.2, 71.7], ohyb: [16.0, 74.9] },
 };
 
+type Hodnoty = { plast?: [string, string]; rura?: [string, string]; ohyb?: [string, string] };
+
 /** Kóty na renderi radu alebo systému z hodnôt, ktoré má stránka z dát; chýbajúca hodnota = bez kóty. */
-export function kotyRenderu(
-  piktogram: string | null | undefined,
-  h: { plast?: [string, string]; rura?: [string, string]; ohyb?: [string, string] },
-): Kota[] {
-  const b = piktogram ? BODY[piktogram] : undefined;
+export function kotyRenderu(piktogram: string | null | undefined, h: Hodnoty): Kota[] {
+  return kotyZBodov(piktogram ? BODY[piktogram] : undefined, h);
+}
+
+/**
+ * Kóty na renderi vlastného 3D modelu: body zapísal Blender a data/rendery_web.py ich prepočítal na
+ * percentá orezaného obrázka (data/rendery.json). Bez záznamu sa vráti null a stránka použije piktogram.
+ */
+export function kotyRenderu3d(druh: 'rady' | 'hlavy' | 'varianty' | 'hero', id: string | null | undefined, h: Hodnoty): Kota[] | null {
+  const b = id ? (rendery as Record<string, Record<string, Partial<Record<'plast' | 'rura' | 'ohyb', Bod>>>>)[druh]?.[id] : undefined;
+  if (!b?.plast || !b.rura || !b.ohyb) return null;
+  return kotyZBodov({ plast: b.plast, rura: b.rura, ohyb: b.ohyb }, h);
+}
+
+function kotyZBodov(b: { plast: Bod; rura: Bod; ohyb: Bod } | undefined, h: Hodnoty): Kota[] {
   if (!b) return [];
   const out: Kota[] = [];
   if (h.plast) out.push({ x: b.plast[0], y: b.plast[1], l: 8, smer: 'hore-vpravo', smerM: 'hore-vlavo', hodnota: h.plast[0], text: h.plast[1], kod: 'plast' });

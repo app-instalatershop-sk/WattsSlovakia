@@ -1,7 +1,7 @@
 import { getCollection } from 'astro:content';
 import { getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
-import { piktogram, fotkaProduktu } from './obrazky';
+import { obrazRadu, fotkaProduktu } from './obrazky';
 import { cestaKategorie, cestaRadu, cestaProduktu, kNazov, kPopis, rNazov, rKratky, pNazov, tlakText, ruraText, cislo, kotvaKodu, type Kategoria, type Produkt } from './katalog';
 import { clanky } from '../content/clanky';
 import { type Lang, t, route, ESHOP } from '../i18n/ui';
@@ -52,7 +52,7 @@ export async function indexHladania(lang: Lang): Promise<Polozka[]> {
 
   for (const r of rady.filter((x) => !x.je_skupina)) {
     const k = katId(r.kategoria);
-    out.push({ s: 'rad', n: rNazov(r, lang), d: [kNazov(k, lang), tlakText(r)].filter(Boolean).join(', '), u: cestaRadu(k, r, lang), k: [r.nazov_watts, r.nazov, rKratky(r, lang)].filter(Boolean).join(' '), o: await male(piktogram(r.piktogram)) });
+    out.push({ s: 'rad', n: rNazov(r, lang), d: [kNazov(k, lang), tlakText(r)].filter(Boolean).join(', '), u: cestaRadu(k, r, lang), k: [r.nazov_watts, r.nazov, rKratky(r, lang)].filter(Boolean).join(' '), o: await male(obrazRadu(r)) });
   }
 
   for (const v of varianty) {
@@ -66,7 +66,7 @@ export async function indexHladania(lang: Lang): Promise<Polozka[]> {
     const d0 = v.rura?.d ?? (rura.match(/\d{2,3}/)?.[0] ?? '');
     const pocet = r.pocet_rur && r.pocet_rur > 1 ? `${r.pocet_rur}x` : '';
     const kluce = [model, `${v.plast_mm ?? ''}/${d0}`, `${v.plast_mm ?? ''}/${pocet}${d0}`, rura, v.dn ? `DN ${v.dn}` : '', ...(v.prislusenstvo ?? []).map((x) => x.obj)];
-    out.push({ s: 'kod', n: v.obj_cislo, d, u: `${cestaRadu(k, r, lang)}#${kotvaKodu(v.obj_cislo)}`, k: kluce.filter(Boolean).join(' '), v: 1, o: await male(piktogram(r.piktogram)) });
+    out.push({ s: 'kod', n: v.obj_cislo, d, u: `${cestaRadu(k, r, lang)}#${kotvaKodu(v.obj_cislo)}`, k: kluce.filter(Boolean).join(' '), v: 1, o: await male(obrazRadu(r)) });
   }
 
   for (const p of produkty) {

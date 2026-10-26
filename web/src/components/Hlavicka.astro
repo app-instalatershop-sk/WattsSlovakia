@@ -11,7 +11,7 @@ import Ikona from './Ikona.astro';
 import WattsLogo from './WattsLogo.astro';
 import MicroflexLogo from './MicroflexLogo.astro';
 import { kategorie, cestaKategorie, kKratky, rNazov, type Kategoria } from '../lib/katalog';
-import { piktogram } from '../lib/obrazky';
+import { obrazPiktogramu, je3d } from '../lib/obrazky';
 import { FIRMA } from '../content/firma';
 import { type Lang, type Alternates, ESHOP, KATALOG_PDF, t, route, LANGS } from '../i18n/ui';
 
@@ -100,10 +100,10 @@ const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, 
   <div class="mega" id="mega" hidden>
     <div class="wrap mega-in">
       <ul class="mega-kat">
-        {potrubia.map((k) => { const img = piktogram(k.piktogram); return (
+        {potrubia.map((k) => { const img = obrazPiktogramu(k.piktogram); return (
           <li>
             <a class="mega-k" href={cestaKategorie(k, lang)}>
-              <span class="mega-obj">{img && <Obraz src={img} alt="" widths={[240, 400]} sizes="200px" loading="lazy" class="mega-img" />}</span>
+              <span class:list={['mega-obj', { je3d: je3d(img) }]}>{img && <Obraz src={img} alt="" widths={[240, 400]} sizes="200px" loading="lazy" class="mega-img" />}</span>
               <strong>{kKratky(k, lang)}</strong>
               <span>{radyKat(k)}</span>
             </a>
@@ -132,8 +132,8 @@ const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, 
       </form>
       <p class="mnav-nadpis">{ui.nav.potrubia}</p>
       <ul class="mnav-kat">
-        {potrubia.map((k) => { const img = piktogram(k.piktogram); return (
-          <li><a href={cestaKategorie(k, lang)}>{img && <Obraz src={img} alt="" widths={[120, 200]} sizes="64px" loading="lazy" class="mnav-img" />}<span>{kKratky(k, lang)}</span></a></li>
+        {potrubia.map((k) => { const img = obrazPiktogramu(k.piktogram); return (
+          <li><a href={cestaKategorie(k, lang)}>{img && <Obraz src={img} alt="" widths={[120, 200]} sizes="64px" loading="lazy" class:list={['mnav-img', { je3d: je3d(img) }]} />}<span>{kKratky(k, lang)}</span></a></li>
         ); })}
       </ul>
       <ul class="mnav-odkazy">
@@ -249,6 +249,8 @@ const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, 
   .mega-obj { display: block; height: 118px; margin: -4px 0 8px; filter: drop-shadow(0 14px 14px rgb(11 27 51 / 0.2)); transition: transform 350ms var(--ease-soft); }
   @media (hover: hover) and (pointer: fine) { .mega-k:hover .mega-obj { transform: translateY(-4px); } }
   .mega-obj :global(.mega-img) { width: 100%; height: 100%; object-fit: contain; object-position: center bottom; }
+  /* Render 3D modelu má vlastný tieň. */
+  .mega-obj.je3d { filter: none; }
   .mega-k strong { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 17px; line-height: 1.25; letter-spacing: -0.01em; transition: color 150ms var(--ease-soft); }
   .mega-k:hover strong { color: var(--color-blue-700); }
   .mega-k > span:last-child { font-size: 13px; line-height: 1.45; color: var(--color-ink-soft); }
@@ -269,6 +271,7 @@ const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, 
   .mnav-kat { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
   .mnav-kat a { display: flex; align-items: center; gap: 10px; padding: 8px 12px 8px 8px; border-radius: var(--radius-l); background: linear-gradient(180deg, #f5f8fc 0%, #edf2f9 100%); color: var(--color-ink); font-weight: 500; font-size: 15px; line-height: 1.25; min-height: 64px; }
   .mnav-kat :global(.mnav-img) { width: 56px; height: 48px; object-fit: contain; flex: none; filter: drop-shadow(0 6px 6px rgb(11 27 51 / 0.2)); }
+  .mnav-kat :global(.mnav-img.je3d) { filter: none; }
   .mnav-odkazy a { display: block; padding: 13px 0; border-bottom: 1px solid rgb(10 42 94 / 0.08); color: var(--color-ink); font-weight: 500; }
   .mnav-tel { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; font-size: 17px; color: var(--color-blue-900); font-variant-numeric: tabular-nums; }
   .eshop-m { justify-content: center; height: 48px; }

@@ -10,7 +10,7 @@ import Hlava from '../components/Hlava.astro';
 import Zaver from '../components/Zaver.astro';
 import Ikona from '../components/Ikona.astro';
 import { kategorie, cestaKategorie, cestaRadu, kNazov, kKratky, kPopis, rNazov, rMedium, cislo, rozsah, rozsahRur, tlakyRadov, tlakText, type Kategoria, type Rad, type Variant } from '../lib/katalog';
-import { piktogram, fotka } from '../lib/obrazky';
+import { obrazPiktogramu, je3d, fotka } from '../lib/obrazky';
 import { sadzba } from '../lib/sadzba';
 import { stranky } from '../content/stranky';
 import { type Lang, t, route, staticAlternates, KATALOG_PDF } from '../i18n/ui';
@@ -75,9 +75,9 @@ const produktySkupiny = (id: string) => produkty.filter((p) => p.skupina === id)
     <section class="wrap" aria-labelledby="h-sys">
       <div class="s-hlava"><h2 id="h-sys">{tx.systemyH2}</h2><p>{sadzba(tx.systemyP)}</p></div>
       <ol class="systemy">
-        {potrubia.map((k, i) => { const img = piktogram(k.piktogram); const href = cestaKategorie(k, lang); return (
+        {potrubia.map((k, i) => { const img = obrazPiktogramu(k.piktogram); const href = cestaKategorie(k, lang); return (
           <li class:list={['sys', { 'sys-vpravo': i % 2 === 1 }]}>
-            <a class="sys-obraz" href={href} tabindex="-1" aria-hidden="true" style={`view-transition-name: kat-${k.id}`}>
+            <a class:list={['sys-obraz', { je3d: je3d(img) }]} href={href} tabindex="-1" aria-hidden="true" style={`view-transition-name: kat-${k.id}`}>
               {img && <Obraz src={img} alt="" widths={[420, 640, 900]} sizes="(max-width: 900px) 80vw, 40vw" />}
             </a>
             <div class="sys-text">
@@ -154,6 +154,9 @@ const produktySkupiny = (id: string) => produkty.filter((p) => p.skupina === id)
   .sys-obraz::before { content: ""; position: absolute; inset: -6% -4% 4%; background: radial-gradient(50% 50% at 50% 50%, #fff 0%, rgb(255 255 255 / 0.55) 45%, rgb(255 255 255 / 0) 72%); z-index: 0; }
   .sys-obraz::after { content: ""; position: absolute; left: 18%; right: 14%; bottom: 18px; height: 26px; border-radius: 50%; background: radial-gradient(closest-side, rgb(10 42 94 / 0.24), rgb(10 42 94 / 0)); }
   .sys-obraz :global(img) { position: relative; z-index: 1; width: 100%; max-width: 400px; height: auto; margin-inline: auto; filter: drop-shadow(0 22px 24px rgb(11 27 51 / 0.2)); transition: transform 450ms var(--ease-soft); }
+  /* Render 3D modelu má vlastný kontaktný tieň: bez tieňa z CSS a bez elipsy podlahy. */
+  .sys-obraz.je3d::after { display: none; }
+  .sys-obraz.je3d :global(img) { filter: none; }
   @media (hover: hover) and (pointer: fine) { .sys:hover .sys-obraz :global(img) { transform: translateY(-6px); } }
   .sys-vpravo .sys-obraz { order: 2; }
   .sys-text h3 { font-size: clamp(22px, 1vw + 16px, 28px); letter-spacing: -0.015em; }

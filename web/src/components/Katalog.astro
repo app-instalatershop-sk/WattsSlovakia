@@ -11,7 +11,7 @@ import Obraz from './Obraz.astro';
 import { getCollection } from 'astro:content';
 import Ikona from './Ikona.astro';
 import { kategorie, cestaKategorie, cestaRadu, kKratky, kPopis, rNazov, rozsah, type Kategoria, type Rad } from '../lib/katalog';
-import { piktogram, fotkaProduktu } from '../lib/obrazky';
+import { obrazRadu, je3d, fotkaProduktu } from '../lib/obrazky';
 import { sadzba } from '../lib/sadzba';
 import { type Lang, t, route } from '../i18n/ui';
 
@@ -84,9 +84,9 @@ const dielSkupiny = (r: Rad) => fotkaProduktu(TYPICKY[r.id] ?? '') ?? r.produkty
               <p>{sadzba(kPopis(p.kat, lang))}</p>
             </div>
             <div class="studio" data-pocet={p.dlazdice.length}>
-              {p.dlazdice.map(({ rad: r, vyhotovenia }) => { const img = piktogram(r.piktogram); const href = cestaRadu(p.kat, r, lang); return (
+              {p.dlazdice.map(({ rad: r, vyhotovenia }) => { const img = obrazRadu(r); const href = cestaRadu(p.kat, r, lang); return (
                 <div class="rad">
-                  <a class="rad-obj" href={href} tabindex="-1" aria-hidden="true" style={`view-transition-name: rad-${r.id}`}>
+                  <a class:list={['rad-obj', { je3d: je3d(img) }]} href={href} tabindex="-1" aria-hidden="true" style={`view-transition-name: rad-${r.id}`}>
                     {img && <Obraz src={img} alt="" widths={[420, 640, 900]} sizes="(max-width: 760px) 78vw, (max-width: 1100px) 44vw, 34vw" class="rad-img" />}
                   </a>
                   <div class="rad-txt">
@@ -183,6 +183,10 @@ const dielSkupiny = (r: Rad) => fotkaProduktu(TYPICKY[r.id] ?? '') ?? r.produkty
   .rad-obj :global(.rad-img) { width: 100%; height: auto; aspect-ratio: 5 / 4; object-fit: contain; object-position: center bottom; display: block;
     -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 22%), linear-gradient(to top left, #000 78%, transparent 99%); -webkit-mask-composite: source-in;
     mask-image: linear-gradient(to right, transparent 0%, #000 22%), linear-gradient(to top left, #000 78%, transparent 99%); mask-composite: intersect; }
+  /* Render 3D modelu: celé telo a vlastný kontaktný tieň, bez doznenia, bez tieňa z CSS a bez elipsy podlahy. */
+  .rad-obj.je3d { filter: none; }
+  .rad-obj.je3d::after { display: none; }
+  .rad-obj.je3d :global(.rad-img) { -webkit-mask-image: none; mask-image: none; }
   @media (hover: hover) and (pointer: fine) { .rad:has(a:hover) .rad-obj { transform: translateY(-6px); } }
   .rad-txt { display: flex; flex-direction: column; align-self: start; padding-top: 22px; border-top: 1px solid rgb(10 42 94 / 0.14); margin-top: 18px; }
   .rad-hlavny { display: flex; flex-direction: column; gap: 2px; color: var(--color-ink); }

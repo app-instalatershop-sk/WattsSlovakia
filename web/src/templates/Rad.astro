@@ -18,8 +18,8 @@ import CastiStranky from '../components/CastiStranky.astro';
 import Kopirovanie from '../components/Kopirovanie.astro';
 import VolbaDimenzie from '../components/VolbaDimenzie.astro';
 import { kategorie, radyKategorie, variantyRadu, cestaKategorie, cestaRadu, cestaProduktu, alternatyRadu, kKratky, rNazov, rKratky, rMedium, rOznacenie, pNazov, cislo, rozsah, rozsahRur, tlakText, kotvaKodu, type Kategoria, type Rad } from '../lib/katalog';
-import { piktogram, fotkaRadu, detail, fotkaReferencie } from '../lib/obrazky';
-import { kotyRenderu } from '../lib/koty';
+import { piktogram, render3d, fotkaRadu, detail, fotkaReferencie } from '../lib/obrazky';
+import { kotyRenderu, kotyRenderu3d } from '../lib/koty';
 import { sadzba } from '../lib/sadzba';
 import { obsahRadu } from '../content/rady';
 import { referencie } from '../content/referencie';
@@ -35,7 +35,10 @@ const obsah = obsahRadu(r.slug, lang);
 const nazov = rNazov(r, lang);
 const model = nazov.split(',')[0].trim();
 const kratky = rKratky(r, lang);
-const pikto = piktogram(r.piktogram);
+// Render do hlavy: čelný pohľad vlastného 3D modelu (hlavy), kým nie je, celé potrubie (rady), inak piktogram Watts.
+const hlava3d = render3d('hlavy', r.id);
+const rad3d = render3d('rady', r.id);
+const pikto = hlava3d ?? rad3d ?? piktogram(r.piktogram);
 
 // Rady s rovnakým renderom v kategórii (UNO a UNO PRIMO): PRIMO preberá príslušenstvo základného radu.
 const radyKat = await radyKategorie(k.id);
@@ -57,11 +60,12 @@ const fakty: [string, string][] = [
 ];
 // Kóty na renderi v hlave: plášť, nosná rúra s tlakom a polomer ohybu stoja pri tom, čo opisujú.
 // Keď sú na obraze aspoň dve, zoznam faktov pod nadpisom sa nezobrazí (čísla by boli dvakrát).
-const kotyHlavy = kotyRenderu(r.piktogram, {
-  plast: plastRozsah ? [`Ø ${plastRozsah}`, ui.home.popisy.plast] : undefined,
-  rura: ruraRozsah ? [`${r.pocet_rur && r.pocet_rur > 1 && varianty.some((v) => v.rura) ? `${r.pocet_rur} × ` : ''}${ruraRozsah}`, [ui.rad.rura.toLowerCase(), tlakText(r)].filter(Boolean).join(', ')] : undefined,
-  ohyb: polomery.length ? [`${ui.common.od} ${cislo(Math.min(...polomery), 2)} m`, ui.home.popisy.polomer] : undefined,
-});
+const hodnotyHlavy = {
+  plast: plastRozsah ? [`Ø ${plastRozsah}`, ui.home.popisy.plast] as [string, string] : undefined,
+  rura: ruraRozsah ? [`${r.pocet_rur && r.pocet_rur > 1 && varianty.some((v) => v.rura) ? `${r.pocet_rur} × ` : ''}${ruraRozsah}`, [ui.rad.rura.toLowerCase(), tlakText(r)].filter(Boolean).join(', ')] as [string, string] : undefined,
+  ohyb: polomery.length ? [`${ui.common.od} ${cislo(Math.min(...polomery), 2)} m`, ui.home.popisy.polomer] as [string, string] : undefined,
+};
+const kotyHlavy = (hlava3d ? kotyRenderu3d('hlavy', r.id, hodnotyHlavy) : rad3d ? kotyRenderu3d('rady', r.id, hodnotyHlavy) : null) ?? kotyRenderu(r.piktogram, hodnotyHlavy);
 const faktyHlavy = kotyHlavy.length >= 2 ? [] : fakty;
 
 // Stavba pod lupou: kľúčové číslo plášťa berie rozsah z tabuľky, nosnej rúry aj priemery.

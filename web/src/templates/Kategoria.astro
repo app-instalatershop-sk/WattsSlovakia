@@ -11,8 +11,8 @@ import Zaver from '../components/Zaver.astro';
 import Ikona from '../components/Ikona.astro';
 import KartaRadu from '../components/KartaRadu.astro';
 import { kategorie, radyKategorie, cestaKategorie, cestaRadu, cestaProduktu, alternatyKategorie, kNazov, kKratky, kPopis, rNazov, pNazov, cislo, rozsah, rozsahRur, tlakyRadov, tlakText, datum, type Kategoria, type Rad, type Variant } from '../lib/katalog';
-import { piktogram, fotkaRadu } from '../lib/obrazky';
-import { kotyRenderu } from '../lib/koty';
+import { piktogram, render3d, radPiktogramu, fotkaRadu } from '../lib/obrazky';
+import { kotyRenderu, kotyRenderu3d } from '../lib/koty';
 import { sadzba } from '../lib/sadzba';
 import { faq } from '../content/faq';
 import { stranky } from '../content/stranky';
@@ -31,7 +31,11 @@ const variantyRadu = (id: string): Variant[] => vsetkyVarianty.filter((v) => v.r
 const varianty = rady.flatMap((r) => variantyRadu(r.id));
 const tlaky = tlakyRadov(rady);
 const polomery = varianty.map((v) => v.polomer_ohybu_m).filter((x): x is number => typeof x === 'number');
-const pikto = piktogram(k.piktogram);
+// Render systému: rad, ktorý systém zastupuje (rovnaký ako jeho piktogram Watts), čelný pohľad 3D modelu.
+const radSystemu = radPiktogramu(k.piktogram);
+const hlava3d = render3d('hlavy', radSystemu);
+const rad3d = render3d('rady', radSystemu);
+const pikto = hlava3d ?? rad3d ?? piktogram(k.piktogram);
 const otazky = faq(k.id, lang);
 const faqLd = otazky.length ? [{
   '@context': 'https://schema.org', '@type': 'FAQPage',
@@ -52,11 +56,12 @@ const fakty: [string, string][] = [
   ...(polomery.length ? [[ui.kategoria.polomer, `${ui.common.od} ${cislo(Math.min(...polomery), 2)} m`] as [string, string]] : []),
 ];
 // Kóty na renderi systému, rovnako ako na stránke radu; zoznam faktov ostáva len bez nich.
-const kotyHlavy = kotyRenderu(k.piktogram, {
-  plast: varianty.length ? [`Ø ${rozsah(varianty.map((v) => v.plast_mm), 'mm', lang)}`, ui.home.popisy.plast] : undefined,
-  rura: varianty.length ? [rozsahRur(varianty, lang), [ui.kategoria.rura.toLowerCase(), tlaky.length ? `${tlaky.join(' / ')} bar` : ''].filter(Boolean).join(', ')] : undefined,
-  ohyb: polomery.length ? [`${ui.common.od} ${cislo(Math.min(...polomery), 2)} m`, ui.home.popisy.polomer] : undefined,
-});
+const hodnotyHlavy = {
+  plast: varianty.length ? [`Ø ${rozsah(varianty.map((v) => v.plast_mm), 'mm', lang)}`, ui.home.popisy.plast] as [string, string] : undefined,
+  rura: varianty.length ? [rozsahRur(varianty, lang), [ui.kategoria.rura.toLowerCase(), tlaky.length ? `${tlaky.join(' / ')} bar` : ''].filter(Boolean).join(', ')] as [string, string] : undefined,
+  ohyb: polomery.length ? [`${ui.common.od} ${cislo(Math.min(...polomery), 2)} m`, ui.home.popisy.polomer] as [string, string] : undefined,
+};
+const kotyHlavy = (hlava3d ? kotyRenderu3d('hlavy', radSystemu, hodnotyHlavy) : rad3d ? kotyRenderu3d('rady', radSystemu, hodnotyHlavy) : null) ?? kotyRenderu(k.piktogram, hodnotyHlavy);
 const faktyHlavy = kotyHlavy.length >= 2 ? [] : fakty;
 
 const pk = '–';

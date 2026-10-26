@@ -8,9 +8,9 @@
 import Obraz from './Obraz.astro';
 import Ikona from './Ikona.astro';
 import Koty from './Koty.astro';
-import { piktogram } from '../lib/obrazky';
+import { obrazRadu, je3d } from '../lib/obrazky';
 import { sadzba } from '../lib/sadzba';
-import { kotyRenderu } from '../lib/koty';
+import { kotyRenderu, kotyRenderu3d } from '../lib/koty';
 import { rozsah, rozsahRur, rNazov, rKratky, cislo, tlakText, type Rad, type Variant } from '../lib/katalog';
 import { stranky } from '../content/stranky';
 import { type Lang, t } from '../i18n/ui';
@@ -20,22 +20,24 @@ interface Props { rad: Rad; href: string; varianty: Variant[]; lang: Lang; vyhot
 const { rad, href, varianty, lang, vyhotovenia = [] } = Astro.props;
 const ui = t(lang);
 const tx = stranky(lang).kategoria;
-const img = piktogram(rad.piktogram);
+const img = obrazRadu(rad);
+const z3d = je3d(img);
 const model = rNazov(rad, lang).split(',')[0].trim();
 const kratky = rKratky(rad, lang);
 const pol = varianty.map((v) => v.polomer_ohybu_m).filter((x): x is number => typeof x === 'number');
 const rura = varianty.length ? `${rad.pocet_rur && rad.pocet_rur > 1 && varianty.some((v) => v.rura) ? `${rad.pocet_rur} × ` : ''}${rozsahRur(varianty, lang)}` : '';
 const plast = varianty.some((v) => v.plast_mm) ? rozsah(varianty.map((v) => v.plast_mm), 'mm', lang) : '';
-const koty = kotyRenderu(rad.piktogram, {
-  plast: plast ? [`Ø ${plast}`, ui.home.popisy.plast] : undefined,
-  rura: rura ? [rura, [ui.rad.rura.toLowerCase(), tlakText(rad)].filter(Boolean).join(', ')] : undefined,
-  ohyb: pol.length ? [`${ui.common.od} ${cislo(Math.min(...pol), 2)} m`, ui.home.popisy.polomer] : undefined,
-});
+const hodnoty = {
+  plast: plast ? [`Ø ${plast}`, ui.home.popisy.plast] as [string, string] : undefined,
+  rura: rura ? [rura, [ui.rad.rura.toLowerCase(), tlakText(rad)].filter(Boolean).join(', ')] as [string, string] : undefined,
+  ohyb: pol.length ? [`${ui.common.od} ${cislo(Math.min(...pol), 2)} m`, ui.home.popisy.polomer] as [string, string] : undefined,
+};
+const koty = (z3d && kotyRenderu3d('rady', rad.id, hodnoty)) || kotyRenderu(rad.piktogram, hodnoty);
 const pod = [rad.pocet_rur ? ui.home.rury(rad.pocet_rur) : '', varianty.length ? ui.sklonovanie.dimenzii(varianty.length) : tlakText(rad)].filter(Boolean).join(', ');
 ---
 <article class="karta">
   <a class="karta-studio" href={href} tabindex="-1" aria-hidden="true">
-    <span class="karta-stage" style={`view-transition-name: rad-${rad.id}`}>
+    <span class:list={['karta-stage', { je3d: z3d }]} style={`view-transition-name: rad-${rad.id}`}>
       {img && <Obraz src={img} alt="" widths={[480, 720, 960]} sizes="(max-width: 900px) 92vw, 44vw" />}
       <Koty koty={koty} label={ui.home.popisy.label} />
     </span>
@@ -59,6 +61,8 @@ const pod = [rad.pocet_rur ? ui.home.rury(rad.pocet_rur) : '', varianty.length ?
   .karta-studio { display: flex; align-items: flex-end; height: 420px; padding: 28px 24px 12px; background: radial-gradient(60% 70% at 55% 55%, #ffffff 0%, #eef3f9 70%, #e3ebf5 100%); }
   .karta-stage { position: relative; display: block; width: 100%; max-width: 520px; margin: 0 auto; container-type: inline-size; transition: transform 420ms var(--ease-soft); }
   .karta-stage :global(img) { display: block; width: 100%; height: auto; filter: drop-shadow(0 24px 26px rgb(11 27 51 / 0.22)); }
+  /* Render 3D modelu má vlastný kontaktný tieň: bez druhého tieňa z CSS. */
+  .karta-stage.je3d :global(img) { filter: none; }
   @media (hover: hover) and (pointer: fine) { .karta:has(a:hover) .karta-stage { transform: translateY(-4px); } }
   /* V úzkej karte (tri rady vedľa seba, telefón) by sa štítky prekrývali: kóta polomeru ustúpi. */
   @container (max-width: 440px) {

@@ -13,7 +13,7 @@ import Zaver from '../components/Zaver.astro';
 import Ikona from '../components/Ikona.astro';
 import Kopirovanie from '../components/Kopirovanie.astro';
 import { cestaRadu, cestaProduktu, kKratky, rNazov, rKratky, tlakText, priemery, ruraText, cislo } from '../lib/katalog';
-import { piktogram } from '../lib/obrazky';
+import { obrazPiktogramu, obrazRadu } from '../lib/obrazky';
 import { materialVariantu } from '../lib/material';
 import { kodyProduktu } from '../lib/produkty';
 import { sadzba } from '../lib/sadzba';
@@ -90,7 +90,7 @@ const data = {
   diely: Object.fromEntries(produkty.flatMap((p) => { const u = cestaProduktu(p, vsetkyKat.find((k) => k.id === p.kategoria)!, lang); return kodyProduktu(p).map((c) => [c, u]); })),
 };
 const texty = { ...tx, kwNad: tx.kwNad(0), rezerva: tx.rezerva(0), ui_obj: 'Obj. číslo' };
-const obrazky = await Promise.all(systemy.map(async ({ k }) => { const p = piktogram(k.piktogram); return p ? (await getImage({ src: p, width: 360, format: 'webp' })).src : ''; }));
+const obrazky = await Promise.all(systemy.map(async ({ k }) => { const p = obrazPiktogramu(k.piktogram); return p ? (await getImage({ src: p, width: 360, format: 'webp' })).src : ''; }));
 ---
 <Base lang={lang} alternates={staticAlternates('vyber')} title={tx.title} description={tx.desc} aktivna="vyber" drobceky={[{ text: tx.kratko }]} vizualneDrobceky={false}>
   <Hlava lang={lang} nadpis={tx.title} drobceky={[{ text: tx.kratko }]} lead={tx.lead} />
@@ -113,7 +113,7 @@ const obrazky = await Promise.all(systemy.map(async ({ k }) => { const p = pikto
       <div class="krok-hlava"><span class="krok-c">2</span><h2 id="h-k2">{tx.k2}</h2></div>
       {systemy.map(({ k, rady: rr }) => (
         <div class="volby-k2" role="radiogroup" aria-labelledby="h-k2" data-pre={k.id} hidden>
-          {rr.map((r) => { const p = piktogram(r.piktogram); return (
+          {rr.map((r) => { const p = obrazRadu(r); return (
             <button type="button" class="harok volba-r" role="radio" aria-checked="false" data-r={r.slug} data-kw={varianty.some((v) => v.rad === r.id && v.vykon_kw) ? '1' : ''}>
               {p && <Obraz src={p} alt="" widths={[160, 240]} sizes="120px" class="volba-r-img" />}
               <span class="volba-r-text">
@@ -192,7 +192,7 @@ const obrazky = await Promise.all(systemy.map(async ({ k }) => { const p = pikto
   .volby-k1 { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 40px 18px; padding-top: 34px; }
   .volba-k, .volba-r { position: relative; border: 0; font: inherit; color: var(--color-ink); text-align: left; cursor: pointer; transition: transform 200ms var(--ease-soft), box-shadow 200ms var(--ease-soft); }
   .volba-k { display: flex; flex-direction: column; gap: 4px; padding: 0 18px 20px; }
-  .volba-k img { width: calc(100% + 16px); max-width: none; height: auto; aspect-ratio: 9 / 7; margin: -40px -8px 6px; object-fit: contain; object-position: center bottom; filter: drop-shadow(0 18px 16px rgb(11 27 51 / 0.24)); transition: transform 300ms var(--ease-soft); }
+  .volba-k img { width: calc(100% + 16px); max-width: none; height: auto; aspect-ratio: 9 / 7; margin: -40px -8px 6px; object-fit: contain; object-position: center bottom; transition: transform 300ms var(--ease-soft); }
   @media (hover: hover) and (pointer: fine) { .volba-k:hover, .volba-r:hover { transform: translateY(-3px); } }
   @media (hover: hover) and (pointer: fine) { .volba-k:hover img { transform: translateY(-3px); } }
   .volba-k[aria-checked="true"], .volba-r[aria-checked="true"] { box-shadow: 0 0 0 3px var(--color-blue-700), var(--elev-3); }
@@ -201,7 +201,7 @@ const obrazky = await Promise.all(systemy.map(async ({ k }) => { const p = pikto
   .volba-pod { font-size: 14px; color: var(--color-ink-soft); }
   .volby-k2 { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
   .volba-r { display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: 16px; align-items: center; padding: 14px 20px 14px 12px; }
-  .volba-r :global(.volba-r-img) { width: 104px; height: 80px; object-fit: contain; filter: drop-shadow(0 10px 10px rgb(11 27 51 / 0.2)); }
+  .volba-r :global(.volba-r-img) { width: 104px; height: 80px; object-fit: contain; }
   .volba-r-text { display: flex; flex-direction: column; gap: 2px; }
   .volba-popis { margin-top: 6px; font-size: 14px; line-height: 1.45; color: var(--color-ink-soft); }
 

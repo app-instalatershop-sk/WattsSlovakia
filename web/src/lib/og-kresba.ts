@@ -48,7 +48,7 @@ async function obraz(z: OgZaznam): Promise<string | undefined> {
 }
 
 // Medzipamäť na disku: obrázok sa prekreslí, len keď sa zmení záznam, zdrojový obraz alebo kresba (VERZIA).
-const VERZIA = 1;
+const VERZIA = 3; // 2: rendery vlastného 3D modelu, 3: nadnadpis vetou namiesto verzálok
 const pamat = join(koren, 'node_modules', '.cache', 'og');
 export async function kresliOg(z: OgZaznam): Promise<Buffer> {
   const zdroj = z.obraz ? (await stat(join(koren, 'src', 'assets', ...z.obraz.split('/')))).mtimeMs : 0;
@@ -81,7 +81,7 @@ async function nakresli(z: OgZaznam): Promise<Buffer> {
       h('img', { width: 238, height: 32 }, undefined, { src: microflex }),
       h('div', { display: 'flex', flexDirection: 'column' }, [
         h('div', { width: 64, height: 7, borderRadius: 4, background: '#f7c900', marginBottom: 22 }),
-        h('div', { fontSize: 23, fontWeight: 600, letterSpacing: 1.5, color: '#f7c900', textTransform: 'uppercase', marginBottom: 14 }, z.pred),
+        h('div', { fontSize: 26, fontWeight: 500, color: '#f7c900', marginBottom: 12 }, z.pred), // veta, nie verzálky (DESIGN kap. 5 a 18)
         h('div', { fontFamily: 'Archivo, ArchivoExt', fontWeight: 700, fontSize: velkost, lineHeight: 1.06, letterSpacing: -1 }, z.nadpis),
         z.fakty.length ? h('div', { display: 'flex', gap: 44, marginTop: 34 }, z.fakty.slice(0, 3).map(([dt, dd]) =>
           h('div', { display: 'flex', flexDirection: 'column' }, [

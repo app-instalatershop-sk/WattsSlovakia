@@ -1,7 +1,7 @@
 import { getCollection } from 'astro:content';
 import { cestaKategorie, cestaRadu, cestaProduktu, kNazov, kKratky, rNazov, pNazov, rozsah, rozsahRur, tlakText, tlakyRadov, type Kategoria } from './katalog';
 import { faktyProduktu, kodyProduktu } from './produkty';
-import { fotkaProduktu } from './obrazky';
+import { fotkaProduktu, render3d, radPiktogramu } from './obrazky';
 import { clanky } from '../content/clanky';
 import { type Lang, route, LANGS } from '../i18n/ui';
 
@@ -15,6 +15,9 @@ export interface OgZaznam { kluc: string; lang: Lang; nadpis: string; pred: stri
 
 /** Kľúč obrázka z adresy stránky: „/potrubia/vykurovanie/“ → „potrubia/vykurovanie“, „/“ → „domov“. */
 export const klucOg = (cesta: string) => cesta.replace(/^\/|\/$/g, '').replace(/\/index\.html$/, '') || 'domov';
+
+/** Obraz náhľadu z vlastného 3D modelu (cesta v src/assets), keď render existuje; inak pôvodný obraz. */
+const z3d = (druh: Parameters<typeof render3d>[0], id: string | undefined, inak: string | undefined) => (render3d(druh, id) ? `3d/${druh}/${id}.webp` : inak);
 
 const texty = {
   sk: {
@@ -48,16 +51,16 @@ async function zostav(): Promise<OgZaznam[]> {
       const [nadpis, pred] = tx[kluc];
       out.push({ kluc: klucOg(route(lang, kluc)), lang, nadpis, pred, fakty, obraz, druh });
     };
-    staticke('domov', 'fotky/hero-rez-duo.png', 'render', [[tx.systemy, String(potrubne.length)], [tx.rady, String(rady.length)], [tx.tlak, `${tlaky.join(' / ')} bar`]]);
-    staticke('potrubia', 'fotky/rodina-potrubi.png', 'render', [[tx.systemy, String(potrubne.length)], [tx.rady, String(rady.length)], [tx.tlak, `${tlaky.join(' / ')} bar`]]);
-    staticke('vyber', 'piktogramy/rad-duo-kurenie.png', 'render');
+    staticke('domov', z3d('hero', 'duo', 'fotky/hero-rez-duo.png')!, 'render', [[tx.systemy, String(potrubne.length)], [tx.rady, String(rady.length)], [tx.tlak, `${tlaky.join(' / ')} bar`]]);
+    staticke('potrubia', z3d('rodina', 'rodina', 'fotky/rodina-potrubi.png')!, 'render', [[tx.systemy, String(potrubne.length)], [tx.rady, String(rady.length)], [tx.tlak, `${tlaky.join(' / ')} bar`]]);
+    staticke('vyber', z3d('rady', 'microflex-duo-6-bar', 'piktogramy/rad-duo-kurenie.png')!, 'render');
     staticke('stiahnut', 'fotky/katalog-obalka.jpg', 'biely');
     staticke('firmy', 'fotky/montaz-budova.jpg', 'foto');
     staticke('poradna', 'fotky/vykop-rez.jpg', 'foto');
     staticke('kontakt', 'fotky/kotuc.jpg', 'foto');
     staticke('referencie', 'referencie/orange-5.jpg', 'foto');
     const [pn, pp] = tx.predvolene;
-    out.push({ kluc: `predvolene-${lang}`, lang, nadpis: pn, pred: pp, fakty: [], obraz: 'fotky/rodina-potrubi.png', druh: 'render' });
+    out.push({ kluc: `predvolene-${lang}`, lang, nadpis: pn, pred: pp, fakty: [], obraz: z3d('rodina', 'rodina', 'fotky/rodina-potrubi.png'), druh: 'render' });
 
     for (const k of kat) {
       const rr = rady.filter((r) => r.kategoria === k.id);
@@ -67,7 +70,7 @@ async function zostav(): Promise<OgZaznam[]> {
         if (tlakyRadov(rr).length) fakty.push([tx.tlak, `${tlakyRadov(rr).join(' / ')} bar`]);
         if (rozsahRur(vs, lang)) fakty.push([tx.rura, rozsahRur(vs, lang)]);
         if (vs.some((v) => v.plast_mm)) fakty.push([tx.plast, rozsah(vs.map((v) => v.plast_mm), 'mm', lang)]);
-        out.push({ kluc: klucOg(cestaKategorie(k, lang)), lang, nadpis: kNazov(k, lang), pred: tx.potrubia2, fakty, obraz: k.piktogram ? `piktogramy/${k.piktogram}` : undefined, druh: 'render' });
+        out.push({ kluc: klucOg(cestaKategorie(k, lang)), lang, nadpis: kNazov(k, lang), pred: tx.potrubia2, fakty, obraz: z3d('rady', radPiktogramu(k.piktogram), k.piktogram ? `piktogramy/${k.piktogram}` : undefined), druh: 'render' });
       } else {
         const ps = produkty.filter((p) => p.kategoria === k.id);
         out.push({ kluc: klucOg(cestaKategorie(k, lang)), lang, nadpis: kNazov(k, lang), pred: 'Microflex', fakty: [[tx.produkty, String(ps.length)], [tx.obj, String(ps.reduce((n, p) => n + kodyProduktu(p).length, 0))]],
@@ -81,7 +84,7 @@ async function zostav(): Promise<OgZaznam[]> {
       if (tlakText(r)) fakty.push([tx.tlak, tlakText(r)]);
       if (rozsahRur(vs, lang)) fakty.push([tx.rura, rozsahRur(vs, lang)]);
       if (vs.some((v) => v.plast_mm)) fakty.push([tx.plast, rozsah(vs.map((v) => v.plast_mm), 'mm', lang)]);
-      out.push({ kluc: klucOg(cestaRadu(k, r, lang)), lang, nadpis: rNazov(r, lang), pred: kKratky(k, lang), fakty, obraz: r.piktogram ? `piktogramy/${r.piktogram}` : undefined, druh: 'render' });
+      out.push({ kluc: klucOg(cestaRadu(k, r, lang)), lang, nadpis: rNazov(r, lang), pred: kKratky(k, lang), fakty, obraz: z3d('rady', r.id, r.piktogram ? `piktogramy/${r.piktogram}` : undefined), druh: 'render' });
     }
     for (const p of produkty) {
       const k = kat.find((x) => x.id === p.kategoria) as Kategoria;

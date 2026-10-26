@@ -123,8 +123,8 @@ const popisy = [
         <h2 id="h-rodina">{h.rodinaH2}</h2>
         <p class="lead">{sadzba(h.rodinaP)}</p>
       </div>
-      <div class="rodina-obraz">
-        <div class:list={['rodina-wrap', { je3d: rodina3d }]}><Obraz src={rodina} alt={h.rodinaAlt} widths={[800, 1200, 1633]} sizes="(max-width: 1100px) 100vw, 64vw" class="rodina-img" /></div>
+      <div class:list={['rodina-obraz', { je3d: rodina3d }]}>
+        <div class="rodina-wrap"><Obraz src={rodina} alt={h.rodinaAlt} widths={[800, 1200, 1633]} sizes="(max-width: 1100px) 100vw, 64vw" class="rodina-img" /></div>
       </div>
     </div>
   </section>
@@ -343,10 +343,12 @@ const popisy = [
   /* Render je veľký a vždy dobehne za pravý okraj obrazovky, aj na širokom monitore. */
   .rodina-obraz { width: max(146%, calc(104% + var(--bleed) + 24px)); max-width: none; margin: -196px 0 0 -4%; position: relative; z-index: 2; }
   .rodina-wrap { filter: drop-shadow(0 28px 36px rgb(11 27 51 / 0.2)); }
-  /* Rodina z 3D modelu: celé telá a vlastný kontaktný tieň, bez doznenia a bez tieňa z CSS. */
-  .rodina-wrap.je3d { filter: none; }
-  .rodina-wrap.je3d :global(.rodina-img) { -webkit-mask-image: none; mask-image: none; }
   .rodina-wrap :global(.rodina-img) { width: 100%; height: auto; display: block; -webkit-mask-image: linear-gradient(to top right, #000 66%, transparent 97%); mask-image: linear-gradient(to top right, #000 66%, transparent 97%); }
+  /* Rodina z 3D modelu: celé telá a vlastný kontaktný tieň, bez doznenia a bez tieňa z CSS. Na počítači
+     sa zmestí celá (text menuje aj COOL a HP, tie by za okrajom chýbali), vpravo do okraja obrazovky. */
+  .rodina-obraz.je3d .rodina-wrap { filter: none; }
+  .rodina-obraz.je3d :global(.rodina-img) { -webkit-mask-image: none; mask-image: none; }
+  @media (min-width: 1101px) { .rodina-obraz.je3d { width: calc(100% + var(--bleed) - 16px); margin: -180px 0 0 -1%; } }
 
 
   /* ---------- Pokládka: kotúč vľavo cez okraj obrazovky, text v jeho vnútri ---------- */

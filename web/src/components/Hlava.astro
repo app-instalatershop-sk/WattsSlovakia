@@ -66,7 +66,7 @@ const leskMaska = rozlozenie === 'studio' && zdrojMasky && zdrojMasky.format !==
   <div class:list={['hs-studio', { 'hs-vedla-volby': z3d && Astro.slots.has('nad-obrazom') }]}>
     {/* Ovládanie nad renderom (živé kóty na stránke radu): pod nadpisom, priamo nad výrobkom. */}
     {Astro.slots.has('nad-obrazom') && <div class="wrap hs-volba"><slot name="nad-obrazom" /></div>}
-    <div class="hs-stage" style={`--obraz-max: ${obrazMax}px`}>
+    <div class:list={['hs-stage', { 'bez-kot': z3d && koty.length === 0 }]} style={`--obraz-max: ${obrazMax}px`}>
       <div class:list={['hs-obraz', z3d ? 'je3d' : `dz-${dozvenie}`, { 'ma-prechod': prechod }]} style={prechod ? `view-transition-name: ${prechod}` : undefined}>
         {/* Výrobok sa pri pohybe myši nepatrne posunie (data-mys v pohyb.ts), kóty idú s ním.
             Tieň nesie obal, dozvenie (maska) je na obrázku: maska na tom istom prvku by tieň orezala. */}
@@ -199,6 +199,8 @@ const leskMaska = rozlozenie === 'studio' && zdrojMasky && zdrojMasky.format !==
     /* Štítky pod renderom potrebujú miesto: odsadenie hlavy (nie okraj renderu, ten by sa zlúčil cez hlavu). */
     .hlava-studio { padding-bottom: 64px; }
     .hs-stage { width: auto; margin: 0 calc(-1 * var(--gutter)); padding-left: 0; }
+    /* Celé telá z 3D modelu bez kót (rodina v Potrubiach) ostanú v okrajoch: nie je čo orezať ani komu robiť miesto. */
+    .hs-stage.bez-kot { margin-inline: 0; }
   }
   /* Telefón: render je pod textom hlavy už pod okrajom obrazovky, preto výber dimenzie ide pod render,
      k štítkom kót, ktoré mení. Odsadenie nechá miesto štítkom, ktoré visia pod renderom. */

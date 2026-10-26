@@ -567,7 +567,20 @@
    "polomer": 16.4
   }
  },
- "rodina": {},
+ "rodina": {
+  "rodina": {
+   "pomer": 2.7934,
+   "rad": "rodina",
+   "obj_cislo": [
+    "M16075C",
+    "MD16032C",
+    "MD1603225SWI",
+    "MQ16032C2520S",
+    "M16075PE",
+    "MQ16032C3225E"
+   ]
+  }
+ },
  "makra": {
   "pena": {
    "pomer": 1.0

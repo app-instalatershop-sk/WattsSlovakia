@@ -191,8 +191,8 @@ const obrazky = await Promise.all(systemy.map(async ({ k }) => { const p = pikto
   .volba-k, .volba-r { position: relative; border: 0; font: inherit; color: var(--color-ink); text-align: left; cursor: pointer; transition: transform 200ms var(--ease-soft), box-shadow 200ms var(--ease-soft); }
   .volba-k { display: flex; flex-direction: column; gap: 4px; padding: 16px 18px 20px; }
   .volba-k img { width: 100%; height: auto; aspect-ratio: 9 / 7; object-fit: contain; filter: drop-shadow(0 14px 14px rgb(11 27 51 / 0.2)); margin-bottom: 6px; transition: transform 300ms var(--ease-soft); }
-  .volba-k:hover, .volba-r:hover { transform: translateY(-3px); }
-  .volba-k:hover img { transform: translateY(-3px); }
+  @media (hover: hover) and (pointer: fine) { .volba-k:hover, .volba-r:hover { transform: translateY(-3px); } }
+  @media (hover: hover) and (pointer: fine) { .volba-k:hover img { transform: translateY(-3px); } }
   .volba-k[aria-checked="true"], .volba-r[aria-checked="true"] { box-shadow: 0 0 0 3px var(--color-blue-700), 0 26px 50px -30px rgb(10 42 94 / 0.6); }
   .volba-k[aria-checked="true"]::after, .volba-r[aria-checked="true"]::after { content: ""; position: absolute; top: 14px; right: 14px; width: 12px; height: 12px; border-radius: 50%; background: var(--color-yellow-500); box-shadow: 0 0 0 4px rgb(247 201 0 / 0.25); }
   .volba-nazov { font-weight: 700; font-size: 17px; font-family: var(--font-display); letter-spacing: -0.01em; }

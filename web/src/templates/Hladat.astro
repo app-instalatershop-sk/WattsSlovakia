@@ -78,7 +78,7 @@ const texty = { skupiny: tx.skupiny, vysledkov: [tx.vysledkov(1), tx.vysledkov(2
   .hl-form input::-webkit-search-cancel-button { display: none; }
   .hl-navrhy { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin-top: 16px; font-size: 14px; color: var(--color-ink-soft); }
   .hl-navrhy a { padding: 5px 11px; border-radius: 9px; background: rgb(255 255 255 / 0.8); box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.1); color: var(--color-ink); font-weight: 500; }
-  .hl-navrhy a:hover { color: var(--color-blue-700); box-shadow: inset 0 0 0 1px var(--color-blue-700); }
+  @media (hover: hover) and (pointer: fine) { .hl-navrhy a:hover { color: var(--color-blue-700); box-shadow: inset 0 0 0 1px var(--color-blue-700); } }
 
   .hl-stav { font-size: 15px; color: var(--color-ink-soft); margin-bottom: 20px; }
   .hl-stav :global(strong) { color: var(--color-ink); }

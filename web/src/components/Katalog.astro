@@ -121,7 +121,8 @@ const skupiny = (k: Kategoria) => rady.filter((r) => r.kategoria === k.id).sort(
      vpravo vyššie, takže ju spodok renderu pretína. Dole ostáva miesto pre render rodiny, ktorý
      zhora prechádza cez švík do bielej sekcie pod ním. */
   .katalog { position: relative; isolation: isolate; margin-top: calc(-1 * var(--presah-hero)); padding-top: calc(var(--presah-hero) + 84px); padding-bottom: 200px; scroll-margin-top: calc(72px - var(--presah-hero)); overflow-x: clip; }
-  .katalog::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, var(--zem-1) 0%, var(--zem-2) 100%); clip-path: polygon(0 var(--presah-hero), 100% 0, 100% 100%, 0 100%); }
+  /* Pás siaha o 1 px pod sekciu: pri zlomkovej výške by medzi ním a rodinou ostala svetlá vlasová škára. */
+  .katalog::before { content: ""; position: absolute; inset: 0 0 -1px; z-index: -1; background: linear-gradient(180deg, var(--zem-1) 0%, var(--zem-2) 100%); clip-path: polygon(0 var(--presah-hero), 100% 0, 100% 100%, 0 100%); }
   .katalog h2 { font-size: clamp(28px, 2.2vw + 14px, 42px); margin-bottom: 32px; }
 
   /* Dva stĺpce na mriežke 7 / 5. Panely sú podmriežka cez celú šírku, takže popis vybranej kategórie
@@ -175,7 +176,7 @@ const skupiny = (k: Kategoria) => rady.filter((r) => r.kategoria === k.id).sort(
   .rad-obj :global(.rad-img) { width: 100%; height: auto; aspect-ratio: 5 / 4; object-fit: contain; object-position: center bottom; display: block;
     -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 22%), linear-gradient(to top left, #000 78%, transparent 99%); -webkit-mask-composite: source-in;
     mask-image: linear-gradient(to right, transparent 0%, #000 22%), linear-gradient(to top left, #000 78%, transparent 99%); mask-composite: intersect; }
-  .rad:has(a:hover) .rad-obj { transform: translateY(-6px); }
+  @media (hover: hover) and (pointer: fine) { .rad:has(a:hover) .rad-obj { transform: translateY(-6px); } }
   .rad-txt { display: flex; flex-direction: column; align-self: start; padding-top: 22px; border-top: 1px solid rgb(10 42 94 / 0.14); margin-top: 18px; }
   .rad-hlavny { display: flex; flex-direction: column; gap: 2px; color: var(--color-ink); }
   .rad-hlavny strong { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 22px; line-height: 1.2; letter-spacing: -0.01em; color: var(--color-ink); transition: color 150ms var(--ease-soft); }

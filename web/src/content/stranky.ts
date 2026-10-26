@@ -35,6 +35,9 @@ const sk = {
     prislusenstvo: 'Príslušenstvo', dielov: (n: number) => (n === 1 ? '1 diel' : n >= 2 && n <= 4 ? `${n} diely` : `${n} dielov`),
     druhy: { MK: 'Zmršťovacia krytka', MS: 'Protiprachová krytka', MG: 'Gumová krytka EPDM', MFP: 'Pevný bod', MPP: 'Plastová spojka MPP' } as Record<string, string>,
     stranaDielu: 'Stránka dielu', ks2: 'potrebné 2 ks', prislPozn: 'Príslušenstvo k obj. číslu je podľa katalógu výrobcu, s. 8 až 18.',
+    // Živé kóty v hlave radu (components/VolbaDimenzie.astro).
+    volbaHint: 'Vyberte priemer, kóty na reze sa prepočítajú.', volbaPlast: 'Plášť a izolácia', volbaDetail: 'Detail v tabuľke',
+    volbaVykon: (kw: string) => `výkon asi ${kw} kW`, volbaZosilnena: 'zosilnená izolácia',
   },
   skupiny: {
     produktov: (n: number) => (n === 1 ? '1 produkt' : n >= 2 && n <= 4 ? `${n} produkty` : `${n} produktov`),
@@ -116,6 +119,8 @@ const cs: typeof sk = {
     prislusenstvo: 'Příslušenství', dielov: (n: number) => (n === 1 ? '1 díl' : n >= 2 && n <= 4 ? `${n} díly` : `${n} dílů`),
     druhy: { MK: 'Smršťovací krytka', MS: 'Protiprachová krytka', MG: 'Pryžová krytka EPDM', MFP: 'Pevný bod', MPP: 'Plastová spojka MPP' },
     stranaDielu: 'Stránka dílu', ks2: 'potřeba 2 ks', prislPozn: 'Příslušenství k obj. číslu je podle katalogu výrobce, s. 8 až 18.',
+    volbaHint: 'Vyberte průměr, kóty na řezu se přepočítají.', volbaPlast: 'Plášť a izolace', volbaDetail: 'Detail v tabulce',
+    volbaVykon: (kw: string) => `výkon asi ${kw} kW`, volbaZosilnena: 'zesílená izolace',
   },
   skupiny: {
     produktov: (n: number) => (n === 1 ? '1 produkt' : n >= 2 && n <= 4 ? `${n} produkty` : `${n} produktů`),

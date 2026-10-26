@@ -16,6 +16,7 @@ import Subory from '../components/Subory.astro';
 import Scena from '../components/Scena.astro';
 import CastiStranky from '../components/CastiStranky.astro';
 import Kopirovanie from '../components/Kopirovanie.astro';
+import VolbaDimenzie from '../components/VolbaDimenzie.astro';
 import { kategorie, radyKategorie, variantyRadu, cestaKategorie, cestaRadu, cestaProduktu, alternatyRadu, kKratky, rNazov, rKratky, rMedium, rOznacenie, pNazov, cislo, rozsah, rozsahRur, tlakText, kotvaKodu, type Kategoria, type Rad } from '../lib/katalog';
 import { piktogram, fotkaRadu, detail, fotkaReferencie } from '../lib/obrazky';
 import { kotyRenderu } from '../lib/koty';
@@ -114,8 +115,10 @@ const productLd = [{
 <Base lang={lang} alternates={alternatyRadu(k, r)} title={nazov} description={meta} aktivna="potrubia" drobceky={drobceky} vizualneDrobceky={false} jsonLd={productLd}>
   <Hlava lang={lang} nadpis={nazov} drobceky={drobceky} pred={[kKratky(k, lang), ruryText].filter(Boolean).join(', ')} lead={kratky ?? undefined} obraz={pikto} obrazAlt={ui.rad.fotoAlt(nazov)} obrazMax={860} prechod={`rad-${r.id}`} koty={kotyHlavy} kotyLabel={ui.home.popisy.label} rozlozenie="studio">
     {faktyHlavy.length > 0 && <dl class="hlava-fakty">{faktyHlavy.map(([dt, dd]) => <div><dt>{dt}</dt><dd>{dd}</dd></div>)}</dl>}
+    {/* Živé kóty: výber dimenzie nad renderom prepíše kóty na ňom (len keď sú na obraze aspoň dve). */}
+    {kotyHlavy.length >= 2 && varianty.length > 1 && <VolbaDimenzie slot="nad-obrazom" lang={lang} varianty={varianty} pocetRur={r.pocet_rur} model={model} />}
     <div class="hlava-akcie">
-      <a class="btn btn-yellow btn-lg" href="#varianty">{tx.vybrat} <Ikona nazov="arrow-down" velkost={18} /></a>
+      <a class="btn btn-yellow btn-lg" href="#varianty" data-cta><span data-cta-text>{tx.vybrat}</span> <Ikona nazov="arrow-down" velkost={18} /></a>
       <a class="odkaz" href={eshop} target="_blank" rel="noopener">{tx.kupit} <Ikona nazov="external-link" velkost={16} /></a>
     </div>
     {sestry.length > 0 && (
@@ -284,6 +287,26 @@ const productLd = [{
 
   .oznacenie { margin-top: 56px !important; font-size: 13px; color: var(--color-ink-soft); }
   .oznacenie span { color: var(--color-ink); font-weight: 500; }
+
+  /* Tlač (brief kap. 16.5, inštalatéri si tlačia obj. čísla): nadpis radu a tabuľka variantov, ako je
+     práve vyfiltrovaná; bez hlavičky, renderu, tlačidiel a ďalších častí. Hlavička tabuľky sa opakuje
+     na každej strane, riadok sa nerozdelí. */
+  @media print {
+    :global(.topbar), :global(.hdr), :global(.ftr), :global(.zaver), :global(.casti), :global(.hs-studio), :global(.hlava-akcie),
+    :global(.hlava-sestry), :global(.kopia-toast), :global(.tv-filter), :global(.tv-pr-td), :global(.tv-pr-th), :global(.tv-shop), :global(.tv-shop-th), :global(.kopia),
+    #stavba, #stiahnut, #referencie, #suvisiace, .oznacenie { display: none !important; }
+    @page { margin: 14mm 12mm; }
+    :global(body) { background: #fff; }
+    :global(.hlava) { min-height: 0 !important; padding: 0 0 12px !important; background: none !important; }
+    :global(.hlava)::after { display: none; }
+    :global(.telo) { background: none !important; padding: 0 !important; }
+    :global(.harok) { box-shadow: none !important; border-radius: 0 !important; }
+    :global(.wrap) { max-width: none !important; padding-inline: 0 !important; }
+    :global(table.data) { font-size: 9.5pt; }
+    :global(table.data th), :global(table.data td) { padding: 5px 6px !important; }
+    :global(.tv-tab thead) { display: table-header-group; }
+    :global(.tv-tab tbody tr) { break-inside: avoid; }
+  }
 
   @media (max-width: 900px) { .stavba, .ref, .ref-vpravo { grid-template-columns: minmax(0, 1fr); } .lupy { grid-template-columns: minmax(0, 1fr); gap: 24px; } .ref :global(.ref-scena), .ref-vpravo :global(.ref-scena) { order: 0; margin-inline: calc(-1 * var(--gutter)); } .ref :global(.ref-scena .scena-img), .ref-vpravo :global(.ref-scena .scena-img) { border-radius: 0; } }
   @media (max-width: 760px) { .lupa { display: grid; grid-template-columns: 92px minmax(0, 1fr); column-gap: 18px; } .lupa-okno { grid-row: 1 / span 3; width: 92px; height: 92px; margin: 4px 0 0; } }

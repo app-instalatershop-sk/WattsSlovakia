@@ -68,8 +68,8 @@ const idDetailu = (v: Variant) => `pr-${v.obj_cislo.replace(/[^A-Za-z0-9]/g, '')
           {ma('polomer_ohybu_m') && <th scope="col" class="right">{ui.tabulka.polomer}<small>m</small></th>}
           {ma('kotuc') && <th scope="col" class="right">{ui.tabulka.kotuc}<small>m</small></th>}
           {izolacie.size > 0 && <th scope="col">{ui.tabulka.izolacia}</th>}
-          {maPrisl && <th scope="col">{tx.prislusenstvo}</th>}
-          <th scope="col"><span class="sr">{ui.tabulka.eshop}</span></th>
+          {maPrisl && <th scope="col" class="tv-pr-th">{tx.prislusenstvo}</th>}
+          <th scope="col" class="tv-shop-th"><span class="sr">{ui.tabulka.eshop}</span></th>
         </tr>
       </thead>
       <tbody>
@@ -193,7 +193,13 @@ const idDetailu = (v: Variant) => `pr-${v.obj_cislo.replace(/[^A-Za-z0-9]/g, '')
 </style>
 
 <script>
+  // Poslucháče na dokumente patria stránke: pri prechode na inú stránku (ClientRouter) sa zrušia.
+  let stranka: AbortController | undefined;
+  document.addEventListener('astro:before-swap', () => stranka?.abort());
+
   function initTabulky() {
+    if (!stranka || stranka.signal.aborted) stranka = new AbortController();
+    const signal = stranka.signal;
     document.querySelectorAll<HTMLElement>('[data-tv]').forEach((tv) => {
       if (tv.dataset.init) return;
       tv.dataset.init = '1';
@@ -220,14 +226,27 @@ const idDetailu = (v: Variant) => `pr-${v.obj_cislo.replace(/[^A-Za-z0-9]/g, '')
         }
         if (pocet) pocet.textContent = (pocet.dataset.sablona ?? '').replace('{n}', String(n)).replace('{z}', String(riadky.length));
       };
+      const nastav = (kluc: 'rura' | 'izolacia', hodnota: string) => {
+        stav[kluc] = hodnota;
+        tv.querySelectorAll<HTMLButtonElement>(`button[data-${kluc}]`).forEach((x) => x.setAttribute('aria-pressed', String((x.dataset[kluc] ?? '') === hodnota)));
+      };
       tv.querySelectorAll<HTMLButtonElement>('button[data-rura], button[data-izolacia]').forEach((b) => {
         b.addEventListener('click', () => {
           const kluc = 'rura' in b.dataset ? 'rura' : 'izolacia';
-          stav[kluc] = b.dataset[kluc] ?? '';
-          tv.querySelectorAll<HTMLButtonElement>(`button[data-${kluc}]`).forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+          nastav(kluc, b.dataset[kluc] ?? '');
           obnov();
+          // Živé kóty v hlave radu (VolbaDimenzie) sa nastavia podľa filtra.
+          document.dispatchEvent(new CustomEvent('mfx:dimenzia', { detail: { ...stav, zdroj: 'tabulka' } }));
         });
       });
+      // Výber dimenzie v hlave nastaví filter; hodnotu bez tlačidla (napr. pri dvoch rúrach v plášti) vynechá.
+      document.addEventListener('mfx:dimenzia', (e) => {
+        const d = (e as CustomEvent<{ rura: string; izolacia: string; zdroj: string }>).detail;
+        if (d.zdroj === 'tabulka') return;
+        nastav('rura', d.rura && tv.querySelector(`button[data-rura="${d.rura}"]`) ? d.rura : '');
+        nastav('izolacia', d.izolacia && tv.querySelector(`button[data-izolacia="${d.izolacia}"]`) ? d.izolacia : '');
+        obnov();
+      }, { signal });
     });
     oznacCiel();
   }

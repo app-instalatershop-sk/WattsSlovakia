@@ -118,7 +118,7 @@ const ld = [{
   .hodiny dt { color: var(--color-ink-soft); }
   .hodiny dd { margin: 0; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; color: var(--color-blue-900); }
   .karta-eshop { background: linear-gradient(160deg, #fff 0%, #f3f7fc 100%); transition: transform 250ms var(--ease-soft); }
-  .karta-eshop:hover { color: var(--color-ink); transform: translateY(-3px); }
+  @media (hover: hover) and (pointer: fine) { .karta-eshop:hover { color: var(--color-ink); transform: translateY(-3px); } }
   .karta-eshop p { color: var(--color-ink-soft); }
 
   .dve { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 32px 64px; align-items: start; }

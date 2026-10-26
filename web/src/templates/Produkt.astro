@@ -120,7 +120,7 @@ const ld = [{
 
   .rady { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
   .rad { display: grid; grid-template-columns: 120px minmax(0, 1fr) auto; gap: 16px; align-items: center; padding: 12px 20px 12px 12px; color: var(--color-ink); transition: transform 250ms var(--ease-soft); }
-  .rad:hover { color: var(--color-ink); transform: translateY(-2px); }
+  @media (hover: hover) and (pointer: fine) { .rad:hover { color: var(--color-ink); transform: translateY(-2px); } }
   .rad-obraz :global(img) { display: block; width: 120px; height: 90px; object-fit: contain; filter: drop-shadow(0 10px 12px rgb(11 27 51 / 0.2)); }
   .rad-nazov { display: block; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 17px; color: var(--color-blue-900); }
   .rad-pod { display: block; font-size: 14px; color: var(--color-ink-soft); margin-top: 2px; }

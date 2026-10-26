@@ -44,7 +44,7 @@ const polozky = subory.map((s) => { const p = popisSuboru(s, lang); return { ...
   .list { position: relative; display: block; aspect-ratio: 210 / 297; border-radius: 4px; overflow: hidden; background: #fff; box-shadow: 0 1px 0 rgb(10 42 94 / 0.08), 0 28px 44px -26px rgb(11 27 51 / 0.55); transform: rotate(var(--r, 0deg)); transition: transform 350ms var(--ease-soft), box-shadow 350ms var(--ease-soft); }
   .stol li:nth-child(odd) .list { --r: -1.2deg; }
   .stol li:nth-child(even) .list { --r: 1deg; }
-  .dok:hover .list { transform: translateY(-8px) rotate(0deg); box-shadow: 0 1px 0 rgb(10 42 94 / 0.08), 0 40px 60px -28px rgb(11 27 51 / 0.6); }
+  @media (hover: hover) and (pointer: fine) { .dok:hover .list { transform: translateY(-8px) rotate(0deg); box-shadow: 0 1px 0 rgb(10 42 94 / 0.08), 0 40px 60px -28px rgb(11 27 51 / 0.6); } }
   .list :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; }
   .format { display: flex; flex-direction: column; justify-content: flex-end; padding: 18px; color: #fff; background: linear-gradient(160deg, #1467c1 0%, var(--color-blue-900) 100%); }
   .format b { font-family: var(--font-display); font-stretch: 125%; font-weight: 700; font-size: clamp(30px, 2.4vw, 42px); line-height: 1; letter-spacing: -0.02em; }

@@ -93,11 +93,11 @@ const obraz = fotka('vykop-rez.jpg');
   .clanky { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
   .clanky .prvy { grid-column: 1 / -1; }
   .clanok-k { display: flex; flex-direction: column; height: 100%; overflow: hidden; color: var(--color-ink); transition: transform 250ms var(--ease-soft); }
-  .clanok-k:hover { color: var(--color-ink); transform: translateY(-3px); }
+  @media (hover: hover) and (pointer: fine) { .clanok-k:hover { color: var(--color-ink); transform: translateY(-3px); } }
   .clanok-obraz { display: block; aspect-ratio: 16 / 9; overflow: hidden; background: linear-gradient(160deg, #f5f8fc 0%, #e4edf8 100%); }
   .clanok-obraz :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform 700ms var(--ease-soft); }
   .clanok-obraz.render :global(img) { object-fit: contain; padding: 16px; }
-  .clanok-k:hover .clanok-obraz :global(img) { transform: scale(1.03); }
+  @media (hover: hover) and (pointer: fine) { .clanok-k:hover .clanok-obraz :global(img) { transform: scale(1.03); } }
   .clanok-text { display: flex; flex-direction: column; gap: 8px; padding: 22px 26px 26px; flex: 1; }
   .clanok-min { font-size: 14px; font-weight: 500; color: var(--color-blue-700); }
   .clanok-n { font-family: var(--font-display); font-weight: 700; font-size: 21px; line-height: 1.2; letter-spacing: -0.01em; }

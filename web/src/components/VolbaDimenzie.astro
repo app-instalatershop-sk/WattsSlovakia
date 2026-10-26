@@ -1,0 +1,315 @@
+---
+/**
+ * Živé kóty (Juraj 26. 10. 2026: „chcel by som to živé a čo najlepšie“, docs/DOLADENIE.md kap. 3, fáza C).
+ * Výber dimenzie v hlave radu: klik na priemer nosnej rúry prepíše kóty na renderi (plášť, nosná rúra,
+ * polomer ohybu) krátkym pretočením číslic, ukáže obj. číslo a nastaví filter tabuľky variantov. Filter
+ * v tabuľke funguje aj opačne (udalosť mfx:dimenzia). Vybraný variant je v adrese (?obj=MD12532C), takže
+ * sa dá poslať kolegovi.
+ *
+ * Hodnoty sú sformátované tu na serveri rovnako ako v tabuľke, skript ich len vymieňa. Pri „obmedziť
+ * pohyb“ sa čísla vymenia bez pohybu. Prvá úroveň = priemer nosnej rúry (pri rade s rôznymi rúrami
+ * v jednom plášti ich kombinácia, napr. „28 + 18“), druhá = plášť, keď má rúra viac variantov
+ * (štandardná a zosilnená izolácia).
+ */
+import Ikona from './Ikona.astro';
+import { cislo, kotvaKodu, type Variant } from '../lib/katalog';
+import { stranky } from '../content/stranky';
+import { type Lang, t } from '../i18n/ui';
+
+interface Props { lang: Lang; varianty: Variant[]; pocetRur: number | null; model: string }
+const { lang, varianty, pocetRur, model } = Astro.props;
+const ui = t(lang);
+const tx = stranky(lang).rad;
+
+type Cast = { n: number; d: number; s: number };
+// Nosné rúry variantu: pri jednej rúre z dát, pri viacerých z textu katalógu („1x28/4.01x18/2.5“).
+const casti = (v: Variant): Cast[] => v.rura?.d
+  ? [{ n: pocetRur ?? 1, d: v.rura.d, s: v.rura.s }]
+  : [...(v.rura_text ?? '').matchAll(/(?:(\d)\s*[x×]\s*)?(\d{2,3})\s*[/x×]\s*(\d{1,2}[.,]\d)/g)]
+      .map(([, n, d, s]) => ({ n: Number(n ?? 1), d: Number(d), s: Number(s.replace(',', '.')) }));
+const jednoduche = varianty.every((v) => casti(v).length === 1);
+const kluc = (v: Variant) => {
+  const c = casti(v);
+  return jednoduche ? cislo(c[0]?.d) : c.map((x) => `${x.n > 1 ? `${x.n}× ` : ''}${x.d}`).join(' + ');
+};
+const nbsp = (s: string) => s.replace(/ ([×+]) /g, ' $1 ').replace(/ (mm|m|kW|kg\/m)\b/g, ' $1');
+
+const zoradene = [...varianty].sort((a, b) => (casti(a)[0]?.d ?? 0) - (casti(b)[0]?.d ?? 0) || (a.plast_mm ?? 0) - (b.plast_mm ?? 0) || a.poradie - b.poradie);
+const skupiny: { k: string; vs: Variant[] }[] = [];
+for (const v of zoradene) {
+  const k = kluc(v);
+  const g = skupiny.find((x) => x.k === k);
+  if (g) g.vs.push(v); else skupiny.push({ k, vs: [v] });
+}
+
+const data = skupiny.map((g) => ({
+  k: g.k,
+  vs: g.vs.map((v) => {
+    const c = casti(v);
+    const ruraKota = c.length === 1 && v.rura?.d
+      ? `${(pocetRur ?? 1) > 1 ? `${pocetRur} × ` : ''}${cislo(c[0].d)} × ${cislo(c[0].s, 1)} mm`
+      : `${c.map((x) => `${x.n > 1 ? `${x.n} × ` : ''}${x.d}`).join(' + ')} mm`;
+    const zos = v.izolacia === 'zosilnena';
+    const izSlovo = zos ? tx.zosilnena.toLowerCase() : g.vs.some((x) => x.izolacia === 'zosilnena') && v.izolacia === 'standard' ? tx.standard.toLowerCase() : '';
+    return {
+      obj: v.obj_cislo,
+      kotva: kotvaKodu(v.obj_cislo),
+      // Popis druhej úrovne: plášť, pri dvoch izoláciách aj jej druh.
+      l2: [v.plast_mm ? `Ø ${cislo(v.plast_mm)}` : v.obj_cislo, izSlovo].filter(Boolean).join(', '),
+      kp: v.plast_mm ? nbsp(`Ø ${cislo(v.plast_mm)} mm`) : null,
+      kpt: zos ? `${ui.home.popisy.plast}, ${tx.volbaZosilnena}` : null,
+      kr: nbsp(ruraKota),
+      ko: v.polomer_ohybu_m ? nbsp(`${cislo(v.polomer_ohybu_m, 2)} m`) : null,
+      fakty: [v.vykon_kw ? tx.volbaVykon(cislo(v.vykon_kw)) : '', v.hmotnost_kg_m ? nbsp(`${cislo(v.hmotnost_kg_m, 2)} kg/m`) : ''].filter(Boolean).join(', '),
+      // Filter tabuľky: priemer len pri rade s jednou rúrou (tabuľka filtruje po jednotlivých priemeroch).
+      tr: v.rura?.d ? String(v.rura.d) : '',
+      ti: v.izolacia ?? '',
+    };
+  }),
+}));
+const payload = { model, detail: tx.volbaDetail, vybrat: tx.vybrat, objText: ui.tabulka.obj };
+// Varianty s rovnakým plášťom aj izoláciou (COOL s káblom a bez neho) rozlíši až obj. číslo.
+for (const g of data) if (new Set(g.vs.map((x) => x.l2)).size < g.vs.length) g.vs.forEach((x) => { x.l2 = x.obj; });
+// Riadok výsledku má stálu výšku; s druhou úrovňou (plášť) sa na telefóne zalomí, preto dva riadky.
+const maPlast = skupiny.some((g) => g.vs.length > 1);
+---
+{skupiny.length > 1 && (
+<div class:list={['volba', { 'volba-2r': maPlast }]} data-volba>
+  <div class="volba-riadok">
+    <span class="volba-meno" id="volba-l1">{tx.filterRura} Ø</span>
+    <div class="volba-seg" role="group" aria-labelledby="volba-l1" data-seg>
+      <span class="volba-jazdec" aria-hidden="true"></span>
+      <button type="button" aria-pressed="true" data-k="">{tx.vsetky}</button>
+      {skupiny.map((g, i) => <button type="button" aria-pressed="false" data-k={i}>{g.k}</button>)}
+    </div>
+  </div>
+  <div class="volba-vysledok" data-vysledok>
+    <p class="volba-hint" data-hint>{tx.volbaHint}</p>
+    <div class="volba-detail" data-detail hidden>
+      <div class="volba-seg volba-seg-2" role="group" aria-label={tx.volbaPlast} data-seg2 hidden><span class="volba-jazdec" aria-hidden="true"></span></div>
+      <span class="volba-obj">{ui.tabulka.obj} <strong data-obj></strong><button type="button" class="kopia" data-kopia="" aria-label={tx.kopirovat} title={tx.kopirovat}><Ikona nazov="copy" velkost={15} /></button></span>
+      <span class="volba-fakty" data-fakty></span>
+    </div>
+    <p class="sr" aria-live="polite" data-sr></p>
+  </div>
+  <script type="application/json" data-volba-data set:html={JSON.stringify({ ...payload, skupiny: data })} />
+</div>
+)}
+
+<style>
+  .volba-riadok { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+  .volba-meno { font-size: 14px; color: var(--color-ink-soft); }
+  /* Segmentový prepínač: biela koľajnica, tmavomodrý jazdec sa pružne presúva pod vybranú hodnotu.
+     Tlačidlá druhej úrovne pridáva skript, preto štýly tlačidiel cez :global (bez značky komponentu). */
+  .volba-seg { position: relative; display: flex; gap: 2px; max-width: 100%; padding: 4px; border-radius: 14px; overflow-x: auto; scrollbar-width: none;
+    background: rgb(255 255 255 / 0.86); box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.1), 0 10px 24px -18px rgb(10 42 94 / 0.5); }
+  .volba-seg::-webkit-scrollbar { display: none; }
+  .volba-seg :global(button) { position: relative; z-index: 1; flex: none; min-width: 44px; height: 40px; padding: 0 13px; border: 0; border-radius: 10px; background: transparent;
+    font: 600 15px/1 var(--font-display); font-stretch: 112.5%; font-variant-numeric: tabular-nums; color: var(--color-ink); cursor: pointer; white-space: nowrap;
+    transition: color 200ms var(--ease-soft); }
+  .volba-seg :global(button[data-k=""]) { font: 500 14.5px/1 var(--font-text); }
+  .volba-seg :global(button[aria-pressed="true"]) { color: #fff; }
+  .volba-jazdec { position: absolute; z-index: 0; top: 4px; left: 0; height: 40px; width: 0; border-radius: 10px; background: linear-gradient(180deg, #123a7a 0%, var(--color-blue-900) 100%);
+    box-shadow: 0 6px 14px -6px rgb(10 42 94 / 0.6); transition: transform 460ms var(--ease-pruzina), width 460ms var(--ease-pruzina); }
+  .volba-jazdec.bez-pohybu { transition: none; }
+  @media (hover: hover) and (pointer: fine) {
+    .volba-seg :global(button[aria-pressed="false"]:hover) { color: var(--color-blue-700); }
+  }
+
+  /* Riadok pod výberom má stálu výšku, aby sa render pod ním pri výbere neposunul. */
+  .volba-vysledok { display: flex; align-items: center; min-height: 52px; margin-top: 8px; }
+  .volba-hint { font-size: 14px; color: var(--color-ink-soft); }
+  .volba-detail { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; }
+  .volba-seg-2 { padding: 3px; border-radius: 12px; }
+  .volba-seg-2 :global(button) { height: 34px; padding: 0 12px; border-radius: 9px; font: 500 14px/1 var(--font-text); }
+  .volba-seg-2 .volba-jazdec { top: 3px; height: 34px; border-radius: 9px; }
+  .volba-obj { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--color-ink-soft); }
+  .volba-obj strong { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 16px; letter-spacing: 0.01em; color: var(--color-blue-900); }
+  .volba-obj :global(.kopia) { opacity: 1; }
+  .volba-fakty { font-size: 14px; color: var(--color-ink-soft); }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+  /* Pretočenie čísla v štítku kóty: nové znaky vyjdú zdola, starý text odíde hore. */
+  :global(.stitok strong.zk) { position: relative; display: inline-block; }
+  :global(.zk-z) { display: inline-block; white-space: pre; }
+  :global(.zk-stary) { position: absolute; top: 0; white-space: pre; pointer-events: none; }
+  :global(.zk-kruh) { position: absolute; left: -7px; top: -7px; width: 14px; height: 14px; border-radius: 50%; box-shadow: 0 0 0 2px var(--color-blue-700); pointer-events: none; }
+
+  @media (max-width: 760px) {
+    .volba-riadok { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .volba-vysledok { min-height: 48px; }
+    .volba-2r .volba-vysledok { min-height: 92px; }
+    .volba-fakty { display: none; }
+  }
+</style>
+
+<script>
+  type V = { obj: string; kotva: string; l2: string; kp: string | null; kpt: string | null; kr: string; ko: string | null; fakty: string; tr: string; ti: string };
+  type Data = { model: string; detail: string; vybrat: string; objText: string; skupiny: { k: string; vs: V[] }[] };
+
+  let ac: AbortController | undefined;
+
+  function initVolba() {
+    ac?.abort();
+    const koren = document.querySelector<HTMLElement>('[data-volba]');
+    if (!koren) return;
+    ac = new AbortController();
+    const signal = ac.signal;
+    const data: Data = JSON.parse(koren.querySelector('[data-volba-data]')!.textContent ?? '{}');
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const css = getComputedStyle(document.documentElement);
+    const pruzina = CSS.supports('transition-timing-function', 'linear(0, 1)') ? css.getPropertyValue('--ease-pruzina').trim() : '';
+    const mekka = css.getPropertyValue('--ease-soft').trim() || 'ease-out';
+
+    const seg = koren.querySelector<HTMLElement>('[data-seg]')!;
+    const seg2 = koren.querySelector<HTMLElement>('[data-seg2]')!;
+    const hint = koren.querySelector<HTMLElement>('[data-hint]')!;
+    const detail = koren.querySelector<HTMLElement>('[data-detail]')!;
+    const objEl = koren.querySelector<HTMLElement>('[data-obj]')!;
+    const kopia = koren.querySelector<HTMLButtonElement>('.volba-obj [data-kopia]')!;
+    const faktyEl = koren.querySelector<HTMLElement>('[data-fakty]')!;
+    const srEl = koren.querySelector<HTMLElement>('[data-sr]')!;
+    const hlava = koren.closest('section') ?? document;
+    const cta = hlava.querySelector<HTMLAnchorElement>('[data-cta]');
+    const ctaText = cta?.querySelector<HTMLElement>('[data-cta-text]');
+    const ctaHref = cta?.getAttribute('href') ?? '#varianty';
+    const kota = (kod: string) => {
+      const li = hlava.querySelector<HTMLElement>(`[data-koty] .k-${kod}`);
+      const hodnota = li?.querySelector<HTMLElement>('.stitok strong') ?? null;
+      const text = li?.querySelector<HTMLElement>('.stitok span') ?? null;
+      for (const el of [hodnota, text]) if (el && el.dataset.povodna === undefined) el.dataset.povodna = el.textContent ?? '';
+      return { li, hodnota, text };
+    };
+    const koty = { plast: kota('plast'), rura: kota('rura'), ohyb: kota('ohyb') };
+
+    // Jazdec (tmavomodrá plocha) pod vybraným tlačidlom; prvé nastavenie bez pohybu.
+    const posunJazdec = (s: HTMLElement, hned = false) => {
+      const j = s.querySelector<HTMLElement>('.volba-jazdec');
+      const b = s.querySelector<HTMLElement>('button[aria-pressed="true"]');
+      if (!j || !b) return;
+      j.classList.toggle('bez-pohybu', hned || reduce);
+      j.style.width = `${b.offsetWidth}px`;
+      j.style.transform = `translateX(${b.offsetLeft}px)`;
+      if (hned) requestAnimationFrame(() => j.classList.remove('bez-pohybu'));
+      const vpravo = b.offsetLeft + b.offsetWidth - s.clientWidth;
+      if (vpravo > s.scrollLeft || b.offsetLeft < s.scrollLeft) s.scrollTo({ left: Math.max(0, b.offsetLeft - 24), behavior: reduce || hned ? 'auto' : 'smooth' });
+    };
+
+    // Pretočenie textu: starý text odíde hore, nové znaky prídu zdola s pružným dojazdom a štítok
+    // plynule zmení šírku. Bod kóty pulzne, aby bolo vidno, čo sa zmenilo.
+    const prepis = (el: HTMLElement | null, nova: string, animuj: boolean, li?: HTMLElement | null) => {
+      if (!el) return;
+      const stara = el.textContent ?? '';
+      if (stara === nova) return;
+      if (!animuj || reduce) { el.textContent = nova; return; }
+      const stitok = el.closest<HTMLElement>('.stitok');
+      const w0 = stitok?.getBoundingClientRect().width ?? 0;
+      el.classList.add('zk');
+      el.textContent = '';
+      const znaky = [...nova].map((ch) => { const s = document.createElement('span'); s.className = 'zk-z'; s.textContent = ch; el.append(s); return s; });
+      const st = document.createElement('span');
+      st.className = 'zk-stary';
+      st.textContent = stara;
+      st.style[getComputedStyle(el).textAlign === 'right' ? 'right' : 'left'] = '0';
+      el.append(st);
+      st.animate([{ transform: 'none', opacity: 1 }, { transform: 'translateY(-0.6em)', opacity: 0 }], { duration: 200, easing: 'cubic-bezier(0.4, 0, 1, 1)', fill: 'forwards' }).finished.then(() => st.remove(), () => st.remove());
+      znaky.forEach((s, i) => s.animate([{ transform: 'translateY(0.7em)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: 520, delay: 70 + i * 16, easing: pruzina || mekka, fill: 'backwards' }));
+      if (stitok) {
+        const w1 = stitok.getBoundingClientRect().width;
+        if (Math.abs(w1 - w0) > 1) {
+          stitok.style.overflow = 'clip';
+          stitok.animate([{ width: `${w0}px` }, { width: `${w1}px` }], { duration: 420, easing: pruzina || mekka }).finished.then(() => { stitok.style.overflow = ''; }, () => { stitok.style.overflow = ''; });
+        }
+      }
+      const bod = li?.querySelector<HTMLElement>('.bod');
+      if (bod) {
+        bod.animate([{ transform: 'none' }, { transform: 'scale(1.35)' }, { transform: 'none' }], { duration: 420, easing: mekka });
+        const kruh = document.createElement('span');
+        kruh.className = 'zk-kruh';
+        li!.append(kruh);
+        kruh.animate([{ transform: 'scale(1)', opacity: 0.7 }, { transform: 'scale(3.2)', opacity: 0 }], { duration: 760, easing: 'cubic-bezier(0.2, 0.7, 0.2, 1)' }).finished.then(() => kruh.remove(), () => kruh.remove());
+      }
+    };
+
+    let sk = -1, vi = 0;
+    // zdroj: 'rura' klik na priemer, 'plast' klik na plášť, 'tabulka' filter v tabuľke, inak načítanie.
+    const vyber = (noveSk: number, noveVi: number, opts: { animuj: boolean; zdroj?: 'rura' | 'plast' | 'tabulka' }) => {
+      const ineSk = noveSk !== sk;
+      sk = noveSk; vi = noveVi;
+      const g = sk >= 0 ? data.skupiny[sk] : undefined;
+      const v = g?.vs[vi];
+      seg.querySelectorAll<HTMLButtonElement>('button').forEach((b) => b.setAttribute('aria-pressed', String((b.dataset.k === '' ? -1 : Number(b.dataset.k)) === sk)));
+      posunJazdec(seg, !opts.animuj);
+      hint.hidden = Boolean(v);
+      detail.hidden = !v;
+
+      // Druhá úroveň (plášť) len pri rúre s viacerými variantmi; pri inej rúre sa postaví nanovo.
+      if (ineSk || !opts.animuj) {
+        seg2.querySelectorAll('button').forEach((b) => b.remove());
+        seg2.hidden = !g || g.vs.length < 2;
+        g?.vs.forEach((x, i) => {
+          if (g.vs.length < 2) return;
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.textContent = x.l2;
+          b.addEventListener('click', () => { if (i !== vi) vyber(sk, i, { animuj: true, zdroj: 'plast' }); }, { signal });
+          seg2.append(b);
+        });
+      }
+      seg2.querySelectorAll<HTMLButtonElement>('button').forEach((b, i) => b.setAttribute('aria-pressed', String(i === vi)));
+      if (!seg2.hidden) posunJazdec(seg2, ineSk || !opts.animuj);
+
+      prepis(koty.plast.hodnota, v?.kp ?? koty.plast.hodnota?.dataset.povodna ?? '', opts.animuj, koty.plast.li);
+      prepis(koty.plast.text, v?.kpt ?? koty.plast.text?.dataset.povodna ?? '', false);
+      prepis(koty.rura.hodnota, v?.kr ?? koty.rura.hodnota?.dataset.povodna ?? '', opts.animuj, koty.rura.li);
+      prepis(koty.ohyb.hodnota, v?.ko ?? koty.ohyb.hodnota?.dataset.povodna ?? '', opts.animuj, koty.ohyb.li);
+
+      if (v) {
+        objEl.textContent = v.obj;
+        kopia.dataset.kopia = v.obj;
+        faktyEl.textContent = v.fakty;
+        srEl.textContent = [`${data.model} ${g!.k}`, v.kp, v.kr, v.ko, `${data.objText} ${v.obj}`].filter(Boolean).join(', ');
+      } else srEl.textContent = '';
+      if (cta) {
+        cta.setAttribute('href', v ? `#${v.kotva}` : ctaHref);
+        if (ctaText) ctaText.textContent = v ? data.detail : data.vybrat;
+      }
+      // Adresa so zvoleným variantom (bez nového záznamu v histórii, stav prechodov ostane).
+      const url = new URL(location.href);
+      if (v) url.searchParams.set('obj', v.obj); else url.searchParams.delete('obj');
+      if (url.href !== location.href) history.replaceState(history.state, '', url.href);
+      // Tabuľka: priemer rúry; izoláciu len keď ju človek zvolil (inak tabuľka ukáže obe pre ten priemer).
+      if (opts.zdroj === 'rura' || opts.zdroj === 'plast') {
+        document.dispatchEvent(new CustomEvent('mfx:dimenzia', { detail: { rura: v?.tr ?? '', izolacia: opts.zdroj === 'plast' ? v?.ti ?? '' : '', zdroj: 'hlava' } }));
+      }
+    };
+
+    seg.querySelectorAll<HTMLButtonElement>('button').forEach((b) => b.addEventListener('click', () => {
+      const n = b.dataset.k === '' ? -1 : Number(b.dataset.k);
+      if (n !== sk) vyber(n, 0, { animuj: true, zdroj: 'rura' });
+    }, { signal }));
+
+    // Filter v tabuľke nastaví aj výber v hlave (pri rade s jednou rúrou, kde sa priemery zhodujú).
+    document.addEventListener('mfx:dimenzia', (e) => {
+      const d = (e as CustomEvent<{ rura: string; izolacia: string; zdroj: string }>).detail;
+      if (d.zdroj !== 'tabulka') return;
+      if (!d.rura) { if (sk !== -1) vyber(-1, 0, { animuj: true, zdroj: 'tabulka' }); return; }
+      const n = data.skupiny.findIndex((g) => g.vs.some((x) => x.tr === d.rura));
+      if (n < 0) return;
+      const m = Math.max(0, data.skupiny[n].vs.findIndex((x) => !d.izolacia || x.ti === d.izolacia));
+      if (n !== sk || m !== vi) vyber(n, m, { animuj: true, zdroj: 'tabulka' });
+    }, { signal });
+
+    window.addEventListener('resize', () => { posunJazdec(seg, true); if (!seg2.hidden) posunJazdec(seg2, true); }, { signal });
+
+    // Variant z adresy (?obj=… alebo #obj. číslo z hľadania) sa vyberie hneď, bez pohybu.
+    const zAdresy = new URL(location.href).searchParams.get('obj') ?? decodeURIComponent(location.hash.slice(1));
+    const najdi = () => { for (const [i, g] of data.skupiny.entries()) { const j = g.vs.findIndex((x) => x.obj === zAdresy || x.kotva === zAdresy); if (j >= 0) return [i, j]; } return null; };
+    const start = zAdresy ? najdi() : null;
+    if (start) vyber(start[0], start[1], { animuj: false });
+    else posunJazdec(seg, true);
+  }
+
+  initVolba();
+  document.addEventListener('astro:page-load', initVolba);
+</script>

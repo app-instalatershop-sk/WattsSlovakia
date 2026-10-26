@@ -170,6 +170,9 @@ const idDetailu = (v: Variant) => `pr-${v.obj_cislo.replace(/[^A-Za-z0-9]/g, '')
   /* Mobil: variant ako karta, obj. číslo a e-shop na jednom riadku, údaje v dvoch stĺpcoch. */
   @media (max-width: 760px) {
     .tv-filter { padding: 18px 18px 14px; gap: 14px; }
+    /* Pri 390 px sa šesť čipov (Všetky a päť priemerov) zmestí do riadku, posledný sa nezalomí sám. */
+    .tv-filter .chips { gap: 6px; }
+    .tv-filter .chip { min-width: 40px; padding: 0 10px; }
     .tv-pocet { margin-left: 0; padding-bottom: 0; }
     .tv-obal { padding: 0; overflow: visible; }
     .tv-tab, .tv-tab tbody { display: block; }

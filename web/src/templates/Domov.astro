@@ -388,7 +388,9 @@ const popisy = [
   /* ---------- Rodina: render prechádza cez švík z modrého pásu do bielej ---------- */
   .rodina { background: linear-gradient(180deg, var(--zem-2) 0%, var(--zem-3) 100%); padding-top: 0; padding-bottom: 96px; overflow-x: clip; overflow-y: visible; }
   .rodina-grid { position: relative; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px; align-items: start; }
-  .rodina-text { padding-top: 64px; }
+  /* Text rodiny začína vyššie, v páse, cez ktorý prechádza render (pás katalógu má dole 200 px pre jeho
+     presah); vľavo by inak ostala prázdna plocha (DOLADENIE kap. 2.4, bod 4). */
+  .rodina-text { position: relative; z-index: 3; margin-top: -96px; }
   .rodina-text h2 { margin-bottom: 16px; }
   .rodina-text .lead { max-width: 30em; }
   /* Render je veľký a vždy dobehne za pravý okraj obrazovky, aj na širokom monitore. */
@@ -532,7 +534,7 @@ const popisy = [
     /* Render rodiny dobehne za pravý okraj obrazovky ako na počítači: rúry sú v renderi zrezané
        vpravo a na okraji mriežky by bolo rez vidno. */
     .rodina-obraz { width: calc(100% + var(--gutter)); margin: -120px calc(-1 * var(--gutter)) 0 0; grid-row: 1; }
-    .rodina-text { padding-top: 24px; }
+    .rodina-text { padding-top: 24px; margin-top: 0; }
     /* Pod 1 100 px je text medzi fotkou a lupami, čiary by ho križovali: lupy stoja samostatne. */
     .lupa-bod, .lupy-ciary { display: none; }
     .lupy { width: 100%; margin: 36px 0 0; gap: 24px; }

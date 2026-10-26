@@ -54,7 +54,7 @@ const pod = [rad.pocet_rur ? ui.home.rury(rad.pocet_rur) : '', varianty.length ?
 </article>
 
 <style>
-  .karta { display: flex; flex-direction: column; border-radius: 22px; overflow: hidden; background: #fff; box-shadow: 0 1px 0 rgb(10 42 94 / 0.05), 0 34px 70px -40px rgb(10 42 94 / 0.55); }
+  .karta { display: flex; flex-direction: column; border-radius: var(--radius-xl); overflow: hidden; background: #fff; box-shadow: 0 1px 0 rgb(10 42 94 / 0.05), var(--elev-4); }
   /* Štúdio: svetlo za výrobkom, render stojí na spodku plochy, všetky karty majú rovnakú výšku štúdia. */
   .karta-studio { display: flex; align-items: flex-end; height: 420px; padding: 28px 24px 12px; background: radial-gradient(60% 70% at 55% 55%, #ffffff 0%, #eef3f9 70%, #e3ebf5 100%); }
   .karta-stage { position: relative; display: block; width: 100%; max-width: 520px; margin: 0 auto; container-type: inline-size; transition: transform 420ms var(--ease-soft); }
@@ -64,16 +64,16 @@ const pod = [rad.pocet_rur ? ui.home.rury(rad.pocet_rur) : '', varianty.length ?
   @container (max-width: 440px) {
     .karta-stage :global(.k-ohyb) { display: none; }
     /* Štítok plášťa by vyšiel z karty vpravo: v úzkom poli rastie doľava. */
-    .karta .karta-stage :global(.k-plast .stitok) { left: auto; right: -0.75px; align-items: flex-end; text-align: right; border-radius: 12px; border-bottom-right-radius: 2px; }
+    .karta .karta-stage :global(.k-plast .stitok) { left: auto; right: -0.75px; align-items: flex-end; text-align: right; border-radius: var(--radius-l); border-bottom-right-radius: 2px; }
   }
   .karta-telo { display: flex; flex-direction: column; gap: 6px; padding: 22px 28px 26px; }
-  .karta h3 { font-size: 26px; letter-spacing: -0.015em; }
+  .karta h3 { font-size: 24px; letter-spacing: -0.015em; }
   .karta h3 a { color: var(--color-ink); }
   .karta h3 a:hover { color: var(--color-blue-700); }
   .karta-pod { color: var(--color-ink-soft); font-size: 15px; }
-  .karta-popis { margin-top: 6px; font-size: 15.5px; max-width: 34em; }
+  .karta-popis { margin-top: 6px; font-size: 16px; max-width: 34em; }
   .karta-akcie { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; margin-top: 16px; }
-  .karta-vyh { display: inline-flex; align-items: baseline; gap: 6px; padding: 7px 12px; border-radius: 999px; background: var(--color-blue-50); color: var(--color-ink); font-size: 14.5px; transition: background-color 150ms var(--ease-soft); }
+  .karta-vyh { display: inline-flex; align-items: baseline; gap: 6px; padding: 7px 12px; border-radius: 999px; background: var(--color-blue-50); color: var(--color-ink); font-size: 15px; transition: background-color 150ms var(--ease-soft); }
   .karta-vyh:hover { background: var(--color-blue-100); color: var(--color-ink); }
   .karta-vyh strong { font-weight: 600; }
   .karta-vyh span { color: var(--color-ink-soft); font-size: 13px; }

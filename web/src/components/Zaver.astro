@@ -49,7 +49,7 @@ const alt = lang === 'cs' ? 'Kotouče potrubí Microflex připravené na stavbě
   .zaver-akcie { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
   /* Fotka vystupuje cez šikmú hranu do tela stránky a vpravo za okraj obrazovky. */
   .zaver-foto { margin: -200px calc(-1 * var(--bleed)) 0 0; }
-  .zaver-foto :global(img) { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; border-radius: 18px 0 0 18px; box-shadow: 0 40px 80px -30px rgb(2 10 30 / 0.7); }
+  .zaver-foto :global(img) { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; border-radius: var(--radius-xl) 0 0 var(--radius-xl); box-shadow: var(--elev-4-tma); }
   .zaver-kontakt { position: relative; display: flex; flex-wrap: wrap; gap: 14px 36px; margin-top: 48px; }
   .zaver-kontakt a, .zaver-kontakt span { display: inline-flex; align-items: center; gap: 10px; color: #fff; font-weight: 500; }
   .zaver-kontakt a:hover { color: var(--color-yellow-500); }

@@ -136,6 +136,9 @@ sa už nepoužíva.
 | Tabuľky | 14 px | 1,4 | Plex 400/500, tabulkové číslice |
 | Popisky, zdroje | 13 px | 1,4 | Plex 400, `--ink-soft` |
 
+**Škála v rozhraní** (od 26. 10. 2026): pevné veľkosti len 12, 13, 14, 15, 16, 17, 18, 20, 22, 24 a 28 px,
+nadpisy plynulo cez `clamp()`. Polovičné veľkosti (14,5 px a pod.) sa nepoužívajú, kontrola ich nahlási.
+
 **Pravidlá sadzby:**
 - Dĺžka riadku najviac 70 znakov (slovenčina má dlhé slová), text zarovnaný doľava všade,
   nikdy do bloku, nikdy na stred okrem prázdnych stavov.
@@ -151,11 +154,16 @@ sa už nepoužíva.
 
 - **Kontajner** 1 320 px, 12 stĺpcov, medzera 24 px. Bočný okraj 16 px na mobile, 32 px na tablete,
   48 px na počítači.
-- **Zaoblenie** presne dve hodnoty: 4 px (tlačidlá, polia, filtre) a 12 px (fotky, karty
-  s obrázkom). Piktogramy sú kruhy.
-- **Karty bez tieňa.** Oddeľuje ich plocha (`--grey-100`, `--blue-50`) alebo linka 1 px
-  `--grey-300`. Tieň má len to, čo naozaj pláva nad stránkou: menu, dialóg, výsledky hľadania
-  (`0 8px 24px rgba(11, 27, 51, .12)`).
+- **Zaoblenie** v štyroch stupňoch podľa úrovne prvku (od 26. 10. 2026, `docs/DOLADENIE.md` A1;
+  predtým sa v kóde rozbehlo na 28 hodnôt): `--radius-s` 4 px (tlačidlo, čip, malý štítok),
+  `--radius-m` 8 px (segment prepínača, riadok, malé tlačidlo vo vnútri plochy), `--radius-l` 12 px
+  (karta, pole formulára, štítok kóty, koľajnica prepínača), `--radius-xl` 18 px (hárok, veľká karta,
+  fotka, panel menu). Vnorený prvok má o stupeň menšie zaoblenie ako jeho obal. Kruhy 50 %, lišty 1 až 3 px.
+- **Hĺbka v štyroch úrovniach** (`--elev-1` drobné karty a segment, `--elev-2` plávajúce prvky: pás
+  častí, štítky, správa, `--elev-3` karty a hárky, `--elev-4` veľké fotky cez hranu, `--elev-4-tma` to
+  isté na tmavom podzemí). Svetlo vždy zhora, tieň tónovaný do tmavomodrej. Obrysy (inset, prstence lúp),
+  kontaktná čiara `0 1px 0` a žltá žiara hlavného tlačidla ostávajú pri prvku. Nová hodnota mimo tokenov
+  sa nepridáva; `data/kontrola_webu.py` ju nahlási.
 - **Linky** 1 px `--grey-300`; hrubšia linka 2 px `--blue-700` len pod aktívnou položkou
   podnavigácie.
 

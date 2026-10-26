@@ -3,6 +3,8 @@
 Použitie:  python data/kontrola_webu.py
 Hlási: interné odkazy na neexistujúce stránky alebo súbory, kotvy (#id), ktoré na cieľovej stránke
 nie sú, titulky nad 60 znakov, popisy mimo 120 až 160 znakov a stránky bez náhľadového obrázka (og:image).
+Na konci stráž tokenov v zdrojoch web/src (docs/DOLADENIE.md, A1): zaoblenie mimo var(--radius-*),
+tieň s výškou mimo var(--elev-*) a veľkosť písma mimo škály.
 """
 import collections
 import html
@@ -63,3 +65,29 @@ for k, n in chyby.most_common(30):
 print(f'titulky nad 60 znakov: {len(dlhe_titulky)}', *[f'\n  {n} {t}' for n, t in sorted(dlhe_titulky, reverse=True)[:10]])
 print(f'popisy mimo 120–160 znakov: {len(zle_popisy)}', *[f'\n  {n} {u}' for n, u in zle_popisy[:10]])
 print(f'bez og:image: {len(bez_og)}', *[f'\n  {u}' for u in bez_og[:10]])
+
+# Stráž tokenov v zdrojoch: hodnoty mimo zaoblení, úrovní hĺbky a škály písma (global.css, DOLADENIE A1).
+SRC = os.path.join(os.path.dirname(D), 'src')
+SKALA_PISMA = {12, 13, 14, 15, 16, 17, 18, 20, 22, 24, 28}
+NAVY = re.compile(r'rgb\((?:10 42 94|11 27 51|2 10 30|4 16 40) / [0-9.]+\)')
+mimo = collections.defaultdict(list)
+for koren, _, subory in os.walk(SRC):
+    for f in subory:
+        if not f.endswith(('.astro', '.css')) or f == 'pisma.css':
+            continue
+        cesta = os.path.join(koren, f)
+        rel = os.path.relpath(cesta, SRC).replace(os.sep, '/')
+        for i, riadok in enumerate(open(cesta, encoding='utf-8'), 1):
+            for h in re.findall(r'(?<![-\w])border-radius:\s*([^;}"\n]+)', riadok):
+                if not re.search(r'var\(|clamp\(|%|999px', h) and re.search(r'\b(?:[4-9]|\d{2,})px', h):
+                    mimo['zaoblenie mimo var(--radius-*)'].append(f'{rel}:{i} {h.strip()}')
+            for h in re.findall(r'(?<![-\w])box-shadow:\s*([^;}"\n]+)', riadok):
+                for z in re.split(r',\s*(?![^()]*\))', h):
+                    c = re.findall(r'-?\d+(?:\.\d+)?', z.split('rgb')[0])
+                    if 'inset' not in z and NAVY.search(z) and len(c) >= 3 and float(c[1]) > 2 and float(c[2]) > 12:
+                        mimo['tieň mimo var(--elev-*)'].append(f'{rel}:{i} {z.strip()}')
+            for v in re.findall(r'(?<![-\w])font-size:\s*(\d+(?:\.\d+)?)px', riadok) + re.findall(r'(?<![-\w])font:\s*(?:\d{3}\s+)?(\d+(?:\.\d+)?)px', riadok):
+                if float(v) not in SKALA_PISMA:
+                    mimo['písmo mimo škály'].append(f'{rel}:{i} {v}px')
+for k in ('zaoblenie mimo var(--radius-*)', 'tieň mimo var(--elev-*)', 'písmo mimo škály'):
+    print(f'{k}: {len(mimo[k])}', *[f'\n  {x}' for x in mimo[k][:8]])

@@ -139,7 +139,7 @@ const skupiny = (k: Kategoria) => rady.filter((r) => r.kategoria === k.id).sort(
   .t-lbl { position: relative; display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 15px 0 15px 20px; border-bottom: var(--line); cursor: pointer; color: var(--color-ink-soft); transition: color 150ms var(--ease-soft); }
   .t-lbl::before { content: ""; position: absolute; left: 0; top: 50%; width: 4px; height: 0; border-radius: 2px; background: var(--color-yellow-500); transform: translateY(-50%); transition: height 250ms var(--ease-soft); }
   .t-lbl input { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; }
-  .t-nazov { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 500; font-size: 19px; line-height: 1.25; letter-spacing: -0.01em; }
+  .t-nazov { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 500; font-size: 20px; line-height: 1.25; letter-spacing: -0.01em; }
   .t-pocet { font-size: 14px; font-variant-numeric: tabular-nums; white-space: nowrap; color: #7a8494; }
   .t-lbl:hover { color: var(--color-ink); }
   .t-lbl:has(input:checked) { color: var(--color-ink); }

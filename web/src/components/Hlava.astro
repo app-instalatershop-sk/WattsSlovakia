@@ -123,7 +123,7 @@ const maBok = Astro.slots.has('bok');
      ani horná hrana pod hlavičkou nevytvoria rovnú čiaru (napr. kotúč v článku o pokládke). */
   .hlava-biely .hlava-obraz :global(img) { -webkit-mask-image: radial-gradient(closest-side, #000 58%, transparent 100%); mask-image: radial-gradient(closest-side, #000 58%, transparent 100%); }
   .hlava-foto .hlava-obraz { align-self: center; margin-bottom: calc(var(--presah-hero) * -0.6); }
-  .hlava-foto .hlava-obraz :global(img) { aspect-ratio: 3 / 2; object-fit: cover; border-radius: var(--radius-l) 0 0 var(--radius-l); box-shadow: 0 30px 60px -20px rgb(11 27 51 / 0.45); }
+  .hlava-foto .hlava-obraz :global(img) { aspect-ratio: 3 / 2; object-fit: cover; border-radius: var(--radius-l) 0 0 var(--radius-l); box-shadow: var(--elev-4); }
   .hlava-bok { position: relative; z-index: 2; }
   /* Render s menom prechodu priletí z predošlej stránky, vlastný vstup by sa s preletom bil. */
   .hlava-obraz.ma-prechod { animation: none; }

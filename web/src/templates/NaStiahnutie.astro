@@ -136,12 +136,12 @@ const katRadu = (r: Rad) => kat.find((k) => k.id === r.kategoria)!;
 <style>
   .obalka { display: block; width: min(320px, 70vw); margin: 8px 6% 0 auto; transform: rotate(3deg); transition: transform 400ms var(--ease-soft); }
   @media (hover: hover) and (pointer: fine) { .obalka:hover { transform: rotate(1deg) translateY(-6px); } }
-  .obalka :global(img) { display: block; width: 100%; height: auto; border-radius: 4px; box-shadow: 0 2px 0 rgb(10 42 94 / 0.06), 0 40px 70px -30px rgb(11 27 51 / 0.6), 0 12px 24px -12px rgb(11 27 51 / 0.35); }
+  .obalka :global(img) { display: block; width: 100%; height: auto; border-radius: var(--radius-s); box-shadow: 0 2px 0 rgb(10 42 94 / 0.06), var(--elev-4), var(--elev-1); }
 
   .katalog { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 32px 56px; align-items: center; padding: 36px 40px; }
   .katalog h2 { font-size: clamp(26px, 1.4vw + 17px, 36px); letter-spacing: -0.02em; }
   .katalog-p { margin: 14px 0 24px; color: var(--color-ink-soft); max-width: 34em; font-size: 17px; }
-  .velkost { margin-top: 10px; font-size: 13.5px; color: var(--color-ink-soft); }
+  .velkost { margin-top: 10px; font-size: 14px; color: var(--color-ink-soft); }
   .obsah { margin: 0; }
   .obsah > div { display: flex; justify-content: space-between; gap: 16px; padding: 13px 0; border-bottom: 1px solid rgb(10 42 94 / 0.08); }
   .obsah dt { font-weight: 500; }
@@ -152,7 +152,7 @@ const katRadu = (r: Rad) => kat.find((k) => k.id === r.kategoria)!;
   .v-nazov { font-weight: 600; white-space: normal !important; }
   .v-rady { white-space: normal !important; color: var(--color-ink-soft); }
   .v-rady a { font-weight: 500; }
-  .format { display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 9px; background: var(--color-blue-50); font-family: var(--font-display); font-stretch: 112.5%; font-weight: 700; font-size: 13px; letter-spacing: .03em; color: var(--color-blue-900); transition: background-color 150ms var(--ease-soft); }
+  .format { display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: var(--radius-m); background: var(--color-blue-50); font-family: var(--font-display); font-stretch: 112.5%; font-weight: 700; font-size: 13px; letter-spacing: .03em; color: var(--color-blue-900); transition: background-color 150ms var(--ease-soft); }
   .format:hover { background: var(--color-blue-100); color: var(--color-blue-900); }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 
@@ -160,10 +160,10 @@ const katRadu = (r: Rad) => kat.find((k) => k.id === r.kategoria)!;
   .podklad { display: grid; grid-template-columns: 48px minmax(0, 1fr) auto; gap: 16px; align-items: center; padding: 18px 22px; color: var(--color-ink); transition: transform 250ms var(--ease-soft); }
   @media (hover: hover) and (pointer: fine) { .podklad:hover { color: var(--color-ink); transform: translateY(-2px); } }
   .podklad :global(.icon) { color: var(--color-blue-700); }
-  .typ { width: 48px; height: 56px; border-radius: 6px 14px 6px 6px; display: grid; place-items: end center; padding-bottom: 8px; font-family: var(--font-display); font-stretch: 112.5%; font-size: 11.5px; font-weight: 700; letter-spacing: 0.04em; color: #fff; background: linear-gradient(160deg, #1467c1 0%, var(--color-blue-900) 100%); box-shadow: 0 10px 18px -10px rgb(10 42 94 / 0.6), inset 0 1px 0 rgb(255 255 255 / 0.25); }
+  .typ { width: 48px; height: 56px; border-radius: var(--radius-s) var(--radius-l) var(--radius-s) var(--radius-s); display: grid; place-items: end center; padding-bottom: 8px; font-family: var(--font-display); font-stretch: 112.5%; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; color: #fff; background: linear-gradient(160deg, #1467c1 0%, var(--color-blue-900) 100%); box-shadow: var(--elev-1), inset 0 1px 0 rgb(255 255 255 / 0.25); }
   .typ-epd { background: linear-gradient(160deg, #2f8f5b 0%, #1d6340 100%); }
   .podklad-nazov { display: block; font-weight: 600; }
-  .podklad-meta { display: block; font-size: 13.5px; color: var(--color-ink-soft); margin-top: 1px; }
+  .podklad-meta { display: block; font-size: 14px; color: var(--color-ink-soft); margin-top: 1px; }
   .source { margin-top: 16px; }
   @media (max-width: 900px) { .katalog { grid-template-columns: minmax(0, 1fr); padding: 28px 24px; } .obalka { margin: 8px auto 0; width: min(240px, 60vw); } }
 </style>

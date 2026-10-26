@@ -101,16 +101,16 @@ const maPlast = skupiny.some((g) => g.vs.length > 1);
   .volba-meno { font-size: 14px; color: var(--color-ink-soft); }
   /* Segmentový prepínač: biela koľajnica, tmavomodrý jazdec sa pružne presúva pod vybranú hodnotu.
      Tlačidlá druhej úrovne pridáva skript, preto štýly tlačidiel cez :global (bez značky komponentu). */
-  .volba-seg { position: relative; display: flex; gap: 2px; max-width: 100%; padding: 4px; border-radius: 14px; overflow-x: auto; scrollbar-width: none;
-    background: rgb(255 255 255 / 0.86); box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.1), 0 10px 24px -18px rgb(10 42 94 / 0.5); }
+  .volba-seg { position: relative; display: flex; gap: 2px; max-width: 100%; padding: 4px; border-radius: var(--radius-l); overflow-x: auto; scrollbar-width: none;
+    background: rgb(255 255 255 / 0.86); box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.1), var(--elev-1); }
   .volba-seg::-webkit-scrollbar { display: none; }
-  .volba-seg :global(button) { position: relative; z-index: 1; flex: none; min-width: 44px; height: 40px; padding: 0 13px; border: 0; border-radius: 10px; background: transparent;
+  .volba-seg :global(button) { position: relative; z-index: 1; flex: none; min-width: 44px; height: 40px; padding: 0 13px; border: 0; border-radius: var(--radius-m); background: transparent;
     font: 600 15px/1 var(--font-display); font-stretch: 112.5%; font-variant-numeric: tabular-nums; color: var(--color-ink); cursor: pointer; white-space: nowrap;
     transition: color 200ms var(--ease-soft); }
-  .volba-seg :global(button[data-k=""]) { font: 500 14.5px/1 var(--font-text); }
+  .volba-seg :global(button[data-k=""]) { font: 500 15px/1 var(--font-text); }
   .volba-seg :global(button[aria-pressed="true"]) { color: #fff; }
-  .volba-jazdec { position: absolute; z-index: 0; top: 4px; left: 0; height: 40px; width: 0; border-radius: 10px; background: linear-gradient(180deg, #123a7a 0%, var(--color-blue-900) 100%);
-    box-shadow: 0 6px 14px -6px rgb(10 42 94 / 0.6); transition: transform 460ms var(--ease-pruzina), width 460ms var(--ease-pruzina); }
+  .volba-jazdec { position: absolute; z-index: 0; top: 4px; left: 0; height: 40px; width: 0; border-radius: var(--radius-m); background: linear-gradient(180deg, #123a7a 0%, var(--color-blue-900) 100%);
+    box-shadow: var(--elev-1); transition: transform 460ms var(--ease-pruzina), width 460ms var(--ease-pruzina); }
   .volba-jazdec.bez-pohybu { transition: none; }
   @media (hover: hover) and (pointer: fine) {
     .volba-seg :global(button[aria-pressed="false"]:hover) { color: var(--color-blue-700); }
@@ -120,9 +120,9 @@ const maPlast = skupiny.some((g) => g.vs.length > 1);
   .volba-vysledok { display: flex; align-items: center; min-height: 52px; margin-top: 8px; }
   .volba-hint { font-size: 14px; color: var(--color-ink-soft); }
   .volba-detail { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; }
-  .volba-seg-2 { padding: 3px; border-radius: 12px; }
-  .volba-seg-2 :global(button) { height: 34px; padding: 0 12px; border-radius: 9px; font: 500 14px/1 var(--font-text); }
-  .volba-seg-2 .volba-jazdec { top: 3px; height: 34px; border-radius: 9px; }
+  .volba-seg-2 { padding: 3px; border-radius: var(--radius-l); }
+  .volba-seg-2 :global(button) { height: 34px; padding: 0 12px; border-radius: var(--radius-m); font: 500 14px/1 var(--font-text); }
+  .volba-seg-2 .volba-jazdec { top: 3px; height: 34px; border-radius: var(--radius-m); }
   .volba-obj { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--color-ink-soft); }
   .volba-obj strong { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 16px; letter-spacing: 0.01em; color: var(--color-blue-900); }
   .volba-obj :global(.kopia) { opacity: 1; }

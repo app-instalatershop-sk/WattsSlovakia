@@ -71,13 +71,13 @@ const texty = { skupiny: tx.skupiny, vysledkov: [tx.vysledkov(1), tx.vysledkov(2
 </Base>
 
 <style>
-  .hl-form { position: relative; display: flex; align-items: center; gap: 10px; margin-top: 30px; padding: 8px 8px 8px 54px; max-width: 640px; border-radius: 18px; background: #fff; box-shadow: 0 1px 0 rgb(10 42 94 / 0.06), 0 22px 44px -26px rgb(10 42 94 / 0.55), inset 0 0 0 1px rgb(10 42 94 / 0.08); transition: box-shadow 150ms var(--ease-soft); }
-  .hl-form:focus-within { box-shadow: 0 0 0 4px rgb(0 93 185 / 0.14), 0 22px 44px -26px rgb(10 42 94 / 0.55), inset 0 0 0 1px var(--color-blue-700); }
+  .hl-form { position: relative; display: flex; align-items: center; gap: 10px; margin-top: 30px; padding: 8px 8px 8px 54px; max-width: 640px; border-radius: var(--radius-xl); background: #fff; box-shadow: 0 1px 0 rgb(10 42 94 / 0.06), var(--elev-3), inset 0 0 0 1px rgb(10 42 94 / 0.08); transition: box-shadow 150ms var(--ease-soft); }
+  .hl-form:focus-within { box-shadow: 0 0 0 4px rgb(0 93 185 / 0.14), var(--elev-3), inset 0 0 0 1px var(--color-blue-700); }
   .hl-form > :global(.icon) { position: absolute; left: 18px; color: var(--color-blue-700); }
   .hl-form input { flex: 1; min-width: 0; height: 48px; border: 0; background: transparent; font: inherit; font-size: 18px; color: var(--color-ink); outline: none; }
   .hl-form input::-webkit-search-cancel-button { display: none; }
   .hl-navrhy { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin-top: 16px; font-size: 14px; color: var(--color-ink-soft); }
-  .hl-navrhy a { padding: 5px 11px; border-radius: 9px; background: rgb(255 255 255 / 0.8); box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.1); color: var(--color-ink); font-weight: 500; }
+  .hl-navrhy a { padding: 5px 11px; border-radius: var(--radius-m); background: rgb(255 255 255 / 0.8); box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.1); color: var(--color-ink); font-weight: 500; }
   @media (hover: hover) and (pointer: fine) { .hl-navrhy a:hover { color: var(--color-blue-700); box-shadow: inset 0 0 0 1px var(--color-blue-700); } }
 
   .hl-stav { font-size: 15px; color: var(--color-ink-soft); margin-bottom: 20px; }
@@ -89,12 +89,12 @@ const texty = { skupiny: tx.skupiny, vysledkov: [tx.vysledkov(1), tx.vysledkov(2
   .hl-vysledky :global(.hl-sk a) { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px; align-items: center; padding: 11px 0; border-top: 1px solid rgb(10 42 94 / 0.08); color: var(--color-ink); }
   .hl-vysledky :global(.hl-sk a:first-of-type) { border-top: 0; }
   .hl-vysledky :global(.hl-sk a:hover .hl-n) { color: var(--color-blue-700); }
-  .hl-vysledky :global(.hl-n) { font-weight: 600; font-size: 15.5px; }
+  .hl-vysledky :global(.hl-n) { font-weight: 600; font-size: 16px; }
   .hl-vysledky :global(.hl-kod .hl-n) { font-family: var(--font-display); font-stretch: 112.5%; color: var(--color-blue-900); letter-spacing: 0.01em; }
-  .hl-vysledky :global(.hl-d) { grid-column: 1; font-size: 13.5px; color: var(--color-ink-soft); }
+  .hl-vysledky :global(.hl-d) { grid-column: 1; font-size: 14px; color: var(--color-ink-soft); }
   .hl-vysledky :global(.hl-sk a .icon) { grid-row: 1 / span 2; grid-column: 2; color: var(--color-blue-700); }
   .hl-vysledky :global(mark) { background: rgb(247 201 0 / 0.35); color: inherit; border-radius: 3px; padding: 0 1px; }
-  .hl-vysledky :global(.hl-viac) { margin: 6px 0 8px; padding: 0; border: 0; background: none; font: inherit; font-size: 14.5px; font-weight: 500; color: var(--color-blue-700); cursor: pointer; border-bottom: 1px solid currentColor; }
+  .hl-vysledky :global(.hl-viac) { margin: 6px 0 8px; padding: 0; border: 0; background: none; font: inherit; font-size: 15px; font-weight: 500; color: var(--color-blue-700); cursor: pointer; border-bottom: 1px solid currentColor; }
   .hl-nic { padding: 28px 30px; max-width: 640px; }
   .hl-nic h2 { font-size: 22px; }
   .hl-nic p { margin: 8px 0 16px; color: var(--color-ink-soft); }

@@ -356,7 +356,7 @@ const popisy = [
   .stitok { position: absolute; display: flex; flex-direction: column; gap: clamp(2px, 0.3cqw, 4px); white-space: nowrap;
     padding: clamp(5px, 0.72cqw, 10px) clamp(8px, 1.05cqw, 14px); border-radius: clamp(8px, 0.9cqw, 12px);
     background: rgb(255 255 255 / 0.84); -webkit-backdrop-filter: blur(10px) saturate(1.4); backdrop-filter: blur(10px) saturate(1.4);
-    box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.08), 0 14px 30px -16px rgb(11 27 51 / 0.5);
+    box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.08), var(--elev-2);
     animation: rise 560ms var(--ease-soft) both; animation-delay: calc(1520ms + var(--i) * 170ms); }
   .stitok strong { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: clamp(15px, 2.5cqw, 28px); line-height: 1.05; letter-spacing: -0.02em; color: var(--color-blue-900); font-variant-numeric: tabular-nums; }
   .stitok span { font-size: clamp(11px, 1.45cqw, 15px); line-height: 1.3; font-weight: 500; color: #3f4b5e; }
@@ -408,13 +408,13 @@ const popisy = [
   .lupa { --ring: var(--color-blue-700); display: flex; flex-direction: column; align-items: flex-start; }
   .lupa-rura { --ring: #e0b400; }
   .lupa-pena { --ring: #8e97a3; }
-  .lupa-okno { position: relative; display: block; width: 168px; height: 168px; margin-bottom: 20px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 5px #fff, 0 0 0 7px var(--ring), 0 24px 44px -18px rgb(11 27 51 / 0.55); }
+  .lupa-okno { position: relative; display: block; width: 168px; height: 168px; margin-bottom: 20px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 5px #fff, 0 0 0 7px var(--ring), var(--elev-3); }
   .lupa-okno :global(img) { display: block; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
   /* Sklo lupy: odlesk hore vľavo a tieň pri okraji, aby záber pôsobil zväčšene, nie ako nálepka. */
   .lupa-okno::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(70% 55% at 30% 18%, rgb(255 255 255 / 0.36), rgb(255 255 255 / 0) 62%); box-shadow: inset 0 -12px 26px rgb(11 27 51 / 0.28), inset 0 0 0 1px rgb(11 27 51 / 0.12); pointer-events: none; }
-  .lupa h3 { font-size: 19px; line-height: 1.25; margin-bottom: 4px; }
+  .lupa h3 { font-size: 20px; line-height: 1.25; margin-bottom: 4px; }
   .lupa-kluc { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 17px; line-height: 1.3; letter-spacing: -0.01em; color: var(--color-blue-900); margin-bottom: 8px; }
-  .lupa p:last-child { font-size: 14.5px; line-height: 1.55; color: var(--color-ink-soft); max-width: 30em; }
+  .lupa p:last-child { font-size: 15px; line-height: 1.55; color: var(--color-ink-soft); max-width: 30em; }
 
   /* ---------- Pokládka: kotúč vľavo cez okraj obrazovky, text v jeho vnútri ---------- */
   .pokladka { position: relative; overflow: hidden; padding-top: 112px; padding-bottom: 232px; isolation: isolate; background: linear-gradient(180deg, var(--zem-3) 0%, var(--zem-4) 100%); }
@@ -438,7 +438,7 @@ const popisy = [
   .k-rura { position: absolute; left: 0; top: 6px; bottom: 6px; width: 6px; border-radius: 3px; background: linear-gradient(90deg, #2a7fd6 0%, var(--color-blue-700) 45%, var(--color-blue-800) 100%); transform-origin: top; transform: scaleY(var(--rozvin, 1)); }
   .kroky { display: flex; flex-direction: column; gap: 22px; }
   .kroky li { display: grid; grid-template-columns: 30px minmax(0, 1fr); column-gap: 10px; }
-  .k-cislo { grid-row: 1 / span 2; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 19px; line-height: 1.3; color: var(--color-blue-700); font-variant-numeric: tabular-nums; transition: color 250ms var(--ease-soft); }
+  .k-cislo { grid-row: 1 / span 2; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 20px; line-height: 1.3; color: var(--color-blue-700); font-variant-numeric: tabular-nums; transition: color 250ms var(--ease-soft); }
   .kroky h3 { font-size: 18px; line-height: 1.3; margin-bottom: 2px; }
   .kroky p { font-size: 15px; color: var(--color-ink-soft); max-width: 32em; }
   /* Kým ich rúra nedosiahne, sú kroky tlmené. Bez skriptu sú všetky plné. */
@@ -470,7 +470,7 @@ const popisy = [
   /* Šírky stĺpcov sú vypočítané tak, aby výška veľkej fotky (3 : 2) sedela s dvomi menšími (16 : 9) nad sebou. */
   .proj-mozaika { position: relative; display: grid; grid-template-columns: minmax(0, 1.765fr) minmax(0, 1fr); grid-template-rows: auto auto; gap: 24px; margin-top: 40px; }
   .proj-mozaika :global(.pm-a) { grid-row: 1 / span 2; }
-  .proj-mozaika :global(.scena-img) { border-radius: 16px; box-shadow: 0 34px 70px -34px rgb(2 10 30 / 0.8); filter: saturate(0.94) contrast(1.03); }
+  .proj-mozaika :global(.scena-img) { border-radius: var(--radius-xl); box-shadow: var(--elev-4-tma); filter: saturate(0.94) contrast(1.03); }
   /* Výkop sa otvorí: pri rolovaní sa veľká fotka roztvorí zhora aj zdola, tam kde to prehliadač vie. */
   @supports (animation-timeline: view()) {
     @media (prefers-reduced-motion: no-preference) {
@@ -482,7 +482,7 @@ const popisy = [
   .proj-text { display: flex; flex-direction: column; align-items: flex-start; }
   .proj-kde { font-size: 15px; font-weight: 500; color: #8fb9ec; }
   .proj-text h3 { margin-top: 8px; font-size: clamp(22px, 0.9vw + 15px, 28px); line-height: 1.15; letter-spacing: -0.015em; color: #fff; max-width: 14em; }
-  .proj-text h3 + p { margin-top: 12px; color: var(--color-on-dark-muted); font-size: 15.5px; line-height: 1.6; max-width: 30em; }
+  .proj-text h3 + p { margin-top: 12px; color: var(--color-on-dark-muted); font-size: 16px; line-height: 1.6; max-width: 30em; }
   .proj-odkaz, .proj-vsetky { margin-top: 18px; font-weight: 500; border-bottom: 1px solid rgb(255 255 255 / 0.5); padding-bottom: 2px; }
   .proj-vsetky-obal { position: relative; margin-top: 32px; }
 
@@ -499,19 +499,19 @@ const popisy = [
   .podpora-sluzby h3 { font-size: 20px; line-height: 1.25; color: #fff; }
   .podpora-sluzby p { color: var(--color-on-dark-muted); font-size: 15px; line-height: 1.6; }
   .podpora-sluzby a { margin-top: 4px; font-weight: 500; border-bottom: 1px solid rgb(255 255 255 / 0.5); padding-bottom: 2px; }
-  .istota { grid-column: 1 / 8; grid-row: 3; font-size: 14.5px; line-height: 1.65; color: var(--color-on-dark-muted); max-width: 52em; }
+  .istota { grid-column: 1 / 8; grid-row: 3; font-size: 15px; line-height: 1.65; color: var(--color-on-dark-muted); max-width: 52em; }
 
   /* Karta konfigurátora: vlastná plocha s obrazom trasy (rez výkopom), stav „pripravujeme“ na žltej. */
-  .konfigurator { grid-column: 9 / 13; grid-row: 1 / span 3; align-self: start; position: relative; overflow: hidden; border-radius: 22px;
+  .konfigurator { grid-column: 9 / 13; grid-row: 1 / span 3; align-self: start; position: relative; overflow: hidden; border-radius: var(--radius-xl);
     background: linear-gradient(165deg, #164490 0%, #0d3270 58%, #0a2a5e 100%);
-    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.09), 0 40px 70px -40px rgb(2 10 30 / 0.85); }
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.09), var(--elev-4-tma); }
   .konf-obraz { position: relative; }
   .konf-obraz :global(img) { display: block; width: 100%; height: auto; aspect-ratio: 16 / 11; object-fit: cover; object-position: 50% 70%; }
   .konf-obraz::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgb(13 50 112 / 0) 45%, #0f3878 100%); }
   .konf-telo { position: relative; padding: 4px 28px 30px; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
-  .konf-stav { display: inline-flex; align-items: center; height: 28px; padding: 0 12px; border-radius: 999px; background: var(--color-yellow-500); color: var(--color-ink); font-size: 13.5px; font-weight: 600; }
+  .konf-stav { display: inline-flex; align-items: center; height: 28px; padding: 0 12px; border-radius: 999px; background: var(--color-yellow-500); color: var(--color-ink); font-size: 14px; font-weight: 600; }
   .konfigurator h3 { margin-top: 6px; font-size: clamp(24px, 1vw + 16px, 30px); line-height: 1.1; letter-spacing: -0.02em; color: #fff; }
-  .konfigurator p:not(.konf-stav) { color: var(--color-on-dark-muted); font-size: 15.5px; line-height: 1.6; }
+  .konfigurator p:not(.konf-stav) { color: var(--color-on-dark-muted); font-size: 16px; line-height: 1.6; }
   .konf-odkaz { margin-top: 8px; font-weight: 600; border-bottom: 1px solid rgb(255 255 255 / 0.55); padding-bottom: 2px; }
 
   /* ---------- Tablet ---------- */
@@ -559,7 +559,7 @@ const popisy = [
     /* Popisy na telefóne: kratšie čiary a menšie písmo, aby sa zmestili okolo renderu. */
     .lupy { grid-template-columns: 1fr; gap: 20px; }
     .lupa { display: grid; grid-template-columns: 92px minmax(0, 1fr); column-gap: 18px; align-items: start; }
-    .lupa-okno { grid-row: 1 / span 3; width: 92px; height: 92px; margin: 4px 0 0; box-shadow: 0 0 0 4px #fff, 0 0 0 6px var(--ring), 0 14px 26px -12px rgb(11 27 51 / 0.5); }
+    .lupa-okno { grid-row: 1 / span 3; width: 92px; height: 92px; margin: 4px 0 0; box-shadow: 0 0 0 4px #fff, 0 0 0 6px var(--ring), var(--elev-2); }
     .lupa h3 { font-size: 17px; }
     .lupa-kluc { font-size: 15px; margin-bottom: 4px; }
     .lupa p:last-child { font-size: 14px; }

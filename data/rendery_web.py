@@ -31,6 +31,11 @@ CIEL = REPO / 'web' / 'src' / 'assets' / '3d'
 DATA = REPO / 'web' / 'src' / 'data'
 SIRKA = {'rady': 1400, 'hlavy': 1800, 'varianty': 1400, 'hero': 2600, 'rodina': 2400, 'makra': 1200}
 OKRAJ = 0.025
+# Kde merať spodnú hranu tela pre kótu polomeru ohybu (podiel šírky obrázka od ľavého konca výrobku).
+# Hero má rez vľavo a telo ide doprava za okraj, preto ďalej vpravo.
+OHYB_X = {'hero': 0.74}
+# Skupiny, ktorých výrobok vybieha za pravý okraj (hero): vpravo sa neorezáva a neodsadzuje.
+BEZ_OREZU_VPRAVO = {'hero'}
 UHOL_PLAST = 112.0  # stupne od vodorovnej osi proti smeru hodinových ručičiek: okraj čela vľavo hore
 
 skupiny = sys.argv[1:] or list(SIRKA)
@@ -42,7 +47,7 @@ def bbox_alfa(im, prah=4):
     return im.getchannel('A').point(lambda v: 255 if v > prah else 0).getbbox()
 
 
-def body_kot(body, objekt, ramec, w_crop, h_crop):
+def body_kot(body, objekt, ramec, w_crop, h_crop, ohyb_x=0.10):
     """Body plast, rura a ohyb v % orezaného obrázka (ramec = x0, y0 v pôvodnom renderi)."""
     x0, y0 = ramec
 
@@ -61,11 +66,11 @@ def body_kot(body, objekt, ramec, w_crop, h_crop):
     if rury:
         dolna = max(rury, key=lambda r: r['stred'][1])
         out['rura'] = pct(*max(dolna['okraj'], key=lambda q: q[1]))
-    # ohyb: spodná hrana tela 10 % šírky obrázka napravo od jeho ľavého konca
+    # ohyb: spodná hrana tela kúsok napravo od ľavého konca výrobku (hero: ďalej vpravo na tele)
     a = objekt.getchannel('A')
     bb = a.point(lambda v: 255 if v > 128 else 0).getbbox()
     if bb:
-        x = min(bb[2] - 1, bb[0] + int(0.10 * objekt.width))
+        x = min(bb[2] - 1, bb[0] + int(ohyb_x * objekt.width))
         stlpec = a.crop((x, 0, x + 1, objekt.height)).point(lambda v: 255 if v > 128 else 0).getbbox()
         if stlpec:
             out['ohyb'] = pct(x, stlpec[3] - 1)
@@ -94,6 +99,8 @@ def spracuj(skupina):
             m = round(OKRAJ * max(bb[2] - bb[0], bb[3] - bb[1]))
             x0, y0 = max(0, bb[0] - m), max(0, bb[1] - m)
             x1, y1 = min(spolu.width, bb[2] + m), min(spolu.height, bb[3] + m)
+            if skupina in BEZ_OREZU_VPRAVO:
+                x1 = spolu.width
         orez = spolu.crop((x0, y0, x1, y1))
         w = min(SIRKA[skupina], orez.width)
         h = round(orez.height * w / orez.width)
@@ -116,7 +123,13 @@ def spracuj(skupina):
             body = meta.get('body_px', {})
             body = body.get(png.name) or (next(iter(body.values())) if body else None)
             if isinstance(body, dict) and 'plast_celo_stred' in body:
-                zaznam.update(body_kot(body, objekt, (x0, y0), x1 - x0, y1 - y0))
+                zaznam.update(body_kot(body, objekt, (x0, y0), x1 - x0, y1 - y0, OHYB_X.get(skupina, 0.10)))
+                # Stred čela plášťa (sústredné kružnice v hero) a polomer čela v % šírky obrázka
+                cx, cy = body['plast_celo_stred']
+                zaznam['stred'] = [round((cx - x0) / (x1 - x0) * 100, 2), round((cy - y0) / (y1 - y0) * 100, 2)]
+                okraj = body.get('plast_okraj') or []
+                if okraj:
+                    zaznam['polomer'] = round(max(abs(p[0] - cx) for p in okraj) / (x1 - x0) * 100, 2)
             elif isinstance(body, dict) and 'rury' in body and skupina == 'rodina':
                 zaznam['potrubia'] = body['rury']
         zaznamy[meno] = zaznam
@@ -126,6 +139,8 @@ def spracuj(skupina):
 
 for s in skupiny:
     spracuj(s)
+for s in SIRKA:
+    vystup.setdefault(s, {})
 
 # Piktogram Watts → rad s 3D renderom (prvý rad s tým piktogramom podľa poradia).
 rady = json.loads((DATA / 'rady.json').read_text(encoding='utf-8'))

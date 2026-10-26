@@ -48,6 +48,12 @@ export const obrazHlavy = (id: string | undefined, subor: string | null | undefi
 /** Či obrázok pochádza z 3D modelu (má celé telo a vlastný tieň: bez masky a bez tieňa z CSS). */
 const mnozina3d = new Set(Object.values(rendery3d).map((m) => m.default));
 export const je3d = (img: ImageMetadata | undefined) => Boolean(img && mnozina3d.has(img));
+/** Rozložený rez radu (data/rozklad_web.py): snímky vo web/public/3d/rozklad-<id radu>/, body vrstiev v JSON. */
+export interface RozkladData { meno: string; snimok: number; pomer: number; sirky: number[]; cesta: string; body: Record<'plast' | 'pena' | 'rura', [number, number]>[] }
+const rozklady = import.meta.glob<{ default: RozkladData }>('/src/data/rozklad-*.json', { eager: true });
+export const rozkladRadu = (id: string | null | undefined) => (id ? rozklady[`/src/data/rozklad-${id}.json`]?.default : undefined);
+/** Makro materiálu nosnej rúry podľa média radu (vykurovanie žltá PE-Xa, sanita biela PE-Xa, chlad čierna PE 100). */
+export const makroRury = (kategoria: string) => render3d('makra', kategoria === 'sanita' ? 'rura-biela' : kategoria === 'studena-a-chladena-voda' ? 'rura-cierna' : 'rura-zlta');
 /** Maska odlesku k renderu 3D modelu: len výrobok bez tieňa (<meno>-maska.webp vedľa renderu). */
 export const maska3d = (img: ImageMetadata | undefined) => {
   const kluc = img && Object.keys(rendery3d).find((k) => rendery3d[k].default === img);

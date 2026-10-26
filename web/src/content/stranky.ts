@@ -38,6 +38,7 @@ const sk = {
     // Živé kóty v hlave radu (components/VolbaDimenzie.astro).
     volbaHint: 'Vyberte priemer, kóty na reze sa prepočítajú.', volbaPlast: 'Plášť a izolácia', volbaDetail: 'Detail v tabuľke',
     volbaVykon: (kw: string) => `výkon asi ${kw} kW`, volbaZosilnena: 'zosilnená izolácia',
+    rozkladAlt: (model: string) => `${model} rozložené na plášť z HDPE, izoláciu z PE-X peny a nosné rúry`,
   },
   skupiny: {
     produktov: (n: number) => (n === 1 ? '1 produkt' : n >= 2 && n <= 4 ? `${n} produkty` : `${n} produktov`),
@@ -121,6 +122,7 @@ const cs: typeof sk = {
     stranaDielu: 'Stránka dílu', ks2: 'potřeba 2 ks', prislPozn: 'Příslušenství k obj. číslu je podle katalogu výrobce, s. 8 až 18.',
     volbaHint: 'Vyberte průměr, kóty na řezu se přepočítají.', volbaPlast: 'Plášť a izolace', volbaDetail: 'Detail v tabulce',
     volbaVykon: (kw: string) => `výkon asi ${kw} kW`, volbaZosilnena: 'zesílená izolace',
+    rozkladAlt: (model: string) => `${model} rozložené na plášť z HDPE, izolaci z pěny PE-X a nosné trubky`,
   },
   skupiny: {
     produktov: (n: number) => (n === 1 ? '1 produkt' : n >= 2 && n <= 4 ? `${n} produkty` : `${n} produktů`),

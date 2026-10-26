@@ -9,7 +9,10 @@ import Scena from '../components/Scena.astro';
 import { referencie } from '../content/referencie';
 import type { Kota } from '../lib/koty';
 import { kategorie, cislo, rozsah } from '../lib/katalog';
-import { fotka, detail, fotkaReferencie } from '../lib/obrazky';
+import { fotka, fotkaReferencie, render3d, maska3d, rozkladRadu, makroRury } from '../lib/obrazky';
+import Rozklad from '../components/Rozklad.astro';
+import { stranky } from '../content/stranky';
+import rendery from '../data/rendery.json';
 import { sadzba } from '../lib/sadzba';
 import { type Lang, t, route, staticAlternates, KATALOG_PDF } from '../i18n/ui';
 
@@ -34,7 +37,12 @@ const faktPlast = `Ø ${rozsah(variantyPotrubi.map((v) => v.plast_mm), 'mm', lan
 const tlaky = [...new Set(radyPotrubi.map((r) => r.tlak_bar).filter((x): x is number => typeof x === 'number'))].sort((a, b) => a - b);
 const faktTlak = h.popisy.tlak(tlaky.map((x) => `${x}`));
 
-const heroRez = fotka('hero-rez-duo.png')!;
+// Hero: render vlastného 3D modelu (data/blender, kompozícia ako pôvodný render Watts: rez vľavo, telo
+// za pravý okraj). Kým nie je, ostáva render Watts. Body kót a stred rezu sú v data/rendery.json.
+const hero3d = render3d('hero', 'duo');
+const heroRez = hero3d ?? fotka('hero-rez-duo.png')!;
+const heroBody = hero3d ? (rendery.hero as Record<string, { plast?: number[]; rura?: number[]; ohyb?: number[]; stred?: number[] }>).duo : undefined;
+const heroMaska = hero3d ? maska3d(hero3d) : undefined;
 const rodina = fotka('rodina-potrubi.png')!;
 const kotuc = fotka('kotuc.jpg')!;
 // Rez výkopom s dvomi potrubiami (render z katalógu Watts): obraz trasy pre kartu konfigurátora.
@@ -54,16 +62,15 @@ const kotyPovazska = sPovazska.koty;
 // Stavenisko so žeriavom: rúra v popredí (modré pixely pri 45 % šírky ležia na 76 % výšky fotky).
 const stavenisko = fotkaReferencie('povazska-3.jpg')!;
 const kotyStavenisko: Kota[] = [{ x: 45, y: 76, l: 12, smer: 'hore-vpravo', hodnota: pp.stavenisko.kota[0], text: pp.stavenisko.kota[1] }];
-/* Rez pod lupou: tri vrstvy od jadra po plášť. Bod (x, y v % renderu rodiny) leží na prvej rúre
-   (DUO vykurovanie): žltá nosná rúra, pena vpravo od nej, plášť na hrane rezu. Zmerané na siluete
-   rodina-potrubi.png; body idú zľava doprava v tom istom poradí ako lupy, takže sa čiary nekrížia.
-   Zábery v lupách sú dočasne výrezy z podkladov Watts, nahradia ich fotky odrezku. */
-const polohyBodov: Record<string, [number, number]> = { rura: [11.5, 71], pena: [17, 68], plast: [20.4, 64] };
-const lupy = h.lupy.map((l) => ({ ...l, img: detail(`vrstva-${l.id}.jpg`)!, bod: polohyBodov[l.id] }));
+// Rozložený rez na domove: DUO vykurovanie ako vzor celej rodiny, texty vrstiev z ui.ts (od plášťa po rúru,
+// v poradí, v akom sa pri rolovaní oddelia), makrá materiálov z 3D modelu, keď sú.
+const rozklad = rozkladRadu('microflex-duo-6-bar');
+const tx = stranky(lang).rad;
+const vrstvyRozkladu = (['plast', 'pena', 'rura'] as const).map((id) => ({ ...h.lupy.find((l) => l.id === id)!, img: id === 'rura' ? makroRury('vykurovanie') : render3d('makra', id) }));
 // Odlesk po plášti: maska je samotný render, svetlo tak prejde len po výrobku, nie po pozadí.
 // Ten istý súbor ako 760 px AVIF v srcset obrázka (Obraz.astro), na mobile sa teda nesťahuje druhýkrát.
 // Prehliadač bez AVIF masku nenačíta a odlesk len vynechá.
-const leskMaska = (await getImage({ src: heroRez, width: 760, format: 'avif', quality: 50 })).src;
+const leskMaska = (await getImage({ src: heroMaska ?? heroRez, width: 760, format: heroMaska ? 'webp' : 'avif', quality: 50 })).src;
 /* Popisy na renderi: bod leží na tom, čo číslo opisuje (okraj plášťa, spodná žltá rúra, zvlnené telo),
    štítok v prázdnom mieste okolo výrobku. Polohy a dĺžky čiar sú v CSS podľa id, zmerané na siluete
    hero-rez-duo.png; dĺžky sú v cqw (percentá šírky štúdia), takže celá vrstva rastie s obrázkom. */
@@ -90,12 +97,12 @@ const popisy = [
         </div>
       </div>
       <div class="hero-product">
-        <div class="hero-stage">
+        <div class:list={['hero-stage', { je3d: hero3d }]} style={heroBody?.stred ? `--kx: ${((heroBody.stred[0] + 50) / 190 * 100).toFixed(1)}%; --ky: ${((heroBody.stred[1] + 15) / 115 * 100).toFixed(1)}%` : undefined}>
           <Obraz src={heroRez} alt={h.heroAlt} widths={[760, 1140, 1517]} sizes="(max-width: 760px) 100vw, 62vw" loading="eager" fetchpriority="high" class="hero-img" />
           <span class="lesk" aria-hidden="true" style={`--maska: url("${leskMaska}")`}></span>
           <ul class="popisy" aria-label={h.popisy.label}>
             {popisy.map((p, i) => (
-              <li class={`popis popis-${p.id}`} style={`--i: ${i}`}>
+              <li class={`popis popis-${p.id}`} style={`--i: ${i}${heroBody?.[p.id as 'plast'] ? `; --x: ${heroBody[p.id as 'plast']![0]}%; --y: ${heroBody[p.id as 'plast']![1]}%` : ''}`}>
                 <span class="bod" aria-hidden="true"></span>
                 <span class="ciara" aria-hidden="true"></span>
                 <span class="stitok"><strong>{p.hodnota}</strong><span>{sadzba(p.text)}</span></span>
@@ -115,25 +122,15 @@ const popisy = [
         <h2 id="h-rodina">{h.rodinaH2}</h2>
         <p class="lead">{sadzba(h.rodinaP)}</p>
       </div>
-      <div class="rodina-obraz" data-lupy-obraz>
+      <div class="rodina-obraz">
         <div class="rodina-wrap"><Obraz src={rodina} alt={h.rodinaAlt} widths={[800, 1200, 1633]} sizes="(max-width: 1100px) 100vw, 64vw" class="rodina-img" /></div>
-        {lupy.map((l) => <span class="lupa-bod" data-bod={l.id} style={`--x: ${l.bod[0]}%; --y: ${l.bod[1]}%`} aria-hidden="true"></span>)}
       </div>
-      {/* Rez pod lupou: každá lupa zväčší jednu vrstvu prvej rúry a čiara ju spojí s miestom na nej.
-          Čiary kreslí skript nižšie podľa skutočnej polohy bodov a líp; bez skriptu ostanú lupy s textom. */}
-      <svg class="lupy-ciary" data-lupy-ciary aria-hidden="true"></svg>
-      <ul class="lupy" aria-label={h.lupyLabel} data-reveal-group>
-        {lupy.map((l) => (
-          <li class={`lupa lupa-${l.id}`} data-lupa={l.id}>
-            <span class="lupa-okno"><Obraz src={l.img} alt="" width={168} height={168} densities={[1, 2]} /></span>
-            <h3>{l.nazov}</h3>
-            <p class="lupa-kluc">{sadzba(l.kluc)}</p>
-            <p>{sadzba(l.text)}</p>
-          </li>
-        ))}
-      </ul>
     </div>
   </section>
+
+  {/* Rozložený rez (Juraj 26. 10. 2026 namiesto „rezu pod lupou“): vlastný 3D model DUO sa pri rolovaní
+      rozloží na plášť, penu a nosné rúry, pri každej vrstve kóta. Kým nie sú snímky, ostáva len rodina. */}
+  {rozklad && <Rozklad class="rozklad-domov" data={rozklad} nadpis={tx.stavbaH2} popis={tx.stavbaP} vrstvy={vrstvyRozkladu} alt={tx.rozkladAlt('Microflex DUO')} label={h.lupyLabel} />}
 
   <section class="section pokladka" aria-labelledby="h-pokladka">
     {/* Fotka kotúča má čisto bielu plochu: násobením splynie s pásom a text sedí vo vnútri kotúča. */}
@@ -226,65 +223,6 @@ const popisy = [
   </div>
 </Base>
 
-<script>
-  /* Čiary od bodu na rúre k lupe. Počíta sa z polohy v rozložení (offsetLeft a offsetTop), nie
-     z getBoundingClientRect, aby ich nerozhodil pohyb lúp pri zjavení. Kreslí sa len tam, kde je
-     čiara v CSS viditeľná (od 1 101 px). */
-  function initLupy() {
-    const svg = document.querySelector<SVGSVGElement>('[data-lupy-ciary]');
-    const grid = svg?.parentElement as HTMLElement | null;
-    if (!svg || !grid) return;
-    const w = window as unknown as { __lupy?: AbortController };
-    w.__lupy?.abort();
-    const ac = new AbortController();
-    w.__lupy = ac;
-    const NS = 'http://www.w3.org/2000/svg';
-    const poloha = (el: HTMLElement) => {
-      let x = 0, y = 0, n: HTMLElement | null = el;
-      while (n && n !== grid) { x += n.offsetLeft; y += n.offsetTop; n = n.offsetParent as HTMLElement | null; }
-      return { x, y };
-    };
-    const kresli = () => {
-      if (getComputedStyle(svg).display === 'none') return;
-      svg.setAttribute('viewBox', `0 0 ${grid.offsetWidth} ${grid.offsetHeight}`);
-      svg.replaceChildren();
-      grid.querySelectorAll<HTMLElement>('[data-lupa]').forEach((li) => {
-        const bod = grid.querySelector<HTMLElement>(`[data-bod="${li.dataset.lupa}"]`);
-        const okno = li.querySelector<HTMLElement>('.lupa-okno');
-        if (!bod || !okno) return;
-        const b = poloha(bod), o = poloha(okno);
-        const bx = b.x + bod.offsetWidth / 2, by = b.y + bod.offsetHeight / 2;
-        const r = okno.offsetWidth / 2, ox = o.x + r, oy = o.y + r;
-        const dx = bx - ox, dy = by - oy, d = Math.hypot(dx, dy) || 1;
-        // Od okraja bodu po okraj lupy (za bielym a farebným prstencom).
-        const x1 = bx - (dx / d) * 11, y1 = by - (dy / d) * 11;
-        const x2 = ox + (dx / d) * (r + 10), y2 = oy + (dy / d) * (r + 10);
-        for (const trieda of ['lupa-halo', 'lupa-ciara']) {
-          const path = document.createElementNS(NS, 'path');
-          path.setAttribute('d', `M${x1.toFixed(1)} ${y1.toFixed(1)} L${x2.toFixed(1)} ${y2.toFixed(1)}`);
-          path.setAttribute('pathLength', '1');
-          path.setAttribute('class', trieda);
-          svg.appendChild(path);
-        }
-      });
-    };
-    let snimka = 0;
-    const naplanuj = () => { cancelAnimationFrame(snimka); snimka = requestAnimationFrame(kresli); };
-    window.addEventListener('resize', naplanuj, { signal: ac.signal });
-    document.fonts?.ready.then(naplanuj);
-    grid.querySelectorAll('img').forEach((img) => img.addEventListener('load', naplanuj, { once: true, signal: ac.signal }));
-    kresli();
-    // Čiary sa nakreslia, keď sa lupy objavia v okne.
-    const lupyEl = grid.querySelector('.lupy');
-    if (lupyEl && 'IntersectionObserver' in window) {
-      const io = new IntersectionObserver((z) => { if (z.some((e) => e.isIntersecting)) { svg.classList.add('is-on'); io.disconnect(); } }, { rootMargin: '0px 0px -15% 0px' });
-      io.observe(lupyEl);
-      ac.signal.addEventListener('abort', () => io.disconnect());
-    } else svg.classList.add('is-on');
-  }
-  initLupy();
-  document.addEventListener('astro:page-load', initLupy);
-</script>
 
 <style>
   /* ---------- Hero: svetlé pole, farbu nesie výrobok ---------- */
@@ -321,16 +259,18 @@ const popisy = [
     margin-right: calc(min(calc(-1 * var(--gutter)), calc((var(--container-site) - 100vw) / 2)) - 64px);
     pointer-events: none; animation: settle 1300ms 120ms var(--ease-soft) both; }
   .hero-product :global(.hero-img) { width: 100%; height: auto; display: block; filter: drop-shadow(0 30px 36px rgb(11 27 51 / 0.17)); }
+  /* Render 3D modelu má vlastný kontaktný tieň. */
+  .hero-stage.je3d :global(.hero-img) { filter: none; }
   /* Štúdio má presne rozmer obrázka: body popisov sú v percentách obrázka a sedia pri každej šírke.
      Pri pohybe myši sa výrobok jemne posunie a pootočí, text stojí. */
   .hero-stage { position: relative; max-width: 1180px; margin-inline: auto; container-type: inline-size; transform: translate3d(calc(var(--mx, 0) * 12px), calc(var(--my, 0) * 8px), 0); transition: transform 900ms var(--ease-soft); }
   /* Za rezom sústredné kružnice ako na výkrese prierezu, stredom v reze rúry (27 % a 60 % štúdia).
      Zdola doznejú ešte nad šikmou hranou pásu katalógu, aby cez ňu neprechádzali. */
   .hero-stage::before { content: ""; position: absolute; inset: -15% -40% 0 -50%; z-index: -1; pointer-events: none;
-    background: repeating-radial-gradient(circle at 40.5% 65%, rgb(10 42 94 / 0.075) 0 1px, rgb(10 42 94 / 0) 1.5px 46px);
-    -webkit-mask-image: radial-gradient(circle at 40.5% 65%, #000 12%, transparent 50%), linear-gradient(to bottom, #000 40%, transparent calc(100% - var(--presah-hero) - 32px));
+    background: repeating-radial-gradient(circle at var(--kx, 40.5%) var(--ky, 65%), rgb(10 42 94 / 0.075) 0 1px, rgb(10 42 94 / 0) 1.5px 46px);
+    -webkit-mask-image: radial-gradient(circle at var(--kx, 40.5%) var(--ky, 65%), #000 12%, transparent 50%), linear-gradient(to bottom, #000 40%, transparent calc(100% - var(--presah-hero) - 32px));
     -webkit-mask-composite: source-in;
-    mask-image: radial-gradient(circle at 40.5% 65%, #000 12%, transparent 50%), linear-gradient(to bottom, #000 40%, transparent calc(100% - var(--presah-hero) - 32px));
+    mask-image: radial-gradient(circle at var(--kx, 40.5%) var(--ky, 65%), #000 12%, transparent 50%), linear-gradient(to bottom, #000 40%, transparent calc(100% - var(--presah-hero) - 32px));
     mask-composite: intersect;
     animation: kruhy 1600ms 300ms var(--ease-soft) both; }
   @keyframes kruhy { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: none; } }
@@ -386,7 +326,10 @@ const popisy = [
   @keyframes pulz { 0% { opacity: 0.9; transform: scale(0.6); } 100% { opacity: 0; transform: scale(2.4); } }
 
   /* ---------- Rodina: render prechádza cez švík z modrého pásu do bielej ---------- */
-  .rodina { background: linear-gradient(180deg, var(--zem-2) 0%, var(--zem-3) 100%); padding-top: 0; padding-bottom: 96px; overflow-x: clip; overflow-y: visible; }
+  /* Pod rodinou hneď pokračuje rozložený rez (lupy sú preč), preto len malý spodný okraj. */
+  .rodina { background: linear-gradient(180deg, var(--zem-2) 0%, var(--zem-3) 100%); padding-top: 0; padding-bottom: 24px; overflow-x: clip; overflow-y: visible; }
+  /* Rozložený rez pokračuje zostupom pod zem: rovnaký tón ako koniec rodiny a začiatok pokládky. */
+  :global(.rozklad.rozklad-domov) { background: var(--zem-3); }
   .rodina-grid { position: relative; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px; align-items: start; }
   /* Text rodiny začína vyššie, v páse, cez ktorý prechádza render (pás katalógu má dole 200 px pre jeho
      presah); vľavo by inak ostala prázdna plocha (DOLADENIE kap. 2.4, bod 4). */
@@ -398,25 +341,6 @@ const popisy = [
   .rodina-wrap { filter: drop-shadow(0 28px 36px rgb(11 27 51 / 0.2)); }
   .rodina-wrap :global(.rodina-img) { width: 100%; height: auto; display: block; -webkit-mask-image: linear-gradient(to top right, #000 66%, transparent 97%); mask-image: linear-gradient(to top right, #000 66%, transparent 97%); }
 
-  /* Rez pod lupou. Bod na rúre, čiara a lupa so zväčšeným materiálom. Farba prstenca lupy je farba
-     vrstvy: žltá rúra, sivá pena, modrý plášť. Lupy stoja v rade pod rúrami, zľava od jadra po plášť. */
-  .lupa-bod { position: absolute; z-index: 3; left: var(--x); top: var(--y); width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%; background: #fff; box-shadow: inset 0 0 0 3px var(--color-blue-900), 0 0 0 4px rgb(255 255 255 / 0.55), 0 3px 10px rgb(11 27 51 / 0.35); }
-  .lupy-ciary { position: absolute; inset: 0; z-index: 3; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
-  .lupy-ciary :global(.lupa-halo) { fill: none; stroke: rgb(255 255 255 / 0.75); stroke-width: 4.5; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 900ms var(--ease-soft); }
-  .lupy-ciary :global(.lupa-ciara) { fill: none; stroke: rgb(10 42 94 / 0.6); stroke-width: 1.5; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 900ms var(--ease-soft); }
-  .lupy-ciary.is-on :global(path) { stroke-dashoffset: 0; }
-  /* Rad lúp začína pod voľným miestom pod rúrami (spodok renderu je priehľadný), preto záporný okraj. */
-  .lupy { grid-column: 1 / -1; position: relative; z-index: 4; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; width: 60%; margin: -24px 0 0 22%; }
-  .lupa { --ring: var(--color-blue-700); display: flex; flex-direction: column; align-items: flex-start; }
-  .lupa-rura { --ring: #e0b400; }
-  .lupa-pena { --ring: #8e97a3; }
-  .lupa-okno { position: relative; display: block; width: 168px; height: 168px; margin-bottom: 20px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 5px #fff, 0 0 0 7px var(--ring), var(--elev-3); }
-  .lupa-okno :global(img) { display: block; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-  /* Sklo lupy: odlesk hore vľavo a tieň pri okraji, aby záber pôsobil zväčšene, nie ako nálepka. */
-  .lupa-okno::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(70% 55% at 30% 18%, rgb(255 255 255 / 0.36), rgb(255 255 255 / 0) 62%); box-shadow: inset 0 -12px 26px rgb(11 27 51 / 0.28), inset 0 0 0 1px rgb(11 27 51 / 0.12); pointer-events: none; }
-  .lupa h3 { font-size: 20px; line-height: 1.25; margin-bottom: 4px; }
-  .lupa-kluc { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 17px; line-height: 1.3; letter-spacing: -0.01em; color: var(--color-blue-900); margin-bottom: 8px; }
-  .lupa p:last-child { font-size: 15px; line-height: 1.55; color: var(--color-ink-soft); max-width: 30em; }
 
   /* ---------- Pokládka: kotúč vľavo cez okraj obrazovky, text v jeho vnútri ---------- */
   .pokladka { position: relative; overflow: hidden; padding-top: 112px; padding-bottom: 232px; isolation: isolate; background: linear-gradient(180deg, var(--zem-3) 0%, var(--zem-4) 100%); }
@@ -535,10 +459,6 @@ const popisy = [
        vpravo a na okraji mriežky by bolo rez vidno. */
     .rodina-obraz { width: calc(100% + var(--gutter)); margin: -120px calc(-1 * var(--gutter)) 0 0; grid-row: 1; }
     .rodina-text { padding-top: 24px; margin-top: 0; }
-    /* Pod 1 100 px je text medzi fotkou a lupami, čiary by ho križovali: lupy stoja samostatne. */
-    .lupa-bod, .lupy-ciary { display: none; }
-    .lupy { width: 100%; margin: 36px 0 0; gap: 24px; }
-    .lupa-okno { width: 132px; height: 132px; }
     .proj-hlava, .proj-texty { grid-template-columns: minmax(0, 1fr); }
     .podpora-hlava, .podpora-sluzby, .istota { grid-column: 1 / -1; grid-row: auto; }
     .konfigurator { grid-column: 1 / -1; grid-row: auto; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; }
@@ -569,15 +489,8 @@ const popisy = [
     .hero-product { margin: 44px 0 0; margin-right: calc(-1 * var(--gutter)); margin-left: calc(-1 * var(--gutter)); justify-self: stretch; }
     .hero { padding-bottom: 28px; }
     /* Popisy na telefóne: kratšie čiary a menšie písmo, aby sa zmestili okolo renderu. */
-    .lupy { grid-template-columns: 1fr; gap: 20px; }
-    .lupa { display: grid; grid-template-columns: 92px minmax(0, 1fr); column-gap: 18px; align-items: start; }
-    .lupa-okno { grid-row: 1 / span 3; width: 92px; height: 92px; margin: 4px 0 0; box-shadow: 0 0 0 4px #fff, 0 0 0 6px var(--ring), var(--elev-2); }
-    .lupa h3 { font-size: 17px; }
-    .lupa-kluc { font-size: 15px; margin-bottom: 4px; }
-    .lupa p:last-child { font-size: 14px; }
-    .rodina { padding-bottom: 64px; }
+    .rodina { padding-bottom: 16px; }
     .rodina-obraz { margin-top: -72px; }
-    .lupy { margin-top: 28px; }
     /* Kotúč ide nad text ako pás, jeho vnútro je pod ním. */
     .pokladka { padding-bottom: 168px; }
     .kroky-obal { margin-top: 32px; }

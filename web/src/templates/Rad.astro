@@ -18,7 +18,8 @@ import CastiStranky from '../components/CastiStranky.astro';
 import Kopirovanie from '../components/Kopirovanie.astro';
 import VolbaDimenzie from '../components/VolbaDimenzie.astro';
 import { kategorie, radyKategorie, variantyRadu, cestaKategorie, cestaRadu, cestaProduktu, alternatyRadu, kKratky, rNazov, rKratky, rMedium, rOznacenie, pNazov, cislo, rozsah, rozsahRur, tlakText, kotvaKodu, type Kategoria, type Rad } from '../lib/katalog';
-import { piktogram, render3d, fotkaRadu, detail, fotkaReferencie } from '../lib/obrazky';
+import { piktogram, render3d, fotkaRadu, detail, fotkaReferencie, rozkladRadu, makroRury } from '../lib/obrazky';
+import Rozklad from '../components/Rozklad.astro';
 import { kotyRenderu, kotyRenderu3d } from '../lib/koty';
 import { sadzba } from '../lib/sadzba';
 import { obsahRadu } from '../content/rady';
@@ -74,6 +75,10 @@ const vrstvy = obsah ? (['rura', 'pena', 'plast'] as const).map((id) => {
   const kluc = id === 'plast' ? (plastRozsah ? `Ø ${plastRozsah}` : 'HDPE') : id === 'rura' && ruraRozsah && !/^\d/.test(v.kluc ?? '') ? `Ø ${ruraRozsah}, ${v.kluc?.replace(/^PE-Xa, |^PE 100, /, '')}` : v.kluc ?? '';
   return { id, nazov: tx.vrstvy[id], kluc, text: v.text, img: detail(`vrstva-${id}.jpg`)! };
 }) : [];
+// Rozložený rez radu z 3D modelu (Juraj 26. 10. 2026: domov aj stránky radov): namiesto líp, keď sú snímky.
+// Vrstvy v poradí, v akom sa pri rolovaní oddelia (plášť, pena, rúra); v lupe makro materiálu, keď je.
+const rozklad = obsah ? rozkladRadu(r.id) : undefined;
+const vrstvyRozkladu = [...vrstvy].reverse().map((v) => ({ ...v, img: v.id === 'rura' ? makroRury(k.id) : render3d('makra', v.id) }));
 
 // Príslušenstvo odporúčané výrobcom, podľa skupín (spojky, krytky, prestupy).
 const produkty = (await getCollection('produkty')).map((p) => p.data);
@@ -149,6 +154,24 @@ const productLd = [{
     </section>
 
     {obsah && (
+      rozklad ? (
+      <section class="cast" id="stavba" aria-labelledby="h-rozklad">
+        {/* Hore stojí lepkavá hlavička (72 px) a pás častí stránky; obraz rozkladu sa drží pod nimi. */}
+        <Rozklad data={rozklad} nadpis={tx.stavbaH2} popis={obsah.popis[0]} vrstvy={vrstvyRozkladu} alt={tx.rozkladAlt(model)} label={ui.home.lupyLabel} hore={casti.length > 2 ? 132 : 72} horeM={casti.length > 2 ? 116 : 64} />
+        <div class="wrap stavba stavba-pod">
+          <div class="stavba-text">
+            {obsah.popis.slice(1).map((p) => <p class="stavba-popis">{sadzba(p)}</p>)}
+          </div>
+          <div class="stavba-zoznamy">
+            <h3>{tx.parametreH3}</h3>
+            <dl class="parametre">{obsah.parametre.map(([dt, dd]) => <div><dt>{dt}</dt><dd>{sadzba(dd)}</dd></div>)}</dl>
+            <h3>{tx.montazH3}</h3>
+            <ul class="montaz">{obsah.montaz.map((m) => <li><Ikona nazov="check" velkost={18} /><span>{sadzba(m)}</span></li>)}</ul>
+            {obsah.strana && <p class="stavba-zdroj"><a href={KATALOG_PDF} target="_blank" rel="noopener">{tx.stranaKat(obsah.strana)}</a></p>}
+          </div>
+        </div>
+      </section>
+      ) : (
       <section class="wrap cast" id="stavba" aria-labelledby="h-stavba">
         {/* Stavba (Juraj 22. 10. 2026, návrh B): render s kótami je veľký v hlave, tu sú vrstvy ako
             lupy v rade ako na domove, popis a pokojné zoznamy parametrov a montáže vedľa seba. */}
@@ -176,6 +199,7 @@ const productLd = [{
           ))}
         </ol>
       </section>
+      )
     )}
 
     {r.subory.length > 0 && (
@@ -237,6 +261,8 @@ const productLd = [{
   .prazdne { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; padding: 28px; }
 
   .stavba { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: 32px 72px; align-items: start; }
+  /* Pod rozloženým rezom: ďalší odsek popisu a zoznamy parametrov a montáže. */
+  .stavba-pod { margin-top: 24px; }
   .stavba h2 { font-size: clamp(26px, 1.4vw + 17px, 36px); letter-spacing: -0.02em; }
   .stavba-popis { margin-top: 16px; font-size: 17px; line-height: 1.6; max-width: 36em; }
   .stavba-zoznamy h3 { font-size: 17px; font-weight: 600; color: var(--color-ink); }

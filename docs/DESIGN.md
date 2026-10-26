@@ -169,6 +169,9 @@ nadpisy plynulo cez `clamp()`. Polovičné veľkosti (14,5 px a pod.) sa nepouž
 
 ### Piktogramy radov = rendery výrobcu
 
+**Od 26. 10. 2026 ich na celom webe nahrádza vlastný 3D model** (kap. 7, Vlastný 3D model; Juraj:
+„Áno, všade“). Piktogramy Watts ostávajú len ako záloha tam, kde render ešte nie je. Pôvodné rozhodnutie:
+
 Rozhodnutie Juraja 21. 9. 2026: žiadne ručne kreslené ikony, len profesionálne riešenie. Ako
 piktogramy radov používame **oficiálne 3D rendery Watts** (rez potrubím pod uhlom, priehľadné
 pozadie), ktoré máme so súhlasom z brožúry 2026 pre všetkých deväť radov: UNO a DUO vykurovanie,
@@ -221,6 +224,39 @@ filter (sliders-horizontal), stiahnuť, menu, zavrieť, externý odkaz (pri odka
 - Formáty AVIF a WebP so záložným JPEG, responzívne veľkosti, hero obrázok predom načítaný.
 - Alt texty po slovensky s názvom radu a dimenziou, napríklad „Prierez potrubia Microflex DUO
   125/2×32 s dvoma žltými rúrami PE-Xa“.
+
+### Vlastný 3D model (od 26. 10. 2026)
+
+Juraj: „Urob naozaj ako reálne, čo najväčšia kvalita… použijeme to ako dizajn pre stránku.“ Parametrický
+model v Blenderi (`data/blender/potrubie.py`) stavia plášť, penu a nosné rúry presne podľa
+`varianty.json`; materiály a svetlo sú ladené podľa skutočných fotiek, nie podľa renderov Watts. Ku
+každému renderu Blender zapíše polohy bodov (stred rezu, okraj plášťa, rúry), z nich sú kóty.
+
+| Skupina | Záber | Kde na webe |
+|---|---|---|
+| `rady` (12) | A: celé potrubie, rez vpravo dole | karty radov, katalóg na domove, menu, Výber, hľadanie, náhľady na zdieľanie |
+| `hlavy` (12) | C: čelný pohľad na rez, telo vľavo hore | hlava radu a systému (5 systémov berie hlavu svojho radu) |
+| `varianty` (91) | C v tom istom rámci ako hlavy | živé kóty: výber dimenzie prelínaním ukáže presný rez |
+| `hero` | DUO, rez vľavo, telo za pravým okrajom | hero domova |
+| `rodina` | šesť systémov vedľa seba | domov, hlava Potrubí, článok Ako vybrať |
+| `makra` | plášť, pena, rúra žltá, biela a čierna | lupy pri vrstvách |
+| rozložený rez | 72 snímok, vrstvy sa oddelia pri rolovaní | domov a stránky radov („Z čoho je potrubie“) |
+
+Pravidlá:
+- Render má celé telo a vlastný kontaktný tieň: žiadne dozvenie maskou, žiadny tieň z CSS (trieda
+  `je3d`, `lib/obrazky.ts`). Odlesk ide len po výrobku (maska `-maska.webp` bez tieňa).
+- Hlavy a varianty majú spoločný rámec: kamera v rovnakej vzdialenosti v pomere k plášťu
+  (`--ramec jednotny`), plášť je na každom obrázku rovnako veľký na tom istom mieste, mení sa len
+  vnútro rezu. `data/rendery_web.py` orezáva všetky rovnakým výrezom (v šírkach obrázka, hlavy sú
+  2 000 px a varianty 1 600 px).
+- Štítky kót ležia v prázdnom mieste okolo výrobku (Juraj 23. 9.). Na čelnom zábere: plášť nad rezom
+  doprava, ohyb pod telom doľava (bod v 30 % šírky), rúra pod spodkom rezu doľava; dĺžku čiary k rúre
+  počíta `rendery_web.py` a pri výbere dimenzie sa plynulo zmení.
+- Postup: `data/blender/davka.py web` (render, `data/_3d/web`, mimo gitu) → `data/rendery_web.py`
+  (WebP do `web/src/assets/3d`, body do `web/src/data/rendery.json`) → `data/rozklad_web.py` pre
+  rozložený rez (`web/public/3d/rozklad-<rad>`). Návod: `data/blender/README.md`.
+- Model je technická vizualizácia z rozmerov katalógu, nie fotka a nie výstup AI; stavby a montáže
+  ostávajú len skutočné fotky.
 
 ---
 
@@ -304,7 +340,9 @@ samotný výrobok. Nad nadpisom je tichý riadok s kľúčovým slovom (ostáva 
 vyhľadávaniu), nadpis má dva riadky a druhý je modrý. Akcie sú nerovnocenné zámerne: žlté tlačidlo
 vedie na výber podľa použitia priamo pod ním (kotva `#vyber`, sprievodca `/vyber/` je zatiaľ zástupná
 stránka) a podčiarknutý odkaz otvára katalóg PDF výrobcu s veľkosťou súboru. Veta o partnerstve
-v hero nie je, lebo to isté aj s logom hovorí horný pás. Render má strop 1 180 px.
+v hero nie je, lebo to isté aj s logom hovorí horný pás. Render má strop 1 180 px. Od 26. 10. je
+v hero render vlastného modelu (DUO, rez vľavo, telo za pravým okrajom); nezasahuje do stĺpca textu,
+medzera od nadpisu je pri 1 024 až 2 560 px aspoň 32 px (meranie po riadkoch obrázka).
 
 Hero v5 (Juraj 23. 9.: „grafika veľmi jednoduchá, ničím nezaujme; tabuľka pod tým vyzerá
 neprofesionálne, netuším, aký má zmysel“): **pás čísel pod hero je zrušený, čísla sú technické popisy
@@ -337,7 +375,8 @@ tlačeného katalógu: názov a počet radov, vybraná kategória má žltú zna
 **štúdio**: rendery stoja na spoločnej podlahe s tieňom, popisy sú zarovnané doľava a začínajú na
 jednej linke (podmriežka). Od 23. 9. (hadovito) je štúdio vľavo na mriežke 7 / 5 a nadpis, register
 a popis vybranej kategórie vpravo, ako výber pri výrobku v e-shope. Za ľavý okraj obrazovky vybieha
-len svetlo štúdia; telá rúr sú orezané už v renderoch výrobcu, preto ich za okraj nepúšťame. Pri
+len svetlo štúdia; telá rúr boli orezané už v renderoch výrobcu, preto ich za okraj nepúšťame (od 26. 10.
+sú v štúdiu rendery vlastného modelu s celým telom, kap. 7). Pri
 jednom rade je render väčší (72 % štúdia) a popis pod ním ako pri ostatných. Záložky sú prepínače bez skriptu a obsah všetkých panelov je v HTML
 kvôli vyhľadávačom.
 
@@ -346,8 +385,19 @@ Rady, ktoré zdieľajú render so súrodencom (PRIMO), preto majú vlastný riad
 a odlišnosťou pod renderom základného radu: „Užší plášť pri tej istej rúre“ (katalóg s. 8 proti 9
 a 10 proti 11; vlastný obrázok PRIMO nemá ani výrobca, fotka PRIMO DUO je tá istá ako DUO).
 
-Rodina: render prechádza cez švík z pásu katalógu a za pravý okraj obrazovky. Pod ním je **rez pod
-lupou** (Juraj 23. 9. vybral z troch štýlov; balenie z vnorených plôch bolo „vôbec nie pekné“): na
+Rodina (od 26. 10. render vlastného modelu so šiestimi rúrami): na počítači sa zmestí celá do pravého
+okraja obrazovky, lebo text menuje aj COOL a HP; na tablete a mobile ide nad text cez celú šírku.
+Pôvodne render Watts prechádzal cez švík z pásu katalógu a za pravý okraj obrazovky.
+
+**Z čoho je potrubie** (od 26. 10. 2026, `components/Rozklad.astro`, Juraj: domov aj stránky radov):
+rozložený rez z 3D modelu. Sekcia je vysoká (280 % výšky okna) a jej obsah stojí; pri rolovaní sa
+rúra rozloží na plášť, penu a nosné rúry (72 snímok na plátne), pri každej vrstve sa objaví kóta
+a vľavo jej popis s malou lupou makra. Na telefóne je vidno len kótu a popis práve odkrytej vrstvy.
+Snímky sa načítajú, až keď sa sekcia blíži (najprv posledná, potom každá ôsma, štvrtá…); bez AVIF
+alebo pri „obmedziť pohyb“ je tam statický rozložený obraz. Rad bez snímok má namiesto toho tri
+lupy (nižšie).
+
+Pôvodný **rez pod lupou** (Juraj 23. 9. vybral z troch štýlov; balenie z vnorených plôch bolo „vôbec nie pekné“): na
 prvej rúre renderu sú tri body (žltá nosná rúra, pena, hrana plášťa) a od nich vedú tenké čiary
 k trom kruhovým lupám v rade pod rúrami. Lupa zväčší materiál vrstvy, prstenec má farbu vrstvy
 (žltá, sivá, modrá) a sklo jemný odlesk. Pri lupe je názov, jedno kľúčové číslo z katalógu (PE-Xa do
@@ -422,12 +472,19 @@ Každá vnútorná stránka má rovnakú kostru, aby web pôsobil ako celok:
 - Tabuľky obj. čísel: kopírovanie jedným klikom, odkaz do e-shopu v riadku, na mobile karta
   s tromi stĺpcami údajov. Pri filtri sa riadky plynulo presunú (FLIP), nové prídu odstupňovane.
 - **Živé kóty** (stránka radu, od 26. 10. 2026, `components/VolbaDimenzie.astro`; Juraj: „chcel by som
-  to živé a čo najlepšie“): pod nadpisom (na telefóne pod renderom) je prepínač priemeru nosnej rúry.
+  to živé a čo najlepšie“): pod nadpisom (na počítači vľavo vedľa renderu, na telefóne pod renderom)
+  je prepínač priemeru nosnej rúry; keď je render dimenzie z 3D modelu, obraz sa prelínaním vymení na
+  presný rez a kóty sa presunú na nové body.
   Výber prepíše kóty na renderi krátkym pretočením číslic, bod kóty pulzne, po plášti prejde pás svetla;
   pri rúre s dvoma plášťami sa objaví druhá úroveň (štandardná a zosilnená izolácia), pod ňou obj. číslo
   s kopírovaním, výkon a hmotnosť. Hlavné tlačidlo vedie na riadok vybraného variantu v tabuľke, filter
   tabuľky sa nastaví oboma smermi a variant je v adrese (`?obj=MD16032C`). Pri „obmedziť pohyb“ sa čísla
   len vymenia. Hodnoty formátuje server rovnako ako tabuľku.
+- **Hlava radu s renderom 3D modelu** (od 26. 10. 2026): čelný záber je vyšší ako široký, preto od
+  1 101 px dva stĺpce: výber dimenzie vľavo pod nadpisom, render vpravo od vrchu štúdia (najviac
+  660 px). Na 1 440 × 900 sú nadpis, výber aj celý rez s kótami na prvej obrazovke a klik v lište mení
+  obraz hneď vedľa. Lišta sa v úzkom stĺpci zalomí do dvoch riadkov (jazdec ide aj na druhý riadok),
+  na telefóne je posúvateľný riadok. Systémy a Potrubia (bez výberu) majú render v strede pod textom.
 - **Živý výrobok v štúdiu** (hlava radu, systému a Potrubí): render jemne dozneje na strane so zrezaným
   telom, pri pohybe myši sa nepatrne posunie aj s kótami a po načítaní po ňom raz prejde pás svetla
   (rovnako ako v hero domova).
@@ -738,12 +795,12 @@ Na webe je:
 
 | Časť | Variant | Kde v kóde |
 |---|---|---|
-| Hlava radu, systému a Potrubí | štúdio: nadpis hore, popis a akcie vedľa, render takmer cez celú šírku s kótami | `Hlava.astro`, `rozlozenie="studio"` (ostatné stránky ostávajú `vedla`) |
+| Hlava radu, systému a Potrubí | štúdio: nadpis hore, popis a akcie vedľa, render takmer cez celú šírku s kótami; pri renderi 3D modelu s výberom dimenzie (rady) výber vľavo a render vpravo | `Hlava.astro`, `rozlozenie="studio"` (ostatné stránky ostávajú `vedla`) |
 | Záver vnútorných stránok | fotka kotúčov cez šikmú hranu, kontakt v jednom riadku | `Zaver.astro` |
 | Projekty na domove | mozaika: výkop Orange, kotolňa a stavenisko, každá fotka s kótou | `Domov.astro`; s fotkou od 2 400 px prejsť na fotku cez celú šírku |
 | Karty radov | štúdio s kótami na renderi; v úzkej karte kóta polomeru ustúpi a plášť ide doľava | `KartaRadu.astro` |
 | Diely | na podlahe štúdia bez bielej karty | `KartaProduktu.astro` |
-| Stavba radu | popis a zoznamy vedľa seba, vrstvy ako tri lupy v rade (render s kótami je už v hlave) | `Rad.astro` |
+| Stavba radu | rozložený rez pri rolovaní (keď má rad snímky), pod ním popis, parametre a montáž; inak vrstvy ako tri lupy s makrami | `Rad.astro`, `Rozklad.astro` |
 | Referencia na stránke radu | scéna s kótou, druhá zrkadlovo | `Rad.astro` |
 | Pre firmy | veľká fotka areálu a tri skupiny s lupou | `PreFirmy.astro` |
 | Podklady | dokumenty na stole: obálka katalógu a brožúry, ostatné ako list so skratkou formátu | `Subory.astro` |

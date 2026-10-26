@@ -8,6 +8,7 @@
  *         (štítok visí na konci čiary a rastie doprava alebo doľava)
  *  smerM  smer na telefóne, keď by štítok pri úzkom displeji vyšiel z obrazu (inak ako smer)
  *  l      dĺžka čiary v percentách šírky obrazu (cqw), na telefóne sa skráti na tri štvrtiny
+ *  lM     iná dĺžka čiary na telefóne (tiež skrátená na tri štvrtiny), keď by sa štítky stretli
  *
  * Kóty prídu, keď je obraz v okne: bod, čiara a štítok po sebe. Bez skriptu alebo pri „obmedziť
  * pohyb“ sú hneď viditeľné.
@@ -21,7 +22,7 @@ const { koty, label } = Astro.props;
 {koty.length > 0 && (
   <ul class="koty" aria-label={label} data-koty>
     {koty.map((k, i) => (
-      <li class={`kota s-${k.smer} sm-${k.smerM ?? k.smer}${k.kod ? ` k-${k.kod}` : ''}`} style={`--x: ${k.x}%; --y: ${k.y}%; --l: ${k.l}; --i: ${i}`}>
+      <li class={`kota s-${k.smer} sm-${k.smerM ?? k.smer}${k.kod ? ` k-${k.kod}` : ''}`} style={`--x: ${k.x}%; --y: ${k.y}%; --l: ${k.l};${k.lM ? ` --lm: ${k.lM};` : ''} --i: ${i}`}>
         <span class="bod" aria-hidden="true"></span>
         <span class="ciara" aria-hidden="true"></span>
         <span class="stitok"><strong>{k.hodnota}</strong><span>{sadzba(k.text)}</span></span>
@@ -31,6 +32,9 @@ const { koty, label } = Astro.props;
 )}
 
 <style>
+  /* Registrovaná dĺžka čiary: pri výbere dimenzie (VolbaDimenzie mení --l rúry) sa čiara aj štítok
+     presunú plynule, nie skokom. */
+  @property --dlzka { syntax: '<length>'; inherits: true; initial-value: 0px; }
   /* --k skráti čiary na telefóne; dĺžka je v štýle prvku (inline), preto sa mení cez násobiteľ. */
   .koty { --k: 1; position: absolute; inset: 0; z-index: 2; margin: 0; padding: 0; pointer-events: none; }
   .kota { --dlzka: calc(var(--l) * var(--k) * 1cqw); position: absolute; left: var(--x); top: var(--y); width: 0; height: 0; }
@@ -54,6 +58,7 @@ const { koty, label } = Astro.props;
   }
   @media (max-width: 760px) {
     .koty { --k: 0.75; }
+    .kota { --dlzka: calc(var(--lm, var(--l)) * var(--k) * 1cqw); }
     .stitok { border-radius: var(--radius-m); }
     .sm-hore-vpravo .ciara, .sm-hore-vlavo .ciara { bottom: 0; transform-origin: bottom; }
     .sm-dole-vpravo .ciara, .sm-dole-vlavo .ciara { top: 0; transform-origin: top; }

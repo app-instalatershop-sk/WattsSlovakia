@@ -42,6 +42,11 @@ BEZ_OREZU_VPRAVO = {'hero'}
 # sa obraz prelína na mieste a mení sa len vnútro rezu, nie poloha ani veľkosť plášťa.
 SPOLOCNY_RAMEC = ('hlavy', 'varianty')
 UHOL_PLAST = 112.0  # stupne od vodorovnej osi proti smeru hodinových ručičiek: okraj čela vľavo hore
+# Čelný záber (hlavy, varianty): štítky kót ležia v prázdnom mieste okolo výrobku, nikdy na plášti (Juraj
+# 23. 9.). Bod ohybu je na spodnej hrane tela v 30 % šírky (štítok visí doľava pod telo, kde je už prázdno)
+# a čiara k rúre je taká dlhá, aby štítok rúry visel pod spodkom rezu (lr v % šírky, ako dĺžky kót).
+CELNY = ('hlavy', 'varianty')
+OHYB_CELNY = 0.30
 
 skupiny = sys.argv[1:] or list(SIRKA)
 vystup_cesta = DATA / 'rendery.json'
@@ -79,6 +84,22 @@ def body_kot(body, objekt, ramec, w_crop, h_crop, ohyb_x=0.10):
         stlpec = a.crop((x, 0, x + 1, objekt.height)).point(lambda v: 255 if v > 128 else 0).getbbox()
         if stlpec:
             out['ohyb'] = pct(x, stlpec[3] - 1)
+    return out
+
+
+def koty_celne(objekt, ramec, zaznam):
+    """Bod ohybu na spodnej hrane tela a dĺžka čiary k rúre (lr) na čelnom zábere, z priehľadnosti výrobku."""
+    a = objekt.getchannel('A').crop(ramec).point(lambda v: 255 if v > 128 else 0)
+    w, h = a.size
+    out = {}
+    xo = int(OHYB_CELNY * w)
+    stlpec = a.crop((xo, 0, xo + 1, h)).getbbox()
+    if stlpec:
+        out['ohyb'] = [round(xo / w * 100, 2), round((stlpec[3] - 1) / h * 100, 2)]
+    spodok = (a.getbbox()[3] - 1) / h * 100          # najnižší bod výrobku: spodok čela plášťa
+    if 'rura' in zaznam:
+        # zvislá vzdialenosť v % výšky prepočítaná na % šírky (dĺžky čiar kót sú v cqw)
+        out['lr'] = round(max(5.0, (spodok + 1.5 - zaznam['rura'][1]) / zaznam['pomer']), 2)
     return out
 
 
@@ -172,6 +193,8 @@ def spracuj(skupina):
                 okraj = body.get('plast_okraj') or []
                 if okraj:
                     zaznam['polomer'] = round(max(abs(p[0] - cx) for p in okraj) / (x1 - x0) * 100, 2)
+                if skupina in CELNY:
+                    zaznam.update(koty_celne(objekt, (x0, y0, x1, y1), zaznam))
             elif isinstance(body, dict) and 'rury' in body and skupina == 'rodina':
                 zaznam['potrubia'] = body['rury']
         zaznamy[meno] = zaznam

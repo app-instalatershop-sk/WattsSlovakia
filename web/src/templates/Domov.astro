@@ -324,6 +324,11 @@ const popisy = [
     .popis-plast .stitok, .popis-ohyb .stitok { left: -0.75px; bottom: var(--l); border-bottom-left-radius: 2px; }
     .popis-rura .ciara { top: 0; transform-origin: top; }
     .popis-rura .stitok { left: -0.75px; top: var(--l); border-top-left-radius: 2px; }
+    /* Render 3D modelu: bod ohybu je na spodnej hrane tela, štítok visí pod ňou v prázdnom mieste,
+       nie nad bodom na plášti (Juraj 23. 9.: štítok nikdy na plášti). */
+    .je3d .popis-ohyb { --l: 8cqw; }
+    .je3d .popis-ohyb .ciara { top: 0; bottom: auto; transform-origin: top; }
+    .je3d .popis-ohyb .stitok { top: var(--l); bottom: auto; border-radius: clamp(8px, 0.9cqw, 12px); border-top-left-radius: 2px; }
   }
   @keyframes bod { from { opacity: 0; transform: scale(0.3); } to { opacity: 1; transform: none; } }
   @keyframes ciaraY { from { transform: scaleY(0); } to { transform: scaleY(1); } }

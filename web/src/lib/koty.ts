@@ -12,6 +12,8 @@ import rendery from '../data/rendery.json';
 type Smer = 'hore-vpravo' | 'hore-vlavo' | 'dole-vpravo' | 'dole-vlavo';
 export interface Kota {
   x: number; y: number; l: number; smer: Smer; smerM?: Smer;
+  /** Dĺžka čiary na telefóne (inak l). */
+  lM?: number;
   hodnota: string; text: string;
   /** Čo kóta opisuje (plast, rura, ohyb); karta ju podľa toho môže v úzkom poli skryť. */
   kod?: string;
@@ -42,18 +44,32 @@ export function kotyRenderu(piktogram: string | null | undefined, h: Hodnoty): K
  * percentá orezaného obrázka (data/rendery.json). Bez záznamu sa vráti null a stránka použije piktogram.
  */
 export function kotyRenderu3d(druh: 'rady' | 'hlavy' | 'varianty' | 'hero', id: string | null | undefined, h: Hodnoty): Kota[] | null {
-  const b = id ? (rendery as Record<string, Record<string, Partial<Record<'plast' | 'rura' | 'ohyb', Bod>>>>)[druh]?.[id] : undefined;
+  const b = id ? (rendery as Record<string, Record<string, Partial<Record<'plast' | 'rura' | 'ohyb', Bod>> & { lr?: number }>>)[druh]?.[id] : undefined;
   if (!b?.plast || !b.rura || !b.ohyb) return null;
-  // Čelný záber (hlavy, varianty): bod ohybu je pri ľavom konci tela, na telefóne by jeho štítok pod ním
-  // narazil do štítku rúry, preto ide nad bod (cez telo plášťa).
-  return kotyZBodov({ plast: b.plast, rura: b.rura, ohyb: b.ohyb }, h, druh === 'hlavy' || druh === 'varianty' ? 'hore-vpravo' : undefined);
+  const body = { plast: b.plast, rura: b.rura, ohyb: b.ohyb };
+  return druh === 'hlavy' || druh === 'varianty' ? kotyCelne(body, b.lr, h) : kotyZBodov(body, h);
 }
 
-function kotyZBodov(b: { plast: Bod; rura: Bod; ohyb: Bod } | undefined, h: Hodnoty, ohybM?: Smer): Kota[] {
+/**
+ * Čelný záber (hlava radu a varianty): rez je veľký, štítky musia ležať v prázdnom mieste okolo výrobku,
+ * nikdy na plášti (Juraj 23. 9.). Plášť nad rezom doprava, rúra pod spodkom rezu doľava (dĺžku čiary lr
+ * vypočítal data/rendery_web.py z polohy rúry; pri výbere dimenzie ju mení VolbaDimenzie), ohyb pod
+ * telom doľava. Na telefóne rovnako; čiary sa tam skracujú na tri štvrtiny, preto je lM väčšie.
+ */
+export const lmRury = (lr: number) => Math.round((lr / 0.75) * 100) / 100;
+function kotyCelne(b: { plast: Bod; rura: Bod; ohyb: Bod }, lr: number | undefined, h: Hodnoty): Kota[] {
+  const out: Kota[] = [];
+  if (h.plast) out.push({ x: b.plast[0], y: b.plast[1], l: 8, smer: 'hore-vpravo', hodnota: h.plast[0], text: h.plast[1], kod: 'plast' });
+  if (h.rura) out.push({ x: b.rura[0], y: b.rura[1], l: lr ?? 6, lM: lr ? lmRury(lr) : undefined, smer: 'dole-vlavo', hodnota: h.rura[0], text: h.rura[1], kod: 'rura' });
+  if (h.ohyb) out.push({ x: b.ohyb[0], y: b.ohyb[1], l: 5, smer: 'dole-vlavo', hodnota: h.ohyb[0], text: h.ohyb[1], kod: 'ohyb' });
+  return out;
+}
+
+function kotyZBodov(b: { plast: Bod; rura: Bod; ohyb: Bod } | undefined, h: Hodnoty): Kota[] {
   if (!b) return [];
   const out: Kota[] = [];
   if (h.plast) out.push({ x: b.plast[0], y: b.plast[1], l: 8, smer: 'hore-vpravo', smerM: 'hore-vlavo', hodnota: h.plast[0], text: h.plast[1], kod: 'plast' });
   if (h.rura) out.push({ x: b.rura[0], y: b.rura[1], l: 6, smer: 'dole-vlavo', hodnota: h.rura[0], text: h.rura[1], kod: 'rura' });
-  if (h.ohyb) out.push({ x: b.ohyb[0], y: b.ohyb[1], l: 7, smer: 'dole-vpravo', smerM: ohybM, hodnota: h.ohyb[0], text: h.ohyb[1], kod: 'ohyb' });
+  if (h.ohyb) out.push({ x: b.ohyb[0], y: b.ohyb[1], l: 7, smer: 'dole-vpravo', hodnota: h.ohyb[0], text: h.ohyb[1], kod: 'ohyb' });
   return out;
 }

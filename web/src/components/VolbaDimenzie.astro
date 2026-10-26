@@ -16,7 +16,7 @@ import { cislo, kotvaKodu, type Variant } from '../lib/katalog';
 import { stranky } from '../content/stranky';
 import { type Lang, t } from '../i18n/ui';
 
-type Body = { plast?: number[]; rura?: number[]; ohyb?: number[] };
+type Body = { plast?: number[]; rura?: number[]; ohyb?: number[]; lr?: number };
 /** obrazy: render presnej dimenzie (3D model, čelný záber v spoločnom rámci s hlavou) podľa obj. čísla;
  *  bodyHlavy: body kót na obraze hlavy (návrat pri „Všetky“). Bez nich sa menia len čísla. */
 export interface ObrazVariantu { avif: string; webp: string; src: string; body: Body }
@@ -144,7 +144,7 @@ const maPlast = skupiny.some((g) => g.vs.length > 1);
   /* Obraz presnej dimenzie nad obrazom hlavy (rovnaký rámec), kóty sa presúvajú plynulo. */
   :global(.hs-tien) { position: relative; }
   :global(.volba-obr img) { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 380ms var(--ease-soft); }
-  :global(.hlava [data-koty] .kota) { transition: left 520ms var(--ease-pruzina), top 520ms var(--ease-pruzina); }
+  :global(.hlava [data-koty] .kota) { transition: left 520ms var(--ease-pruzina), top 520ms var(--ease-pruzina), --dlzka 520ms var(--ease-pruzina); }
   @media (prefers-reduced-motion: reduce) { :global(.hlava [data-koty] .kota) { transition: none; } }
   :global(.zk-kruh) { position: absolute; left: -7px; top: -7px; width: 14px; height: 14px; border-radius: 50%; box-shadow: 0 0 0 2px var(--color-blue-700); pointer-events: none; }
 
@@ -157,7 +157,7 @@ const maPlast = skupiny.some((g) => g.vs.length > 1);
 </style>
 
 <script>
-  type Body = { plast?: number[]; rura?: number[]; ohyb?: number[] };
+  type Body = { plast?: number[]; rura?: number[]; ohyb?: number[]; lr?: number };
   type Obr = { avif: string; webp: string; src: string; body: Body };
   type V = { obj: string; kotva: string; l2: string; kp: string | null; kpt: string | null; kr: string; ko: string | null; fakty: string; tr: string; ti: string; obr: Obr | null };
   type Data = { model: string; detail: string; vybrat: string; objText: string; bodyHlavy: Body | null; skupiny: { k: string; vs: V[] }[] };
@@ -210,6 +210,9 @@ const maPlast = skupiny.some((g) => g.vs.length > 1);
         const li = koty[id].li, bod = b[id];
         if (li && bod) { li.style.setProperty('--x', `${bod[0]}%`); li.style.setProperty('--y', `${bod[1]}%`); }
       }
+      // Čiara k rúre: štítok visí pod spodkom rezu, nie na plášti (lr z data/rendery_web.py, lM ako v lib/koty.ts).
+      const lr = koty.rura.li;
+      if (lr && b.lr) { lr.style.setProperty('--l', String(b.lr)); lr.style.setProperty('--lm', String(Math.round((b.lr / 0.75) * 100) / 100)); }
     };
     const ukazObraz = async (o: Obr | null, animuj: boolean) => {
       if (!tien || !zakladny || !data.bodyHlavy) return;

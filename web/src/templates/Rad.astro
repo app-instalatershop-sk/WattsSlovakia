@@ -72,7 +72,7 @@ const faktyHlavy = kotyHlavy.length >= 2 ? [] : fakty;
 
 // Živé kóty s obrazom: ku každej dimenzii render vlastného 3D modelu v tom istom rámci ako čelný záber
 // hlavy (data/rendery_web.py, spoločný rámec), výber dimenzie ho prelínaním ukáže a kóty presunie.
-type Body3d = { plast?: number[]; rura?: number[]; ohyb?: number[] };
+type Body3d = { plast?: number[]; rura?: number[]; ohyb?: number[]; lr?: number };
 const klucObj = (s: string) => s.replace(/[^A-Za-z0-9]/g, '');
 const bodyVariantov = rendery.varianty as Record<string, Body3d>;
 const obrazyVariantov: Record<string, ObrazVariantu> = hlava3d ? Object.fromEntries((await Promise.all(varianty.map(async (v) => {

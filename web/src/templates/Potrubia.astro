@@ -10,7 +10,7 @@ import Hlava from '../components/Hlava.astro';
 import Zaver from '../components/Zaver.astro';
 import Ikona from '../components/Ikona.astro';
 import { kategorie, cestaKategorie, cestaRadu, kNazov, kKratky, kPopis, rNazov, rMedium, cislo, rozsah, rozsahRur, tlakyRadov, tlakText, type Kategoria, type Rad, type Variant } from '../lib/katalog';
-import { obrazPiktogramu, je3d, fotka } from '../lib/obrazky';
+import { obrazPiktogramu, je3d, fotka, render3d } from '../lib/obrazky';
 import { sadzba } from '../lib/sadzba';
 import { stranky } from '../content/stranky';
 import { type Lang, t, route, staticAlternates, KATALOG_PDF } from '../i18n/ui';
@@ -25,7 +25,8 @@ const diely = vsetky.filter((k) => k.typ !== 'potrubie');
 const rady = (await getCollection('rady')).map((r) => r.data).sort((a, b) => a.poradie - b.poradie);
 const varianty = (await getCollection('varianty')).map((v) => v.data);
 const produkty = (await getCollection('produkty')).map((p) => p.data);
-const rodina = fotka('rodina-potrubi.png')!;
+// Rodina systémov z vlastného 3D modelu (data/blender), kým nie je, render Watts.
+const rodina = render3d('rodina', 'rodina') ?? fotka('rodina-potrubi.png')!;
 const obrazDielov: Record<string, string> = { spojky: 'montaz-odbocka.jpg', prislusenstvo: 'montaz-koleno.jpg' };
 
 const radyKat = (k: Kategoria) => rady.filter((r) => r.kategoria === k.id);

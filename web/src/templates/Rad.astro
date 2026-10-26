@@ -89,7 +89,8 @@ const bodyHlavy = hlava3d ? (rendery.hlavy as Record<string, Body3d>)[r.id] : un
 const vrstvy = obsah ? (['rura', 'pena', 'plast'] as const).map((id) => {
   const v = obsah.vrstvy[id];
   const kluc = id === 'plast' ? (plastRozsah ? `Ø ${plastRozsah}` : 'HDPE') : id === 'rura' && ruraRozsah && !/^\d/.test(v.kluc ?? '') ? `Ø ${ruraRozsah}, ${v.kluc?.replace(/^PE-Xa, |^PE 100, /, '')}` : v.kluc ?? '';
-  return { id, nazov: tx.vrstvy[id], kluc, text: v.text, img: detail(`vrstva-${id}.jpg`)! };
+  // Makro materiálu z 3D modelu, kým nie je, dočasný výrez z podkladov Watts.
+  return { id, nazov: tx.vrstvy[id], kluc, text: v.text, img: (id === 'rura' ? makroRury(k.id) : render3d('makra', id)) ?? detail(`vrstva-${id}.jpg`)! };
 }) : [];
 // Rozložený rez radu z 3D modelu (Juraj 26. 10. 2026: domov aj stránky radov): namiesto líp, keď sú snímky.
 // Vrstvy v poradí, v akom sa pri rolovaní oddelia (plášť, pena, rúra); v lupe makro materiálu, keď je.

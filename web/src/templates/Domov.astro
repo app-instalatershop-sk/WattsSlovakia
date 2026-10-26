@@ -43,7 +43,8 @@ const hero3d = render3d('hero', 'duo');
 const heroRez = hero3d ?? fotka('hero-rez-duo.png')!;
 const heroBody = hero3d ? (rendery.hero as Record<string, { plast?: number[]; rura?: number[]; ohyb?: number[]; stred?: number[] }>).duo : undefined;
 const heroMaska = hero3d ? maska3d(hero3d) : undefined;
-const rodina = fotka('rodina-potrubi.png')!;
+const rodina3d = render3d('rodina', 'rodina');
+const rodina = rodina3d ?? fotka('rodina-potrubi.png')!;
 const kotuc = fotka('kotuc.jpg')!;
 // Rez výkopom s dvomi potrubiami (render z katalógu Watts): obraz trasy pre kartu konfigurátora.
 const trasa = fotka('vykop-rez.jpg')!;
@@ -123,7 +124,7 @@ const popisy = [
         <p class="lead">{sadzba(h.rodinaP)}</p>
       </div>
       <div class="rodina-obraz">
-        <div class="rodina-wrap"><Obraz src={rodina} alt={h.rodinaAlt} widths={[800, 1200, 1633]} sizes="(max-width: 1100px) 100vw, 64vw" class="rodina-img" /></div>
+        <div class:list={['rodina-wrap', { je3d: rodina3d }]}><Obraz src={rodina} alt={h.rodinaAlt} widths={[800, 1200, 1633]} sizes="(max-width: 1100px) 100vw, 64vw" class="rodina-img" /></div>
       </div>
     </div>
   </section>
@@ -339,6 +340,9 @@ const popisy = [
   /* Render je veľký a vždy dobehne za pravý okraj obrazovky, aj na širokom monitore. */
   .rodina-obraz { width: max(146%, calc(104% + var(--bleed) + 24px)); max-width: none; margin: -196px 0 0 -4%; position: relative; z-index: 2; }
   .rodina-wrap { filter: drop-shadow(0 28px 36px rgb(11 27 51 / 0.2)); }
+  /* Rodina z 3D modelu: celé telá a vlastný kontaktný tieň, bez doznenia a bez tieňa z CSS. */
+  .rodina-wrap.je3d { filter: none; }
+  .rodina-wrap.je3d :global(.rodina-img) { -webkit-mask-image: none; mask-image: none; }
   .rodina-wrap :global(.rodina-img) { width: 100%; height: auto; display: block; -webkit-mask-image: linear-gradient(to top right, #000 66%, transparent 97%); mask-image: linear-gradient(to top right, #000 66%, transparent 97%); }
 
 

@@ -9,7 +9,7 @@ import Hlava from '../components/Hlava.astro';
 import Zaver from '../components/Zaver.astro';
 import Ikona from '../components/Ikona.astro';
 import { clanky, alternatyClanku, type Clanok } from '../content/clanky';
-import { fotka } from '../lib/obrazky';
+import { render3d, fotka } from '../lib/obrazky';
 import { sadzba } from '../lib/sadzba';
 import { type Lang, route, KATALOG_PDF } from '../i18n/ui';
 
@@ -19,7 +19,7 @@ const tx = {
   sk: { poradna: 'Poradňa', obsah: 'V článku', zdroj: 'Zdroj', katalog: (s: string) => `Katalóg Watts Microflex, s. ${s}`, citanie: (n: number) => `${n} min čítania`, suvisiace: 'Ďalej', dalsie: 'Ďalšie články' },
   cs: { poradna: 'Poradna', obsah: 'V článku', zdroj: 'Zdroj', katalog: (s: string) => `Katalog Watts Microflex, s. ${s}`, citanie: (n: number) => `${n} min čtení`, suvisiace: 'Dále', dalsie: 'Další články' },
 }[lang];
-const obraz = fotka(c.obraz);
+const obraz = (c.obraz === 'rodina-potrubi.png' ? render3d('rodina', 'rodina') : undefined) ?? fotka(c.obraz);
 // Obrázky s bielym pozadím (render rezu, kotúč) sa násobia do poľa hlavy; v zaoblenom ráme fotky by
 // biela časť kotúča vyzerala ako prázdny výrez.
 const druh = c.obraz.endsWith('.png') ? 'render' : c.obraz === 'rez-render.jpg' || c.obraz === 'kotuc.jpg' ? 'biely' : 'foto';

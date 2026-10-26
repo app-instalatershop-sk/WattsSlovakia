@@ -86,24 +86,28 @@ def renderove_png(zdroj):
 
 
 def spolocny_ramec():
-    """Zjednotenie obrysov (výrobok aj tieň) všetkých čelných záberov hláv a variantov s okrajom."""
-    x0 = y0 = 10 ** 9
-    x1 = y1 = 0
-    rozmer = None
+    """Zjednotenie obrysov (výrobok aj tieň) všetkých čelných záberov hláv a variantov s okrajom.
+
+    V jednotkách šírky obrázka: hlavy sú 2000 px, varianty 1600 px, kamera aj pomer strán sú rovnaké
+    (data/blender: --ramec jednotny), takže ten istý výrez v pomere k šírke sedí na oba."""
+    x0 = y0 = float('inf')
+    x1 = y1 = 0.0
+    pomer = None
     for sk in SPOLOCNY_RAMEC:
         for png in renderove_png(ZDROJ / sk) if (ZDROJ / sk).is_dir() else []:
             objekt = Image.open(png).convert('RGBA')
-            rozmer = rozmer or objekt.size
-            if objekt.size != rozmer:
-                print(f'POZOR: {png.name} má iný rozmer {objekt.size} ako {rozmer}, spoločný rámec nesedí')
+            w, h = objekt.size
+            pomer = pomer or h / w
+            if abs(h / w - pomer) > 0.002:
+                print(f'POZOR: {png.name} má iný pomer strán {w} × {h}, spoločný rámec nesedí')
             tien = png.with_name(png.stem + '-tien.png')
             spolu = Image.alpha_composite(Image.open(tien).convert('RGBA'), objekt) if tien.exists() else objekt
             bb = bbox_alfa(spolu)
-            x0, y0, x1, y1 = min(x0, bb[0]), min(y0, bb[1]), max(x1, bb[2]), max(y1, bb[3])
-    if not rozmer:
+            x0, y0, x1, y1 = min(x0, bb[0] / w), min(y0, bb[1] / w), max(x1, bb[2] / w), max(y1, bb[3] / w)
+    if pomer is None:
         return None
-    m = round(OKRAJ * max(x1 - x0, y1 - y0))
-    return max(0, x0 - m), max(0, y0 - m), min(rozmer[0], x1 + m), min(rozmer[1], y1 + m)
+    m = OKRAJ * max(x1 - x0, y1 - y0)
+    return max(0.0, x0 - m), max(0.0, y0 - m), min(1.0, x1 + m), min(pomer, y1 + m)
 
 
 RAMEC = None
@@ -120,7 +124,7 @@ def spracuj(skupina):
     zaznamy = {}
     if skupina in SPOLOCNY_RAMEC and RAMEC is None:
         RAMEC = spolocny_ramec()
-        print('spoločný rámec hláv a variantov:', RAMEC)
+        print('spoločný rámec hláv a variantov (v šírkach obrázka):', RAMEC and tuple(round(v, 4) for v in RAMEC))
     for png in renderove_png(zdroj):
         meno = png.stem
         objekt = Image.open(png).convert('RGBA')
@@ -129,7 +133,8 @@ def spracuj(skupina):
         if skupina == 'makra':
             x0, y0, x1, y1 = 0, 0, spolu.width, spolu.height
         elif skupina in SPOLOCNY_RAMEC and RAMEC:
-            x0, y0, x1, y1 = RAMEC
+            x0, y0, x1, y1 = (round(v * objekt.width) for v in RAMEC)
+            x1, y1 = min(x1, objekt.width), min(y1, objekt.height)
         else:
             bb = bbox_alfa(spolu)
             m = round(OKRAJ * max(bb[2] - bb[0], bb[3] - bb[1]))

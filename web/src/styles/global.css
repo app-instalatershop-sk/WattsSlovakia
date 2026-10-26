@@ -83,6 +83,9 @@
   /* Obraz.astro (AVIF so záložným WebP) obaľuje <img> do <picture>; ten nemá vlastný box, rozloženie
      a štýly sa správajú, akoby tam bol len <img>. */
   picture { display: contents; }
+  /* <source> nemá v štýloch prehliadača display: none; s picture bez boxu by sa v mriežke či flexe stal
+     prázdnou položkou a obrázok by skočil do ďalšieho stĺpca (Výber, krok 2, opravené 26. 10. 2026). */
+  picture > source { display: none; }
   a { color: var(--color-blue-700); text-decoration: none; transition: color 150ms var(--ease-soft); }
   a:hover { color: var(--color-blue-800); }
   p { margin: 0; text-wrap: pretty; }

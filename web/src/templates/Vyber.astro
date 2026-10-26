@@ -187,10 +187,12 @@ const obrazky = await Promise.all(systemy.map(async ({ k }) => { const p = pikto
   .krok-c { flex: none; width: 44px; height: 44px; border-radius: var(--radius-l); display: grid; place-items: center; background: var(--color-blue-900); color: #fff; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 700; font-size: 20px; box-shadow: var(--elev-1); }
   .krok-hlava h2 { font-size: clamp(24px, 1.2vw + 16px, 32px); letter-spacing: -0.02em; }
 
-  .volby-k1 { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 18px; }
+  /* Krok 1: render systému prekračuje hornú hranu karty (zásada z 21. 9.: priehľadný render je predmet,
+     nie obrázok v rámčeku); karta je podstavec s názvom. Predtým päť rovnakých kariet s malým renderom. */
+  .volby-k1 { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 40px 18px; padding-top: 34px; }
   .volba-k, .volba-r { position: relative; border: 0; font: inherit; color: var(--color-ink); text-align: left; cursor: pointer; transition: transform 200ms var(--ease-soft), box-shadow 200ms var(--ease-soft); }
-  .volba-k { display: flex; flex-direction: column; gap: 4px; padding: 16px 18px 20px; }
-  .volba-k img { width: 100%; height: auto; aspect-ratio: 9 / 7; object-fit: contain; filter: drop-shadow(0 14px 14px rgb(11 27 51 / 0.2)); margin-bottom: 6px; transition: transform 300ms var(--ease-soft); }
+  .volba-k { display: flex; flex-direction: column; gap: 4px; padding: 0 18px 20px; }
+  .volba-k img { width: calc(100% + 16px); max-width: none; height: auto; aspect-ratio: 9 / 7; margin: -40px -8px 6px; object-fit: contain; object-position: center bottom; filter: drop-shadow(0 18px 16px rgb(11 27 51 / 0.24)); transition: transform 300ms var(--ease-soft); }
   @media (hover: hover) and (pointer: fine) { .volba-k:hover, .volba-r:hover { transform: translateY(-3px); } }
   @media (hover: hover) and (pointer: fine) { .volba-k:hover img { transform: translateY(-3px); } }
   .volba-k[aria-checked="true"], .volba-r[aria-checked="true"] { box-shadow: 0 0 0 3px var(--color-blue-700), var(--elev-3); }
@@ -288,7 +290,7 @@ const obrazky = await Promise.all(systemy.map(async ({ k }) => { const p = pikto
   }
   @media (max-width: 1100px) { .volby-k1 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
   @media (max-width: 900px) { .k3 { grid-template-columns: minmax(0, 1fr); } }
-  @media (max-width: 760px) { .volby-k1 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; } .volba-k { padding: 12px 14px 16px; } .k3 { padding: 22px 18px; } }
+  @media (max-width: 760px) { .volby-k1 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 44px 12px; padding-top: 28px; } .volba-k { padding: 0 14px 16px; } .volba-k img { margin-top: -30px; } .k3 { padding: 22px 18px; } }
 </style>
 
 <script>

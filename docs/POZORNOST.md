@@ -63,8 +63,10 @@ podľa všetkého ako podiel ľudskej hranice na fotkách).
 Správa s mapami: `data/_pozornost/2026-10-26-1307/index.html` (10 stránok, desktop a mobil, dva varianty).
 
 - **Nadpis nesie hlavné stránky:** domov, Potrubia, kategória, rad, Pre firmy a Výber majú na nadpise 15 až 26 %
-  pozornosti (2 až 3,5× viac, než zodpovedá jeho ploche). Na stránkach Spojky, diel, Referencie a Na stiahnutie len
-  6 až 8 %: nad nadpisom sú drobčeky a nadnadpis a pozornosť sa rozdelí.
+  pozornosti (2 až 3,5× viac, než zodpovedá jeho ploche). Na stránkach Spojky, diel, Referencie a Na stiahnutie
+  6 až 8 %, lebo nadpis je krátky; na jednotku plochy má aj tam na desktope 2,3 až 2,9×, slabý teda nie je.
+- **Drobčeky** majú na desktope 5 až 9 % a na mobile 9 až 15 %. Najviac na stránkach dielov, kde sa cesta na mobile
+  zalomí do dvoch riadkov; jeden odkaz o úroveň vyššie by tam ubral 4,6 bodu v prospech nadpisu, textu, tlačidla a fotky.
 - **Hlavné žlté tlačidlo** dostane na hlavných stránkach na desktope 1,0 až 1,4 % a na mobile 4,4 až 5,5 %. Väčšie
   tlačidlo (písmo 19 px, viac vnútorného okraja) by na mobile zvýšilo podiel na 6,0 až 7,1 % (o 1 až 2 body), na
   desktope o 0,3 až 0,8 bodu.

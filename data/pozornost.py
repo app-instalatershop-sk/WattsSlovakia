@@ -49,7 +49,7 @@ OBLASTI = {
     'Ďalšie odkazy v hlave': ['main .hero-odkaz', 'main .hlava-akcie .odkaz', 'main .btn:not(.btn-yellow)'],
     'Hlavný obraz': ['main .hero-img', 'main .hs-obraz img', 'main .hlava-obraz img', 'main .scena-img'],
     'Kóty na obraze': ['main [data-koty] .stitok', 'main .popisy .stitok'],
-    'Drobčeky': ['main nav[aria-label] ol', '.drobceky'],
+    'Drobčeky': ['main .crumbs'],
 }
 
 

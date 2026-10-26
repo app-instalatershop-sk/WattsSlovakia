@@ -11,7 +11,7 @@ import Obraz from './Obraz.astro';
 import { getCollection } from 'astro:content';
 import Ikona from './Ikona.astro';
 import { kategorie, cestaKategorie, cestaRadu, kKratky, kPopis, rNazov, rozsah, type Kategoria, type Rad } from '../lib/katalog';
-import { piktogram } from '../lib/obrazky';
+import { piktogram, fotkaProduktu } from '../lib/obrazky';
 import { sadzba } from '../lib/sadzba';
 import { type Lang, t, route } from '../i18n/ui';
 
@@ -53,6 +53,13 @@ function panel(k: Kategoria) {
 }
 const panely = potrubia.map(panel);
 const skupiny = (k: Kategoria) => rady.filter((r) => r.kategoria === k.id).sort((a, b) => a.poradie - b.poradie);
+// Skupina dielov dostane výrez jedného typického dielu (DOLADENIE kap. 2.5: riadok odkazov bez obrazu).
+const TYPICKY: Record<string, string> = {
+  'pe-x-spojky-vykurovanie-a-cool': 'pe-x-x-pe-x-spojka-kurenie', 'pe-x-spojky-sanita': 'sanitarne-spojky-microflex-pe-x',
+  'prislusenstvo-spojok': 't-kus-z-bronzu', 'koncovky-a-redukcie': 'teplom-zmrstitelne-hlavice-pre-uno-rurku',
+  'izolacne-sady': 'izolovana-suprava-t-kusu', 'opravne-a-vystrazne-pasky': 'vystrazna-paska', 'prestupy-stenou': 'tesnenie-na-prienik-na-stenu-micro-press',
+};
+const dielSkupiny = (r: Rad) => fotkaProduktu(TYPICKY[r.id] ?? '') ?? r.produkty.map(fotkaProduktu).find(Boolean);
 ---
 <section id="vyber" class="section katalog" aria-labelledby="h-kat">
   <div class="wrap">
@@ -108,9 +115,9 @@ const skupiny = (k: Kategoria) => rady.filter((r) => r.kategoria === k.id).sort(
     <div class="diely">
       <h3>{h.dielyH3}</h3>
       <ul>
-        {diely.flatMap((k) => skupiny(k).map((r) => (
-          <li><a href={`${cestaKategorie(k, lang)}#h-${r.id}`}>{rNazov(r, lang)} <Ikona nazov="chevron-right" velkost={16} /></a></li>
-        )))}
+        {diely.flatMap((k) => skupiny(k).map((r) => { const img = dielSkupiny(r); return (
+          <li><a href={`${cestaKategorie(k, lang)}#h-${r.id}`}>{img && <span class="diel-obr"><Obraz src={img} alt="" width={48} height={48} densities={[1, 2]} /></span>}<span>{rNazov(r, lang)}</span> <Ikona nazov="chevron-right" velkost={16} /></a></li>
+        ); }))}
       </ul>
     </div>
   </div>
@@ -192,8 +199,13 @@ const skupiny = (k: Kategoria) => rady.filter((r) => r.kategoria === k.id).sort(
 
   .diely { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px 28px; margin-top: 56px; padding-top: 28px; border-top: var(--line); }
   .diely h3 { font-family: var(--font-text); font-stretch: 100%; font-size: 16px; font-weight: 600; letter-spacing: 0; }
-  .diely ul { display: flex; flex-wrap: wrap; gap: 10px 26px; }
+  .diely ul { display: flex; flex-wrap: wrap; gap: 6px 26px; }
   .diely li a { display: inline-flex; align-items: center; gap: 4px; font-size: 15px; font-weight: 500; }
+  /* Výrez dielu stojí pri názve skupiny s tieňom dopadu, ako diely na podlahe štúdia. */
+  .diel-obr { position: relative; flex: none; display: grid; place-items: center; width: 48px; height: 48px; margin-right: 6px; }
+  .diel-obr::before { content: ""; position: absolute; left: 10%; right: 10%; bottom: 2px; height: 8px; border-radius: 50%; background: radial-gradient(closest-side, rgb(10 42 94 / 0.22), rgb(10 42 94 / 0)); }
+  .diel-obr :global(img) { position: relative; width: 48px; height: 48px; object-fit: contain; transition: transform 300ms var(--ease-soft); }
+  @media (hover: hover) and (pointer: fine) { .diely li a:hover .diel-obr :global(img) { transform: translateY(-3px); } }
   .diely li :global(svg) { width: 15px; height: 15px; }
 
   /* Pod 1 100 px: register je vodorovný pás záložiek, popis pod ním, rendery ako koľajnica na posun prstom. */

@@ -80,3 +80,51 @@ Otázka pre manažéra (dokument „Microflex Slovensko: otázky pre manažéra�
 pri obj. číslach z exportu e-shopu. Rozhodnutie z 21. 9. je „fáza 1 bez cien“.
 
 **Hotové 23. 9.:** otázka č. 9 v dokumente pre manažéra.
+
+## Krok 5: Hlava stránky podľa merania pozornosti
+
+Juraj 26. 10. 2026 odsúhlasil úpravy A a C z porovnania variantov (nástroj pozornosti, `docs/POZORNOST.md`);
+úpravu B (väčší nadpis na podstránkach) nie, pridala by len plochu. Implementácia, keď ju Juraj spustí.
+Čísla v zátvorkách sú odhad pozornosti v prvých 3 s z testu variantov.
+
+### A. Väčšie hlavné tlačidlo v hlave stránky
+
+1. **Trieda `.btn-lg` v `web/src/styles/global.css`** hneď pri `.btn`: výška 56 px, vnútorný okraj 0 30 px,
+   písmo 18 px s hrúbkou 600, ikonka 18 px ostane. Pre `.btn-yellow.btn-lg` jemný žltý tieň
+   `0 12px 24px -12px rgb(176 138 0 / 0.65)` popri dnešnom `inset 0 1px 0 rgb(255 255 255 / 0.35)`,
+   pri prejdení myšou o niečo silnejší. Farba, rohy (`--radius-s`) a šípka ostanú.
+2. **`btn-lg` dostane len hlavné tlačidlo v hlave stránky**, 9 miest: Domov (Vybrať potrubie,
+   `Domov.astro`), Potrubia (Sprievodca výberom), Kategória (Rady a obj. čísla), Rad (Vybrať dimenziu), Produkt
+   (Obj. čísla, pri dieli bez tabuľky Otvoriť katalóg; obe vetvy), Pre firmy (Dopyt na projekt), Na stiahnutie
+   (Stiahnuť katalóg PDF), Poradňa (Články). Ostatné žlté tlačidlá ostanú: záver Do e-shopu, formuláre (dopyt, hľadanie, 404),
+   výsledky sprievodcu výberom a tlačidlá v tele stránky.
+3. **Mobil:** šírka podľa textu ako dnes. Pri 360 px skontrolovať riadok s odkazom vedľa tlačidla (Dopyt
+   na projekt, Kúpiť v e-shope, Hľadať v e-shope); ak sa nezmestí, zalomí sa pod tlačidlo ako dnes.
+
+Hotovo, keď má 9 hláv väčšie tlačidlo pri 1440 aj 390 px, ostatné tlačidlá sa nezmenili, CLS ostane 0
+a meranie pozornosti dá podobné čísla ako test (mobil domov okolo 7 % namiesto 4,7 %, desktop 1,3 až 2,0 %).
+
+### C. Kratšie drobčeky na mobile
+
+1. **Len CSS v `global.css` pri `.crumbs`**, do šírky 760 px: zobraziť iba predposlednú položku (stránku
+   o úroveň vyššie) a namiesto lomky pred ňou „‹“ (`::before`, znak U+2039 je v podmnožine písma).
+   Pravidlo pokryje drobčeky v hlave (`Hlava.astro`, rozloženie vedľa aj štúdio) aj drobčeky stránok bez hlavy
+   (`Base.astro`). Diel: „‹ Príslušenstvo spojok“, rad: „‹ Vykurovanie“, stránka s jednou úrovňou: „‹ Domov“.
+2. **Dotyková plocha** odkazu na mobile aspoň 44 px na výšku: vnútorný okraj vyrovnaný rovnako veľkým
+   záporným okrajom, aby sa hlava neposunula.
+3. **Bez zmeny:** desktop (celá cesta), štruktúrované dáta BreadcrumbList v `Base.astro`, texty položiek
+   a označenie „Kde ste“. Skryté položky čítačka obrazovky na mobile nečíta, rovnako ako ich nevidno.
+
+Hotovo, keď majú stránky dielov, radov, kategórií a podstránky pri 390 px jeden riadok „‹ …“, desktop sa
+na snímkach pred a po nezmenil a meranie pozornosti na stránke dielu na mobile dá na drobčekoch okolo
+11 % (dnes 15,3 %).
+
+### Overenie po A a C
+
+1. `npm run build` a `python data/kontrola_webu.py` (0 chybných odkazov), slovenská aj česká verzia.
+2. Snímky hláv pri 1440 a 390 px pred a po: domov, Potrubia, Vykurovanie, DUO 6 bar, T-kus z bronzu,
+   Pre firmy, Na stiahnutie, Poradňa a jeden článok.
+3. `data/pozornost.py` na tých istých stránkach, výsledok do `docs/POZORNOST.md`.
+4. Lighthouse na mobile pre domov a stránku dielu (čakám bez zmeny, 90 a viac).
+5. Pravidlá do `docs/DESIGN.md` (veľkosť hlavného tlačidla, drobčeky na mobile), sem „Hotové“ s dátumom,
+   commit bez pushu.

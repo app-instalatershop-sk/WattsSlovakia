@@ -16,7 +16,8 @@ import Subory from '../components/Subory.astro';
 import Scena from '../components/Scena.astro';
 import CastiStranky from '../components/CastiStranky.astro';
 import Kopirovanie from '../components/Kopirovanie.astro';
-import VolbaDimenzie from '../components/VolbaDimenzie.astro';
+import VolbaDimenzie, { type ObrazVariantu } from '../components/VolbaDimenzie.astro';
+import rendery from '../data/rendery.json';
 import { kategorie, radyKategorie, variantyRadu, cestaKategorie, cestaRadu, cestaProduktu, alternatyRadu, kKratky, rNazov, rKratky, rMedium, rOznacenie, pNazov, cislo, rozsah, rozsahRur, tlakText, kotvaKodu, type Kategoria, type Rad } from '../lib/katalog';
 import { piktogram, render3d, fotkaRadu, detail, fotkaReferencie, rozkladRadu, makroRury } from '../lib/obrazky';
 import Rozklad from '../components/Rozklad.astro';
@@ -68,6 +69,21 @@ const hodnotyHlavy = {
 };
 const kotyHlavy = (hlava3d ? kotyRenderu3d('hlavy', r.id, hodnotyHlavy) : rad3d ? kotyRenderu3d('rady', r.id, hodnotyHlavy) : null) ?? kotyRenderu(r.piktogram, hodnotyHlavy);
 const faktyHlavy = kotyHlavy.length >= 2 ? [] : fakty;
+
+// Živé kóty s obrazom: ku každej dimenzii render vlastného 3D modelu v tom istom rámci ako čelný záber
+// hlavy (data/rendery_web.py, spoločný rámec), výber dimenzie ho prelínaním ukáže a kóty presunie.
+type Body3d = { plast?: number[]; rura?: number[]; ohyb?: number[] };
+const klucObj = (s: string) => s.replace(/[^A-Za-z0-9]/g, '');
+const bodyVariantov = rendery.varianty as Record<string, Body3d>;
+const obrazyVariantov: Record<string, ObrazVariantu> = hlava3d ? Object.fromEntries((await Promise.all(varianty.map(async (v) => {
+  const img = render3d('varianty', klucObj(v.obj_cislo));
+  const body = bodyVariantov[klucObj(v.obj_cislo)];
+  if (!img || !body) return null;
+  const [a8, a14, w8, w14] = await Promise.all(([[800, 'avif'], [1400, 'avif'], [800, 'webp'], [1400, 'webp']] as const)
+    .map(([width, format]) => getImage({ src: img, width, format, quality: format === 'avif' ? 55 : 82 })));
+  return [v.obj_cislo, { avif: `${a8.src} 800w, ${a14.src} 1400w`, webp: `${w8.src} 800w, ${w14.src} 1400w`, src: w14.src, body }] as const;
+}))).filter((x): x is NonNullable<typeof x> => x !== null)) : {};
+const bodyHlavy = hlava3d ? (rendery.hlavy as Record<string, Body3d>)[r.id] : undefined;
 
 // Stavba pod lupou: kľúčové číslo plášťa berie rozsah z tabuľky, nosnej rúry aj priemery.
 const vrstvy = obsah ? (['rura', 'pena', 'plast'] as const).map((id) => {
@@ -125,7 +141,7 @@ const productLd = [{
   <Hlava lang={lang} nadpis={nazov} drobceky={drobceky} pred={[kKratky(k, lang), ruryText].filter(Boolean).join(', ')} lead={kratky ?? undefined} obraz={pikto} obrazAlt={ui.rad.fotoAlt(nazov)} obrazMax={860} prechod={`rad-${r.id}`} koty={kotyHlavy} kotyLabel={ui.home.popisy.label} rozlozenie="studio">
     {faktyHlavy.length > 0 && <dl class="hlava-fakty">{faktyHlavy.map(([dt, dd]) => <div><dt>{dt}</dt><dd>{dd}</dd></div>)}</dl>}
     {/* Živé kóty: výber dimenzie nad renderom prepíše kóty na ňom (len keď sú na obraze aspoň dve). */}
-    {kotyHlavy.length >= 2 && varianty.length > 1 && <VolbaDimenzie slot="nad-obrazom" lang={lang} varianty={varianty} pocetRur={r.pocet_rur} model={model} />}
+    {kotyHlavy.length >= 2 && varianty.length > 1 && <VolbaDimenzie slot="nad-obrazom" lang={lang} varianty={varianty} pocetRur={r.pocet_rur} model={model} obrazy={obrazyVariantov} bodyHlavy={bodyHlavy} />}
     <div class="hlava-akcie">
       <a class="btn btn-yellow btn-lg" href="#varianty" data-cta><span data-cta-text>{tx.vybrat}</span> <Ikona nazov="arrow-down" velkost={18} /></a>
       <a class="odkaz" href={eshop} target="_blank" rel="noopener">{tx.kupit} <Ikona nazov="external-link" velkost={16} /></a>

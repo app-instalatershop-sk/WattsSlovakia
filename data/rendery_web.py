@@ -20,13 +20,14 @@ Spustenie: C:/Users/krist/nastroje/web/.venv/Scripts/python.exe -I data/rendery_
 """
 import json
 import math
+import os
 import sys
 from pathlib import Path
 
 from PIL import Image
 
 REPO = Path(__file__).resolve().parent.parent
-ZDROJ = REPO / 'data' / '_3d' / 'web'
+ZDROJ = Path(os.environ.get('MFX_3D_ZDROJ', REPO / 'data' / '_3d' / 'web'))
 CIEL = REPO / 'web' / 'src' / 'assets' / '3d'
 DATA = REPO / 'web' / 'src' / 'data'
 SIRKA = {'rady': 1400, 'hlavy': 1800, 'varianty': 1400, 'hero': 2600, 'rodina': 2400, 'makra': 1200}
@@ -36,6 +37,9 @@ OKRAJ = 0.025
 OHYB_X = {'hero': 0.74}
 # Skupiny, ktorých výrobok vybieha za pravý okraj (hero): vpravo sa neorezáva a neodsadzuje.
 BEZ_OREZU_VPRAVO = {'hero'}
+# Čelné zábery hláv a variantov majú spoločný rámec (zjednotenie obrysov všetkých): pri výbere dimenzie
+# sa obraz prelína na mieste a mení sa len vnútro rezu, nie poloha ani veľkosť plášťa.
+SPOLOCNY_RAMEC = ('hlavy', 'varianty')
 UHOL_PLAST = 112.0  # stupne od vodorovnej osi proti smeru hodinových ručičiek: okraj čela vľavo hore
 
 skupiny = sys.argv[1:] or list(SIRKA)
@@ -77,7 +81,36 @@ def body_kot(body, objekt, ramec, w_crop, h_crop, ohyb_x=0.10):
     return out
 
 
+def renderove_png(zdroj):
+    return [p for p in sorted(zdroj.glob('*.png')) if not p.stem.endswith(('-tien', '-cisty', '-na-bielom', '-maska'))]
+
+
+def spolocny_ramec():
+    """Zjednotenie obrysov (výrobok aj tieň) všetkých čelných záberov hláv a variantov s okrajom."""
+    x0 = y0 = 10 ** 9
+    x1 = y1 = 0
+    rozmer = None
+    for sk in SPOLOCNY_RAMEC:
+        for png in renderove_png(ZDROJ / sk) if (ZDROJ / sk).is_dir() else []:
+            objekt = Image.open(png).convert('RGBA')
+            rozmer = rozmer or objekt.size
+            if objekt.size != rozmer:
+                print(f'POZOR: {png.name} má iný rozmer {objekt.size} ako {rozmer}, spoločný rámec nesedí')
+            tien = png.with_name(png.stem + '-tien.png')
+            spolu = Image.alpha_composite(Image.open(tien).convert('RGBA'), objekt) if tien.exists() else objekt
+            bb = bbox_alfa(spolu)
+            x0, y0, x1, y1 = min(x0, bb[0]), min(y0, bb[1]), max(x1, bb[2]), max(y1, bb[3])
+    if not rozmer:
+        return None
+    m = round(OKRAJ * max(x1 - x0, y1 - y0))
+    return max(0, x0 - m), max(0, y0 - m), min(rozmer[0], x1 + m), min(rozmer[1], y1 + m)
+
+
+RAMEC = None
+
+
 def spracuj(skupina):
+    global RAMEC
     zdroj = ZDROJ / skupina
     if not zdroj.is_dir():
         print(f'{skupina}: chýba {zdroj}, preskakujem')
@@ -85,15 +118,18 @@ def spracuj(skupina):
     ciel = CIEL / skupina
     ciel.mkdir(parents=True, exist_ok=True)
     zaznamy = {}
-    for png in sorted(zdroj.glob('*.png')):
-        if png.stem.endswith(('-tien', '-cisty', '-na-bielom', '-maska')):
-            continue
+    if skupina in SPOLOCNY_RAMEC and RAMEC is None:
+        RAMEC = spolocny_ramec()
+        print('spoločný rámec hláv a variantov:', RAMEC)
+    for png in renderove_png(zdroj):
         meno = png.stem
         objekt = Image.open(png).convert('RGBA')
         tien_cesta = png.with_name(meno + '-tien.png')
         spolu = Image.alpha_composite(Image.open(tien_cesta).convert('RGBA'), objekt) if tien_cesta.exists() else objekt
         if skupina == 'makra':
             x0, y0, x1, y1 = 0, 0, spolu.width, spolu.height
+        elif skupina in SPOLOCNY_RAMEC and RAMEC:
+            x0, y0, x1, y1 = RAMEC
         else:
             bb = bbox_alfa(spolu)
             m = round(OKRAJ * max(bb[2] - bb[0], bb[3] - bb[1]))

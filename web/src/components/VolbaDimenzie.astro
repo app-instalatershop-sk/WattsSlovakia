@@ -16,8 +16,12 @@ import { cislo, kotvaKodu, type Variant } from '../lib/katalog';
 import { stranky } from '../content/stranky';
 import { type Lang, t } from '../i18n/ui';
 
-interface Props { lang: Lang; varianty: Variant[]; pocetRur: number | null; model: string }
-const { lang, varianty, pocetRur, model } = Astro.props;
+type Body = { plast?: number[]; rura?: number[]; ohyb?: number[] };
+/** obrazy: render presnej dimenzie (3D model, čelný záber v spoločnom rámci s hlavou) podľa obj. čísla;
+ *  bodyHlavy: body kót na obraze hlavy (návrat pri „Všetky“). Bez nich sa menia len čísla. */
+export interface ObrazVariantu { avif: string; webp: string; src: string; body: Body }
+interface Props { lang: Lang; varianty: Variant[]; pocetRur: number | null; model: string; obrazy?: Record<string, ObrazVariantu>; bodyHlavy?: Body }
+const { lang, varianty, pocetRur, model, obrazy = {}, bodyHlavy } = Astro.props;
 const ui = t(lang);
 const tx = stranky(lang).rad;
 
@@ -64,10 +68,11 @@ const data = skupiny.map((g) => ({
       // Filter tabuľky: priemer len pri rade s jednou rúrou (tabuľka filtruje po jednotlivých priemeroch).
       tr: v.rura?.d ? String(v.rura.d) : '',
       ti: v.izolacia ?? '',
+      obr: obrazy[v.obj_cislo] ?? null,
     };
   }),
 }));
-const payload = { model, detail: tx.volbaDetail, vybrat: tx.vybrat, objText: ui.tabulka.obj };
+const payload = { model, detail: tx.volbaDetail, vybrat: tx.vybrat, objText: ui.tabulka.obj, bodyHlavy: bodyHlavy ?? null };
 // Varianty s rovnakým plášťom aj izoláciou (COOL s káblom a bez neho) rozlíši až obj. číslo.
 for (const g of data) if (new Set(g.vs.map((x) => x.l2)).size < g.vs.length) g.vs.forEach((x) => { x.l2 = x.obj; });
 // Riadok výsledku má stálu výšku; s druhou úrovňou (plášť) sa na telefóne zalomí, preto dva riadky.
@@ -133,6 +138,11 @@ const maPlast = skupiny.some((g) => g.vs.length > 1);
   :global(.stitok strong.zk) { position: relative; display: inline-block; }
   :global(.zk-z) { display: inline-block; white-space: pre; }
   :global(.zk-stary) { position: absolute; top: 0; white-space: pre; pointer-events: none; }
+  /* Obraz presnej dimenzie nad obrazom hlavy (rovnaký rámec), kóty sa presúvajú plynulo. */
+  :global(.hs-tien) { position: relative; }
+  :global(.volba-obr img) { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 380ms var(--ease-soft); }
+  :global(.hlava [data-koty] .kota) { transition: left 520ms var(--ease-pruzina), top 520ms var(--ease-pruzina); }
+  @media (prefers-reduced-motion: reduce) { :global(.hlava [data-koty] .kota) { transition: none; } }
   :global(.zk-kruh) { position: absolute; left: -7px; top: -7px; width: 14px; height: 14px; border-radius: 50%; box-shadow: 0 0 0 2px var(--color-blue-700); pointer-events: none; }
 
   @media (max-width: 760px) {
@@ -144,8 +154,10 @@ const maPlast = skupiny.some((g) => g.vs.length > 1);
 </style>
 
 <script>
-  type V = { obj: string; kotva: string; l2: string; kp: string | null; kpt: string | null; kr: string; ko: string | null; fakty: string; tr: string; ti: string };
-  type Data = { model: string; detail: string; vybrat: string; objText: string; skupiny: { k: string; vs: V[] }[] };
+  type Body = { plast?: number[]; rura?: number[]; ohyb?: number[] };
+  type Obr = { avif: string; webp: string; src: string; body: Body };
+  type V = { obj: string; kotva: string; l2: string; kp: string | null; kpt: string | null; kr: string; ko: string | null; fakty: string; tr: string; ti: string; obr: Obr | null };
+  type Data = { model: string; detail: string; vybrat: string; objText: string; bodyHlavy: Body | null; skupiny: { k: string; vs: V[] }[] };
 
   let ac: AbortController | undefined;
 
@@ -181,6 +193,46 @@ const maPlast = skupiny.some((g) => g.vs.length > 1);
       return { li, hodnota, text };
     };
     const koty = { plast: kota('plast'), rura: kota('rura'), ohyb: kota('ohyb') };
+
+    // Obraz presnej dimenzie: nový render sa načíta a prelínaním prekryje obraz hlavy (rovnaký rámec,
+    // mení sa len vnútro rezu). Kóty sa presunú na body nového renderu. „Všetky“ vráti obraz hlavy.
+    const tien = hlava.querySelector<HTMLElement>('.hs-tien');
+    const zakladny = tien?.querySelector<HTMLImageElement>('img');
+    const sizes = zakladny?.getAttribute('sizes') ?? '100vw';
+    let vrstva: HTMLImageElement | null = null;
+    let poradie = 0;
+    const posunKoty = (b: Body | null | undefined) => {
+      if (!b) return;
+      for (const id of ['plast', 'rura', 'ohyb'] as const) {
+        const li = koty[id].li, bod = b[id];
+        if (li && bod) { li.style.setProperty('--x', `${bod[0]}%`); li.style.setProperty('--y', `${bod[1]}%`); }
+      }
+    };
+    const ukazObraz = async (o: Obr | null, animuj: boolean) => {
+      if (!tien || !zakladny || !data.bodyHlavy) return;
+      const moje = ++poradie;
+      if (!o) {
+        const stara = vrstva; vrstva = null;
+        if (stara) { stara.style.opacity = '0'; setTimeout(() => stara.closest('picture')?.remove(), animuj && !reduce ? 420 : 0); }
+        posunKoty(data.bodyHlavy);
+        return;
+      }
+      const pic = document.createElement('picture');
+      pic.className = 'volba-obr';
+      const zdroj = document.createElement('source');
+      zdroj.type = 'image/avif'; zdroj.srcset = o.avif; zdroj.sizes = sizes;
+      const img = document.createElement('img');
+      img.alt = ''; img.srcset = o.webp; img.sizes = sizes; img.src = o.src;
+      pic.append(zdroj, img);
+      tien.append(pic);
+      try { await img.decode(); } catch { /* aj bez dekódovania sa zobrazí po načítaní */ }
+      if (moje !== poradie || signal.aborted) { pic.remove(); return; }
+      const stara = vrstva; vrstva = img;
+      if (!animuj || reduce) img.style.transition = 'none';
+      requestAnimationFrame(() => { img.style.opacity = '1'; });
+      if (stara) setTimeout(() => stara.closest('picture')?.remove(), animuj && !reduce ? 420 : 0);
+      posunKoty(o.body);
+    };
 
     // Jazdec (tmavomodrá plocha) pod vybraným tlačidlom; prvé nastavenie bez pohybu.
     const posunJazdec = (s: HTMLElement, hned = false) => {
@@ -266,6 +318,7 @@ const maPlast = skupiny.some((g) => g.vs.length > 1);
       prepis(koty.plast.text, v?.kpt ?? koty.plast.text?.dataset.povodna ?? '', false);
       prepis(koty.rura.hodnota, v?.kr ?? koty.rura.hodnota?.dataset.povodna ?? '', opts.animuj, koty.rura.li);
       prepis(koty.ohyb.hodnota, v?.ko ?? koty.ohyb.hodnota?.dataset.povodna ?? '', opts.animuj, koty.ohyb.li);
+      ukazObraz(v?.obr ?? null, opts.animuj);
 
       if (v) {
         objEl.textContent = v.obj;

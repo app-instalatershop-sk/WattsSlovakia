@@ -10,7 +10,8 @@
  */
 export type Skupina = 'rad' | 'kod' | 'diel' | 'stranka';
 /** v = 1: obj. číslo potrubia (pri rovnakej zhode pred dielmi, ktoré ho len spomínajú). */
-export interface Polozka { s: Skupina; n: string; d: string; u: string; k?: string; v?: 1 }
+/** o = malý obrázok (render radu alebo výrez dielu, 96 px WebP) do našepkávača */
+export interface Polozka { s: Skupina; n: string; d: string; u: string; k?: string; v?: 1; o?: string }
 export interface Vysledok { p: Polozka; s: number }
 export interface Vysledky { vysledky: Vysledok[]; ciastocne: boolean; terminy: string[] }
 

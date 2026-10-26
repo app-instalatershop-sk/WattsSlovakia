@@ -93,6 +93,12 @@ const texty = { skupiny: tx.skupiny, vysledkov: [tx.vysledkov(1), tx.vysledkov(2
   .hl-vysledky :global(.hl-kod .hl-n) { font-family: var(--font-display); font-stretch: 112.5%; color: var(--color-blue-900); letter-spacing: 0.01em; }
   .hl-vysledky :global(.hl-d) { grid-column: 1; font-size: 14px; color: var(--color-ink-soft); }
   .hl-vysledky :global(.hl-sk a .icon) { grid-row: 1 / span 2; grid-column: 2; color: var(--color-blue-700); }
+  .hl-vysledky :global(.hl-sk a.hl-obr) { grid-template-columns: 48px minmax(0, 1fr) auto; column-gap: 14px; }
+  .hl-vysledky :global(.hl-obr .hl-i) { grid-row: 1 / span 2; grid-column: 1; width: 48px; height: 48px; }
+  .hl-vysledky :global(.hl-obr .hl-i img) { width: 48px; height: 48px; object-fit: contain; mix-blend-mode: multiply; }
+  .hl-vysledky :global(.hl-obr .hl-n) { grid-column: 2; }
+  .hl-vysledky :global(.hl-obr .hl-d) { grid-column: 2; }
+  .hl-vysledky :global(.hl-sk a.hl-obr .icon) { grid-column: 3; }
   .hl-vysledky :global(mark) { background: rgb(247 201 0 / 0.35); color: inherit; border-radius: 3px; padding: 0 1px; }
   .hl-vysledky :global(.hl-viac) { margin: 6px 0 8px; padding: 0; border: 0; background: none; font: inherit; font-size: 15px; font-weight: 500; color: var(--color-blue-700); cursor: pointer; border-bottom: 1px solid currentColor; }
   .hl-nic { padding: 28px 30px; max-width: 640px; }
@@ -143,7 +149,8 @@ const texty = { skupiny: tx.skupiny, vysledkov: [tx.vysledkov(1), tx.vysledkov(2
         sek.className = `harok hl-sk hl-${s}`;
         const riadok = (p: (typeof v)[number]['p']) => {
           const von = /^https?:/.test(p.u);
-          return `<a href="${esc(p.u)}"${von ? ' target="_blank" rel="noopener"' : ''}><span class="hl-n">${zvyrazni(p.n, terminy)}</span>${von ? ikonaExt : ikona}${p.d ? `<span class="hl-d">${zvyrazni(p.d, terminy)}</span>` : ''}</a>`;
+          // Malý render radu alebo výrez dielu ako v našepkávači v hlavičke.
+          return `<a href="${esc(p.u)}"${von ? ' target="_blank" rel="noopener"' : ''}${p.o ? ' class="hl-obr"' : ''}>${p.o ? `<span class="hl-i"><img src="${esc(p.o)}" alt="" width="48" height="48" loading="lazy" decoding="async"></span>` : ''}<span class="hl-n">${zvyrazni(p.n, terminy)}</span>${von ? ikonaExt : ikona}${p.d ? `<span class="hl-d">${zvyrazni(p.d, terminy)}</span>` : ''}</a>`;
         };
         const prve = 8;
         sek.innerHTML = `<h2>${esc(texty.skupiny[s])}<span>${v.length}</span></h2>${v.slice(0, prve).map((x) => riadok(x.p)).join('')}`;

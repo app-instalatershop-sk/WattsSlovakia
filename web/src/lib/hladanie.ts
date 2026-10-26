@@ -1,4 +1,7 @@
 import { getCollection } from 'astro:content';
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { piktogram, fotkaProduktu } from './obrazky';
 import { cestaKategorie, cestaRadu, cestaProduktu, kNazov, kPopis, rNazov, rKratky, pNazov, tlakText, ruraText, cislo, kotvaKodu, type Kategoria, type Produkt } from './katalog';
 import { clanky } from '../content/clanky';
 import { type Lang, t, route, ESHOP } from '../i18n/ui';
@@ -35,6 +38,13 @@ export async function indexHladania(lang: Lang): Promise<Polozka[]> {
   const varianty = (await getCollection('varianty')).map((x) => x.data);
   const produkty = (await getCollection('produkty')).map((x) => x.data).sort((a, b) => a.poradie - b.poradie);
   const katId = (id: string) => kat.find((k) => k.id === id) as Kategoria;
+  // Malý obrázok k výsledku (render radu, výrez dielu): v našepkávači rad alebo diel spoznať na pohľad.
+  const obrazky = new Map<ImageMetadata, Promise<string>>();
+  const male = (img: ImageMetadata | undefined) => {
+    if (!img) return Promise.resolve(undefined);
+    if (!obrazky.has(img)) obrazky.set(img, getImage({ src: img, width: 96, format: 'webp', quality: 60 }).then((x) => x.src));
+    return obrazky.get(img)!;
+  };
   const out: Polozka[] = [];
 
   // Kategórie aj s popisom (kotolňa, biomasa, pitná voda…) a slugom (sanita).
@@ -42,7 +52,7 @@ export async function indexHladania(lang: Lang): Promise<Polozka[]> {
 
   for (const r of rady.filter((x) => !x.je_skupina)) {
     const k = katId(r.kategoria);
-    out.push({ s: 'rad', n: rNazov(r, lang), d: [kNazov(k, lang), tlakText(r)].filter(Boolean).join(', '), u: cestaRadu(k, r, lang), k: [r.nazov_watts, r.nazov, rKratky(r, lang)].filter(Boolean).join(' ') });
+    out.push({ s: 'rad', n: rNazov(r, lang), d: [kNazov(k, lang), tlakText(r)].filter(Boolean).join(', '), u: cestaRadu(k, r, lang), k: [r.nazov_watts, r.nazov, rKratky(r, lang)].filter(Boolean).join(' '), o: await male(piktogram(r.piktogram)) });
   }
 
   for (const v of varianty) {
@@ -56,14 +66,15 @@ export async function indexHladania(lang: Lang): Promise<Polozka[]> {
     const d0 = v.rura?.d ?? (rura.match(/\d{2,3}/)?.[0] ?? '');
     const pocet = r.pocet_rur && r.pocet_rur > 1 ? `${r.pocet_rur}x` : '';
     const kluce = [model, `${v.plast_mm ?? ''}/${d0}`, `${v.plast_mm ?? ''}/${pocet}${d0}`, rura, v.dn ? `DN ${v.dn}` : '', ...(v.prislusenstvo ?? []).map((x) => x.obj)];
-    out.push({ s: 'kod', n: v.obj_cislo, d, u: `${cestaRadu(k, r, lang)}#${kotvaKodu(v.obj_cislo)}`, k: kluce.filter(Boolean).join(' '), v: 1 });
+    out.push({ s: 'kod', n: v.obj_cislo, d, u: `${cestaRadu(k, r, lang)}#${kotvaKodu(v.obj_cislo)}`, k: kluce.filter(Boolean).join(' '), v: 1, o: await male(piktogram(r.piktogram)) });
   }
 
   for (const p of produkty) {
     const k = katId(p.kategoria);
     const sk = rady.find((x) => x.id === p.skupina);
     const cesta = cestaProduktu(p, k, lang);
-    out.push({ s: 'diel', n: pNazov(p, lang), d: sk ? rNazov(sk, lang) : '', u: cesta, k: p.nazov_watts });
+    const obr = await male(fotkaProduktu(p.id));
+    out.push({ s: 'diel', n: pNazov(p, lang), d: sk ? rNazov(sk, lang) : '', u: cesta, k: p.nazov_watts, o: obr });
     // Obj. čísla dielu s rozmerom v doplnku a celým riadkom tabuľky v kľúčoch (rúra, závit, plášť).
     const videne = new Set<string>();
     for (const tab of p.tabulky) {
@@ -74,7 +85,7 @@ export async function indexHladania(lang: Lang): Promise<Polozka[]> {
         if (!kod || videne.has(kod)) continue;
         videne.add(kod);
         const rozmer = rozmerRiadku(tab, riadok, lang);
-        out.push({ s: 'kod', n: kod, d: [pNazov(p, lang), rozmer].filter(Boolean).join(', '), u: `${cesta}#${kotvaKodu(kod)}`, k: riadok.slice(1).map((c, i) => `${hlavicky[i + 1] ?? ''} ${c}`).join(' ') });
+        out.push({ s: 'kod', n: kod, d: [pNazov(p, lang), rozmer].filter(Boolean).join(', '), u: `${cesta}#${kotvaKodu(kod)}`, k: riadok.slice(1).map((c, i) => `${hlavicky[i + 1] ?? ''} ${c}`).join(' '), o: obr });
       }
     }
   }

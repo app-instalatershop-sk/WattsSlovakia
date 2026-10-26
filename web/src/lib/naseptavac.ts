@@ -51,9 +51,10 @@ export function pripojNaseptavac(form: HTMLFormElement) {
     const vsetkyUrl = `${form.getAttribute('action')}?q=${encodeURIComponent(q)}`;
     pozn.textContent = !vysledky.length ? tx.nic : ciastocne ? tx.ciastocne : '';
     pozn.hidden = !pozn.textContent;
+    // Pri rade, dieli a obj. čísle malý render alebo výrez dielu (rad či diel spoznať na pohľad).
     zoznam.innerHTML = prve.map(({ p }, i) => moznost(`${id}-${i}`, p.u,
-      `<span class="nas-n">${zvyrazni(p.n, terminy)}</span><span class="nas-s">${esc(tx.skupiny[p.s])}</span>${p.d ? `<span class="nas-d">${zvyrazni(p.d, terminy)}</span>` : ''}`,
-      p.s === 'kod' ? ' nas-kod' : '')).join('')
+      `${p.o ? `<span class="nas-i"><img src="${esc(p.o)}" alt="" width="44" height="44" decoding="async"></span>` : ''}<span class="nas-n">${zvyrazni(p.n, terminy)}</span><span class="nas-s">${esc(tx.skupiny[p.s])}</span>${p.d ? `<span class="nas-d">${zvyrazni(p.d, terminy)}</span>` : ''}`,
+      `${p.s === 'kod' ? ' nas-kod' : ''}${p.o ? ' nas-obr' : ''}`)).join('')
       + (vysledky.length > prve.length ? moznost(`${id}-v`, vsetkyUrl, `<span class="nas-n">${esc(tx.vsetky)} (${vysledky.length})</span>`, ' nas-vsetky') : '')
       + (!vysledky.length ? moznost(`${id}-s`, tx.sprievodcaUrl, `<span class="nas-n">${esc(tx.sprievodca)}</span>`, ' nas-vsetky') : '');
     aktivna = -1;

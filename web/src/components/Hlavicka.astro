@@ -213,6 +213,13 @@ const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, 
   .nas :global(.nas-d) { grid-column: 1 / -1; font-size: 14px; line-height: 1.4; color: var(--color-ink-soft); }
   .nas :global(.nas-o > .icon) { grid-column: 2; grid-row: 1; justify-self: end; color: var(--color-blue-700); }
   .nas :global(.nas-o:has(> .icon) .nas-s) { display: none; }
+  /* Výsledok s obrázkom: render radu alebo výrez dielu vľavo cez oba riadky textu. */
+  .nas :global(.nas-obr) { grid-template-columns: 44px minmax(0, 1fr) auto; column-gap: 12px; align-items: center; }
+  .nas :global(.nas-obr .nas-i) { grid-row: 1 / span 2; display: grid; place-items: center; width: 44px; height: 44px; }
+  .nas :global(.nas-obr .nas-i img) { width: 44px; height: 44px; object-fit: contain; mix-blend-mode: multiply; }
+  .nas :global(.nas-obr .nas-n) { grid-column: 2; align-self: end; }
+  .nas :global(.nas-obr .nas-s) { grid-column: 3; grid-row: 1; align-self: end; }
+  .nas :global(.nas-obr .nas-d) { grid-column: 2 / -1; align-self: start; }
   .nas :global(.nas-vsetky) { margin-top: 4px; border-top: 1px solid rgb(10 42 94 / 0.08); border-radius: 0 0 var(--radius-l) var(--radius-l); }
   .nas :global(.nas-vsetky .nas-n) { font-weight: 500; font-size: 15px; color: var(--color-blue-700); }
   .nas :global(mark) { background: rgb(247 201 0 / 0.35); color: inherit; border-radius: 3px; padding: 0 1px; }

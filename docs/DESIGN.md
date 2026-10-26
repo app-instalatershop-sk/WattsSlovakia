@@ -239,6 +239,11 @@ filter (sliders-horizontal), stiahnuť, menu, zavrieť, externý odkaz (pri odka
   prepnutie kroku sprievodcu (posun 150–200 ms), zobrazenie výsledkov hľadania, potvrdenie formulára.
 - Žiadne zväčšovanie kariet pri prejdení myšou, žiadne karusely. Pri `prefers-reduced-motion` sa
   nehýbe nič a všetko je hneď viditeľné (kroky pokládky plné, rúra rozvinutá).
+- Od 26. 10. 2026 (`docs/DOLADENIE.md`): pohyb viazaný na rolovanie bez spätnej väzby do skriptu ide do
+  CSS (`animation-timeline: view()` alebo pomenovaná časová os sekcie), beží mimo hlavného vlákna; kde to
+  prehliadač nevie, prvok stojí. Pružný dojazd má token `--ease-pruzina` (CSS `linear()`, prekmit 3 %).
+  Efekty prejdenia myšou s pohybom alebo tieňom sú len pre myš (`@media (hover: hover) and (pointer: fine)`),
+  na telefóne by po ťuknutí ostali „zdvihnuté“.
 
 ---
 
@@ -415,7 +420,22 @@ Každá vnútorná stránka má rovnakú kostru, aby web pôsobil ako celok:
   položky sú vizuálne skryté, čítačka obrazovky ich prečíta. Celá cesta na dieloch a článkoch sa na mobile
   zalomila do dvoch riadkov a brala 15 % pozornosti prvej obrazovky.
 - Tabuľky obj. čísel: kopírovanie jedným klikom, odkaz do e-shopu v riadku, na mobile karta
-  s tromi stĺpcami údajov.
+  s tromi stĺpcami údajov. Pri filtri sa riadky plynulo presunú (FLIP), nové prídu odstupňovane.
+- **Živé kóty** (stránka radu, od 26. 10. 2026, `components/VolbaDimenzie.astro`; Juraj: „chcel by som
+  to živé a čo najlepšie“): pod nadpisom (na telefóne pod renderom) je prepínač priemeru nosnej rúry.
+  Výber prepíše kóty na renderi krátkym pretočením číslic, bod kóty pulzne, po plášti prejde pás svetla;
+  pri rúre s dvoma plášťami sa objaví druhá úroveň (štandardná a zosilnená izolácia), pod ňou obj. číslo
+  s kopírovaním, výkon a hmotnosť. Hlavné tlačidlo vedie na riadok vybraného variantu v tabuľke, filter
+  tabuľky sa nastaví oboma smermi a variant je v adrese (`?obj=MD16032C`). Pri „obmedziť pohyb“ sa čísla
+  len vymenia. Hodnoty formátuje server rovnako ako tabuľku.
+- **Živý výrobok v štúdiu** (hlava radu, systému a Potrubí): render jemne dozneje na strane so zrezaným
+  telom, pri pohybe myši sa nepatrne posunie aj s kótami a po načítaní po ňom raz prejde pás svetla
+  (rovnako ako v hero domova).
+- **Podklady bez obálky** sú biele listy ako skutočné dokumenty: výkres s mriežkou, rámikom a rohovou
+  pečiatkou, vyhlásenia s titulnou stranou. Skutočné náhľady (prvá strana PDF, výkres) prídu, keď ich
+  dostaneme od Watts (otázka č. 18 pre manažéra).
+- **Tlač stránky radu:** nadpis a tabuľka, ako je práve vyfiltrovaná, na A4 bez hlavičky, renderu
+  a tlačidiel; hlavička tabuľky sa opakuje na každej strane.
 
 ### Kategória (napr. Potrubia pre vykurovanie)
 

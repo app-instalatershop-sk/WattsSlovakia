@@ -80,3 +80,9 @@ Správa s mapami: `data/_pozornost/2026-10-26-1307/index.html` (10 stránok, des
   test variantov sa po stavbe potvrdil. Tlačidlo na mobile 4,4–6,7 % → 5,7–8,2 % (domov 4,7 → 7,2 %),
   na desktope +0,4 až 0,7 bodu; drobčeky na stránke dielu na mobile 15,3 → 10,6 % a tlačidlo tam 2,9 → 4,9 %.
   Väčší nadpis na podstránkach (variant B) sa neurobil: pridal by len plochu, na jednotku plochy rovnaký účinok.
+- **26. 10. 2026 večer, živé kóty (výber dimenzie v hlave radu)** (`docs/DOLADENIE.md`): meranie po stavbe s variantom
+  „bez výberu“ (správa `data/_pozornost/2026-10-26-1803`, rady DUO a UNO 6 bar). Na desktope si výber vezme 12,4 až
+  12,9 % prvého pohľadu, najmä na úkor renderu (12,0 až 13,2 % → 6,6 %); nadpis ostal 17,5 až 18,2 %, hlavné tlačidlo
+  1,9 → 1,7 %, kóty 1,0 až 1,4 → 0,6 %. Na mobile je výber pod renderom, mimo prvej obrazovky, čísla sa nezmenili.
+  Výber je nový prvok na interakciu, pozornosť mu patrí; render ostáva veľký pod ním. Nástroj má na to novú oblasť
+  „Výber dimenzie“ (`[data-volba]`).

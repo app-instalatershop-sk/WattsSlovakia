@@ -302,6 +302,22 @@ podpisový pohyb = živé kóty, v čo najlepšej podobe. Body nižšie ostávaj
 4. **Test v predajni:** kedy a s kým (10 až 15 inštalatérov a projektantov), raz pred fázou A a raz po
    fáze B.
 
+## 7. Stav (26. 10. 2026 večer)
+
+| Krok | Stav | Kde |
+|---|---|---|
+| C2 Živé kóty | **hotové**: výber priemeru (a plášťa) prepíše kóty pretočením číslic, bod pulzne, po plášti prejde svetlo; obj. číslo s kopírovaním, filter tabuľky oboma smermi, variant v adrese `?obj=`; 11 radov SK aj CS (COOL DUO nemá kóty) | `components/VolbaDimenzie.astro`, commit 4c5a04b |
+| A2 Chyby na hranách | **hotové** 1 až 3 (dozvenie renderu v štúdiu vľavo, Potrubia vpravo; mobil rodina bez rezu a škáry; kotúč v článku); 4 a 5 ostávajú | `Hlava.astro`, `Domov.astro`, `Katalog.astro` |
+| A3 Dotyk a tlač | **hotové**: 27 efektov len pre myš, tlač tabuľky na A4 | commit 4c5a04b |
+| A1 Tokeny | **hotové**: zaoblenie 4 stupne, hĺbka 4 úrovne, písmo bez polovičných veľkostí, stráž v `data/kontrola_webu.py` (dnes 0 odchýlok); porovnanie snímok 13 stránok bez rozbitia | commit 2efef1a, `DESIGN.md` kap. 5 a 6 |
+| A4 Zvyšky šablóny | **hotové**: bez žltých čiarok na domove, diely na podlahe v „Čo budete potrebovať“, podklady ako biele listy (výkres s pečiatkou); **ostáva** Výber krok 1 a riadok spojok na domove | commit 766fcaa |
+| Živý výrobok v štúdiu | **hotové**: pohyb za myšou a pás svetla v hlavách radov, systémov a Potrubí | `Hlava.astro` |
+| Pohyb a správanie | **hotové**: plynulý filter tabuľky (FLIP), kotúč v CSS na časovej osi sekcie, rozmazané náhľady fotiek | `TabulkaVariantov.astro`, `Obraz.astro`, `data/nahlady_fotiek.py` |
+| Hľadanie s obrázkami | **hotové**: render radu alebo výrez dielu pri každom výsledku (našepkávač aj stránka) | commit 7c6fc37 |
+| B2 3D model | **beží**: parametrický model v Blenderi (`data/blender/potrubie.py`), skúšky v `data/_3d/` | |
+| B4 Skutočné náhľady dokumentov | **čaká na Watts**: automatické sťahovanie z watts.eu je zablokované, preto otázka č. 18 pre manažéra | |
+| Meranie | Lighthouse mobil: domov 92, rad 93, diel 93, CLS 0; pozornosť: `docs/POZORNOST.md` | |
+
 ## Zdroje
 
 Overené 26. 10. 2026.

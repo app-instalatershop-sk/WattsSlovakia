@@ -1,0 +1,35 @@
+---
+/**
+ * Pracovná stránka (noindex, mimo mapy webu): rozložený rez z vlastného 3D modelu v kontexte webu.
+ * Po rozhodnutí Juraja sa komponent presunie na miesto (domov alebo stránka radu) a stránka sa zmaže.
+ */
+import Base from '../../layouts/Base.astro';
+import Rozklad from '../../components/Rozklad.astro';
+import { t } from '../../i18n/ui';
+import rozklad from '../../data/rozklad-duo-v1.json';
+
+const ui = t('sk');
+const vrstvy = (['plast', 'pena', 'rura'] as const).map((id) => ui.home.lupy.find((l) => l.id === id)!);
+---
+<Base lang="sk" alternates={{ sk: '/navrhy/rozklad/', cs: '/navrhy/rozklad/' }} title="Návrh: rozložený rez" description="Pracovná stránka: rozložený rez potrubia Microflex DUO z vlastného 3D modelu, ktorý sa pri rolovaní rozloží na vrstvy." robots="noindex, nofollow">
+  <section class="wrap uvod">
+    <p class="znacka">Pracovná stránka, nie je súčasťou webu</p>
+    <h1>Rozložený rez z vlastného 3D modelu</h1>
+    <p class="lead">Microflex DUO, vykurovanie 6 bar (MD16032C), vyrenderované v Blenderi podľa rozmerov z katalógu. Posúvajte nadol: plášť sa odsunie, nosné rúry vysunú a pri každej vrstve sa objaví kóta.</p>
+  </section>
+
+  <Rozklad data={rozklad} nadpis="Z čoho je potrubie" popis="Tri vrstvy, každá s vlastnou úlohou. Údaje sú z katalógu výrobcu." vrstvy={vrstvy} alt="Potrubie Microflex DUO rozložené na plášť z HDPE, izoláciu z PE-X peny a dve nosné rúry PE-Xa" label={ui.home.lupyLabel} />
+
+  <section class="wrap dalej">
+    <h2>Pod rozloženým rezom</h2>
+    <p class="lead">Tu by pokračovala stránka. Sekcia zaberá asi tri výšky okna, obraz počas nej stojí na mieste a rozkladá sa podľa rolovania.</p>
+  </section>
+</Base>
+
+<style>
+  .uvod { padding-block: 48px 24px; }
+  .znacka { display: inline-block; margin-bottom: 16px; padding: 4px 10px; border-radius: var(--radius-s); background: #fff8db; color: #6b4d00; font-size: 14px; font-weight: 600; }
+  .uvod .lead { margin-top: 16px; }
+  .dalej { padding-block: 96px 160px; }
+  .dalej .lead { margin-top: 12px; }
+</style>

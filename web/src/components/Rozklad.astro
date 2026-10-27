@@ -80,7 +80,7 @@ const posledna = `${data.cesta}${sirka}/${String(data.snimok - 1).padStart(3, '0
   /* Malá lupa s makrom materiálu vrstvy: prstenec vo farbe vrstvy, sklo s odleskom. */
   .rz-vrstvy li.ma-lupu { display: grid; grid-template-columns: 56px minmax(0, 1fr); column-gap: 16px; align-items: start; }
   .rz-vrstvy li.ma-lupu > :not(.rz-lupa) { grid-column: 2; }
-  .rz-lupa { --ring: var(--color-blue-700); position: relative; grid-row: 1 / span 3; width: 56px; height: 56px; margin-top: 2px; border-radius: 50%; overflow: hidden; background: #fff; box-shadow: 0 0 0 3px #fff, 0 0 0 4.5px var(--ring), var(--elev-1); }
+  .rz-lupa { --ring: var(--color-blue-700); position: relative; display: block; grid-row: 1 / span 3; width: 56px; height: 56px; margin-top: 2px; border-radius: 50%; overflow: hidden; background: #fff; box-shadow: 0 0 0 3px #fff, 0 0 0 4.5px var(--ring), var(--elev-1); }
   [data-vrstva="pena"] .rz-lupa { --ring: #8e97a3; }
   [data-vrstva="rura"] .rz-lupa { --ring: #e0b400; }
   .rz-lupa :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; }
@@ -121,6 +121,8 @@ const posledna = `${data.cesta}${sirka}/${String(data.snimok - 1).padStart(3, '0
     .rz-vrstvy { order: 2; margin-top: 4px; display: block; min-height: 7.5em; }
     .rozklad.rz-js .rz-vrstvy li { display: none; }
     .rozklad.rz-js .rz-vrstvy li.is-aktivna { display: block; opacity: 1; }
+    /* Vrstva s lupou ostáva mriežka (lupa vľavo, text vedľa), inak by makro zabralo celú šírku. */
+    .rozklad.rz-js .rz-vrstvy li.is-aktivna.ma-lupu { display: grid; }
   }
   @media (prefers-reduced-motion: reduce) {
     .rozklad { height: auto; }

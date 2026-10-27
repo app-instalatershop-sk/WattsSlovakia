@@ -84,7 +84,9 @@ snimky_body = []
 for f in snimky:
     k = body[f.name]
     top = min(k['plast_okraj'], key=lambda q: q[1])
-    dolna = max(k['rury'], key=lambda r: r['stred'][1])
+    # Nosná rúra, nie chránička ani kábel (HP, COOL s káblom), ako v data/rendery_web.py.
+    nosne = [r for r in k['rury'] if r.get('druh') not in ('kabel', 'chranicka')] or k['rury']
+    dolna = max(nosne, key=lambda r: r['stred'][1])
     spodok = max(dolna['okraj'], key=lambda q: q[1])
     snimky_body.append({'plast': pct(*top), 'pena': pena, 'rura': pct(*spodok)})
 

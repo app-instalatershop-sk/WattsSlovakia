@@ -392,7 +392,9 @@ Pôvodne render Watts prechádzal cez švík z pásu katalógu a za pravý okraj
 **Z čoho je potrubie** (od 26. 10. 2026, `components/Rozklad.astro`, Juraj: domov aj stránky radov):
 rozložený rez z 3D modelu. Sekcia je vysoká (280 % výšky okna) a jej obsah stojí; pri rolovaní sa
 rúra rozloží na plášť, penu a nosné rúry (72 snímok na plátne), pri každej vrstve sa objaví kóta
-a vľavo jej popis s malou lupou makra. Na telefóne je vidno len kótu a popis práve odkrytej vrstvy.
+a vľavo jej popis s malou lupou makra. Na telefóne a tablete (do 900 px) je na obraze len bod práve
+odkrytej vrstvy vo farbe jej prstenca lupy a pod obrazom jej popis; štítok tam nie je, lebo vedľa rezu
+nie je miesto a štítok peny by ležal na plášti (overené 27. 10. na všetkých radoch).
 Snímky sa načítajú, až keď sa sekcia blíži (najprv posledná, potom každá ôsma, štvrtá…); bez AVIF
 alebo pri „obmedziť pohyb“ je tam statický rozložený obraz. Rad bez snímok má namiesto toho tri
 lupy (nižšie).

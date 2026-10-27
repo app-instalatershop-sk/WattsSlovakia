@@ -113,6 +113,13 @@ const posledna = `${data.cesta}${sirka}/${String(data.snimok - 1).padStart(3, '0
     .rz-sticky { top: var(--rz-top-m, 64px); height: calc(100svh - var(--rz-top-m, 64px)); }
     /* Na úzkom displeji len kóta práve oddelenej vrstvy, tri by sa prekrývali. */
     .rozklad.rz-js .rz-stage :global(.kota.rz-vid:not(.rz-aktivna)) { opacity: 0; }
+    /* A bez štítka: vedľa rezu nie je miesto, štítok peny by ležal na plášti (Juraj 23. 9.: nikdy) a štítok
+       rúry tesne nad textom vrstvy, ktorý hovorí to isté. Na obraze ostáva bod vo farbe vrstvy, ako prstenec
+       lupy a pás pri texte pod obrazom; názov a číslo sú v tom texte. */
+    .rz-stage :global(.kota .ciara), .rz-stage :global(.kota .stitok) { display: none; }
+    .rz-stage :global(.k-plast) { --bod: var(--color-blue-700); }
+    .rz-stage :global(.k-pena) { --bod: #8e97a3; }
+    .rz-stage :global(.k-rura) { --bod: #e0b400; }
     .rz-grid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
     .rz-text { display: contents; }
     .rz-text h2 { order: 0; font-size: clamp(24px, 5vw + 8px, 32px); }

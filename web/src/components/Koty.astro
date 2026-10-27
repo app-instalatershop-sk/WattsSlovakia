@@ -38,7 +38,8 @@ const { koty, label } = Astro.props;
   /* --k skráti čiary na telefóne; dĺžka je v štýle prvku (inline), preto sa mení cez násobiteľ. */
   .koty { --k: 1; position: absolute; inset: 0; z-index: 2; margin: 0; padding: 0; pointer-events: none; }
   .kota { --dlzka: calc(var(--l) * var(--k) * 1cqw); position: absolute; left: var(--x); top: var(--y); width: 0; height: 0; }
-  .bod { position: absolute; z-index: 2; left: -7px; top: -7px; width: 14px; height: 14px; border-radius: 50%; background: #fff; box-shadow: inset 0 0 0 3px var(--color-blue-900), 0 0 0 4px rgb(255 255 255 / 0.5), 0 3px 10px rgb(4 16 40 / 0.4); }
+  /* --bod: farba prstenca bodu (rodič ju môže zmeniť, napríklad na farbu vrstvy). */
+  .bod { position: absolute; z-index: 2; left: -7px; top: -7px; width: 14px; height: 14px; border-radius: 50%; background: #fff; box-shadow: inset 0 0 0 3px var(--bod, var(--color-blue-900)), 0 0 0 4px rgb(255 255 255 / 0.5), 0 3px 10px rgb(4 16 40 / 0.4); }
   .ciara { position: absolute; left: -0.75px; width: 1.5px; height: var(--dlzka); background: var(--color-blue-900); box-shadow: 0 0 0 1.5px rgb(255 255 255 / 0.6); }
   .stitok { position: absolute; display: flex; flex-direction: column; gap: 3px; white-space: nowrap;
     padding: clamp(6px, 0.9cqw, 11px) clamp(9px, 1.3cqw, 15px); border-radius: var(--radius-l);

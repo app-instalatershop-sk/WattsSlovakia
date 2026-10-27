@@ -583,7 +583,7 @@ def web_rozlozeny(a, log):
 
 def obnov_realitu():
     """Stránka Model a skutočnosť (galéria, /realita) s tým, čo je už vyrenderované."""
-    r = subprocess.run([sys.executable, "-I", str(REPO / "data" / "blender" / "realita.py")], capture_output=True,
+    r = subprocess.run([sys.executable, "-I", "-X", "utf8", str(REPO / "data" / "blender" / "realita.py")], capture_output=True,
                        text=True, encoding="utf-8", errors="replace", cwd=REPO)
     print("   realita:", (r.stdout.strip().splitlines() or ["?"])[-1] if r.returncode == 0 else r.stderr[-800:])
 

@@ -95,18 +95,20 @@ a fotografické zrno (pevné semienko, sekvencia nebliká); `*-na-bielom.jpg` je
 
 `data/_3d/web/` (sada `web`, **produkčné mená, web na ne stavia, nemeniť**). Každé PNG je RGBA
 s priehľadným pozadím, vedľa neho `<meno>-tien.png` (vrstva tieňa, pri okrajoch nulová) a `<meno>.json`
-(`rad`, `obj_cislo`, `rozlisenie`, `body_px` na kóty, `geometria`). Postup a časy sa po každej skupine
+(`rad`, `obj_cislo`, `rozlisenie`, `body_px` na kóty, `geometria`). Renderuje sa v dvojnásobnej šírke
+webu (`KVALITA` v `davka.py`; rozložený rez 2000 px pre web 1200 px), `data/rendery_web.py`
+a `data/rozklad_web.py` zmenšujú. Postup a časy sa po každej skupine
 pripíšu do `STAV.txt`, kontaktné hárky skupín sú v `data/_3d/najlepsie/web-<skupina>.jpg`.
 
 | Priečinok | Obsah |
 |---|---|
-| `hlavy/<rad-id>.png` | výrez C (čelný pohľad na rez, azimut 22°, elevácia 12°), **jednotný** pre všetky varianty, 2000 px, 1024 vzoriek, 12 radov (reprezentatívny variant ako v `data/_3d/rady`) |
-| `hero/duo.png` | hlavný obrázok domova: DUO MD16032C, rez v ľavej tretine obrátený k nadpisu, telo odchádza za pravý okraj (objektív 60 mm, telo 14 D), 3200 × 2206 px; tieň slabne hore, vľavo a dole, vpravo pokračuje s telom |
-| `rady/<rad-id>.png` | výrez A (celé telo), 1600 px, 12 radov |
+| `hlavy/<rad-id>.png` | výrez C (čelný pohľad na rez, azimut 22°, elevácia 12°), **jednotný** pre všetky varianty, 3600 px, 1024 vzoriek, 12 radov (reprezentatívny variant ako v `data/_3d/rady`) |
+| `hero/duo.png` | hlavný obrázok domova: DUO MD16032C, rez v ľavej tretine obrátený k nadpisu, telo odchádza za pravý okraj (objektív 60 mm, telo 14 D), 5200 × 3586 px, expozícia −0,70 (dlhé telo chytá viac kľúčového svetla, bez nej je o 0,45 clony svetlejšie ako ostatné zábery); tieň slabne hore, vľavo a dole, vpravo pokračuje s telom |
+| `rady/<rad-id>.png` | výrez A (celé telo), 2800 px, 12 radov |
 | `makra/plast.png`, `pena.png`, `rura-zlta.png`, `rura-biela.png`, `rura-cierna.png` | makrá do líp, štvorec 1200 px (render 2400 a zmenšenie); celoplošné, `-tien.png` je prázdna vrstva len pre jednotnosť |
-| `rodina/rodina.png` | šesť systémov vedľa seba (UNO, DUO, DUO sanita, QUADRO, COOL, HP; všetky plášť 160 mm), rezy ku kamere, schodovito ako fotka v katalógu s. 6, 2400 × 1090 px; v JSON `body_px` pre každú rúru zvlášť |
-| `varianty/<obj_cislo>.png` | každý variant 12 radov vo výreze C, 1600 px, 512 vzoriek; **rez plášťa je na každom obrázku na tom istom mieste a rovnako veľký** (prepínanie dimenzie mení len proporcie). 91 variantov, 83 súborov: 8 objednávacích čísel je v údajoch v dvoch radoch (UNO a UNO PRIMO, DUO a PRIMO DUO), JSON má vtedy pole `rady` |
-| `rozlozeny/<rad-id>/rozlozeny-000.png` až `-071.png` | rozložený rez, 72 snímok, 1600 px, 256 vzoriek, každý rad vlastný výrez (všetky fázy v zábere); `rozlozeny.json` má `body_px` pre každú snímku |
+| `rodina/rodina.png` | šesť systémov vedľa seba (UNO, DUO, DUO sanita, QUADRO, COOL, HP; všetky plášť 160 mm), rezy ku kamere, schodovito ako fotka v katalógu s. 6, 4800 × 2182 px; v JSON `body_px` pre každú rúru zvlášť |
+| `varianty/<obj_cislo>.png` | každý variant 12 radov vo výreze C, 2800 px, 512 vzoriek; **rez plášťa je na každom obrázku na tom istom mieste a rovnako veľký** (prepínanie dimenzie mení len proporcie). 91 variantov, 83 súborov: 8 objednávacích čísel je v údajoch v dvoch radoch (UNO a UNO PRIMO, DUO a PRIMO DUO), JSON má vtedy pole `rady` |
+| `rozlozeny/<rad-id>/rozlozeny-000.png` až `-071.png` | rozložený rez, 72 snímok, 2000 px, 256 vzoriek, každý rad vlastný výrez (všetky fázy v zábere); `rozlozeny.json` má `body_px` pre každú snímku |
 
 `data/_3d/ramovanie/` (sada `ramovanie`, DUO MD16032C, 1600 px, každý s `-tien`, `-cisty`, `.json`, `-na-bielom.jpg`):
 
@@ -272,19 +274,26 @@ Tieň je samostatný prechod s menším počtom vzoriek.
 Celá sada `final` trvá asi 40 minút (2411 s), sada `prvy` 4 minúty, `najlepsie` 4 minúty,
 `ramovanie` 2,5 minúty, `rady12` (12 radov s tieňmi a prehľadom) 10,5 minúty (625 s).
 
-Produkčná sada `web` (27. 10. 2026; čistý čas renderu, bez spánku počítača):
+Produkčná sada `web`, 2. kolo (27. 10. 2026 od 15:18, verzia modelu `2026-10-27c`, render
+v dvojnásobnej šírke webu; čistý čas renderu, bez spánku počítača; poradie ako pri behu):
 
 | Skupina | Počet | Render | Na jeden obrázok |
 |---|---|---|---|
-| `hlavy` (2000 px, 1024 vz.) | 12 | 13,1 min | 45 až 53 s + tieň 15 s |
-| `hero` (3200 × 2206, 1024 vz.) | 1 | 2,5 min | 108 s + tieň 43 s |
-| `rady` (1600 px, 1024 vz.) | 12 | asi 7 min | 26 až 34 s + tieň 9 s |
-| `makra` (render 2400, 512 vz.) | 5 | 13,8 min | 2 až 4 min |
-| `rodina` (2400 × 1090, 1024 vz.) | 1 | 0,9 min | |
-| `varianty` (1600 px, 512 vz.) | 83 | 31,7 min | 18 s + tieň 5,6 s (s prípravou asi 29 s) |
-| `rozlozeny` (72 snímok, 1600 px, 256 vz.) | 11 × 72 | 9,5 až 13 min na rad | 6 až 7 s + tieň 3,7 s |
+| `hlavy` (3600 px, 1024 vz.) | 12 | 47,8 min | 2,5 až 3,4 min + tieň 52 až 67 s |
+| `rady` (2800 px, 1024 vz.) | 12 | 22,6 min | 79 až 93 s + tieň 28 až 32 s |
+| `hero` (5200 × 3586, 1024 vz.) | 1 | 6,5 min | 273 s + tieň 114 s |
+| `rodina` (4800 × 2182, 1024 vz.) | 1 | 3,6 min | 150 s + tieň 66 s |
+| `makra` (render 2400, 512 vz.) | 5 | 14,1 min | 2 až 4,7 min |
+| `varianty` (2800 px, 512 vz.) | 83 | 99,3 min | 43 až 64 s + tieň 17 až 23 s (s prípravou asi 81 s) |
+| `rozlozeny` (72 snímok, 2000 px, 256 vz.) | 12 × 72 | 14 až 16,3 min na rad | 6,4 až 11 s (zvyčajne 7 s) + tieň 5 s |
 
-Celá sada beží asi 3,5 hodiny čistého času. Dávka sa dá prerušiť a pustiť znova (hotové súbory
-preskočí); ak počítač zaspí, po prebudení pokračuje sama. Kým dávka beží, Windows počítač pre
+Celá sada beží asi 6,7 hodiny (24 217 s aj s prípravou scén, prehľadmi a obnovou stránky Model
+a skutočnosť); prvá sada v šírke webu trvala asi 3,5 hodiny. Prevod do webu: `data/rendery_web.py
+hlavy varianty` asi 9 minút (hlavy a varianty vždy spolu, majú spoločný výrez),
+`data/rozklad_web.py` 21 až 27 s na rad. Rozložený rez prevádzať až po riadku
+radu v `STAV.txt`: `rozlozeny.json` pribúda počas renderu a snímky dávka po renderi ešte prepisuje
+(vinetácia a zrno), skorší prevod nájde neúplný súbor alebo zmieša snímky bez zrna. Dávka sa dá
+prerušiť a pustiť znova (hotové súbory s aktuálnou verziou modelu preskočí); ak počítač zaspí,
+po prebudení pokračuje sama. Kým dávka beží, Windows počítač pre
 nečinnosť neuspí (`nezaspi()` v `davka.py`, len pre tento proces, nastavenia napájania sa nemenia).
 Zatvorené veko ani odpojenie napájania to neprekoná: na noc nechať počítač zapojený a s otvoreným vekom.

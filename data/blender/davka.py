@@ -12,6 +12,7 @@ Výstupy: data/_3d/najlepsie/ (vždy aktuálne najlepšie) a data/_3d/final/.
 """
 import argparse
 import json
+import re
 import subprocess
 import sys
 import time
@@ -353,15 +354,249 @@ def sada_rady12(a, log):
     porovnanie.main()
 
 
+# =============================================================================================
+# Produkčná sada pre web (data/_3d/web): stabilné mená, ku každému PNG -tien.png a .json
+# =============================================================================================
+WEB = REPO / "data" / "_3d" / "web"
+ARG_C = ["--azimut", 22, "--elevacia", 12, "--ramec", "jednotny"]           # výrez C, jednotný pre všetky varianty
+ARG_HERO = ["--ramec", "hero", "--azimut", -36, "--elevacia", 15, "--hero-podiel", 0.30, "--ohnisko", 60,
+            "--tien-dosah", 0.4, "--dlzka", 14, "--krok-daleko", 12, "--rebra-blizko", 40, "--segmenty", 900]
+MAKRA = (("plast", "microflex-duo-6-bar", "MD16032C", "makro-plast", []),
+         ("pena", "microflex-duo-6-bar", "MD16032C", "makro-pena", []),
+         ("rura-zlta", "microflex-duo-6-bar", "MD16032C", "makro-rura", []),
+         ("rura-biela", "microflex-duo-10-bar", "MD1603225SWI", "makro-rura", []),
+         # COOL DUO (rúry 40 mm v plášti 160): rovnaká kompozícia ako žltá rúra v DUO
+         ("rura-cierna", "microflex-cool-duo", "MD16040PE", "makro-rura", []))
+# rady, ktorých štúdiový render (výrez A) treba po úprave presahu rúr vyrenderovať znova
+# (presah rúr 26. 10.; biela PE-Xa s albedom podľa fotky 27. 10.)
+RADY_ZNOVA = {"microflex-primo-duo-6-bar", "microflex-primo-duo-10-bar", "microflex-cool-s-vyhrievacim-kablom",
+              "microflex-cool-duo", "microflex-uno-10-bar", "microflex-duo-10-bar", "microflex-quadro"}
+
+
+def meno_suboru(obj):
+    return re.sub(r"[^A-Za-z0-9]", "", obj)
+
+
+def hotove(png):
+    png = Path(png)
+    return png.exists() and png.with_name(png.stem + "-tien.png").exists() and png.with_suffix(".json").exists()
+
+
+def dokonci_na_mieste(png, **kw):
+    """Fotodokončenie priamo do súboru (v produkčnej sade bez kópie -cisty)."""
+    fotodokoncenie(png, png, **kw)
+
+
+def zapis_stav(skupina, pocet, render_s, spolu_s, poznamka=""):
+    WEB.mkdir(parents=True, exist_ok=True)
+    riadok = (f"{time.strftime('%Y-%m-%d %H:%M')} | {skupina} | {pocet} obrázkov | render {render_s / 60:.1f} min "
+              f"(spolu s prípravou {spolu_s / 60:.1f} min)" + (f" | {poznamka}" if poznamka else "") + "\n")
+    with open(WEB / "STAV.txt", "a", encoding="utf-8") as f:
+        f.write(riadok)
+    print("STAV:", riadok.strip())
+
+
+def cas_renderu(riadky):
+    """Súčet časov renderu z riadkov HOTOVO (farba aj tieň)."""
+    spolu = 0.0
+    for r in riadky:
+        m = re.search(r", ([0-9.]+) s$", r)
+        if m:
+            spolu += float(m.group(1))
+    return spolu
+
+
+def prehlad(skupina, panely, stlpce=4, vyska=360):
+    """Kontaktný hárok skupiny do galérie (najlepsie/web-<skupina>.jpg)."""
+    if not panely:
+        return
+    ciel = REPO / "data" / "_3d" / "najlepsie" / f"web-{skupina}.jpg"
+    sys.argv = ["porovnanie.py", "--out", str(ciel), "--vyska", str(vyska), "--pozadie", "255,255,255",
+                "--stlpce", str(stlpce)]
+    for cesta, popis in panely:
+        tien = Path(cesta).with_name(Path(cesta).stem + "-tien.png")
+        sys.argv += ["--panel", f"{cesta}|{tien}|{popis}"]
+    porovnanie.main()
+
+
+def prazdny_tien(png):
+    im = Image.open(png)
+    Image.new("RGBA", im.size, (0, 0, 0, 0)).save(Path(png).with_name(Path(png).stem + "-tien.png"))
+
+
+def web_hlavy(a, log):
+    o = WEB / "hlavy"
+    o.mkdir(parents=True, exist_ok=True)
+    t0, rs, panely, n = time.time(), 0.0, [], 0
+    for rad, obj in RADY12:
+        png = o / f"{rad}.png"
+        if not hotove(png):
+            rs += cas_renderu(blender("--rad", rad, "--obj", obj, "--pohlad", "studio", *ARG_C, "--sirka", 2000,
+                                      "--vzorky", 1024, "--out", png, log=log))
+            dokonci_na_mieste(png)
+            n += 1
+        panely.append((png, f"{rad.replace('microflex-', '')} ({obj})"))
+    prehlad("hlavy", panely)
+    zapis_stav("hlavy (výrez C, 2000 px, 1024 vz.)", len(RADY12), rs, time.time() - t0,
+               "" if n == len(RADY12) else f"nových {n}, ostatné z predchádzajúceho behu")
+
+
+def web_hero(a, log):
+    o = WEB / "hero"
+    o.mkdir(parents=True, exist_ok=True)
+    png = o / "duo.png"
+    t0, rs = time.time(), 0.0
+    if not hotove(png):
+        rs = cas_renderu(blender("--rad", "microflex-duo-6-bar", "--obj", "MD16032C", "--pohlad", "studio", *ARG_HERO,
+                                 "--sirka", 3200, "--vzorky", 1024, "--out", png, log=log))
+        dokonci_na_mieste(png)
+    prehlad("hero", [(png, "hero/duo.png (DUO MD16032C, 3200 px)")], stlpce=1, vyska=700)
+    zapis_stav("hero (DUO MD16032C, 3200 px, 1024 vz.)", 1, rs, time.time() - t0)
+
+
+def web_rady(a, log):
+    o = WEB / "rady"
+    o.mkdir(parents=True, exist_ok=True)
+    stare = REPO / "data" / "_3d" / "rady"
+    t0, rs, panely, kopie = time.time(), 0.0, [], 0
+    for rad, obj in RADY12:
+        png = o / f"{rad}.png"
+        stara_geometria = (rad in RADY_ZNOVA and png.with_suffix(".json").exists() and
+                           "geometria" not in json.loads(png.with_suffix(".json").read_text(encoding="utf-8")))
+        if not hotove(png) or stara_geometria:
+            zdroj = stare / f"{rad.replace('microflex-', '')}-{obj}.png"
+            if rad not in RADY_ZNOVA and hotove(zdroj):
+                Image.open(zdroj).save(png)
+                Image.open(zdroj.with_name(zdroj.stem + "-tien.png")).save(png.with_name(png.stem + "-tien.png"))
+                json_k_obrazku(zdroj, png, 1.0)
+                kopie += 1
+            else:
+                rs += cas_renderu(blender("--rad", rad, "--obj", obj, "--pohlad", "studio", "--sirka", 1600,
+                                          "--vzorky", 1024, "--out", png, log=log))
+                dokonci_na_mieste(png)
+        panely.append((png, f"{rad.replace('microflex-', '')} ({obj})"))
+    prehlad("rady", panely)
+    zapis_stav("rady (výrez A, 1600 px, 1024 vz.)", len(RADY12), rs, time.time() - t0,
+               f"{kopie} skopírovaných z data/_3d/rady, ostatné nanovo (upravený presah rúr)")
+
+
+def web_makra(a, log):
+    o = WEB / "makra"
+    o.mkdir(parents=True, exist_ok=True)
+    tmp = REPO / "data" / "_3d" / "_tmp" / "makra-2400"
+    tmp.mkdir(parents=True, exist_ok=True)
+    t0, rs, panely = time.time(), 0.0, []
+    for meno, rad, obj, pohlad, extra in MAKRA:
+        png = o / f"{meno}.png"
+        if not hotove(png):
+            velky = tmp / f"{meno}.png"
+            rs += cas_renderu(blender("--rad", rad, "--obj", obj, "--pohlad", pohlad, *extra, "--sirka", 2400,
+                                      "--vzorky", 512, "--out", velky, log=log))
+            zmensi(velky, png, 1200)
+            dokonci_na_mieste(png, vinetacia=0.06)
+            json_k_obrazku(velky, png, 0.5)
+            prazdny_tien(png)                     # makro je celoplošné, tieň nemá (prázdna vrstva pre jednotnosť)
+        panely.append((png, f"makra/{meno}.png ({obj})"))
+    prehlad("makra", panely, stlpce=5, vyska=320)
+    zapis_stav("makra (render 2400, zmenšené na 1200 px, 512 vz.)", len(MAKRA), rs, time.time() - t0)
+
+
+def web_rodina(a, log):
+    o = WEB / "rodina"
+    o.mkdir(parents=True, exist_ok=True)
+    png = o / "rodina.png"
+    t0, rs = time.time(), 0.0
+    if not hotove(png):
+        rs = cas_renderu(blender("--pohlad", "rodina", "--azimut", 40, "--elevacia", 18, "--sirka", 2400,
+                                 "--vzorky", 1024, "--out", png, log=log))
+        dokonci_na_mieste(png)
+    prehlad("rodina", [(png, "rodina/rodina.png (2400 px)")], stlpce=1, vyska=600)
+    zapis_stav("rodina (6 systémov, 2400 px, 1024 vz.)", 1, rs, time.time() - t0)
+
+
+def web_varianty(a, log):
+    o = WEB / "varianty"
+    o.mkdir(parents=True, exist_ok=True)
+    rady12 = {r for r, _ in RADY12}
+    vsetky = [v for v in json.loads((REPO / "web" / "src" / "data" / "varianty.json").read_text(encoding="utf-8"))
+              if v.get("rad") in rady12]
+    podla_mena = {}
+    for v in vsetky:
+        podla_mena.setdefault(meno_suboru(v["obj_cislo"]), []).append(v)
+    t0, rs, n, panely = time.time(), 0.0, 0, []
+    for meno, vs in podla_mena.items():
+        png = o / f"{meno}.png"
+        if not hotove(png):
+            rs += cas_renderu(blender("--rad", vs[0]["rad"], "--obj", vs[0]["obj_cislo"], "--pohlad", "studio", *ARG_C,
+                                      "--sirka", 1600, "--vzorky", 512, "--out", png, log=log))
+            dokonci_na_mieste(png)
+            n += 1
+            if len(vs) > 1:
+                # rovnaké objednávacie číslo vo viacerých radoch (UNO a UNO PRIMO, DUO a PRIMO DUO)
+                z = json.loads(png.with_suffix(".json").read_text(encoding="utf-8"))
+                z["rady"] = [v["rad"] for v in vs]
+                png.with_suffix(".json").write_text(json.dumps(z, ensure_ascii=False, indent=1), encoding="utf-8")
+        panely.append((png, meno))
+    prehlad("varianty", panely, stlpce=10, vyska=200)
+    zapis_stav("varianty (výrez C jednotný, 1600 px, 512 vz.)", len(podla_mena), rs, time.time() - t0,
+               f"{len(vsetky)} variantov v {len(podla_mena)} súboroch (8 obj. čísel zdieľa UNO/UNO PRIMO a DUO/PRIMO DUO); nových {n}")
+
+
+def web_rozlozeny(a, log):
+    o = WEB / "rozlozeny"
+    panely = []
+    for rad, obj in RADY12:
+        t0, rs = time.time(), 0.0
+        d = o / rad
+        d.mkdir(parents=True, exist_ok=True)
+        hotovych = len(list(d.glob("rozlozeny-[0-9][0-9][0-9].png")))
+        tienov = len(list(d.glob("rozlozeny-[0-9][0-9][0-9]-tien.png")))
+        if not (hotovych == 72 and tienov == 72 and (d / "rozlozeny.json").exists()):
+            zdroj = REPO / "data" / "_3d" / "final" / "rozlozeny"
+            if rad == "microflex-duo-6-bar" and (zdroj / "rozlozeny.json").exists():
+                for i in range(72):
+                    for kon in ("", "-tien"):
+                        Image.open(zdroj / f"rozlozeny-{i:03d}{kon}.png").save(d / f"rozlozeny-{i:03d}{kon}.png")
+                (d / "rozlozeny.json").write_text((zdroj / "rozlozeny.json").read_text(encoding="utf-8"), encoding="utf-8")
+                poznamka = "skopírované z final/rozlozeny"
+            else:
+                rs += cas_renderu(blender("--rad", rad, "--obj", obj, "--pohlad", "rozlozeny", "--snimky", 72,
+                                          "--sirka", 1600, "--vzorky", 256, "--out", d / "rozlozeny.png", log=log))
+                for f in sorted(d.glob("rozlozeny-[0-9][0-9][0-9].png")):
+                    dokonci_na_mieste(f)
+                poznamka = ""
+            zapis_stav(f"rozlozeny/{rad} (72 snímok, 1600 px, 256 vz.)", 72, rs, time.time() - t0, poznamka)
+        panely.append((d / "rozlozeny-054.png", rad.replace("microflex-", "")))
+        prehlad("rozlozeny", panely)
+
+
+def sada_web(a, log):
+    kroky = {"hlavy": web_hlavy, "hero": web_hero, "rady": web_rady, "makra": web_makra, "rodina": web_rodina,
+             "varianty": web_varianty, "rozlozeny": web_rozlozeny}
+    for meno in (a.len.split(",") if a.len else list(kroky)):
+        print("==", meno)
+        kroky[meno](a, log)
+
+
+def nezaspi():
+    """Kým dávka beží, Windows neuspí počítač pre nečinnosť. Platí len pre tento proces (skončí s ním),
+    nastavenia napájania sa nemenia; zatvorené veko ani odpojenie napájania tým neprekonáme."""
+    if sys.platform == "win32":
+        import ctypes
+        ctypes.windll.kernel32.SetThreadExecutionState(0x80000000 | 0x00000001)  # ES_CONTINUOUS | ES_SYSTEM_REQUIRED
+
+
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument("sada", choices=["najlepsie", "final", "rady", "prvy", "ramovanie", "rady12"])
+    p.add_argument("sada", choices=["najlepsie", "final", "rady", "prvy", "ramovanie", "rady12", "web"])
+    p.add_argument("--len", default=None, help="sada web: len vybrané skupiny (hlavy,hero,rady,makra,rodina,varianty,rozlozeny)")
     p.add_argument("--vzorky", type=int, default=512)
     p.add_argument("--vzorky-sekvencia", type=int, default=256)
     p.add_argument("--vzorky-makro", type=int, default=512, help="makrá sa renderujú 2x a zmenšia (4x viac vzoriek na pixel)")
     p.add_argument("--sirka", type=int, default=1600)
     p.add_argument("--sirka-makro", type=int, default=1200)
     a = p.parse_args()
+    nezaspi()
     log = []
     t0 = time.time()
     if a.sada == "najlepsie":
@@ -370,6 +605,8 @@ def main():
         sada_prvy(a, log)
     elif a.sada == "ramovanie":
         sada_ramovanie(a, log)
+    elif a.sada == "web":
+        sada_web(a, log)
     elif a.sada == "rady12":
         sada_rady12(a, log)
     elif a.sada == "rady":
@@ -379,7 +616,8 @@ def main():
     else:
         sada_final(a, log)
     cesta = REPO / "data" / "_3d" / {"najlepsie": "najlepsie", "prvy": "prvy", "ramovanie": "ramovanie",
-                                     "rady12": "rady"}.get(a.sada, "final") / f"davka-{a.sada}.json"
+                                     "rady12": "rady", "web": "web"}.get(a.sada, "final") / f"davka-{a.sada}.json"
+    cesta.parent.mkdir(parents=True, exist_ok=True)
     cesta.write_text(json.dumps({"spolu_s": round(time.time() - t0), "kroky": log}, ensure_ascii=False, indent=1),
                      encoding="utf-8")
     print(f"Sada {a.sada} hotová za {time.time() - t0:.0f} s")

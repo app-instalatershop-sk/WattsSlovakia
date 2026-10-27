@@ -31,6 +31,9 @@ from mathutils import Vector
 from mathutils.geometry import delaunay_2d_cdt
 
 MM = 0.001
+# verzia geometrie (zapisuje sa do JSON): mení sa, keď sa zmení tvar alebo poloha dielov,
+# aby dávky vedeli, ktoré staršie rendre treba obnoviť
+GEOMETRIA = "2026-10-26b"
 
 
 def _cesta_skriptu():
@@ -80,7 +83,9 @@ FARBY = {
     "plast": (0.0040, 0.0050, 0.095),   # sýty ultramarín (zóny tieň/stred/svetlo podľa fotky s. 6)
     "pena": (0.072, 0.074, 0.071),
     "pexa_zlta": (0.270, 0.190, 0.000),
-    "pexa_biela": (0.840, 0.830, 0.760),
+    # krémovo biela sanitárna PE-Xa: pri jase štúdia podľa fotky s. 6 (stred sRGB 239/238/229);
+    # vyššie albedo by sa prepálilo do čistej bielej a rúra by na bielom pozadí zmizla
+    "pexa_biela": (0.310, 0.302, 0.268),
     "pe100": (0.014, 0.015, 0.017),
     "pruh_pe100": (0.004, 0.100, 0.360),
 }
@@ -239,9 +244,12 @@ def zaobli(body, polomery, krok_deg=5.0, uzavrety=True):
     """Lomená čiara so zaoblenými rohmi (kružnicový oblúk v každom rohu).
 
     body: [(x, r)] v mm, polomery: polomer zaoblenia pre každý bod (0 = ostrý roh).
-    Ak sa susedné zaoblenia nezmestia, polomer sa zmenší. Vracia pole (n, 2)."""
+    krok_deg: krok oblúka v stupňoch, jedno číslo alebo zoznam pre každý bod (vzdialené vlny
+    v perspektíve môžu mať hrubší oblúk). Ak sa susedné zaoblenia nezmestia, polomer sa zmenší.
+    Vracia pole (n, 2)."""
     P = [np.asarray(p, float) for p in body]
     n = len(P)
+    kroky = list(krok_deg) if isinstance(krok_deg, (list, tuple, np.ndarray)) else [krok_deg] * n
     out = []
     for i in range(n):
         p1 = P[i]
@@ -281,7 +289,7 @@ def zaobli(body, polomery, krok_deg=5.0, uzavrety=True):
             da -= 2 * math.pi
         while da < -math.pi:
             da += 2 * math.pi
-        k = max(2, int(math.ceil(abs(math.degrees(da)) / krok_deg)))
+        k = max(2, int(math.ceil(abs(math.degrees(da)) / kroky[i])))
         for j in range(k + 1):
             th = a0 + da * j / k
             out.append(c + r * np.array([math.cos(th), math.sin(th)]))
@@ -423,7 +431,7 @@ def viecko_prierezu(profil, diery, uhol, hustota=1.0):
     return V, F, np.ones(len(F), np.int32)
 
 
-def profil_plasta(D, L_ziad, krok_deg=5.0, prm=PLAST):
+def profil_plasta(D, L_ziad, krok_deg=5.0, prm=PLAST, krok_daleko=None, rebra_blizko=None):
     """Uzavretý profil plášťa (x, r) v mm: rez, vlny ako ploché skrinky, zadný rez, vnútorná stena.
 
     Ako na skutočnej fotke rezu: plášť je prerezaný v drážke (rez je tenký, vnútorná a vonkajšia
@@ -452,10 +460,17 @@ def profil_plasta(D, L_ziad, krok_deg=5.0, prm=PLAST):
 
     rng = np.random.default_rng(1234)
     nep = prm.get("nepravidelnost", 0.0)
+    kroky = []                                         # krok oblúka pre každý bod profilu
+
+    def kr(k):
+        return krok_daleko if (krok_daleko and rebra_blizko is not None and k >= rebra_blizko) else krok_deg
+
     # predný rez v strede drážky: tenká rezná plocha od vnútornej steny po dno drážky
     b(0.0, r_i, rr)
     b(0.0, rv, rr)
+    kroky += [krok_deg, krok_deg]
     for k in range(n):
+        kroky += [kr(k)] * 4
         xg = -k * P                                     # stred drážky k
         dx = nep * rng.uniform(-1, 1) if 0 < k < n else 0.0
         dR = nep * rng.uniform(-1, 1) if k < n - 1 else 0.0
@@ -469,7 +484,8 @@ def profil_plasta(D, L_ziad, krok_deg=5.0, prm=PLAST):
     # zadný rez v strede poslednej drážky
     b(-L, rv, rr)
     b(-L, r_i, rr)
-    prof = zaobli(body, pol, krok_deg=krok_deg)
+    kroky += [kr(n), kr(n)]
+    prof = zaobli(body, pol, krok_deg=kroky)
     if plocha_profilu(prof) < 0:
         prof = prof[::-1].copy()
     # materiál: 1 = rezné plochy (len zvislé úseky na samom začiatku a konci), 0 = povrch plášťa
@@ -995,8 +1011,8 @@ def mat_rura(druh, cast, d=32.0, ciara_uhol=130.0):
         zak = FARBY["pexa_biela"]
         sss, polomer, mierka = 0.28, (1.0, 0.95, 0.85), 0.0030
         drs = (0.18, 0.26, 0.42)[cast]
-        farba_rez = (0.90, 0.89, 0.84)
-        farba_vnutro = (0.70, 0.68, 0.62)
+        farba_rez = (0.40, 0.39, 0.35)
+        farba_vnutro = (0.26, 0.25, 0.22)
     else:  # pe100, kabel, chranicka
         zak = FARBY["pe100"]
         sss, polomer, mierka = 0.0, (1.0, 1.0, 1.0), 0.001
@@ -1372,6 +1388,134 @@ def ramec_ako_watts(cam, D, x_cela, ciel_px, sirka, vyska):
     return vyska
 
 
+def body_variantu_D(model, dosah=0.55):
+    """Body výrobku v jednotkách D (stred rezu plášťa v počiatku): obrys plášťa vpredu, v strede
+    a vzadu, konce rúr a podlaha pod tieňom. Z nich sa skladá jednotný výrez."""
+    D, R = model.D, model.D / 2.0
+    P = PLAST["rozstup_a"] + PLAST["rozstup_b"] * D
+    L = max(2, int(round((model.dlzka_mm or model.a.dlzka * D) / P))) * P
+    t = np.linspace(0, 2 * math.pi, 64, endpoint=False)
+    casti = [np.column_stack([np.full_like(t, x), R * np.cos(t), R * np.sin(t)]) for x in (0.0, -0.5 * L, -L)]
+    for r in model.rury:
+        xx = model.x_pena + r.presah
+        casti.append(np.column_stack([np.full_like(t, xx), r.v + r.d / 2 * np.cos(t), r.w + r.d / 2 * np.sin(t)]))
+    b = np.concatenate(casti)
+    xs = np.linspace(b[:, 0].min() - 0.12 * D, b[:, 0].max() + 0.12 * D, 24)
+    ys = np.array([-dosah, -0.5 * dosah, 0.0, 0.5 * dosah, dosah]) * D
+    X, Y = np.meshgrid(xs, ys)
+    podlaha = np.column_stack([X.ravel(), Y.ravel(), np.full(X.size, -R)])
+    return np.concatenate([b, podlaha]) / D
+
+
+def premietni_np(body, az, el, vzd, ohnisko, snimac=36.0):
+    """Perspektívna projekcia ako kamera Blendera (snímač na šírku): kamera vo vzdialenosti vzd
+    od počiatku v smere (az, el), mieri do počiatku. Vracia (u, v) v jednotkách šírky snímky."""
+    k = np.array([math.cos(el) * math.cos(az), -math.cos(el) * math.sin(az), math.sin(el)])
+    C = k * vzd
+    f = -k
+    vpravo = np.cross(f, [0.0, 0.0, 1.0])
+    vpravo /= np.linalg.norm(vpravo)
+    hore = np.cross(vpravo, f)
+    rel = body - C
+    z = rel @ f
+    return (rel @ vpravo) / z * (ohnisko / snimac), (rel @ hore) / z * (ohnisko / snimac)
+
+
+def jednotny_ramec(a, okraj=0.03):
+    """Výrez spoločný pre všetkých 91 variantov 12 radov v danom smere kamery: kamera vo
+    vzdialenosti c * D od stredu rezu, posun objektívu a pomer strán sú pre všetky rovnaké, takže
+    rez plášťa je na každom obrázku na tom istom mieste a rovnako veľký; menia sa len rúry.
+    Výsledok sa uloží do data/_3d/_tmp (kľúč: smer, ohnisko, dĺžka, údaje)."""
+    import hashlib
+    az, el = math.radians(a.azimut), math.radians(a.elevacia)
+    rady = [r for r in nacitaj_json("rady.json") if r["id"].startswith("microflex-")]
+    varianty = [v for v in nacitaj_json("varianty.json") if v.get("rad") in {r["id"] for r in rady}]
+    kluc = hashlib.sha1(json.dumps([a.azimut, a.elevacia, a.ohnisko, a.dlzka, okraj, PLAST, varianty],
+                                   sort_keys=True, ensure_ascii=False).encode("utf-8")).hexdigest()[:12]
+    cache = REPO / "data" / "_3d" / "_tmp" / f"jednotny-ramec-{kluc}.json"
+    if cache.exists():
+        return json.loads(cache.read_text(encoding="utf-8"))
+    rady_d = {r["id"]: r for r in rady}
+    vsetko = []
+    for v in varianty:
+        m = Potrubie(rady_d[v["rad"]], v, a).rozloz()
+        vsetko.append(body_variantu_D(m, a.tien_dosah))
+    body = np.concatenate(vsetko)
+    vzd = 6.0
+    for _ in range(12):
+        u, w = premietni_np(body, az, el, vzd, a.ohnisko)
+        vzd *= (u.max() - u.min()) * (1 + 2 * okraj)
+    u, w = premietni_np(body, az, el, vzd, a.ohnisko)
+    prm = {"vzdialenost_D": vzd, "shift_x": float(0.5 * (u.max() + u.min())), "shift_y": float(0.5 * (w.max() + w.min())),
+           "pomer": float((w.max() - w.min()) * (1 + 2 * okraj)), "variantov": len(varianty), "kluc": kluc}
+    cache.parent.mkdir(parents=True, exist_ok=True)
+    cache.write_text(json.dumps(prm, indent=1), encoding="utf-8")
+    print(f"Jednotný výrez z {len(varianty)} variantov: vzdialenosť {vzd:.3f} D, pomer strán 1 : {prm['pomer']:.3f}")
+    return prm
+
+
+def ramec_jednotny(cam, D, prm, sirka):
+    """Kamera podľa jednotného výrezu: vzdialenosť c * D od stredu rezu, pevný posun a pomer."""
+    sc = bpy.context.scene
+    smer = cam.matrix_world.to_quaternion() @ Vector((0.0, 0.0, 1.0))      # kamera hľadí po -Z
+    cam.location = smer * (prm["vzdialenost_D"] * D * MM)
+    cam.data.shift_x, cam.data.shift_y = prm["shift_x"], prm["shift_y"]
+    vyska = int(round(sirka * prm["pomer"] / 2.0)) * 2
+    sc.render.resolution_y = vyska
+    bpy.context.view_layer.update()
+    return vyska
+
+
+def ramec_hero(cam, model, body, sirka, pomer=1.45, podiel=0.26, okraj_vlavo=0.05, okraj=0.04):
+    """Výrez pre hlavný obrázok domova (text vľavo, výrobok vpravo, ako súčasný hero-rez-duo.png):
+    rez plášťa v ľavej tretine obrátený doľava k nadpisu, telo ide doprava a odchádza za pravý
+    okraj (koniec nevidno). podiel = šírka obrysu rezu plášťa ako podiel šírky snímky,
+    okraj_vlavo = odstup najľavejšieho bodu (konce rúr) od ľavého okraja. Pomer strán je pevný;
+    ak sa viditeľná časť (s tieňom) nezmestí na výšku, záber sa oddiali. Vracia výšku v px."""
+    sc = bpy.context.scene
+    R = model.D / 2.0
+    t = np.linspace(0, 2 * math.pi, 128, endpoint=False)
+    xp = model.skupiny["plast"].location.x / MM
+    obrys = np.column_stack([np.full_like(t, xp), R * np.cos(t), R * np.sin(t)]) * MM
+    konce = [obrys]
+    xr = model.skupiny["rury"].location.x / MM
+    for r in model.rury:
+        xx = model.x_pena + r.presah + xr
+        konce.append(np.column_stack([np.full_like(t, xx), r.v + r.d / 2 * np.cos(t), r.w + r.d / 2 * np.sin(t)]) * MM)
+    konce = np.concatenate(konce)
+    ciel = Vector((xp * MM, 0.0, 0.0))
+    vyska_w = 1.0 / pomer
+    vmin = vmax = 0.0
+    for _ in range(8):
+        cam.data.shift_x = cam.data.shift_y = 0.0
+        for _ in range(12):
+            bpy.context.view_layer.update()
+            u, _ = premietni(cam, obrys)
+            k = (u.max() - u.min()) / podiel
+            smer = (cam.location - ciel).normalized()
+            cam.location = ciel + smer * (cam.location - ciel).length * k
+        bpy.context.view_layer.update()
+        uk, _ = premietni(cam, konce)
+        cam.data.shift_x = float(uk.min()) + 0.5 - okraj_vlavo
+        u, v = premietni(cam, body)
+        x_img = u - cam.data.shift_x + 0.5
+        vid = (x_img >= 0.0) & (x_img <= 1.0)
+        vmin, vmax = float(v[vid].min()), float(v[vid].max())
+        if (vmax - vmin) * (1 + 2 * okraj) <= vyska_w * 1.001:
+            break
+        podiel *= 0.98 * vyska_w / ((vmax - vmin) * (1 + 2 * okraj))
+    cam.data.shift_y = 0.5 * (vmax + vmin)
+    vyska = int(round(sirka / pomer / 2.0)) * 2
+    sc.render.resolution_y = vyska
+    zad = np.column_stack([np.full_like(t, xp - model.L), R * np.cos(t), R * np.sin(t)]) * MM
+    uz, vz = premietni(cam, zad)
+    vnutri = ((uz - cam.data.shift_x + 0.5) < 1.0) & (np.abs(vz - cam.data.shift_y) < 0.5 / pomer)
+    if vnutri.any():
+        print("Pozor: zadný koniec tela je v zábere, treba dlhšie telo (--dlzka)")
+    print(f"Hero: rez plášťa {podiel:.3f} šírky, {sirka} x {vyska} px")
+    return vyska
+
+
 def ramec_detail(cam, model, body, sirka, podiel=0.47, okraj_vpravo=0.05, okraj=0.03, vyska=None):
     """Detailný výrez pre hlavu stránky: kamera v smere štúdia, ale bližšie, až kým vonkajší
     obrys rezu plášťa nezaberie 'podiel' šírky snímky; rez je vpravo (pravý okraj rezu alebo
@@ -1447,22 +1591,48 @@ def zarovnaj_kameru(cam, body, ciel, sirka, okraj=0.04, vyska=None):
 class Potrubie:
     """Celý výrobok: skupiny plášť, pena, rúry (každá má prázdny objekt rodiča na posun)."""
 
-    def __init__(self, rad, variant, a):
+    def __init__(self, rad, variant, a, dlzka_mm=None):
         self.rad, self.variant, self.a = rad, variant, a
         self.D = float(variant.get("plast_mm") or priemer_z_kodu(variant["obj_cislo"]))
         self.rury = rury_variantu(rad, variant)
         self.kvalita = a.kvalita
+        self.dlzka_mm = dlzka_mm                 # pevná dĺžka tela v mm (rodina); inak a.dlzka * D
+        self._rozlozene = False
+
+    def rozloz(self):
+        """Poloha, natočenie a presah rúr (čistá geometria, bez Blendera). Volá sa raz."""
+        if self._rozlozene:
+            return self
+        a, D = self.a, self.D
+        r_i = D / 2.0 - PLAST["hrubka"] * D
+        rozmiestni_rury(self.rad["id"], self.rury, r_i - 0.1)
+        self.x_pena = -PLAST["zapustenie_peny"] * D
+        natocenie, mierka = (a.natocenie, 1.0) if a.natocenie_dane else self.vyber_natocenie(a.natocenie, self.x_pena)
+        self.natocenie = natocenie
+        rot = math.radians(natocenie)
+        for r in self.rury:
+            v, w = r.v, r.w
+            r.v, r.w = v * math.cos(rot) - w * math.sin(rot), v * math.sin(rot) + w * math.cos(rot)
+        for r, pr in zip(self.rury, self._presahy(mierka=mierka)):
+            r.presah = pr
+        self._rozlozene = True
+        return self
 
     def postav(self):
         a, D = self.a, self.D
         sc = bpy.context.scene
-        L_ziad = a.dlzka * D
+        L_ziad = self.dlzka_mm if self.dlzka_mm else a.dlzka * D
         q = self.kvalita
         # hustota siete podľa výstupu: pri 3200 px treba jemnejšie oblúky aj viac dielikov po obvode
         sirka = a.sirka or 1600
         krok = {"nahlad": 7.0, "studio": 4.5 if sirka <= 1700 else 3.0, "makro": 2.0}[q]
         seg = {"nahlad": 256, "studio": max(720, int(0.75 * sirka)), "makro": 2048}[q]
-        prof, mat, L, rz = profil_plasta(D, L_ziad, krok_deg=krok)
+        if a.krok:
+            krok = a.krok
+        if a.segmenty:
+            seg = a.segmenty
+        prof, mat, L, rz = profil_plasta(D, L_ziad, krok_deg=krok, krok_daleko=a.krok_daleko,
+                                         rebra_blizko=a.rebra_blizko)
         self.L, self.rz = L, rz
         R, r_i = rz["R"], rz["r_i"]
         self.skupiny = {}
@@ -1507,21 +1677,11 @@ class Potrubie:
 
         # rúry a ich poloha
         r_pena = r_i - 0.1
-        rozmiestni_rury(self.rad["id"], self.rury, r_pena)
-        zap = PLAST["zapustenie_peny"] * D
-        x_pena = -zap
+        self.rozloz()
+        x_pena = self.x_pena
         x_zad = -L + 2.0
-        self.x_pena = x_pena
-        natocenie, mierka_presahu = (a.natocenie, 1.0) if a.natocenie_dane else self.vyber_natocenie(a.natocenie, x_pena)
-        self.natocenie = natocenie
-        rot = math.radians(natocenie)
-        for r in self.rury:
-            v, w = r.v, r.w
-            r.v, r.w = v * math.cos(rot) - w * math.sin(rot), v * math.sin(rot) + w * math.cos(rot)
-        presahy = self._presahy(mierka=mierka_presahu)
         mats_cache = {}
         for i, r in enumerate(self.rury):
-            r.presah = presahy[i]
             x_pred = x_pena + r.presah
             prof_r, mat_r = profil_rury(r.d, r.s, x_pred, x_zad, krok_deg=krok, druh=r.druh)
             seg_r = max(96, int(seg * r.d / D * 1.6))
@@ -1619,11 +1779,11 @@ class Potrubie:
             if a.presah is not None:
                 base = a.presah * r.d
             elif r.druh == "kabel":
-                base = 0.75 * hlavne[0].d + 6 + 0.9 * hlavne[0].d
+                base = min(min(0.75 * hlavne[0].d + 6, 0.45 * self.D) + 0.2 * self.D, 0.6 * self.D)
             elif len(hlavne) == 1:
-                base = 0.75 * r.d + 6
+                base = min(0.75 * r.d + 6, 0.45 * self.D)
             elif len(hlavne) == 2:
-                base = 1.75 * r.d + 8
+                base = min(1.75 * r.d + 8, 0.45 * self.D)
             else:
                 base = 1.1 * r.d + 6
             if len(hlavne) > 2 and r.druh != "kabel":
@@ -1684,8 +1844,9 @@ class Potrubie:
             return ok, skore
 
         kandidati = sorted(np.arange(-180.0, 180.0, 3.0), key=lambda d: abs(d))
-        for mierka in (1.0, 0.9, 0.8, 0.7):
-            vyhovuju = [(d, posud(zaklad + d, mierka)[1]) for d in kandidati if posud(zaklad + d, mierka)[0]]
+        for mierka in (1.0, 0.9, 0.8, 0.7, 0.55, 0.4):
+            posudky = [(d, posud(zaklad + d, mierka)) for d in kandidati]
+            vyhovuju = [(d, sk) for d, (ok, sk) in posudky if ok]
             if not vyhovuju:
                 continue
             if biele and len(hlavne) > 2:
@@ -1837,8 +1998,11 @@ def kluc_body(model, cam):
     W, H = sc.render.resolution_x, sc.render.resolution_y
     sx, sy = cam.data.shift_x, cam.data.shift_y
 
+    koren = getattr(model, "koren", None)
+    posun = np.array(koren.matrix_world.translation) if koren is not None else np.zeros(3)
+
     def px(pts):
-        pts = np.asarray(pts, float)
+        pts = np.asarray(pts, float) + posun
         u, v = premietni(cam, pts)
         return [[round(float((uu - sx + 0.5) * W), 1), round(float(H / 2 - (vv - sy) * W), 1)] for uu, vv in zip(u, v)]
 
@@ -1930,9 +2094,66 @@ def volne_miesto_peny(model, smer_v=1.0):
     return naj
 
 
+# rodina pre domov a stránku Potrubia: šesť systémov, všetky s plášťom 160 mm (vyrovnaný rad
+# ako na fotke v katalógu s. 6); UNO a COOL vo veľkosti 160, aby nepôsobili ako menejcenné
+RODINA = (("microflex-uno-6-bar", "M16075C"), ("microflex-duo-6-bar", "MD16032C"),
+          ("microflex-duo-10-bar", "MD1603225SWI"), ("microflex-quadro", "MQ16032C2520S"),
+          ("microflex-cool", "M16075PE"), ("microflex-hp", "MQ16032C3225E"))
+
+
+def rodina(a, sc, out, zaznam):
+    """Spoločný záber šiestich systémov: rúry rovnobežne vedľa seba, rezy ku kamere, každá ďalšia
+    o kus ďalej (diagonálny rad ako skutočná fotka v katalógu s. 6), rovnaké štúdio, široký pomer
+    strán, vrstva tieňa a JSON s bodmi rezu pre každú rúru."""
+    zoznam = [tuple(x.split(":")) for x in a.rodina.split(",")] if a.rodina else list(RODINA)
+    modely = []
+    for rad_id, obj in zoznam:
+        rad, variant = nacitaj_variant(rad_id, obj)
+        modely.append((rad, variant))
+    Dmax = max(float(v.get("plast_mm") or priemer_z_kodu(v["obj_cislo"])) for _, v in modely)
+    dlzka_mm = a.rodina_dlzka * Dmax
+    medzera, krok_x = 0.12 * Dmax, a.rodina_krok * Dmax
+    # Poradie zľava doprava = poradie v zozname. Kamera je na strane -Y (azimut > 0, rezy vpravo
+    # ako na ostatných renderoch): vľavo je rúra najbližšie ku kamere, každá ďalšia je ďalej od
+    # kamery (+Y) a o krok vpredu (+X). Bližšia rúra je tak vždy celá za rovinou rezu ďalšej,
+    # takže nezakryje žiadny rez (ako fotka s. 6, zrkadlovo); vzdialenejšie telá vykúkajú nad bližšími.
+    strana = 1.0 if a.azimut >= 0 else -1.0
+    sirka_povodna = a.sirka
+    a.sirka = 1000                    # hustota siete: jedna rúra zaberá len časť záberu
+    postavene, y = [], 0.0
+    for i, (rad, variant) in enumerate(modely):
+        m = Potrubie(rad, variant, a, dlzka_mm=dlzka_mm).postav()
+        if i > 0:
+            y += (0.5 * (postavene[-1].D + m.D) + medzera) * strana
+        koren = bpy.data.objects.new(f"koren_{i}", None)
+        sc.collection.objects.link(koren)
+        for g in m.skupiny.values():
+            g.parent = koren
+        # všetky ležia na spoločnej podlahe z = -Dmax / 2
+        koren.location = (i * krok_x * MM, y * MM, -(Dmax - m.D) / 2 * MM)
+        m.koren = koren
+        postavene.append(m)
+    a.sirka = sirka_povodna
+    for m in postavene:                      # rad do stredu: štúdio je postavené okolo osi x
+        m.koren.location.y -= 0.5 * y * MM
+        m.koren.location.x -= (len(postavene) - 1) * krok_x * MM
+    bpy.context.view_layer.update()
+    L_eff = dlzka_mm + (len(postavene) - 1) * krok_x
+    return postavene, Dmax, L_eff
+
+
+class _Skupina:
+    """Viac modelov ako jeden pre tieň (render_tien potrebuje len zoznam objektov)."""
+
+    def __init__(self, modely):
+        self.objekty = [o for m in modely for o in m.objekty]
+
+
 def hlavny(a):
     if a.farba_plast:
         FARBY["plast"] = tuple(float(x) for x in a.farba_plast.split(","))
+    if a.farba_biela:
+        FARBY["pexa_biela"] = tuple(float(x) for x in a.farba_biela.split(","))
     if a.hrana_drsnost is not None:
         PLAST_HRANA[0] = a.hrana_drsnost
     if a.sss_plast:
@@ -1943,6 +2164,8 @@ def hlavny(a):
     print(f"Rad {rad['id']}, variant {variant['obj_cislo']}: plášť {variant.get('plast_mm') or priemer_z_kodu(variant['obj_cislo']):g} mm, "
           f"rúry {variant.get('rura') or variant.get('rura_text')}")
     sc = vycisti_scenu()
+    if a.pohlad == "rodina":
+        return hlavny_rodina(a, sc)
     model = Potrubie(rad, variant, a).postav()
     D, L = model.D, model.L
     sirka = a.sirka or 1600
@@ -1967,7 +2190,7 @@ def hlavny(a):
     zaznam = {"rad": rad["id"], "obj_cislo": variant["obj_cislo"], "plast_mm": D,
               "rury": [dict(d=r.d, s=r.s, druh=r.druh) for r in model.rury], "pohlad": a.pohlad,
               "vzorky": a.vzorky, "kamera": dict(azimut=a.azimut, elevacia=a.elevacia, ohnisko=a.ohnisko),
-              "blender": bpy.app.version_string, "casy_s": {}}
+              "blender": bpy.app.version_string, "geometria": GEOMETRIA, "casy_s": {}}
 
     if a.pohlad in ("studio", "rozlozeny"):
         fazy = [a.faza] if a.snimky <= 1 else [i / (a.snimky - 1) for i in range(a.snimky)]
@@ -1976,6 +2199,17 @@ def hlavny(a):
             cx, cy, os_, wr, hr = (float(x) for x in a.watts.split(","))
             model.nastav_fazu(fazy[0])
             ramec_ako_watts(cam, D, 0.0, (cx, cy, os_), int(wr), int(hr))
+            body = None
+        elif ramec == "hero":
+            model.nastav_fazu(fazy[0])
+            body = body_objektov(model.objekty)
+            if not a.bez_tiena:
+                body = np.concatenate([body, body_tiena(body, D, a.tien_dosah)])
+            ramec_hero(cam, model, body, sirka, pomer=a.hero_pomer, podiel=a.hero_podiel, okraj_vlavo=a.hero_okraj)
+            body = None
+        elif ramec == "jednotny":
+            model.nastav_fazu(fazy[0])
+            ramec_jednotny(cam, D, jednotny_ramec(a), sirka)
             body = None
         elif ramec == "detail":
             model.nastav_fazu(fazy[0])
@@ -2072,13 +2306,50 @@ def hlavny(a):
     cesta_json.write_text(json.dumps(zaznam, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
+def hlavny_rodina(a, sc):
+    """Render rodiny systémov (pozri rodina())."""
+    out = Path(a.out or (REPO / "data" / "_3d" / "skusky" / "rodina.png"))
+    if not out.is_absolute():
+        out = REPO / out
+    modely, Dmax, L_eff = rodina(a, sc, out, None)
+    sirka = a.sirka or 2400
+    nastav_render(sc, a, sirka, sirka, a.vzorky)
+    svet(sc, a.svet)
+    studiove_svetla(Dmax, L_eff, a.svetlo, strana=1.0 if a.azimut >= 0 else -1.0,
+                    jasy={"kluc": a.jas_kluc, "vypln": a.jas_vypln_st, "kontra": a.jas_kontra_st, "celo": a.jas_celo,
+                          "kluc_sirka": a.kluc_sirka, "kluc_y": a.kluc_y})
+    podlaha_biela = biela_podlaha(Dmax, L_eff)
+    podlaha = tienovy_podklad(Dmax, L_eff)
+    for pl in (podlaha_biela, podlaha):
+        pl.scale = (3.0, 3.0, 1.0)
+    podlaha.hide_render = True
+    bpy.context.view_layer.update()
+    body = body_objektov([o for m in modely for o in m.objekty])
+    if not a.bez_tiena:
+        body = np.concatenate([body, body_tiena(body, Dmax, a.tien_dosah)])
+    ciel = tuple(0.5 * (body.min(0) + body.max(0)))
+    cam = kamera(sc, a.azimut, a.elevacia, ciel, a.ohnisko)
+    zarovnaj_kameru(cam, body, ciel, sirka, okraj=a.okraj, vyska=a.vyska or int(round(sirka / a.rodina_pomer / 2)) * 2)
+    zaznam = {"rad": "rodina", "obj_cislo": [m.variant["obj_cislo"] for m in modely],
+              "rady": [m.rad["id"] for m in modely], "pohlad": "rodina", "vzorky": a.vzorky,
+              "kamera": dict(azimut=a.azimut, elevacia=a.elevacia, ohnisko=a.ohnisko),
+              "blender": bpy.app.version_string, "geometria": GEOMETRIA, "casy_s": {}}
+    zaznam["casy_s"][out.name] = round(render(out), 1)
+    if not a.bez_tiena:
+        ct = out.with_name(out.stem + "-tien" + out.suffix)
+        zaznam["casy_s"][ct.name] = round(render_tien(_Skupina(modely), podlaha, ct, max(96, a.vzorky // 4), podlaha_biela, a), 1)
+    zaznam["body_px"] = {out.name: [dict(rad=m.rad["id"], obj_cislo=m.variant["obj_cislo"], **kluc_body(m, cam)) for m in modely]}
+    zaznam["rozlisenie"] = [sc.render.resolution_x, sc.render.resolution_y]
+    out.with_suffix(".json").write_text(json.dumps(zaznam, ensure_ascii=False, indent=1), encoding="utf-8")
+
+
 def argumenty():
     argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
     p = argparse.ArgumentParser(prog="potrubie.py", description="Parametrický render potrubia Microflex")
     p.add_argument("--rad", default="microflex-duo-6-bar", help="id radu z rady.json")
     p.add_argument("--obj", default=None, help="objednávacie číslo variantu (napr. MD16032C)")
     p.add_argument("--pohlad", default="studio",
-                   choices=["studio", "makro-plast", "makro-pena", "makro-rura", "rozlozeny"])
+                   choices=["studio", "makro-plast", "makro-pena", "makro-rura", "rozlozeny", "rodina"])
     p.add_argument("--faza", type=float, default=0.0, help="rozloženie 0..1")
     p.add_argument("--snimky", type=int, default=0, help="počet snímok sekvencie rozloženia (0 = jedna)")
     p.add_argument("--sirka", type=int, default=None)
@@ -2094,6 +2365,9 @@ def argumenty():
     p.add_argument("--tien-okraje", default=None,
                    help="okraje s nábehom tieňa na nulu: l, h, p, d (ľavý, horný, pravý, dolný); predvolené všetky, pri detaile hpd")
     p.add_argument("--detail-podiel", type=float, default=0.47, help="detail: šírka rezu plášťa ako podiel šírky snímky")
+    p.add_argument("--hero-pomer", type=float, default=1.45, help="hero: pomer strán šírka : výška")
+    p.add_argument("--hero-podiel", type=float, default=0.26, help="hero: šírka rezu plášťa ako podiel šírky snímky")
+    p.add_argument("--hero-okraj", type=float, default=0.05, help="hero: okraj vľavo pred koncami rúr")
     p.add_argument("--detail-okraj", type=float, default=0.05, help="detail: okraj vpravo za rezom alebo koncami rúr")
     p.add_argument("--dlzka", type=float, default=None, help="dĺžka tela v násobkoch priemeru plášťa (2,2; pri detaile 4)")
     p.add_argument("--natocenie", type=float, default=None,
@@ -2106,8 +2380,9 @@ def argumenty():
     p.add_argument("--clona", type=float, default=None,
                    help="clonové číslo pre hĺbku ostrosti (0 = bez; štúdio bez, makrá f/18 až f/32)")
     p.add_argument("--okraj", type=float, default=0.03)
-    p.add_argument("--ramec", choices=["tesny", "rozlozeny", "detail"], default=None,
-                   help="tesny (celé telo), rozlozeny (všetky fázy rozloženia), detail (rez veľký vpravo, telo za ľavým okrajom)")
+    p.add_argument("--ramec", choices=["tesny", "rozlozeny", "detail", "jednotny", "hero"], default=None,
+                   help="tesny (celé telo), rozlozeny (všetky fázy rozloženia), detail (rez veľký vpravo, telo za ľavým "
+                        "okrajom), jednotny (rovnaký výrez pre všetky varianty: rez plášťa vždy rovnako veľký a na tom istom mieste)")
     p.add_argument("--watts", default=None,
                    help="porovnávací výrez: cx,cy,os,sirka,vyska vonkajšej elipsy prstenca na renderi Watts (px)")
     p.add_argument("--expozicia", type=float, default=None)
@@ -2121,6 +2396,10 @@ def argumenty():
     p.add_argument("--teplota", type=float, default=None,
                    help="vyváženie bielej v K (makro peny 5900: kompenzuje žltý odraz od rúr)")
     p.add_argument("--kvalita", choices=["nahlad", "studio", "makro"], default="studio")
+    p.add_argument("--segmenty", type=int, default=None, help="počet dielikov po obvode (inak podľa šírky)")
+    p.add_argument("--krok", type=float, default=None, help="krok oblúkov profilu v stupňoch (inak podľa kvality)")
+    p.add_argument("--krok-daleko", type=float, default=None, help="krok oblúkov vzdialených vĺn (perspektíva, dlhé telo)")
+    p.add_argument("--rebra-blizko", type=int, default=None, help="koľko vĺn od rezu má jemný krok (zvyšok --krok-daleko)")
     p.add_argument("--zariadenie", default="GPU")
     p.add_argument("--komory", action="store_true", help="dutiny dvojstennej konštrukcie plášťa (v makre plášťa vždy)")
     p.add_argument("--zarez", action="store_true", help="makro plášťa so zárezom cez tri vlny namiesto pozdĺžneho rezu")
@@ -2142,15 +2421,20 @@ def argumenty():
     p.add_argument("--kluc-y", type=float, default=None, help="štúdio: poloha kľúča naprieč (záporné = ku kamere, v m pri D 160)")
     p.add_argument("--hrana-drsnost", type=float, default=None, help="o koľko sú hrany a steny vĺn drsnejšie (ladenie)")
     p.add_argument("--farba-plast", default=None, help="lineárna farba plášťa r,g,b (ladenie)")
+    p.add_argument("--farba-biela", default=None, help="lineárna farba bielej PE-Xa r,g,b (ladenie)")
     p.add_argument("--sss-plast", default=None, help="presvitanie plášťa: váha,dosah_mm (ladenie)")
+    p.add_argument("--rodina", default=None, help="rodina: zoznam rad:obj oddelený čiarkami (predvolene 6 systémov)")
+    p.add_argument("--rodina-dlzka", type=float, default=2.0, help="rodina: dĺžka tiel v násobkoch najväčšieho D")
+    p.add_argument("--rodina-krok", type=float, default=0.35, help="rodina: o koľko je každý ďalší rez vpredu (násobok D)")
+    p.add_argument("--rodina-pomer", type=float, default=2.2, help="rodina: pomer strán šírka : výška")
     p.add_argument("--blend", default=None, help="uložiť .blend na kontrolu")
     a = p.parse_args(argv)
     a.azimut_dany, a.elevacia_dany = a.azimut is not None, a.elevacia is not None
     a.natocenie_dane = a.natocenie is not None
     if a.dlzka is None:
-        a.dlzka = 4.0 if a.ramec == "detail" else 2.2
+        a.dlzka = {"detail": 4.0, "hero": 7.0}.get(a.ramec, 2.2)
     if a.tien_okraje is None:
-        a.tien_okraje = "hpd" if a.ramec == "detail" else "lhpd"
+        a.tien_okraje = {"detail": "hpd", "hero": "lhd"}.get(a.ramec, "lhpd")
     if a.natocenie is None:
         a.natocenie = -20.0
     a.expozicia_dana = a.expozicia is not None
@@ -2182,7 +2466,7 @@ def argumenty():
             a.expozicia = 0.45
     if a.clona is None:
         # mierna hĺbka ostrosti ako na produktovej fotke; makrá viac zacloniť
-        a.clona = {"studio": 0.0, "rozlozeny": 0.0, "makro-rura": 18.0, "makro-pena": 22.0, "makro-plast": 32.0}[a.pohlad]
+        a.clona = {"studio": 0.0, "rozlozeny": 0.0, "rodina": 0.0, "makro-rura": 18.0, "makro-pena": 22.0, "makro-plast": 32.0}[a.pohlad]
     if a.zarez_uhol is None:
         # zárez na strane ku kamere: smer od osi ku kamere v rovine YZ
         az, el = math.radians(a.azimut if a.azimut_dany else 80.0), math.radians(a.elevacia if a.elevacia_dany else 30.0)

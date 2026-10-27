@@ -14,7 +14,7 @@ nie podľa renderov Watts, ktoré sú samy počítačová grafika. Rendery Watts
 | Súbor | Čo robí |
 |---|---|
 | `potrubie.py` | model, materiály, štúdio, kamera, render jedného pohľadu alebo sekvencie (beží v Blenderi) |
-| `davka.py` | dávky: `najlepsie` (priebežný stav pre majiteľa), `final` (všetky výstupy), `rady` (kontrola radov), `prvy` (výstupy prvého zadania v `data/_3d/prvy`, po sade `final`), `ramovanie` (výrezy A, B, C pre hlavu stránky radu), `rady12` (všetkých 12 radov v štúdiu a ich prehľad); skladá verzie na bielom, fotodokončenie, záznamy JSON k zmenšeninám a porovnania (beží v Pythone s Pillow) |
+| `davka.py` | dávky: `najlepsie` (priebežný stav pre majiteľa), `final` (všetky výstupy), `rady` (kontrola radov), `prvy` (výstupy prvého zadania v `data/_3d/prvy`, po sade `final`), `ramovanie` (výrezy A, B, C pre hlavu stránky radu), `rady12` (všetkých 12 radov v štúdiu a ich prehľad), `web` (produkčná sada pre web v `data/_3d/web`, dá sa prerušiť a pustiť znova, hotové súbory preskočí); skladá verzie na bielom, fotodokončenie, záznamy JSON k zmenšeninám a porovnania (beží v Pythone s Pillow) |
 | `porovnanie.py` | zostava obrázkov vedľa seba v rovnakej výške s popisom |
 
 ## Čo treba
@@ -47,6 +47,10 @@ $P -I data/blender/davka.py prvy --vzorky 1024
 # výrezy pre hlavu stránky radu (data/_3d/ramovanie) a všetkých 12 radov (data/_3d/rady)
 $P -I data/blender/davka.py ramovanie --vzorky 1024
 $P -I data/blender/davka.py rady12 --vzorky 1024
+
+# produkčná sada pre web (data/_3d/web), niekoľko hodín; --len vyberie skupiny
+$P -I data/blender/davka.py web
+$P -I data/blender/davka.py web --len hlavy,hero
 
 # jeden pohľad priamo v Blenderi, napr. štúdio iného variantu
 $B -b --factory-startup -P data/blender/potrubie.py -- \
@@ -87,6 +91,21 @@ a fotografické zrno (pevné semienko, sekvencia nebliká); `*-na-bielom.jpg` je
 | `rozlozeny-faza-*.jpg` | snímky 0, 18, 36, 54 a 71 sekvencie (fáza 0 až 1) na bielom, na rýchlu kontrolu |
 | `uno-6-bar-M12532C.png`, `quadro-MQ16032C2520S.png`, `cool-M9040PE.png` | kontrola iných radov, 1600 px |
 
+`data/_3d/web/` (sada `web`, **produkčné mená, web na ne stavia, nemeniť**). Každé PNG je RGBA
+s priehľadným pozadím, vedľa neho `<meno>-tien.png` (vrstva tieňa, pri okrajoch nulová) a `<meno>.json`
+(`rad`, `obj_cislo`, `rozlisenie`, `body_px` na kóty, `geometria`). Postup a časy sa po každej skupine
+pripíšu do `STAV.txt`, kontaktné hárky skupín sú v `data/_3d/najlepsie/web-<skupina>.jpg`.
+
+| Priečinok | Obsah |
+|---|---|
+| `hlavy/<rad-id>.png` | výrez C (čelný pohľad na rez, azimut 22°, elevácia 12°), **jednotný** pre všetky varianty, 2000 px, 1024 vzoriek, 12 radov (reprezentatívny variant ako v `data/_3d/rady`) |
+| `hero/duo.png` | hlavný obrázok domova: DUO MD16032C, rez v ľavej tretine obrátený k nadpisu, telo odchádza za pravý okraj (objektív 60 mm, telo 14 D), 3200 × 2206 px; tieň slabne hore, vľavo a dole, vpravo pokračuje s telom |
+| `rady/<rad-id>.png` | výrez A (celé telo), 1600 px, 12 radov |
+| `makra/plast.png`, `pena.png`, `rura-zlta.png`, `rura-biela.png`, `rura-cierna.png` | makrá do líp, štvorec 1200 px (render 2400 a zmenšenie); celoplošné, `-tien.png` je prázdna vrstva len pre jednotnosť |
+| `rodina/rodina.png` | šesť systémov vedľa seba (UNO, DUO, DUO sanita, QUADRO, COOL, HP; všetky plášť 160 mm), rezy ku kamere, schodovito ako fotka v katalógu s. 6, 2400 × 1090 px; v JSON `body_px` pre každú rúru zvlášť |
+| `varianty/<obj_cislo>.png` | každý variant 12 radov vo výreze C, 1600 px, 512 vzoriek; **rez plášťa je na každom obrázku na tom istom mieste a rovnako veľký** (prepínanie dimenzie mení len proporcie). 91 variantov, 83 súborov: 8 objednávacích čísel je v údajoch v dvoch radoch (UNO a UNO PRIMO, DUO a PRIMO DUO), JSON má vtedy pole `rady` |
+| `rozlozeny/<rad-id>/rozlozeny-000.png` až `-071.png` | rozložený rez, 72 snímok, 1600 px, 256 vzoriek, každý rad vlastný výrez (všetky fázy v zábere); `rozlozeny.json` má `body_px` pre každú snímku |
+
 `data/_3d/ramovanie/` (sada `ramovanie`, DUO MD16032C, 1600 px, každý s `-tien`, `-cisty`, `.json`, `-na-bielom.jpg`):
 
 | Súbor | Výrez |
@@ -125,7 +144,11 @@ plášťa, berie sa z objednávacieho čísla (MD16040PE = 160 mm).
 | `--ohnisko`, `--clona` | 100 mm, bez | objektív na snímač 36 mm; štúdio je ostré od začiatku po koniec (ako produktová fotka skladaná z viacerých záberov), makrá f/18 až f/32 |
 | `--ramec` | podľa pohľadu | `tesny` (celé telo), `rozlozeny` (obsiahne všetky fázy, rovnaká kamera pre sekvenciu), `detail` (rez veľký vpravo, telo odchádza za ľavý okraj, kde ho web nechá utiecť za okraj obrazovky) |
 | `--detail-podiel`, `--detail-okraj` | 0,47, 0,05 | detail: šírka rezu plášťa ako podiel šírky snímky; okraj vpravo za rezom alebo koncami rúr |
-| `--natocenie`, `--presah` | −20° a automatika, podľa počtu rúr | natočenie rúr v reze; bez zadania sa natočenie upraví tak, aby koniec **bielej** rúry ostal v obryse plášťa (inak splynie s bielym pozadím) a pri 3 a viac rúrach boli biele vľavo hore nad penou; presah rúr pred penu (pri 3 a viac rúrach kratší, vzdialenejšie vyčnievajú viac) |
+| `--ramec jednotny` | | výrez spoločný pre všetkých 91 variantov 12 radov v danom smere kamery: kamera vo vzdialenosti c · D, rovnaký posun a pomer strán, takže rez plášťa je všade na tom istom mieste a rovnako veľký; parametre sa spočítajú raz a uložia do `data/_3d/_tmp/jednotny-ramec-*.json` |
+| `--ramec hero`, `--hero-pomer`, `--hero-podiel`, `--hero-okraj` | 1,45, 0,26, 0,05 | hlavný obrázok: rez vľavo obrátený doľava, telo za pravým okrajom; pomer strán, šírka rezu ako podiel šírky, okraj vľavo; ak sa záber nezmestí na výšku, oddiali sa; hlási, keby bol vidno zadný koniec tela |
+| `--pohlad rodina`, `--rodina`, `--rodina-dlzka`, `--rodina-krok`, `--rodina-pomer` | 6 systémov, 2,0, 0,35, 2,2 | spoločný záber radov: zoznam `rad:obj` oddelený čiarkami, dĺžka tiel a posun rezov v násobkoch D, pomer strán |
+| `--segmenty`, `--krok`, `--krok-daleko`, `--rebra-blizko` | podľa šírky | hustota siete: dieliky po obvode, krok oblúkov profilu; pri dlhom tele v perspektíve majú vzdialené vlny hrubší krok (napr. hero: 40 vĺn jemne, ďalej 12°) |
+| `--natocenie`, `--presah` | −20° a automatika, podľa počtu rúr (najviac 0,45 D, kábel 0,6 D) | natočenie rúr v reze; bez zadania sa natočenie upraví tak, aby koniec **bielej** rúry ostal v obryse plášťa (inak splynie s bielym pozadím) a pri 3 a viac rúrach boli biele vľavo hore nad penou; presah rúr pred penu (pri 3 a viac rúrach kratší, vzdialenejšie vyčnievajú viac) |
 | `--pena-styl`, `--bunka` | `jemna` | `jemna` (ako fotka: sivá, matná, jemné póry), `bunky`, `zrna` (ako rendery Watts) |
 | `--prierez`, `--zarez`, `--komory` | v makre plášťa prierez | plášť rozrezaný pozdĺž osi (dvojitá stena a dutiny), alebo zárez cez tri vlny (pomalší, booleovský rez) |
 | `--bez-tiena`, `--len-tien` | | bez vrstvy tieňa; len vrstva tieňa k existujúcemu renderu |
@@ -165,7 +188,9 @@ plášťa, berie sa z objednávacieho čísla (MD16040PE = 160 mm).
   so štyrmi modrými pruhmi; pri COOL s káblom tenký čierny kábel pri rúre, vyčnieva ďalej ako rúra;
   pri HP dve čierne vlnité chráničky so svetlou vložkou, rozmer z objednávacieho čísla
   (MQ16032C3225E = 32 a 25 mm, vnútorný priemer podľa brožúry 2026: 25/18,8 až 40/32 mm).
-  Hrúbka steny nosných rúr podľa údajov.
+  Hrúbka steny nosných rúr podľa údajov. Albedo bielej rúry je nízke (0,31) preto, lebo štúdio svieti
+  silno: pri vyššom by sa krémová belosť prepálila do čistej bielej a rúra by na bielom pozadí zmizla
+  (kalibrované na stred sRGB 239 ako na fotke s. 6).
 - **Rozmiestnenie rúr:** UNO v strede, dve rúry nad sebou (−20°), tri a štyri do štvorca
   (kúrenie na jednej uhlopriečke, sanita na druhej). Natočenie a presah sa rozhodujú v rovnakom
   referenčnom štúdiovom pohľade pre všetky výrezy, takže A, B, C aj makrá ukazujú ten istý kus.
@@ -213,7 +238,26 @@ Tieň je samostatný prechod s menším počtom vzoriek.
 | UNO M16063C | 1600 × 1078 | 1024 | 31 s | 9 s |
 | fáza rozloženia (jeden záber) | 1600 × 946 | 512 | 11 až 13 s | 4,5 s |
 | náhľad pri ladení | 1000 px | 128 | 3 až 4 s | 1,5 s |
+| výrez B detail (DUO) | 1600 × 1684 | 1024 | 57 s | 17 s |
+| výrez C čelný (DUO) | 1600 × 1278 | 1024 | 41 s | 11 s |
+| ktorýkoľvek z 12 radov, výrez A | 1600 × 1032 až 1092 | 1024 | 26 až 34 s | 9 až 10 s |
 
-Celá sada `final` trvá asi 40 minút (2411 s), sada `prvy` 4 minúty, `najlepsie` 4 minúty.
-Ďalší variant v štúdiu 1600 px je teda asi minúta vrátane tieňa; všetkých asi 100 variantov
-všetkých radov by trvalo okolo 1,5 hodiny.
+Celá sada `final` trvá asi 40 minút (2411 s), sada `prvy` 4 minúty, `najlepsie` 4 minúty,
+`ramovanie` 2,5 minúty, `rady12` (12 radov s tieňmi a prehľadom) 10,5 minúty (625 s).
+
+Produkčná sada `web` (27. 10. 2026; čistý čas renderu, bez spánku počítača):
+
+| Skupina | Počet | Render | Na jeden obrázok |
+|---|---|---|---|
+| `hlavy` (2000 px, 1024 vz.) | 12 | 13,1 min | 45 až 53 s + tieň 15 s |
+| `hero` (3200 × 2206, 1024 vz.) | 1 | 2,5 min | 108 s + tieň 43 s |
+| `rady` (1600 px, 1024 vz.) | 12 | asi 7 min | 26 až 34 s + tieň 9 s |
+| `makra` (render 2400, 512 vz.) | 5 | 13,8 min | 2 až 4 min |
+| `rodina` (2400 × 1090, 1024 vz.) | 1 | 0,9 min | |
+| `varianty` (1600 px, 512 vz.) | 83 | 31,7 min | 18 s + tieň 5,6 s (s prípravou asi 29 s) |
+| `rozlozeny` (72 snímok, 1600 px, 256 vz.) | 11 × 72 | 9,5 až 13 min na rad | 6 až 7 s + tieň 3,7 s |
+
+Celá sada beží asi 3,5 hodiny čistého času. Dávka sa dá prerušiť a pustiť znova (hotové súbory
+preskočí); ak počítač zaspí, po prebudení pokračuje sama. Kým dávka beží, Windows počítač pre
+nečinnosť neuspí (`nezaspi()` v `davka.py`, len pre tento proces, nastavenia napájania sa nemenia).
+Zatvorené veko ani odpojenie napájania to neprekoná: na noc nechať počítač zapojený a s otvoreným vekom.

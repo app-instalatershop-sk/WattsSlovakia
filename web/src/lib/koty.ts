@@ -54,14 +54,15 @@ export function kotyRenderu3d(druh: 'rady' | 'hlavy' | 'varianty' | 'hero', id: 
  * Čelný záber (hlava radu a varianty): rez je veľký, štítky musia ležať v prázdnom mieste okolo výrobku,
  * nikdy na plášti (Juraj 23. 9.). Plášť nad rezom doprava, rúra pod spodkom rezu doľava (dĺžku čiary lr
  * vypočítal data/rendery_web.py z polohy rúry; pri výbere dimenzie ju mení VolbaDimenzie), ohyb pod
- * telom doľava. Na telefóne rovnako; čiary sa tam skracujú na tri štvrtiny, preto je lM väčšie.
+ * telom doľava. Na telefóne rovnako; čiary sa tam skracujú na tri štvrtiny, preto je lM väčšie, a štítky
+ * sú voči obrazu širšie: rúra má o kúsok dlhšiu čiaru a ohyb kratšiu, aby sa ich rohy nestretli.
  */
-export const lmRury = (lr: number) => Math.round((lr / 0.75) * 100) / 100;
+export const lmRury = (lr: number) => Math.round(((lr + 1.5) / 0.75) * 100) / 100;
 function kotyCelne(b: { plast: Bod; rura: Bod; ohyb: Bod }, lr: number | undefined, h: Hodnoty): Kota[] {
   const out: Kota[] = [];
   if (h.plast) out.push({ x: b.plast[0], y: b.plast[1], l: 8, smer: 'hore-vpravo', hodnota: h.plast[0], text: h.plast[1], kod: 'plast' });
   if (h.rura) out.push({ x: b.rura[0], y: b.rura[1], l: lr ?? 6, lM: lr ? lmRury(lr) : undefined, smer: 'dole-vlavo', hodnota: h.rura[0], text: h.rura[1], kod: 'rura' });
-  if (h.ohyb) out.push({ x: b.ohyb[0], y: b.ohyb[1], l: 5, smer: 'dole-vlavo', hodnota: h.ohyb[0], text: h.ohyb[1], kod: 'ohyb' });
+  if (h.ohyb) out.push({ x: b.ohyb[0], y: b.ohyb[1], l: 5, lM: 3, smer: 'dole-vlavo', hodnota: h.ohyb[0], text: h.ohyb[1], kod: 'ohyb' });
   return out;
 }
 

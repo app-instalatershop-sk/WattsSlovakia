@@ -16,7 +16,8 @@ Do rendery.json idú pomer strán a body pre kóty v percentách orezaného obr�
 Mapa piktogramov (rad-duo-kurenie.png → id radu) dovolí nahradiť render Watts tam, kde stránka pozná
 len piktogram (kategória, systém).
 
-Spustenie: C:/Users/krist/nastroje/web/.venv/Scripts/python.exe -I data/rendery_web.py [skupiny…]
+Spustenie: C:/Users/krist/nastroje/web/.venv/Scripts/python.exe -I data/rendery_web.py [skupiny…] [--len-body]
+  --len-body  len prepočíta body kót v rendery.json, obrázky nechá (rýchle, napr. po zmene výpočtu bodov)
 """
 import json
 import math
@@ -48,7 +49,8 @@ UHOL_PLAST = 112.0  # stupne od vodorovnej osi proti smeru hodinových ručičie
 CELNY = ('hlavy', 'varianty')
 OHYB_CELNY = 0.30
 
-skupiny = sys.argv[1:] or list(SIRKA)
+LEN_BODY = '--len-body' in sys.argv
+skupiny = [a for a in sys.argv[1:] if not a.startswith('--')] or list(SIRKA)
 vystup_cesta = DATA / 'rendery.json'
 vystup = json.loads(vystup_cesta.read_text(encoding='utf-8')) if vystup_cesta.exists() else {}
 
@@ -72,7 +74,8 @@ def body_kot(body, objekt, ramec, w_crop, h_crop, ohyb_x=0.10):
             u = math.degrees(math.atan2(-(p[1] - cy), p[0] - cx)) % 360
             return abs(u - UHOL_PLAST)
         out['plast'] = pct(*min(okraj, key=odchylka))
-    rury = [r for r in body.get('rury', []) if r.get('druh') != 'kabel'] or body.get('rury', [])
+    # nosná rúra, nie vyhrievací kábel (COOL) ani chránička na káble (HP)
+    rury = [r for r in body.get('rury', []) if r.get('druh') not in ('kabel', 'chranicka')] or body.get('rury', [])
     if rury:
         dolna = max(rury, key=lambda r: r['stred'][1])
         out['rura'] = pct(*max(dolna['okraj'], key=lambda q: q[1]))
@@ -167,12 +170,13 @@ def spracuj(skupina):
         orez = spolu.crop((x0, y0, x1, y1))
         w = min(SIRKA[skupina], orez.width)
         h = round(orez.height * w / orez.width)
-        mala = orez.resize((w, h), Image.LANCZOS)
-        if skupina == 'makra':
-            mala.convert('RGB').save(ciel / f'{meno}.webp', 'WEBP', quality=90, method=6)
+        if LEN_BODY:
+            pass
+        elif skupina == 'makra':
+            orez.resize((w, h), Image.LANCZOS).convert('RGB').save(ciel / f'{meno}.webp', 'WEBP', quality=90, method=6)
         else:
-            mala.save(ciel / f'{meno}.webp', 'WEBP', quality=92, alpha_quality=100, method=6, exact=True)
-        if skupina in ('hlavy', 'hero', 'varianty'):
+            orez.resize((w, h), Image.LANCZOS).save(ciel / f'{meno}.webp', 'WEBP', quality=92, alpha_quality=100, method=6, exact=True)
+        if skupina in ('hlavy', 'hero', 'varianty') and not LEN_BODY:
             # Maska odlesku: len výrobok bez tieňa (pás svetla nemá prejsť po podlahe), malá a stačí hrubá.
             mw = min(1000, w)
             maska = Image.new('RGBA', objekt.size, (255, 255, 255, 0))

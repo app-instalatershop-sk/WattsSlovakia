@@ -119,8 +119,8 @@
     27.85
    ],
    "rura": [
-    84.45,
-    70.39
+    75.59,
+    69.63
    ],
    "ohyb": [
     13.8,
@@ -278,283 +278,2193 @@
  },
  "hlavy": {
   "microflex-cool-duo": {
-   "pomer": 1.1488,
+   "pomer": 1.1553,
    "rad": "microflex-cool-duo",
    "obj_cislo": "MD16040PE",
    "plast": [
-    48.79,
-    18.16
+    48.29,
+    18.08
    ],
    "rura": [
-    67.5,
-    74.73
+    66.81,
+    74.38
    ],
    "ohyb": [
-    29.97,
-    64.71
+    29.95,
+    64.68
    ],
    "stred": [
-    59.52,
-    48.55
+    58.92,
+    48.33
    ],
-   "polomer": 28.16,
-   "lr": 6.45
+   "polomer": 27.87,
+   "lr": 6.4
   },
   "microflex-cool-s-vyhrievacim-kablom": {
-   "pomer": 1.1488,
+   "pomer": 1.1553,
    "rad": "microflex-cool-s-vyhrievacim-kablom",
    "obj_cislo": "MV12550PE",
    "plast": [
-    48.79,
-    18.16
+    48.29,
+    18.08
    ],
    "rura": [
-    67.43,
-    67.1
+    66.74,
+    66.8
    ],
    "ohyb": [
-    29.97,
-    64.71
+    29.95,
+    64.68
    ],
    "stred": [
-    59.52,
-    48.55
+    58.92,
+    48.33
    ],
-   "polomer": 28.16,
-   "lr": 13.1
+   "polomer": 27.87,
+   "lr": 12.96
   },
   "microflex-cool": {
-   "pomer": 1.1488,
+   "pomer": 1.1553,
    "rad": "microflex-cool",
    "obj_cislo": "M9040PE",
    "plast": [
-    48.79,
-    18.16
+    48.29,
+    18.08
    ],
    "rura": [
-    68.71,
-    69.53
+    68.01,
+    69.21
    ],
    "ohyb": [
-    29.97,
-    64.71
+    29.95,
+    64.68
    ],
    "stred": [
-    59.52,
-    48.55
+    58.92,
+    48.33
    ],
-   "polomer": 28.16,
-   "lr": 11.04
+   "polomer": 27.87,
+   "lr": 10.93
   },
   "microflex-duo-10-bar": {
-   "pomer": 1.1488,
+   "pomer": 1.1553,
    "rad": "microflex-duo-10-bar",
    "obj_cislo": "MD1603225SWI",
    "plast": [
-    48.79,
-    18.16
+    48.29,
+    18.08
    ],
    "rura": [
-    66.23,
-    67.2
+    65.55,
+    66.89
    ],
    "ohyb": [
-    29.97,
-    64.71
+    29.95,
+    64.68
    ],
    "stred": [
-    59.52,
-    48.55
+    58.92,
+    48.33
    ],
-   "polomer": 28.16,
-   "lr": 13.01
+   "polomer": 27.87,
+   "lr": 12.88
   },
   "microflex-duo-6-bar": {
-   "pomer": 1.1488,
+   "pomer": 1.1553,
    "rad": "microflex-duo-6-bar",
    "obj_cislo": "MD16032C",
    "plast": [
-    48.79,
-    18.16
+    48.29,
+    18.08
    ],
    "rura": [
-    66.76,
-    69.86
+    66.08,
+    69.53
    ],
    "ohyb": [
-    29.97,
-    64.71
+    29.95,
+    64.68
    ],
    "stred": [
-    59.52,
-    48.55
+    58.92,
+    48.33
    ],
-   "polomer": 28.16,
-   "lr": 10.69
+   "polomer": 27.87,
+   "lr": 10.6
   },
   "microflex-hp": {
-   "pomer": 1.1488,
+   "pomer": 1.1553,
    "rad": "microflex-hp",
    "obj_cislo": "MQ16032C3225E",
    "plast": [
-    48.79,
-    18.16
+    48.29,
+    18.08
    ],
    "rura": [
-    70.25,
-    67.78
+    56.44,
+    64.43
    ],
    "ohyb": [
-    29.97,
-    64.71
+    29.95,
+    64.68
    ],
    "stred": [
-    59.52,
-    48.55
+    58.92,
+    48.33
    ],
-   "polomer": 28.16,
-   "lr": 12.5
+   "polomer": 27.87,
+   "lr": 15.01
   },
   "microflex-primo-duo-10-bar": {
-   "pomer": 1.1488,
+   "pomer": 1.1553,
    "rad": "microflex-primo-duo-10-bar",
    "obj_cislo": "MD1253225S",
    "plast": [
-    48.79,
-    18.16
+    48.29,
+    18.08
    ],
    "rura": [
-    63.26,
-    70.16
+    62.61,
+    69.84
    ],
    "ohyb": [
-    29.97,
-    64.71
+    29.95,
+    64.68
    ],
    "stred": [
-    59.52,
-    48.55
+    58.92,
+    48.33
    ],
-   "polomer": 28.16,
-   "lr": 10.43
+   "polomer": 27.87,
+   "lr": 10.33
   },
   "microflex-primo-duo-6-bar": {
-   "pomer": 1.1488,
+   "pomer": 1.1553,
    "rad": "microflex-primo-duo-6-bar",
    "obj_cislo": "MD12532C",
    "plast": [
-    48.79,
-    18.16
+    48.29,
+    18.08
    ],
    "rura": [
-    67.43,
-    75.2
+    66.74,
+    74.86
    ],
    "ohyb": [
-    29.97,
-    64.71
+    29.95,
+    64.68
    ],
    "stred": [
-    59.52,
-    48.55
+    58.92,
+    48.33
    ],
-   "polomer": 28.16,
-   "lr": 6.05
+   "polomer": 27.87,
+   "lr": 5.99
   },
   "microflex-quadro": {
-   "pomer": 1.1488,
+   "pomer": 1.1553,
    "rad": "microflex-quadro",
    "obj_cislo": "MQ16032C2520S",
    "plast": [
-    48.79,
-    18.16
+    48.29,
+    18.08
    ],
    "rura": [
-    68.54,
-    64.81
+    67.84,
+    64.52
    ],
    "ohyb": [
-    29.97,
-    64.71
+    29.95,
+    64.68
    ],
    "stred": [
-    59.52,
-    48.55
+    58.92,
+    48.33
    ],
-   "polomer": 28.16,
-   "lr": 15.09
+   "polomer": 27.87,
+   "lr": 14.94
   },
   "microflex-uno-10-bar": {
-   "pomer": 1.1488,
+   "pomer": 1.1553,
    "rad": "microflex-uno-10-bar",
    "obj_cislo": "M12550S",
    "plast": [
-    48.79,
-    18.16
+    48.29,
+    18.08
    ],
    "rura": [
-    67.43,
-    67.1
+    66.74,
+    66.8
    ],
    "ohyb": [
-    29.97,
-    64.71
+    29.95,
+    64.68
    ],
    "stred": [
-    59.52,
-    48.55
+    58.92,
+    48.33
    ],
-   "polomer": 28.16,
-   "lr": 13.1
+   "polomer": 27.87,
+   "lr": 12.96
   },
   "microflex-uno-6-bar": {
-   "pomer": 1.1488,
+   "pomer": 1.1553,
    "rad": "microflex-uno-6-bar",
    "obj_cislo": "M12532C",
    "plast": [
-    48.79,
-    18.16
+    48.29,
+    18.08
    ],
    "rura": [
-    64.85,
-    60.44
+    64.19,
+    60.16
    ],
    "ohyb": [
-    29.97,
-    64.71
+    29.95,
+    64.68
    ],
    "stred": [
-    59.52,
-    48.55
+    58.92,
+    48.33
    ],
-   "polomer": 28.16,
-   "lr": 18.89
+   "polomer": 27.87,
+   "lr": 18.71
   },
   "microflex-uno-primo-6-bar": {
-   "pomer": 1.1488,
+   "pomer": 1.1553,
    "rad": "microflex-uno-primo-6-bar",
    "obj_cislo": "M12550C",
    "plast": [
-    48.79,
-    18.16
+    48.29,
+    18.08
    ],
    "rura": [
-    67.43,
-    67.1
+    66.74,
+    66.8
    ],
    "ohyb": [
-    29.97,
-    64.71
+    29.95,
+    64.68
    ],
    "stred": [
-    59.52,
-    48.55
+    58.92,
+    48.33
    ],
-   "polomer": 28.16,
-   "lr": 13.1
+   "polomer": 27.87,
+   "lr": 12.96
   }
  },
- "varianty": {},
+ "varianty": {
+  "M12525C": {
+   "pomer": 1.1547,
+   "rad": "microflex-uno-6-bar",
+   "obj_cislo": "M12525C",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    63.19,
+    57.62
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 20.85
+  },
+  "M12532C": {
+   "pomer": 1.1547,
+   "rad": "microflex-uno-6-bar",
+   "obj_cislo": "M12532C",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    64.16,
+    60.14
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 18.67
+  },
+  "M12540C": {
+   "pomer": 1.1547,
+   "rad": "microflex-uno-primo-6-bar",
+   "obj_cislo": "M12540C",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    65.29,
+    63.05
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 16.15
+  },
+  "M12550C": {
+   "pomer": 1.1547,
+   "rad": "microflex-uno-6-bar",
+   "obj_cislo": "M12550C",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    66.72,
+    66.76
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 12.94
+  },
+  "M12550PE": {
+   "pomer": 1.1547,
+   "rad": "microflex-cool",
+   "obj_cislo": "M12550PE",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    66.72,
+    66.76
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 12.94
+  },
+  "M12550S": {
+   "pomer": 1.1547,
+   "rad": "microflex-uno-10-bar",
+   "obj_cislo": "M12550S",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    66.72,
+    66.76
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 12.94
+  },
+  "M12563C": {
+   "pomer": 1.1547,
+   "rad": "microflex-uno-6-bar",
+   "obj_cislo": "M12563C",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    68.62,
+    71.69
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 8.67
+  },
+  "M12563PE": {
+   "pomer": 1.1547,
+   "rad": "microflex-cool",
+   "obj_cislo": "M12563PE",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    68.62,
+    71.69
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 8.67
+  },
+  "M12563S": {
+   "pomer": 1.1547,
+   "rad": "microflex-uno-10-bar",
+   "obj_cislo": "M12563S",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    68.62,
+    71.69
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 8.67
+  },
+  "M16040C": {
+   "pomer": 1.1547,
+   "rad": "microflex-uno-6-bar",
+   "obj_cislo": "M16040C",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    63.81,
+    59.71
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 19.04
+  },
+  "M16050C": {
+   "pomer": 1.1547,
+   "rad": "microflex-uno-6-bar",
+   "obj_cislo": "M16050C",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    64.9,
+    62.55
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 16.58
+  },
+  "M16063C": {
+   "pomer": 1.1547,
+   "rad": "microflex-uno-6-bar",
+   "obj_cislo": "M16063C",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    66.35,
+    66.29
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 13.34
+  },
+  "M16075C": {
+   "pomer": 1.1547,
+   "rad": "microflex-uno-6-bar",
+   "obj_cislo": "M16075C",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    67.71,
+    69.82
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 10.29
+  },
+  "M16075PE": {
+   "pomer": 1.1547,
+   "rad": "microflex-cool",
+   "obj_cislo": "M16075PE",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    67.71,
+    69.82
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 10.29
+  },
+  "M16075S": {
+   "pomer": 1.1547,
+   "rad": "microflex-uno-10-bar",
+   "obj_cislo": "M16075S",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    67.71,
+    69.82
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 10.29
+  },
+  "M16090C": {
+   "pomer": 1.1547,
+   "rad": "microflex-uno-6-bar",
+   "obj_cislo": "M16090C",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    69.2,
+    74.13
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 6.55
+  },
+  "M16090PE": {
+   "pomer": 1.1547,
+   "rad": "microflex-cool",
+   "obj_cislo": "M16090PE",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    69.2,
+    74.13
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 6.55
+  },
+  "M16090PE18W": {
+   "pomer": 1.1547,
+   "rad": "microflex-cool-s-vyhrievacim-kablom",
+   "obj_cislo": "M16090PE18W",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    69.2,
+    74.13
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 6.55
+  },
+  "M16090S": {
+   "pomer": 1.1547,
+   "rad": "microflex-uno-10-bar",
+   "obj_cislo": "M16090S",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    69.2,
+    74.13
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 6.55
+  },
+  "M200110C": {
+   "pomer": 1.1547,
+   "rad": "microflex-uno-6-bar",
+   "obj_cislo": "M200110C",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    69.01,
+    73.57
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 7.04
+  },
+  "M200110PE": {
+   "pomer": 1.1547,
+   "rad": "microflex-cool",
+   "obj_cislo": "M200110PE",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    69.01,
+    73.57
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 7.04
+  },
+  "M200110S": {
+   "pomer": 1.1547,
+   "rad": "microflex-uno-10-bar",
+   "obj_cislo": "M200110S",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    69.01,
+    73.57
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 7.04
+  },
+  "M200125C": {
+   "pomer": 1.1547,
+   "rad": "microflex-uno-6-bar",
+   "obj_cislo": "M200125C",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    69.19,
+    76.28
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 5.0
+  },
+  "M20075C": {
+   "pomer": 1.1547,
+   "rad": "microflex-uno-6-bar",
+   "obj_cislo": "M20075C",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    65.83,
+    65.3
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 14.2
+  },
+  "M20090C": {
+   "pomer": 1.1547,
+   "rad": "microflex-uno-6-bar",
+   "obj_cislo": "M20090C",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    67.19,
+    68.81
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 11.16
+  },
+  "M7525C": {
+   "pomer": 1.1547,
+   "rad": "microflex-uno-6-bar",
+   "obj_cislo": "M7525C",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    66.29,
+    64.19
+   ],
+   "ohyb": [
+    29.98,
+    64.73
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 15.23
+  },
+  "M7525S": {
+   "pomer": 1.1547,
+   "rad": "microflex-uno-10-bar",
+   "obj_cislo": "M7525S",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    66.29,
+    64.19
+   ],
+   "ohyb": [
+    29.98,
+    64.73
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 15.23
+  },
+  "M9032C": {
+   "pomer": 1.1547,
+   "rad": "microflex-uno-6-bar",
+   "obj_cislo": "M9032C",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    66.37,
+    65.0
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 14.53
+  },
+  "M9032PE": {
+   "pomer": 1.1547,
+   "rad": "microflex-cool",
+   "obj_cislo": "M9032PE",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    66.37,
+    65.0
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 14.53
+  },
+  "M9032S": {
+   "pomer": 1.1547,
+   "rad": "microflex-uno-10-bar",
+   "obj_cislo": "M9032S",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    66.37,
+    65.0
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 14.53
+  },
+  "M9040C": {
+   "pomer": 1.1547,
+   "rad": "microflex-uno-6-bar",
+   "obj_cislo": "M9040C",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    67.98,
+    69.17
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 10.92
+  },
+  "M9040PE": {
+   "pomer": 1.1547,
+   "rad": "microflex-cool",
+   "obj_cislo": "M9040PE",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    67.98,
+    69.17
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 10.92
+  },
+  "M9040S": {
+   "pomer": 1.1547,
+   "rad": "microflex-uno-10-bar",
+   "obj_cislo": "M9040S",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    67.98,
+    69.17
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 10.92
+  },
+  "MD1252520S": {
+   "pomer": 1.1547,
+   "rad": "microflex-primo-duo-10-bar",
+   "obj_cislo": "MD1252520S",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    63.74,
+    66.47
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 13.19
+  },
+  "MD12525C": {
+   "pomer": 1.1547,
+   "rad": "microflex-duo-6-bar",
+   "obj_cislo": "MD12525C",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    66.39,
+    69.75
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 10.35
+  },
+  "MD1252818SWI": {
+   "pomer": 1.1547,
+   "rad": "microflex-duo-10-bar",
+   "obj_cislo": "MD1252818SWI",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    66.04,
+    66.64
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 13.04
+  },
+  "MD1253222SWI": {
+   "pomer": 1.1547,
+   "rad": "microflex-duo-10-bar",
+   "obj_cislo": "MD1253222SWI",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    63.66,
+    69.35
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 10.69
+  },
+  "MD1253225S": {
+   "pomer": 1.1547,
+   "rad": "microflex-primo-duo-10-bar",
+   "obj_cislo": "MD1253225S",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    62.59,
+    69.81
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 10.29
+  },
+  "MD12532C": {
+   "pomer": 1.1547,
+   "rad": "microflex-duo-6-bar",
+   "obj_cislo": "MD12532C",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    66.72,
+    74.82
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 5.96
+  },
+  "MD12532PE": {
+   "pomer": 1.1547,
+   "rad": "microflex-cool-duo",
+   "obj_cislo": "MD12532PE",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    66.72,
+    74.82
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 5.96
+  },
+  "MD16025C": {
+   "pomer": 1.1547,
+   "rad": "microflex-duo-6-bar",
+   "obj_cislo": "MD16025C",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    64.64,
+    64.78
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 14.65
+  },
+  "MD16025SWI": {
+   "pomer": 1.1547,
+   "rad": "microflex-duo-10-bar",
+   "obj_cislo": "MD16025SWI",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    64.64,
+    64.78
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 14.65
+  },
+  "MD1603218SWI": {
+   "pomer": 1.1547,
+   "rad": "microflex-duo-10-bar",
+   "obj_cislo": "MD1603218SWI",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    63.97,
+    64.05
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 15.28
+  },
+  "MD1603225SWI": {
+   "pomer": 1.1547,
+   "rad": "microflex-duo-10-bar",
+   "obj_cislo": "MD1603225SWI",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    65.52,
+    66.86
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 12.85
+  },
+  "MD1603228SWI": {
+   "pomer": 1.1547,
+   "rad": "microflex-duo-10-bar",
+   "obj_cislo": "MD1603228SWI",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    64.03,
+    67.19
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 12.56
+  },
+  "MD16032C": {
+   "pomer": 1.1547,
+   "rad": "microflex-duo-6-bar",
+   "obj_cislo": "MD16032C",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    66.05,
+    69.5
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 10.56
+  },
+  "MD1604025SWI": {
+   "pomer": 1.1547,
+   "rad": "microflex-duo-10-bar",
+   "obj_cislo": "MD1604025SWI",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    62.77,
+    67.74
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 12.09
+  },
+  "MD1604028SWI": {
+   "pomer": 1.1547,
+   "rad": "microflex-duo-10-bar",
+   "obj_cislo": "MD1604028SWI",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    63.42,
+    68.85
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 11.13
+  },
+  "MD1604032SWI": {
+   "pomer": 1.1547,
+   "rad": "microflex-duo-10-bar",
+   "obj_cislo": "MD1604032SWI",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    62.42,
+    69.39
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 10.66
+  },
+  "MD16040C": {
+   "pomer": 1.1547,
+   "rad": "microflex-duo-6-bar",
+   "obj_cislo": "MD16040C",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    66.78,
+    74.35
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 6.36
+  },
+  "MD16040PE": {
+   "pomer": 1.1547,
+   "rad": "microflex-cool-duo",
+   "obj_cislo": "MD16040PE",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    66.78,
+    74.35
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 6.36
+  },
+  "MD1605025SWI": {
+   "pomer": 1.1547,
+   "rad": "microflex-duo-10-bar",
+   "obj_cislo": "MD1605025SWI",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    60.38,
+    69.52
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 10.55
+  },
+  "MD1605032SWI": {
+   "pomer": 1.1547,
+   "rad": "microflex-duo-10-bar",
+   "obj_cislo": "MD1605032SWI",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    62.22,
+    72.12
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 8.29
+  },
+  "MD1605040SWI": {
+   "pomer": 1.1547,
+   "rad": "microflex-duo-10-bar",
+   "obj_cislo": "MD1605040SWI",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    60.91,
+    73.07
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 7.47
+  },
+  "MD16050C": {
+   "pomer": 1.1547,
+   "rad": "microflex-duo-6-bar",
+   "obj_cislo": "MD16050C",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    66.14,
+    79.28
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 5.0
+  },
+  "MD16050PE": {
+   "pomer": 1.1547,
+   "rad": "microflex-cool-duo",
+   "obj_cislo": "MD16050PE",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    66.14,
+    79.28
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 5.0
+  },
+  "MD20050C": {
+   "pomer": 1.1547,
+   "rad": "microflex-duo-6-bar",
+   "obj_cislo": "MD20050C",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    66.78,
+    74.35
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 6.36
+  },
+  "MD20063C": {
+   "pomer": 1.1547,
+   "rad": "microflex-duo-6-bar",
+   "obj_cislo": "MD20063C",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    66.12,
+    79.48
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 5.0
+  },
+  "MD20063PE": {
+   "pomer": 1.1547,
+   "rad": "microflex-cool-duo",
+   "obj_cislo": "MD20063PE",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    66.12,
+    79.48
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 5.0
+  },
+  "MD20063SWI": {
+   "pomer": 1.1547,
+   "rad": "microflex-duo-10-bar",
+   "obj_cislo": "MD20063SWI",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    60.04,
+    74.92
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 5.87
+  },
+  "MQ12525C3225E": {
+   "pomer": 1.1547,
+   "rad": "microflex-hp",
+   "obj_cislo": "MQ12525C3225E",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    55.46,
+    65.38
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 14.13
+  },
+  "MQ12532C3225E": {
+   "pomer": 1.1547,
+   "rad": "microflex-hp",
+   "obj_cislo": "MQ12532C3225E",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    55.71,
+    69.23
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 10.8
+  },
+  "MQ16025C2520S": {
+   "pomer": 1.1547,
+   "rad": "microflex-quadro",
+   "obj_cislo": "MQ16025C2520S",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    67.4,
+    63.43
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 15.82
+  },
+  "MQ16032C2520S": {
+   "pomer": 1.1547,
+   "rad": "microflex-quadro",
+   "obj_cislo": "MQ16032C2520S",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    67.82,
+    64.48
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 14.91
+  },
+  "MQ16032C3225E": {
+   "pomer": 1.1547,
+   "rad": "microflex-hp",
+   "obj_cislo": "MQ16032C3225E",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    56.41,
+    64.4
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 14.98
+  },
+  "MQ16032C3225S": {
+   "pomer": 1.1547,
+   "rad": "microflex-quadro",
+   "obj_cislo": "MQ16032C3225S",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    66.35,
+    68.46
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 11.46
+  },
+  "MQ16040C32E": {
+   "pomer": 1.1547,
+   "rad": "microflex-hp",
+   "obj_cislo": "MQ16040C32E",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    56.57,
+    67.86
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 11.98
+  },
+  "MQ20040C4028S": {
+   "pomer": 1.1547,
+   "rad": "microflex-quadro",
+   "obj_cislo": "MQ20040C4028S",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    68.64,
+    66.28
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 13.35
+  },
+  "MV12550PE": {
+   "pomer": 1.1547,
+   "rad": "microflex-cool-s-vyhrievacim-kablom",
+   "obj_cislo": "MV12550PE",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    66.72,
+    66.76
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 12.94
+  },
+  "MV12550PE18W": {
+   "pomer": 1.1547,
+   "rad": "microflex-cool-s-vyhrievacim-kablom",
+   "obj_cislo": "MV12550PE18W",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    66.72,
+    66.76
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 12.94
+  },
+  "MV12563PE": {
+   "pomer": 1.1547,
+   "rad": "microflex-cool-s-vyhrievacim-kablom",
+   "obj_cislo": "MV12563PE",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    68.62,
+    71.69
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 8.67
+  },
+  "MV12563PE18W": {
+   "pomer": 1.1547,
+   "rad": "microflex-cool-s-vyhrievacim-kablom",
+   "obj_cislo": "MV12563PE18W",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    68.62,
+    71.69
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 8.67
+  },
+  "MV16075PE": {
+   "pomer": 1.1547,
+   "rad": "microflex-cool-s-vyhrievacim-kablom",
+   "obj_cislo": "MV16075PE",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    67.71,
+    69.82
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 10.29
+  },
+  "MV16075PE18W": {
+   "pomer": 1.1547,
+   "rad": "microflex-cool-s-vyhrievacim-kablom",
+   "obj_cislo": "MV16075PE18W",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    67.71,
+    69.82
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 10.29
+  },
+  "MV16090PE": {
+   "pomer": 1.1547,
+   "rad": "microflex-cool-s-vyhrievacim-kablom",
+   "obj_cislo": "MV16090PE",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    69.2,
+    74.13
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 6.55
+  },
+  "MV200110PE": {
+   "pomer": 1.1547,
+   "rad": "microflex-cool-s-vyhrievacim-kablom",
+   "obj_cislo": "MV200110PE",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    69.01,
+    73.57
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 7.04
+  },
+  "MV200110PE18W": {
+   "pomer": 1.1547,
+   "rad": "microflex-cool-s-vyhrievacim-kablom",
+   "obj_cislo": "MV200110PE18W",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    69.01,
+    73.57
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 7.04
+  },
+  "MV7532PE": {
+   "pomer": 1.1547,
+   "rad": "microflex-cool-s-vyhrievacim-kablom",
+   "obj_cislo": "MV7532PE",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    67.99,
+    68.56
+   ],
+   "ohyb": [
+    29.98,
+    64.73
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 11.45
+  },
+  "MV7532PE18W": {
+   "pomer": 1.1547,
+   "rad": "microflex-cool-s-vyhrievacim-kablom",
+   "obj_cislo": "MV7532PE18W",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    67.99,
+    68.56
+   ],
+   "ohyb": [
+    29.98,
+    64.73
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 11.45
+  },
+  "MV9032PE": {
+   "pomer": 1.1547,
+   "rad": "microflex-cool-s-vyhrievacim-kablom",
+   "obj_cislo": "MV9032PE",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    66.37,
+    65.0
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 14.53
+  },
+  "MV9032PE18W": {
+   "pomer": 1.1547,
+   "rad": "microflex-cool-s-vyhrievacim-kablom",
+   "obj_cislo": "MV9032PE18W",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    66.37,
+    65.0
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 14.53
+  },
+  "MV9040PE": {
+   "pomer": 1.1547,
+   "rad": "microflex-cool-s-vyhrievacim-kablom",
+   "obj_cislo": "MV9040PE",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    67.98,
+    69.17
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 10.92
+  },
+  "MV9040PE18W": {
+   "pomer": 1.1547,
+   "rad": "microflex-cool-s-vyhrievacim-kablom",
+   "obj_cislo": "MV9040PE18W",
+   "plast": [
+    48.26,
+    18.09
+   ],
+   "rura": [
+    67.98,
+    69.17
+   ],
+   "ohyb": [
+    29.98,
+    64.65
+   ],
+   "stred": [
+    58.89,
+    48.31
+   ],
+   "polomer": 27.85,
+   "lr": 10.92
+  }
+ },
  "hero": {
   "duo": {
    "pomer": 1.4592,

@@ -212,7 +212,7 @@ const maPlast = skupiny.some((g) => g.vs.length > 1);
       }
       // Čiara k rúre: štítok visí pod spodkom rezu, nie na plášti (lr z data/rendery_web.py, lM ako v lib/koty.ts).
       const lr = koty.rura.li;
-      if (lr && b.lr) { lr.style.setProperty('--l', String(b.lr)); lr.style.setProperty('--lm', String(Math.round((b.lr / 0.75) * 100) / 100)); }
+      if (lr && b.lr) { lr.style.setProperty('--l', String(b.lr)); lr.style.setProperty('--lm', String(Math.round(((b.lr + 1.5) / 0.75) * 100) / 100)); }
     };
     const ukazObraz = async (o: Obr | null, animuj: boolean) => {
       if (!tien || !zakladny || !data.bodyHlavy) return;

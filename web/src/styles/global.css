@@ -43,7 +43,8 @@
     color-scheme: light;
     --gutter: clamp(16px, 3vw, 48px);
     /* Vzdialenosť od okraja obsahovej mriežky k okraju obrazovky. Pre prvky, ktoré majú dobehnúť
-       za okraj; 100vw obsahuje aj posuvník, preto sekcia s presahom potrebuje overflow-x: clip. */
+       za okraj; 100vw obsahuje aj posuvník, preto sekcia s presahom potrebuje overflow-x: clip
+       (v tele vnútorných stránok to robí .telo, mimo neho hero, hlava a záver samy). */
     --bleed: calc(var(--gutter) + max(0px, (100vw - var(--container-site)) / 2));
     --line: 1px solid var(--color-grey-300);
     /* O koľko sa pás katalógu podsunie pod spodok hero; zároveň výška jeho šikmej hrany. */
@@ -184,8 +185,9 @@
   .band { background: linear-gradient(180deg, #f3f7fc 0%, var(--color-blue-50) 55%, #e6eff9 100%); }
   /* Svetlý pás, ktorý začína bielou: sekcia pod hero prechádza plynulo, bez viditeľného švíku. */
   /* Vnútorné stránky: telo pod hlavou pokračuje zostupom pod zem ako domov a končí pod šikmou
-     hranou tmavého záveru. */
-  .telo { position: relative; background: linear-gradient(180deg, var(--zem-1) 0%, var(--zem-2) 45%, var(--zem-3) 100%); padding: 48px 0 calc(var(--sikmina-zaver) + 88px); }
+     hranou tmavého záveru. overflow-x: clip: čo dobieha za okraj obrazovky (--bleed, žiary za
+     obrázkami), nesmie urobiť vodorovný posuvník; sticky a zvislý presah ostávajú. */
+  .telo { position: relative; overflow-x: clip; background: linear-gradient(180deg, var(--zem-1) 0%, var(--zem-2) 45%, var(--zem-3) 100%); padding: 48px 0 calc(var(--sikmina-zaver) + 88px); }
   .telo > .wrap + .wrap, .telo > section + section { margin-top: 88px; }
   /* Hárok: biela plocha pre tabuľky a zoznamy na modrom tele, jemne nadvihnutá. */
   /* Sekcia, na ktorú skáče plávajúca navigácia častí: hlavička a pás častí ju neprekryjú. */

@@ -67,7 +67,9 @@ a ekoshop.sk. Podrobný plán kľúčových slov bude v samostatnom SEO dokument
    „čo mám urobiť“ (vybrať, hľadať, stiahnuť, kúpiť).
 3. **Asymetria pre príbeh, symetria pre výber.** Hero, „Prečo Microflex“ a referencie sú
    asymetrické (pomer 5 : 7 stĺpcov, obraz cez okraj). Mriežky kategórií, variantov a súborov sú
-   prísne symetrické, lebo tam človek porovnáva.
+   prísne symetrické, lebo tam človek porovnáva. Obraz cez okraj obrazovky (`--bleed`) orezáva jeho
+   sekcia alebo `.telo` cez `overflow-x: clip`: `100vw` obsahuje aj posuvník a bez orezania má
+   stránka na počítači s Windows vodorovný posuvník (Juraj 27. 10.).
 4. **Modrá vedie, žltá ukazuje.** Modrá je značka a akcia. Žltá (farba jadra rúry) je len malá
    plocha na jednom mieste obrazovky: jadro v piktograme, aktívny krok sprievodcu, zvýraznený
    riadok. Nikdy žltý text, nikdy žltá ako pozadie sekcie.

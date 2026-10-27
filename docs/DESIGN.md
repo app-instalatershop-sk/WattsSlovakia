@@ -252,6 +252,9 @@ Pravidlá:
 - Štítky kót ležia v prázdnom mieste okolo výrobku (Juraj 23. 9.). Na čelnom zábere: plášť nad rezom
   doprava, ohyb pod telom doľava (bod v 30 % šírky), rúra pod spodkom rezu doľava; dĺžku čiary k rúre
   počíta `rendery_web.py` a pri výbere dimenzie sa plynulo zmení.
+- Biela rúra (PE-Xa v sanite a QUADRO) je krémová a tienená ako na fotke katalógu s. 6, nikdy čisto
+  biela: na bielom pozadí by zmizla (27. 10. bola prepálená a v rozloženom reze splývala s pozadím).
+  Jej koniec ostáva v obryse plášťa. Kalibrácia v `data/blender/README.md`.
 - Postup: `data/blender/davka.py web` (render, `data/_3d/web`, mimo gitu) → `data/rendery_web.py`
   (WebP do `web/src/assets/3d`, body do `web/src/data/rendery.json`) → `data/rozklad_web.py` pre
   rozložený rez (`web/public/3d/rozklad-<rad>`). Návod: `data/blender/README.md`.

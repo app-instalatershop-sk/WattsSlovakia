@@ -67,26 +67,26 @@
    "polomer": 17.42
   },
   "microflex-duo-10-bar": {
-   "pomer": 1.312,
+   "pomer": 1.3282,
    "rad": "microflex-duo-10-bar",
    "obj_cislo": "MD1603225SWI",
    "plast": [
-    69.29,
-    27.97
+    68.26,
+    27.87
    ],
    "rura": [
-    85.27,
-    70.76
+    83.98,
+    70.48
    ],
    "ohyb": [
-    14.25,
-    52.33
+    14.1,
+    52.12
    ],
    "stred": [
-    76.21,
-    53.51
+    75.07,
+    53.3
    ],
-   "polomer": 18.23
+   "polomer": 17.94
   },
   "microflex-duo-6-bar": {
    "pomer": 1.3459,
@@ -133,26 +133,26 @@
    "polomer": 17.69
   },
   "microflex-primo-duo-10-bar": {
-   "pomer": 1.3289,
+   "pomer": 1.348,
    "rad": "microflex-primo-duo-10-bar",
    "obj_cislo": "MD1253225S",
    "plast": [
-    69.24,
-    28.02
+    68.13,
+    27.94
    ],
    "rura": [
-    82.5,
-    74.48
+    81.17,
+    74.27
    ],
    "ohyb": [
-    13.96,
-    52.68
+    13.79,
+    52.53
    ],
    "stred": [
-    76.19,
-    54.01
+    74.97,
+    53.85
    ],
-   "polomer": 18.32
+   "polomer": 18.01
   },
   "microflex-primo-duo-6-bar": {
    "pomer": 1.3587,
@@ -177,48 +177,48 @@
    "polomer": 17.23
   },
   "microflex-quadro": {
-   "pomer": 1.3404,
+   "pomer": 1.3462,
    "rad": "microflex-quadro",
    "obj_cislo": "MQ16032C2520S",
    "plast": [
-    68.03,
+    67.74,
     27.93
    ],
    "rura": [
-    83.78,
+    83.42,
     67.96
    ],
    "ohyb": [
-    13.92,
+    13.86,
     52.31
    ],
    "stred": [
-    74.84,
+    74.51,
     53.58
    ],
-   "polomer": 17.93
+   "polomer": 17.85
   },
   "microflex-uno-10-bar": {
-   "pomer": 1.3218,
+   "pomer": 1.3429,
    "rad": "microflex-uno-10-bar",
    "obj_cislo": "M12550S",
    "plast": [
-    69.28,
-    27.98
+    68.0,
+    27.9
    ],
    "rura": [
-    84.58,
-    71.12
+    83.01,
+    70.92
    ],
    "ohyb": [
-    14.1,
-    52.55
+    13.84,
+    52.39
    ],
    "stred": [
-    76.22,
-    53.78
+    74.81,
+    53.62
    ],
-   "polomer": 18.28
+   "polomer": 17.95
   },
   "microflex-uno-6-bar": {
    "pomer": 1.3362,

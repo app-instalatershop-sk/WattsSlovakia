@@ -88,7 +88,7 @@ const bodyHlavy = hlava3d ? (rendery.hlavy as Record<string, Body3d>)[r.id] : un
 // Stavba pod lupou: kľúčové číslo plášťa berie rozsah z tabuľky, nosnej rúry aj priemery.
 const vrstvy = obsah ? (['rura', 'pena', 'plast'] as const).map((id) => {
   const v = obsah.vrstvy[id];
-  const kluc = id === 'plast' ? (plastRozsah ? `Ø ${plastRozsah}` : 'HDPE') : id === 'rura' && ruraRozsah && !/^\d/.test(v.kluc ?? '') ? `Ø ${ruraRozsah}, ${v.kluc?.replace(/^PE-Xa, |^PE 100, /, '')}` : v.kluc ?? '';
+  const kluc = id === 'plast' ? (plastRozsah ? `Ø ${plastRozsah}` : ui.home.lupy.find((l) => l.id === 'plast')!.kluc) : id === 'rura' && ruraRozsah && !/^\d/.test(v.kluc ?? '') ? `Ø ${ruraRozsah}, ${v.kluc?.replace(/^PE-Xa, |^PE 100, /, '')}` : v.kluc ?? '';
   // Makro materiálu z 3D modelu, kým nie je, dočasný výrez z podkladov Watts.
   return { id, nazov: tx.vrstvy[id], kluc, text: v.text, img: (id === 'rura' ? makroRury(k.id) : render3d('makra', id)) ?? detail(`vrstva-${id}.jpg`)! };
 }) : [];

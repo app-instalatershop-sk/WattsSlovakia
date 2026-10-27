@@ -150,8 +150,8 @@ plášťa, berie sa z objednávacieho čísla (MD16040PE = 160 mm).
 | `--ramec hero`, `--hero-pomer`, `--hero-podiel`, `--hero-okraj` | 1,45, 0,26, 0,05 | hlavný obrázok: rez vľavo obrátený doľava, telo za pravým okrajom; pomer strán, šírka rezu ako podiel šírky, okraj vľavo; ak sa záber nezmestí na výšku, oddiali sa; hlási, keby bol vidno zadný koniec tela |
 | `--pohlad rodina`, `--rodina`, `--rodina-dlzka`, `--rodina-krok`, `--rodina-pomer` | 6 systémov, 2,0, 0,35, 2,2 | spoločný záber radov: zoznam `rad:obj` oddelený čiarkami, dĺžka tiel a posun rezov v násobkoch D, pomer strán |
 | `--segmenty`, `--krok`, `--krok-daleko`, `--rebra-blizko` | podľa šírky | hustota siete: dieliky po obvode, krok oblúkov profilu; pri dlhom tele v perspektíve majú vzdialené vlny hrubší krok (napr. hero: 40 vĺn jemne, ďalej 12°) |
-| `--natocenie`, `--presah` | −20° a automatika, podľa počtu rúr (najviac 0,45 D, kábel 0,6 D) | natočenie rúr v reze; bez zadania sa natočenie upraví tak, aby koniec **bielej** rúry ostal v obryse plášťa (inak splynie s bielym pozadím) a pri 3 a viac rúrach boli biele vľavo hore nad penou; presah rúr pred penu (pri 3 a viac rúrach kratší, vzdialenejšie vyčnievajú viac) |
-| `--pena-styl`, `--bunka` | `jemna` | `jemna` (ako fotka: sivá, matná, jemné póry), `bunky`, `zrna` (ako rendery Watts) |
+| `--natocenie`, `--presah` | −20° a automatika, podľa počtu rúr (asi 0,4 D, najviac 0,42 až 0,45 D) | natočenie rúr v reze; bez zadania sa natočenie upraví tak, aby koniec **bielej** rúry ostal v obryse plášťa (inak splynie s bielym pozadím) a pri 3 a viac rúrach boli biele vľavo hore nad penou; presah rúr pred penu podľa fotiek brožúry 2026 (jedna a dve rúry 1,3 a 1,6 d + 8 mm, štyri 1,5 d + 8 mm a vzdialenejšie vyčnievajú viac, chráničky HP 0,5 d + 4 mm, kábel o 0,1 d rúry ďalej ako rúra) |
+| `--pena-styl`, `--bunka` | `vrstvy`, 1 mm | `vrstvy` (podľa fotiek: tmavé jadro okolo rúr, svetlejšie navinuté vrstvy, hrubé bunky), `jemna` (hladká bez jadra ako retušovaná fotka s. 6, len na porovnanie) |
 | `--prierez`, `--zarez`, `--komory` | v makre plášťa prierez | plášť rozrezaný pozdĺž osi (dvojitá stena a dutiny), alebo zárez cez tri vlny (pomalší, booleovský rez) |
 | `--bez-tiena`, `--len-tien` | | bez vrstvy tieňa; len vrstva tieňa k existujúcemu renderu |
 | `--tien-sila`, `--tien-prah`, `--tien-okraj`, `--tien-dosah` | 0,55, 0,12, 0,03, 0,55 | najväčšia alfa tieňa; slabší dosvit okolia sa zahodí (ostane kontaktný tieň); pás bez tieňa pri okrajoch; kam siaha tieň od osi (násobok D) pre výrez záberu |
@@ -161,10 +161,11 @@ plášťa, berie sa z objednávacieho čísla (MD16040PE = 160 mm).
 | `--hrana-drsnost` | 0,15 | o koľko sú hrany a steny vĺn drsnejšie ako vrchol (mäkký odlesk na hrane) |
 | `--farba-plast`, `--sss-plast` | | ladenie farby (lineárne RGB) a presvitania plášťa (váha, dosah v mm) |
 | `--svet` | 0,04 | sila okolia (tmavé štúdio, svieti len zhora; čierne zástery) |
-| `--prevod`, `--expozicia`, `--teplota` | Standard, 0 | prevod farieb, expozícia, vyváženie bielej (makro peny 5900 K) |
+| `--prevod`, `--expozicia`, `--teplota` | Standard, −0,25 | prevod farieb, expozícia (štúdio o štvrť clony tmavšie od 27. 10., `EXPOZICIA_STUDIO`; makro peny +0,45 k tomu), vyváženie bielej (makro peny 5900 K) |
 | `--kvalita` | `studio` | `nahlad` (bez posunutia povrchu peny), `studio`, `makro` (jemnejšia sieť); hustota siete rastie so šírkou |
 | `--watts cx,cy,os,š,v` | | porovnávací výrez: prstenec plášťa presne tam, kde je na renderi Watts |
 | `--blend` | | uloží aj `.blend` na kontrolu |
+| `--vyrez x0,y0,x1,y1` | | ladenie: renderuje len časť snímky v plnom rozlíšení (podiel šírky a výšky, y zhora), napr. čelo peny |
 
 ## Ako je model postavený
 
@@ -174,27 +175,40 @@ plášťa, berie sa z objednávacieho čísla (MD16040PE = 160 mm).
   0,11 P, vnútorná 0,09 P. V každej vlne je dutina (princíp uzavretej komory). Plášť je prerezaný
   **v drážke** ako na skutočnej fotke rezu: rez je tenký (zrastené steny) s otrepom, široký modrý
   „prstenec“ okolo peny je predná stena prvej vlny. Vlny majú drobnú náhodnú nepravidelnosť.
-- **Materiál plášťa:** sýty ultramarín, vrcholy hladké z formy (drsnosť 0,20 až 0,28, od vlny
+- **Materiál plášťa:** sýta kobaltová modrá (odtieň 226°, do 27. 10. bol do fialova, 238°), vrcholy hladké z formy (drsnosť 0,20 až 0,28, od vlny
   k vlne trochu iná), hrany a steny vĺn drsnejšie (mäkký široký odlesk namiesto tenkej svetlej
   čiary), stopy po nástroji po obvode, slabá pomarančová kôra. Presvitanie náhodnou prechádzkou
   s rozptylom posunutým do tyrkysova: v štúdiu slabé (plášť pôsobí nepriehľadne ako na fotke),
   v makre plášťa silné (tenké steny proti svetlu svietia ako na makrofotke). Rez je matný,
   svetlejší, so stopami po píle.
 - **Pena (PE-X):** čelo je triangulované medzikružie so skutočným posunutím povrchu (adaptívne
-  delenie po pixeloch): stredne sivá, matná, jemné plytké póry, sem-tam hlbší pór, slabé navinuté
-  vrstvy, piliny a modré triesky z plášťa pri okraji. Čelo je kúsok za rezom plášťa.
-- **Rúry:** PE-Xa žltá (kúrenie) a krémovo biela (sanita): lesklé, mierne presvitajú, rez bledší
-  krémový so stopami po píle, vnútro tmavšie do oranžova, mikroškrabance, potlač len ako pás
-  drobných nečitateľných značiek (žiadny vymyslený text ani logo). Biela rúra má jemne tmavší okraj
-  pri pohľade pod uhlom a je menej presvitá, aby nesplynula s bielym pozadím. PE 100 (COOL) čierna
-  so štyrmi modrými pruhmi; pri COOL s káblom tenký čierny kábel pri rúre, vyčnieva ďalej ako rúra;
-  pri HP dve čierne vlnité chráničky so svetlou vložkou, rozmer z objednávacieho čísla
-  (MQ16032C3225E = 32 a 25 mm, vnútorný priemer podľa brožúry 2026: 25/18,8 až 40/32 mm).
+  delenie po pixeloch), dve vrstvy ako na fotke rezu zo stavby a na fotkách brožúry 2026 (Juraj 27. 10.):
+  **jadro** okolo rúr je takmer čierne (kruh okolo osi, ktorý obalí všetky rúry aj kábel s rezervou 0,07
+  polomeru peny; pri DUO 125 asi 0,7 polomeru) a o pol milimetra zapustené, na hranici je tenká tieňová
+  škára; **vonkajšie vrstvy** k plášťu sú o niečo svetlejšia sivá navinutá v špirále (závity po 5 až 9 mm,
+  švy miestami zrastené, každý závit trochu iný odtieň). Povrch tvoria prerezané uzavreté bunky tesne
+  vedľa seba (1 a 0,5 mm v škvrnách, miska so svetlým okrajom), riedke väčšie bubliny do 1,3 mm a
+  svetlé zrnká; vo veľkosti webu pôsobí pena hrubo a bublinkato ako na fotkách, nie ako jemný prášok; pri okraji piliny a modré triesky z plášťa. Čelo je kúsok za rezom plášťa. Koža peny a steny
+  otvorov (vidno ich v rozloženom reze) majú farbu vonkajších vrstiev a jadra; koža má nižšie albedo,
+  lebo na ňu svieti kľúčové svetlo zhora a inak by pôsobila ako iný, svetlý materiál.
+- **Rúry:** PE-Xa žltá (kúrenie) a krémovo biela (sanita): lesklé, mierne presvitajú. Rez má farbu
+  rúry, len je svetlejší a matný so stopami po píle (do 27. 10. mala žltá rúra na reze biely lem, na
+  žiadnej fotke ho nemá); vnútro je rovnakej farby v tieni, pri bielej krémové, nie sivé.
+  Mikroškrabance, potlač len ako pás drobných nečitateľných značiek (žiadny vymyslený text ani logo).
+  Biela rúra má jemne tmavší okraj pri pohľade pod uhlom a je menej presvitá, aby nesplynula s bielym
+  pozadím. PE 100 (COOL) čierna pololesklá so štyrmi modrými pruhmi, rez tmavosivý. Pri COOL s káblom
+  plochý čierny kábel 8 × 4,5 mm (odhad podľa fotiek) leží plochou stranou navrchu rúry (katalóg s. 18:
+  rúra je v kontakte s káblom), mierne natočený ku kamere; jeho rez ukazuje vrstvy podľa nákresu
+  v katalógu s. 21 (čierny plášť, opletenie, svetlá izolácia, tmavé jadro, dva vodiče), ako svetlý
+  krúžok na fotke s. 6. Pri HP dve čierne vlnité chráničky s jemnými hlbokými vlnami (0,14 d) a
+  svetlosivou vložkou, rozmer z objednávacieho čísla (MQ16032C3225E = 32 a 25 mm, vnútorný priemer
+  podľa brožúry 2026: 25/18,8 až 40/32 mm); vyčnievajú len krátko, žlté rúry ďaleko (fotka brožúry).
   Hrúbka steny nosných rúr podľa údajov. Albedo bielej rúry je nízke (0,31) preto, lebo štúdio svieti
   silno: pri vyššom by sa krémová belosť prepálila do čistej bielej a rúra by na bielom pozadí zmizla
   (kalibrované na stred sRGB 239 ako na fotke s. 6).
-- **Rozmiestnenie rúr:** UNO v strede, dve rúry nad sebou (−20°), tri a štyri do štvorca
-  (kúrenie na jednej uhlopriečke, sanita na druhej). Natočenie a presah sa rozhodujú v rovnakom
+- **Rozmiestnenie rúr:** UNO v strede, dve rúry nad sebou (−20°) s medzerou 0,2 d, štyri do
+  tesného štvorca s medzerou 2,5 mm (kúrenie na jednej uhlopriečke, sanita alebo chráničky na druhej;
+  overené na fotkách QUADRO a HP v brožúre 2026). Natočenie a presah sa rozhodujú v rovnakom
   referenčnom štúdiovom pohľade pre všetky výrezy, takže A, B, C aj makrá ukazujú ten istý kus.
 - **Štúdio:** veľký softbox nad telom, mierne za ním (jeho odraz leží na hornom okraji ako na
   fotke, nie rozliaty po celom plášti), úzky kontra pás za telom (lemy na hranách vĺn), vlastné
@@ -209,7 +223,17 @@ plášťa, berie sa z objednávacieho čísla (MD16040PE = 160 mm).
 
 ## Kalibrácia proti fotkám
 
-Štúdiový pohľad v rovnakom uhle ako fotka s. 6 (`--azimut -42 --elevacia 14`), stredné hodnoty sRGB
+**27. 10. 2026 (2. kolo, podľa pripomienok Juraja):** farby sú zmerané na produktových fotkách deviatich
+radov z brožúry 2026 (`podklady/watts/fotky-katalog/brozura-2026-*.jpeg`, jedno štúdio), na fotke rezu
+DUO zo stavby a na fotke s. 6; segmentácia podľa odtieňa a sýtosti, mediány sRGB. Ciele a výsledok
+skúšobných hláv (výrez C, 1100 px): plášť odtieň 220 až 226° (fotky 214 až 230°, predtým 238°),
+lineárny jas 0,056 (fotky 0,04 až 0,06, o kúsok tmavšie ako predtým 0,059); pena celkovo sRGB 96 až 100
+(fotky 94 až 111, predtým 115), jadro asi 51 a vonkajšie vrstvy asi 98, pomer jasu 0,3 (fotka zo stavby
+0,3, brožúra 0,58); žltá odtieň 47 až 48° a jas 0,47 až 0,55 (fotky 0,50 až 0,58); biela sRGB 231 až 248
+(fotky 227 až 240). Farby sú rovnaké vo všetkých záberoch, lebo sa celá sada `web` renderuje znova
+s jednou verziou modelu (`GEOMETRIA` v JSON každého renderu, `davka.py` staršie obnoví).
+
+**Do 26. 10.:** štúdiový pohľad v rovnakom uhle ako fotka s. 6 (`--azimut -42 --elevacia 14`), stredné hodnoty sRGB
 (fotka v zátvorke): plášť 50/54/160 pri sýtosti 0,52 (49/54/136, 0,50), tiene 29/32/104 (26/27/87),
 žltá 255/226/26 (253/221/5), pena 124 (122). Plášť sa porovnáva po zónach (tiene, stred, svetlá),
 nie len priemerom: priemer môže sedieť, kým rozloženie tónov nie. Rozstup vĺn overený autokoreláciou
@@ -220,8 +244,9 @@ práce (výrezy, zóny, mapa nenasýtených miest), nie v repozitári.
 
 Tvar a hrúbky profilu plášťa, poloha a presah rúr a rozostup rúr v reze sú odmerané z fotiek, nie
 z výkresu. Ak Watts pošle výkres plášťa (DWG v `subory` radov), stačí upraviť slovník `PLAST`
-v `potrubie.py`. Farby sú zladené s jednou katalógovou fotkou (JPEG z tlače); iná fotka môže mať
-iné vyváženie.
+v `potrubie.py`. Farby sú zladené s fotkami brožúry 2026, fotkou zo stavby a s. 6 (JPEG z tlače a
+z webu, malé); iná fotka môže mať iné vyváženie. Odhad sú aj polomer tmavého jadra peny, hrúbka
+závitov a rozmer kábla COOL (8 × 4,5 mm).
 
 ## Časy renderu (RTX 5070 Laptop, OptiX, 26. 10. 2026)
 

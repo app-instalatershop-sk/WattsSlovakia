@@ -249,14 +249,20 @@ Pravidlá:
   `je3d`, `lib/obrazky.ts`). Odlesk ide len po výrobku (maska `-maska.webp` bez tieňa).
 - Hlavy a varianty majú spoločný rámec: kamera v rovnakej vzdialenosti v pomere k plášťu
   (`--ramec jednotny`), plášť je na každom obrázku rovnako veľký na tom istom mieste, mení sa len
-  vnútro rezu. `data/rendery_web.py` orezáva všetky rovnakým výrezom (v šírkach obrázka, hlavy sú
-  2 000 px a varianty 1 600 px).
+  vnútro rezu. `data/rendery_web.py` orezáva všetky rovnakým výrezom (v šírkach obrázka; od 27. 10.
+  sú hlavy 3 600 px a varianty 2 800 px, render v dvojnásobnej šírke webu a zmenšený).
 - Štítky kót ležia v prázdnom mieste okolo výrobku (Juraj 23. 9.). Na čelnom zábere: plášť nad rezom
   doprava, ohyb pod telom doľava (bod v 30 % šírky), rúra pod spodkom rezu doľava; dĺžku čiary k rúre
   počíta `rendery_web.py` a pri výbere dimenzie sa plynulo zmení.
 - Biela rúra (PE-Xa v sanite a QUADRO) je krémová a tienená ako na fotke katalógu s. 6, nikdy čisto
   biela: na bielom pozadí by zmizla (27. 10. bola prepálená a v rozloženom reze splývala s pozadím).
   Jej koniec ostáva v obryse plášťa. Kalibrácia v `data/blender/README.md`.
+- Pena je ako v skutočnosti (Juraj 27. 10., fotka rezu zo stavby a brožúra 2026): takmer čierne jadro
+  okolo rúr, o niečo svetlejšie navinuté vrstvy k plášťu, hrubé bunky, nie hladká jemná plocha. Plášť
+  je kobaltovo modrý, nie do fialova. Farby plášťa, peny a rúr sú na všetkých radoch a záberoch rovnaké
+  a zmerané na fotkách; celá sada sa renderuje jednou verziou modelu.
+- Rez žltej rúry je žltý (žiadny biely lem). Kábel COOL je plochý čierny a leží na rúre, chráničky HP
+  sú čierne a vyčnievajú len krátko.
 - Postup: `data/blender/davka.py web` (render, `data/_3d/web`, mimo gitu) → `data/rendery_web.py`
   (WebP do `web/src/assets/3d`, body do `web/src/data/rendery.json`) → `data/rozklad_web.py` pre
   rozložený rez (`web/public/3d/rozklad-<rad>`). Návod: `data/blender/README.md`.

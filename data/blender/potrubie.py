@@ -33,7 +33,7 @@ from mathutils.geometry import delaunay_2d_cdt
 MM = 0.001
 # verzia geometrie (zapisuje sa do JSON): mení sa, keď sa zmení tvar alebo poloha dielov,
 # aby dávky vedeli, ktoré staršie rendre treba obnoviť
-GEOMETRIA = "2026-10-26b"
+GEOMETRIA = "2026-10-27c"
 
 
 def _cesta_skriptu():
@@ -78,17 +78,23 @@ PLAST_SSS = list(PLAST_SSS_STUDIO)
 PLAST_HRANA = [0.15]   # o koľko je drsnejšia stena a hrana vlny ako vrchol (mäkký odlesk na hrane)
 
 FARBY = {
-    # lineárne RGB (nie sRGB); podľa štúdiovej fotky (katalóg s. 6): plášť ultramarín do fialova
-    # (sRGB stred 49, 54, 136), pena neutrálna stredná sivá, PE-Xa citrónová žltá
-    "plast": (0.0040, 0.0050, 0.095),   # sýty ultramarín (zóny tieň/stred/svetlo podľa fotky s. 6)
-    "pena": (0.072, 0.074, 0.071),
-    "pexa_zlta": (0.270, 0.190, 0.000),
-    # krémovo biela sanitárna PE-Xa: pri jase štúdia podľa fotky s. 6 (stred sRGB 239/238/229);
-    # vyššie albedo by sa prepálilo do čistej bielej a rúra by na bielom pozadí zmizla
-    "pexa_biela": (0.310, 0.302, 0.268),
-    "pe100": (0.014, 0.015, 0.017),
-    "pruh_pe100": (0.004, 0.100, 0.360),
+    # lineárne RGB (nie sRGB). Kalibrované 27. 10. podľa produktových fotiek brožúry Watts 2026 (s. 3 a 4,
+    # deväť radov v jednom štúdiu), fotky rezu zo stavby a štúdiovej fotky s. 6; postup a namerané
+    # mediány sú v README. Plášť sýta kobaltová modrá (odtieň 222 až 226°, nie do fialova), pena teplá
+    # sivá v dvoch vrstvách: takmer čierne jadro okolo rúr a o niečo svetlejšie navinuté vrstvy k plášťu.
+    "plast": (0.0012, 0.0108, 0.072),
+    "pena": (0.071, 0.067, 0.062),         # vonkajšie navinuté vrstvy
+    "pena_jadro": (0.0155, 0.0148, 0.0138),  # jadro okolo rúr (fotka zo stavby: jas 0,3 až 0,45 vonkajších vrstiev)
+    "pexa_zlta": (0.285, 0.180, 0.000),    # sýta žltá, odtieň 47 až 49° (brožúra, s. 6)
+    # krémovo biela sanitárna PE-Xa (brožúra: sRGB 227 až 240); vyššie albedo by sa prepálilo do čistej
+    # bielej a rúra by na bielom pozadí zmizla
+    "pexa_biela": (0.285, 0.277, 0.245),
+    "pe100": (0.008, 0.008, 0.009),        # čierna PE 100 (brožúra: sRGB 16 až 25 mimo odleskov)
+    "pruh_pe100": (0.006, 0.090, 0.330),
 }
+# štúdiové pohľady sú o štvrť clony tmavšie ako do 27. 10. (Juraj: „jemne tmavšie produkty“); žltá a biela
+# rúra sa tak už neprepaľujú (predtým 90 % bielej nad sRGB 245)
+EXPOZICIA_STUDIO = -0.25
 
 
 # =============================================================================================
@@ -102,6 +108,7 @@ class Rura:
     v: float = 0.0        # poloha stredu v reze, vodorovne (mm)
     w: float = 0.0        # poloha stredu v reze, zvisle (mm)
     presah: float = 0.0   # o koľko vyčnieva pred čelo peny (mm)
+    smer: float = 0.0     # plochý kábel: smer dlhšej osi prierezu v rovine reza (radiány)
 
 
 def nacitaj_json(meno):
@@ -173,7 +180,10 @@ def rury_variantu(rad, variant):
     if not rury:
         raise SystemExit(f"Neviem prečítať rozmery rúr variantu {variant.get('obj_cislo')}")
     if rad_id == "microflex-cool-s-vyhrievacim-kablom":
-        rury.append(Rura(8.0, 3.7, "kabel"))           # samoregulačný vykurovací kábel pri rúre
+        # samoregulačný vykurovací kábel ležiaci na rúre (katalóg s. 18: „dopravná rúrka je v kontakte
+        # s káblom“): plochý čierny, d = šírka, s = hrúbka (8 x 4,5 mm je odhad podľa fotiek brožúry
+        # 2026 a s. 6, rozmer v údajoch nie je)
+        rury.append(Rura(8.0, 4.5, "kabel"))
     if rad_id == "microflex-hp":
         # dve vlnité chráničky na silový a dátový kábel (brožúra 2026: vonkajší/vnútorný priemer
         # od 25/18,8 do 40/32 mm). Rozmer berieme z objednávacieho čísla: MQ16032C3225E = chráničky
@@ -186,8 +196,9 @@ def rury_variantu(rad, variant):
 
 
 def rozmiestni_rury(rad_id, vsetky, r_pena):
-    """Poloha rúr v reze ako na renderoch Watts. Rúry sa nesmú dotýkať plášťa ani seba.
-    Kábel (COOL s vyhrievacím káblom) leží tesne pri rúre vpravo hore."""
+    """Poloha rúr v reze podľa produktových fotiek brožúry 2026 (DUO nad sebou s medzerou asi 0,2 d,
+    QUADRO a HP v tesnom štvorci). Rúry sa nesmú dotýkať plášťa ani seba. Kábel (COOL s vyhrievacím
+    káblom) sa umiestni až po natočení rúr (Potrubie.rozloz), aby vždy ležal navrchu rúry."""
     rury = [r for r in vsetky if r.druh != "kabel"]
     kable = [r for r in vsetky if r.druh == "kabel"]
     n = len(rury)
@@ -195,7 +206,7 @@ def rozmiestni_rury(rad_id, vsetky, r_pena):
         rury[0].v = rury[0].w = 0.0
     elif n == 2:
         a, b = rury
-        medzera = max(5.0, 0.25 * 0.5 * (a.d + b.d))
+        medzera = max(4.0, 0.20 * 0.5 * (a.d + b.d))
         dist = 0.5 * (a.d + b.d) + medzera
         # väčšia rúra hore; stred dvojice v strede peny
         a.w, b.w = dist * b.d / (a.d + b.d), -dist * a.d / (a.d + b.d)
@@ -211,7 +222,8 @@ def rozmiestni_rury(rad_id, vsetky, r_pena):
             if i < len(ine):
                 poradie.append(ine[i])
         rury[:] = poradie
-        medzera = max(4.0, 0.18 * sum(r.d for r in rury) / len(rury))
+        # na fotkách QUADRO a HP sa rúry takmer dotýkajú (medzera 2 až 3 mm)
+        medzera = max(2.5, 0.08 * sum(r.d for r in rury) / len(rury))
         rho = 0.0
         for i in range(len(rury)):
             a, b = rury[i], rury[(i + 1) % len(rury)]
@@ -228,13 +240,17 @@ def rozmiestni_rury(rad_id, vsetky, r_pena):
                 k = max(0.0, rr - presah) / rr
                 r.v, r.w = r.v * k, r.w * k
         print(f"Pozor: rúry by presahovali penu o {presah:.1f} mm, rozostup zmenšený")
-    for kb in kable:
-        hl = rury[0]
-        uhol = math.radians(55.0)
-        rr = hl.d / 2 + kb.d / 2 + 0.6
-        kb.v, kb.w = hl.v + rr * math.cos(uhol), hl.w + rr * math.sin(uhol)
     vsetky[:] = rury + kable
     return vsetky
+
+
+def poloz_kabel(kb, rura, uhol_deg):
+    """Plochý kábel leží plochou stranou na rúre (dotyk) v smere uhol_deg od stredu rúry; dlhšia os
+    prierezu je dotyčnica k rúre (kb.smer v radiánoch, v rovine reza)."""
+    u = math.radians(uhol_deg)
+    rr = rura.d / 2 + kb.s / 2 + 0.15
+    kb.v, kb.w = rura.v + rr * math.cos(u), rura.w + rr * math.sin(u)
+    kb.smer = u + math.pi / 2
 
 
 # =============================================================================================
@@ -561,14 +577,13 @@ def profily_komor(rz, krok_deg=5.0):
 
 def profil_rury(d, s, x_pred, x_zad, krok_deg=6.0, druh="pexa-zlta"):
     """Uzavretý profil nosnej rúry (x, r) s jemne zrazenými hranami rezu.
-    Kábel má zaoblený koniec, chránička vlnitý vonkajší povrch a hladkú vložku."""
+    Chránička (HP) má vlnitý vonkajší povrch a hladkú vložku; plochý kábel nie je rotačný (kabel_mesh)."""
     ro, ri = d / 2.0, d / 2.0 - s
     fo = min(0.45, 0.12 * s)
     fi = min(0.30, 0.08 * s)
-    if druh == "kabel":
-        ri, fo = 0.3, 0.35 * ro
     if druh == "chranicka":
-        pc, hc = max(3.0, 0.22 * d), max(1.2, 0.07 * d)
+        # jemné hlboké vlny ako elektroinštalačná chránička na fotke HP v brožúre 2026 (asi 0,14 d)
+        pc, hc = max(2.6, 0.14 * d), max(1.0, 0.055 * d)
         ri = ro - max(s, hc + 0.8)                  # vnútorná hladká vložka (priemer podľa brožúry)
         body, pol = [(x_pred, ri), (x_pred, ro)], [0.2, 0.3]
         n = int((x_pred - x_zad) / pc)
@@ -608,25 +623,97 @@ def profil_rury(d, s, x_pred, x_zad, krok_deg=6.0, druh="pexa-zlta"):
     return prof, mat
 
 
+def obrys_stadionu(a, rho, krok):
+    """Obrys štadióna (prierez plochého kábla) v lokálnych súradniciach: polkruhy polomeru rho so
+    stredmi (±a, 0) a rovné úseky medzi nimi, body asi po 'krok' mm, proti smeru hodín. Pri a = 0
+    je to kruh."""
+    body = []
+    n_obl = max(12, int(math.ceil(math.pi * rho / krok)))
+    n_rov = int(math.ceil(2 * a / krok)) if a > 0 else 0
+    for strana in (1.0, -1.0):
+        for k in range(n_obl):
+            t = -math.pi / 2 + math.pi * k / n_obl + (0.0 if strana > 0 else math.pi)
+            body.append((strana * a + rho * math.cos(t), rho * math.sin(t)))
+        for k in range(n_rov):                    # rovný úsek hore (strana +) alebo dole (strana -)
+            body.append((strana * (a - 2 * a * k / n_rov), strana * rho))
+    return np.array(body)
+
+
+def obrys_diery(d, krok):
+    """Body obrysu diery v čele peny: kruh (v, w, r) alebo štadión (v, w, r, a, smer)."""
+    cv, cw, r = d[:3]
+    a, smer = (d[3], d[4]) if len(d) > 3 else (0.0, 0.0)
+    loc = obrys_stadionu(a, r, krok)
+    c, s_ = math.cos(smer), math.sin(smer)
+    return np.column_stack([cv + loc[:, 0] * c - loc[:, 1] * s_, cw + loc[:, 0] * s_ + loc[:, 1] * c])
+
+
+def vzdialenost_od_diery(d, pv, pw):
+    """Znamienková vzdialenosť bodu od okraja diery (záporná vnútri)."""
+    cv, cw, r = d[:3]
+    a, smer = (d[3], d[4]) if len(d) > 3 else (0.0, 0.0)
+    dx, dy = pv - cv, pw - cw
+    c, s_ = math.cos(smer), math.sin(smer)
+    lx, ly = dx * c + dy * s_, -dx * s_ + dy * c
+    return math.hypot(max(abs(lx) - a, 0.0), ly) - r
+
+
+def kabel_mesh(meno, sirka, hrubka, x_pred, x_zad, krok=0.3):
+    """Plochý vykurovací kábel: obrys štadióna (sirka x hrubka) vytiahnutý pozdĺž osi X, rovný rez
+    vpredu s jemne zrazenou hranou. Lokálne súradnice: dlhšia os prierezu je Y. Materiály:
+    0 = plášť kábla, 1 = rez (vrstvy kábla kreslí materiál rezu podľa polohy)."""
+    rho = hrubka / 2.0
+    a = max(0.0, sirka / 2.0 - rho)
+    zr = min(0.25, 0.3 * rho)
+    o = obrys_stadionu(a, rho, krok)
+    o_in = o * np.array([(a + rho - zr) / (a + rho), (rho - zr) / rho])
+    n = len(o)
+    kruhy = [(x_zad, o), (x_pred - zr, o), (x_pred, o_in)]
+    V = np.concatenate([np.column_stack([np.full(n, x), ob[:, 0], ob[:, 1]]) for x, ob in kruhy] +
+                       [np.array([[x_pred, 0.0, 0.0], [x_zad, 0.0, 0.0]])])
+    i = np.arange(n)
+    j = (i + 1) % n
+    quady, mat_q = [], []
+    for k in range(len(kruhy) - 1):
+        quady.append(np.stack([k * n + i, k * n + j, (k + 1) * n + j, (k + 1) * n + i], -1))
+        mat_q.append(np.full(n, 0 if k == 0 else 1, np.int32))
+    c_pred, c_zad = 3 * n, 3 * n + 1
+    troj = np.concatenate([np.stack([2 * n + i, 2 * n + j, np.full(n, c_pred)], -1),
+                           np.stack([j, i, np.full(n, c_zad)], -1)])
+    mat_t = np.concatenate([np.full(n, 1, np.int32), np.zeros(n, np.int32)])
+    return mesh_z_poli(meno, V * MM, [np.concatenate(quady), troj],
+                       np.concatenate(mat_q + [mat_t]), hladke=True)
+
+
+def stena_otvoru(meno, d, x0, x1, krok=0.5):
+    """Stena otvoru v pene okolo rúry alebo kábla (rúrka bez viek), normály dovnútra otvoru."""
+    ob = obrys_diery(d, krok)
+    n = len(ob)
+    V = np.concatenate([np.column_stack([np.full(n, x), ob[:, 0], ob[:, 1]]) for x in (x0, x1)])
+    i = np.arange(n)
+    j = (i + 1) % n
+    F = np.stack([i, n + i, n + j, j], -1)
+    return mesh_z_poli(meno, V * MM, F)
+
+
 def celo_peny_mesh(meno, r_von, diery, x, hustota=3.0, krok_okraja=0.6):
     """Rovinné čelo peny (medzikružie s dierami pre rúry) ako pravidelná triangulácia (CDT).
 
-    diery: [(v, w, r)] v mm. Vnútorné body na šesťuholníkovej mriežke dávajú trojuholníky
-    podobnej veľkosti, čo potrebuje adaptívne delenie s posunutím (displacement)."""
+    diery: [(v, w, r)] pre rúry, [(v, w, r, a, smer)] pre plochý kábel, v mm. Vnútorné body na
+    šesťuholníkovej mriežke dávajú trojuholníky podobnej veľkosti, čo potrebuje adaptívne delenie
+    s posunutím (displacement)."""
     body, hrany = [], []
 
-    def kruh(cv, cw, r, krok):
-        n = max(48, int(math.ceil(2 * math.pi * r / krok)))
+    def obrys(pts):
         z = len(body)
-        for k in range(n):
-            a = 2 * math.pi * k / n
-            body.append((cv + r * math.cos(a), cw + r * math.sin(a)))
-        for k in range(n):
-            hrany.append((z + k, z + (k + 1) % n))
+        body.extend(tuple(p) for p in pts)
+        hrany.extend((z + k, z + (k + 1) % len(pts)) for k in range(len(pts)))
 
-    kruh(0.0, 0.0, r_von, krok_okraja)
-    for (cv, cw, r) in diery:
-        kruh(cv, cw, r, krok_okraja * 0.7)
+    n_von = max(48, int(math.ceil(2 * math.pi * r_von / krok_okraja)))
+    t = np.linspace(0.0, 2 * math.pi, n_von, endpoint=False)
+    obrys(np.column_stack([r_von * np.cos(t), r_von * np.sin(t)]))
+    for d in diery:
+        obrys(obrys_diery(d, krok_okraja * 0.7))
     h = hustota
     okraj = 0.6 * h
     ny = int(2 * r_von / (h * 0.866)) + 2
@@ -638,7 +725,7 @@ def celo_peny_mesh(meno, r_von, diery, x, hustota=3.0, krok_okraja=0.6):
             vv = ix * h + posun
             if math.hypot(vv, wv) > r_von - okraj:
                 continue
-            if any(math.hypot(vv - cv, wv - cw) < r + okraj for (cv, cw, r) in diery):
+            if any(vzdialenost_od_diery(d, vv, wv) < okraj for d in diery):
                 continue
             body.append((vv, wv))
     vs, es, fs, _, _, _ = delaunay_2d_cdt([Vector(p) for p in body], hrany, [], 0, 1e-7, False)
@@ -650,7 +737,7 @@ def celo_peny_mesh(meno, r_von, diery, x, hustota=3.0, krok_okraja=0.6):
         cxy = V2[list(f)].mean(0)
         if math.hypot(*cxy) > r_von:
             continue
-        if any(math.hypot(cxy[0] - cv, cxy[1] - cw) < r for (cv, cw, r) in diery):
+        if any(vzdialenost_od_diery(d, cxy[0], cxy[1]) < 0 for d in diery):
             continue
         tri.append(f)
     F = np.array(tri, dtype=np.int64)
@@ -759,7 +846,7 @@ def principled(u, **kw):
         "spek": "Specular IOR Level", "coat": "Coat Weight", "coat_drsnost": "Coat Roughness",
         "sheen": "Sheen Weight", "sheen_drsnost": "Sheen Roughness", "coat_normala": "Coat Normal",
         "sheen_farba": "Sheen Tint", "prenos": "Transmission Weight", "aniz": "Anisotropic",
-        "aniz_rot": "Anisotropic Rotation", "tangenta": "Tangent",
+        "aniz_rot": "Anisotropic Rotation", "tangenta": "Tangent", "kov": "Metallic",
     }
     vstupy = {}
     for k, v in kw.items():
@@ -829,151 +916,171 @@ def mat_plast(rez=False):
         nx = u.math("ABSOLUTE", u.uzol("ShaderNodeSeparateXYZ", {"Vector": geo.outputs["Normal"]}).outputs["X"])
         drs = u.math("ADD", drs, u.rozsah(nx, 0.15, 0.85, 0.0, PLAST_HRANA[0], interp="SMOOTHSTEP"))
     # rez pílou je zdrsnený a rozptyľuje svetlo: svetlejší, mierne zamatový (obe skutočné fotky)
-    zak = tuple(c * 2.0 + 0.012 for c in FARBY["plast"]) if rez else FARBY["plast"]
+    zak = tuple(c * 1.5 + 0.004 for c in FARBY["plast"]) if rez else FARBY["plast"]
     farba = u.mix_farba(u.rozsah(hruby, 0.2, 0.8, 0.0, 1.0), (*[c * 1.04 for c in zak], 1.0),
                         (*[c * 0.95 for c in zak], 1.0))
     bsdf = principled(u, farba=farba, drsnost=drs, ior=1.53, spek=0.50, normala=bump,
                       sss=PLAST_SSS[0], sss_polomer=(0.10, 0.90, 1.0), sss_mierka=PLAST_SSS[1] * MM,
-                      sheen=0.35 if rez else 0.0, sheen_drsnost=0.4, sheen_farba=(0.55, 0.65, 1.0))
+                      sheen=0.20 if rez else 0.0, sheen_drsnost=0.4, sheen_farba=(0.35, 0.55, 1.0))
     u.vystup(bsdf)
     return m
+
+
+def nasob(u, farba, k):
+    """Farba (zásuvka alebo n-tica) vynásobená číslom alebo zásuvkou s číslom."""
+    n = u.uzol("ShaderNodeVectorMath", operation="SCALE")
+    u._vstup(n.inputs[0], farba if isinstance(farba, bpy.types.NodeSocket) else tuple(farba[:3]))
+    u._vstup(n.inputs["Scale"], k)
+    return n.outputs["Vector"]
 
 
 def mat_pena_celo(prm=None):
     """Rezná plocha PE-X peny so skutočným posunutím povrchu (adaptívne delenie).
 
-    styl "bunky" (predvolený): prerezané uzavreté bunky, teda jamky rôznej veľkosti a hĺbky
-    oddelené oblými svetlými stenami, ako na renderoch UNO sanita a QUADRO.
-    styl "zrna": svetlé oblé zrná s tmavými medzerami, ako na renderi DUO kúrenie.
-    V oboch štýloch sú občas hlboké tmavé póry. Farba tmavne v hĺbke."""
+    styl "vrstvy" (predvolený) podľa produktových fotiek brožúry 2026 a fotky rezu zo stavby:
+    - jadro: rúry obaľuje takmer čierna pena po kruh r_jadro okolo osi; je o pol milimetra zapustená,
+      na hranici je preto tenká tieňová škára,
+    - vonkajšie vrstvy: o niečo svetlejšia sivá pena navinutá v špirále k plášťu, so švami medzi
+      závitmi; každý závit má trochu iný odtieň,
+    - povrch: hrubé prerezané uzavreté bunky (miska so svetlým okrajom, 1 a 0,5 mm v škvrnách),
+      riedke väčšie bubliny do 1,3 mm, svetlé zrnká ako plsť; pri okraji piliny z rezu.
+    styl "jemna": hladká stredná sivá s plytkými pórmi bez jadra (retušovaná štúdiová fotka s. 6),
+    len na porovnanie."""
     prm = prm or {}
-    styl = prm.get("styl", "jemna")
-    bunka = prm.get("bunka", 0.45 if styl == "jemna" else 1.0)   # mm, priemerná veľkosť bunky (zrna)
-    vyska = prm.get("vyska", 0.07 if styl == "jemna" else 0.45)  # mm, hĺbka jamky (výška zrna)
+    jemna = prm.get("styl", "vrstvy") == "jemna"
+    bunka = prm.get("bunka", 0.45 if jemna else 1.00)        # mm, priemerná veľkosť bunky
+    vyska = prm.get("vyska", 0.07 if jemna else 0.24)        # mm, hĺbka prerezanej bunky
+    r_okraj = prm.get("r_okraj", 60.0)
+    r_jadro = -10.0 if jemna else prm.get("r_jadro", 0.6 * r_okraj)
+    zavit = prm.get("zavit", 7.0)                            # mm, hrúbka závitu vonkajších vrstiev
     m, u = novy_material("pena_celo")
     p0 = u.mm()
-    # pokrivenie súradníc šumom: bunky nie sú pravidelná mozaika
+    sep0 = u.uzol("ShaderNodeSeparateXYZ", {"Vector": p0})
+    r_v = u.math("SQRT", u.math("ADD", u.math("MULTIPLY", sep0.outputs["Y"], sep0.outputs["Y"]),
+                                u.math("MULTIPLY", sep0.outputs["Z"], sep0.outputs["Z"])))
+    theta = u.math("ARCTAN2", sep0.outputs["Z"], sep0.outputs["Y"])
+    # hranice vrstiev nie sú presné kruhy: pomalé zvlnenie polomeru o ±0,6 mm
+    r_w = u.math("ADD", r_v, u.math("MULTIPLY", u.math("SUBTRACT", u.sum(p0, 0.12, detail=2.0), 0.5), 1.2))
+
+    # jadro a jeho hranica (d_j < 0 v jadre)
+    d_j = u.math("SUBTRACT", r_w, r_jadro)
+    jadro = u.rozsah(d_j, 0.12, -0.12, 0.0, 1.0, interp="SMOOTHSTEP")
+    skara = u.rozsah(u.math("ABSOLUTE", d_j), 0.0, 0.45, 1.0, 0.0, interp="SMOOTHSTEP")
+    zapust = u.rozsah(d_j, 0.30, -0.30, 0.0, 1.0, interp="SMOOTHSTEP")
+
+    def svy(r0, krok, exp):
+        """Švy navinutej vrstvy: špirála, polomer rastie o 'krok' na otáčku."""
+        faza = u.math("SUBTRACT", u.math("DIVIDE", u.math("SUBTRACT", r_w, r0), krok),
+                      u.math("DIVIDE", theta, 2 * math.pi))
+        return faza, u.math("POWER", u.math("ABSOLUTE", u.math("SINE", u.math("MULTIPLY", faza, math.pi))), exp)
+
+    faza_v, sev_v = svy(r_jadro, zavit, 28.0)
+    sev_v = u.math("MULTIPLY", sev_v, u.math("SUBTRACT", 1.0, jadro))
+    sev_v = u.math("MULTIPLY", sev_v, prm.get("vrstvy", 0.35 if jemna else 1.0))
+    sev_v = u.math("MULTIPLY", sev_v, u.rozsah(u.sum(p0, 0.05, detail=2.0), 0.35, 0.65, 0.15, 1.0))
+    _, sev_j = svy(0.0, 6.0, 40.0)
+    sev_j = u.math("MULTIPLY", sev_j, u.math("MULTIPLY", jadro, 0.5))
+    # odtieň závitu: náhodné číslo pre každý závit (biely šum z celej časti fázy)
+    wn = u.uzol("ShaderNodeTexWhiteNoise", {"W": u.math("FLOOR", faza_v)}, noise_dimensions="1D")
+    ton = u.rozsah(wn.outputs["Value"], 0.0, 1.0, 0.93, 1.07)
+    ton = u.math("ADD", u.math("MULTIPLY", u.math("SUBTRACT", ton, 1.0), u.math("SUBTRACT", 1.0, jadro)), 1.0)
+
+    # bunky: pokrivené súradnice, aby bunky neboli pravidelná mozaika
     krivenie = u.uzol("ShaderNodeTexNoise", {"Vector": p0, "Scale": 0.8, "Detail": 3.0, "Roughness": 0.5},
                       noise_dimensions="3D").outputs["Color"]
-    krivenie = u.vmath("SUBTRACT", krivenie, (0.5, 0.5, 0.5))
-    p = u.vmath("ADD", p0, u.vmath("SCALE", krivenie, scale=0.40 * bunka))
-    mikro = u.sum(p0, 6.0, detail=4.0, drsnost=0.6)
+    p = u.vmath("ADD", p0, u.vmath("SCALE", u.vmath("SUBTRACT", krivenie, (0.5, 0.5, 0.5)), scale=0.45 * bunka))
 
-    if styl == "jemna":
-        # štúdiová fotka: stredne sivá, matná, takmer hladká plocha s jemnou plytkou pórovitosťou
-        def jamky_j(mierka, r_min, r_rozptyl):
-            v = u.uzol("ShaderNodeTexVoronoi", {"Vector": p, "Scale": 1.0 / mierka, "Randomness": 1.0},
-                       voronoi_dimensions="3D", feature="F1")
-            sepj = u.uzol("ShaderNodeSeparateColor", {"Color": v.outputs["Color"]})
-            r = u.math("ADD", r_min, u.math("MULTIPLY", sepj.outputs[0], r_rozptyl))
-            t = u.math("DIVIDE", v.outputs["Distance"], r)
-            cup = u.math("SQRT", u.math("MAXIMUM", u.math("SUBTRACT", 1.0, u.math("MULTIPLY", t, t)), 0.0))
-            return u.math("MULTIPLY", cup, u.math("ADD", 0.5, sepj.outputs[1])), sepj.outputs[2]
+    def bunky(mierka, hl_min, hl_rozptyl):
+        """Prerezané uzavreté bunky tesne vedľa seba: každá bunka je jamka so zaobleným dnom a tenkým
+        okrajom (vzdialenosť k hrane bunky Voronoi). Vracia (hĺbka 0..~1,4, okraj 0..1, náhoda bunky)."""
+        f1 = u.uzol("ShaderNodeTexVoronoi", {"Vector": p, "Scale": 1.0 / mierka, "Randomness": 1.0},
+                    voronoi_dimensions="3D", feature="F1")
+        hr = u.uzol("ShaderNodeTexVoronoi", {"Vector": p, "Scale": 1.0 / mierka, "Randomness": 1.0},
+                    voronoi_dimensions="3D", feature="DISTANCE_TO_EDGE")
+        s_ = u.uzol("ShaderNodeSeparateColor", {"Color": f1.outputs["Color"]})
+        e = u.math("DIVIDE", hr.outputs["Distance"], 0.45)               # 0 na hrane, 1 v strede bunky (miska)
+        e = u.math("MINIMUM", e, 1.0)
+        profil = u.math("SQRT", u.math("MAXIMUM", u.math("SUBTRACT", 1.0, u.math("POWER", u.math("SUBTRACT", 1.0, e), 2.0)), 0.0))
+        hl = u.math("MULTIPLY", profil, u.math("ADD", hl_min, u.math("MULTIPLY", s_.outputs[1], hl_rozptyl)))
+        okraj = u.rozsah(hr.outputs["Distance"], 0.0, 0.07, 1.0, 0.0, interp="SMOOTHSTEP")
+        return hl, okraj, s_.outputs[2]
 
-        jA, nahA = jamky_j(bunka, 0.42, 0.25)
-        jB, _ = jamky_j(2.2 * bunka, 0.30, 0.25)
-        hlbka = u.math("MAXIMUM", jA, u.math("MULTIPLY", jB, 0.7))
-        h = u.math("MULTIPLY", hlbka, -vyska)
-        svetlost = u.math("SUBTRACT", 1.0, u.math("MULTIPLY", u.rozsah(hlbka, 0.0, 1.3, 0.0, 1.0, interp="SMOOTHSTEP"), 0.55))
-    elif styl == "zrna":
-        def zrna(mierka, polomer):
-            v = u.uzol("ShaderNodeTexVoronoi", {"Vector": p, "Scale": 1.0 / mierka, "Randomness": 1.0},
-                       voronoi_dimensions="3D", feature="F1")
-            t = u.math("DIVIDE", v.outputs["Distance"], polomer)
-            kop = u.math("SQRT", u.math("MAXIMUM", u.math("SUBTRACT", 1.0, u.math("MULTIPLY", t, t)), 0.0))
-            nah = u.uzol("ShaderNodeSeparateColor", {"Color": v.outputs["Color"]}).outputs[0]
-            return u.math("MULTIPLY", kop, u.math("ADD", 0.65, u.math("MULTIPLY", nah, 0.7))), nah
-
-        zA, nahA = zrna(bunka, 0.64)
-        zB, _ = zrna(0.58 * bunka, 0.62)
-        vrch = u.math("MAXIMUM", zA, u.math("MULTIPLY", zB, 0.62))      # 0 medzera .. ~1.35 vrch zrna
-        h = u.math("SUBTRACT", u.math("MULTIPLY", vrch, vyska), 1.35 * vyska)
-        svetlost = u.rozsah(vrch, 0.0, 0.6, 0.0, 1.0, interp="SMOOTHSTEP")
-    else:
-        def jamky(mierka, r_min, r_rozptyl):
-            """Prerezaná bublina: guľová jamka náhodného polomeru a hĺbky okolo bodu Voronoi."""
-            v = u.uzol("ShaderNodeTexVoronoi", {"Vector": p, "Scale": 1.0 / mierka, "Randomness": 1.0},
-                       voronoi_dimensions="3D", feature="F1")
-            sepj = u.uzol("ShaderNodeSeparateColor", {"Color": v.outputs["Color"]})
-            r = u.math("ADD", r_min, u.math("MULTIPLY", sepj.outputs[0], r_rozptyl))
-            t = u.math("DIVIDE", v.outputs["Distance"], r)
-            cup = u.math("SQRT", u.math("MAXIMUM", u.math("SUBTRACT", 1.0, u.math("MULTIPLY", t, t)), 0.0))
-            hl = u.math("ADD", 0.55, u.math("MULTIPLY", sepj.outputs[1], 0.8))
-            return u.math("MULTIPLY", cup, hl), sepj.outputs[2]
-
-        jA, nahA = jamky(bunka, 0.50, 0.24)
-        jB, _ = jamky(0.42 * bunka, 0.36, 0.25)
-        hlbka = u.math("MAXIMUM", jA, u.math("MULTIPLY", jB, 0.5))      # 0 stena .. ~1.35 dno
-        h = u.math("MULTIPLY", hlbka, -vyska)
-        svetlost = u.math("SUBTRACT", 1.0, u.rozsah(hlbka, 0.0, 1.2, 0.0, 1.0, interp="SMOOTHSTEP"))
-    # póry: náhodne vybrané bunky s hlbokou tmavou dierou rôznej veľkosti
-    vP = u.uzol("ShaderNodeTexVoronoi", {"Vector": p, "Scale": 1.0 / (1.8 * bunka), "Randomness": 1.0},
+    jA, okA, nahA = bunky(bunka, 0.55, 0.85)
+    jB, okB, _ = bunky(0.48 * bunka, 0.45, 0.55)
+    # menšie bunky vypĺňajú len časť plochy (pomalý šum), inde sú väčšie
+    mix_b = u.rozsah(u.sum(p0, 0.6, detail=2.0), 0.45, 0.60, 0.0, 1.0, interp="SMOOTHSTEP")
+    hlbka = u.math("ADD", u.math("MULTIPLY", jA, u.math("SUBTRACT", 1.0, mix_b)), u.math("MULTIPLY", jB, mix_b))
+    okraj_b = u.math("ADD", u.math("MULTIPLY", okA, u.math("SUBTRACT", 1.0, mix_b)), u.math("MULTIPLY", okB, mix_b))
+    # riedke väčšie bubliny, hlbšie a tmavé
+    vV = u.uzol("ShaderNodeTexVoronoi", {"Vector": p, "Scale": 1.0 / (3.2 * bunka), "Randomness": 1.0},
                 voronoi_dimensions="3D", feature="F1")
-    sep = u.uzol("ShaderNodeSeparateColor", {"Color": vP.outputs["Color"]})
-    je_por = u.math("LESS_THAN", sep.outputs[0], prm.get("pory", 0.06 if styl == "jemna" else 0.22))
-    r_por = u.math("ADD", 0.12, u.math("MULTIPLY", u.math("POWER", sep.outputs[1], 2.0), 0.20))
-    hrana = u.uzol("ShaderNodeMapRange", {"Value": vP.outputs["Distance"], "From Min": u.math("MULTIPLY", r_por, 0.5),
-                                          "From Max": r_por, "To Min": 1.0, "To Max": 0.0},
-                   interpolation_type="SMOOTHSTEP").outputs["Result"]
-    diera = u.math("MULTIPLY", hrana, je_por)
-    h = u.math("ADD", h, u.math("MULTIPLY", mikro, 0.06 * vyska))
-    h = u.math("ADD", h, u.math("MULTIPLY", diera, (-6.0 if styl == "jemna" else -2.2) * vyska))
-    # navinuté vrstvy peny: slabé sústredné švy (fotka rezu DUO), nízky kontrast
-    _, r_v, _, _ = smer_po_obvode(u, p0)
-    faza_v = u.math("ADD", u.math("DIVIDE", r_v, prm.get("vrstva", 9.0)),
-                    u.math("MULTIPLY", u.sum(p0, 0.08, detail=2.0), 0.6))
-    sev = u.math("POWER", u.math("ABSOLUTE", u.math("SINE", u.math("MULTIPLY", faza_v, math.pi))), 40.0)
-    sev = u.math("MULTIPLY", sev, prm.get("vrstvy", 1.0))
-    h = u.math("SUBTRACT", h, u.math("MULTIPLY", sev, 0.06))
-    posun = u.uzol("ShaderNodeDisplacement", {"Height": h, "Midlevel": 0.06 * vyska, "Scale": MM},
-                   space="OBJECT").outputs[0]
-    # farba: steny a vrchy svetlé, hĺbka tmavá, póry takmer čierne, bunky trochu rôzne svetlé
-    zak = FARBY["pena"]
-    tmava = (zak[0] * 0.30, zak[1] * 0.30, zak[2] * 0.30, 1.0)
-    farba = u.mix_farba(svetlost, tmava, (*zak, 1.0))
-    farba = u.mix_farba(diera, farba, (0.020, 0.020, 0.019, 1.0))
-    farba = u.mix_farba(u.math("MULTIPLY", sev, 0.22), farba, (zak[0] * 0.6, zak[1] * 0.6, zak[2] * 0.6, 1.0))
+    sV = u.uzol("ShaderNodeSeparateColor", {"Color": vV.outputs["Color"]})
+    je_bub = u.math("LESS_THAN", sV.outputs[0], prm.get("bubliny", 0.0 if jemna else 0.12))
+    # vzdialenosť Voronoi je v jednotkách bunky (3,2 * bunka): polomer bubliny 0,14 až 0,40 bunky, t. j. 0,45 až 1,3 mm
+    r_bub = u.math("ADD", 0.14, u.math("MULTIPLY", u.math("POWER", sV.outputs[1], 1.5), 0.26))
+    t_b = u.math("DIVIDE", vV.outputs["Distance"], r_bub)
+    bub = u.math("MULTIPLY", je_bub, u.math("SQRT", u.math("MAXIMUM", u.math("SUBTRACT", 1.0, u.math("MULTIPLY", t_b, t_b)), 0.0)))
+    # svetlé zrnká (plsť) na stenách buniek
+    vZ = u.uzol("ShaderNodeTexVoronoi", {"Vector": p0, "Scale": 1.0 / 0.32, "Randomness": 1.0},
+                voronoi_dimensions="3D", feature="F1")
+    sZ = u.uzol("ShaderNodeSeparateColor", {"Color": vZ.outputs["Color"]})
+    zrnko = u.math("MULTIPLY", u.math("LESS_THAN", sZ.outputs[0], prm.get("zrnka", 0.0 if jemna else 0.10)),
+                   u.rozsah(vZ.outputs["Distance"], 0.15, 0.28, 1.0, 0.0, interp="SMOOTHSTEP"))   # 0,05 až 0,09 mm
+    zrnko = u.math("MULTIPLY", zrnko, u.rozsah(hlbka, 0.0, 0.6, 1.0, 0.2))
+    mikro = u.sum(p0, 7.0, detail=4.0, drsnost=0.6)
+
+    # výška povrchu v mm (záporná = do peny)
+    h = u.math("MULTIPLY", hlbka, -vyska)
+    h = u.math("ADD", h, u.math("MULTIPLY", bub, -2.0 * vyska))
+    h = u.math("ADD", h, u.math("MULTIPLY", mikro, 0.10 * vyska))
+    h = u.math("SUBTRACT", h, u.math("MULTIPLY", zapust, 0.5))
+    h = u.math("SUBTRACT", h, u.math("MULTIPLY", skara, 0.35))
+    h = u.math("SUBTRACT", h, u.math("MULTIPLY", sev_v, 0.12))
+    h = u.math("SUBTRACT", h, u.math("MULTIPLY", sev_j, 0.12))
+    posun = u.uzol("ShaderNodeDisplacement", {"Height": h, "Midlevel": 0.0, "Scale": MM}, space="OBJECT").outputs[0]
+
+    # farba: jadro tmavé, vrstvy svetlejšie; steny buniek svetlejšie, jamky a bubliny tmavé
+    von, jad = FARBY["pena"], FARBY["pena_jadro"]
+    zak = u.mix_farba(jadro, (*von, 1.0), (*jad, 1.0))
+    jas = u.math("SUBTRACT", 1.05, u.math("MULTIPLY", u.rozsah(hlbka, 0.0, 1.3, 0.0, 1.0, interp="SMOOTHSTEP"),
+                                          0.20 if jemna else 0.30))
+    jas = u.math("ADD", jas, u.math("MULTIPLY", okraj_b, 0.0 if jemna else 0.45))
+    jas = u.math("MULTIPLY", jas, u.math("SUBTRACT", 1.0, u.math("MULTIPLY", bub, 0.50)))
+    jas = u.math("MULTIPLY", jas, u.rozsah(nahA, 0.0, 1.0, 0.88, 1.12))
+    jas = u.math("MULTIPLY", jas, u.rozsah(u.sum(p0, 0.10, detail=3.0), 0.3, 0.7, 0.88, 1.12))
+    jas = u.math("MULTIPLY", jas, ton)
+    jas = u.math("MULTIPLY", jas, u.math("SUBTRACT", 1.0, u.math("MULTIPLY", sev_v, 0.30)))
+    jas = u.math("MULTIPLY", jas, u.math("SUBTRACT", 1.0, u.math("MULTIPLY", sev_j, 0.35)))
+    jas = u.math("MULTIPLY", jas, u.math("SUBTRACT", 1.0, u.math("MULTIPLY", skara, 0.70)))
+    farba = nasob(u, zak, jas)
+    farba = u.mix_farba(u.math("MULTIPLY", zrnko, 0.55), farba, (von[0] * 2.4, von[1] * 2.4, von[2] * 2.3, 1.0))
     # piliny z rezu (fotka rezu DUO): riedke svetlé zrnká a modré triesky z plášťa, hustejšie pri okraji
-    r_okraj = prm.get("r_okraj")
-    if r_okraj and prm.get("piliny", 1.0) > 0:
+    if prm.get("piliny", 1.0) > 0:
         vf = u.uzol("ShaderNodeTexVoronoi", {"Vector": p0, "Scale": 1.0 / 2.2, "Randomness": 1.0},
                     voronoi_dimensions="3D", feature="F1")
         sf = u.uzol("ShaderNodeSeparateColor", {"Color": vf.outputs["Color"]})
         pri_okraji = u.rozsah(r_v, r_okraj - 14.0, r_okraj - 1.0, 0.25, 1.0, interp="SMOOTHSTEP")
         je_zrnko = u.math("LESS_THAN", sf.outputs[0], u.math("MULTIPLY", pri_okraji, 0.018 * prm.get("piliny", 1.0)))
         r_zr = u.math("ADD", 0.06, u.math("MULTIPLY", sf.outputs[1], 0.14))
-        zrnko = u.math("MULTIPLY", je_zrnko, u.rozsah(u.math("DIVIDE", vf.outputs["Distance"], r_zr), 0.7, 1.0, 1.0, 0.0,
-                                                    interp="SMOOTHSTEP"))
+        pil = u.math("MULTIPLY", je_zrnko, u.rozsah(u.math("DIVIDE", vf.outputs["Distance"], r_zr), 0.7, 1.0, 1.0, 0.0,
+                                                  interp="SMOOTHSTEP"))
         modra = u.math("LESS_THAN", sf.outputs[2], 0.35)
-        farba_zr = u.mix_farba(modra, (zak[0] * 1.9, zak[1] * 1.9, zak[2] * 1.85, 1.0), (0.010, 0.020, 0.22, 1.0))
-        farba = u.mix_farba(zrnko, farba, farba_zr)
-    # jemné škvrny (penu tvoria navinuté pásy)
-    farba = u.mix_farba(u.rozsah(u.sum(p0, 0.12, detail=3.0), 0.35, 0.65, 0.0, 0.12), farba,
-                        (zak[0] * 0.8, zak[1] * 0.8, zak[2] * 0.8, 1.0))
-    jas = u.rozsah(nahA, 0.0, 1.0, 0.94 if styl == "jemna" else 0.88, 1.06 if styl == "jemna" else 1.12)
-    farba_n = u.uzol("ShaderNodeMix", data_type="RGBA", blend_type="MULTIPLY")
-    u._vstup(farba_n.inputs[0], 1.0)
-    u._vstup(next(s for s in farba_n.inputs if s.identifier == "A_Color"), farba)
-    jas_rgb = u.uzol("ShaderNodeCombineColor", {"Red": jas, "Green": jas, "Blue": jas}).outputs[0]
-    u._vstup(next(s for s in farba_n.inputs if s.identifier == "B_Color"), jas_rgb)
-    farba = next(s for s in farba_n.outputs if s.type == "RGBA")
-    if styl == "jemna":
-        drs = u.math("SUBTRACT", 0.80, u.math("MULTIPLY", svetlost, 0.12))
-        bsdf = principled(u, farba=farba, drsnost=drs, ior=1.5, spek=0.35, sss=0.15,
-                          sss_polomer=(1.0, 1.0, 1.0), sss_mierka=0.0008, sheen=0.25, sheen_drsnost=0.5)
-    else:
-        drs = u.math("SUBTRACT", 0.60, u.math("MULTIPLY", svetlost, 0.22))
-        bsdf = principled(u, farba=farba, drsnost=drs, ior=1.5, spek=0.5, sss=0.08,
-                          sss_polomer=(1.0, 1.0, 1.0), sss_mierka=0.0006, sheen=0.12, sheen_drsnost=0.4)
+        farba_pil = u.mix_farba(modra, (von[0] * 2.6, von[1] * 2.6, von[2] * 2.5, 1.0), (0.010, 0.030, 0.20, 1.0))
+        farba = u.mix_farba(pil, farba, farba_pil)
+    drs = u.math("SUBTRACT", 0.80, u.math("MULTIPLY", okraj_b, 0.15))
+    bsdf = principled(u, farba=farba, drsnost=drs, ior=1.5, spek=0.30, sss=0.04, sss_polomer=(1.0, 1.0, 1.0),
+                      sss_mierka=0.0006, sheen=0.10, sheen_drsnost=0.5, sheen_farba=(0.6, 0.6, 0.6))
     u.vystup(bsdf, posun)
     m.displacement_method = "BOTH"
     return m
 
 
-def mat_pena_plast():
-    """Vonkajšia koža a otvory peny (vidno ich v rozloženom pohľade): svetlosivá, jemne
-    bunkovitá, matná. Koža je hladšia ako rez, bunky sú len naznačené."""
-    m, u = novy_material("pena_telo")
+def mat_pena_plast(jadro=False):
+    """Vonkajšia koža peny a stena otvorov pre rúry (vidno ich v rozloženom pohľade): matná, bunky
+    len naznačené. Koža má farbu vonkajších vrstiev, otvory farbu tmavého jadra. Koža je obrátená ku
+    kľúčovému svetlu zhora (čelo peny svieti len slabšie predné svetlo), preto má nižšie albedo: inak by
+    vyzerala 2,7-krát svetlejšia ako čelo, teda ako iný materiál (meranie 27. 10.)."""
+    m, u = novy_material("pena_otvor" if jadro else "pena_telo")
     p = u.mm()
     v = u.uzol("ShaderNodeTexVoronoi", {"Vector": p, "Scale": 1.0 / 0.8, "Randomness": 1.0},
                voronoi_dimensions="3D", feature="F1")
@@ -981,12 +1088,12 @@ def mat_pena_plast():
     n1 = u.sum(p, 1.6, detail=4.0, drsnost=0.6)
     n2 = u.sum(p, 0.05, detail=2.0)
     vyska = u.math("ADD", u.math("MULTIPLY", bunky, 0.6), u.math("MULTIPLY", n1, 0.4))
-    bump = u.uzol("ShaderNodeBump", {"Strength": 0.30, "Distance": 0.00012, "Height": vyska}).outputs["Normal"]
-    zak = FARBY["pena"]
-    farba = u.mix_farba(u.rozsah(n2, 0.3, 0.7, 0.0, 1.0), (*[c * 0.86 for c in zak], 1.0), (*[c * 0.74 for c in zak], 1.0))
-    farba = u.mix_farba(u.math("MULTIPLY", u.math("SUBTRACT", 1.0, bunky), 0.35), farba, (*[c * 0.55 for c in zak], 1.0))
-    bsdf = principled(u, farba=farba, drsnost=0.62, ior=1.5, spek=0.35, normala=bump, sss=0.06,
-                      sss_polomer=(1.0, 1.0, 1.0), sss_mierka=0.0006)
+    bump = u.uzol("ShaderNodeBump", {"Strength": 0.50, "Distance": 0.00015, "Height": vyska}).outputs["Normal"]
+    zak = FARBY["pena_jadro"] if jadro else tuple(c * 0.62 for c in FARBY["pena"])
+    farba = u.mix_farba(u.rozsah(n2, 0.3, 0.7, 0.0, 1.0), (*[c * 1.00 for c in zak], 1.0), (*[c * 0.86 for c in zak], 1.0))
+    farba = u.mix_farba(u.math("MULTIPLY", u.math("SUBTRACT", 1.0, bunky), 0.45), farba, (*[c * 0.55 for c in zak], 1.0))
+    bsdf = principled(u, farba=farba, drsnost=0.70, ior=1.5, spek=0.30, normala=bump, sss=0.04,
+                      sss_polomer=(1.0, 1.0, 1.0), sss_mierka=0.0006, sheen=0.2, sheen_drsnost=0.5)
     u.vystup(bsdf)
     return m
 
@@ -995,30 +1102,32 @@ def mat_rura(druh, cast, d=32.0, ciara_uhol=130.0):
     """Nosná rúra: cast 0 = vonkajší povrch, 1 = vnútro, 2 = rez.
 
     PE-Xa (žltá kúrenie, krémovo biela sanita): lesklá (drsnosť asi 0,14), mierne presvitá, jemné
-    pozdĺžne stopy a mikroškrabance; rez je bledší, krémový, saténový so stopami po píle; vnútro
-    tmavšie do oranžova. Potlač je len tenký pás drobných tmavších značiek bez textu (nič si
-    nevymýšľame). PE 100 (COOL): čierna so štyrmi modrými pruhmi. Kábel, chránička: čierne, matné."""
+    pozdĺžne stopy a mikroškrabance. Rez má farbu rúry, len je o niečo svetlejší a matný so stopami
+    po píle (fotky brožúry 2026, s. 6, rez zo stavby: žltá rúra nemá biely lem); vnútro je rovnakej
+    farby v tieni. Potlač je len tenký pás drobných tmavších značiek bez textu (nič si nevymýšľame).
+    PE 100 (COOL): čierna, pololesklá, so štyrmi modrými pruhmi, rez tmavosivý. Kábel: čierny plášť.
+    Chránička (HP): čierna lesklejšia vlnitá, svetlosivá hladká vložka."""
     m, u = novy_material(f"{druh}_{cast}_{round(d)}_{round(ciara_uhol)}")
     p = u.mm()
     pexa = druh in ("pexa-zlta", "pexa-biela")
     if druh == "pexa-zlta":
         zak = FARBY["pexa_zlta"]
-        sss, polomer, mierka = 0.35, (1.0, 0.75, 0.15), 0.0030
-        drs = (0.14, 0.22, 0.40)[cast]
-        farba_rez = (0.86, 0.72, 0.30)          # bledší, krémový rez (fotka rezu DUO)
-        farba_vnutro = (0.86, 0.52, 0.0)         # vnútro tmavšie do oranžova
+        sss, polomer, mierka = 0.30, (1.0, 0.70, 0.12), 0.0025
+        drs = (0.14, 0.24, 0.42)[cast]
+        farba_rez = (0.50, 0.33, 0.012)          # žltá ako rúra, matný rez pôsobí svetlejšie
+        farba_vnutro = (0.27, 0.165, 0.0)
     elif druh == "pexa-biela":
         zak = FARBY["pexa_biela"]
         sss, polomer, mierka = 0.28, (1.0, 0.95, 0.85), 0.0030
         drs = (0.18, 0.26, 0.42)[cast]
         farba_rez = (0.40, 0.39, 0.35)
-        farba_vnutro = (0.26, 0.25, 0.22)
+        farba_vnutro = (0.30, 0.29, 0.255)        # krémové vnútro (predtým sivé), tmavne len tieňom
     else:  # pe100, kabel, chranicka
         zak = FARBY["pe100"]
         sss, polomer, mierka = 0.0, (1.0, 1.0, 1.0), 0.001
-        drs = (0.26, 0.32, 0.62)[cast] if druh == "pe100" else (0.38, 0.45, 0.62)[cast]
-        farba_rez = (0.05, 0.05, 0.052)
-        farba_vnutro = (0.50, 0.53, 0.56) if druh == "chranicka" else zak   # svetlosivá vložka chráničky
+        drs = {"pe100": (0.24, 0.34, 0.55), "chranicka": (0.26, 0.30, 0.55)}.get(druh, (0.36, 0.45, 0.55))[cast]
+        farba_rez = (0.040, 0.040, 0.042)
+        farba_vnutro = (0.42, 0.44, 0.46) if druh == "chranicka" else (0.012, 0.012, 0.013)   # svetlosivá vložka chráničky
     # pozdĺžne stopy po vytláčaní (šum natiahnutý pozdĺž osi X)
     tah = u.sum(u.vmath("MULTIPLY", p, (0.01, 1.0, 1.0)), 1.5, detail=2.0, drsnost=0.5)
     drs_s = drs
@@ -1076,6 +1185,38 @@ def mat_rura(druh, cast, d=32.0, ciara_uhol=130.0):
     bsdf = principled(u, farba=farba_s, drsnost=drs_s, ior=1.5, spek=0.5, normala=bump,
                       sss=sss if cast != 1 else sss * 0.6, sss_polomer=polomer, sss_mierka=mierka)
     u.vystup(bsdf)
+    return m
+
+
+def mat_kabel_rez(a, rho):
+    """Rez plochého samoregulačného kábla podľa katalógu s. 21: čierny vonkajší plášť, opletenie
+    z pocínovanej medi, svetlý izolačný plášť, tmavé vykurovacie jadro a dva pocínované medené
+    vodiče na jeho krajoch (na fotke s. 6 je na konci kábla svetlý krúžok). Vrstvy sa kreslia podľa
+    vzdialenosti od osi štadióna v lokálnych súradniciach kábla (a = polovica rovného úseku, rho)."""
+    m, u = novy_material("kabel_rez")
+    s_ = u.uzol("ShaderNodeSeparateXYZ", {"Vector": u.mm()})
+    ay = u.math("ABSOLUTE", s_.outputs["Y"])
+    z2 = u.math("MULTIPLY", s_.outputs["Z"], s_.outputs["Z"])
+    dy = u.math("MAXIMUM", u.math("SUBTRACT", ay, a), 0.0)
+    q = u.math("DIVIDE", u.math("SQRT", u.math("ADD", u.math("MULTIPLY", dy, dy), z2)), rho)
+    dv = u.math("SUBTRACT", ay, a)
+    q_vod = u.math("DIVIDE", u.math("SQRT", u.math("ADD", u.math("MULTIPLY", dv, dv), z2)), rho)
+
+    def pas(x, od, do):
+        return u.math("MULTIPLY", u.rozsah(x, od - 0.03, od + 0.03, 0.0, 1.0, interp="SMOOTHSTEP"),
+                      u.rozsah(x, do - 0.03, do + 0.03, 1.0, 0.0, interp="SMOOTHSTEP"))
+
+    oplet = pas(q, 0.68, 0.80)
+    izol = pas(q, 0.50, 0.68)
+    vodic = u.rozsah(q_vod, 0.27, 0.33, 1.0, 0.0, interp="SMOOTHSTEP")
+    kov = u.math("MAXIMUM", oplet, vodic)
+    zrno = u.sum(u.mm(), 4.0, detail=3.0)                     # opletenie a rez nie sú hladké
+    farba = (0.012, 0.012, 0.013, 1.0)                        # plášť a jadro: čierne a tmavosivé
+    farba = u.mix_farba(u.rozsah(q, 0.47, 0.53, 1.0, 0.0), farba, (0.030, 0.030, 0.031, 1.0))
+    farba = u.mix_farba(izol, farba, (0.50, 0.51, 0.50, 1.0))
+    farba = u.mix_farba(kov, farba, u.mix_farba(zrno, (0.55, 0.56, 0.56, 1.0), (0.42, 0.43, 0.43, 1.0)))
+    drs = u.math("ADD", 0.45, u.math("MULTIPLY", kov, -0.10))
+    u.vystup(principled(u, farba=farba, drsnost=drs, ior=1.5, spek=0.4, kov=kov))
     return m
 
 
@@ -1430,7 +1571,7 @@ def jednotny_ramec(a, okraj=0.03):
     az, el = math.radians(a.azimut), math.radians(a.elevacia)
     rady = [r for r in nacitaj_json("rady.json") if r["id"].startswith("microflex-")]
     varianty = [v for v in nacitaj_json("varianty.json") if v.get("rad") in {r["id"] for r in rady}]
-    kluc = hashlib.sha1(json.dumps([a.azimut, a.elevacia, a.ohnisko, a.dlzka, okraj, PLAST, varianty],
+    kluc = hashlib.sha1(json.dumps([GEOMETRIA, a.azimut, a.elevacia, a.ohnisko, a.dlzka, okraj, PLAST, varianty],
                                    sort_keys=True, ensure_ascii=False).encode("utf-8")).hexdigest()[:12]
     cache = REPO / "data" / "_3d" / "_tmp" / f"jednotny-ramec-{kluc}.json"
     if cache.exists():
@@ -1613,6 +1754,10 @@ class Potrubie:
         for r in self.rury:
             v, w = r.v, r.w
             r.v, r.w = v * math.cos(rot) - w * math.sin(rot), v * math.sin(rot) + w * math.cos(rot)
+        # kábel leží navrchu rúry, mierne natočený ku kamere (fotky brožúry 2026 a s. 6)
+        nosna = next(r for r in self.rury if r.druh != "kabel")
+        for kb in (r for r in self.rury if r.druh == "kabel"):
+            poloz_kabel(kb, nosna, 90.0 + (12.0 if a.azimut >= 0 else -12.0))
         for r, pr in zip(self.rury, self._presahy(mierka=mierka)):
             r.presah = pr
         self._rozlozene = True
@@ -1683,6 +1828,14 @@ class Potrubie:
         mats_cache = {}
         for i, r in enumerate(self.rury):
             x_pred = x_pena + r.presah
+            if r.druh == "kabel":
+                # plochý kábel ležiaci na rúre: dlhšia os prierezu je dotyčnica k rúre (r.smer)
+                me = kabel_mesh(f"kabel_{i}", r.d, r.s, x_pred, x_zad)
+                rho = r.s / 2.0
+                o = pridaj(f"kabel_{i}", me, "rury", [mat_rura("kabel", 0, r.d), mat_kabel_rez(max(0.0, r.d / 2 - rho), rho)])
+                o.location = (0.0, r.v * MM, r.w * MM)
+                o.rotation_euler = (r.smer, 0.0, 0.0)
+                continue
             prof_r, mat_r = profil_rury(r.d, r.s, x_pred, x_zad, krok_deg=krok, druh=r.druh)
             seg_r = max(96, int(seg * r.d / D * 1.6))
             me = rotacne_teleso(f"rura_{i}", prof_r, seg_r, mat_hrany=mat_r)
@@ -1696,11 +1849,19 @@ class Potrubie:
 
         # pena: čelo (posunutie povrchu) a telo (koža, otvory)
         fil = min(1.2, 0.3 * (r_pena - max(math.hypot(r.v, r.w) + r.d / 2 for r in self.rury)))
-        diery = [(r.v, r.w, r.d / 2 + 0.05) for r in self.rury]
+        diery = [(r.v, r.w, r.s / 2 + 0.05, max(0.0, r.d / 2 - r.s / 2), r.smer) if r.druh == "kabel"
+                 else (r.v, r.w, r.d / 2 + 0.05) for r in self.rury]
         me = celo_peny_mesh("pena_celo", r_pena - fil, diery, x_pena,
                             hustota={"nahlad": 6.0, "studio": 3.0, "makro": 1.5}[q],
                             krok_okraja={"nahlad": 1.5, "studio": 0.6, "makro": 0.25}[q])
-        o = pridaj("pena_celo", me, "pena", [mat_pena_celo({k: v for k, v in (("bunka", a.bunka), ("styl", a.pena_styl), ("r_okraj", r_pena)) if v is not None})])
+        # tmavé jadro peny: kruh okolo osi, ktorý obalí všetky rúry aj kábel s rezervou (fotka zo stavby:
+        # asi 0,7 polomeru peny pri DUO 125); vonkajšie vrstvy majú aspoň dva závity po 5 až 9 mm
+        dosah = max(math.hypot(d[0], d[1]) + d[2] + (d[3] if len(d) > 3 else 0.0) for d in diery)
+        self.r_jadro = min(dosah + max(2.5, 0.07 * r_pena), r_pena - max(4.0, 0.14 * r_pena))
+        zavitov = max(2, round((r_pena - self.r_jadro) / 7.0))
+        prm_peny = {"bunka": a.bunka, "styl": a.pena_styl, "r_okraj": r_pena, "r_jadro": self.r_jadro,
+                    "zavit": (r_pena - self.r_jadro) / zavitov}
+        o = pridaj("pena_celo", me, "pena", [mat_pena_celo({k: v for k, v in prm_peny.items() if v is not None})])
         if q != "nahlad":
             mod = o.modifiers.new("delenie", "SUBSURF")
             mod.subdivision_type = "SIMPLE"
@@ -1712,14 +1873,12 @@ class Potrubie:
         # telo peny: vonkajšia koža so zaoblením pri čele
         pk = zaobli([(x_pena, r_pena - fil), (x_pena, r_pena), (x_zad, r_pena)], [0, fil, 0], krok_deg=krok, uzavrety=False)
         me = rotacne_teleso("pena_telo", pk, seg, uzavrety=False)
-        mat_t = mat_pena_plast()
-        pridaj("pena_telo", me, "pena", [mat_t])
-        for i, r in enumerate(self.rury):
-            pd = np.array([(x_zad, r.d / 2 + 0.05), (x_pena, r.d / 2 + 0.05)])
-            me = rotacne_teleso(f"pena_otvor_{i}", pd, max(64, int(seg * r.d / D)), uzavrety=False)
-            # otvor: normály dovnútra otvoru (k osi rúry)
-            o = pridaj(f"pena_otvor_{i}", me, "pena", [mat_t])
-            o.location = (0.0, r.v * MM, r.w * MM)
+        pridaj("pena_telo", me, "pena", [mat_pena_plast()])
+        mat_o = mat_pena_plast(jadro=True)
+        for i, d in enumerate(diery):
+            # otvor v tmavom jadre: normály dovnútra otvoru (k osi rúry)
+            pridaj(f"pena_otvor_{i}", stena_otvoru(f"pena_otvor_{i}", d, x_zad, x_pena, krok=0.5 if q != "nahlad" else 1.5),
+                   "pena", [mat_o])
         return self
 
     def _zarez(self, o_plast, rz):
@@ -1764,9 +1923,10 @@ class Potrubie:
         return math.radians(42.0 if self.a.azimut >= 0 else -42.0), math.radians(18.0)
 
     def _presahy(self, rury=None, mierka=1.0):
-        """Presah rúr pred čelo peny (mm). Pri troch a viac rúrach vyčnievajú rúry vzdialenejšie od
-        kamery viac, aby ich konce nezakryli bližšie rúry (ako na štúdiovej fotke rodiny potrubí).
-        Kábel (COOL s káblom) vyčnieva ďalej ako rúra, ako na renderi Watts."""
+        """Presah rúr pred čelo peny (mm) podľa produktových fotiek brožúry 2026 a s. 6: jedna aj dve
+        rúry vyčnievajú asi 0,4 D; pri štyroch rúrach vyčnievajú rúry vzdialenejšie od kamery viac,
+        aby ich konce nezakryli bližšie rúry. Chráničky HP len krátko (asi pol priemeru), kábel
+        (COOL s káblom) o desatinu priemeru rúry ďalej ako rúra, na ktorej leží."""
         a = self.a
         rury = self.rury if rury is None else rury
         az, el = self.ref_pohlad()
@@ -1779,20 +1939,27 @@ class Potrubie:
             if a.presah is not None:
                 base = a.presah * r.d
             elif r.druh == "kabel":
-                base = min(min(0.75 * hlavne[0].d + 6, 0.45 * self.D) + 0.2 * self.D, 0.6 * self.D)
+                base = 0.0                                               # doplní sa nižšie podľa rúry
+            elif r.druh == "chranicka":
+                base = 0.5 * r.d + 4
             elif len(hlavne) == 1:
-                base = min(0.75 * r.d + 6, 0.45 * self.D)
+                base = min(1.3 * r.d + 8, 0.42 * self.D)
             elif len(hlavne) == 2:
-                base = min(1.75 * r.d + 8, 0.45 * self.D)
+                base = min(1.6 * r.d + 8, 0.42 * self.D)
             else:
-                base = 1.1 * r.d + 6
-            if len(hlavne) > 2 and r.druh != "kabel":
+                base = min(1.5 * r.d + 8, 0.45 * self.D)
+            if len(hlavne) > 2 and r.druh not in ("kabel", "chranicka"):
                 stup = 0.30 * r.d * (1.0 - hlbky[i] / hmax)              # vzdialenejšie dlhšie
-            elif r.druh == "kabel":
+            elif r.druh in ("kabel", "chranicka"):
                 stup = 0.0
             else:
                 stup = (0.0, 0.10)[i % 2] * r.d
             out.append((base + stup) * mierka)
+        if a.presah is None:
+            for i, r in enumerate(rury):
+                if r.druh == "kabel":
+                    j = next(k for k, x in enumerate(rury) if x.druh != "kabel")
+                    out[i] = min(out[j] + 0.10 * rury[j].d * mierka, 0.55 * self.D)
         return out
 
     def _premietni_ref(self, body):
@@ -2236,6 +2403,12 @@ def hlavny(a):
             cam.data.dof.use_dof = True
             cam.data.dof.focus_distance = (cam.location - Vector((0, 0, 0))).length
             cam.data.dof.aperture_fstop = a.clona
+        if a.vyrez:
+            # ladenie: len časť snímky v plnom rozlíšení (x0,y0,x1,y1 ako podiel, y zhora)
+            x0, y0, x1, y1 = (float(v) for v in a.vyrez.split(","))
+            sc.render.use_border, sc.render.use_crop_to_border = True, True
+            sc.render.border_min_x, sc.render.border_max_x = x0, x1
+            sc.render.border_min_y, sc.render.border_max_y = 1.0 - y1, 1.0 - y0
         for i, f in enumerate(fazy):
             model.nastav_fazu(f)
             cesta = out if len(fazy) == 1 else out.parent / f"{out.stem}-{i:03d}{out.suffix}"
@@ -2389,8 +2562,9 @@ def argumenty():
     p.add_argument("--svetlo", type=float, default=1.0, help="násobok jasu svetiel")
     p.add_argument("--svet", type=float, default=0.04, help="sila okolia (tmavé štúdio, svieti len zhora)")
     p.add_argument("--bunka", type=float, default=None, help="veľkosť bunky peny (mm)")
-    p.add_argument("--pena-styl", choices=["jemna", "bunky", "zrna"], default="jemna",
-                   help="vzhľad rezu peny: jemna (ako fotka), bunky, zrna (ako rendery Watts)")
+    p.add_argument("--pena-styl", choices=["vrstvy", "jemna"], default="vrstvy",
+                   help="vzhľad rezu peny: vrstvy (tmavé jadro, svetlejšie závity, hrubé bunky; podľa fotiek), "
+                        "jemna (hladká bez jadra ako retušovaná fotka s. 6, len na porovnanie)")
     p.add_argument("--prevod", default="Standard", help="view transform (Standard, Khronos PBR Neutral, AgX)")
     p.add_argument("--vzhlad", default="None", help="look prevodu farieb (napr. 'AgX - Punchy')")
     p.add_argument("--teplota", type=float, default=None,
@@ -2428,6 +2602,7 @@ def argumenty():
     p.add_argument("--rodina-krok", type=float, default=0.35, help="rodina: o koľko je každý ďalší rez vpredu (násobok D)")
     p.add_argument("--rodina-pomer", type=float, default=2.2, help="rodina: pomer strán šírka : výška")
     p.add_argument("--blend", default=None, help="uložiť .blend na kontrolu")
+    p.add_argument("--vyrez", default=None, help="ladenie: renderovať len časť snímky x0,y0,x1,y1 (podiel, y zhora)")
     a = p.parse_args(argv)
     a.azimut_dany, a.elevacia_dany = a.azimut is not None, a.elevacia is not None
     a.natocenie_dane = a.natocenie is not None
@@ -2439,7 +2614,7 @@ def argumenty():
         a.natocenie = -20.0
     a.expozicia_dana = a.expozicia is not None
     if a.expozicia is None:
-        a.expozicia = 0.0
+        a.expozicia = EXPOZICIA_STUDIO
     if a.azimut is None:
         a.azimut = 42.0
     if a.elevacia is None:
@@ -2458,12 +2633,12 @@ def argumenty():
             if not a.elevacia_dany:
                 a.elevacia = 34.0
             if a.expozicia_dana is False:
-                a.expozicia = 0.0
+                a.expozicia = EXPOZICIA_STUDIO
     if a.pohlad == "makro-pena":
         if a.teplota is None:
             a.teplota = 5900.0
         if not a.expozicia_dana:
-            a.expozicia = 0.45
+            a.expozicia = 0.45 + EXPOZICIA_STUDIO
     if a.clona is None:
         # mierna hĺbka ostrosti ako na produktovej fotke; makrá viac zacloniť
         a.clona = {"studio": 0.0, "rozlozeny": 0.0, "rodina": 0.0, "makro-rura": 18.0, "makro-pena": 22.0, "makro-plast": 32.0}[a.pohlad]

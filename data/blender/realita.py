@@ -3,10 +3,12 @@
 Porovnanie 3D modelu so skutočnosťou pre majiteľa: stránka v živej galérii http://127.0.0.1:4340/realita.
 
 Ku každému z 12 radov dá vedľa seba náš model (čelný pohľad, celé telo, rozložený rez, detail čela 1 : 1
-a všetky dimenzie) a skutočnosť (výrez z fotky rodiny z katalógu s. 6, fotky zo stavieb). Render Watts je
-osobitne, len ako vzor tvaru (je to počítačová grafika). Pod každým radom je pole na pripomienky, galéria
-(data/blender/galeria.mjs) ich ukladá do data/_3d/realita/pripomienky.json. Obrázky berie zo sady `web`
-(data/_3d/web, davka.py web); hotové výrezy pri ďalšom spustení preskočí, kým sa zdroj nezmení.
+a všetky dimenzie) a skutočnosť (produktové fotky brožúry 2026, výrez z fotky rodiny z katalógu s. 6,
+fotky zo stavieb). Render Watts je osobitne, len ako vzor tvaru (je to počítačová grafika). Pod každým
+radom je pole na pripomienky, galéria (data/blender/galeria.mjs) ich ukladá do
+data/_3d/realita/pripomienky.json; spracované kolá sú v pripomienky-<n>.json a stránka ich ukazuje nad
+poľom. Obrázky berie zo sady `web` (data/_3d/web, davka.py web); hotové výrezy pri ďalšom spustení
+preskočí, kým sa zdroj nezmení.
 
 Spúšťa sa Pythonom s Pillow (nie v Blenderi), potom otvoriť http://127.0.0.1:4340/realita:
   C:\\Users\\krist\\nastroje\\web\\.venv\\Scripts\\python.exe -I data/blender/realita.py
@@ -43,28 +45,38 @@ VYREZY = {
     "uno-male": (1465, 700, 1600, 860),
 }
 REF = REPO / "web" / "src" / "assets" / "referencie"
+# Produktové fotky z brožúry Watts 2026 (s. 3 a 4): deväť radov v jednom štúdiu, malé (241 až 354 px).
+BROZURA = {k: REPO / "podklady" / "watts" / "fotky-katalog" / f"brozura-2026-{k}.jpeg" for k in (
+    "s3-uno-kurenie", "s3-duo-kurenie", "s3-quadro", "s3-hp", "s3-uno-sanita", "s3-duo-sanita",
+    "s4-cool", "s4-cool-duo", "s4-cool-kabel")}
 FOTKY = REPO / "web" / "src" / "assets" / "fotky"
 KATALOG = REPO / "podklady" / "watts" / "fotky-katalog"
 
 # Skutočnosť ku každému radu: (zdroj, popis). Zdroj "rodina:<kľúč>" je výrez z fotky rodiny.
 REALITA = {
-    "microflex-uno-6-bar": [("rodina:uno-kurenie", "UNO na štúdiovej fotke z katalógu (s. 6)"),
+    "microflex-uno-6-bar": [(BROZURA["s3-uno-kurenie"], "UNO, produktová fotka z brožúry 2026"),
+                            ("rodina:uno-kurenie", "UNO na štúdiovej fotke z katalógu (s. 6)"),
                             ("rodina:uno-male", "Menšie UNO na tej istej fotke")],
-    "microflex-duo-6-bar": [("rodina:duo-kurenie", "DUO na štúdiovej fotke z katalógu (s. 6)"),
-                            (FOTKY / "prierez-duo.jpg", "Rez DUO zo stavby"),
-                            (REF / "povazska-5.jpg", "DUO s koncovými krytkami v kotolni (Považská Bystrica)"),
-                            (REF / "povazska-6.jpg", "Tá istá kotolňa, iný uhol")],
-    "microflex-uno-primo-6-bar": [("rodina:uno-kurenie", "UNO PRIMO na fotke nie je, najbližšie je UNO (s. 6)")],
-    "microflex-primo-duo-6-bar": [("rodina:duo-kurenie", "PRIMO DUO na fotke nie je, najbližšie je DUO (s. 6)"),
+    "microflex-duo-6-bar": [(BROZURA["s3-duo-kurenie"], "DUO, produktová fotka z brožúry 2026: tmavé jadro peny okolo rúr"),
+                            (FOTKY / "prierez-duo.jpg", "Rez DUO zo stavby: takmer čierne jadro, svetlejšie navinuté vrstvy"),
+                            ("rodina:duo-kurenie", "DUO na štúdiovej fotke z katalógu (s. 6)"),
+                            (REF / "povazska-5.jpg", "DUO s koncovými krytkami v kotolni (Považská Bystrica)")],
+    "microflex-uno-primo-6-bar": [(BROZURA["s3-uno-kurenie"], "UNO PRIMO na fotke nie je, najbližšie je UNO (brožúra 2026)"),
+                                  ("rodina:uno-kurenie", "UNO na štúdiovej fotke z katalógu (s. 6)")],
+    "microflex-primo-duo-6-bar": [(BROZURA["s3-duo-kurenie"], "PRIMO DUO na fotke nie je, najbližšie je DUO (brožúra 2026)"),
                                   (FOTKY / "prierez-duo.jpg", "Rez DUO zo stavby")],
-    "microflex-uno-10-bar": [("rodina:duo-sanita", "UNO sanita na fotke nie je, biela rúra je v DUO sanita (s. 6)")],
-    "microflex-duo-10-bar": [("rodina:duo-sanita", "DUO sanita na štúdiovej fotke z katalógu (s. 6)")],
-    "microflex-primo-duo-10-bar": [("rodina:duo-sanita", "PRIMO DUO sanita na fotke nie je, najbližšie je DUO sanita (s. 6)")],
-    "microflex-quadro": [("rodina:quadro", "QUADRO na štúdiovej fotke z katalógu (s. 6)")],
-    "microflex-cool": [("rodina:cool", "COOL na štúdiovej fotke z katalógu (s. 6)")],
-    "microflex-cool-s-vyhrievacim-kablom": [("rodina:cool-kabel", "COOL s vyhrievacím káblom na štúdiovej fotke (s. 6), kábel je pri rúre hore")],
-    "microflex-cool-duo": [("rodina:cool", "COOL DUO na fotke nie je, najbližšie je COOL (s. 6)")],
-    "microflex-hp": [],
+    "microflex-uno-10-bar": [(BROZURA["s3-uno-sanita"], "UNO sanita, produktová fotka z brožúry 2026")],
+    "microflex-duo-10-bar": [(BROZURA["s3-duo-sanita"], "DUO sanita, produktová fotka z brožúry 2026"),
+                             ("rodina:duo-sanita", "DUO sanita na štúdiovej fotke z katalógu (s. 6)")],
+    "microflex-primo-duo-10-bar": [(BROZURA["s3-duo-sanita"], "PRIMO DUO sanita na fotke nie je, najbližšie je DUO sanita (brožúra 2026)")],
+    "microflex-quadro": [(BROZURA["s3-quadro"], "QUADRO, produktová fotka z brožúry 2026"),
+                         ("rodina:quadro", "QUADRO na štúdiovej fotke z katalógu (s. 6)")],
+    "microflex-cool": [(BROZURA["s4-cool"], "COOL, produktová fotka z brožúry 2026"),
+                       ("rodina:cool", "COOL na štúdiovej fotke z katalógu (s. 6)")],
+    "microflex-cool-s-vyhrievacim-kablom": [(BROZURA["s4-cool-kabel"], "COOL s vyhrievacím káblom, brožúra 2026: čierny kábel leží na rúre"),
+                                            ("rodina:cool-kabel", "Na štúdiovej fotke (s. 6) je na konci kábla svetlý krúžok")],
+    "microflex-cool-duo": [(BROZURA["s4-cool-duo"], "COOL DUO, produktová fotka z brožúry 2026")],
+    "microflex-hp": [(BROZURA["s3-hp"], "HP, produktová fotka z brožúry 2026: žlté rúry vyčnievajú, čierne chráničky len krátko")],
 }
 # Čo je v modeli odhad, nie údaj (pozri data/blender/README.md).
 NEISTE = {
@@ -72,11 +84,9 @@ NEISTE = {
     "microflex-cool-duo": "Priemer plášťa je z objednávacieho čísla (MD16040PE = 160 mm), v údajoch nie je.",
     "microflex-uno-primo-6-bar": "Plášť PRIMO má štandardný profil rebier, údaje o rozdiele nemáme.",
     "microflex-primo-duo-6-bar": "Plášť PRIMO má štandardný profil rebier, údaje o rozdiele nemáme.",
-    "microflex-primo-duo-10-bar": "Plášť PRIMO má štandardný profil rebier, údaje o rozdiele nemáme. Farba bielej rúry je nastavená podľa jedinej fotky (s. 6).",
-    "microflex-cool-s-vyhrievacim-kablom": "Hrúbka a poloha vyhrievacieho kábla sú odhad.",
-    "microflex-uno-10-bar": "Farba bielej rúry je nastavená podľa jedinej fotky (s. 6).",
-    "microflex-duo-10-bar": "Farba bielej rúry je nastavená podľa jedinej fotky (s. 6).",
-    "microflex-quadro": "Farba bielej rúry je nastavená podľa jedinej fotky (s. 6).",
+    "microflex-primo-duo-10-bar": "Plášť PRIMO má štandardný profil rebier, údaje o rozdiele nemáme.",
+    "microflex-cool-s-vyhrievacim-kablom": ("Kábel je plochý 8 × 4,5 mm: rozmer je odhad podľa fotiek, v katalógu nie je. "
+                                            "Vrstvy na jeho reze sú podľa nákresu v katalógu (s. 21)."),
 }
 # Zvláštnosti údajov (nie odhad modelu).
 SPOLOCNE_CISLA = ("Päť objednávacích čísel je v UNO aj v UNO PRIMO (napr. M12550C) a tri v DUO aj v PRIMO DUO "
@@ -85,6 +95,17 @@ UDAJE = {r: SPOLOCNE_CISLA for r in ("microflex-uno-6-bar", "microflex-uno-primo
 
 DRUH = {"pexa-zlta": "žltá PE-Xa", "pexa-biela": "biela PE-Xa", "pe-cierna": "čierna PE", "pe100": "čierna PE",
         "chranicka": "chránička", "kabel": "vyhrievací kábel"}
+
+
+def stare_pripomienky():
+    """Spracované kolá pripomienok (pripomienky-1.json, -2.json, ...): {id: [(kolo, text, čas)]}."""
+    out = {}
+    for j in sorted(CIEL.glob("pripomienky-[0-9]*.json"), key=lambda p: int(p.stem.rsplit("-", 1)[1])):
+        kolo = int(j.stem.rsplit("-", 1)[1])
+        for id_, p in json.loads(j.read_text(encoding="utf-8")).items():
+            if p.get("text", "").strip():
+                out.setdefault(id_, []).append((kolo, p["text"].strip(), p.get("cas", "")))
+    return out
 
 
 def cislo(x):
@@ -221,6 +242,7 @@ def main():
     with ThreadPoolExecutor(max_workers=8) as ex:
         list(ex.map(lambda u: priprav(*u), ulohy))
     print(f"obrázky: {len(ulohy)} (nové len pri zmene zdroja) v {OBR.relative_to(REPO)}")
+    STARE.update(stare_pripomienky())
     (CIEL / "index.html").write_text(stranka(rady_data), encoding="utf-8")
     print(f"stránka: {(CIEL / 'index.html').relative_to(REPO)} → http://127.0.0.1:4340/realita")
 
@@ -233,8 +255,13 @@ def obr(meno, popis, velka=None, trieda=""):
             f'<figcaption>{html.escape(popis)}</figcaption></figure>')
 
 
+STARE = {}
+
+
 def pole(id_, nadpis, napoveda):
-    return (f'<div class="pripomienka"><label for="p-{id_}">{html.escape(nadpis)}</label>'
+    predtym = "".join(f'<blockquote class="stare"><span>{kolo}. kolo, {html.escape(cas[:10])}, spracované</span>'
+                      f'{html.escape(text)}</blockquote>' for kolo, text, cas in STARE.get(id_, []))
+    return (f'<div class="pripomienka">{predtym}<label for="p-{id_}">{html.escape(nadpis)}</label>'
             f'<textarea id="p-{id_}" data-id="{id_}" rows="5" placeholder="{html.escape(napoveda)}"></textarea>'
             f'<span class="ulozene" data-stav="{id_}"></span></div>')
 
@@ -308,6 +335,8 @@ h3{{font-size:15px;margin:14px 0 8px;color:var(--soft);font-weight:600}}h4{{font
 details{{margin-top:14px}}summary{{cursor:pointer;font-weight:600;color:var(--navy)}}
 .mriezka{{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-top:10px}}
 .pripomienka{{margin-top:16px;display:grid;gap:6px}}.pripomienka label{{font-weight:600}}
+.stare{{margin:0;padding:8px 12px;border-left:3px solid #9fb3cf;background:#f4f7fb;border-radius:0 8px 8px 0;color:var(--soft);font-size:14px;white-space:pre-wrap}}
+.stare span{{display:block;font-size:12px;font-weight:600;color:var(--navy);margin-bottom:2px}}
 textarea{{width:100%;font:inherit;padding:10px 12px;border-radius:10px;border:1px solid #c5cfdd;background:#fbfcfe;resize:vertical}}
 textarea:focus{{outline:2px solid #2f6fd6;outline-offset:1px;background:#fff}}.ulozene{{font-size:13px;color:var(--soft);min-height:18px}}.ulozene.ok{{color:var(--ok)}}.ulozene.chyba{{color:var(--chyba)}}
 .rodina{{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}}.makra{{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}}
@@ -318,6 +347,11 @@ dialog{{border:0;padding:0;background:transparent;max-width:98vw}}dialog img{{ma
 <main>
 <div class="uvod"><p>Pri každom rade je vľavo náš model, vpravo skutočná fotka. Ak rad na fotke nie je, je tam najbližší skutočný.
 Render Watts je osobitne, lebo aj on je počítačová grafika. Do poľa pod radom napíš, čo vidíš ako chybné; ukladá sa samo.</p>
+<p><strong>2. kolo (27. 10. večer):</strong> model je prerobený podľa tvojich pripomienok. Pena má takmer čierne jadro okolo
+rúr a svetlejšie navinuté vrstvy k plášťu, je hrubšia a bublinkatá. Produkty sú o štvrť clony tmavšie. Plášť
+nie je do fialova; farby plášťa, peny a rúr sú zmerané podľa fotiek z brožúry 2026 a zo stavby a sú rovnaké
+na všetkých radoch. Rez žltej rúry je žltý (nie biely lem), vnútro bielej rúry krémové. Kábel COOL je
+plochý čierny na rúre, chráničky HP čierne s jemnými vlnami. Tvoje pripomienky z 1. kola sú pri každom poli.</p>
 <p>Klik na obrázok ho otvorí v plnom rozlíšení, ďalší klik ho zavrie. Dimenzie radu sú pod obrázkami (rozbaliť).
 Skutočná fotka rodiny má len 1 633 px na sedem rúr, preto sú jej výrezy pri zväčšení mäkšie.</p></div>
 <section id="rodina"><h2>Rodina systémov</h2>

@@ -22,6 +22,7 @@ Zdrojové adresy každého súboru sú v `watts/manifest.json`.
 | `fotky-rady/` | Obrázky radov z listingov a hlavné fotky radov z galérií (do 1000 px). Súbory `*-hlavna` sú z galérie stránky radu. |
 | `fotky-referencie/` | Náhľady referencií (škola, Považská Bystrica), malé. Väčšie verzie treba vypýtať od Watts. |
 | `fotky-katalog/` | Veľké obrázky vytiahnuté z PDF katalógu: kotúč (2105 px), rodina potrubí UNO/DUO/QUADRO/COOL (`s06`), rendery montáže a prestupu stenou (`s35`), rez výkopom s uložením (`s37`), graf tlakovej skúšky (`s41`). |
+| `fotky-katalog/brozura-2026-s3-*.jpeg`, `-s4-*.jpeg` | Produktové fotky deviatich radov z brožúry 2026 (s. 3 a 4), pôvodné JPEG z PDF bez prevodu, 241 až 354 px: UNO a DUO kúrenie, QUADRO, HP, UNO a DUO sanita, COOL, COOL DUO, COOL s káblom. Jediný zdroj, kde vidno HP, COOL DUO a kábel naraz s penou: tmavé jadro peny okolo rúr, svetlejšie navinuté vrstvy k plášťu, hrubé bunky. Podľa nich je kalibrovaný 3D model (27. 10. 2026). |
 
 **Logo Microflex existuje** (oprava 23. 9. 2026): je na s. 3 katalógu, nad heslom „Flexibility, all the
 way.“. Na obale katalógu je „Microflex - Katalóg“ len textom, preto sa 21. 9. prehliadlo. Web používa

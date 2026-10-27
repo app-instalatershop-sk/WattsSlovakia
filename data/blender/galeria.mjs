@@ -1,9 +1,11 @@
 // Živá galéria renderov: v prehliadači ukazuje, čo práve vychádza z Blendera (data/_3d), najnovšie hore.
 // Stránka sa sama obnovuje každé 4 s. Spustenie z koreňa repozitára:
 //   node data/blender/galeria.mjs            → http://127.0.0.1:4340
-// Číta len data/_3d a vzorové fotky (podklady/watts/fotky-katalog, web/src/assets), nič nemení.
+// Číta len data/_3d a vzorové fotky (podklady/watts/fotky-katalog, web/src/assets). Zapisuje jediný súbor:
+// pripomienky majiteľa z porovnania so skutočnosťou (/realita, stránku robí data/blender/realita.py) do
+// data/_3d/realita/pripomienky.json.
 import { createServer } from 'node:http';
-import { readFile, readdir, stat } from 'node:fs/promises';
+import { readFile, readdir, rename, stat, writeFile } from 'node:fs/promises';
 import { execFile } from 'node:child_process';
 import { join, relative, extname, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -18,6 +20,31 @@ const VZORY = [
   ['web/src/assets/piktogramy/rad-duo-kurenie.png', 'Render Watts (len vzor rámovania)'],
 ];
 const TYPY = { '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp' };
+const REALITA = resolve(REPO, 'data/_3d/realita');
+const PRIPOMIENKY = join(REALITA, 'pripomienky.json');
+
+async function pripomienky() {
+  try { return JSON.parse(await readFile(PRIPOMIENKY, 'utf8')); } catch { return {}; }
+}
+
+// Uloží pripomienku k jednému radu (id) cez dočasný súbor, aby sa súbor nikdy nezapísal napoly. Zápisy idú
+// za sebou (fronta), inak by dve polia uložené naraz prepísali jedno druhé.
+let fronta = Promise.resolve();
+async function ulozPripomienku(req) {
+  let telo = '';
+  for await (const k of req) { telo += k; if (telo.length > 200_000) throw new Error('príliš dlhé'); }
+  const { id, text } = JSON.parse(telo);
+  if (!/^[a-z0-9-]{1,80}$/.test(id) || typeof text !== 'string' || text.length > 50_000) throw new Error('zlé údaje');
+  const krok = fronta.then(async () => {
+    const vsetky = await pripomienky();
+    vsetky[id] = { text, cas: new Date().toISOString() };
+    await writeFile(PRIPOMIENKY + '.tmp', JSON.stringify(vsetky, null, 1), 'utf8');
+    await rename(PRIPOMIENKY + '.tmp', PRIPOMIENKY);
+    return vsetky[id].cas;
+  });
+  fronta = krok.catch(() => {});
+  return krok;
+}
 
 async function obrazky(dir, out = []) {
   let polozky = [];
@@ -68,7 +95,7 @@ h2{font-size:17px;margin:0 0 10px}.velky{display:grid;grid-template-columns:minm
 .vzory{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}@media(max-width:900px){.velky,.vzory{grid-template-columns:minmax(0,1fr)}}
 dialog{border:0;padding:0;background:transparent;max-width:96vw}dialog img{max-width:96vw;max-height:92vh;display:block;border-radius:10px;background:#fff}dialog::backdrop{background:rgb(11 27 51/.8)}
 </style></head><body>
-<header><h1>Microflex 3D: živá galéria</h1><span id="beh"><span class="bod"></span><span id="behText">…</span></span><span id="posledne" class="cap"></span></header>
+<header><h1>Microflex 3D: živá galéria</h1><a href="/realita" style="color:var(--navy);font-weight:600">Model a skutočnosť</a><span id="beh"><span class="bod"></span><span id="behText">…</span></span><span id="posledne" class="cap"></span></header>
 <main>
 <section><h2>Stav</h2><p class="stav" id="stav">Agent zatiaľ nezapísal stav (data/_3d/najlepsie/STAV.txt).</p></section>
 <section class="velky"><div><h2>Najnovší render</h2><div class="panel"><img id="hlavny" alt=""><div class="cap" id="hlavnyCap"></div></div></div>
@@ -109,6 +136,21 @@ createServer(async (req, res) => {
     const u = new URL(req.url, 'http://x');
     if (u.pathname === '/') { res.writeHead(200, { 'content-type': 'text/html; charset=utf-8' }).end(STRANKA); return; }
     if (u.pathname === '/api') { res.writeHead(200, { 'content-type': 'application/json', 'cache-control': 'no-store' }).end(JSON.stringify(await api())); return; }
+    if (u.pathname === '/realita') {
+      let s;
+      try { s = await readFile(join(REALITA, 'index.html'), 'utf8'); } catch { res.writeHead(404, { 'content-type': 'text/plain; charset=utf-8' }).end('Stránka porovnania ešte nie je: spusti data/blender/realita.py'); return; }
+      res.writeHead(200, { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store' }).end(s);
+      return;
+    }
+    if (u.pathname === '/pripomienky') {
+      if (req.method === 'POST') {
+        try { const cas = await ulozPripomienku(req); res.writeHead(200, { 'content-type': 'application/json' }).end(JSON.stringify({ ok: true, cas })); }
+        catch (e) { res.writeHead(400, { 'content-type': 'application/json' }).end(JSON.stringify({ ok: false, chyba: String(e.message ?? e) })); }
+        return;
+      }
+      res.writeHead(200, { 'content-type': 'application/json', 'cache-control': 'no-store' }).end(JSON.stringify(await pripomienky()));
+      return;
+    }
     if (u.pathname.startsWith('/subor/')) {
       const cesta = resolve(REPO, decodeURIComponent(u.pathname.slice('/subor/'.length)));
       if (!KORENE.some((k) => cesta.startsWith(k + sep)) || !TYPY[extname(cesta).toLowerCase()]) { res.writeHead(403).end(); return; }

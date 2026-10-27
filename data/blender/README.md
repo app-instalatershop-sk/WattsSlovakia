@@ -16,6 +16,8 @@ nie podľa renderov Watts, ktoré sú samy počítačová grafika. Rendery Watts
 | `potrubie.py` | model, materiály, štúdio, kamera, render jedného pohľadu alebo sekvencie (beží v Blenderi) |
 | `davka.py` | dávky: `najlepsie` (priebežný stav pre majiteľa), `final` (všetky výstupy), `rady` (kontrola radov), `prvy` (výstupy prvého zadania v `data/_3d/prvy`, po sade `final`), `ramovanie` (výrezy A, B, C pre hlavu stránky radu), `rady12` (všetkých 12 radov v štúdiu a ich prehľad), `web` (produkčná sada pre web v `data/_3d/web`, dá sa prerušiť a pustiť znova, hotové súbory preskočí); skladá verzie na bielom, fotodokončenie, záznamy JSON k zmenšeninám a porovnania (beží v Pythone s Pillow) |
 | `porovnanie.py` | zostava obrázkov vedľa seba v rovnakej výške s popisom |
+| `galeria.mjs` | živá galéria renderov pre majiteľa, `node data/blender/galeria.mjs` → http://127.0.0.1:4340; zapisuje len pripomienky z porovnania so skutočnosťou |
+| `realita.py` | stránka „Model a skutočnosť“ (http://127.0.0.1:4340/realita): 12 radov vedľa skutočných fotiek, render Watts osobitne, všetky dimenzie; pripomienky majiteľa ukladá galéria do `data/_3d/realita/pripomienky.json`. Spustiť po každej sade `web` |
 
 ## Čo treba
 

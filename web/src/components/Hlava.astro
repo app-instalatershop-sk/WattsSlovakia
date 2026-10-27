@@ -43,6 +43,8 @@ const maBok = Astro.slots.has('bok');
 // Render 3D modelu má celé telo a vlastný kontaktný tieň: bez doznenia, bez tieňa z CSS a s maskou odlesku
 // bez tieňa (inak by pás svetla prešiel aj po podlahe).
 const z3d = je3d(obraz);
+// Čelný záber 3D modelu (rez spredu, vyšší ako široký): v štúdiu menší, aby bol celý rez s kótami na prvej obrazovke.
+const celny = z3d && !!obraz && obraz.width / obraz.height < 1.4;
 const zdrojMasky = z3d ? maska3d(obraz) : obraz;
 const leskMaska = rozlozenie === 'studio' && zdrojMasky && zdrojMasky.format !== 'jpg' && zdrojMasky.format !== 'jpeg'
   ? (await getImage({ src: zdrojMasky, width: 1000, format: z3d ? 'webp' : 'avif', quality: 50 })).src : null;
@@ -66,7 +68,7 @@ const leskMaska = rozlozenie === 'studio' && zdrojMasky && zdrojMasky.format !==
   <div class:list={['hs-studio', { 'hs-vedla-volby': z3d && Astro.slots.has('nad-obrazom') }]}>
     {/* Ovládanie nad renderom (živé kóty na stránke radu): pod nadpisom, priamo nad výrobkom. */}
     {Astro.slots.has('nad-obrazom') && <div class="wrap hs-volba"><slot name="nad-obrazom" /></div>}
-    <div class:list={['hs-stage', { 'bez-kot': z3d && koty.length === 0 }]} style={`--obraz-max: ${obrazMax}px`}>
+    <div class:list={['hs-stage', { 'bez-kot': z3d && koty.length === 0, 'hs-celny': celny }]} style={`--obraz-max: ${obrazMax}px`}>
       <div class:list={['hs-obraz', z3d ? 'je3d' : `dz-${dozvenie}`, { 'ma-prechod': prechod }]} style={prechod ? `view-transition-name: ${prechod}` : undefined}>
         {/* Výrobok sa pri pohybe myši nepatrne posunie (data-mys v pohyb.ts), kóty idú s ním.
             Tieň nesie obal, dozvenie (maska) je na obrázku: maska na tom istom prvku by tieň orezala. */}
@@ -181,6 +183,7 @@ const leskMaska = rozlozenie === 'studio' && zdrojMasky && zdrojMasky.format !==
      (1 440 × 900) a klik v lište mení obraz hneď vedľa. Stĺpce sa neprekrývajú: riadok s obj. číslom
      po výbere nezasiahne do plášťa. */
   @media (min-width: 1101px) {
+    .hs-stage.hs-celny { width: min(700px, 92vw); margin-top: 16px; }
     .hs-vedla-volby { display: grid; grid-template-columns: minmax(0, 1fr) min(660px, 52vw); column-gap: 40px; align-items: start;
       max-width: var(--container-site); margin-inline: auto; padding-inline: var(--gutter); }
     .hs-vedla-volby .hs-volba { padding-inline: 0; margin-inline: 0; }

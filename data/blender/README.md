@@ -319,3 +319,13 @@ prerušiť a pustiť znova (hotové súbory s aktuálnou verziou modelu preskoč
 po prebudení pokračuje sama. Kým dávka beží, Windows počítač pre
 nečinnosť neuspí (`nezaspi()` v `davka.py`, len pre tento proces, nastavenia napájania sa nemenia).
 Zatvorené veko ani odpojenie napájania to neprekoná: na noc nechať počítač zapojený a s otvoreným vekom.
+
+Novinky z 3D modelu (28. 10. 2026, `davka.py web --len teplo,mierka,kotuc,ohyb`, verzia modelu `2026-10-27c`):
+
+| Skupina | Počet | Render | Na jeden obrázok |
+|---|---|---|---|
+| `teplo` (hlavy 3600 px, 64 vz.; varianty 2800 px, 48 vz.; len emisia, bez tieňa) | 11 + 67 | 7,5 min (spolu 21,8 min: teplotné pole sa počíta na procesore) | hlava 5 až 19 s, variant 4 až 13 s |
+| `mierka` (2800 px, 512 vz., a maska systémov 16 vz.) | 12 + 12 masiek | 18,0 min (spolu 24,8 min) | 14 až 41 s + tieň 6 až 11 s; maska zvyčajne 4 až 17 s |
+| `kotuc` (záber 2400 px, 512 vz.; odvaľovanie 48 snímok, 2400 px, 256 vz.) | 1 + 48 | 12,9 min (spolu 15,0 min) | záber 105 s + tieň 25 s; snímka 6 až 9 s + tieň 6 až 8 s |
+| `kotuc-clanok` (na šírku 2400 × 1800, 512 vz.) | 1 | 12,5 min | 345 s + tieň 406 s |
+| `ohyb` (40 snímok, 1600 px, 192 vz.; DUO 6 bar má 48 snímok v 2000 px z návrhu) | 11 × 40 | 105,4 min (spolu 162,2 min; príprava scény 2,4 až 3,6 min na rad, HP 26 min) | snímka zvyčajne 3 až 9 s + tieň 3 až 9 s; rad 4,1 (COOL s káblom) až 12,3 min |

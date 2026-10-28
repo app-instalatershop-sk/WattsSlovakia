@@ -195,38 +195,81 @@ def videa():
     print(f"videá: nových {n}")
 
 
+SEKCIE = {
+    "01-produkty-na-bielom": ("Každá dimenzia na bielom", "JPEG 2000 × 2000 px pre e-shop, katalóg a cenové ponuky. Podpriečinok podľa radu, súbor podľa obj. čísla."),
+    "02-rady-na-bielom": ("Celé potrubie každého radu na bielom", "JPEG 3000 × 2000 px."),
+    "03-vyrezy-png": ("Priehľadné výrezy s tieňom", "PNG v plnom rozlíšení renderu, grafik ich dá na akékoľvek pozadie."),
+    "04-teplo": ("Teplo v reze ako termokamera", "Príklad prevádzky ako na webe: priehľadné PNG a JPEG na tmavom pozadí."),
+    "05-ohyb": ("Ohyb na najmenší polomer z katalógu", "Priehľadné PNG a JPEG na bielom, reprezentatívna dimenzia každého radu."),
+    "06-videa": ("Videá MP4 bez zvuku", "Slučky 16:9, 1:1 a 9:16 pre web, prezentácie a sociálne siete."),
+}
+# Skupiny v priečinkoch s mnohými súbormi: (začiatok názvu, nadpis), v poradí zobrazenia.
+SKUPINY = {
+    "03-vyrezy-png": [("hero-", "Hlavné zábery"), ("rodina-", "Hlavné zábery"), ("kotuc-", "Hlavné zábery"),
+                      ("hlava-", "Čelný záber každého radu"), ("rad-", "Celé potrubie každého radu"),
+                      ("dimenzie-v-mierke-", "Všetky dimenzie radu v mierke"), ("makro-", "Makrá materiálov")],
+    "06-videa": [("rozlozeny-rez-", "Rozložený rez"), ("ohyb-", "Ohyb na najmenší polomer"), ("kotuc-", "Kotúč sa odvaľuje")],
+}
+
+
 def index():
-    """Miestny prehľad (otvoriť dvojklikom): náhľady obrázkov a videá s rozmermi a veľkosťou."""
+    """Miestny prehľad (otvoriť dvojklikom): náhľady obrázkov a videá s rozmermi a veľkosťou, zoskupené podľa radu
+    alebo druhu záberu."""
     nahlady = CIEL / ".nahlady"
     nahlady.mkdir(parents=True, exist_ok=True)
+    nazvy = {r["slug"]: r["nazov"] for r in json.loads((REPO / "web" / "src" / "data" / "rady.json").read_text(encoding="utf-8"))}
+
+    def polozka(f):
+        if f.suffix.lower() == ".mp4":
+            return (f'<figure><video src="{f.relative_to(CIEL).as_posix()}" muted loop playsinline preload="metadata" controls></video>'
+                    f'<figcaption>{f.name}<br><small>{f.stat().st_size / 1e6:.1f} MB</small></figcaption></figure>')
+        n = nahlady / (f.relative_to(CIEL).as_posix().replace("/", "__") + ".jpg")
+        if novsi(n, f):
+            im = Image.open(f)
+            rozmer = im.size
+            im = im.convert("RGBA")
+            pod = Image.new("RGBA", im.size, (232, 236, 242, 255))
+            pod.alpha_composite(im)
+            pod = pod.convert("RGB")
+            pod.thumbnail((480, 480))
+            pod.save(n, "JPEG", quality=82)
+        else:
+            rozmer = Image.open(f).size
+        return (f'<figure><a href="{f.relative_to(CIEL).as_posix()}"><img src=".nahlady/{n.name}" loading="lazy" alt=""></a>'
+                f'<figcaption>{f.name}<br><small>{rozmer[0]} × {rozmer[1]} px, {f.stat().st_size / 1e6:.1f} MB</small></figcaption></figure>')
+
+    def skupina(nadpis, subory):
+        h = f"<h3>{nadpis}</h3>" if nadpis else ""
+        return f'{h}<div class="mriezka">{"".join(polozka(f) for f in subory)}</div>'
+
     sekcie = []
     for priecinok in sorted(p for p in CIEL.iterdir() if p.is_dir() and not p.name.startswith(".")):
-        polozky = []
-        for f in sorted(priecinok.rglob("*")):
-            if f.suffix.lower() in (".jpg", ".png"):
-                n = nahlady / (f.relative_to(CIEL).as_posix().replace("/", "__") + ".jpg")
-                if novsi(n, f):
-                    im = Image.open(f)
-                    rozmer = im.size
-                    im = im.convert("RGBA")
-                    pod = Image.new("RGBA", im.size, (232, 236, 242, 255))
-                    pod.alpha_composite(im)
-                    pod = pod.convert("RGB")
-                    pod.thumbnail((480, 480))
-                    pod.save(n, "JPEG", quality=82)
-                else:
-                    rozmer = Image.open(f).size
-                polozky.append(f'<figure><a href="{f.relative_to(CIEL).as_posix()}"><img src=".nahlady/{n.name}" loading="lazy" alt=""></a>'
-                               f'<figcaption>{f.name}<br><small>{rozmer[0]} × {rozmer[1]} px, {f.stat().st_size / 1e6:.1f} MB</small></figcaption></figure>')
-            elif f.suffix.lower() == ".mp4":
-                polozky.append(f'<figure><video src="{f.relative_to(CIEL).as_posix()}" muted loop playsinline preload="metadata" controls></video>'
-                               f'<figcaption>{f.name}<br><small>{f.stat().st_size / 1e6:.1f} MB</small></figcaption></figure>')
-        if polozky:
-            sekcie.append(f'<section><h2>{priecinok.name}</h2><div class="mriezka">{"".join(polozky)}</div></section>')
+        subory = [f for f in sorted(priecinok.rglob("*")) if f.suffix.lower() in (".jpg", ".png", ".mp4")]
+        if not subory:
+            continue
+        if any(f.parent != priecinok for f in subory):            # podpriečinky podľa radu (01)
+            rady = sorted({f.parent for f in subory}, key=lambda d: RADY12.index(d.name) if d.name in RADY12 else 99)
+            telo = "".join(skupina(nazvy.get(d.name, d.name), [f for f in subory if f.parent == d]) for d in rady)
+        elif priecinok.name in SKUPINY:
+            poradie = []
+            for _, nadpis in SKUPINY[priecinok.name]:
+                if nadpis not in poradie:
+                    poradie.append(nadpis)
+            podla = {n: [] for n in poradie + ["Ostatné"]}
+            for f in subory:
+                nadpis = next((n for zac, n in SKUPINY[priecinok.name] if f.name.startswith(zac)), "Ostatné")
+                podla[nadpis].append(f)
+            telo = "".join(skupina(n, fs) for n, fs in podla.items() if fs)
+        else:
+            telo = skupina("", subory)
+        nadpis, popis = SEKCIE.get(priecinok.name, (priecinok.name, ""))
+        sekcie.append(f'<section><h2>{nadpis}</h2><p class="popis">{popis} <span>Priečinok {priecinok.name}, '
+                      f'{len(subory)} súborov.</span></p>{telo}</section>')
     (CIEL / "index.html").write_text(f"""<!doctype html><html lang="sk"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Microflex: reklamné podklady z 3D modelu</title>
 <style>body{{margin:0;padding:32px;font:15px/1.5 system-ui,sans-serif;background:#f4f6f9;color:#0b1b33}}h1{{font-size:28px;margin:0 0 6px}}
-h2{{font-size:18px;margin:36px 0 12px}}.mriezka{{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}}
+h2{{font-size:22px;margin:48px 0 4px}}h3{{font-size:16px;margin:24px 0 10px;color:#123a7a}}.popis{{margin:0 0 8px;color:#3f4b5e}}.popis span{{color:#5b6779;font-size:13px}}
+.mriezka{{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}}
 figure{{margin:0;background:#fff;border-radius:12px;padding:10px;box-shadow:0 1px 3px rgb(0 0 0/.08)}}img,video{{width:100%;height:auto;border-radius:8px;display:block;background:#e8ecf2}}
 figcaption{{margin-top:6px;font-size:13px;word-break:break-all}}small{{color:#5b6779}}</style>
 <h1>Microflex: reklamné podklady z 3D modelu</h1><p>Popis a odporúčané použitie: README.md v tomto priečinku. Klik na obrázok otvorí plné rozlíšenie.</p>

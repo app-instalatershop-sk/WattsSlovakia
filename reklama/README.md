@@ -13,7 +13,7 @@ plné rozlíšenie.
 | `03-vyrezy-png/` | priehľadné PNG v plnom rozlíšení renderu, s tieňom: hero DUO, rodina šiestich systémov, kotúč 100 m, hlavy a telá radov, dimenzie v mierke, makrá materiálov | 2400 až 5200 px | grafik ich dá na akékoľvek pozadie: billboard, roll-up, veľtržný stánok, reklama v časopise |
 | `04-teplo/` | rez ako na termokamere (príklad prevádzky), priehľadné aj na tmavomodrom pozadí | 3000 × 2400 px | technické prezentácie, sociálne siete, porovnanie izolácie |
 | `05-ohyb/` | rúra ohnutá na najmenší polomer z katalógu pre každý rad | 2400 × 2000 px | „ohne sa okolo prekážky“: reklama, veľtrh, sociálne siete |
-| `06-videa/` | slučky MP4 bez zvuku: rozložený rez, ohyb, odvaľovanie kotúča | 16:9 (1920 × 1080), 1:1 (1080 × 1080), 9:16 (1080 × 1920) | 16:9 web, YouTube a prezentácie; 1:1 príspevky na Facebook, Instagram a LinkedIn; 9:16 stories a reels |
+| `06-videa/` | slučky MP4 bez zvuku: rozložený rez a ohyb každého radu, odvaľovanie kotúča | 16:9 (1920 × 1080) a 1:1 (1080 × 1080), rozložený rez aj 9:16 (1080 × 1920) | 16:9 web, YouTube a prezentácie; 1:1 príspevky na Facebook, Instagram a LinkedIn; 9:16 stories a reels |
 
 ## Dobré vedieť
 
@@ -22,8 +22,8 @@ plné rozlíšenie.
 - **Značka Microflex patrí Watts.** Ako oficiálny partner ju môžeme používať pri predaji. Pri veľkej kampani
   je dobré dať ju Watts na vedomie.
 - **Teplo v reze je výpočet.** Je to ustálený stav pri príklade prevádzky (napríklad prívod 70 °C,
-  spiatočka 50 °C a pôda 10 °C). Pri vykurovaní je strata na meter z katalógu výrobcu. Čísla uvádzajte
-  s podmienkami, rovnako ako na webe.
+  spiatočka 50 °C a pôda 10 °C), zladený so stratami z grafov katalógu. Stratu na meter uvádzame len
+  pri UNO, DUO a PRIMO, kde je v katalógu výrobcu. Čísla uvádzajte s podmienkami, rovnako ako na webe.
 - **Polomer ohybu a rozmery kotúča** sú z údajov katalógu pre danú dimenziu.
 - Priečinok nie je v gite, lebo má stovky MB. Ak sa zmení model alebo pribudnú rendery, vytvorí sa znova
   príkazom `C:/Users/krist/nastroje/web/.venv/Scripts/python.exe -I data/reklama.py`. Hotové súbory preskočí.

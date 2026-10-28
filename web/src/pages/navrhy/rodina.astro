@@ -1,0 +1,28 @@
+---
+import Strana from '../../navrhy/Strana.astro';
+import Rodina from '../../navrhy/Rodina.astro';
+import rodinaObr from '../../assets/3d/rodina/rodina.webp';
+import rady from '../../data/rady.json';
+import data from '../../data/navrhy/rodina.json';
+
+// Údaje do štítkov: z rady.json a varianty.json, kde ich máme; tlak a materiál len tam, kde ich uvádza katalóg.
+const FAKTY: Record<string, [string, string]> = {
+  'microflex-uno-6-bar': ['1 rúra PE-Xa, vykurovacia voda, 6 bar', 'plášť 75 až 200 mm, rúra 25 až 125 mm'],
+  'microflex-duo-6-bar': ['prívod a spiatočka z PE-Xa, 6 bar', 'plášť 125 až 200 mm, rúry 25 až 63 mm'],
+  'microflex-duo-10-bar': ['2 rúry PE-Xa na pitnú vodu, 10 bar', 'plášť 125 až 200 mm'],
+  'microflex-quadro': ['4 rúry: vykurovanie aj pitná voda', 'plášť 160 a 200 mm, 6 a 10 bar'],
+  'microflex-cool': ['1 rúra PE 100, studená a chladená voda', 'plášť 90 až 200 mm, rúra 32 až 110 mm'],
+  'microflex-hp': ['2 rúry PE-Xa a 2 chráničky na káble', 'plášť 125 a 160 mm, tepelné čerpadlá'],
+};
+const systemy = data.systemy.map((s) => {
+  const r = rady.find((x) => x.id === s.rad)!;
+  return { rad: s.rad, nazov: r.nazov, fakty: FAKTY[s.rad], odkaz: `/potrubia/${r.kategoria}/${r.slug}/`, bod: s.bod };
+});
+---
+<Strana cesta="/navrhy/rodina/" nadpis="4 Rodina na ťuknutie"
+  popis="Obrázok šiestich systémov dnes len ukazuje. V návrhu po prejdení myšou alebo ťuknutí zvýrazní jeden systém, ostatné stmavnú a pri ňom sa objaví štítok s tým hlavným a odkazom na rad. Na telefóne funguje ťuknutie, pre klávesnicu sú nad obrázkom tlačidlá."
+  kde="Potrubia (prehľad radov) a domov, časť Päť systémov, jedna rodina">
+  <Rodina obraz={rodinaObr.src} pomer={data.pomer} cesta={data.cesta} krok={data.krok} systemy={systemy}
+    nadpis="Päť systémov, jedna rodina."
+    popis="UNO a DUO pre vykurovanie a pitnú vodu, QUADRO pre všetko v jednom plášti, COOL pre chlad, HP pre tepelné čerpadlá. Prejdite myšou alebo ťuknite na systém." />
+</Strana>

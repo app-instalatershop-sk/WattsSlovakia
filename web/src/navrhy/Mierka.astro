@@ -1,0 +1,109 @@
+---
+/**
+ * Návrh 5: všetky dimenzie radu v skutočnom pomere veľkostí (render rodina so zoznamom variantov, rezy
+ * v jednej rovine, dlhý objektív). Riadok tabuľky pod myšou alebo v ohnisku zvýrazní svoj rez a rez pod
+ * myšou zvýrazní riadok; masky a mapa indexov ako pri rodine (data/navrhy_web.py mierka).
+ */
+interface Riadok { obj: string; plast: number; rury: string; polomer: string; hmotnost: string; kotuc: string; bod: number[] }
+interface Props { cesta: string; pomer: number; krok: number; riadky: Riadok[]; nadpis: string; popis: string }
+const { cesta, pomer, krok, riadky, nadpis, popis } = Astro.props;
+---
+<section class="mierka" data-mierka data-cesta={cesta} data-krok={krok}>
+  <div class="wrap">
+    <h2>{nadpis}</h2>
+    <p class="lead">{popis}</p>
+  </div>
+  <div class="mi-stage" style={`aspect-ratio: ${pomer}`}>
+    <img class="mi-zaklad" src={`${cesta}zaklad.webp`} alt="Všetky dimenzie radu vedľa seba v skutočnom pomere veľkostí" width="2000" height={Math.round(2000 / pomer)} />
+    {riadky.map((_, k) => <img class="mi-svetlo" data-k={k} src={`${cesta}zaklad.webp`} alt="" aria-hidden="true" style={`-webkit-mask-image: url(${cesta}maska-${k}.webp); mask-image: url(${cesta}maska-${k}.webp)`} />)}
+    {riadky.map((r, k) => (
+      <p class="mi-stitok" data-k={k} style={`--x: ${r.bod[0]}%; --y: ${r.bod[1]}%`} hidden><strong>Ø {r.plast}</strong><span>{r.rury}</span></p>
+    ))}
+  </div>
+  <div class="wrap mi-tab-obal">
+    <table class="mi-tab">
+      <thead><tr><th>Obj. číslo</th><th>Plášť Ø</th><th>Rúry</th><th>Polomer ohybu</th><th>Hmotnosť</th><th>Kotúč Ø / šírka</th></tr></thead>
+      <tbody>
+        {riadky.map((r, k) => (
+          <tr data-k={k} tabindex="0"><td>{r.obj}</td><td>{r.plast} mm</td><td>{r.rury}</td><td>{r.polomer}</td><td>{r.hmotnost}</td><td>{r.kotuc}</td></tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<style>
+  .mierka { padding: 56px 0 72px; background: linear-gradient(180deg, #fff, #eef3f9 45%, #fff); }
+  .mierka h2 { font-size: clamp(28px, 2.2vw + 14px, 42px); letter-spacing: -0.02em; }
+  .mierka .lead { margin-top: 12px; max-width: 44em; }
+  .mi-stage { position: relative; width: min(100% - 2 * var(--gutter), 1400px); margin: 28px auto 0; }
+  .mi-stage img { position: absolute; inset: 0; width: 100%; height: 100%; -webkit-mask-size: 100% 100%; mask-size: 100% 100%; }
+  .mi-zaklad { transition: filter 240ms var(--ease-soft); }
+  .mi-svetlo { opacity: 0; transition: opacity 240ms var(--ease-soft); pointer-events: none; }
+  .mierka.je-vyber .mi-zaklad { filter: saturate(0.35) brightness(0.88) contrast(0.92); }
+  .mi-svetlo.is-on { opacity: 1; }
+  .mi-stitok { position: absolute; left: var(--x); top: var(--y); transform: translate(-50%, calc(-100% - 14px)); display: grid; justify-items: center; gap: 2px; padding: 7px 12px; border-radius: var(--radius-m);
+    background: rgb(255 255 255 / 0.93); box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.08), var(--elev-2); white-space: nowrap; pointer-events: none; }
+  .mi-stitok strong { font-family: var(--font-display); font-stretch: 112%; font-weight: 600; font-size: 18px; color: var(--color-blue-900); }
+  .mi-stitok span { font-size: 13px; color: #3f4b5e; }
+  .mi-tab-obal { margin-top: 28px; overflow-x: auto; }
+  .mi-tab { width: 100%; border-collapse: collapse; font-size: 15px; font-variant-numeric: tabular-nums; }
+  .mi-tab th { padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; color: var(--color-ink-soft); border-bottom: 2px solid rgb(10 42 94 / 0.12); }
+  .mi-tab td { padding: 11px 12px; border-bottom: 1px solid rgb(10 42 94 / 0.08); }
+  .mi-tab tbody tr { cursor: pointer; transition: background 160ms var(--ease-soft); }
+  .mi-tab tbody tr.is-on { background: rgb(247 181 28 / 0.18); }
+  .mi-tab tbody tr:focus-visible { outline: 3px solid var(--color-yellow-500); outline-offset: -3px; }
+  .mi-tab td:first-child { font-weight: 600; color: var(--color-blue-900); }
+  @media (prefers-reduced-motion: reduce) { .mi-zaklad, .mi-svetlo { transition: none; } }
+</style>
+
+<script>
+  function initMierka() {
+    const sek = document.querySelector<HTMLElement>('[data-mierka]');
+    if (!sek || sek.dataset.on) return;
+    sek.dataset.on = '1';
+    const stage = sek.querySelector<HTMLElement>('.mi-stage')!;
+    const svetla = [...sek.querySelectorAll<HTMLElement>('.mi-svetlo')];
+    const stitky = [...sek.querySelectorAll<HTMLElement>('.mi-stitok')];
+    const riadky = [...sek.querySelectorAll<HTMLElement>('tbody tr')];
+    let aktivny = -1;
+    const ukaz = (k: number) => {
+      if (k === aktivny) return;
+      aktivny = k;
+      sek.classList.toggle('je-vyber', k >= 0);
+      svetla.forEach((s, i) => s.classList.toggle('is-on', i === k));
+      stitky.forEach((s, i) => { s.hidden = i !== k; });
+      riadky.forEach((r, i) => r.classList.toggle('is-on', i === k));
+    };
+    const mapa = new Image();
+    const platno = document.createElement('canvas');
+    let data: Uint8ClampedArray | undefined;
+    mapa.onload = () => {
+      platno.width = mapa.naturalWidth; platno.height = mapa.naturalHeight;
+      const ctx = platno.getContext('2d', { willReadFrequently: true })!;
+      ctx.drawImage(mapa, 0, 0);
+      data = ctx.getImageData(0, 0, platno.width, platno.height).data;
+    };
+    mapa.src = `${sek.dataset.cesta}mapa.png`;
+    const index = (e: PointerEvent | MouseEvent) => {
+      if (!data) return -1;
+      const r = stage.getBoundingClientRect();
+      const x = Math.floor(((e.clientX - r.left) / r.width) * platno.width);
+      const y = Math.floor(((e.clientY - r.top) / r.height) * platno.height);
+      if (x < 0 || y < 0 || x >= platno.width || y >= platno.height) return -1;
+      const v = data[(y * platno.width + x) * 4];
+      return v ? Math.round(v / Number(sek.dataset.krok)) - 1 : -1;
+    };
+    stage.addEventListener('pointermove', (e) => ukaz(index(e)));
+    stage.addEventListener('pointerleave', () => ukaz(-1));
+    stage.addEventListener('click', (e) => ukaz(index(e)));
+    riadky.forEach((r, i) => {
+      r.addEventListener('pointerenter', () => ukaz(i));
+      r.addEventListener('focus', () => ukaz(i));
+      r.addEventListener('click', () => ukaz(i));
+    });
+    sek.querySelector('tbody')!.addEventListener('pointerleave', () => ukaz(-1));
+  }
+  initMierka();
+  document.addEventListener('astro:page-load', initMierka);
+</script>

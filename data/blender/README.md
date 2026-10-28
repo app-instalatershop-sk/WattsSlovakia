@@ -18,6 +18,10 @@ nie podľa renderov Watts, ktoré sú samy počítačová grafika. Rendery Watts
 | `porovnanie.py` | zostava obrázkov vedľa seba v rovnakej výške s popisom |
 | `galeria.mjs` | živá galéria renderov pre majiteľa, `node data/blender/galeria.mjs` → http://127.0.0.1:4340; zapisuje len pripomienky z porovnania so skutočnosťou |
 | `realita.py` | stránka „Model a skutočnosť“ (http://127.0.0.1:4340/realita): 12 radov vedľa skutočných fotiek, render Watts osobitne, všetky dimenzie; pripomienky majiteľa ukladá galéria do `data/_3d/realita/pripomienky.json`. Spustiť po každej sade `web` |
+| `ohyb.py` | ohyb tela za rezom pre pohľad `ohyb`: zhustenie siete v oblúku, pôvodné súradnice v atribúte `povodne` (z nich berú materiály súradnice textúr, aby potlač a bunky ostali na povrchu), ohnutie o ľubovoľný uhol s pevným polomerom na osi |
+| `teplo.py` | ustálené teplotné pole v reze (SOR na mriežke) a strata do pôdy s predpokladmi katalógu (s. 38); pri známej strate z katalógu doladí vodivosť peny tak, aby strata sedela (pohľad `studio` s `--termo`) |
+| `zive.py` | živé okno: Blender s oknom ukazuje scénu, na ktorej sa práve pracuje (Rendered na procesore), a poslednú hotovú snímku. Spustené obyčajným Pythonom len zapíše `data/_3d/zive/stav.json` |
+| `video.py` | MP4 (H.264) z postupnosti PNG cez editor sekvencií Blendera (ffmpeg je v ňom zabudovaný) |
 
 ## Čo treba
 
@@ -62,7 +66,28 @@ $B -b --factory-startup -P data/blender/potrubie.py -- \
 # rozložený rez ako sekvencia (rovnaká kamera pre všetky snímky)
 $B -b --factory-startup -P data/blender/potrubie.py -- --rad microflex-duo-6-bar --obj MD16032C \
    --pohlad rozlozeny --snimky 72 --sirka 1600 --vzorky 256 --out data/_3d/iny/rozlozeny.png
+
+# návrhy 28. 10. (pracovná stránka /navrhy/, prevod do webu data/navrhy_web.py)
+# ohyb na najmenší polomer z katalógu, 48 snímok od rovnej rúry po oblúk 90°
+$B -b --factory-startup -P data/blender/potrubie.py -- --rad microflex-duo-6-bar --obj MD16032C \
+   --pohlad ohyb --elevacia 32 --azimut 38 --snimky 48 --sirka 2000 --vzorky 256 --out data/_3d/navrhy/ohyb/duo/ohyb.png
+# termokamera v zábere hlavy radu: teploty médií a pôdy, strata z katalógu (W/m) na doladenie
+$B -b --factory-startup -P data/blender/potrubie.py -- --rad microflex-duo-6-bar --obj MD16032C --pohlad studio \
+   --azimut 22 --elevacia 12 --ramec jednotny --termo 70,50,10 --termo-q 12.98 --termo-rozsah 8,72 \
+   --sirka 2800 --vzorky 48 --bez-tiena --out data/_3d/navrhy/teplo/varianty/MD16032C.png
+# kotúč (rozmery z údajov variantu, 100 m vo vrstvách), voľný koniec s rezom; maska systémov rodiny
+$B -b --factory-startup -P data/blender/potrubie.py -- --rad microflex-duo-6-bar --obj MD12525C --pohlad kotuc \
+   --azimut 30 --elevacia 15 --kotuc-volny 2.2 --sirka 1800 --vzorky 256 --out data/_3d/navrhy/kotuc/kotuc.png
+$B -b --factory-startup -P data/blender/potrubie.py -- --pohlad rodina --azimut 40 --elevacia 18 --sirka 4800 \
+   --vzorky 16 --maska --out data/_3d/navrhy/rodina/maska.png
+
+# živé okno (Blender s oknom); úlohu mu oznámi zápis stavu
+$B --factory-startup -P data/blender/zive.py
+$P -I -X utf8 data/blender/zive.py "čo sa robí" "data/_3d/navrhy/ohyb/duo/ohyb-*.png" --rad ... --pohlad ohyb ...
 ```
+
+Živé okno počíta náhľad procesorom: režim Rendered drží scénu v pamäti grafickej karty a pri súbežnom
+renderi v dávke jej pamäť došla (28. 10. pri rodine v 4800 px).
 
 Rýchly náhľad pri ladení: `--sirka 800 --vzorky 64 --kvalita nahlad --bez-tiena`.
 Nový tieň k existujúcemu renderu (rovnaké parametre ako pri renderi): pridať `--len-tien`.

@@ -1,0 +1,45 @@
+---
+import Strana from '../../navrhy/Strana.astro';
+import Teplo, { type VariantTepla } from '../../navrhy/Teplo.astro';
+import rendery from '../../data/rendery.json';
+import varianty from '../../data/varianty.json';
+import termo from '../../data/navrhy/teplo-duo.json';
+
+const obrazky = import.meta.glob<{ default: ImageMetadata }>('../../assets/3d/varianty/*.webp', { eager: true });
+const fotoUrl = (obj: string) => Object.entries(obrazky).find(([k]) => k.endsWith(`/${obj}.webp`))?.[1].default.src ?? '';
+type T = (typeof termo)[keyof typeof termo];
+const zoznam: VariantTepla[] = varianty
+  .filter((v) => v.rad === 'microflex-duo-6-bar' && v.obj_cislo in termo)
+  .map((v) => {
+    const t = (termo as Record<string, T>)[v.obj_cislo];
+    const f = (rendery.varianty as Record<string, { plast: number[]; rura: number[]; pomer: number }>)[v.obj_cislo];
+    return { obj: v.obj_cislo, plast: v.plast_mm, rura: v.rura!.d, foto: fotoUrl(v.obj_cislo), termo: t.src, pomer: t.pomer,
+      fotoBody: { plast: f.plast, rura: f.rura }, termoBody: { rury: t.rury, plast: t.plast }, q: t.q };
+  })
+  .sort((a, b) => a.rura - b.rura || a.plast - b.plast);
+const prvy = (termo as Record<string, T>).MD16032C;
+---
+<Strana cesta="/navrhy/teplo/" nadpis="2 Teplo v reze"
+  popis="Hlava stránky radu dostane prepínač Pohľad a Teplota. Ten istý záber sa zmení na obraz termokamery: vidno, ako pena drží teplo v rúrach a že plášť ostáva skoro na teplote pôdy. Vyskúšajte prepínač aj výber dimenzie."
+  kde="hlava stránky radu (vykurovanie a sanita UNO, DUO, PRIMO; pri ďalších radoch len teploty bez straty, katalóg ich straty neuvádza)">
+  <Teplo varianty={zoznam} predvoleny="MD16032C" rozsah={prvy.rozsah} paleta={prvy.paleta as [number, [number, number, number]][]}
+    pred="Vykurovanie, dve rúry" nadpis="Microflex DUO, vykurovanie 6 bar"
+    lead="Prívod a spiatočka v jednom plášti. Prepnite na teplotu a uvidíte, ako pena drží teplo pri rúrach."
+    podmienky="Ustálený stav: prívod 70 °C, spiatočka 50 °C, pôda 10 °C, krytie 0,8 m. Teploty v reze sú výpočet, strata na meter je z katalógu výrobcu." />
+  <section class="wrap nv-pozn">
+    <h2>Ako sú čísla vypočítané</h2>
+    <ul>
+      <li>Strata na meter je z grafov tepelných strát v katalógu Watts (s. 38), pre každú dimenziu pri ΔT 50 K (stredná teplota vody mínus teplota pôdy). Grafy som z PDF prečítal presne, z vektorov čiar, nie odhadom.</li>
+      <li>Teploty v reze počíta 3D model: ustálené vedenie tepla penou medzi rúrami a plášťom a z plášťa do pôdy, s hodnotami z tej istej strany katalógu (λ peny 0,0335 až 0,0372 W/m·K, pôda 1 W/m·K, krytie 0,8 m).</li>
+      <li>Samotný výpočet dáva pri DUO o 11 až 22 % nižšie straty ako katalóg; výrobca zrejme ráta s rezervou alebo s menším vnútorným priemerom plášťa. Vodivosť peny je preto doladená tak, aby strata sedela s katalógom. Rozloženie teplôt v reze to nemení, posunie sa len teplota plášťa asi o 1 °C.</li>
+      <li>Pri radoch bez grafu v katalógu (QUADRO, COOL, HP) by ostali len teploty, bez straty na meter. Na teploty a stratu sa môžeme spýtať aj Watts.</li>
+    </ul>
+  </section>
+</Strana>
+
+<style>
+  .nv-pozn { padding-block: 48px 0; max-width: 60em; }
+  .nv-pozn h2 { font-size: 24px; }
+  .nv-pozn ul { margin-top: 14px; display: grid; gap: 10px; padding-left: 20px; }
+  .nv-pozn li { font-size: 16px; line-height: 1.55; color: var(--color-ink-soft); }
+</style>

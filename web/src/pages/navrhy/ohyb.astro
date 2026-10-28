@@ -1,0 +1,21 @@
+---
+import Strana from '../../navrhy/Strana.astro';
+import Ohyb from '../../navrhy/Ohyb.astro';
+import data from '../../data/navrhy/ohyb-duo.json';
+---
+<Strana cesta="/navrhy/ohyb/" nadpis="1 Ohyb na najmenší polomer"
+  popis="Pri rolovaní sa rúra ohne z rovnej do oblúka s najmenším polomerom z katalógu a pri oblúku sa objaví kóta. Dokazuje hlavnú vetu domova, že potrubie sa ohne okolo prekážky; dnes ju ilustruje rovná rúra. Rolujte pomaly cez celú sekciu."
+  kde="domov pod časťou Päť systémov, jedna rodina; na stránkach radov v časti Stavba a montáž s polomerom daného radu">
+  <div class="nv-pred" aria-hidden="true"></div>
+  <Ohyb data={data}
+    nadpis="Ohne sa okolo prekážky."
+    popis="Microflex sa ohýba priamo vo výkope, bez kolien a bez zvárania. DUO 2 × 32 mm v plášti 160 mm zvládne oblúk s polomerom 0,60 m, menšie plášte ešte tesnejší: UNO v plášti 75 mm od 0,20 m."
+    poznamka="Polomer platí pre os potrubia. Najmenší polomer každej dimenzie je v tabuľke variantov radu."
+    alt="Potrubie Microflex DUO ohnuté do oblúka s polomerom 0,60 m"
+    popisKoty="najmenší polomer ohybu" />
+  <div class="nv-po" aria-hidden="true"></div>
+</Strana>
+
+<style>
+  .nv-pred, .nv-po { height: 30vh; }
+</style>

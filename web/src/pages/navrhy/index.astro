@@ -1,0 +1,55 @@
+---
+import Strana from '../../navrhy/Strana.astro';
+
+const NAVRHY = [
+  { href: '/navrhy/ohyb/', nazov: '1 Ohyb na najmenší polomer', kde: 'domov a stránky radov', co: 'pri rolovaní sa rúra ohne do oblúka s polomerom z katalógu a objaví sa kóta', stav: 'hotová sekvencia DUO 160, 48 snímok', odp: 'áno, je to dôkaz hlavnej vety domova' },
+  { href: '/navrhy/teplo/', nazov: '2 Teplo v reze', kde: 'hlava stránky radu', co: 'prepínač Pohľad a Teplota: termokamera ukáže, ako pena drží teplo, so stratou z katalógu', stav: 'hotové pre 8 dimenzií DUO 6 bar', odp: 'áno, v odbore to nikto nemá' },
+  { href: '/navrhy/kotuc/', nazov: '3 Kotúč sa rozvinie', kde: 'domov, časť o pokládke', co: 'render kotúča s kótami namiesto fotky; pri rolovaní sa odvaľuje', stav: 'hlavný záber a tri zábery pohybu, sekvencia po schválení', odp: 'áno, ak sa Vám páči kotúč' },
+  { href: '/navrhy/rodina/', nazov: '4 Rodina na ťuknutie', kde: 'Potrubia a domov', co: 'systém pod myšou alebo prstom sa zvýrazní a ukáže štítok s odkazom', stav: 'hotové', odp: 'áno, lacné a pomôže v navigácii' },
+  { href: '/navrhy/mierka/', nazov: '5 Dimenzie v mierke', kde: 'stránka radu, časť Varianty', co: 'všetky dimenzie radu v skutočnom pomere, prepojené s tabuľkou', stav: 'hotové pre DUO 6 bar', odp: 'áno, pre projektantov' },
+  { href: '/navrhy/videa/', nazov: '6 Videá a fotky mimo webu', kde: 'siete, prezentácie, e-shop', co: 'slučky MP4 z renderov a produktové fotky na bielom', stav: 'ukážkové video a 6 fotiek', odp: 'podľa toho, či ich využijete' },
+];
+---
+<Strana cesta="/navrhy/" nadpis="Návrhy: novinky z 3D modelu"
+  popis="Šesť noviniek, každá ukázaná tak, ako by bola na webe, so skutočnými údajmi z katalógu. Pri každej je, kde by bola, v akom stave je ukážka a moje odporúčanie; rozhodnutie je Vaše.">
+  <section class="wrap prehlad">
+    <ol class="navrhy">
+      {NAVRHY.map((n) => (
+        <li>
+          <a href={n.href}>
+            <strong>{n.nazov}</strong>
+            <span class="co">{n.co}</span>
+            <span class="kde">Kde: {n.kde}</span>
+            <span class="stav">Ukážka: {n.stav}</span>
+            <span class="odp"><b>Odporúčam</b> {n.odp}</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+    <div class="poznamky">
+      <h2>Čo platí pre všetky návrhy</h2>
+      <ul>
+        <li>Všetko je z vlastného 3D modelu a údajov katalógu (polomer ohybu, rozmery kotúča, tepelné straty), nie ilustrácie ani výstup AI.</li>
+        <li>Pohyb sa načíta až po hlavnom obrázku stránky a pri nastavení „obmedziť pohyb“ ostane statický obraz s kótami, ako pri rozloženom reze.</li>
+        <li>Na domove pribudne najviac jeden nový pohyb (ohyb); kotúč nahradí dnešnú rastúcu čiaru.</li>
+        <li>Po rozhodnutí sa vybrané návrhy prenesú do webu na všetky rady a pracovné stránky /navrhy/ sa zmažú.</li>
+      </ul>
+    </div>
+  </section>
+</Strana>
+
+<style>
+  .prehlad { padding-block: 40px 0; }
+  .navrhy { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; list-style: none; padding: 0; }
+  .navrhy a { display: grid; gap: 6px; height: 100%; padding: 20px 22px; border-radius: 20px; background: #fff; color: inherit; box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.08), var(--elev-1); }
+  .navrhy a:hover { box-shadow: inset 0 0 0 2px var(--color-blue-700), var(--elev-2); }
+  .navrhy strong { font-family: var(--font-display); font-size: 20px; color: var(--color-blue-900); }
+  .navrhy .co { font-size: 16px; line-height: 1.5; }
+  .navrhy .kde, .navrhy .stav { font-size: 14px; color: var(--color-ink-soft); }
+  .navrhy .odp { margin-top: 4px; font-size: 14px; }
+  .navrhy .odp b { color: var(--color-blue-700); }
+  .poznamky { margin-top: 40px; max-width: 56em; }
+  .poznamky h2 { font-size: 22px; }
+  .poznamky ul { margin-top: 12px; display: grid; gap: 8px; padding-left: 20px; }
+  .poznamky li { line-height: 1.55; color: var(--color-ink-soft); }
+</style>

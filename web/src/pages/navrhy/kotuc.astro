@@ -1,0 +1,83 @@
+---
+import Strana from '../../navrhy/Strana.astro';
+import Koty from '../../components/Koty.astro';
+import type { Kota } from '../../lib/koty';
+import data from '../../data/navrhy/kotuc-duo.json';
+
+const hlavny = data.zabery.find((z) => z.meno === 'kotuc')!;
+const pohyb = data.zabery.filter((z) => z.meno.startsWith('pohyb'));
+const k = hlavny.kotuc;
+const cislo = (x: number, d = 2) => x.toLocaleString('sk-SK', { minimumFractionDigits: d, maximumFractionDigits: d });
+const koty: Kota[] = [
+  { x: hlavny.body.vpravo[0], y: hlavny.body.vpravo[1], l: 6, smer: 'dole-vpravo', smerM: 'dole-vlavo', hodnota: `Ø ${cislo(k.d_m)} m`, text: 'priemer kotúča' },
+  { x: hlavny.body.bok_daleko[0], y: hlavny.body.bok_daleko[1], l: 5, smer: 'hore-vpravo', smerM: 'hore-vlavo', hodnota: `${cislo(k.sirka_m)} m`, text: 'šírka kotúča' },
+  { x: hlavny.body.vlavo[0], y: hlavny.body.vlavo[1], l: 7, smer: 'dole-vlavo', hodnota: `${cislo(Math.floor(k.dlzka_m), 0)} m`, text: `${k.vrstvy} vrstvy po ${k.zavitov} závitoch` },
+  { x: hlavny.body.celo[0], y: hlavny.body.celo[1], l: 9, smer: 'hore-vpravo', smerM: 'hore-vlavo', hodnota: '2 × 25 mm', text: 'DUO v plášti 125 mm' },
+];
+const KROKY: [string, string][] = [
+  ['Kotúč k výkopu', 'Kotúč položte pozdĺž výkopu, odstráňte fóliu a koniec rúry dajte na miesto napojenia.'],
+  ['Rozvinúť do piesku', 'Postupne strihajte sťahovacie pásky a rúru rozvíjajte do pieskového lôžka, mierne hadovito a s dodržaním polomeru ohybu.'],
+  ['Spojky a skúška', 'Konce uzavrite krytkami, pripojte spojky PE-X a urobte tlakovú skúšku s protokolom.'],
+  ['Páska a zásyp', 'Zasypte prvú vrstvu, položte výstražnú pásku a výkop zasypte celý.'],
+];
+const POPISY = ['Kotúč pri výkope, voľný koniec na mieste napojenia', 'Kotúč sa odvaľuje, rúra ostáva ležať v ryhe', 'Po 6 m sa kotúč otočil presne podľa odvalenia (pozri pásky)'];
+---
+<Strana cesta="/navrhy/kotuc/" nadpis="3 Kotúč sa rozvinie"
+  popis="V časti o pokládke na domove nahradí fotku kotúča render z nášho štúdia s kótami z údajov výrobcu: priemer, šírka a dĺžka v jednom kuse. Pri rolovaní cez štyri kroky by sa kotúč odvaľoval a za ním by ostávala rovná rúra, namiesto dnešnej rastúcej čiary. Tu je hlavný záber a tri zábery pohybu; celú sekvenciu urobím, keď schválite vzhľad."
+  kde="domov, časť Sto metrov za štyridsať minút; článok Pokládka v Poradni">
+  <section class="kt">
+    <div class="wrap kt-grid">
+      <div class="kt-text">
+        <h2>Sto metrov za štyridsať minút.</h2>
+        <p class="lead">Za toľko podľa katalógu výrobcu položia traja montážnici stometrový kotúč Microflex UNO alebo DUO v menších dimenziách. Bez zvárania, bez predizolovaných kolien a bez špeciálneho náradia.</p>
+        <ol class="kt-kroky">
+          {KROKY.map(([n, t], i) => <li><span class="kt-cislo">{i + 1}</span><h3>{n}</h3><p>{t}</p></li>)}
+        </ol>
+      </div>
+      <div class="kt-stage" style={`aspect-ratio: ${hlavny.pomer}; --pomer: ${hlavny.pomer}`}>
+        <img src={hlavny.src} alt="Kotúč potrubia Microflex DUO, 100 m vo štyroch vrstvách so zelenými páskami, voľný koniec s rezom na podlahe" width="1600" height={Math.round(1600 / hlavny.pomer)} />
+        <Koty koty={koty} label="Rozmery kotúča" />
+      </div>
+    </div>
+  </section>
+  <section class="wrap kt-pohyb">
+    <h2>Ako by sa kotúč hýbal pri rolovaní</h2>
+    <p>Kotúč sa odvaľuje pozdĺž výkopu ako v návode výrobcu („rúru rolujte pozdĺž alebo priamo do výkopu“) a voľný koniec ostáva na mieste napojenia. Na webe by plynulý pohyb riadilo rolovanie cez štyri kroky.</p>
+    <ol class="kt-zabery">
+      {pohyb.map((z, i) => (
+        <li>
+          <div class="kt-zaber" style={`aspect-ratio: ${z.pomer}`}><img src={z.src} alt={POPISY[i]} width="1000" height={Math.round(1000 / z.pomer)} loading="lazy" /></div>
+          <p><strong>{cislo(z.volny_m, 1)} m</strong> {POPISY[i]}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+</Strana>
+
+<style>
+  .kt { padding: 48px 0 56px; background: linear-gradient(180deg, #fff, #eef3f9); }
+  .kt-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 32px 56px; align-items: center; }
+  .kt-text h2 { font-size: clamp(28px, 2.2vw + 14px, 42px); letter-spacing: -0.02em; }
+  .kt-text .lead { margin-top: 14px; }
+  .kt-kroky { margin-top: 26px; display: grid; gap: 16px; list-style: none; padding: 0; }
+  .kt-kroky li { display: grid; grid-template-columns: 34px minmax(0, 1fr); column-gap: 14px; }
+  .kt-cislo { grid-row: span 2; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--color-yellow-500); font-family: var(--font-display); font-weight: 700; color: var(--color-ink); }
+  .kt-kroky h3 { font-size: 17px; }
+  .kt-kroky p { font-size: 15px; line-height: 1.55; color: var(--color-ink-soft); }
+  /* Kotúč je vyšší ako široký: obraz celý v okne (pod hlavičkou), šírka podľa pomeru strán. */
+  .kt-stage { position: relative; width: min(100%, 640px, calc((100svh - 150px) * var(--pomer))); justify-self: start; container-type: inline-size; }
+  .kt-stage img { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .kt-pohyb { padding-block: 48px 0; }
+  .kt-pohyb h2 { font-size: 26px; }
+  .kt-pohyb > p { margin-top: 10px; max-width: 52em; color: var(--color-ink-soft); }
+  .kt-zabery { margin-top: 22px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; list-style: none; padding: 0; }
+  .kt-zaber { position: relative; border-radius: 20px; background: #f2f5f9; overflow: hidden; }
+  .kt-zaber img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+  .kt-zabery p { margin-top: 10px; font-size: 15px; line-height: 1.45; color: var(--color-ink-soft); }
+  .kt-zabery strong { color: var(--color-blue-900); font-family: var(--font-display); }
+  @media (max-width: 900px) {
+    .kt-grid { grid-template-columns: minmax(0, 1fr); }
+    .kt-stage { order: -1; }
+    .kt-zabery { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>

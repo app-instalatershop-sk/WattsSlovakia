@@ -30,6 +30,10 @@ import numpy as np
 from mathutils import Vector
 from mathutils.geometry import delaunay_2d_cdt
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import ohyb  # noqa: E402  (ohyb tela za rezom, pohľad ohyb)
+import teplo  # noqa: E402  (teplotné pole v reze, --termo)
+
 MM = 0.001
 # verzia geometrie (zapisuje sa do JSON): mení sa, keď sa zmení tvar alebo poloha dielov,
 # aby dávky vedeli, ktoré staršie rendre treba obnoviť
@@ -75,6 +79,7 @@ PLAST = {
 PLAST_SSS_STUDIO = (0.25, 1.2)
 PLAST_SSS_MAKRO = (1.0, 7.0)
 PLAST_SSS = list(PLAST_SSS_STUDIO)
+POVODNE_SURADNICE = [False]   # pohľad ohyb: materiály berú súradnice z neohnutej siete
 PLAST_HRANA = [0.15]   # o koľko je drsnejšia stena a hrana vlny ako vrchol (mäkký odlesk na hrane)
 
 FARBY = {
@@ -812,7 +817,11 @@ class Uzly:
         return n.outputs["Vector"] if op not in ("LENGTH", "DOT_PRODUCT", "DISTANCE") else n.outputs["Value"]
 
     def mm(self):
-        """Súradnice objektu v milimetroch."""
+        """Súradnice objektu v milimetroch. Pri ohybe z neohnutej siete (atribút ohyb.ATRIBUT),
+        aby textúry v oblúku ostali prilepené k povrchu."""
+        if POVODNE_SURADNICE[0]:
+            at = self.uzol("ShaderNodeAttribute", attribute_type="GEOMETRY", attribute_name=ohyb.ATRIBUT)
+            return self.vmath("SCALE", at.outputs["Vector"], scale=1000.0)
         tc = self.uzol("ShaderNodeTexCoord")
         return self.vmath("SCALE", tc.outputs["Object"], scale=1000.0)
 
@@ -1778,6 +1787,8 @@ class Potrubie:
             seg = a.segmenty
         prof, mat, L, rz = profil_plasta(D, L_ziad, krok_deg=krok, krok_daleko=a.krok_daleko,
                                          rebra_blizko=a.rebra_blizko)
+        if getattr(self, "zahustenie", None):    # pohľad ohyb: vnútorná stena plášťa nesmie ísť tetivou
+            prof, mat = ohyb.zahusti_profil(prof, mat, *self.zahustenie)
         self.L, self.rz = L, rz
         R, r_i = rz["R"], rz["r_i"]
         self.skupiny = {}
@@ -1822,6 +1833,7 @@ class Potrubie:
 
         # rúry a ich poloha
         r_pena = r_i - 0.1
+        self.r_pena = r_pena
         self.rozloz()
         x_pena = self.x_pena
         x_zad = -L + 2.0
@@ -2040,6 +2052,119 @@ class Potrubie:
         self.skupiny["rury"].location.x = 0.62 * D * krivka(faza, 0.25, 0.75) * MM
         bpy.context.view_layer.update()
 
+    def priprav_ohyb(self, x_b_mm, R_mm, theta, smer, krok_mm):
+        """Pohľad ohyb: zhustí malé siete v oblúku a uloží pôvodné súradnice všetkých sietí."""
+        x_lo = x_b_mm - R_mm * theta - 1.0
+        for o in self.objekty:
+            if o.type == "MESH" and o.name != "plast":      # plášť je zhustený už v profile
+                ohyb.zahusti_siet(o, x_b_mm * MM, x_lo * MM, krok_mm * MM)
+            if o.type == "MESH":
+                ohyb.uloz_povodne(o)
+        self.ohyb_prm = (x_b_mm * MM, R_mm * MM, theta, smer)
+
+    def nastav_ohyb(self, faza):
+        """0 = rovná rúra, 1 = ohnutá o celý uhol (plynulý nábeh aj dobeh)."""
+        x_b, R, theta, smer = self.ohyb_prm
+        t = min(1.0, max(0.0, faza))
+        ohyb.nastav_ohyb(self.objekty, x_b, R, theta * t * t * (3 - 2 * t), smer)
+        bpy.context.view_layer.update()
+
+
+# =============================================================================================
+# Termo pohľad (--termo): teplotné pole v reze ako na termokamere
+# =============================================================================================
+# paleta termokamier (ironbow) v sRGB: studené fialovočierne, teplé oranžové až biele
+PALETA_TERMO = [(0.00, (0.05, 0.03, 0.16)), (0.16, (0.27, 0.05, 0.47)), (0.36, (0.63, 0.10, 0.52)),
+                (0.56, (0.90, 0.33, 0.20)), (0.74, (0.98, 0.62, 0.10)), (0.89, (1.00, 0.87, 0.35)),
+                (1.00, (1.00, 0.98, 0.82))]
+
+
+def termo_farba(t):
+    """t v 0..1 (aj pole) -> lineárne RGB."""
+    t = np.clip(np.asarray(t, float), 0.0, 1.0)
+    xs = [b[0] for b in PALETA_TERMO]
+    c = np.stack([np.interp(t, xs, [b[1][k] for b in PALETA_TERMO]) for k in range(3)], -1)
+    return np.where(c <= 0.04045, c / 12.92, ((c + 0.055) / 1.055) ** 2.4)
+
+
+def mat_termo(meno, farba_lin=None, obraz=None, r_mm=None):
+    """Emisia farby teploty: termokamera nevidí svetlá ani odlesky. Mierne stmavnutie pri šikmom pohľade
+    drží čitateľný tvar vĺn plášťa. obraz = teplotné pole čela peny zo súradníc y, z (polomer r_mm)."""
+    m, u = novy_material(meno)
+    if obraz is not None:
+        s_ = u.uzol("ShaderNodeSeparateXYZ", {"Vector": u.mm()})
+        uv = u.uzol("ShaderNodeCombineXYZ", {"X": u.math("ADD", u.math("DIVIDE", s_.outputs["Y"], 2.0 * r_mm), 0.5),
+                                              "Y": u.math("ADD", u.math("DIVIDE", s_.outputs["Z"], 2.0 * r_mm), 0.5)})
+        tex = u.uzol("ShaderNodeTexImage", {"Vector": uv.outputs["Vector"]}, image=obraz, interpolation="Cubic",
+                     extension="EXTEND")
+        farba = tex.outputs["Color"]
+    else:
+        farba = (*[float(x) for x in farba_lin], 1.0)
+    lw = u.uzol("ShaderNodeLayerWeight", {"Blend": 0.35})
+    sila = u.math("SUBTRACT", 1.0, u.math("MULTIPLY", lw.outputs["Facing"], 0.55))
+    em = u.uzol("ShaderNodeEmission", {"Color": farba, "Strength": sila})
+    u.vystup(em.outputs["Emission"])
+    return m
+
+
+def termo_scena(model, a, zaznam):
+    """Materiály podľa teplôt: čelo peny dostane vypočítané pole (data/blender/teplo.py), rúry a otvory
+    teplotu média, plášť a koža peny teplotu plášťa. Teploty: --termo prívod,spiatočka,...,pôda (°C)."""
+    hodnoty = [float(x) for x in a.termo.split(",")]
+    t_poda, t_rury = hodnoty[-1], hodnoty[:-1]
+    nosne = [i for i, r in enumerate(model.rury) if r.druh not in ("kabel", "chranicka")]
+    if len(t_rury) != len(nosne):
+        raise SystemExit(f"--termo: {len(nosne)} nosné rúry, zadaných teplôt {len(t_rury)}")
+    rury = [(model.rury[i].v, model.rury[i].w, model.rury[i].d) for i in nosne]
+    v = teplo.vypocitaj(rury, t_rury, t_poda, model.r_pena, model.D, n=a.termo_mriezka, q_katalog=a.termo_q)
+    t0, t1 = ((float(x) for x in a.termo_rozsah.split(",")) if a.termo_rozsah
+              else (t_poda - 2.0, max(t_rury) + 2.0))
+    T = v["pole"]
+    n = T.shape[0]
+    px = np.ones((n, n, 4), np.float32)
+    px[..., :3] = termo_farba((T - t0) / (t1 - t0))
+    img = bpy.data.images.new("termo_pole", n, n, alpha=False, float_buffer=True)
+    img.colorspace_settings.name = "Non-Color"
+    img.pixels.foreach_set(px.ravel())
+
+    def farba(t):
+        return termo_farba((t - t0) / (t1 - t0))
+
+    def teplota_v_bode(vv, ww):
+        i = int(round((ww + model.r_pena) / (2 * model.r_pena) * (n - 1)))
+        j = int(round((vv + model.r_pena) / (2 * model.r_pena) * (n - 1)))
+        return float(T[min(max(i, 0), n - 1), min(max(j, 0), n - 1)])
+
+    t_objektu = {i: t for i, t in zip(nosne, t_rury)}
+    for i, r in enumerate(model.rury):
+        t_objektu.setdefault(i, teplota_v_bode(r.v, r.w))     # chránička, kábel: teplota peny okolo
+    m_plast = mat_termo("termo_plast", farba(v["t_plast"]))
+    m_celo = mat_termo("termo_pena_celo", obraz=img, r_mm=model.r_pena)
+    m_rury = {i: mat_termo(f"termo_rura_{i}", farba(t)) for i, t in t_objektu.items()}
+    for o in model.objekty:
+        if o.type != "MESH":
+            continue
+        meno = o.name
+        if meno.startswith(("rura_", "pena_otvor_", "kabel_")):
+            mat = m_rury[int(meno.rsplit("_", 1)[1])]
+        elif meno == "pena_celo":
+            mat = m_celo
+            o.modifiers.clear()                    # bez posunutia povrchu: termokamera reliéf nevidí
+        else:
+            mat = m_plast
+        sloty = max(1, len(o.data.materials))
+        o.data.materials.clear()
+        for _ in range(sloty):
+            o.data.materials.append(mat)
+    for ob in bpy.data.objects:
+        if ob.type == "LIGHT":
+            ob.hide_render = True
+    zaznam["termo"] = dict(t_rury=t_rury, t_poda=t_poda, t_plast=round(v["t_plast"], 2), q=round(v["q"], 2),
+                           q_model=round(v["q_model"], 2), q_katalog=a.termo_q, faktor=round(v["faktor"], 3),
+                           lambda_pena=round(v["lambda"], 4), odpor_pody=round(v["odpor_pody"], 4),
+                           rozsah=[t0, t1], paleta=PALETA_TERMO, rury_obj=[f"rura_{i}" for i in nosne])
+    print(f"Termo: plášť {v['t_plast']:.1f} °C, strata {v['q']:.2f} W/m (model {v['q_model']:.2f}, faktor {v['faktor']:.3f})")
+
 
 # =============================================================================================
 # Pohľady a render
@@ -2187,6 +2312,35 @@ def kluc_body(model, cam):
     return out
 
 
+def kotuc_body(k, D, cam):
+    """2D body kót kotúča (px): vrch, ľavý a pravý okraj vonkajšieho obrysu, bočnice (šírka)."""
+    sc = bpy.context.scene
+    W, H = sc.render.resolution_x, sc.render.resolution_y
+    sx, sy = cam.data.shift_x, cam.data.shift_y
+    xc, yc, zc = k["stred_mm"]
+    rv = k["r_von_mm"]
+    y0, y1 = -D / 2.0, 2 * yc + D / 2.0
+    body = [(xc, yc, zc + rv), (xc - rv, yc, zc), (xc + rv, yc, zc), (xc, y0, zc + rv), (xc, y1, zc + rv)]
+    u, v = premietni(cam, np.asarray(body, float) * MM)
+    px = [[round(float((uu - sx + 0.5) * W), 1), round(float(H / 2 - (vv - sy) * W), 1)] for uu, vv in zip(u, v)]
+    return dict(zip(("vrch", "vlavo", "vpravo", "bok_blizko", "bok_daleko"), px))
+
+
+def ohyb_body(model, cam, faza):
+    """2D body kóty polomeru pri ohybe (px): stred oblúka, bod osi v polovici a na konci oblúka."""
+    sc = bpy.context.scene
+    W, H = sc.render.resolution_x, sc.render.resolution_y
+    sx, sy = cam.data.shift_x, cam.data.shift_y
+    x_b, R, theta, smer = model.ohyb_prm
+    t = min(1.0, max(0.0, faza))
+    th = theta * t * t * (3 - 2 * t)
+    body = [(x_b, smer * R, 0.0), tuple(ohyb.bod_osi(x_b, R, th, smer, 0.5 * R * th)),
+            tuple(ohyb.bod_osi(x_b, R, th, smer, R * th)), (x_b, 0.0, 0.0)]
+    u, v = premietni(cam, np.asarray(body, float))
+    px = [[round(float((uu - sx + 0.5) * W), 1), round(float(H / 2 - (vv - sy) * W), 1)] for uu, vv in zip(u, v)]
+    return {"stred": px[0], "os_polovica": px[1], "os_koniec": px[2], "zaciatok": px[3], "uhol": round(math.degrees(th), 2)}
+
+
 def makro_kamera(cam, ciel_mm, azimut, elevacia, pole_mm):
     """Kamera blízko bodu ciel_mm; pole_mm je šírka záberu v rovine cieľa (mm)."""
     c = cam.data
@@ -2309,6 +2463,147 @@ def rodina(a, sc, out, zaznam):
     return postavene, Dmax, L_eff
 
 
+# =============================================================================================
+# Kotúč (pohľad kotuc): 100 m potrubia navinutých vo vrstvách, voľný koniec s rezom na podlahe
+# =============================================================================================
+def torus_polia(R, r, seg_R, seg_r):
+    """Prstenec okolo osi Y (R polomer osi, r polomer rúry, v metroch), normály von."""
+    u = np.linspace(0.0, 2.0 * math.pi, seg_R, endpoint=False)
+    v = np.linspace(0.0, 2.0 * math.pi, seg_r, endpoint=False)
+    U, W = np.meshgrid(u, v, indexing="ij")
+    V = np.stack([(R + r * np.cos(W)) * np.cos(U), r * np.sin(W), (R + r * np.cos(W)) * np.sin(U)], -1).reshape(-1, 3)
+    I, J = np.meshgrid(np.arange(seg_R), np.arange(seg_r), indexing="ij")
+    a = I * seg_r + J
+    b = ((I + 1) % seg_R) * seg_r + J
+    c = ((I + 1) % seg_R) * seg_r + (J + 1) % seg_r
+    d = I * seg_r + (J + 1) % seg_r
+    return V, np.stack([a, d, c, b], -1).reshape(-1, 4)
+
+
+def kvader_polia(x0, x1, y0, y1, z0, z1):
+    V = np.array([(x0, y0, z0), (x1, y0, z0), (x1, y1, z0), (x0, y1, z0), (x0, y0, z1), (x1, y0, z1), (x1, y1, z1), (x0, y1, z1)])
+    F = np.array([(0, 3, 2, 1), (4, 5, 6, 7), (0, 1, 5, 4), (1, 2, 6, 5), (2, 3, 7, 6), (3, 0, 4, 7)])
+    return V, F
+
+
+def mat_plast_kotuc(D):
+    """Plášť v závitoch kotúča: hladký prstenec, vlny sú reliéf v materiáli (100 m vĺn ako geometria by bolo
+    desiatky miliónov bodov). Uhol okolo osi kotúča krát polomer osi závitu (atribút objektu r_osi)
+    dáva dĺžku pozdĺž rúry; profil vlny ako na geometrii plášťa (vrchol asi 70 % rozstupu)."""
+    m, u = novy_material("plast_kotuc")
+    P = PLAST["rozstup_a"] + PLAST["rozstup_b"] * D
+    tc = u.uzol("ShaderNodeTexCoord")
+    sep = u.uzol("ShaderNodeSeparateXYZ", {"Vector": tc.outputs["Object"]})
+    theta = u.math("ARCTAN2", sep.outputs["Z"], sep.outputs["X"])
+    r_osi = u.uzol("ShaderNodeAttribute", attribute_type="OBJECT", attribute_name="r_osi").outputs["Fac"]
+    dlzka = u.math("MULTIPLY", u.math("MULTIPLY", theta, r_osi), 1000.0 / P)
+    f = u.math("ABSOLUTE", u.math("SUBTRACT", u.math("FRACT", dlzka), 0.5))
+    vyska = u.rozsah(f, 0.30, 0.42, 1.0, 0.0, interp="SMOOTHSTEP")
+    bump = u.uzol("ShaderNodeBump", {"Strength": 1.0, "Distance": 0.035 * D * MM, "Height": vyska}).outputs["Normal"]
+    hruby = u.sum(u.mm(), 0.04, detail=2.0)
+    drs = u.rozsah(hruby, 0.3, 0.7, 0.22, 0.30)
+    # reliéf nemá tieň v drážkach ako skutočné vlny: o 15 % tmavší, aby závity sedeli s voľným koncom
+    farba = u.mix_farba(u.rozsah(hruby, 0.2, 0.8, 0.0, 1.0), (*[c * 0.88 for c in FARBY["plast"]], 1.0),
+                        (*[c * 0.80 for c in FARBY["plast"]], 1.0))
+    u.vystup(principled(u, farba=farba, drsnost=drs, ior=1.53, spek=0.50, normala=bump,
+                        sss=PLAST_SSS[0], sss_polomer=(0.10, 0.90, 1.0), sss_mierka=PLAST_SSS[1] * MM))
+    return m
+
+
+def mat_paska():
+    m, u = novy_material("paska")
+    # zelené PET pásky ako na fotke kotúča (web/src/assets/fotky/kotuc.jpg)
+    u.vystup(principled(u, farba=(0.045, 0.30, 0.12, 1.0), drsnost=0.32, ior=1.5, spek=0.5))
+    return m
+
+
+def hlavny_kotuc(a, sc, rad, variant):
+    """Kotúč stojí na hrane, voľný koniec vonkajšej vrstvy leží na podlahe a končí rezom ku kamere
+    (skutočný model s vlnami a rezom). Vrstvy po D dovnútra, kým nie je navinutá dĺžka --kotuc-dlzka;
+    --kotuc-volny je dĺžka voľného konca (kotúč sa odvalil), --kotuc-natocenie otočenie kotúča."""
+    D = float(variant.get("plast_mm") or priemer_z_kodu(variant["obj_cislo"]))
+    kd, ks = 1000.0 * variant["kotuc"]["d"], 1000.0 * variant["kotuc"]["sirka"]
+    n_w = max(1, int(ks // D))
+    R_o = kd / 2.0 - D / 2.0
+    rb = 1000.0 * float(variant.get("polomer_ohybu_m") or 0.0)
+    vrstvy, dlzka, r = [], 0.0, R_o
+    while dlzka < a.kotuc_dlzka * 1000.0 - 1.0 and r >= rb:
+        vrstvy.append(r)
+        dlzka += n_w * 2.0 * math.pi * r
+        r -= D
+    L_free = 1000.0 * a.kotuc_volny
+    a.dlzka = L_free / D
+    model = Potrubie(rad, variant, a).postav()
+    xc, zc = -L_free, R_o
+    psi = math.radians(a.kotuc_natocenie)
+    objekty = list(model.objekty)
+    m_k, m_p = mat_plast_kotuc(D), mat_paska()
+    seg_R = 900 if (a.sirka or 1600) > 1600 else 600
+    for j, rj in enumerate(vrstvy):
+        for k in range(n_w):
+            me = mesh_z_poli(f"kotuc_{j}_{k}", *torus_polia(rj * MM, D / 2.0 * MM, seg_R, 48))
+            o = bpy.data.objects.new(me.name, me)
+            sc.collection.objects.link(o)
+            o.location = (xc * MM, k * D * MM, zc * MM)
+            o["r_osi"] = rj * MM
+            o.data.materials.append(m_k)
+            objekty.append(o)
+    # sťahovacie pásky okolo prierezu zväzku (6 po obvode): vonkajšia, vnútorná a dve bočné strany
+    r_von, r_vnu = vrstvy[0] + D / 2.0, vrstvy[-1] - D / 2.0
+    y0, y1 = -D / 2.0, (n_w - 1) * D + D / 2.0
+    sir, hr = 20.0, 1.0
+    for i in range(6):
+        fi = psi + i * math.pi / 3.0 + 0.4
+        kusy = [kvader_polia(r_von, r_von + hr, y0 - hr, y1 + hr, -sir / 2, sir / 2),
+                kvader_polia(r_vnu - hr, r_vnu, y0 - hr, y1 + hr, -sir / 2, sir / 2),
+                kvader_polia(r_vnu - hr, r_von + hr, y0 - hr, y0, -sir / 2, sir / 2),
+                kvader_polia(r_vnu - hr, r_von + hr, y1, y1 + hr, -sir / 2, sir / 2)]
+        for n, (V, F) in enumerate(kusy):
+            me = mesh_z_poli(f"paska_{i}_{n}", V * MM, F, hladke=False)
+            o = bpy.data.objects.new(me.name, me)
+            sc.collection.objects.link(o)
+            o.location = (xc * MM, 0.0, zc * MM)
+            o.rotation_euler = (0.0, -fi, 0.0)
+            o.data.materials.append(m_p)
+            objekty.append(o)
+    bpy.context.view_layer.update()
+    model.objekty = objekty
+    print(f"Kotúč {variant['obj_cislo']}: Ø {kd:.0f} x {ks:.0f} mm, {len(vrstvy)} vrstvy po {n_w} závitoch, "
+          f"navinuté {dlzka / 1000:.1f} m, voľný koniec {L_free / 1000:.2f} m")
+    return model, dict(d_m=kd / 1000, sirka_m=ks / 1000, vrstvy=len(vrstvy), zavitov=n_w, dlzka_m=round(dlzka / 1000, 1),
+                       volny_m=a.kotuc_volny, stred_mm=[xc, (n_w - 1) * D / 2, zc], r_von_mm=R_o + D / 2)
+
+
+FARBY_MASKY = ((1, 0, 0), (0, 1, 0), (0, 0, 1), (1, 1, 0), (0, 1, 1), (1, 0, 1),
+               (1, 0.5, 0), (0.5, 0, 1), (0, 1, 0.5), (1, 0, 0.5), (0.5, 1, 0), (0, 0.5, 1))
+
+
+def maska_systemov(modely, sc, zaznam):
+    """Návrh rodiny na ťuknutie: každý systém jednou čistou farbou (emisia, bez svetiel a vyhladzovania),
+    v tom istom zábere ako render rodiny (záber počíta aj s tieňom, ten sa len nerenderuje)."""
+    for k, m in enumerate(modely):
+        mat, u = novy_material(f"maska_{k}")
+        em = u.uzol("ShaderNodeEmission", {"Color": (*FARBY_MASKY[k % len(FARBY_MASKY)], 1.0), "Strength": 1.0})
+        u.vystup(em.outputs["Emission"])
+        for o in m.objekty:
+            if o.type != "MESH":
+                continue
+            n = max(1, len(o.data.materials))
+            o.data.materials.clear()
+            for _ in range(n):
+                o.data.materials.append(mat)
+            o.modifiers.clear()
+    for ob in bpy.data.objects:
+        if ob.type == "LIGHT":
+            ob.hide_render = True
+    sc.view_settings.view_transform = "Standard"
+    sc.view_settings.look = "None"
+    sc.view_settings.exposure = 0.0
+    sc.cycles.use_denoising = False
+    sc.cycles.filter_width = 0.01
+    zaznam["maska_farby"] = [[m.rad["id"], m.variant["obj_cislo"], list(FARBY_MASKY[k % len(FARBY_MASKY)])] for k, m in enumerate(modely)]
+
+
 class _Skupina:
     """Viac modelov ako jeden pre tieň (render_tien potrebuje len zoznam objektov)."""
 
@@ -2333,19 +2628,41 @@ def hlavny(a):
     sc = vycisti_scenu()
     if a.pohlad == "rodina":
         return hlavny_rodina(a, sc)
-    model = Potrubie(rad, variant, a).postav()
+    ohyb_prm = None
+    if a.pohlad == "ohyb":
+        # rovný kus za rezom, oblúk s polomerom z katalógu (na osi) a rovný chvost; rez ostáva rovný
+        D_ = float(variant.get("plast_mm") or priemer_z_kodu(variant["obj_cislo"]))
+        R_mm = 1000.0 * (a.ohyb_polomer or float(variant.get("polomer_ohybu_m") or 0.0) or 0.0025 * D_)
+        theta = math.radians(a.ohyb_uhol)
+        x_b = -a.ohyb_od * D_
+        a.dlzka = a.ohyb_od + R_mm * theta / D_ + a.ohyb_chvost
+        POVODNE_SURADNICE[0] = True
+        ohyb_prm = (x_b, R_mm, theta, a.ohyb_smer, min(6.0, max(1.5, R_mm * math.radians(1.2))))
+    kotuc = None
+    if a.pohlad == "kotuc":
+        model, kotuc = hlavny_kotuc(a, sc, rad, variant)
+    else:
+        model = Potrubie(rad, variant, a)
+        if ohyb_prm:
+            model.zahustenie = (ohyb_prm[0], ohyb_prm[0] - ohyb_prm[1] * ohyb_prm[2] - 1.0, ohyb_prm[4])
+        model.postav()
+        if ohyb_prm:
+            model.priprav_ohyb(*ohyb_prm)
     D, L = model.D, model.L
     sirka = a.sirka or 1600
     nastav_render(sc, a, sirka, sirka, a.vzorky)
     svet(sc, a.svet * (0.15 if a.pohlad == "makro-plast" else 1.0), pozadie=a.pozadie)
     if a.pozadie:
         sc.render.film_transparent = False
-    if not (a.pohlad == "makro-plast" and a.prierez):
+    if kotuc:   # štúdio zväčšené na kotúč (svetlá sa škálujú podľa D)
+        studiove_svetla(a.kotuc_k * 160.0, L + 1000.0 * kotuc["d_m"], a.svetlo, strana=1.0 if a.azimut >= 0 else -1.0)
+    elif not (a.pohlad == "makro-plast" and a.prierez):
         studiove_svetla(D, L, a.svetlo, strana=1.0 if a.azimut >= 0 else -1.0,
                         jasy={"kluc": a.jas_kluc, "vypln": a.jas_vypln_st, "kontra": a.jas_kontra_st, "celo": a.jas_celo,
                               "kluc_sirka": a.kluc_sirka, "kluc_y": a.kluc_y})
-    podlaha_biela = biela_podlaha(D, L) if a.pohlad in ("studio", "rozlozeny") else None
-    podlaha = tienovy_podklad(D, L)
+    L_podl = L + (1000.0 * kotuc["d_m"] if kotuc else 0.0)
+    podlaha_biela = biela_podlaha(D, L_podl) if a.pohlad in ("studio", "rozlozeny", "ohyb", "kotuc") else None
+    podlaha = tienovy_podklad(D, L_podl)
     podlaha.hide_render = True
     out = Path(a.out or (REPO / "data" / "_3d" / "skusky" / f"{a.pohlad}-{variant['obj_cislo']}.png"))
     if not out.is_absolute():
@@ -2358,8 +2675,15 @@ def hlavny(a):
               "rury": [dict(d=r.d, s=r.s, druh=r.druh) for r in model.rury], "pohlad": a.pohlad,
               "vzorky": a.vzorky, "kamera": dict(azimut=a.azimut, elevacia=a.elevacia, ohnisko=a.ohnisko),
               "blender": bpy.app.version_string, "geometria": GEOMETRIA, "casy_s": {}}
+    if ohyb_prm:
+        zaznam["ohyb"] = dict(polomer_m=round(ohyb_prm[1] / 1000.0, 3), uhol=a.ohyb_uhol, od_mm=round(-ohyb_prm[0], 1),
+                              smer=a.ohyb_smer)
+    if a.termo:
+        termo_scena(model, a, zaznam)
+    if kotuc:
+        zaznam["kotuc"] = kotuc
 
-    if a.pohlad in ("studio", "rozlozeny"):
+    if a.pohlad in ("studio", "rozlozeny", "ohyb", "kotuc"):
         fazy = [a.faza] if a.snimky <= 1 else [i / (a.snimky - 1) for i in range(a.snimky)]
         ramec = a.ramec or ("rozlozeny" if a.pohlad == "rozlozeny" else "tesny")
         if a.watts:
@@ -2386,6 +2710,15 @@ def hlavny(a):
             ramec_detail(cam, model, body, sirka, podiel=a.detail_podiel, okraj_vpravo=a.detail_okraj,
                          okraj=a.okraj, vyska=a.vyska)
             body = None
+        elif a.pohlad == "ohyb":
+            # záber na ohnutý stav; rovná rúra na začiatku pohybu môže presahovať za okraj. Chvost za
+            # oblúkom odchádza za okraj záberu (v zábere len jeho začiatok), koniec tela nie je vidno.
+            model.nastav_ohyb(1.0)
+            body = body_objektov(model.objekty)
+            x_b, R_, th_, sm_ = model.ohyb_prm
+            A_ = ohyb.bod_osi(x_b, R_, th_, sm_, R_ * th_)
+            T_ = np.array([-math.cos(th_), sm_ * math.sin(th_), 0.0])
+            body = body[(body - A_) @ T_ <= a.ohyb_zaber * D * MM]
         elif ramec == "rozlozeny":
             model.nastav_fazu(0.0)
             b0 = body_objektov(model.objekty)
@@ -2409,8 +2742,12 @@ def hlavny(a):
             sc.render.use_border, sc.render.use_crop_to_border = True, True
             sc.render.border_min_x, sc.render.border_max_x = x0, x1
             sc.render.border_min_y, sc.render.border_max_y = 1.0 - y1, 1.0 - y0
+        nastav = model.nastav_ohyb if a.pohlad == "ohyb" else model.nastav_fazu
+        if a.len_scena:   # živé okno (zive.py): scéna a kamera bez renderu
+            nastav(fazy[-1])
+            return
         for i, f in enumerate(fazy):
-            model.nastav_fazu(f)
+            nastav(f)
             cesta = out if len(fazy) == 1 else out.parent / f"{out.stem}-{i:03d}{out.suffix}"
             if not a.len_tien:
                 dt = render(cesta)
@@ -2419,6 +2756,10 @@ def hlavny(a):
                 ct = cesta.with_name(cesta.stem + "-tien" + cesta.suffix)
                 zaznam["casy_s"][ct.name] = round(render_tien(model, podlaha, ct, max(96, a.vzorky // 4), podlaha_biela, a), 1)
             zaznam.setdefault("body_px", {})[cesta.name] = kluc_body(model, cam)
+            if kotuc:
+                zaznam.setdefault("kotuc_px", {})[cesta.name] = kotuc_body(kotuc, D, cam)
+            if ohyb_prm:
+                zaznam.setdefault("ohyb_px", {})[cesta.name] = ohyb_body(model, cam, f)
     else:
         # makro zábery do kruhových líp: štvorec vyplnený materiálom vrstvy
         model.nastav_fazu(0.0)
@@ -2507,8 +2848,12 @@ def hlavny_rodina(a, sc):
               "rady": [m.rad["id"] for m in modely], "pohlad": "rodina", "vzorky": a.vzorky,
               "kamera": dict(azimut=a.azimut, elevacia=a.elevacia, ohnisko=a.ohnisko),
               "blender": bpy.app.version_string, "geometria": GEOMETRIA, "casy_s": {}}
+    if a.len_scena:   # živé okno (zive.py)
+        return
+    if a.maska:
+        maska_systemov(modely, sc, zaznam)
     zaznam["casy_s"][out.name] = round(render(out), 1)
-    if not a.bez_tiena:
+    if not a.bez_tiena and not a.maska:
         ct = out.with_name(out.stem + "-tien" + out.suffix)
         zaznam["casy_s"][ct.name] = round(render_tien(_Skupina(modely), podlaha, ct, max(96, a.vzorky // 4), podlaha_biela, a), 1)
     zaznam["body_px"] = {out.name: [dict(rad=m.rad["id"], obj_cislo=m.variant["obj_cislo"], **kluc_body(m, cam)) for m in modely]}
@@ -2522,7 +2867,7 @@ def argumenty():
     p.add_argument("--rad", default="microflex-duo-6-bar", help="id radu z rady.json")
     p.add_argument("--obj", default=None, help="objednávacie číslo variantu (napr. MD16032C)")
     p.add_argument("--pohlad", default="studio",
-                   choices=["studio", "makro-plast", "makro-pena", "makro-rura", "rozlozeny", "rodina"])
+                   choices=["studio", "makro-plast", "makro-pena", "makro-rura", "rozlozeny", "rodina", "ohyb", "kotuc"])
     p.add_argument("--faza", type=float, default=0.0, help="rozloženie 0..1")
     p.add_argument("--snimky", type=int, default=0, help="počet snímok sekvencie rozloženia (0 = jedna)")
     p.add_argument("--sirka", type=int, default=None)
@@ -2602,6 +2947,22 @@ def argumenty():
     p.add_argument("--rodina-krok", type=float, default=0.35, help="rodina: o koľko je každý ďalší rez vpredu (násobok D)")
     p.add_argument("--rodina-pomer", type=float, default=2.2, help="rodina: pomer strán šírka : výška")
     p.add_argument("--blend", default=None, help="uložiť .blend na kontrolu")
+    p.add_argument("--len-scena", action="store_true", help="postaviť scénu a kameru bez renderu (živé okno zive.py)")
+    p.add_argument("--maska", action="store_true", help="rodina: maska systémov (každý systém čistou farbou), bez tieňa")
+    p.add_argument("--kotuc-dlzka", type=float, default=100.0, help="kotúč: navinutá dĺžka v m")
+    p.add_argument("--kotuc-volny", type=float, default=1.2, help="kotúč: dĺžka voľného konca na podlahe v m")
+    p.add_argument("--kotuc-natocenie", type=float, default=0.0, help="kotúč: otočenie kotúča okolo osi v stupňoch")
+    p.add_argument("--kotuc-k", type=float, default=2.6, help="kotúč: mierka štúdia (svetlá ako pre plášť k x 160 mm)")
+    p.add_argument("--termo", default=None, help="termo pohľad: teploty médií v nosných rúrach a pôdy, napr. 70,50,10")
+    p.add_argument("--termo-q", type=float, default=None, help="termo: strata z katalógu (W/m) na doladenie vodivosti peny")
+    p.add_argument("--termo-rozsah", default=None, help="termo: rozsah palety v °C, napr. 8,72")
+    p.add_argument("--termo-mriezka", type=int, default=400, help="termo: mriežka teplotného poľa (body na priemer peny)")
+    p.add_argument("--ohyb-uhol", type=float, default=90.0, help="ohyb: uhol oblúka v stupňoch")
+    p.add_argument("--ohyb-polomer", type=float, default=None, help="ohyb: polomer na osi v m (inak z údajov variantu)")
+    p.add_argument("--ohyb-od", type=float, default=1.3, help="ohyb: rovný kus za rezom v násobkoch D")
+    p.add_argument("--ohyb-chvost", type=float, default=2.5, help="ohyb: rovný kus za oblúkom v násobkoch D")
+    p.add_argument("--ohyb-smer", type=float, default=1.0, help="ohyb: +1 k +Y (od kamery pri azimute > 0), -1 k -Y")
+    p.add_argument("--ohyb-zaber", type=float, default=0.6, help="ohyb: koľko chvosta za oblúkom je v zábere (násobok D)")
     p.add_argument("--vyrez", default=None, help="ladenie: renderovať len časť snímky x0,y0,x1,y1 (podiel, y zhora)")
     a = p.parse_args(argv)
     a.azimut_dany, a.elevacia_dany = a.azimut is not None, a.elevacia is not None
@@ -2614,7 +2975,7 @@ def argumenty():
         a.natocenie = -20.0
     a.expozicia_dana = a.expozicia is not None
     if a.expozicia is None:
-        a.expozicia = EXPOZICIA_STUDIO
+        a.expozicia = 0.0 if a.termo else EXPOZICIA_STUDIO
     if a.azimut is None:
         a.azimut = 42.0
     if a.elevacia is None:
@@ -2641,7 +3002,7 @@ def argumenty():
             a.expozicia = 0.45 + EXPOZICIA_STUDIO
     if a.clona is None:
         # mierna hĺbka ostrosti ako na produktovej fotke; makrá viac zacloniť
-        a.clona = {"studio": 0.0, "rozlozeny": 0.0, "rodina": 0.0, "makro-rura": 18.0, "makro-pena": 22.0, "makro-plast": 32.0}[a.pohlad]
+        a.clona = {"studio": 0.0, "rozlozeny": 0.0, "rodina": 0.0, "ohyb": 0.0, "kotuc": 0.0, "makro-rura": 18.0, "makro-pena": 22.0, "makro-plast": 32.0}[a.pohlad]
     if a.zarez_uhol is None:
         # zárez na strane ku kamere: smer od osi ku kamere v rovine YZ
         az, el = math.radians(a.azimut if a.azimut_dany else 80.0), math.radians(a.elevacia if a.elevacia_dany else 30.0)

@@ -43,7 +43,7 @@ const polomer = data.polomer_m.toFixed(2).replace('.', ',');
 </section>
 
 <style>
-  .ohyb { --oh-pad: clamp(12px, 3vh, 32px); position: relative; height: 270vh; }
+  .ohyb { --oh-pad: clamp(12px, 3vh, 32px); position: relative; height: 225vh; }
   /* Obsah v strede okna pod hlavičkou; okraje auto ho pri vyššom obsahu zarovnajú hore (nič sa neoreže). */
   .oh-sticky { position: sticky; top: var(--oh-top); height: calc(100vh - var(--oh-top)); display: flex; padding-block: var(--oh-pad); overflow: clip; }
   .oh-grid { width: 100%; margin-block: auto; display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 24px 48px; align-items: center; }
@@ -67,10 +67,15 @@ const polomer = data.polomer_m.toFixed(2).replace('.', ',');
   .oh-stitok strong { font-family: var(--font-display); font-stretch: 118%; font-weight: 600; font-size: clamp(16px, 3.1cqw, 30px); line-height: 1.02; letter-spacing: -0.02em; color: var(--color-blue-900); font-variant-numeric: tabular-nums; }
   .oh-stitok span { font-size: clamp(12px, 1.6cqw, 15px); line-height: 1.3; font-weight: 500; color: #3f4b5e; }
   .ohyb.oh-js .oh-polomer, .ohyb.oh-js .oh-bod, .ohyb.oh-js .oh-stitok { opacity: 0; transition: opacity 320ms var(--ease-soft); }
+  /* So skriptom ide bod a štítok s oblúkom cez transform (--xn, --yn v percentách obrazu, 1cqw = 1 % šírky rámika):
+     plynulo a bez nového rozloženia pri každom snímku; štítok bez rozmazania pozadia, pod ním sa mení obraz. */
+  .ohyb.oh-js .oh-bod, .ohyb.oh-js .oh-stitok { left: 0; top: 0; will-change: transform; }
+  .ohyb.oh-js .oh-bod { transform: translate3d(calc(var(--xn, 0) * 1cqw), calc(var(--yn, 0) * 1cqw / var(--pomer)), 0); }
+  .ohyb.oh-js .oh-stitok { transform: translate3d(calc(var(--xn, 0) * 1cqw), calc(var(--yn, 0) * 1cqw / var(--pomer)), 0) translate(14px, -50%); -webkit-backdrop-filter: none; backdrop-filter: none; background: rgb(255 255 255 / 0.94); }
   .ohyb.oh-js.oh-kota .oh-polomer, .ohyb.oh-js.oh-kota .oh-bod, .ohyb.oh-js.oh-kota .oh-stitok { opacity: 1; }
 
   @media (max-width: 900px) {
-    .ohyb { height: 230vh; }
+    .ohyb { height: 200vh; }
     .oh-sticky { top: var(--oh-top-m); height: calc(100svh - var(--oh-top-m)); }
     .oh-grid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
     .oh-text h2 { font-size: clamp(24px, 5vw + 8px, 32px); }
@@ -79,6 +84,7 @@ const polomer = data.polomer_m.toFixed(2).replace('.', ',');
     .oh-stage { margin-inline: calc(-1 * var(--gutter)); width: calc(100% + 2 * var(--gutter)); }
     /* štítok pod koncom kóty: vpravo od nej by na úzkom displeji vyšiel z obrazu */
     .oh-stitok { transform: translate(-50%, 14px); }
+    .ohyb.oh-js .oh-stitok { transform: translate3d(calc(var(--xn, 0) * 1cqw), calc(var(--yn, 0) * 1cqw / var(--pomer)), 0) translate(-50%, 14px); }
   }
   @media (prefers-reduced-motion: reduce) {
     .ohyb { height: auto; }
@@ -120,8 +126,8 @@ const polomer = data.polomer_m.toFixed(2).replace('.', ',');
           ciara.setAttribute('x1', String(os[0])); ciara.setAttribute('y1', String(os[1]));
           ciara.setAttribute('x2', String(k[0])); ciara.setAttribute('y2', String(k[1]));
           for (const [el, q] of [[bod, os], [stitok, k]] as const) {
-            el.style.setProperty('--x', `${q[0]}%`);
-            el.style.setProperty('--y', `${q[1]}%`);
+            el.style.setProperty('--xn', q[0].toFixed(3));
+            el.style.setProperty('--yn', q[1].toFixed(3));
           }
           sek.classList.toggle('oh-kota', x / (n - 1) >= KOTA);
         },

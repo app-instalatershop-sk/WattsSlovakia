@@ -16,6 +16,7 @@ import RodinaVyber from '../components/RodinaVyber.astro';
 import KotucSekvencia from '../components/KotucSekvencia.astro';
 import { rodinaNaTuknutie } from '../lib/novinky';
 import { stranky } from '../content/stranky';
+import { clanky } from '../content/clanky';
 import rendery from '../data/rendery.json';
 import { sadzba } from '../lib/sadzba';
 import { type Lang, t, route, staticAlternates, KATALOG_PDF } from '../i18n/ui';
@@ -52,6 +53,7 @@ const nv = ui.novinky;
 const rodinaTuk = rodina3d ? await rodinaNaTuknutie(rady, rodina3d, lang) : null;
 const ohybDomov = ohybRadu('microflex-duo-6-bar');
 const odvalenie = kotucData()?.odvalenie;
+const clanokPokladka = clanky(lang).find((c) => c.slug.startsWith('pokladka'));
 const kotuc = fotka('kotuc.jpg')!;
 
 /* Projekty: dve najväčšie stavby z referencií. Fotka a kóty (číslo na rúre alebo v kotolni) sú
@@ -159,7 +161,8 @@ const popisy = heroVariant && heroRad ? [
         <div class="wrap">
           <div class="pokladka-pata">
             <p class="zataz"><strong>{h.zataz[0]}</strong><span>{sadzba(h.zataz[1])}</span></p>
-            <p class="zdroj"><a href={`${KATALOG_PDF}#page=37`} target="_blank" rel="noopener">{h.pokladkaOdkaz} <Ikona nazov="arrow-up-right" velkost={14} /></a></p>
+            {/* Podrobný postup je v článku Poradne, na domove len prehľad (Juraj 28. 10.). */}
+            <p class="zdroj">{clanokPokladka && <a class="zdroj-clanok" href={`${route(lang, 'poradna')}${clanokPokladka.slug}/`}>{h.pokladkaClanok} <Ikona nazov="arrow-right" velkost={14} /></a>}<a href={`${KATALOG_PDF}#page=36`} target="_blank" rel="noopener">{h.pokladkaOdkaz} <Ikona nazov="arrow-up-right" velkost={14} /></a></p>
           </div>
         </div>
       </>
@@ -246,7 +249,7 @@ const popisy = heroVariant && heroRad ? [
           </li>
         ))}
       </ul>
-      <p class="istota">{sadzba(h.istota)}</p>
+      <p class="istota">{sadzba(h.istota)} <a href={`${route(lang, 'stiahnut')}#h-dalsie`}>{h.istotaOdkaz}</a></p>
     </section>
   </div>
 </Base>
@@ -315,12 +318,15 @@ const popisy = heroVariant && heroRad ? [
      je viditeľný. Na mobile tak čakal aj na písma a obrázky pod ním. Pohyb ostáva. */
   @keyframes settle { from { transform: translate(40px, 0) rotate(-1.5deg) scale(1.02); } to { transform: none; } }
 
-  /* Odlesk: pás svetla raz prejde po plášti. Maska je render, takže svetlo nejde po pozadí. */
-  .lesk { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen; opacity: 0.9;
-    -webkit-mask: var(--maska) center / 100% 100% no-repeat; mask: var(--maska) center / 100% 100% no-repeat;
-    background: linear-gradient(105deg, rgb(255 255 255 / 0) 40%, rgb(190 215 255 / 0.42) 50%, rgb(255 255 255 / 0) 60%) no-repeat;
-    background-size: 260% 100%; background-position: 135% 0; animation: lesk 2200ms 1100ms cubic-bezier(0.45, 0, 0.25, 1) both; }
-  @keyframes lesk { from { background-position: 135% 0; } to { background-position: -35% 0; } }
+  /* Odlesk: pás svetla raz prejde po plášti. Maska je render, takže svetlo nejde po pozadí. Pás sa posúva cez
+     transform (grafická karta), nie cez background-position, ktoré by sa prekresľovalo pri každom snímku. */
+  .lesk { position: absolute; inset: 0; overflow: hidden; pointer-events: none; mix-blend-mode: screen; opacity: 0.9;
+    -webkit-mask: var(--maska) center / 100% 100% no-repeat; mask: var(--maska) center / 100% 100% no-repeat; }
+  .lesk::before { content: ""; position: absolute; top: 0; bottom: 0; left: 0; width: 260%; will-change: transform;
+    background: linear-gradient(105deg, rgb(255 255 255 / 0) 40%, rgb(190 215 255 / 0.42) 50%, rgb(255 255 255 / 0) 60%);
+    animation: lesk 2200ms 1100ms cubic-bezier(0.45, 0, 0.25, 1) both; }
+  /* rovnaká dráha ako predtým background-position 135 % → −35 % pri šírke pásu 260 % */
+  @keyframes lesk { from { transform: translateX(-83.08%); } to { transform: translateX(21.54%); } }
 
   /* Technické popisy (kóty): bod leží na tom, čo číslo opisuje, čiara vedie k štítku. Štítok má
      jemne mliečne pozadie, aby bol čitateľný aj tam, kde sa dotkne výrobku. Prídu po nadpise. */
@@ -416,7 +422,8 @@ const popisy = heroVariant && heroRad ? [
   .pk-hlava .lead { margin-top: 18px; max-width: 40em; }
   .pk-pozn { margin-top: 8px; font-size: 14px; color: var(--color-ink-soft); }
   /* clip namiesto hidden: hidden by vypol lepkavý obraz kotúča (sticky v KotucSekvencia) */
-  .pokladka.ma-kotuc { padding-top: 96px; overflow: clip; }
+  /* Ohyb a kotúč sú jedna kapitola o pokládke (Juraj 28. 10.): kotúč nadväzuje na ohyb bez veľkej medzery. */
+  .pokladka.ma-kotuc { padding-top: 32px; overflow: clip; }
   .pokladka.ma-kotuc .pokladka-pata { margin-top: 8px; }
   .pokladka-text { grid-column: 7 / 13; }
   .pokladka h2 { font-size: clamp(32px, 3vw + 12px, 58px); line-height: 1.04; letter-spacing: -0.03em; max-width: 11em; }
@@ -440,8 +447,9 @@ const popisy = heroVariant && heroRad ? [
   .zataz { display: flex; align-items: baseline; gap: 12px; }
   .zataz strong { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 28px; letter-spacing: -0.02em; color: var(--color-blue-900); white-space: nowrap; }
   .zataz span { font-size: 15px; color: var(--color-ink-soft); }
-  .zdroj { font-size: 13px; color: #7a8494; }
+  .zdroj { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 22px; font-size: 13px; color: #7a8494; }
   .zdroj a { display: inline-flex; align-items: center; gap: 4px; font-weight: 500; }
+  .zdroj .zdroj-clanok { font-size: 15px; font-weight: 600; }
   .zdroj :global(svg) { width: 14px; height: 14px; }
 
   /* ---------- Podzemie: referencie a pre firmy na tmavom, šikmá horná hrana ---------- */
@@ -497,10 +505,11 @@ const popisy = heroVariant && heroRad ? [
   .podpora-sluzby p { color: var(--color-on-dark-muted); font-size: 15px; line-height: 1.6; }
   .podpora-sluzby a { margin-top: 4px; font-weight: 500; border-bottom: 1px solid rgb(255 255 255 / 0.5); padding-bottom: 2px; }
   .istota { grid-column: 1 / 8; grid-row: 2; font-size: 15px; line-height: 1.65; color: var(--color-on-dark-muted); max-width: 52em; }
+  .istota a { font-weight: 500; border-bottom: 1px solid rgb(255 255 255 / 0.5); padding-bottom: 1px; }
 
   /* ---------- Tablet ---------- */
   @media (max-width: 1100px) {
-    .pokladka.ma-kotuc { padding-top: 48px; }
+    .pokladka.ma-kotuc { padding-top: 24px; }
     .hero-in { grid-template-columns: minmax(0, 46fr) minmax(0, 54fr); }
     .hero h1 { font-size: clamp(34px, 3.4vw + 10px, 50px); }
     .rodina-grid { grid-template-columns: 1fr; }

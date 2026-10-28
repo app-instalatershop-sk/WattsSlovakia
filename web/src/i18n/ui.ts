@@ -102,15 +102,15 @@ const sk = {
     pokladkaAlt: 'Kotúč potrubia Microflex so zvlneným modrým plášťom a sťahovacími páskami',
     krokyLabel: 'Postup pokládky',
     kroky: [
-      ['Kotúč k výkopu', 'Kotúč položte pozdĺž výkopu, odstráňte fóliu a koniec rúry dajte na miesto napojenia.'],
-      ['Rozvinúť do piesku', 'Postupne strihajte sťahovacie pásky a rúru rozvíjajte do pieskového lôžka, mierne hadovito a s dodržaním polomeru ohybu.'],
-      ['Spojky a skúška', 'Konce uzavrite krytkami, pripojte spojky PE-X a urobte tlakovú skúšku s protokolom.'],
-      ['Páska a zásyp', 'Zasypte prvú vrstvu, položte výstražnú pásku a výkop zasypte celý.'],
+      ['Kotúč k výkopu', 'Položte ho pozdĺž výkopu, koniec rúry na miesto napojenia.'],
+      ['Rozvinúť do piesku', 'Mierne hadovito do pieskového lôžka, s dodržaním polomeru ohybu.'],
+      ['Spojky a skúška', 'Krytky na konce, spojky PE-X a tlaková skúška s protokolom.'],
+      ['Páska a zásyp', 'Výstražná páska nad prvou vrstvou, potom celý zásyp.'],
     ] as [string, string][],
     // Katalóg s. 37: uložené v hĺbke 0,5 až 6 m „môže byť vystavené zaťaženiu až 60 ton“, podľa ATV-DVWK-A127.
     zataz: ['až 60 t', 'zaťaženie pre potrubie uložené v hĺbke 0,5 až 6 m podľa smernice ATV-DVWK-A127'] as [string, string],
     pokladkaZdroj: 'Časy sú približné, bez dopravy a výkopu.',
-    pokladkaOdkaz: 'Celý postup v katalógu výrobcu',
+    pokladkaOdkaz: 'Katalóg výrobcu, s. 36 a 37', pokladkaClanok: 'Celý postup pokládky',
     // Projekty: veľké stavby s kótami priamo na fotke. Fakty z referencií na watts.eu (content/referencie.ts).
     projektyH2: 'Projekty, ktoré už ležia v zemi.',
     projektyP: 'Rozvody tepla medzi budovami areálov a obytných súborov, od kotolne po poslednú prípojku.',
@@ -143,7 +143,7 @@ const sk = {
     // Konfigurátor zatiaľ nie je: len tichá veta, nie karta (Juraj 28. 10.).
     konfigurator: 'Pripravujeme konfigurátor trasy, ktorý z nej spočíta potrubie, spojky a príslušenstvo. Dovtedy stačí poslať trasu v dopyte.',
     // Katalóg Watts Microflex s. 3 a 4 (od roku 1994, ISO 9001), s. 8 až 15 (normy rúr), s. 34 (certifikáty).
-    istota: 'Microflex vyrába predizolované potrubie od roku 1994, dnes ako značka skupiny Watts. Výroba je certifikovaná podľa ISO 9001, nosné rúry podľa EN ISO 15875 s kyslíkovou bariérou podľa DIN 4726. Potrubie má certifikáty skúšobní v Belgicku, Nemecku, Dánsku, Holandsku, Francúzsku, Švédsku, Spojenom kráľovstve a USA.',
+    istota: 'Microflex vyrába predizolované potrubie od roku 1994, dnes ako značka skupiny Watts. Výroba podľa ISO 9001, nosné rúry podľa EN ISO 15875, certifikáty skúšobní v ôsmich krajinách.', istotaOdkaz: 'Vyhlásenia a certifikáty',
   },
   potrubia: {
     title: 'Predizolované potrubia Microflex',
@@ -315,14 +315,14 @@ const cs: typeof sk = {
     pokladkaAlt: 'Kotouč potrubí Microflex se zvlněným modrým pláštěm a stahovacími páskami',
     krokyLabel: 'Postup pokládky',
     kroky: [
-      ['Kotouč k výkopu', 'Kotouč položte podél výkopu, odstraňte fólii a konec trubky dejte na místo napojení.'],
-      ['Rozvinout do písku', 'Postupně stříhejte stahovací pásky a trubku rozvíjejte do pískového lože, mírně hadovitě a s dodržením poloměru ohybu.'],
-      ['Spojky a zkouška', 'Konce uzavřete krytkami, připojte spojky PE-X a proveďte tlakovou zkoušku s protokolem.'],
-      ['Páska a zásyp', 'Zasypte první vrstvu, položte výstražnou pásku a výkop zasypte celý.'],
+      ['Kotouč k výkopu', 'Položte ho podél výkopu, konec trubky na místo napojení.'],
+      ['Rozvinout do písku', 'Mírně hadovitě do pískového lože, s dodržením poloměru ohybu.'],
+      ['Spojky a zkouška', 'Krytky na konce, spojky PE-X a tlaková zkouška s protokolem.'],
+      ['Páska a zásyp', 'Výstražná páska nad první vrstvou, potom celý zásyp.'],
     ],
     zataz: ['až 60 t', 'zatížení pro potrubí uložené v hloubce 0,5 až 6 m podle směrnice ATV-DVWK-A127'],
     pokladkaZdroj: 'Časy jsou přibližné, bez dopravy a výkopu.',
-    pokladkaOdkaz: 'Celý postup v katalogu výrobce',
+    pokladkaOdkaz: 'Katalog výrobce, s. 36 a 37', pokladkaClanok: 'Celý postup pokládky',
     projektyH2: 'Projekty, které už leží v zemi.',
     projektyP: 'Rozvody tepla mezi budovami areálů a obytných souborů, od kotelny po poslední přípojku.',
     projektyVsetky: 'Všechny reference',
@@ -350,7 +350,7 @@ const cs: typeof sk = {
       { h: 'Materiál na celou trasu', p: 'Potrubí, svěrné spojky, izolační sady na spoje pod zemí, prostupy stěnou a krytky v jedné nabídce s dostupností.', odkaz: 'Poptávka na projekt' },
     ],
     konfigurator: 'Připravujeme konfigurátor trasy, který z ní spočítá potrubí, spojky a příslušenství. Do té doby stačí poslat trasu v poptávce.',
-    istota: 'Microflex vyrábí předizolované potrubí od roku 1994, dnes jako značka skupiny Watts. Výroba je certifikovaná podle ISO 9001, nosné trubky podle EN ISO 15875 s kyslíkovou bariérou podle DIN 4726. Potrubí má certifikáty zkušeben v Belgii, Německu, Dánsku, Nizozemsku, Francii, Švédsku, Spojeném království a USA.',
+    istota: 'Microflex vyrábí předizolované potrubí od roku 1994, dnes jako značka skupiny Watts. Výroba podle ISO 9001, nosné trubky podle EN ISO 15875, certifikáty zkušeben v osmi zemích.', istotaOdkaz: 'Prohlášení a certifikáty',
   },
   potrubia: {
     title: 'Předizolované potrubí Microflex',

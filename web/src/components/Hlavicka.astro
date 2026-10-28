@@ -166,9 +166,12 @@ const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, 
   .langs a[aria-current] { color: #fff; border-bottom-color: var(--color-yellow-500); }
   .langs .sep { width: 1px; height: 12px; background: rgb(255 255 255 / 0.3); }
 
-  .hdr { position: sticky; top: 0; z-index: 20; background: rgb(255 255 255 / 0.86); -webkit-backdrop-filter: saturate(1.6) blur(14px); backdrop-filter: saturate(1.6) blur(14px); box-shadow: 0 1px 0 rgb(10 42 94 / 0.08); transition: box-shadow 250ms var(--ease-soft), background-color 250ms var(--ease-soft); }
+  .hdr { position: sticky; top: 0; z-index: 20; background: rgb(255 255 255 / 0.86); -webkit-backdrop-filter: saturate(1.6) blur(14px); backdrop-filter: saturate(1.6) blur(14px); box-shadow: 0 1px 0 rgb(10 42 94 / 0.08); transition: box-shadow 250ms var(--ease-soft), background-color 250ms var(--ease-soft), margin-bottom 250ms var(--ease-soft); }
   .hdr.is-scrolled, .hdr.is-open { background: rgb(255 255 255 / 0.96); box-shadow: 0 1px 0 rgb(10 42 94 / 0.08), var(--elev-2); }
   .hdr-in { display: flex; align-items: center; gap: 28px; min-height: 76px; transition: min-height 250ms var(--ease-soft); }
+  /* Pri rolovaní sa hlavička zmenší, ale miesto v stránke ostane rovnaké (o koľko ubudne výška, o toľko pribudne
+     okraj pod ňou): obsah sa sám neposunie (Juraj 28. 10., plynulosť; predtým skočil o 14 px). */
+  .hdr.is-scrolled { margin-bottom: 14px; }
   .hdr.is-scrolled .hdr-in { min-height: 62px; }
 
   /* Značka: oficiálne logo MICROFLEX® (vektor z katalógu Watts) a náš doplnok Slovensko za vlasovou
@@ -290,6 +293,7 @@ const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, 
   }
   @media (max-width: 760px) {
     .hdr-in { gap: 12px; min-height: 64px; }
+    .hdr.is-scrolled { margin-bottom: 2px; }
     .hdr-in > .search, .hdr-in > .eshop { display: none; }
     .hl-btn { display: inline-flex; margin-left: auto; }
     .menu-btn { margin-left: 0; }

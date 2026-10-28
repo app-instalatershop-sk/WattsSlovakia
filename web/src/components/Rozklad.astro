@@ -100,8 +100,11 @@ const posledna = `${data.cesta}${sirka}/${String(data.snimok - 1).padStart(3, '0
   .rozklad.rz-bezi .rz-canvas { opacity: 1; }
   .rozklad.rz-bezi .rz-obr { visibility: hidden; }
 
-  /* Kóty vrstiev: so skriptom sa objavia, až keď sa vrstva oddelí (poradie a polohu riadi skript). */
-  .rozklad.rz-js .rz-stage :global(.kota) { opacity: 0; transition: opacity 260ms var(--ease-soft); }
+  /* Kóty vrstiev: so skriptom sa objavia, až keď sa vrstva oddelí (poradie a polohu riadi skript). Poloha ide
+     cez transform (--xn, --yn v percentách obrazu, 1cqw = 1 % šírky rámika): plynulo aj o zlomky pixela a bez
+     nového rozloženia stránky pri každom snímku. Štítok bez rozmazania pozadia, pod ním sa každý snímok mení obraz. */
+  .rozklad.rz-js .rz-stage :global(.kota) { left: 0; top: 0; transform: translate3d(calc(var(--xn, 0) * 1cqw), calc(var(--yn, 0) * 1cqw / var(--pomer)), 0); will-change: transform; opacity: 0; transition: opacity 260ms var(--ease-soft); }
+  .rozklad.rz-js .rz-stage :global(.stitok) { -webkit-backdrop-filter: none; backdrop-filter: none; background: rgb(255 255 255 / 0.94); }
   .rozklad.rz-js .rz-stage :global(.kota.rz-vid) { opacity: 1; }
   .rozklad.rz-js .rz-stage :global(.kota.rz-vid .bod) { opacity: 1; animation: rz-bod 420ms var(--ease-soft) both; }
   .rozklad.rz-js .rz-stage :global(.kota.rz-vid .ciara) { opacity: 1; animation: rz-ciara 520ms 120ms var(--ease-soft) both; }
@@ -184,9 +187,9 @@ const posledna = `${data.cesta}${sirka}/${String(data.snimok - 1).padStart(3, '0
         const f = x / (n - 1), i = Math.min(n - 2, Math.floor(x)), t = x - i;
         let aktivna = '';
         for (const [id, li] of Object.entries(koty)) {
-          // kóta ide s vrstvou plynulo: medzi bodmi susedných snímok
-          li.style.setProperty('--x', `${body[i][id][0] + t * (body[i + 1][id][0] - body[i][id][0])}%`);
-          li.style.setProperty('--y', `${body[i][id][1] + t * (body[i + 1][id][1] - body[i][id][1])}%`);
+          // kóta ide s vrstvou plynulo: medzi bodmi susedných snímok (v percentách obrazu, CSS z nich urobí transform)
+          li.style.setProperty('--xn', (body[i][id][0] + t * (body[i + 1][id][0] - body[i][id][0])).toFixed(3));
+          li.style.setProperty('--yn', (body[i][id][1] + t * (body[i + 1][id][1] - body[i][id][1])).toFixed(3));
           const vid = f >= PRAH[id];
           if (li.classList.contains('rz-vid') !== vid) li.classList.toggle('rz-vid', vid);
           if (vid) aktivna = id;

@@ -10,14 +10,21 @@ import type { SystemyData } from '../lib/obrazky';
 export interface SystemRodiny { nazov: string; fakty: string[]; odkaz: string }
 interface Props { data: SystemyData; obraz: string; systemy: SystemRodiny[]; label: string; pozriet: string }
 const { data, obraz, systemy, label, pozriet } = Astro.props;
+// „QUADRO, vykurovanie a sanita“: na telefóne len názov (médium je aj v prvom riadku faktov), pri „DUO, sanita 10 bar“
+// ostane tlak, aby sa nepomýlil s DUO na vykurovanie
+const nazvy = data.systemy.map((_, k) => {
+  const n = systemy[k]?.nazov ?? '';
+  const i = n.indexOf(', ');
+  return i < 0 ? { meno: n, medium: '', tlak: '' } : { meno: n.slice(0, i), medium: n.slice(i), tlak: n.match(/ \d+ bar$/)?.[0] ?? '' };
+});
 ---
 <div class="rv" data-rodina-vyber data-cesta={data.cesta} data-krok={data.krok}>
-  <img class="rv-svetlo" src={obraz} alt="" aria-hidden="true" loading="lazy" decoding="async" />
+  <div class="rv-svetlo" data-src={obraz} aria-hidden="true"></div>
   {data.systemy.map((s, k) => (
     <div class="rv-stitok" data-k={k} style={`--x: ${s.bod[0]}%; --y: ${s.bod[1]}%`} hidden>
       <span class="rv-bod" aria-hidden="true"></span>
       <div class="rv-karta">
-        <strong>{systemy[k]?.nazov}</strong>
+        <strong>{nazvy[k].meno}<span class="rv-medium">{nazvy[k].medium}</span>{nazvy[k].tlak && <span class="rv-tlak">{nazvy[k].tlak}</span>}</strong>
         {systemy[k]?.fakty.map((f) => <span>{f}</span>)}
         <a href={systemy[k]?.odkaz}>{pozriet}</a>
       </div>
@@ -30,23 +37,26 @@ const { data, obraz, systemy, label, pozriet } = Astro.props;
 
 <style>
   .rv { position: absolute; inset: 0; z-index: 3; }
-  .rv-svetlo { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; pointer-events: none; transition: opacity 260ms var(--ease-soft);
-    -webkit-mask-size: 100% 100%; mask-size: 100% 100%; }
+  .rv-svetlo { position: absolute; inset: 0; opacity: 0; pointer-events: none; transition: opacity 260ms var(--ease-soft);
+    background: center / 100% 100% no-repeat; -webkit-mask-size: 100% 100%; mask-size: 100% 100%; }
   .rv.je-vyber .rv-svetlo { opacity: 1; }
   /* Ostatné systémy stmavnú: filter na samotnom renderi rodiča (obraz pod vrstvou). */
   :global(.rv-ztlm) { transition: filter 260ms var(--ease-soft); }
   :global(.rv-rodic.je-vyber .rv-ztlm) { filter: saturate(0.35) brightness(0.86) contrast(0.92); }
-  .rv-stitok { position: absolute; left: var(--x); top: var(--y); width: 0; height: 0; z-index: 2; }
+  .rv-stitok { --odstup: 26px; position: absolute; left: var(--x); top: var(--y); width: 0; height: 0; z-index: 2; }
   .rv-bod { position: absolute; left: -7px; top: -7px; width: 14px; height: 14px; border-radius: 50%; background: #fff; box-shadow: inset 0 0 0 3px var(--color-blue-900), 0 0 0 4px rgb(255 255 255 / 0.5), 0 3px 10px rgb(4 16 40 / 0.4); }
-  /* Štítok vedľa bodu (vpravo, pri systémoch v pravej časti vľavo), zvisle na strede bodu. */
-  .rv-karta { position: absolute; top: 0; left: 26px; transform: translateY(-50%); display: grid; gap: 3px; padding: 12px 16px 14px; border-radius: var(--radius-l); white-space: nowrap;
+  /* Štítok vedľa bodu (vpravo, pri systémoch v pravej časti vľavo), zvisle na strede bodu. Skript ho posunie
+     (--posun, --posun-x), aby ostal v okne a v páse systémov, nie nad textom a tlačidlami okolo obrazu. */
+  .rv-karta { position: absolute; top: 0; left: var(--odstup); transform: translate(var(--posun-x, 0px), calc(-50% + var(--posun, 0px))); display: grid; gap: 3px; padding: 12px 16px 14px; border-radius: var(--radius-l); white-space: nowrap;
     background: rgb(255 255 255 / 0.93); -webkit-backdrop-filter: blur(10px) saturate(1.4); backdrop-filter: blur(10px) saturate(1.4); box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.08), var(--elev-2);
     animation: rv-prichod 220ms var(--ease-soft) both; }
-  .rv-karta::before { content: ""; position: absolute; left: -26px; top: 50%; width: 26px; height: 1.5px; background: var(--color-blue-900); }
-  .rv-stitok.vlavo .rv-karta { left: auto; right: 26px; }
-  .rv-stitok.vlavo .rv-karta::before { left: auto; right: -26px; }
+  .rv-karta::before { content: ""; position: absolute; left: calc(-1 * var(--odstup)); top: clamp(12px, calc(50% - var(--posun, 0px)), calc(100% - 12px)); width: var(--odstup); height: 1.5px; background: var(--color-blue-900); }
+  .rv-stitok.vlavo .rv-karta { left: auto; right: var(--odstup); }
+  .rv-stitok.vlavo .rv-karta::before { left: auto; right: calc(-1 * var(--odstup)); }
+  .rv-stitok.tesne .rv-karta::before { display: none; }
   .rv-karta strong { font-family: var(--font-display); font-stretch: 112%; font-weight: 600; font-size: 20px; color: var(--color-blue-900); }
-  .rv-karta span { font-size: 14px; line-height: 1.4; color: #3f4b5e; }
+  .rv-karta > span { font-size: 14px; line-height: 1.4; color: #3f4b5e; }
+  .rv-tlak { display: none; }
   .rv-karta a { margin-top: 6px; font-weight: 600; font-size: 15px; color: var(--color-blue-700); }
   @keyframes rv-prichod { from { opacity: 0; } to { opacity: 1; } }
   /* Tlačidlá pre klávesnicu a čítačky obrazovky: neviditeľné, kým nie sú v ohnisku. */
@@ -55,9 +65,13 @@ const { data, obraz, systemy, label, pozriet } = Astro.props;
   .rv-tlacidla button:focus-visible { position: fixed; z-index: 50; left: 50%; bottom: 24px; width: auto; height: auto; clip-path: none; transform: translateX(-50%);
     padding: 10px 16px; border-radius: 999px; background: var(--color-blue-900); color: #fff; font: inherit; font-weight: 600; outline: 3px solid var(--color-yellow-500); }
   @media (max-width: 760px) {
-    .rv-karta { padding: 9px 12px 11px; white-space: normal; width: 180px; }
-    .rv-karta strong { font-size: 16px; }
-    .rv-karta span { font-size: 13px; }
+    .rv-stitok { --odstup: 18px; }
+    .rv-karta { gap: 2px; padding: 8px 12px 10px; white-space: normal; width: 180px; }
+    .rv-karta strong { font-size: 16px; line-height: 1.25; }
+    .rv-karta > span { font-size: 13px; line-height: 1.35; }
+    .rv-medium { display: none; }
+    .rv-tlak { display: inline; }
+    .rv-karta a { margin-top: 4px; font-size: 14px; }
   }
   @media (prefers-reduced-motion: reduce) {
     .rv-svetlo, :global(.rv-ztlm) { transition: none; }
@@ -72,15 +86,38 @@ const { data, obraz, systemy, label, pozriet } = Astro.props;
       const rodic = vrstva.parentElement!;
       rodic.classList.add('rv-rodic');
       // obraz rodiny pod vrstvou (prvý obrázok rodiča, ktorý nie je súčasťou vrstvy)
-      [...rodic.querySelectorAll<HTMLImageElement>('img')].find((im) => !vrstva.contains(im))?.classList.add('rv-ztlm');
-      const svetlo = vrstva.querySelector<HTMLImageElement>('.rv-svetlo')!;
+      const zaklad = [...rodic.querySelectorAll<HTMLImageElement>('img')].find((im) => !vrstva.contains(im));
+      zaklad?.classList.add('rv-ztlm');
+      const svetlo = vrstva.querySelector<HTMLElement>('.rv-svetlo')!;
       const stitky = [...vrstva.querySelectorAll<HTMLElement>('.rv-stitok')];
       const tlacidla = [...vrstva.querySelectorAll<HTMLButtonElement>('.rv-tlacidla button')];
-      // Štítok ide doprava od bodu, ak sa tam zmestí do okna (obraz rodiny na domove siaha po pravý okraj), inak doľava.
+      // Pás obrazu, v ktorom sú systémy (podiel výšky, z mapy); kým mapa nie je, celý obraz.
+      let pas = [0, 1];
+      // Štítok ide doprava od bodu, ak sa tam zmestí do okna (obraz rodiny na domove siaha po pravý okraj), inak doľava;
+      // keď sa nezmestí ani jedným smerom (úzky telefón, systém v strede), ide na stranu s väčším miestom a posunie sa
+      // do okna bez čiary. Zvisle ostane v páse systémov, aby nezakryl nadpis ani tlačidlá nad obrazom a pod ním.
       const smer = (s: HTMLElement) => {
-        s.classList.remove('vlavo');
-        const karta = s.querySelector<HTMLElement>('.rv-karta')!.getBoundingClientRect();
-        s.classList.toggle('vlavo', karta.right > document.documentElement.clientWidth - 12);
+        s.classList.remove('vlavo', 'tesne');
+        s.style.removeProperty('--posun');
+        s.style.removeProperty('--posun-x');
+        const karta = s.querySelector<HTMLElement>('.rv-karta')!;
+        const okraj = document.documentElement.clientWidth - 12;
+        const vpravo = karta.getBoundingClientRect().right - okraj;
+        if (vpravo > 0) {
+          s.classList.add('vlavo');
+          const vlavo = 12 - karta.getBoundingClientRect().left;
+          if (vlavo > 0) {
+            s.classList.add('tesne');
+            if (vpravo < vlavo) { s.classList.remove('vlavo'); s.style.setProperty('--posun-x', `${-Math.ceil(vpravo)}px`); }
+            else s.style.setProperty('--posun-x', `${Math.ceil(vlavo)}px`);
+          }
+        }
+        const r = rodic.getBoundingClientRect();
+        const k = karta.getBoundingClientRect();
+        const hore = r.top + r.height * pas[0], dole = r.top + r.height * pas[1];
+        let posun = k.bottom > dole ? dole - k.bottom : 0;
+        if (k.top + posun < hore) posun = hore - k.top;
+        if (posun) s.style.setProperty('--posun', `${Math.round(posun)}px`);
       };
       const cesta = vrstva.dataset.cesta!;
       const krok = Number(vrstva.dataset.krok);
@@ -101,18 +138,28 @@ const { data, obraz, systemy, label, pozriet } = Astro.props;
       // Mapa indexov: odtieň sivej (k + 1) · krok, 0 = pozadie. Masky sa stiahnu pri prvom priblížení.
       const platno = document.createElement('canvas');
       let data: Uint8ClampedArray | undefined;
+      let nacitanie: Promise<void> | undefined;
+      // Mapa sa stiahne pri prvom priblížení; ťuknutie na telefóne na ňu počká (inak by prvé nereagovalo).
+      // Svetlá vrstva je ten istý obrázok, aký prehliadač už zobrazil pod ňou (z vyrovnávacej pamäte, nič navyše).
       const pripravMapu = () => {
-        if (data !== undefined || platno.dataset.nacitava) return;
-        platno.dataset.nacitava = '1';
-        const mapa = new Image();
-        mapa.onload = () => {
-          platno.width = mapa.naturalWidth; platno.height = mapa.naturalHeight;
-          const ctx = platno.getContext('2d', { willReadFrequently: true })!;
-          ctx.drawImage(mapa, 0, 0);
-          data = ctx.getImageData(0, 0, platno.width, platno.height).data;
-        };
-        mapa.src = `${cesta}mapa.png`;
-        stitky.forEach((_, k) => { new Image().src = `${cesta}maska-${k}.webp`; });
+        if (!svetlo.style.backgroundImage) svetlo.style.backgroundImage = `url("${zaklad?.currentSrc || svetlo.dataset.src}")`;
+        nacitanie ??= new Promise<void>((hotovo) => {
+          const mapa = new Image();
+          mapa.onload = () => {
+            platno.width = mapa.naturalWidth; platno.height = mapa.naturalHeight;
+            const ctx = platno.getContext('2d', { willReadFrequently: true })!;
+            ctx.drawImage(mapa, 0, 0);
+            data = ctx.getImageData(0, 0, platno.width, platno.height).data;
+            let y0 = platno.height, y1 = 0;
+            for (let i = 0; i < data.length; i += 4) if (data[i]) { const y = (i / 4 / platno.width) | 0; if (y < y0) y0 = y; y1 = y; }
+            if (y1 > y0) pas = [Math.max(0, y0 / platno.height - 0.03), Math.min(1, y1 / platno.height + 0.03)];
+            hotovo();
+          };
+          mapa.onerror = () => hotovo();
+          mapa.src = `${cesta}mapa.png`;
+          stitky.forEach((_, k) => { new Image().src = `${cesta}maska-${k}.webp`; });
+        });
+        return nacitanie;
       };
       const system = (e: MouseEvent) => {
         if (!data) return -1;
@@ -127,9 +174,9 @@ const { data, obraz, systemy, label, pozriet } = Astro.props;
       rodic.addEventListener('touchstart', pripravMapu, { passive: true });
       rodic.addEventListener('pointermove', (e) => { if (e.pointerType === 'mouse') { const k = system(e); ukaz(k >= 0 ? k : pevny); rodic.style.cursor = k >= 0 ? 'pointer' : ''; } });
       rodic.addEventListener('pointerleave', () => ukaz(pevny));
-      rodic.addEventListener('click', (e) => {
+      rodic.addEventListener('click', async (e) => {
         if ((e.target as HTMLElement).closest('a, button')) return;
-        pripravMapu();
+        await pripravMapu();
         const k = system(e);
         pevny = k;
         ukaz(k);

@@ -16,6 +16,7 @@ import json
 import re
 import shutil
 import sys
+import time
 from pathlib import Path
 
 import numpy as np
@@ -200,13 +201,26 @@ def sekvencia(vstup, vzor, meno, sirky, kvalita=52):
     return snimky, pct, round(cw / ch, 4)
 
 
+def dokoncena(skupina, rad, snimky):
+    """Sekvencia je dokončená: dávka zapíše riadok radu do STAV.txt až po renderi aj fotodokončení všetkých snímok
+    (vinetácia a zrno sa prepisujú na mieste, skorší prevod by zmiešal snímky). Hotová sekvencia z predošlého behu
+    riadok mať nemusí (dávka ju preskočí), stačí, že sa snímky pol hodiny nemenili."""
+    posledna = max(f.stat().st_mtime for f in snimky)
+    stav = WEB3D / "STAV.txt"
+    casy = [time.mktime(time.strptime(r[:16], "%Y-%m-%d %H:%M"))
+            for r in (stav.read_text(encoding="utf-8").splitlines() if stav.exists() else []) if f"| {skupina}/{rad} (" in r]
+    return (bool(casy) and max(casy) + 60 >= posledna) or time.time() - posledna > 1800
+
+
 def ohyb():
     for rad in RADY12:
         vstup = WEB3D / "ohyb" / rad
         if not (vstup / "ohyb.json").exists():
             continue
-        if len(list(vstup.glob("ohyb-[0-9][0-9][0-9].png"))) != len(json.loads((vstup / "ohyb.json").read_text(encoding="utf-8"))["ohyb_px"]):
-            continue      # sekvencia sa ešte renderuje
+        snimky = list(vstup.glob("ohyb-[0-9][0-9][0-9].png"))
+        if len(snimky) != len(json.loads((vstup / "ohyb.json").read_text(encoding="utf-8"))["ohyb_px"]) or not dokoncena("ohyb", rad, snimky):
+            print(f"ohyb {rad}: ešte sa renderuje, preskočené")
+            continue
         meta = json.loads((vstup / "ohyb.json").read_text(encoding="utf-8"))
         snimky, pct, pomer = sekvencia(vstup, "ohyb-[0-9][0-9][0-9].png", f"ohyb-{rad}", (1200, 800))
         body = [{"stred": pct(meta["ohyb_px"][f.name]["stred"]), "os": pct(meta["ohyb_px"][f.name]["os_polovica"])}

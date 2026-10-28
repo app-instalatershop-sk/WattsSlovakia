@@ -48,8 +48,9 @@ const dlzka = Math.floor(data.kotuc.dlzka_m);
 
 <style>
   .ks { position: relative; height: 230vh; margin-top: 8px; }
-  /* Obsah v strede okna pod hlavičkou; okraje auto ho pri vyššom obsahu zarovnajú hore (nič sa neoreže). */
-  .ks-sticky { position: sticky; top: 72px; height: calc(100vh - 72px); display: flex; overflow: clip; }
+  /* Obsah v strede okna pod hlavičkou; okraje auto ho pri vyššom obsahu zarovnajú hore. Zvisle sa neorezáva:
+     kóta priemeru stojí nad kotúčom, teda nad horným okrajom obrazu (Juraj 28. 10.: štítok bol orezaný). */
+  .ks-sticky { position: sticky; top: 72px; height: calc(100vh - 72px); display: flex; overflow: clip visible; }
   .ks-obsah { width: 100%; margin-block: auto; display: grid; gap: 18px; }
   /* Široký záber: kotúč prejde celý obraz; výška obmedzená, aby sa pod ním zmestili kroky a nad ním kóta. */
   .ks-stage { position: relative; width: min(100%, calc((100vh - 72px - 360px) * var(--pomer))); margin-inline: auto; container-type: inline-size; }
@@ -76,7 +77,8 @@ const dlzka = Math.floor(data.kotuc.dlzka_m);
   }
   @media (prefers-reduced-motion: reduce) {
     .ks { height: auto; }
-    .ks-sticky { position: static; height: auto; padding-block: 24px; }
+    /* hore miesto pre kótu priemeru nad kotúčom */
+    .ks-sticky { position: static; height: auto; padding-block: clamp(56px, 6vw, 96px) 24px; }
   }
 </style>
 

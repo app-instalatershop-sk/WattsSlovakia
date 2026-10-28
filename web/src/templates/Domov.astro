@@ -8,7 +8,7 @@ import Katalog from '../components/Katalog.astro';
 import Scena from '../components/Scena.astro';
 import { referencie } from '../content/referencie';
 import type { Kota } from '../lib/koty';
-import { kategorie, cislo, rozsah } from '../lib/katalog';
+import { kategorie, cislo } from '../lib/katalog';
 import { fotka, fotkaReferencie, render3d, maska3d, rozkladRadu, makroRury, ohybRadu, kotuc as kotucData } from '../lib/obrazky';
 import Rozklad from '../components/Rozklad.astro';
 import Ohyb from '../components/Ohyb.astro';
@@ -33,13 +33,11 @@ const potrubia = kats.filter((k) => k.typ === 'potrubie');
 const radyPotrubi = rady.filter((r) => potrubia.some((k) => k.id === r.kategoria));
 const variantyPotrubi = varianty.filter((v) => radyPotrubi.some((r) => r.id === v.rad));
 
-// Čísla pri renderi v hero sú z dát, nie z hlavy.
-const polomery = variantyPotrubi.map((v) => v.polomer_ohybu_m).filter((x): x is number => typeof x === 'number');
-const faktPolomer = `${ui.common.od} ${cislo(Math.min(...polomery), 2)} m`;
-const faktRura = rozsah(variantyPotrubi.map((v) => v.rura?.d), 'mm', lang);
-const faktPlast = `Ø ${rozsah(variantyPotrubi.map((v) => v.plast_mm), 'mm', lang)}`;
-const tlaky = [...new Set(radyPotrubi.map((r) => r.tlak_bar).filter((x): x is number => typeof x === 'number'))].sort((a, b) => a - b);
-const faktTlak = h.popisy.tlak(tlaky.map((x) => `${x}`));
+// Čísla pri renderi v hero sú z dát zobrazeného variantu (DUO 2 × 32 v plášti 160): kóta na obraze patrí tomu,
+// čo ukazuje, nie celému sortimentu (Juraj 28. 10.; rozsahy radov sú v katalógu nižšie).
+const heroObj = (rendery.hero as Record<string, { obj_cislo?: string }>).duo?.obj_cislo;
+const heroVariant = variantyPotrubi.find((v) => v.obj_cislo === heroObj);
+const heroRad = rady.find((r) => r.id === heroVariant?.rad);
 
 // Hero: render vlastného 3D modelu (data/blender, kompozícia ako pôvodný render Watts: rez vľavo, telo
 // za pravý okraj). Kým nie je, ostáva render Watts. Body kót a stred rezu sú v data/rendery.json.
@@ -55,8 +53,6 @@ const rodinaTuk = rodina3d ? await rodinaNaTuknutie(rady, rodina3d, lang) : null
 const ohybDomov = ohybRadu('microflex-duo-6-bar');
 const odvalenie = kotucData()?.odvalenie;
 const kotuc = fotka('kotuc.jpg')!;
-// Rez výkopom s dvomi potrubiami (render z katalógu Watts): obraz trasy pre kartu konfigurátora.
-const trasa = fotka('vykop-rez.jpg')!;
 
 /* Projekty: dve najväčšie stavby z referencií. Fotka a kóty (číslo na rúre alebo v kotolni) sú
    v content/referencie.ts, texty pre domov v ui.ts. */
@@ -64,11 +60,8 @@ const po = h.projekty.orange;
 const pp = h.projekty.povazska;
 const refs = referencie(lang);
 const sOrange = refs.find((r) => r.id === 'orange')!.scena!;
-const sPovazska = refs.find((r) => r.id === 'povazska-bystrica')!.scena!;
 const orangeScena = fotkaReferencie(sOrange.fotka)!;
-const povazskaScena = fotkaReferencie(sPovazska.fotka)!;
 const kotyOrange = sOrange.koty;
-const kotyPovazska = sPovazska.koty;
 // Stavenisko so žeriavom: rúra v popredí (modré pixely pri 45 % šírky ležia na 76 % výšky fotky).
 const stavenisko = fotkaReferencie('povazska-3.jpg')!;
 const kotyStavenisko: Kota[] = [{ x: 45, y: 76, l: 12, smer: 'hore-vpravo', hodnota: pp.stavenisko.kota[0], text: pp.stavenisko.kota[1] }];
@@ -84,11 +77,11 @@ const leskMaska = (await getImage({ src: heroMaska ?? heroRez, width: 760, forma
 /* Popisy na renderi: bod leží na tom, čo číslo opisuje (okraj plášťa, spodná žltá rúra, zvlnené telo),
    štítok v prázdnom mieste okolo výrobku. Polohy a dĺžky čiar sú v CSS podľa id, zmerané na siluete
    hero-rez-duo.png; dĺžky sú v cqw (percentá šírky štúdia), takže celá vrstva rastie s obrázkom. */
-const popisy = [
-  { id: 'plast', hodnota: faktPlast, text: h.popisy.plast },
-  { id: 'rura', hodnota: faktRura, text: faktTlak },
-  { id: 'ohyb', hodnota: faktPolomer, text: h.popisy.polomer },
-];
+const popisy = heroVariant && heroRad ? [
+  { id: 'plast', hodnota: `Ø ${cislo(heroVariant.plast_mm ?? 0)} mm`, text: h.popisy.plast },
+  { id: 'rura', hodnota: `${heroRad.pocet_rur && heroRad.pocet_rur > 1 ? `${heroRad.pocet_rur} × ` : ''}${cislo(heroVariant.rura?.d ?? 0)} mm`, text: h.popisy.rury(heroRad.tlak_bar ?? 0) },
+  { id: 'ohyb', hodnota: `${cislo(heroVariant.polomer_ohybu_m ?? 0, 2)} m`, text: h.popisy.polomer },
+] : [];
 ---
 <Base lang={lang} alternates={staticAlternates('domov')} title={ui.domov.title} description={ui.domov.description}>
   <section class="hero" aria-labelledby="h-hero" data-mys>
@@ -105,6 +98,7 @@ const popisy = [
           <a class="btn btn-yellow btn-lg" href={route(lang, 'vyber')}>{h.cta} <Ikona nazov="arrow-right" velkost={18} /></a>
           <a class="hero-odkaz" href={`${route(lang, 'firmy')}#dopyt`}>{h.cta2}</a>
         </div>
+        <p class="hero-dodavatel">{h.dodavatel} <a href={route(lang, 'kontakt')}>{h.dodavatelOdkaz}</a></p>
       </div>
       <div class:list={['hero-product', { je3d: hero3d }]}>
         <div class:list={['hero-stage', { je3d: hero3d }]} style={heroBody?.stred ? `--kx: ${((heroBody.stred[0] + 50) / 190 * 100).toFixed(1)}%; --ky: ${((heroBody.stred[1] + 15) / 115 * 100).toFixed(1)}%` : undefined}>
@@ -131,7 +125,7 @@ const popisy = [
       <div class="rodina-text">
         <h2 id="h-rodina">{h.rodinaH2}</h2>
         <p class="lead">{sadzba(h.rodinaP)}</p>
-        {rodinaTuk && <p class="rodina-hint">{nv.rodina.hint}</p>}
+        {rodinaTuk && <p class="rodina-hint"><span class="len-mys">{nv.rodina.hint.mys}</span><span class="len-dotyk">{nv.rodina.hint.dotyk}</span></p>}
       </div>
       <div class:list={['rodina-obraz', { je3d: rodina3d }]}>
         <div class="rodina-wrap">
@@ -158,12 +152,14 @@ const popisy = [
         <div class="wrap pk-hlava">
           <h2 id="h-pokladka">{h.pokladkaH2}</h2>
           <p class="lead">{sadzba(h.pokladkaP)}</p>
+          {/* Podmienka času hneď pri tvrdení o čase, nie pod iným údajom (Juraj 28. 10.). */}
+          <p class="pk-pozn">{h.pokladkaZdroj}</p>
         </div>
         <KotucSekvencia data={odvalenie} texty={{ priemer: nv.kotuc.priemer, ostava: nv.kotuc.ostava, label: nv.kotuc.label }} celo={['2 × 25 mm', 'DUO v plášti 125 mm']} alt={nv.kotuc.alt} kroky={h.kroky} krokyLabel={h.krokyLabel} />
         <div class="wrap">
           <div class="pokladka-pata">
             <p class="zataz"><strong>{h.zataz[0]}</strong><span>{sadzba(h.zataz[1])}</span></p>
-            <p class="zdroj">{h.pokladkaZdroj} <a href={`${KATALOG_PDF}#page=37`} target="_blank" rel="noopener">{h.pokladkaOdkaz} <Ikona nazov="arrow-up-right" velkost={14} /></a></p>
+            <p class="zdroj"><a href={`${KATALOG_PDF}#page=37`} target="_blank" rel="noopener">{h.pokladkaOdkaz} <Ikona nazov="arrow-up-right" velkost={14} /></a></p>
           </div>
         </div>
       </>
@@ -177,6 +173,7 @@ const popisy = [
           <div class="pokladka-text">
             <h2 id="h-pokladka">{h.pokladkaH2}</h2>
             <p class="lead">{sadzba(h.pokladkaP)}</p>
+            <p class="pk-pozn">{h.pokladkaZdroj}</p>
             <div class="kroky-obal" data-rozvin>
               <span class="k-rura" aria-hidden="true"></span>
               <ol class="kroky" aria-label={h.krokyLabel}>
@@ -187,7 +184,7 @@ const popisy = [
             </div>
             <div class="pokladka-pata">
               <p class="zataz"><strong>{h.zataz[0]}</strong><span>{sadzba(h.zataz[1])}</span></p>
-              <p class="zdroj">{h.pokladkaZdroj} <a href={`${KATALOG_PDF}#page=37`} target="_blank" rel="noopener">{h.pokladkaOdkaz} <Ikona nazov="arrow-up-right" velkost={14} /></a></p>
+              <p class="zdroj"><a href={`${KATALOG_PDF}#page=37`} target="_blank" rel="noopener">{h.pokladkaOdkaz} <Ikona nazov="arrow-up-right" velkost={14} /></a></p>
             </div>
           </div>
         </div>
@@ -198,33 +195,34 @@ const popisy = [
   {/* Podzemie: posledný úsek stránky je tmavý ako zem, do ktorej potrubie ide. Fotka prvého
       projektu prekračuje šikmú hranu, takže svetlá a tmavá časť nie sú dva bloky, ale jeden prechod. */}
   <div class="podzemie">
-    {/* Projekty ako mozaika (Juraj 22. 10. 2026, návrh C): veľký výkop vľavo, kotolňa a stavenisko
-        vpravo nad sebou, každá fotka s jednou kótou; texty oboch projektov pod mozaikou. Keď príde
-        fotka veľkej stavby od 2 400 px, prvá fotka pôjde cez celú šírku (návrh B). */}
+    {/* Projekty (Juraj 28. 10. 2026): vlastná dodávka v Považskej Bystrici vpredu a veľká, referencia výrobcu
+        (Orange) menšia a označená. Fotka a text projektu sú jeden celok, aj na telefóne (predtým tri fotky
+        a pod nimi texty, takže text o Orange stál pod fotkou z Považskej). Kotolňa je na stránke referencií. */}
     <section class="projekty wrap" aria-labelledby="h-projekty">
       <div class="proj-hlava">
         <h2 id="h-projekty">{h.projektyH2}</h2>
         <p class="proj-uvod">{sadzba(h.projektyP)}</p>
       </div>
-      <div class="proj-mozaika">
-        <Scena class="pm-a" obraz={orangeScena} alt={po.alt} koty={kotyOrange} label={h.projektyKoty} widths={[760, 1000, 1200]} sizes="(max-width: 900px) 100vw, 62vw" />
-        <Scena class="pm-b" obraz={povazskaScena} alt={pp.alt} koty={kotyPovazska} label={h.projektyKoty} widths={[480, 895]} sizes="(max-width: 900px) 100vw, 36vw" />
-        <Scena class="pm-c" obraz={stavenisko} alt={pp.stavenisko.alt} koty={kotyStavenisko} label={h.projektyKoty} widths={[480, 895]} sizes="(max-width: 900px) 100vw, 36vw" />
-      </div>
-      <div class="proj-texty">
-        <article class="proj-text" aria-labelledby="h-proj-orange">
-          <p class="proj-kde">{po.kde}</p>
-          <h3 id="h-proj-orange">{sadzba(po.h3)}</h3>
-          <p>{sadzba(po.p)}</p>
-          <a class="proj-odkaz" href={`${route(lang, 'referencie')}#orange`}>{h.projektyViac}</a>
-        </article>
-        <article class="proj-text" aria-labelledby="h-proj-povazska">
+      <article class="proj proj-nasa" aria-labelledby="h-proj-povazska">
+        <Scena class="proj-foto" obraz={stavenisko} alt={pp.stavenisko.alt} koty={kotyStavenisko} label={h.projektyKoty} widths={[760, 1200, 1800]} sizes="(max-width: 900px) 100vw, 62vw" />
+        <div class="proj-text">
+          <p class="proj-rola">{h.rolaNasa}</p>
           <p class="proj-kde">{pp.kde}</p>
           <h3 id="h-proj-povazska">{sadzba(pp.h3)}</h3>
           <p>{sadzba(pp.p)}</p>
           <a class="proj-odkaz" href={`${route(lang, 'referencie')}#povazska-bystrica`}>{h.projektyViac}</a>
-        </article>
-      </div>
+        </div>
+      </article>
+      <article class="proj proj-vyrobca" aria-labelledby="h-proj-orange">
+        <Scena class="proj-foto" obraz={orangeScena} alt={po.alt} koty={kotyOrange} label={h.projektyKoty} widths={[480, 760, 1000]} sizes="(max-width: 900px) 100vw, 42vw" />
+        <div class="proj-text">
+          <p class="proj-rola">{h.rolaVyrobca}</p>
+          <p class="proj-kde">{po.kde}</p>
+          <h3 id="h-proj-orange">{sadzba(po.h3)}</h3>
+          <p>{sadzba(po.p)}</p>
+          <a class="proj-odkaz" href={`${route(lang, 'referencie')}#orange`}>{h.projektyViac}</a>
+        </div>
+      </article>
       <p class="proj-vsetky-obal"><a class="proj-vsetky" href={route(lang, 'referencie')}>{h.projektyVsetky}</a></p>
     </section>
 
@@ -236,6 +234,8 @@ const popisy = [
           <a class="btn btn-yellow" href={`${route(lang, 'firmy')}#dopyt`}>{h.podporaDopyt}</a>
           <a class="btn btn-ghost-light" href={route(lang, 'stiahnut')}><Ikona nazov="download" velkost={18} />{h.podporaPodklady}</a>
         </div>
+        {/* Konfigurátor trasy je samostatná etapa: kým nie je, len tichá veta, nie karta (Juraj 28. 10.). */}
+        <p class="konf-veta">{h.konfigurator}</p>
       </div>
       <ul class="podpora-sluzby">
         {h.podpora.map((s, i) => (
@@ -246,16 +246,6 @@ const popisy = [
           </li>
         ))}
       </ul>
-      {/* Jediné miesto pre konfigurátor trasy (samostatná etapa). Kým nie je hotový, vedie k dopytu. */}
-      <aside class="konfigurator" aria-labelledby="h-konf" data-konfigurator>
-        <div class="konf-obraz"><Obraz src={trasa} alt="" widths={[480, 720]} sizes="(max-width: 900px) 100vw, 34vw" /></div>
-        <div class="konf-telo">
-          <p class="konf-stav">{h.konfigurator.stav}</p>
-          <h3 id="h-konf">{h.konfigurator.h}</h3>
-          <p>{sadzba(h.konfigurator.p)}</p>
-          <a class="konf-odkaz" href={`${route(lang, 'firmy')}#dopyt`}>{h.konfigurator.odkaz}</a>
-        </div>
-      </aside>
       <p class="istota">{sadzba(h.istota)}</p>
     </section>
   </div>
@@ -277,6 +267,7 @@ const popisy = [
   .hero-text > * { animation: rise 680ms var(--ease-soft) both; }
   .hero-text > :nth-child(2) { animation-delay: 220ms; }
   .hero-text > :nth-child(3) { animation-delay: 320ms; }
+  .hero-text > :nth-child(4) { animation-delay: 400ms; }
   .hero h1 { display: flex; flex-direction: column; font-size: clamp(34px, 2.9vw + 12px, 58px); line-height: 1.03; letter-spacing: -0.03em; text-wrap: nowrap; }
   /* Tichý riadok nad sloganom je súčasť H1 kvôli vyhľadávačom; sadzba ako veta, nie verzálky. */
   .h1-kicker { font-family: var(--font-text); font-stretch: 100%; font-size: 16px; font-weight: 500; line-height: 1.4; letter-spacing: 0; color: var(--color-ink-soft); margin-bottom: 18px; }
@@ -291,6 +282,10 @@ const popisy = [
   @media (hover: hover) and (pointer: fine) { .hero-actions .btn:hover :global(svg) { transform: translateX(3px); } }
   /* Druhá akcia nie je tlačidlo: nemá súperiť so žltým, len ponúknuť cestu k dopytu na projekt. */
   .hero-odkaz { display: inline-flex; align-items: center; gap: 8px; font-weight: 500; color: var(--color-blue-700); border-bottom: 1px solid currentColor; padding-bottom: 3px; }
+  /* Kto predáva: tichý riadok pod akciami, odkaz na predajňu (Microflex ostáva hlavná značka). */
+  .hero-dodavatel { margin-top: 22px; font-size: 15px; line-height: 1.5; color: var(--color-ink-soft); }
+  .hero-dodavatel a { font-weight: 600; color: var(--color-ink); text-decoration: underline; text-decoration-color: rgb(10 42 94 / 0.3); text-underline-offset: 3px; }
+  @media (hover: hover) and (pointer: fine) { .hero-dodavatel a:hover { color: var(--color-blue-700); text-decoration-color: currentColor; } }
   /* Rúra prekračuje pravý okraj obsahovej mriežky až za okraj obrazovky. */
   /* Render sedí na spodku hero, takže jeho dolná časť pretne šikmú hranu pásu katalógu. */
   .hero-product { grid-area: obraz; position: relative; z-index: 2; align-self: end; margin-left: -9%;
@@ -419,6 +414,7 @@ const popisy = [
   .pokladka-grid { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 24px; }
   .pk-hlava h2 { font-size: clamp(32px, 3vw + 12px, 58px); line-height: 1.04; letter-spacing: -0.03em; max-width: 11em; }
   .pk-hlava .lead { margin-top: 18px; max-width: 40em; }
+  .pk-pozn { margin-top: 8px; font-size: 14px; color: var(--color-ink-soft); }
   /* clip namiesto hidden: hidden by vypol lepkavý obraz kotúča (sticky v KotucSekvencia) */
   .pokladka.ma-kotuc { padding-top: 96px; overflow: clip; }
   .pokladka.ma-kotuc .pokladka-pata { margin-top: 8px; }
@@ -456,57 +452,51 @@ const popisy = [
   .podzemie a:not(.btn) { color: #fff; }
   .podzemie a:not(.btn):hover { color: var(--color-yellow-500); }
 
-  /* ---------- Projekty: mozaika troch fotiek s kótami (návrh C) ---------- */
+  /* ---------- Projekty: vlastná dodávka veľká, referencia výrobcu menšia; fotka a text spolu ---------- */
   .projekty { position: relative; padding-top: 24px; }
   .proj-hlava { position: relative; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 20px 56px; align-items: end; }
   .proj-hlava h2 { font-size: clamp(30px, 2.2vw + 14px, 46px); line-height: 1.06; letter-spacing: -0.025em; max-width: 12em; }
   .proj-uvod { color: var(--color-on-dark-muted); font-size: 17px; line-height: 1.55; max-width: 26em; }
-  /* Šírky stĺpcov sú vypočítané tak, aby výška veľkej fotky (3 : 2) sedela s dvomi menšími (16 : 9) nad sebou. */
-  .proj-mozaika { position: relative; display: grid; grid-template-columns: minmax(0, 1.765fr) minmax(0, 1fr); grid-template-rows: auto auto; gap: 24px; margin-top: 40px; }
-  .proj-mozaika :global(.pm-a) { grid-row: 1 / span 2; }
-  .proj-mozaika :global(.scena-img) { border-radius: var(--radius-xl); box-shadow: var(--elev-4-tma); filter: saturate(0.94) contrast(1.03); }
-  /* Výkop sa otvorí: pri rolovaní sa veľká fotka roztvorí zhora aj zdola, tam kde to prehliadač vie. */
+  /* Projekt = mriežka: fotka a text vedľa seba, had (vlastná dodávka fotka vľavo, výrobca vpravo). */
+  .proj { position: relative; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; row-gap: 28px; align-items: center; margin-top: 40px; }
+  .proj-nasa :global(.proj-foto) { grid-column: 1 / 9; grid-row: 1; }
+  .proj-nasa .proj-text { grid-column: 9 / 13; grid-row: 1; }
+  .proj-vyrobca { margin-top: 64px; }
+  .proj-vyrobca :global(.proj-foto) { grid-column: 7 / 13; grid-row: 1; }
+  .proj-vyrobca .proj-text { grid-column: 2 / 7; grid-row: 1; }
+  .proj :global(.scena-img) { border-radius: var(--radius-xl); box-shadow: var(--elev-4-tma); filter: saturate(0.94) contrast(1.03); }
+  /* Výkop sa otvorí: pri rolovaní sa fotka vlastnej dodávky roztvorí zhora aj zdola, tam kde to prehliadač vie. */
   @supports (animation-timeline: view()) {
     @media (prefers-reduced-motion: no-preference) {
-      .proj-mozaika :global(.pm-a) { animation: vykop linear both; animation-timeline: view(); animation-range: entry 0% cover 38%; }
+      .proj-nasa :global(.proj-foto) { animation: vykop linear both; animation-timeline: view(); animation-range: entry 0% cover 38%; }
     }
   }
   @keyframes vykop { from { clip-path: inset(8% 0 8% 0 round 16px); } to { clip-path: inset(0 0 0 0 round 16px); } }
-  .proj-texty { position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 56px; margin-top: 36px; }
   .proj-text { display: flex; flex-direction: column; align-items: flex-start; }
+  /* Rola firmy pri projekte: vlastná dodávka žltou (akcent), referencia výrobcu tichým obrysom. */
+  .proj-rola { display: inline-flex; align-items: center; height: 28px; margin-bottom: 12px; padding: 0 12px; border-radius: 999px; font-size: 14px; font-weight: 600; color: var(--color-on-dark-muted); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.35); }
+  .proj-nasa .proj-rola { background: var(--color-yellow-500); color: var(--color-ink); box-shadow: none; }
   .proj-kde { font-size: 15px; font-weight: 500; color: #8fb9ec; }
   .proj-text h3 { margin-top: 8px; font-size: clamp(22px, 0.9vw + 15px, 28px); line-height: 1.15; letter-spacing: -0.015em; color: #fff; max-width: 14em; }
   .proj-text h3 + p { margin-top: 12px; color: var(--color-on-dark-muted); font-size: 16px; line-height: 1.6; max-width: 30em; }
   .proj-odkaz, .proj-vsetky { margin-top: 18px; font-weight: 500; border-bottom: 1px solid rgb(255 255 255 / 0.5); padding-bottom: 2px; }
   .proj-vsetky-obal { position: relative; margin-top: 32px; }
 
-  /* ---------- Projektová podpora a miesto pre konfigurátor ---------- */
+  /* ---------- Projektová podpora: dopyt a podklady vľavo, služby vpravo ---------- */
   .podpora { position: relative; margin-top: 136px; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; row-gap: 48px; align-items: start; }
-  .podpora-hlava { grid-column: 1 / 8; grid-row: 1; }
+  .podpora-hlava { grid-column: 1 / 7; grid-row: 1; }
   .podpora-hlava h2 { font-size: clamp(28px, 1.9vw + 14px, 42px); line-height: 1.08; letter-spacing: -0.025em; max-width: 14em; }
   .podpora-hlava .lead { margin-top: 18px; color: var(--color-on-dark-muted); max-width: 32em; }
   .podpora-akcie { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
-  .podpora-sluzby { grid-column: 1 / 8; grid-row: 2; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px; }
+  .konf-veta { margin-top: 20px; font-size: 15px; line-height: 1.6; color: var(--color-on-dark-muted); max-width: 32em; }
+  .podpora-sluzby { grid-column: 8 / 13; grid-row: 1; display: grid; grid-template-columns: minmax(0, 1fr); gap: 32px; padding-top: 8px; }
   /* Bez krátkej žltej čiarky nad nadpisom (znak šablóny, DOLADENIE kap. 2.5): žltá patrí jadru rúry a akcii. */
   .podpora-sluzby li { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; position: relative; }
   /* Krátka žltá značka nad službou: farba jadra rúry, nie čiara cez celú šírku. */
   .podpora-sluzby h3 { font-size: 20px; line-height: 1.25; color: #fff; }
   .podpora-sluzby p { color: var(--color-on-dark-muted); font-size: 15px; line-height: 1.6; }
   .podpora-sluzby a { margin-top: 4px; font-weight: 500; border-bottom: 1px solid rgb(255 255 255 / 0.5); padding-bottom: 2px; }
-  .istota { grid-column: 1 / 8; grid-row: 3; font-size: 15px; line-height: 1.65; color: var(--color-on-dark-muted); max-width: 52em; }
-
-  /* Karta konfigurátora: vlastná plocha s obrazom trasy (rez výkopom), stav „pripravujeme“ na žltej. */
-  .konfigurator { grid-column: 9 / 13; grid-row: 1 / span 3; align-self: start; position: relative; overflow: hidden; border-radius: var(--radius-xl);
-    background: linear-gradient(165deg, #164490 0%, #0d3270 58%, #0a2a5e 100%);
-    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.09), var(--elev-4-tma); }
-  .konf-obraz { position: relative; }
-  .konf-obraz :global(img) { display: block; width: 100%; height: auto; aspect-ratio: 16 / 11; object-fit: cover; object-position: 50% 70%; }
-  .konf-obraz::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgb(13 50 112 / 0) 45%, #0f3878 100%); }
-  .konf-telo { position: relative; padding: 4px 28px 30px; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
-  .konf-stav { display: inline-flex; align-items: center; height: 28px; padding: 0 12px; border-radius: 999px; background: var(--color-yellow-500); color: var(--color-ink); font-size: 14px; font-weight: 600; }
-  .konfigurator h3 { margin-top: 6px; font-size: clamp(24px, 1vw + 16px, 30px); line-height: 1.1; letter-spacing: -0.02em; color: #fff; }
-  .konfigurator p:not(.konf-stav) { color: var(--color-on-dark-muted); font-size: 16px; line-height: 1.6; }
-  .konf-odkaz { margin-top: 8px; font-weight: 600; border-bottom: 1px solid rgb(255 255 255 / 0.55); padding-bottom: 2px; }
+  .istota { grid-column: 1 / 8; grid-row: 2; font-size: 15px; line-height: 1.65; color: var(--color-on-dark-muted); max-width: 52em; }
 
   /* ---------- Tablet ---------- */
   @media (max-width: 1100px) {
@@ -518,12 +508,13 @@ const popisy = [
        vpravo a na okraji mriežky by bolo rez vidno. */
     .rodina-obraz { width: calc(100% + var(--gutter)); margin: -120px calc(-1 * var(--gutter)) 0 0; grid-row: 1; }
     .rodina-text { padding-top: 24px; margin-top: 0; }
-    .proj-hlava, .proj-texty { grid-template-columns: minmax(0, 1fr); }
+    .proj-hlava { grid-template-columns: minmax(0, 1fr); }
+    .proj-nasa :global(.proj-foto) { grid-column: 1 / 8; }
+    .proj-nasa .proj-text { grid-column: 8 / 13; }
+    .proj-vyrobca :global(.proj-foto) { grid-column: 6 / 13; }
+    .proj-vyrobca .proj-text { grid-column: 1 / 6; }
     .podpora-hlava, .podpora-sluzby, .istota { grid-column: 1 / -1; grid-row: auto; }
-    .konfigurator { grid-column: 1 / -1; grid-row: auto; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; }
-    .konf-obraz :global(img) { aspect-ratio: auto; height: 100%; }
-    .konf-obraz::after { background: linear-gradient(90deg, rgb(13 50 112 / 0) 50%, #0f3878 100%); }
-    .konf-telo { padding: 28px 30px; }
+    .podpora-sluzby { grid-template-columns: repeat(2, minmax(0, 1fr)); padding-top: 0; }
   }
 
   /* Pod 900 px vedľa kotúča nie je miesto: kotúč ide nad text ako pás, vľavo závity, vpravo jeho vnútro. */
@@ -554,14 +545,13 @@ const popisy = [
     .pokladka { padding-bottom: 168px; }
     .kroky-obal { margin-top: 32px; }
     .podzemie { padding-bottom: 88px; }
-    .proj-mozaika { grid-template-columns: minmax(0, 1fr); margin-inline: calc(-1 * var(--gutter)); gap: 12px; }
-    .proj-mozaika :global(.pm-a) { grid-row: auto; }
-    .proj-mozaika :global(.scena-img) { border-radius: 0; }
+    /* Telefón: projekt pod sebou, najprv fotka cez celú šírku, hneď pod ňou jej text. */
+    .proj { grid-template-columns: minmax(0, 1fr); row-gap: 20px; margin-top: 32px; }
+    .proj-vyrobca { margin-top: 56px; }
+    .proj-nasa :global(.proj-foto), .proj-vyrobca :global(.proj-foto), .proj-nasa .proj-text, .proj-vyrobca .proj-text { grid-column: 1 / -1; grid-row: auto; }
+    .proj :global(.proj-foto) { margin-inline: calc(-1 * var(--gutter)); }
+    .proj :global(.scena-img) { border-radius: 0; }
     .podpora { margin-top: 96px; row-gap: 40px; }
     .podpora-sluzby { grid-template-columns: minmax(0, 1fr); gap: 28px; }
-    .konfigurator { display: block; }
-    .konf-obraz :global(img) { aspect-ratio: 16 / 10; height: auto; }
-    .konf-obraz::after { background: linear-gradient(180deg, rgb(13 50 112 / 0) 45%, #0f3878 100%); }
-    .konf-telo { padding: 4px 22px 26px; }
   }
 </style>

@@ -260,4 +260,8 @@
   /* Ikony */
   .icon { width: 20px; height: 20px; flex: none; }
   .icon svg { width: 100%; height: 100%; display: block; }
+
+  /* Text podľa ovládania: „kliknite“ pre myš, „ťuknite“ pre prst (napr. nápoveda pri rodine systémov). */
+  @media (hover: none), (pointer: coarse) { .len-mys { display: none; } }
+  @media (hover: hover) and (pointer: fine) { .len-dotyk { display: none; } }
 }

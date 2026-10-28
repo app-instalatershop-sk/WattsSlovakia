@@ -1,7 +1,7 @@
 ---
 import WattsLogo from './WattsLogo.astro';
 import MicroflexLogo from './MicroflexLogo.astro';
-import { FIRMA } from '../content/firma';
+import { FIRMA, firma } from '../content/firma';
 import { kategorie, cestaKategorie, kKratky } from '../lib/katalog';
 import { type Lang, t, route } from '../i18n/ui';
 interface Props { lang: Lang }
@@ -33,12 +33,14 @@ const kats = await kategorie();
         <li><a href={route(lang, 'poradna')}>{ui.footer.poradna}</a></li>
       </ul>
     </div>
-    <div>
-      <h3>{ui.footer.prevadzkovatel}</h3>
+    {/* Predajňa a kontakt (Juraj 28. 10.: dodávateľ viditeľne); na telefóne hneď za značkou, pred zoznamami.
+        Sídlo firmy je iná adresa ako predajňa a sklad, preto zvlášť v spodnom riadku. */}
+    <div class="ftr-kontakt">
+      <h3>{ui.footer.predajna}</h3>
       <ul>
-        <li>{FIRMA.nazov}</li>
-        <li class="muted">{FIRMA.sidlo.ulica}, {FIRMA.sidlo.psc} {FIRMA.sidlo.mesto}</li>
-        <li class="muted">{ui.footer.ico} {FIRMA.ico}, {ui.footer.icdph} {FIRMA.icdph}</li>
+        <li>{FIRMA.obchod}</li>
+        <li class="muted">{FIRMA.predajna.ulica}, {FIRMA.predajna.psc} {FIRMA.predajna.mesto}</li>
+        <li class="muted">{firma(lang).hodinyKratko}</li>
         <li><a href={FIRMA.telefonHref}>{FIRMA.telefon}</a></li>
         <li><a href={`mailto:${FIRMA.email}`}>{FIRMA.email}</a></li>
         <li><a href={route(lang, 'kontakt')}>{ui.footer.kontakt}</a></li>
@@ -46,6 +48,7 @@ const kats = await kategorie();
     </div>
   </div>
   <div class="wrap ftr-bottom">
+    <span>{ui.footer.prevadzkovatel}: {FIRMA.nazov}, {ui.footer.sidlo} {FIRMA.sidlo.ulica}, {FIRMA.sidlo.psc} {FIRMA.sidlo.mesto}, {ui.footer.ico} {FIRMA.ico}, {ui.footer.icdph} {FIRMA.icdph}</span>
     <span>{ui.footer.znamka}</span>
     <span>© {new Date().getFullYear()} {ui.site.name}</span>
   </div>
@@ -63,6 +66,7 @@ const kats = await kategorie();
   .ftr .muted { color: var(--color-on-dark-muted); }
   .vyrobca { display: flex; align-items: center; gap: 16px; margin-top: 24px; padding-top: 20px; border-top: 1px solid rgb(255 255 255 / 0.18); font-size: 14px; max-width: 32em; }
   .ftr-bottom { border-top: 1px solid rgb(255 255 255 / 0.18); padding-block: 16px; font-size: 13px; color: var(--color-on-dark-muted); display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
-  @media (max-width: 1100px) { .ftr-in { grid-template-columns: 1fr 1fr; } }
+  /* Užšie okno: predajňa a kontakt hneď za značkou, zoznamy odkazov až potom. */
+  @media (max-width: 1100px) { .ftr-in { grid-template-columns: 1fr 1fr; } .ftr-kontakt { order: -1; } .ftr-in > :first-child { order: -2; } }
   @media (max-width: 760px) { .ftr-in { grid-template-columns: 1fr; } }
 </style>

@@ -72,7 +72,7 @@ const produktySkupiny = (id: string) => produkty.filter((p) => p.skupina === id)
 <Base lang={lang} alternates={staticAlternates('potrubia')} title={ui.potrubia.title} description={ui.potrubia.description} aktivna="potrubia" drobceky={[{ text: ui.nav.potrubia }]} vizualneDrobceky={false}>
   <Hlava lang={lang} nadpis={ui.potrubia.title} drobceky={[{ text: ui.nav.potrubia }]} lead={ui.potrubia.lead} obraz={rodina} obrazAlt={ui.potrubia.rodinaAlt} obrazMax={1100} rozlozenie="studio" dozvenie="vpravo">
     {rodinaTuk && <RodinaVyber slot="na-obraze" data={rodinaTuk.data} obraz={rodinaTuk.svetlo} systemy={rodinaTuk.systemy} label={ui.novinky.rodina.systemy} pozriet={ui.novinky.rodina.pozriet} />}
-    {rodinaTuk && <p class="rodina-hint">{ui.novinky.rodina.hint}</p>}
+    {rodinaTuk && <p class="rodina-hint"><span class="len-mys">{ui.novinky.rodina.hint.mys}</span><span class="len-dotyk">{ui.novinky.rodina.hint.dotyk}</span></p>}
     <div class="hlava-akcie">
       <a class="btn btn-yellow btn-lg" href={route(lang, 'vyber')}>{tx.sprievodca} <Ikona nazov="arrow-right" velkost={18} /></a>
       <a class="odkaz" href={KATALOG_PDF} target="_blank" rel="noopener">{tx.katalog} <Ikona nazov="download" velkost={16} /></a>

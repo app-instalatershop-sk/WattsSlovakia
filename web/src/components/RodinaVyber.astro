@@ -1,9 +1,12 @@
 ---
 /**
  * Rodina na ťuknutie (Juraj 28. 10. 2026): vrstva nad renderom rodiny systémov. Systém pod myšou, prstom
- * alebo v ohnisku klávesnice sa zvýrazní (ostatné stmavnú) a pri ňom sa objaví štítok s tým hlavným a odkazom
- * na rad. Masky systémov sú z toho istého záberu (render --maska, data/novinky_web.py rodina), malá mapa
+ * alebo v ohnisku klávesnice sa zvýrazní (ostatné stmavnú) a pri ňom sa objaví karta s tým hlavným; celá karta
+ * je odkaz na rad. Masky systémov sú z toho istého záberu (render --maska, data/novinky_web.py rodina), malá mapa
  * indexov určuje, nad ktorým systémom je ukazovateľ. Rodič musí mať position: relative a rozmer obrazu.
+ * Ovládanie (Juraj 28. 10.: „klik na model nič neurobí, tlačidlo zmizne pri pohybe myši“): myš klikom na potrubie
+ * otvorí jeho rad a karta počká, kým k nej myš prejde; prst prvým ťuknutím ukáže kartu, druhým na to isté potrubie
+ * alebo ťuknutím na kartu otvorí rad; klávesnica prejde odkazmi na rady (Enter otvorí).
  */
 import type { SystemyData } from '../lib/obrazky';
 
@@ -23,15 +26,15 @@ const nazvy = data.systemy.map((_, k) => {
   {data.systemy.map((s, k) => (
     <div class="rv-stitok" data-k={k} style={`--x: ${s.bod[0]}%; --y: ${s.bod[1]}%`} hidden>
       <span class="rv-bod" aria-hidden="true"></span>
-      <div class="rv-karta">
+      <a class="rv-karta" href={systemy[k]?.odkaz}>
         <strong>{nazvy[k].meno}<span class="rv-medium">{nazvy[k].medium}</span>{nazvy[k].tlak && <span class="rv-tlak">{nazvy[k].tlak}</span>}</strong>
         {systemy[k]?.fakty.map((f) => <span>{f}</span>)}
-        <a href={systemy[k]?.odkaz}>{pozriet}</a>
-      </div>
+        <span class="rv-pozriet">{pozriet}</span>
+      </a>
     </div>
   ))}
   <ul class="rv-tlacidla" aria-label={label}>
-    {data.systemy.map((_, k) => <li><button type="button" data-k={k}>{systemy[k]?.nazov}</button></li>)}
+    {data.systemy.map((_, k) => <li><a href={systemy[k]?.odkaz} data-k={k}>{systemy[k]?.nazov}</a></li>)}
   </ul>
 </div>
 
@@ -54,15 +57,18 @@ const nazvy = data.systemy.map((_, k) => {
   .rv-stitok.vlavo .rv-karta { left: auto; right: var(--odstup); }
   .rv-stitok.vlavo .rv-karta::before { left: auto; right: calc(-1 * var(--odstup)); }
   .rv-stitok.tesne .rv-karta::before { display: none; }
+  .rv-karta { color: inherit; text-decoration: none; cursor: pointer; }
   .rv-karta strong { font-family: var(--font-display); font-stretch: 112%; font-weight: 600; font-size: 20px; color: var(--color-blue-900); }
   .rv-karta > span { font-size: 14px; line-height: 1.4; color: #3f4b5e; }
   .rv-tlak { display: none; }
-  .rv-karta a { margin-top: 6px; font-weight: 600; font-size: 15px; color: var(--color-blue-700); }
+  .rv-karta > .rv-pozriet { margin-top: 6px; font-weight: 600; font-size: 15px; color: var(--color-blue-700); }
+  @media (hover: hover) and (pointer: fine) { .rv-karta:hover .rv-pozriet { text-decoration: underline; text-underline-offset: 3px; } }
+  .rv-karta:focus-visible { outline: 3px solid var(--color-yellow-500); outline-offset: 2px; }
   @keyframes rv-prichod { from { opacity: 0; } to { opacity: 1; } }
-  /* Tlačidlá pre klávesnicu a čítačky obrazovky: neviditeľné, kým nie sú v ohnisku. */
+  /* Odkazy na rady pre klávesnicu a čítačky obrazovky: neviditeľné, kým nie sú v ohnisku. */
   .rv-tlacidla { position: absolute; left: 0; bottom: 0; margin: 0; padding: 0; list-style: none; }
-  .rv-tlacidla button { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
-  .rv-tlacidla button:focus-visible { position: fixed; z-index: 50; left: 50%; bottom: 24px; width: auto; height: auto; clip-path: none; transform: translateX(-50%);
+  .rv-tlacidla a { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+  .rv-tlacidla a:focus-visible { position: fixed; z-index: 50; left: 50%; bottom: 24px; width: auto; height: auto; clip-path: none; transform: translateX(-50%);
     padding: 10px 16px; border-radius: 999px; background: var(--color-blue-900); color: #fff; font: inherit; font-weight: 600; outline: 3px solid var(--color-yellow-500); }
   @media (max-width: 760px) {
     .rv-stitok { --odstup: 18px; }
@@ -71,7 +77,7 @@ const nazvy = data.systemy.map((_, k) => {
     .rv-karta > span { font-size: 13px; line-height: 1.35; }
     .rv-medium { display: none; }
     .rv-tlak { display: inline; }
-    .rv-karta a { margin-top: 4px; font-size: 14px; }
+    .rv-karta > .rv-pozriet { margin-top: 4px; font-size: 14px; }
   }
   @media (prefers-reduced-motion: reduce) {
     .rv-svetlo, :global(.rv-ztlm) { transition: none; }
@@ -80,6 +86,8 @@ const nazvy = data.systemy.map((_, k) => {
 </style>
 
 <script>
+  import { navigate } from 'astro:transitions/client';
+
   function initRodinaVyber() {
     document.querySelectorAll<HTMLElement>('[data-rodina-vyber]:not([data-on])').forEach((vrstva) => {
       vrstva.dataset.on = '1';
@@ -90,7 +98,8 @@ const nazvy = data.systemy.map((_, k) => {
       zaklad?.classList.add('rv-ztlm');
       const svetlo = vrstva.querySelector<HTMLElement>('.rv-svetlo')!;
       const stitky = [...vrstva.querySelectorAll<HTMLElement>('.rv-stitok')];
-      const tlacidla = [...vrstva.querySelectorAll<HTMLButtonElement>('.rv-tlacidla button')];
+      const odkazy = stitky.map((s) => s.querySelector<HTMLAnchorElement>('.rv-karta')!.href);
+      const tlacidla = [...vrstva.querySelectorAll<HTMLAnchorElement>('.rv-tlacidla a')];
       // Pás obrazu, v ktorom sú systémy (podiel výšky, z mapy); kým mapa nie je, celý obraz.
       let pas = [0, 1];
       // Štítok ide doprava od bodu, ak sa tam zmestí do okna (obraz rodiny na domove siaha po pravý okraj), inak doľava;
@@ -172,12 +181,40 @@ const nazvy = data.systemy.map((_, k) => {
       };
       rodic.addEventListener('pointerenter', pripravMapu);
       rodic.addEventListener('touchstart', pripravMapu, { passive: true });
-      rodic.addEventListener('pointermove', (e) => { if (e.pointerType === 'mouse') { const k = system(e); ukaz(k >= 0 ? k : pevny); rodic.style.cursor = k >= 0 ? 'pointer' : ''; } });
-      rodic.addEventListener('pointerleave', () => ukaz(pevny));
+      // Typ posledného dotyku: myš otvorí rad hneď, prst najprv ukáže kartu.
+      let posledny = 'mouse', cakaj = 0, ciel = -1, px = 0, py = 0;
+      const zrus = () => { if (cakaj) { clearTimeout(cakaj); cakaj = 0; } };
+      const neskor = (k: number, ms: number) => { ciel = k; zrus(); cakaj = window.setTimeout(() => { cakaj = 0; ukaz(ciel); }, ms); };
+      // vzdialenosť ukazovateľa od otvorenej karty (0 = nad ňou)
+      const odKarty = (x: number, y: number) => {
+        const r = stitky[aktivny].querySelector('.rv-karta')!.getBoundingClientRect();
+        return Math.hypot(Math.max(r.left - x, 0, x - r.right), Math.max(r.top - y, 0, y - r.bottom));
+      };
+      rodic.addEventListener('pointerdown', (e) => { posledny = e.pointerType; }, { passive: true });
+      rodic.addEventListener('pointermove', (e) => {
+        if (e.pointerType !== 'mouse') return;
+        const x = e.clientX, y = e.clientY;
+        const kuKarte = aktivny >= 0 && odKarty(x, y) < odKarty(px, py) - 0.5;
+        px = x; py = y;
+        // nad kartou ostáva otvorená, aby sa dalo kliknúť na ňu
+        if ((e.target as HTMLElement).closest('.rv-karta')) { zrus(); rodic.style.cursor = ''; return; }
+        const k = system(e);
+        rodic.style.cursor = k >= 0 ? 'pointer' : '';
+        const chce = k >= 0 ? k : pevny;
+        if (chce === aktivny) { zrus(); return; }
+        // Myš ide ku karte (cez prázdne miesto alebo cez iné potrubie): karta počká a prepne sa, až keď sa myš
+        // zastaví. Inak sa nové potrubie ukáže hneď a prázdne miesto kartu skryje po chvíli.
+        if (kuKarte) neskor(chce, 320);
+        else if (k >= 0) { zrus(); ukaz(k); }
+        else if (!cakaj) neskor(chce, 450);
+      });
+      rodic.addEventListener('pointerleave', () => { zrus(); ukaz(pevny); });
+      const otvor = (url: string) => { navigate(url).catch(() => { location.href = url; }); };
       rodic.addEventListener('click', async (e) => {
         if ((e.target as HTMLElement).closest('a, button')) return;
         await pripravMapu();
         const k = system(e);
+        if (k >= 0 && (posledny !== 'touch' || pevny === k)) { otvor(odkazy[k]); return; }
         pevny = k;
         ukaz(k);
       });

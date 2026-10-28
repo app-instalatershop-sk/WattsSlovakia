@@ -17,3 +17,5 @@ __pycache__/
 # reklamné podklady z 3D modelu (data/reklama.py): stovky MB, dajú sa vytvoriť znova; v gite len README
 /reklama/*
 !/reklama/README.md
+# snímky stránok na celú výšku pre ChatGPT a porovnanie (scratchpad snimky-stranok.mjs); dajú sa urobiť znova
+/snimky-stranok/

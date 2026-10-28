@@ -21,11 +21,10 @@ import rendery from '../data/rendery.json';
 import { kategorie, radyKategorie, variantyRadu, cestaKategorie, cestaRadu, cestaProduktu, alternatyRadu, kKratky, rNazov, rKratky, rMedium, rOznacenie, pNazov, cislo, rozsah, rozsahRur, tlakText, kotvaKodu, type Kategoria, type Rad } from '../lib/katalog';
 import { piktogram, render3d, fotkaRadu, detail, fotkaReferencie, rozkladRadu, makroRury } from '../lib/obrazky';
 import Rozklad from '../components/Rozklad.astro';
-import Ohyb from '../components/Ohyb.astro';
 import Mierka from '../components/Mierka.astro';
 import TeploVrstva, { type ZaberTepla } from '../components/TeploVrstva.astro';
 import TeploRezim from '../components/TeploRezim.astro';
-import { ohybRadu, mierkaRadu, teplo as teploData, type TeploZaber } from '../lib/obrazky';
+import { mierkaRadu, teplo as teploData, type TeploZaber } from '../lib/obrazky';
 import { kotyRenderu, kotyRenderu3d } from '../lib/koty';
 import { sadzba } from '../lib/sadzba';
 import { obsahRadu } from '../content/rady';
@@ -90,7 +89,8 @@ const obrazyVariantov: Record<string, ObrazVariantu> = hlava3d ? Object.fromEntr
 }))).filter((x): x is NonNullable<typeof x> => x !== null)) : {};
 const bodyHlavy = hlava3d ? (rendery.hlavy as Record<string, Body3d>)[r.id] : undefined;
 
-// Novinky z 3D modelu (Juraj 28. 10. 2026): teplo v reze, dimenzie v mierke, ohyb na najmenší polomer.
+// Novinky z 3D modelu (Juraj 28. 10. 2026): teplo v reze, dimenzie v mierke. Ohyb je len na domove: sekvencia
+// ukazuje jednu dimenziu, nie celý rad (Juraj 28. 10.).
 const nv = ui.novinky;
 // Nosné rúry variantu krátko: „2 × 32 mm“, pri rôznych rúrach „2 × 32 + 25 + 20 mm“ (z textu katalógu).
 const ruryKratko = (v: (typeof varianty)[number]) => {
@@ -130,8 +130,6 @@ const podmienkyTepla = hlavaTepla && role ? [
 const mierka = mierkaRadu(r.id);
 const mierkaObr = render3d('mierka', r.id);
 const stitkyMierky = Object.fromEntries(varianty.map((v) => [v.obj_cislo, [`Ø ${cislo(v.plast_mm ?? 0)} mm`, ruryKratko(v)] as [string, string]]));
-const ohyb = ohybRadu(r.id);
-const ohybVariant = ohyb ? varianty.find((v) => v.obj_cislo === ohyb.obj_cislo) : undefined;
 
 // Stavba pod lupou: kľúčové číslo plášťa berie rozsah z tabuľky, nosnej rúry aj priemery.
 const vrstvy = obsah ? (['rura', 'pena', 'plast'] as const).map((id) => {
@@ -238,7 +236,6 @@ const productLd = [{
             {obsah.strana && <p class="stavba-zdroj"><a href={KATALOG_PDF} target="_blank" rel="noopener">{tx.stranaKat(obsah.strana)}</a></p>}
           </div>
         </div>
-        {ohyb && ohybVariant && <Ohyb data={ohyb} nadpis={nv.ohyb.h2} popis={nv.ohyb.rad(model, ruryKratko(ohybVariant), ohyb.plast_mm, cislo(ohyb.polomer_m, 2))} poznamka={nv.ohyb.pozn} alt={nv.ohyb.alt(model, cislo(ohyb.polomer_m, 2))} kota={nv.ohyb.kota} hore={casti.length > 2 ? 132 : 72} horeM={casti.length > 2 ? 116 : 64} />}
       </section>
       ) : (
       <section class="wrap cast" id="stavba" aria-labelledby="h-stavba">

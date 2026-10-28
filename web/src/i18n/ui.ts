@@ -194,7 +194,6 @@ const sk = {
     ohyb: {
       h2: 'Ohne sa okolo prekážky.',
       domov: 'Microflex sa ohýba priamo vo výkope, bez kolien a bez zvárania. DUO 2 × 32 mm v plášti 160 mm zvládne oblúk s polomerom 0,60 m, menšie plášte ešte tesnejší: UNO v plášti 75 mm od 0,20 m.',
-      rad: (model: string, rury: string, plast: number, polomer: string) => `${model} ${rury} v plášti ${plast} mm sa ohne do oblúka s polomerom ${polomer} m priamo vo výkope, bez kolien a bez zvárania. Menšie dimenzie radu ešte tesnejšie.`,
       pozn: 'Polomer platí pre os potrubia. Najmenší polomer každej dimenzie je v tabuľke variantov.',
       kota: 'najmenší polomer ohybu',
       alt: (model: string, polomer: string) => `Potrubie ${model} ohnuté do oblúka s polomerom ${polomer} m`,
@@ -403,7 +402,6 @@ const cs: typeof sk = {
     ohyb: {
       h2: 'Ohne se kolem překážky.',
       domov: 'Microflex se ohýbá přímo ve výkopu, bez kolen a bez svařování. DUO 2 × 32 mm v plášti 160 mm zvládne oblouk o poloměru 0,60 m, menší pláště ještě těsnější: UNO v plášti 75 mm od 0,20 m.',
-      rad: (model: string, rury: string, plast: number, polomer: string) => `${model} ${rury} v plášti ${plast} mm se ohne do oblouku o poloměru ${polomer} m přímo ve výkopu, bez kolen a bez svařování. Menší dimenze řady ještě těsněji.`,
       pozn: 'Poloměr platí pro osu potrubí. Nejmenší poloměr každé dimenze je v tabulce variant.',
       kota: 'nejmenší poloměr ohybu',
       alt: (model: string, polomer: string) => `Potrubí ${model} ohnuté do oblouku o poloměru ${polomer} m`,

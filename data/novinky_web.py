@@ -212,8 +212,13 @@ def dokoncena(skupina, rad, snimky):
     return (bool(casy) and max(casy) + 60 >= posledna) or time.time() - posledna > 1800
 
 
+# Ohyb je na webe len na domove: sekvencia ukazuje jednu dimenziu, nie celý rad (Juraj 28. 10.). Rendery ostatných
+# radov ostávajú pre reklamu (data/reklama.py berie ich priamo z data/_3d/web/ohyb).
+OHYB_WEB = ["microflex-duo-6-bar"]
+
+
 def ohyb():
-    for rad in RADY12:
+    for rad in OHYB_WEB:
         vstup = WEB3D / "ohyb" / rad
         if not (vstup / "ohyb.json").exists():
             continue

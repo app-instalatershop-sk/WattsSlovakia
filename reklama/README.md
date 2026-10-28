@@ -12,7 +12,7 @@ plné rozlíšenie.
 | `02-rady-na-bielom/` | celé potrubie každého z 12 radov | 3000 × 2000 px, JPG | letáky, ponuky, prezentácie, bannery s bielym pozadím |
 | `03-vyrezy-png/` | priehľadné PNG v plnom rozlíšení renderu, s tieňom: hero DUO, rodina šiestich systémov, kotúč 100 m, hlavy a telá radov, dimenzie v mierke, makrá materiálov | 2400 až 5200 px | grafik ich dá na akékoľvek pozadie: billboard, roll-up, veľtržný stánok, reklama v časopise |
 | `04-teplo/` | rez ako na termokamere (príklad prevádzky), priehľadné aj na tmavomodrom pozadí | 3000 × 2400 px | technické prezentácie, sociálne siete, porovnanie izolácie |
-| `05-ohyb/` | rúra ohnutá na najmenší polomer z katalógu pre každý rad | 2400 × 2000 px | „ohne sa okolo prekážky“: reklama, veľtrh, sociálne siete |
+| `05-ohyb/` | jedna dimenzia každého radu ohnutá na svoj najmenší polomer z katalógu (polomer platí len pre túto dimenziu) | 2400 × 2000 px | „ohne sa okolo prekážky“: reklama, veľtrh, sociálne siete |
 | `06-videa/` | slučky MP4 bez zvuku: rozložený rez a ohyb každého radu, odvaľovanie kotúča | 16:9 (1920 × 1080) a 1:1 (1080 × 1080), rozložený rez aj 9:16 (1080 × 1920) | 16:9 web, YouTube a prezentácie; 1:1 príspevky na Facebook, Instagram a LinkedIn; 9:16 stories a reels |
 
 ## Dobré vedieť

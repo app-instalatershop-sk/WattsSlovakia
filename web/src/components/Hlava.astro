@@ -118,7 +118,7 @@ const leskMaska = rozlozenie === 'studio' && zdrojMasky && zdrojMasky.format !==
   /* Hlava ani jej obsah netvoria vlastnú vrstvu (bez z-index na .hlava a .hlava-in): obraz s kladným
      z-index leží nad telom stránky a biely obraz sa násobí s tým, čo je pod ním, aj pod šikmou hranou.
      Inak by z bieleho pozadia fotky ostal biely obdĺžnik. Hrana (z-index 1) je pod textom aj obrazom. */
-  .hlava::after { content: ""; position: absolute; z-index: 1; left: 0; right: 0; bottom: 0; height: var(--presah-hero); background: var(--zem-1); clip-path: polygon(0 100%, 100% 0, 100% 100%); pointer-events: none; }
+  .hlava::after { content: ""; position: absolute; z-index: 1; left: 0; right: 0; bottom: 0; height: var(--presah-hero); background: var(--zem-1); -webkit-mask: var(--hrana-ohyb) center / 100% 100% no-repeat; mask: var(--hrana-ohyb) center / 100% 100% no-repeat; pointer-events: none; }
   .hlava-bez { min-height: 0; padding-top: 8px; }
   .hlava-in { position: relative; width: 100%; display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: 24px 40px; align-items: center; }
   .hlava-bez .hlava-in { grid-template-columns: minmax(0, 1fr); }

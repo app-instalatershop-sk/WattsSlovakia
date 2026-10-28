@@ -400,6 +400,11 @@ len vodorovne (`overflow-x: clip`), zvislo nie, takže tieň rúry mäkko dopadn
 ostrá hrana. Kružnice za rezom doznejú ešte nad šikmou hranou, cez pás neprechádzajú (Juraj 23. 9.:
 „sivé kruhy prelínajú šikmú vrstvu, robí to sivý tieň a odrezanie“).
 
+Tvar šikmých hrán (Juraj 28. 10. 2026, variant „ohyb“): všetky štyri (pás katalógu, podzemie, spodok hlavy
+vnútorných stránok, záver) stúpajú zľava doprava, ale nie rovno: hrana sa ohne ako rúra v oblúku, ako hlavná
+vlastnosť výrobku. Jeden tvar pre všetky, `--hrana-ohyb` v `global.css` (maska pásu výšky hrany). Súmerný
+oblúk ani vlnky nie: vlnky sú znak šablónových webov a oblúk sa nehodí k fotke, ktorá hranu pretína.
+
 Navigácia po stránke s číslami kapitol (obsah v hero, čísla nad nadpismi, koľajnica pri okraji) bola
 23. 9. skúsená a zrušená: Juraj nemyslel skutočnú navigáciu, ale aby stránka oko viedla nadol
 vizuálne. Pri nejasnom zadaní sa pýtať.

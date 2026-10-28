@@ -44,7 +44,9 @@ const alt = lang === 'cs' ? 'Kotouče potrubí Microflex připravené na stavbě
   /* overflow-x: clip: fotka dobieha vpravo cez --bleed, ktorá ráta so 100vw aj s posuvníkom; bez orezania
      by stránka na počítači mala vodorovný posuvník. Hore fotka cez šikmú hranu vystupuje ďalej. */
   .zaver { --sikmina: var(--sikmina-zaver); position: relative; z-index: 1; overflow-x: clip; margin-top: calc(-1 * var(--sikmina)); margin-bottom: -96px; padding: calc(var(--sikmina) + 40px) 0 112px; color: #fff; }
-  .zaver::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, #0e3676 0%, var(--color-blue-900) 55%, #0c3272 100%); clip-path: polygon(0 var(--sikmina), 100% 0, 100% 100%, 0 100%); }
+  .zaver::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, #0e3676 0%, var(--color-blue-900) 55%, #0c3272 100%);
+    -webkit-mask: var(--hrana-ohyb) left top / 100% var(--sikmina) no-repeat, linear-gradient(#000 0 0) left var(--sikmina) / 100% 100% no-repeat;
+    mask: var(--hrana-ohyb) left top / 100% var(--sikmina) no-repeat, linear-gradient(#000 0 0) left var(--sikmina) / 100% 100% no-repeat; }
   .zaver-in { position: relative; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 32px 56px; align-items: end; }
   .zaver h2 { color: #fff; font-size: clamp(28px, 1.8vw + 16px, 42px); line-height: 1.08; letter-spacing: -0.02em; max-width: 12em; }
   .zaver .lead { color: var(--color-on-dark-muted); margin-top: 16px; }

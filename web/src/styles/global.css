@@ -57,6 +57,9 @@
     --zem-4: #cddff2;
     /* Výška šikmej hrany tmavého záveru a podzemia. */
     --sikmina-zaver: clamp(28px, 5vw, 96px);
+    /* Tvar šikmých hrán (Juraj 28. 10., variant „ohyb“): stúpa zľava doprava, ale nie rovno, ohne sa ako rúra
+       v oblúku. Maska pásu výšky hrany (roztiahne sa na šírku a výšku), plocha pod ňou je celá. */
+    --hrana-ohyb: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 10' preserveAspectRatio='none'%3E%3Cpath d='M0 10C45 10 72 6 100 0V10Z'/%3E%3C/svg%3E");
     --hdr-h: 76px;
     /* Hĺbka v štyroch úrovniach, svetlo vždy zhora, tieň tónovaný do tmavomodrej (DOLADENIE, A1).
        Obrysy (inset, prstence), kontaktná čiara 0 1px 0 a žltá žiara tlačidla ostávajú pri prvku. */
@@ -111,7 +114,8 @@
   }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
-    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+    /* aj bez oneskorenia: kóty v úvode by inak pri obmedzenom pohybe čakali 1,5 s */
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; transition-delay: 0ms !important; }
     ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
   }
 }

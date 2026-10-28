@@ -137,7 +137,9 @@ const dielSkupiny = (r: Rad) => fotkaProduktu(TYPICKY[r.id] ?? '') ?? r.produkty
      zhora prechádza cez švík do bielej sekcie pod ním. */
   .katalog { position: relative; isolation: isolate; margin-top: calc(-1 * var(--presah-hero)); padding-top: calc(var(--presah-hero) + 84px); padding-bottom: 200px; scroll-margin-top: calc(72px - var(--presah-hero)); overflow-x: clip; }
   /* Pás siaha o 1 px pod sekciu: pri zlomkovej výške by medzi ním a rodinou ostala svetlá vlasová škára. */
-  .katalog::before { content: ""; position: absolute; inset: 0 0 -1px; z-index: -1; background: linear-gradient(180deg, var(--zem-1) 0%, var(--zem-2) 100%); clip-path: polygon(0 var(--presah-hero), 100% 0, 100% 100%, 0 100%); }
+  .katalog::before { content: ""; position: absolute; inset: 0 0 -1px; z-index: -1; background: linear-gradient(180deg, var(--zem-1) 0%, var(--zem-2) 100%);
+    -webkit-mask: var(--hrana-ohyb) left top / 100% var(--presah-hero) no-repeat, linear-gradient(#000 0 0) left var(--presah-hero) / 100% 100% no-repeat;
+    mask: var(--hrana-ohyb) left top / 100% var(--presah-hero) no-repeat, linear-gradient(#000 0 0) left var(--presah-hero) / 100% 100% no-repeat; }
   .katalog h2 { font-size: clamp(28px, 2.2vw + 14px, 42px); margin-bottom: 32px; }
 
   /* Dva stĺpce na mriežke 7 / 5. Panely sú podmriežka cez celú šírku, takže popis vybranej kategórie

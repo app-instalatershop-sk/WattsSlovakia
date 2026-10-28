@@ -455,7 +455,9 @@ const popisy = heroVariant && heroRad ? [
   /* ---------- Podzemie: referencie a pre firmy na tmavom, šikmá horná hrana ---------- */
   .podzemie { --sikmina: clamp(28px, 5vw, 96px); position: relative; overflow-x: clip; margin-top: calc(-1 * var(--sikmina)); padding-top: calc(var(--sikmina) + 8px); margin-bottom: -96px; padding-bottom: 112px; color: #fff; }
   /* Spodok končí farbou, ktorou začína pätička, aby medzi nimi nebol schod. */
-  .podzemie::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, #0e3676 0%, var(--color-blue-900) 38%, #0b2d66 78%, #0c3272 100%); clip-path: polygon(0 var(--sikmina), 100% 0, 100% 100%, 0 100%); }
+  .podzemie::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, #0e3676 0%, var(--color-blue-900) 38%, #0b2d66 78%, #0c3272 100%);
+    -webkit-mask: var(--hrana-ohyb) left top / 100% var(--sikmina) no-repeat, linear-gradient(#000 0 0) left var(--sikmina) / 100% 100% no-repeat;
+    mask: var(--hrana-ohyb) left top / 100% var(--sikmina) no-repeat, linear-gradient(#000 0 0) left var(--sikmina) / 100% 100% no-repeat; }
   .podzemie h2 { color: #fff; }
   .podzemie a:not(.btn) { color: #fff; }
   .podzemie a:not(.btn):hover { color: var(--color-yellow-500); }

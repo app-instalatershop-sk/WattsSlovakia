@@ -1,0 +1,129 @@
+---
+/**
+ * Všetky dimenzie radu v skutočnom pomere veľkostí (Juraj 28. 10. 2026): render „rodina“ so zoznamom variantov
+ * radu, rezy v jednej rovine, dlhý objektív (data/blender/davka.py web_mierka, data/novinky_web.py mierka).
+ * Prepojené s tabuľkou variantov: rez pod myšou zvýrazní riadok tabuľky (podľa id = kotvaKodu obj. čísla)
+ * a riadok pod myšou alebo v ohnisku zvýrazní svoj rez. Štítok nad rezom ukáže plášť a rúry.
+ */
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { kotvaKodu } from '../lib/katalog';
+import type { SystemyData } from '../lib/obrazky';
+
+interface Props { data: SystemyData; obraz: ImageMetadata; stitky: Record<string, [string, string]>; nadpis: string; popis: string; alt: string }
+const { data, obraz, stitky, nadpis, popis, alt } = Astro.props;
+const [w1, w2] = await Promise.all([1200, 2000].map((width) => getImage({ src: obraz, width, format: 'webp', quality: 86 })));
+const svetlo = w2.src;
+---
+<figure class="mierka" data-mierka data-cesta={data.cesta} data-krok={data.krok}>
+  <figcaption class="mi-hlava"><strong>{nadpis}</strong> <span>{popis}</span></figcaption>
+  <div class="mi-obal">
+  <div class="mi-stage" style={`aspect-ratio: ${data.pomer}`}>
+    <img class="mi-zaklad" src={w2.src} srcset={`${w1.src} 1200w, ${w2.src} 2000w`} sizes="(max-width: 1300px) 100vw, 1240px" alt={alt} width="2000" height={Math.round(2000 / data.pomer)} loading="lazy" decoding="async" />
+    <img class="mi-svetlo" src={svetlo} alt="" aria-hidden="true" loading="lazy" decoding="async" />
+    {data.systemy.map((s, k) => (
+      <p class="mi-stitok" data-k={k} data-kotva={kotvaKodu(s.obj)} style={`--x: ${s.bod[0]}%; --y: ${s.bod[1]}%`} hidden>
+        <strong>{stitky[s.obj]?.[0]}</strong><span>{stitky[s.obj]?.[1]}</span>
+      </p>
+    ))}
+  </div>
+  </div>
+</figure>
+
+<style>
+  .mierka { margin: 0 0 28px; }
+  .mi-hlava { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; margin-bottom: 10px; }
+  .mi-hlava strong { font-family: var(--font-display); font-size: 18px; color: var(--color-blue-900); }
+  .mi-hlava span { font-size: 15px; color: var(--color-ink-soft); }
+  .mi-obal { padding-top: 34px; }   /* miesto pre štítok nad najvyšším rezom */
+  .mi-stage { position: relative; width: 100%; }
+  /* Telefón: rad dimenzií by bol pár desiatok pixelov vysoký; dá sa ním posúvať do strany. */
+  @media (max-width: 760px) {
+    .mi-obal { overflow-x: auto; margin-inline: calc(-1 * var(--gutter)); padding: 34px var(--gutter) 6px; scrollbar-width: thin; }
+    .mi-stage { min-width: 760px; }
+  }
+  .mi-stage img { position: absolute; inset: 0; width: 100%; height: 100%; -webkit-mask-size: 100% 100%; mask-size: 100% 100%; }
+  .mi-zaklad { transition: filter 220ms var(--ease-soft); }
+  .mi-svetlo { opacity: 0; pointer-events: none; transition: opacity 220ms var(--ease-soft); }
+  .mierka.je-vyber .mi-zaklad { filter: saturate(0.35) brightness(0.88) contrast(0.92); }
+  .mierka.je-vyber .mi-svetlo { opacity: 1; }
+  .mi-stitok { position: absolute; z-index: 2; left: var(--x); top: var(--y); transform: translate(-50%, calc(-100% - 12px)); display: grid; justify-items: center; gap: 1px;
+    margin: 0; padding: 6px 11px; border-radius: var(--radius-m); background: rgb(255 255 255 / 0.94); box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.08), var(--elev-2); white-space: nowrap; pointer-events: none; }
+  .mi-stitok strong { font-family: var(--font-display); font-stretch: 112%; font-weight: 600; font-size: 16px; color: var(--color-blue-900); font-variant-numeric: tabular-nums; }
+  .mi-stitok span { font-size: 13px; color: #3f4b5e; }
+  /* riadok tabuľky zvýraznený z rezu (TabulkaVariantov) */
+  :global(tr.je-mierka > td) { background: rgb(247 181 28 / 0.16); }
+  @media (prefers-reduced-motion: reduce) { .mi-zaklad, .mi-svetlo { transition: none; } }
+</style>
+
+<script>
+  function initMierka() {
+    document.querySelectorAll<HTMLElement>('[data-mierka]:not([data-on])').forEach((sek) => {
+      sek.dataset.on = '1';
+      const stage = sek.querySelector<HTMLElement>('.mi-stage')!;
+      const svetlo = sek.querySelector<HTMLImageElement>('.mi-svetlo')!;
+      const stitky = [...sek.querySelectorAll<HTMLElement>('.mi-stitok')];
+      const cesta = sek.dataset.cesta!;
+      const krok = Number(sek.dataset.krok);
+      const riadok = (k: number) => (k >= 0 ? document.getElementById(stitky[k].dataset.kotva!) : null);
+      let aktivny = -1;
+      const ukaz = (k: number) => {
+        if (k === aktivny) return;
+        riadok(aktivny)?.classList.remove('je-mierka');
+        aktivny = k;
+        if (k >= 0) {
+          const maska = `url(${cesta}maska-${k}.webp)`;
+          svetlo.style.setProperty('-webkit-mask-image', maska);
+          svetlo.style.setProperty('mask-image', maska);
+        }
+        sek.classList.toggle('je-vyber', k >= 0);
+        stitky.forEach((s, i) => { s.hidden = i !== k; });
+        riadok(k)?.classList.add('je-mierka');
+      };
+      const platno = document.createElement('canvas');
+      let data: Uint8ClampedArray | undefined;
+      const mapa = new Image();
+      mapa.onload = () => {
+        platno.width = mapa.naturalWidth; platno.height = mapa.naturalHeight;
+        const ctx = platno.getContext('2d', { willReadFrequently: true })!;
+        ctx.drawImage(mapa, 0, 0);
+        data = ctx.getImageData(0, 0, platno.width, platno.height).data;
+      };
+      const io = new IntersectionObserver((z) => {
+        if (!z.some((e) => e.isIntersecting)) return;
+        io.disconnect();
+        mapa.src = `${cesta}mapa.png`;
+        stitky.forEach((_, k) => { new Image().src = `${cesta}maska-${k}.webp`; });
+      }, { rootMargin: '50% 0px' });
+      io.observe(sek);
+      const index = (e: MouseEvent) => {
+        if (!data) return -1;
+        const r = stage.getBoundingClientRect();
+        const x = Math.floor(((e.clientX - r.left) / r.width) * platno.width);
+        const y = Math.floor(((e.clientY - r.top) / r.height) * platno.height);
+        if (x < 0 || y < 0 || x >= platno.width || y >= platno.height) return -1;
+        const v = data[(y * platno.width + x) * 4];
+        return v ? Math.round(v / krok) - 1 : -1;
+      };
+      stage.addEventListener('pointermove', (e) => { const k = index(e); ukaz(k); stage.style.cursor = k >= 0 ? 'pointer' : ''; });
+      stage.addEventListener('pointerleave', () => ukaz(-1));
+      stage.addEventListener('click', (e) => {
+        const k = index(e);
+        if (k < 0) return;
+        const r = riadok(k);
+        if (r && !r.hidden) r.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
+      });
+      // Riadky tabuľky variantov: myš, ohnisko aj dotyk zvýraznia rez.
+      stitky.forEach((s, k) => {
+        const r = document.getElementById(s.dataset.kotva!);
+        if (!r) return;
+        r.addEventListener('pointerenter', () => ukaz(k));
+        r.addEventListener('pointerleave', () => ukaz(-1));
+        r.addEventListener('focusin', () => ukaz(k));
+        r.addEventListener('focusout', () => ukaz(-1));
+      });
+    });
+  }
+  initMierka();
+  document.addEventListener('astro:page-load', initMierka);
+</script>

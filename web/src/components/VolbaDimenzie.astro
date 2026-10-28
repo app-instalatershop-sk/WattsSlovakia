@@ -336,6 +336,9 @@ const maPlast = skupiny.some((g) => g.vs.length > 1);
         cta.setAttribute('href', v ? `#${v.kotva}` : ctaHref);
         if (ctaText) ctaText.textContent = v ? data.detail : data.vybrat;
       }
+      // Teplo v reze (TeploVrstva) a ďalšie vrstvy nad obrazom počúvajú zvolený variant.
+      koren.dataset.aktivny = v?.obj ?? '';
+      document.dispatchEvent(new CustomEvent('mfx:variant', { detail: { obj: v?.obj ?? null, animuj: opts.animuj } }));
       // Adresa so zvoleným variantom (bez nového záznamu v histórii, stav prechodov ostane).
       const url = new URL(location.href);
       if (v) url.searchParams.set('obj', v.obj); else url.searchParams.delete('obj');

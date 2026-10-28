@@ -19,10 +19,13 @@ const tx = {
   sk: { poradna: 'Poradňa', obsah: 'V článku', zdroj: 'Zdroj', katalog: (s: string) => `Katalóg Watts Microflex, s. ${s}`, citanie: (n: number) => `${n} min čítania`, suvisiace: 'Ďalej', dalsie: 'Ďalšie články' },
   cs: { poradna: 'Poradna', obsah: 'V článku', zdroj: 'Zdroj', katalog: (s: string) => `Katalog Watts Microflex, s. ${s}`, citanie: (n: number) => `${n} min čtení`, suvisiace: 'Dále', dalsie: 'Další články' },
 }[lang];
-const obraz = (c.obraz === 'rodina-potrubi.png' ? render3d('rodina', 'rodina') : undefined) ?? fotka(c.obraz);
+// Rendery 3D modelu namiesto fotiek s bielou plochou: rodina systémov a kotúč (Juraj 28. 10. 2026; fotka kotúča
+// v ráme pôsobila ako nedokončený výrez).
+const render = c.obraz === 'rodina-potrubi.png' ? render3d('rodina', 'rodina') : c.obraz === 'kotuc.jpg' ? render3d('kotuc', 'kotuc-clanok') ?? render3d('kotuc', 'kotuc') : undefined;
+const obraz = render ?? fotka(c.obraz);
 // Obrázky s bielym pozadím (render rezu, kotúč) sa násobia do poľa hlavy; v zaoblenom ráme fotky by
 // biela časť kotúča vyzerala ako prázdny výrez.
-const druh = c.obraz.endsWith('.png') ? 'render' : c.obraz === 'rez-render.jpg' || c.obraz === 'kotuc.jpg' ? 'biely' : 'foto';
+const druh = render || c.obraz.endsWith('.png') ? 'render' : c.obraz === 'rez-render.jpg' || c.obraz === 'kotuc.jpg' ? 'biely' : 'foto';
 const id = (h: string) => h.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 const ostatne = clanky(lang).filter((x) => x.slug !== c.slug);
 const drobceky = [{ text: tx.poradna, href: route(lang, 'poradna') }, { text: c.nazov }];

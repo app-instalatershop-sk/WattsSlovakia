@@ -9,6 +9,8 @@ import Base from '../layouts/Base.astro';
 import Hlava from '../components/Hlava.astro';
 import Zaver from '../components/Zaver.astro';
 import Ikona from '../components/Ikona.astro';
+import RodinaVyber from '../components/RodinaVyber.astro';
+import { rodinaNaTuknutie } from '../lib/novinky';
 import { kategorie, cestaKategorie, cestaRadu, kNazov, kKratky, kPopis, rNazov, rMedium, cislo, rozsah, rozsahRur, tlakyRadov, tlakText, type Kategoria, type Rad, type Variant } from '../lib/katalog';
 import { obrazPiktogramu, je3d, fotka, render3d } from '../lib/obrazky';
 import { sadzba } from '../lib/sadzba';
@@ -26,7 +28,10 @@ const rady = (await getCollection('rady')).map((r) => r.data).sort((a, b) => a.p
 const varianty = (await getCollection('varianty')).map((v) => v.data);
 const produkty = (await getCollection('produkty')).map((p) => p.data);
 // Rodina systémov z vlastného 3D modelu (data/blender), kým nie je, render Watts.
-const rodina = render3d('rodina', 'rodina') ?? fotka('rodina-potrubi.png')!;
+const rodina3d = render3d('rodina', 'rodina');
+const rodina = rodina3d ?? fotka('rodina-potrubi.png')!;
+// Rodina na ťuknutie (Juraj 28. 10. 2026): systém pod myšou alebo prstom sa zvýrazní a ukáže štítok s odkazom.
+const rodinaTuk = rodina3d ? await rodinaNaTuknutie(rady, rodina3d, lang) : null;
 const obrazDielov: Record<string, string> = { spojky: 'montaz-odbocka.jpg', prislusenstvo: 'montaz-koleno.jpg' };
 
 const radyKat = (k: Kategoria) => rady.filter((r) => r.kategoria === k.id);
@@ -66,6 +71,8 @@ const produktySkupiny = (id: string) => produkty.filter((p) => p.skupina === id)
 ---
 <Base lang={lang} alternates={staticAlternates('potrubia')} title={ui.potrubia.title} description={ui.potrubia.description} aktivna="potrubia" drobceky={[{ text: ui.nav.potrubia }]} vizualneDrobceky={false}>
   <Hlava lang={lang} nadpis={ui.potrubia.title} drobceky={[{ text: ui.nav.potrubia }]} lead={ui.potrubia.lead} obraz={rodina} obrazAlt={ui.potrubia.rodinaAlt} obrazMax={1100} rozlozenie="studio" dozvenie="vpravo">
+    {rodinaTuk && <RodinaVyber slot="na-obraze" data={rodinaTuk.data} obraz={rodinaTuk.svetlo} systemy={rodinaTuk.systemy} label={ui.novinky.rodina.systemy} pozriet={ui.novinky.rodina.pozriet} />}
+    {rodinaTuk && <p class="rodina-hint">{ui.novinky.rodina.hint}</p>}
     <div class="hlava-akcie">
       <a class="btn btn-yellow btn-lg" href={route(lang, 'vyber')}>{tx.sprievodca} <Ikona nazov="arrow-right" velkost={18} /></a>
       <a class="odkaz" href={KATALOG_PDF} target="_blank" rel="noopener">{tx.katalog} <Ikona nazov="download" velkost={16} /></a>
@@ -146,6 +153,7 @@ const produktySkupiny = (id: string) => produkty.filter((p) => p.skupina === id)
 </Base>
 
 <style>
+  .rodina-hint { margin-top: 10px; font-size: 14px; color: var(--color-ink-soft); }
   /* Systémy hadovito: render striedavo vľavo a vpravo, text na opačnej strane. */
   .systemy { display: flex; flex-direction: column; gap: 8px; }
   .sys { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 16px 64px; align-items: center; }

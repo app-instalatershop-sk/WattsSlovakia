@@ -9,8 +9,12 @@ import Scena from '../components/Scena.astro';
 import { referencie } from '../content/referencie';
 import type { Kota } from '../lib/koty';
 import { kategorie, cislo, rozsah } from '../lib/katalog';
-import { fotka, fotkaReferencie, render3d, maska3d, rozkladRadu, makroRury } from '../lib/obrazky';
+import { fotka, fotkaReferencie, render3d, maska3d, rozkladRadu, makroRury, ohybRadu, kotuc as kotucData } from '../lib/obrazky';
 import Rozklad from '../components/Rozklad.astro';
+import Ohyb from '../components/Ohyb.astro';
+import RodinaVyber from '../components/RodinaVyber.astro';
+import KotucSekvencia from '../components/KotucSekvencia.astro';
+import { rodinaNaTuknutie } from '../lib/novinky';
 import { stranky } from '../content/stranky';
 import rendery from '../data/rendery.json';
 import { sadzba } from '../lib/sadzba';
@@ -45,6 +49,11 @@ const heroBody = hero3d ? (rendery.hero as Record<string, { plast?: number[]; ru
 const heroMaska = hero3d ? maska3d(hero3d) : undefined;
 const rodina3d = render3d('rodina', 'rodina');
 const rodina = rodina3d ?? fotka('rodina-potrubi.png')!;
+// Novinky z 3D modelu (Juraj 28. 10. 2026): rodina na ťuknutie a ohyb DUO na najmenší polomer.
+const nv = ui.novinky;
+const rodinaTuk = rodina3d ? await rodinaNaTuknutie(rady, rodina3d, lang) : null;
+const ohybDomov = ohybRadu('microflex-duo-6-bar');
+const odvalenie = kotucData()?.odvalenie;
 const kotuc = fotka('kotuc.jpg')!;
 // Rez výkopom s dvomi potrubiami (render z katalógu Watts): obraz trasy pre kartu konfigurátora.
 const trasa = fotka('vykop-rez.jpg')!;
@@ -122,9 +131,13 @@ const popisy = [
       <div class="rodina-text">
         <h2 id="h-rodina">{h.rodinaH2}</h2>
         <p class="lead">{sadzba(h.rodinaP)}</p>
+        {rodinaTuk && <p class="rodina-hint">{nv.rodina.hint}</p>}
       </div>
       <div class:list={['rodina-obraz', { je3d: rodina3d }]}>
-        <div class="rodina-wrap"><Obraz src={rodina} alt={h.rodinaAlt} widths={[800, 1200, 1633]} sizes="(max-width: 1100px) 100vw, 64vw" class="rodina-img" /></div>
+        <div class="rodina-wrap">
+          <Obraz src={rodina} alt={h.rodinaAlt} widths={[800, 1200, 1633]} sizes="(max-width: 1100px) 100vw, 64vw" class="rodina-img" />
+          {rodinaTuk && <RodinaVyber data={rodinaTuk.data} obraz={rodinaTuk.svetlo} systemy={rodinaTuk.systemy} label={nv.rodina.systemy} pozriet={nv.rodina.pozriet} />}
+        </div>
       </div>
     </div>
   </section>
@@ -133,29 +146,53 @@ const popisy = [
       rozloží na plášť, penu a nosné rúry, pri každej vrstve kóta. Kým nie sú snímky, ostáva len rodina. */}
   {rozklad && <Rozklad class="rozklad-domov" data={rozklad} nadpis={tx.stavbaH2} popis={tx.stavbaP} vrstvy={vrstvyRozkladu} alt={tx.rozkladAlt('Microflex DUO')} label={h.lupyLabel} />}
 
-  <section class="section pokladka" aria-labelledby="h-pokladka">
-    {/* Fotka kotúča má čisto bielu plochu: násobením splynie s pásom a text sedí vo vnútri kotúča. */}
-    <div class="kotuc-obal">
-      <Obraz src={kotuc} alt={h.pokladkaAlt} widths={[900, 1400, 2000]} sizes="(max-width: 760px) 120vw, 76vw" class="kotuc" />
-    </div>
-    <div class="wrap pokladka-grid">
-      <div class="pokladka-text">
-        <h2 id="h-pokladka">{h.pokladkaH2}</h2>
-        <p class="lead">{sadzba(h.pokladkaP)}</p>
-        <div class="kroky-obal" data-rozvin>
-          <span class="k-rura" aria-hidden="true"></span>
-          <ol class="kroky" aria-label={h.krokyLabel}>
-            {h.kroky.map(([nazov, text], i) => (
-              <li><span class="k-cislo" aria-hidden="true">{i + 1}</span><h3>{nazov}</h3><p>{sadzba(text)}</p></li>
-            ))}
-          </ol>
+  {/* Ohyb (Juraj 28. 10. 2026): dôkaz hlavnej vety, že potrubie sa ohne okolo prekážky; medzi stavbou
+      potrubia a pokládkou: z čoho je, ako sa ohne, ako sa kladie. */}
+  {ohybDomov && <Ohyb data={ohybDomov} class="ohyb-domov" nadpis={nv.ohyb.h2} popis={nv.ohyb.domov} poznamka={nv.ohyb.pozn} alt={nv.ohyb.alt('Microflex DUO', '0,60')} kota={nv.ohyb.kota} />}
+
+  <section class:list={['section pokladka', { 'ma-kotuc': odvalenie }]} aria-labelledby="h-pokladka">
+    {odvalenie ? (
+      /* Kotúč z 3D modelu sa pri rolovaní odvaľuje cez celú šírku a pod ním sa rozsvecujú kroky pokládky
+         (Juraj 28. 10. 2026, namiesto fotky kotúča a rastúcej čiary). */
+      <>
+        <div class="wrap pk-hlava">
+          <h2 id="h-pokladka">{h.pokladkaH2}</h2>
+          <p class="lead">{sadzba(h.pokladkaP)}</p>
         </div>
-        <div class="pokladka-pata">
-          <p class="zataz"><strong>{h.zataz[0]}</strong><span>{sadzba(h.zataz[1])}</span></p>
-          <p class="zdroj">{h.pokladkaZdroj} <a href={`${KATALOG_PDF}#page=37`} target="_blank" rel="noopener">{h.pokladkaOdkaz} <Ikona nazov="arrow-up-right" velkost={14} /></a></p>
+        <KotucSekvencia data={odvalenie} texty={{ priemer: nv.kotuc.priemer, ostava: nv.kotuc.ostava, label: nv.kotuc.label }} celo={['2 × 25 mm', 'DUO v plášti 125 mm']} alt={nv.kotuc.alt} kroky={h.kroky} krokyLabel={h.krokyLabel} />
+        <div class="wrap">
+          <div class="pokladka-pata">
+            <p class="zataz"><strong>{h.zataz[0]}</strong><span>{sadzba(h.zataz[1])}</span></p>
+            <p class="zdroj">{h.pokladkaZdroj} <a href={`${KATALOG_PDF}#page=37`} target="_blank" rel="noopener">{h.pokladkaOdkaz} <Ikona nazov="arrow-up-right" velkost={14} /></a></p>
+          </div>
         </div>
-      </div>
-    </div>
+      </>
+    ) : (
+      <>
+        {/* Fotka kotúča má čisto bielu plochu: násobením splynie s pásom a text sedí vo vnútri kotúča. */}
+        <div class="kotuc-obal">
+          <Obraz src={kotuc} alt={h.pokladkaAlt} widths={[900, 1400, 2000]} sizes="(max-width: 760px) 120vw, 76vw" class="kotuc" />
+        </div>
+        <div class="wrap pokladka-grid">
+          <div class="pokladka-text">
+            <h2 id="h-pokladka">{h.pokladkaH2}</h2>
+            <p class="lead">{sadzba(h.pokladkaP)}</p>
+            <div class="kroky-obal" data-rozvin>
+              <span class="k-rura" aria-hidden="true"></span>
+              <ol class="kroky" aria-label={h.krokyLabel}>
+                {h.kroky.map(([nazov, text], i) => (
+                  <li><span class="k-cislo" aria-hidden="true">{i + 1}</span><h3>{nazov}</h3><p>{sadzba(text)}</p></li>
+                ))}
+              </ol>
+            </div>
+            <div class="pokladka-pata">
+              <p class="zataz"><strong>{h.zataz[0]}</strong><span>{sadzba(h.zataz[1])}</span></p>
+              <p class="zdroj">{h.pokladkaZdroj} <a href={`${KATALOG_PDF}#page=37`} target="_blank" rel="noopener">{h.pokladkaOdkaz} <Ikona nazov="arrow-up-right" velkost={14} /></a></p>
+            </div>
+          </div>
+        </div>
+      </>
+    )}
   </section>
 
   {/* Podzemie: posledný úsek stránky je tmavý ako zem, do ktorej potrubie ide. Fotka prvého
@@ -347,7 +384,9 @@ const popisy = [
   .rodina-text .lead { max-width: 30em; }
   /* Render je veľký a vždy dobehne za pravý okraj obrazovky, aj na širokom monitore. */
   .rodina-obraz { width: max(146%, calc(104% + var(--bleed) + 24px)); max-width: none; margin: -196px 0 0 -4%; position: relative; z-index: 2; }
-  .rodina-wrap { filter: drop-shadow(0 28px 36px rgb(11 27 51 / 0.2)); }
+  .rodina-wrap { position: relative; filter: drop-shadow(0 28px 36px rgb(11 27 51 / 0.2)); }
+  .rodina-hint { margin-top: 12px; font-size: 14px; color: var(--color-ink-soft); }
+  :global(.ohyb.ohyb-domov) { background: var(--zem-3); }
   .rodina-wrap :global(.rodina-img) { width: 100%; height: auto; display: block; -webkit-mask-image: linear-gradient(to top right, #000 66%, transparent 97%); mask-image: linear-gradient(to top right, #000 66%, transparent 97%); }
   /* Rodina z 3D modelu: celé telá a vlastný kontaktný tieň, bez doznenia a bez tieňa z CSS. Na počítači
      sa zmestí celá (text menuje aj COOL a HP, tie by za okrajom chýbali), vpravo do okraja obrazovky. */
@@ -378,6 +417,11 @@ const popisy = [
   }
   @keyframes kotuc-otacaj { from { rotate: -4deg; } to { rotate: 3deg; } }
   .pokladka-grid { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 24px; }
+  .pk-hlava h2 { font-size: clamp(32px, 3vw + 12px, 58px); line-height: 1.04; letter-spacing: -0.03em; max-width: 11em; }
+  .pk-hlava .lead { margin-top: 18px; max-width: 40em; }
+  /* clip namiesto hidden: hidden by vypol lepkavý obraz kotúča (sticky v KotucSekvencia) */
+  .pokladka.ma-kotuc { padding-top: 96px; overflow: clip; }
+  .pokladka.ma-kotuc .pokladka-pata { margin-top: 8px; }
   .pokladka-text { grid-column: 7 / 13; }
   .pokladka h2 { font-size: clamp(32px, 3vw + 12px, 58px); line-height: 1.04; letter-spacing: -0.03em; max-width: 11em; }
   .pokladka .lead { margin-top: 22px; max-width: 32em; }
@@ -466,6 +510,7 @@ const popisy = [
 
   /* ---------- Tablet ---------- */
   @media (max-width: 1100px) {
+    .pokladka.ma-kotuc { padding-top: 48px; }
     .hero-in { grid-template-columns: minmax(0, 46fr) minmax(0, 54fr); }
     .hero h1 { font-size: clamp(34px, 3.4vw + 10px, 50px); }
     .rodina-grid { grid-template-columns: 1fr; }

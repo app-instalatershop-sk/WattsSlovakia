@@ -189,6 +189,40 @@ const sk = {
     dimenzii: (n: number) => (n === 1 ? '1 dimenzia' : n >= 2 && n <= 4 ? `${n} dimenzie` : `${n} dimenzií`),
     radov: (n: number) => (n === 1 ? '1 rad' : n >= 2 && n <= 4 ? `${n} rady` : `${n} radov`),
   },
+  // Novinky z 3D modelu (Juraj 28. 10. 2026): ohyb, teplo v reze, dimenzie v mierke, rodina na ťuknutie, kotúč.
+  novinky: {
+    ohyb: {
+      h2: 'Ohne sa okolo prekážky.',
+      domov: 'Microflex sa ohýba priamo vo výkope, bez kolien a bez zvárania. DUO 2 × 32 mm v plášti 160 mm zvládne oblúk s polomerom 0,60 m, menšie plášte ešte tesnejší: UNO v plášti 75 mm od 0,20 m.',
+      rad: (model: string, rury: string, plast: number, polomer: string) => `${model} ${rury} v plášti ${plast} mm sa ohne do oblúka s polomerom ${polomer} m priamo vo výkope, bez kolien a bez zvárania. Menšie dimenzie radu ešte tesnejšie.`,
+      pozn: 'Polomer platí pre os potrubia. Najmenší polomer každej dimenzie je v tabuľke variantov.',
+      kota: 'najmenší polomer ohybu',
+      alt: (model: string, polomer: string) => `Potrubie ${model} ohnuté do oblúka s polomerom ${polomer} m`,
+    },
+    teplo: {
+      rezim: 'Zobrazenie', pohlad: 'Pohľad', teplota: 'Teplota',
+      priklad: 'Príklad prevádzky', poda: 'pôda', krytie: 'krytie 0,8 m',
+      sKatalogom: 'Teploty v reze sú výpočet, strata na meter je z katalógu výrobcu.',
+      bezStraty: 'Teploty v reze sú výpočet; stratu na meter pre tento rad katalóg neuvádza.',
+      plast: 'plášť', strata: (q: string) => `strata ${q} W/m`,
+      role: { privod: 'prívod', spiatocka: 'spiatočka', tepla: 'teplá voda', cirkulacia: 'cirkulácia', chlad: 'chladená voda' } as Record<string, string>,
+      alt: (model: string) => `${model}: teploty v reze ako na termokamere`,
+      stupnica: 'Stupnica teplôt',
+    },
+    mierka: {
+      h3: 'Všetky dimenzie v skutočnom pomere',
+      popis: 'Rezy stoja v jednej rovine ako na výkrese. Prejdite myšou po reze alebo po riadku tabuľky.',
+      alt: (model: string) => `Všetky dimenzie ${model} vedľa seba v skutočnom pomere veľkostí`,
+    },
+    rodina: { hint: 'Prejdite myšou alebo ťuknite na systém.', systemy: 'Systémy Microflex', pozriet: 'Pozrieť rad', plast: 'plášť', rura: 'rúra', rury: 'rúry' },
+    kotuc: {
+      priemer: 'priemer kotúča', sirka: 'šírka kotúča', vJednom: 'v jednom kuse', ostava: 'na kotúči ostáva',
+      vrstvy: (v: number, z: number) => `${v} vrstvy po ${z} závitoch`,
+      alt: 'Kotúč potrubia Microflex DUO sa odvaľuje pozdĺž ryhy, za ním ostáva položená rúra',
+      altZaber: 'Kotúč potrubia Microflex DUO, 100 m vo štyroch vrstvách so zelenými páskami a voľný koniec s rezom',
+      label: 'Rozmery kotúča',
+    },
+  },
 };
 
 const cs: typeof sk = {
@@ -364,6 +398,39 @@ const cs: typeof sk = {
     variantov: (n: number) => (n === 1 ? '1 varianta' : n >= 2 && n <= 4 ? `${n} varianty` : `${n} variant`),
     dimenzii: (n: number) => (n === 1 ? '1 dimenze' : n >= 2 && n <= 4 ? `${n} dimenze` : `${n} dimenzí`),
     radov: (n: number) => (n === 1 ? '1 řada' : n >= 2 && n <= 4 ? `${n} řady` : `${n} řad`),
+  },
+  novinky: {
+    ohyb: {
+      h2: 'Ohne se kolem překážky.',
+      domov: 'Microflex se ohýbá přímo ve výkopu, bez kolen a bez svařování. DUO 2 × 32 mm v plášti 160 mm zvládne oblouk o poloměru 0,60 m, menší pláště ještě těsnější: UNO v plášti 75 mm od 0,20 m.',
+      rad: (model: string, rury: string, plast: number, polomer: string) => `${model} ${rury} v plášti ${plast} mm se ohne do oblouku o poloměru ${polomer} m přímo ve výkopu, bez kolen a bez svařování. Menší dimenze řady ještě těsněji.`,
+      pozn: 'Poloměr platí pro osu potrubí. Nejmenší poloměr každé dimenze je v tabulce variant.',
+      kota: 'nejmenší poloměr ohybu',
+      alt: (model: string, polomer: string) => `Potrubí ${model} ohnuté do oblouku o poloměru ${polomer} m`,
+    },
+    teplo: {
+      rezim: 'Zobrazení', pohlad: 'Pohled', teplota: 'Teplota',
+      priklad: 'Příklad provozu', poda: 'půda', krytie: 'krytí 0,8 m',
+      sKatalogom: 'Teploty v řezu jsou výpočet, ztráta na metr je z katalogu výrobce.',
+      bezStraty: 'Teploty v řezu jsou výpočet; ztrátu na metr pro tuto řadu katalog neuvádí.',
+      plast: 'plášť', strata: (q: string) => `ztráta ${q} W/m`,
+      role: { privod: 'přívod', spiatocka: 'zpátečka', tepla: 'teplá voda', cirkulacia: 'cirkulace', chlad: 'chlazená voda' } as Record<string, string>,
+      alt: (model: string) => `${model}: teploty v řezu jako na termokameře`,
+      stupnica: 'Stupnice teplot',
+    },
+    mierka: {
+      h3: 'Všechny dimenze ve skutečném poměru',
+      popis: 'Řezy stojí v jedné rovině jako na výkresu. Přejeďte myší po řezu nebo po řádku tabulky.',
+      alt: (model: string) => `Všechny dimenze ${model} vedle sebe ve skutečném poměru velikostí`,
+    },
+    rodina: { hint: 'Přejeďte myší nebo ťukněte na systém.', systemy: 'Systémy Microflex', pozriet: 'Zobrazit řadu', plast: 'plášť', rura: 'trubka', rury: 'trubky' },
+    kotuc: {
+      priemer: 'průměr kotouče', sirka: 'šířka kotouče', vJednom: 'v jednom kuse', ostava: 'na kotouči zbývá',
+      vrstvy: (v: number, z: number) => `${v} vrstvy po ${z} závitech`,
+      alt: 'Kotouč potrubí Microflex DUO se odvaluje podél rýhy, za ním zůstává položená trubka',
+      altZaber: 'Kotouč potrubí Microflex DUO, 100 m ve čtyřech vrstvách se zelenými páskami a volný konec s řezem',
+      label: 'Rozměry kotouče',
+    },
   },
 };
 

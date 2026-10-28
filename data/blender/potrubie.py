@@ -2323,7 +2323,9 @@ def kotuc_body(k, D, cam):
     body = [(xc, yc, zc + rv), (xc - rv, yc, zc), (xc + rv, yc, zc), (xc, y0, zc + rv), (xc, y1, zc + rv)]
     u, v = premietni(cam, np.asarray(body, float) * MM)
     px = [[round(float((uu - sx + 0.5) * W), 1), round(float(H / 2 - (vv - sy) * W), 1)] for uu, vv in zip(u, v)]
-    return dict(zip(("vrch", "vlavo", "vpravo", "bok_blizko", "bok_daleko"), px))
+    out = dict(zip(("vrch", "vlavo", "vpravo", "bok_blizko", "bok_daleko"), px))
+    out["volny_m"] = k["volny_m"]
+    return out
 
 
 def ohyb_body(model, cam, faza):
@@ -2510,6 +2512,35 @@ def mat_plast_kotuc(D):
     return m
 
 
+def mat_plast_rovny(D):
+    """Rozvinutá rúra ďaleko od kamery: valec, vlny ako reliéf podľa svetovej súradnice x (rúra leží,
+    vlny ostávajú na mieste aj keď sa valec pri odvaľovaní kotúča predlžuje)."""
+    m, u = novy_material("plast_rovny")
+    P = PLAST["rozstup_a"] + PLAST["rozstup_b"] * D
+    geo = u.uzol("ShaderNodeNewGeometry")
+    sep = u.uzol("ShaderNodeSeparateXYZ", {"Vector": geo.outputs["Position"]})
+    f = u.math("ABSOLUTE", u.math("SUBTRACT", u.math("FRACT", u.math("MULTIPLY", sep.outputs["X"], 1000.0 / P)), 0.5))
+    vyska = u.rozsah(f, 0.30, 0.42, 1.0, 0.0, interp="SMOOTHSTEP")
+    bump = u.uzol("ShaderNodeBump", {"Strength": 1.0, "Distance": 0.035 * D * MM, "Height": vyska}).outputs["Normal"]
+    hruby = u.sum(u.mm(), 0.04, detail=2.0)
+    farba = u.mix_farba(u.rozsah(hruby, 0.2, 0.8, 0.0, 1.0), (*[c * 0.88 for c in FARBY["plast"]], 1.0),
+                        (*[c * 0.80 for c in FARBY["plast"]], 1.0))
+    farba = nasob(u, farba, 0.78)
+    u.vystup(principled(u, farba=farba, drsnost=u.rozsah(hruby, 0.3, 0.7, 0.26, 0.36), ior=1.53, spek=0.45,
+                        normala=bump, sss=PLAST_SSS[0], sss_polomer=(0.10, 0.90, 1.0), sss_mierka=PLAST_SSS[1] * MM))
+    return m
+
+
+def valec_polia(r, seg=256):
+    """Valec dĺžky 1 (m) od x = 0 do x = -1 okolo osi X, polomer r (m), normály von."""
+    u = np.linspace(0.0, 2.0 * math.pi, seg, endpoint=False)
+    V = np.concatenate([np.stack([np.zeros(seg), r * np.cos(u), r * np.sin(u)], -1),
+                        np.stack([-np.ones(seg), r * np.cos(u), r * np.sin(u)], -1)])
+    i = np.arange(seg)
+    j = (i + 1) % seg
+    return V, np.stack([i, j, j + seg, i + seg], -1)
+
+
 def mat_paska():
     m, u = novy_material("paska")
     # zelené PET pásky ako na fotke kotúča (web/src/assets/fotky/kotuc.jpg)
@@ -2532,11 +2563,22 @@ def hlavny_kotuc(a, sc, rad, variant):
         dlzka += n_w * 2.0 * math.pi * r
         r -= D
     L_free = 1000.0 * a.kotuc_volny
-    a.dlzka = L_free / D
+    # pri sekvencii (odvaľovanie) je skutočná vlnitá geometria len pri reze, ďalej valec s vlnami z reliéfu
+    L_geom = min(L_free, 1000.0 * a.kotuc_geometria) if a.snimky > 1 else L_free
+    a.dlzka = L_geom / D
     model = Potrubie(rad, variant, a).postav()
     xc, zc = -L_free, R_o
     psi = math.radians(a.kotuc_natocenie)
     objekty = list(model.objekty)
+    valec = None
+    if a.snimky > 1:
+        me = mesh_z_poli("rozvinuta", *valec_polia(D / 2.0 * MM * (1.0 - 2.0 * PLAST["zapustenie_peny"])))
+        valec = bpy.data.objects.new("rozvinuta", me)
+        sc.collection.objects.link(valec)
+        valec.location = (-(L_geom - 1.0) * MM, 0.0, 0.0)
+        valec.data.materials.append(mat_plast_rovny(D))
+        objekty.append(valec)
+    kotuc_obj = []
     m_k, m_p = mat_plast_kotuc(D), mat_paska()
     seg_R = 900 if (a.sirka or 1600) > 1600 else 600
     for j, rj in enumerate(vrstvy):
@@ -2548,6 +2590,7 @@ def hlavny_kotuc(a, sc, rad, variant):
             o["r_osi"] = rj * MM
             o.data.materials.append(m_k)
             objekty.append(o)
+            kotuc_obj.append((o, None))
     # sťahovacie pásky okolo prierezu zväzku (6 po obvode): vonkajšia, vnútorná a dve bočné strany
     r_von, r_vnu = vrstvy[0] + D / 2.0, vrstvy[-1] - D / 2.0
     y0, y1 = -D / 2.0, (n_w - 1) * D + D / 2.0
@@ -2566,16 +2609,35 @@ def hlavny_kotuc(a, sc, rad, variant):
             o.rotation_euler = (0.0, -fi, 0.0)
             o.data.materials.append(m_p)
             objekty.append(o)
+            kotuc_obj.append((o, fi - psi))
     bpy.context.view_layer.update()
     model.objekty = objekty
+
+    def nastav_kotuc(volny_m):
+        """Kotúč sa odvalil: voľný koniec má volny_m, kotúč stojí na jeho konci a otočil sa o odvalenú
+        dĺžku / polomer vonkajšej vrstvy (pásky ukážu otočenie)."""
+        L = 1000.0 * volny_m
+        uhol = psi + (L - L_free) / R_o
+        for o, fi0 in kotuc_obj:
+            o.location.x = -L * MM
+            if fi0 is not None:
+                o.rotation_euler = (0.0, -(fi0 + uhol), 0.0)
+        if valec is not None:
+            valec.scale.x = max(0.001, (L - L_geom + 1.0) * MM)   # valec má dĺžku 1 m
+        kotuc_info["stred_mm"][0] = -L
+        kotuc_info["volny_m"] = round(volny_m, 3)
+        bpy.context.view_layer.update()
     print(f"Kotúč {variant['obj_cislo']}: Ø {kd:.0f} x {ks:.0f} mm, {len(vrstvy)} vrstvy po {n_w} závitoch, "
           f"navinuté {dlzka / 1000:.1f} m, voľný koniec {L_free / 1000:.2f} m")
-    return model, dict(d_m=kd / 1000, sirka_m=ks / 1000, vrstvy=len(vrstvy), zavitov=n_w, dlzka_m=round(dlzka / 1000, 1),
-                       volny_m=a.kotuc_volny, stred_mm=[xc, (n_w - 1) * D / 2, zc], r_von_mm=R_o + D / 2)
+    kotuc_info = dict(d_m=kd / 1000, sirka_m=ks / 1000, vrstvy=len(vrstvy), zavitov=n_w, dlzka_m=round(dlzka / 1000, 1),
+                      volny_m=a.kotuc_volny, stred_mm=[xc, (n_w - 1) * D / 2, zc], r_von_mm=R_o + D / 2)
+    model.nastav_kotuc = nastav_kotuc
+    return model, kotuc_info
 
 
 FARBY_MASKY = ((1, 0, 0), (0, 1, 0), (0, 0, 1), (1, 1, 0), (0, 1, 1), (1, 0, 1),
-               (1, 0.5, 0), (0.5, 0, 1), (0, 1, 0.5), (1, 0, 0.5), (0.5, 1, 0), (0, 0.5, 1))
+               (1, 0.5, 0), (0.5, 0, 1), (0, 1, 0.5), (1, 0, 0.5), (0.5, 1, 0), (0, 0.5, 1),
+               (1, 1, 1), (0.5, 0.5, 0.5), (1, 0.5, 0.5), (0.5, 1, 1))
 
 
 def maska_systemov(modely, sc, zaznam):
@@ -2654,13 +2716,14 @@ def hlavny(a):
     svet(sc, a.svet * (0.15 if a.pohlad == "makro-plast" else 1.0), pozadie=a.pozadie)
     if a.pozadie:
         sc.render.film_transparent = False
-    if kotuc:   # štúdio zväčšené na kotúč (svetlá sa škálujú podľa D)
-        studiove_svetla(a.kotuc_k * 160.0, L + 1000.0 * kotuc["d_m"], a.svetlo, strana=1.0 if a.azimut >= 0 else -1.0)
+    L_drahy = L + 1000.0 * kotuc["d_m"] + (1000.0 * a.kotuc_rozvin + 1000.0 * a.kotuc_volny - L if kotuc and a.snimky > 1 else 0.0) if kotuc else L
+    if kotuc:   # štúdio zväčšené na kotúč (svetlá sa škálujú podľa D) a natiahnuté na celú dráhu odvaľovania
+        studiove_svetla(a.kotuc_k * 160.0, L_drahy, a.svetlo, strana=1.0 if a.azimut >= 0 else -1.0)
     elif not (a.pohlad == "makro-plast" and a.prierez):
         studiove_svetla(D, L, a.svetlo, strana=1.0 if a.azimut >= 0 else -1.0,
                         jasy={"kluc": a.jas_kluc, "vypln": a.jas_vypln_st, "kontra": a.jas_kontra_st, "celo": a.jas_celo,
                               "kluc_sirka": a.kluc_sirka, "kluc_y": a.kluc_y})
-    L_podl = L + (1000.0 * kotuc["d_m"] if kotuc else 0.0)
+    L_podl = L_drahy
     podlaha_biela = biela_podlaha(D, L_podl) if a.pohlad in ("studio", "rozlozeny", "ohyb", "kotuc") else None
     podlaha = tienovy_podklad(D, L_podl)
     podlaha.hide_render = True
@@ -2710,6 +2773,12 @@ def hlavny(a):
             ramec_detail(cam, model, body, sirka, podiel=a.detail_podiel, okraj_vpravo=a.detail_okraj,
                          okraj=a.okraj, vyska=a.vyska)
             body = None
+        elif kotuc and a.snimky > 1:
+            # odvaľovanie: kotúč celý na začiatku aj na konci (pásky, voľný koniec s rezom v popredí)
+            model.nastav_kotuc(a.kotuc_volny + a.kotuc_rozvin)
+            b1 = body_objektov(model.objekty)
+            model.nastav_kotuc(a.kotuc_volny)
+            body = np.concatenate([body_objektov(model.objekty), b1])
         elif a.pohlad == "ohyb":
             # záber na ohnutý stav; rovná rúra na začiatku pohybu môže presahovať za okraj. Chvost za
             # oblúkom odchádza za okraj záberu (v zábere len jeho začiatok), koniec tela nie je vidno.
@@ -2742,7 +2811,13 @@ def hlavny(a):
             sc.render.use_border, sc.render.use_crop_to_border = True, True
             sc.render.border_min_x, sc.render.border_max_x = x0, x1
             sc.render.border_min_y, sc.render.border_max_y = 1.0 - y1, 1.0 - y0
-        nastav = model.nastav_ohyb if a.pohlad == "ohyb" else model.nastav_fazu
+        if a.pohlad == "ohyb":
+            nastav = model.nastav_ohyb
+        elif kotuc:
+            def nastav(f):
+                model.nastav_kotuc(a.kotuc_volny + f * a.kotuc_rozvin)
+        else:
+            nastav = model.nastav_fazu
         if a.len_scena:   # živé okno (zive.py): scéna a kamera bez renderu
             nastav(fazy[-1])
             return
@@ -2953,6 +3028,8 @@ def argumenty():
     p.add_argument("--kotuc-volny", type=float, default=1.2, help="kotúč: dĺžka voľného konca na podlahe v m")
     p.add_argument("--kotuc-natocenie", type=float, default=0.0, help="kotúč: otočenie kotúča okolo osi v stupňoch")
     p.add_argument("--kotuc-k", type=float, default=2.6, help="kotúč: mierka štúdia (svetlá ako pre plášť k x 160 mm)")
+    p.add_argument("--kotuc-rozvin", type=float, default=8.0, help="kotúč: o koľko m sa pri sekvencii odvalí")
+    p.add_argument("--kotuc-geometria", type=float, default=4.0, help="kotúč: skutočná vlnitá geometria pri reze v m (ďalej valec)")
     p.add_argument("--termo", default=None, help="termo pohľad: teploty médií v nosných rúrach a pôdy, napr. 70,50,10")
     p.add_argument("--termo-q", type=float, default=None, help="termo: strata z katalógu (W/m) na doladenie vodivosti peny")
     p.add_argument("--termo-rozsah", default=None, help="termo: rozsah palety v °C, napr. 8,72")

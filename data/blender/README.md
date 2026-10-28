@@ -67,23 +67,20 @@ $B -b --factory-startup -P data/blender/potrubie.py -- \
 $B -b --factory-startup -P data/blender/potrubie.py -- --rad microflex-duo-6-bar --obj MD16032C \
    --pohlad rozlozeny --snimky 72 --sirka 1600 --vzorky 256 --out data/_3d/iny/rozlozeny.png
 
-# návrhy 28. 10. (pracovná stránka /navrhy/, prevod do webu data/navrhy_web.py)
+# novinky 28. 10. (dávka: davka.py web --len teplo,mierka,kotuc,ohyb; prevod do webu: data/novinky_web.py vsetko)
 # ohyb na najmenší polomer z katalógu, 48 snímok od rovnej rúry po oblúk 90°
-$B -b --factory-startup -P data/blender/potrubie.py -- --rad microflex-duo-6-bar --obj MD16032C \
-   --pohlad ohyb --elevacia 32 --azimut 38 --snimky 48 --sirka 2000 --vzorky 256 --out data/_3d/navrhy/ohyb/duo/ohyb.png
+$B -b --factory-startup -P data/blender/potrubie.py -- --rad microflex-duo-6-bar --obj MD16032C    --pohlad ohyb --elevacia 32 --azimut 38 --snimky 48 --sirka 2000 --vzorky 256 --out data/_3d/web/ohyb/microflex-duo-6-bar/ohyb.png
 # termokamera v zábere hlavy radu: teploty médií a pôdy, strata z katalógu (W/m) na doladenie
-$B -b --factory-startup -P data/blender/potrubie.py -- --rad microflex-duo-6-bar --obj MD16032C --pohlad studio \
-   --azimut 22 --elevacia 12 --ramec jednotny --termo 70,50,10 --termo-q 12.98 --termo-rozsah 8,72 \
-   --sirka 2800 --vzorky 48 --bez-tiena --out data/_3d/navrhy/teplo/varianty/MD16032C.png
-# kotúč (rozmery z údajov variantu, 100 m vo vrstvách), voľný koniec s rezom; maska systémov rodiny
-$B -b --factory-startup -P data/blender/potrubie.py -- --rad microflex-duo-6-bar --obj MD12525C --pohlad kotuc \
-   --azimut 30 --elevacia 15 --kotuc-volny 2.2 --sirka 1800 --vzorky 256 --out data/_3d/navrhy/kotuc/kotuc.png
-$B -b --factory-startup -P data/blender/potrubie.py -- --pohlad rodina --azimut 40 --elevacia 18 --sirka 4800 \
-   --vzorky 16 --maska --out data/_3d/navrhy/rodina/maska.png
+$B -b --factory-startup -P data/blender/potrubie.py -- --rad microflex-duo-6-bar --obj MD16032C --pohlad studio    --azimut 22 --elevacia 12 --ramec jednotny --termo 70,50,10 --termo-q 12.98 --termo-rozsah 8,72    --sirka 2800 --vzorky 48 --bez-tiena --out data/_3d/web/teplo-varianty/MD16032C.png
+# kotúč (rozmery z údajov variantu, 100 m vo vrstvách): záber s voľným koncom a odvaľovanie 6 m
+$B -b --factory-startup -P data/blender/potrubie.py -- --rad microflex-duo-6-bar --obj MD12525C --pohlad kotuc    --azimut 30 --elevacia 15 --kotuc-volny 2.2 --sirka 2400 --vzorky 512 --out data/_3d/web/kotuc/kotuc.png
+$B -b --factory-startup -P data/blender/potrubie.py -- --rad microflex-duo-6-bar --obj MD12525C --pohlad kotuc    --azimut 58 --elevacia 16 --ohnisko 50 --kotuc-volny 1.6 --kotuc-rozvin 6 --snimky 48 --sirka 2400 --vzorky 256    --out data/_3d/web/kotuc/odvalenie/kotuc.png
+# dimenzie radu v mierke (rodina so zoznamom variantov) a maska systémov (každý čistou farbou)
+$B -b --factory-startup -P data/blender/potrubie.py -- --pohlad rodina --rodina microflex-duo-6-bar:MD12525C,...    --rodina-krok 0 --rodina-dlzka 1.4 --rodina-pomer 4.4 --azimut 14 --elevacia 10 --ohnisko 200 --sirka 2800 --maska    --vzorky 16 --out data/_3d/web/mierka/microflex-duo-6-bar-maska.png
 
 # živé okno (Blender s oknom); úlohu mu oznámi zápis stavu
-$B --factory-startup -P data/blender/zive.py
-$P -I -X utf8 data/blender/zive.py "čo sa robí" "data/_3d/navrhy/ohyb/duo/ohyb-*.png" --rad ... --pohlad ohyb ...
+$B --factory-startup -P data/blender/zive.py      # dávka davka.py oznamuje každú scénu sama
+$P -I -X utf8 data/blender/zive.py "čo sa robí" "data/_3d/web/ohyb/microflex-duo-6-bar/ohyb-*.png" --rad ... --pohlad ohyb ...
 ```
 
 Živé okno počíta náhľad procesorom: režim Rendered drží scénu v pamäti grafickej karty a pri súbežnom

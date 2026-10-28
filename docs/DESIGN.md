@@ -269,6 +269,30 @@ Pravidlá:
 - Model je technická vizualizácia z rozmerov katalógu, nie fotka a nie výstup AI; stavby a montáže
   ostávajú len skutočné fotky.
 
+#### Novinky z 3D modelu (Juraj 28. 10. 2026: „všetko sa mi páči, chcem to implementovať“)
+
+Každá novinka niečo dokazuje alebo vysvetľuje číslom z katalógu, nie je to efekt. Prevod renderov:
+`data/novinky_web.py`, rendery: `data/blender/davka.py web --len teplo,mierka,kotuc,ohyb`.
+
+- **Ohyb na najmenší polomer** (`Ohyb.astro`): domov medzi stavbou potrubia a pokládkou (DUO 160,
+  R 0,60 m) a stránka radu v časti Stavba a montáž (reprezentatívny variant radu). Polomer je na osi
+  potrubia; kóta ide ako na výkrese od osi k stredu oblúka (stred býva mimo záberu).
+- **Teplo v reze** (`TeploRezim.astro` a `TeploVrstva.astro` v hlave radu): prepínač Pohľad a Teplota,
+  ten istý záber ako obraz termokamery na tmavej obrazovke. Teploty sú vždy „príklad prevádzky“
+  s podmienkami pod prepínačom (vykurovanie 70/50 °C, sanita 60/55 °C, HP 45/40 °C, COOL 7 °C pri
+  pôde 15 °C). Strata na meter len tam, kde je v grafe katalógu (s. 38: UNO, DUO, PRIMO), nikdy
+  vlastný výpočet. COOL s vyhrievacím káblom teplo nemá: bez výkonu kábla by obraz klamal.
+- **Dimenzie v mierke** (`Mierka.astro` nad tabuľkou variantov): všetky dimenzie radu v jednej rovine,
+  dlhý objektív; rez a riadok tabuľky sa zvýraznia navzájom.
+- **Rodina na ťuknutie** (`RodinaVyber.astro` na domove aj v hlave Potrubí): systém pod myšou, prstom
+  alebo v ohnisku sa zvýrazní a ostatné stmavnú; štítok s faktami z katalógu a odkazom na rad.
+- **Kotúč sa odvaľuje** (`KotucSekvencia.astro` v pokládke na domove namiesto fotky): 100 m DUO
+  125 (4 vrstvy po 5 závitoch z rozmerov kotúča), zelené PET pásky ako na fotke; kóta nad kotúčom
+  ukáže priemer a pri odvaľovaní, koľko metrov ostáva. Článok Pokládka má v hlave záber kotúča.
+- Všetko sa sťahuje až pri sekcii; bez skriptu a pri „obmedziť pohyb“ stojí statický obraz s kótami.
+- Reklamné podklady z tých istých renderov: `reklama/` (mimo gitu, `data/reklama.py`, popis
+  v `reklama/README.md`).
+
 ---
 
 ## 8. Pohyb

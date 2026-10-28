@@ -35,7 +35,7 @@ export const fotkaProduktu = (id: string) => najdi(produkty, `${id}.webp`) ?? na
  * Body pre kóty a pomer strán sú v data/rendery.json. Bez 3D renderu sa použije pôvodný piktogram Watts.
  */
 const rendery3d = import.meta.glob<{ default: ImageMetadata }>('/src/assets/3d/*/*.webp', { eager: true });
-export type Druh3d = 'rady' | 'hlavy' | 'varianty' | 'hero' | 'rodina' | 'makra';
+export type Druh3d = 'rady' | 'hlavy' | 'varianty' | 'hero' | 'rodina' | 'makra' | 'teplo-hlavy' | 'teplo-varianty' | 'mierka' | 'kotuc';
 export const render3d = (druh: Druh3d, id: string | null | undefined) => (id ? najdi(rendery3d, `${druh}/${id}.webp`) : undefined);
 /** Rad, ktorého render zastupuje piktogram Watts (kategória a systém poznajú len piktogram). */
 export const radPiktogramu = (subor: string | null | undefined) => (subor ? (rendery.piktogramy as Record<string, string>)[subor] : undefined);
@@ -59,3 +59,26 @@ export const maska3d = (img: ImageMetadata | undefined) => {
   const kluc = img && Object.keys(rendery3d).find((k) => rendery3d[k].default === img);
   return kluc ? rendery3d[kluc.replace(/\.webp$/, '-maska.webp')]?.default : undefined;
 };
+
+/* Novinky z 3D modelu (Juraj 28. 10. 2026; data/novinky_web.py): údaje, ktoré ešte nie sú vyrenderované,
+   chýbajú a stránka danú časť vynechá. */
+const jsonDat = import.meta.glob<{ default: unknown }>('/src/data/{ohyb-*,mierka,teplo,rodina-masky,kotuc}.json', { eager: true });
+const dat = <T>(meno: string) => jsonDat[`/src/data/${meno}.json`]?.default as T | undefined;
+/** Ohyb na najmenší polomer: snímky vo web/public/3d/ohyb-<id radu>/, body kóty polomeru. */
+export const ohybRadu = (id: string | null | undefined) => (id ? dat<import('../components/Ohyb.astro').OhybData>(`ohyb-${id}`) : undefined);
+/** Dimenzie radu v mierke: masky a mapa indexov vo web/public/3d/mierka/<id radu>/, body štítkov. */
+export interface SystemyData { pomer: number; krok: number; cesta: string; systemy: { rad: string; obj: string; bod: number[] }[] }
+export const mierkaRadu = (id: string | null | undefined) => (id ? dat<Record<string, SystemyData>>('mierka')?.[id] : undefined);
+/** Rodina na ťuknutie: masky šiestich systémov rodiny z webu. */
+export const rodinaMasky = () => dat<SystemyData>('rodina-masky');
+/** Teplo v reze: body a teploty kót termo záberov hlavy a variantov, úlohy médií a paleta. */
+export interface TeploZaber { rad: string; pomer: number; rury: { bod: number[]; t: number }[]; plast: { bod: number[]; vlavo?: number[]; t: number }; poda: number; q: number | null; rozsah: number[] }
+export interface TeploData { hlavy: Record<string, TeploZaber>; varianty: Record<string, TeploZaber>; role: Record<string, string[]>; paleta: [number, [number, number, number]][] }
+export const teplo = () => dat<TeploData>('teplo');
+/** Kotúč: záber s kótami a odvaľovanie (snímky vo web/public/3d/kotuc-odvalenie/). */
+export interface KotucInfo { d_m: number; sirka_m: number; vrstvy: number; zavitov: number; dlzka_m: number }
+export interface KotucData {
+  zaber?: { pomer: number; kotuc: KotucInfo; body: Record<string, number[]> };
+  odvalenie?: { snimok: number; pomer: number; sirky: number[]; cesta: string; kotuc: KotucInfo; body: { vrch: number[]; celo: number[]; volny_m: number }[] };
+}
+export const kotuc = () => dat<KotucData>('kotuc');

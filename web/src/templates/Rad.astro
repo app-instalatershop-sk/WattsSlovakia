@@ -21,6 +21,11 @@ import rendery from '../data/rendery.json';
 import { kategorie, radyKategorie, variantyRadu, cestaKategorie, cestaRadu, cestaProduktu, alternatyRadu, kKratky, rNazov, rKratky, rMedium, rOznacenie, pNazov, cislo, rozsah, rozsahRur, tlakText, kotvaKodu, type Kategoria, type Rad } from '../lib/katalog';
 import { piktogram, render3d, fotkaRadu, detail, fotkaReferencie, rozkladRadu, makroRury } from '../lib/obrazky';
 import Rozklad from '../components/Rozklad.astro';
+import Ohyb from '../components/Ohyb.astro';
+import Mierka from '../components/Mierka.astro';
+import TeploVrstva, { type ZaberTepla } from '../components/TeploVrstva.astro';
+import TeploRezim from '../components/TeploRezim.astro';
+import { ohybRadu, mierkaRadu, teplo as teploData, type TeploZaber } from '../lib/obrazky';
 import { kotyRenderu, kotyRenderu3d } from '../lib/koty';
 import { sadzba } from '../lib/sadzba';
 import { obsahRadu } from '../content/rady';
@@ -85,6 +90,49 @@ const obrazyVariantov: Record<string, ObrazVariantu> = hlava3d ? Object.fromEntr
 }))).filter((x): x is NonNullable<typeof x> => x !== null)) : {};
 const bodyHlavy = hlava3d ? (rendery.hlavy as Record<string, Body3d>)[r.id] : undefined;
 
+// Novinky z 3D modelu (Juraj 28. 10. 2026): teplo v reze, dimenzie v mierke, ohyb na najmenší polomer.
+const nv = ui.novinky;
+// Nosné rúry variantu krátko: „2 × 32 mm“, pri rôznych rúrach „2 × 32 + 25 + 20 mm“ (z textu katalógu).
+const ruryKratko = (v: (typeof varianty)[number]) => {
+  if (v.rura?.d) return `${(r.pocet_rur ?? 1) > 1 ? `${r.pocet_rur} × ` : ''}${cislo(v.rura.d)} mm`;
+  const casti = [...(v.rura_text ?? '').matchAll(/(\d)\s*[x×х]\s*(\d{2,3})\s*[/x×х]/g)].map(([, n, d]) => `${Number(n) > 1 ? `${n} × ` : ''}${d}`);
+  return casti.length ? `${casti.join(' + ')} mm` : '';
+};
+const td = teploData();
+const role = td?.role[r.id];
+const kotyTepla = (z: TeploZaber) => {
+  const idx = role!.length === 4 ? [0, 2] : role!.map((_, i) => i).slice(0, 2);
+  const k = idx.map((i, j) => ({ kod: `t${j}`, x: z.rury[i].bod[0], y: z.rury[i].bod[1], hodnota: `${Math.round(z.rury[i].t)} °C`, text: nv.teplo.role[role![i]] }));
+  const pl = z.plast.vlavo ?? z.plast.bod;   // ľavý okraj čela: štítok na tmavej obrazovke, nie na jej hrane
+  k.push({ kod: 'tp', x: pl[0], y: pl[1], hodnota: `${Math.round(z.plast.t)} °C`, text: z.q ? `${nv.teplo.plast}, ${nv.teplo.strata(cislo(z.q, 1))}` : nv.teplo.plast });
+  return k;
+};
+const zaberTepla = async (img: ImageMetadata, z: TeploZaber, sirky: [number, number]): Promise<ZaberTepla> => {
+  const [a1, a2, w1, w2] = await Promise.all(([[sirky[0], 'avif'], [sirky[1], 'avif'], [sirky[0], 'webp'], [sirky[1], 'webp']] as const)
+    .map(([width, format]) => getImage({ src: img, width, format, quality: format === 'avif' ? 55 : 82 })));
+  return { avif: `${a1.src} ${sirky[0]}w, ${a2.src} ${sirky[1]}w`, webp: `${w1.src} ${sirky[0]}w, ${w2.src} ${sirky[1]}w`, src: w2.src, koty: kotyTepla(z) };
+};
+const teploHlava = role && td?.hlavy[r.id] ? render3d('teplo-hlavy', r.id) : undefined;
+const zaberyTepla: Record<string, ZaberTepla> | null = teploHlava ? Object.fromEntries([
+  ['', await zaberTepla(teploHlava, td!.hlavy[r.id], [900, 1800])],
+  ...(await Promise.all(varianty.map(async (v) => {
+    const img = render3d('teplo-varianty', klucObj(v.obj_cislo));
+    const z = td!.varianty[klucObj(v.obj_cislo)];
+    return img && z ? [v.obj_cislo, await zaberTepla(img, z, [800, 1400])] as const : null;
+  }))).filter((x): x is NonNullable<typeof x> => x !== null),
+]) : null;
+const hlavaTepla = td?.hlavy[r.id];
+const podmienkyTepla = hlavaTepla && role ? [
+  `${nv.teplo.priklad}: ${hlavaTepla.rury.map((x, i) => `${nv.teplo.role[role[i]]} ${Math.round(x.t)} °C`).join(', ')}, ${nv.teplo.poda} ${hlavaTepla.poda} °C, ${nv.teplo.krytie}.`,
+  [hlavaTepla, ...Object.values(td!.varianty).filter((x) => x.rad === r.id)].some((x) => x.q) ? nv.teplo.sKatalogom : nv.teplo.bezStraty,
+].join(' ') : '';
+
+const mierka = mierkaRadu(r.id);
+const mierkaObr = render3d('mierka', r.id);
+const stitkyMierky = Object.fromEntries(varianty.map((v) => [v.obj_cislo, [`Ø ${cislo(v.plast_mm ?? 0)} mm`, ruryKratko(v)] as [string, string]]));
+const ohyb = ohybRadu(r.id);
+const ohybVariant = ohyb ? varianty.find((v) => v.obj_cislo === ohyb.obj_cislo) : undefined;
+
 // Stavba pod lupou: kľúčové číslo plášťa berie rozsah z tabuľky, nosnej rúry aj priemery.
 const vrstvy = obsah ? (['rura', 'pena', 'plast'] as const).map((id) => {
   const v = obsah.vrstvy[id];
@@ -143,6 +191,8 @@ const productLd = [{
     {faktyHlavy.length > 0 && <dl class="hlava-fakty">{faktyHlavy.map(([dt, dd]) => <div><dt>{dt}</dt><dd>{dd}</dd></div>)}</dl>}
     {/* Živé kóty: výber dimenzie nad renderom prepíše kóty na ňom (len keď sú na obraze aspoň dve). */}
     {kotyHlavy.length >= 2 && varianty.length > 1 && <VolbaDimenzie slot="nad-obrazom" lang={lang} varianty={varianty} pocetRur={r.pocet_rur} model={model} obrazy={obrazyVariantov} bodyHlavy={bodyHlavy} />}
+    {zaberyTepla && td && <TeploRezim slot="nad-obrazom" texty={nv.teplo} podmienky={podmienkyTepla} rozsah={hlavaTepla!.rozsah} paleta={td.paleta} />}
+    {zaberyTepla && <TeploVrstva slot="na-obraze" zabery={zaberyTepla} alt={nv.teplo.alt(model)} label={nv.teplo.stupnica} />}
     <div class="hlava-akcie">
       <a class="btn btn-yellow btn-lg" href="#varianty" data-cta><span data-cta-text>{tx.vybrat}</span> <Ikona nazov="arrow-down" velkost={18} /></a>
       <a class="odkaz" href={eshop} target="_blank" rel="noopener">{tx.kupit} <Ikona nazov="external-link" velkost={16} /></a>
@@ -160,6 +210,7 @@ const productLd = [{
         <h2 id="h-var">{ui.rad.variantyH2}</h2>
         <p>{varianty.length ? <>{tx.pocetDim(varianty.length)}{zosilnene ? tx.zosilnenych(zosilnene) : ''}. {tx.variantyP}</> : tx.chybaju(model, obsah?.strana ?? null)}</p>
       </div>
+      {mierka && mierkaObr && varianty.length > 1 && <Mierka data={mierka} obraz={mierkaObr} stitky={stitkyMierky} nadpis={nv.mierka.h3} popis={nv.mierka.popis} alt={nv.mierka.alt(model)} />}
       {varianty.length > 0 ? (
         <div class="harok"><TabulkaVariantov varianty={varianty} zdroj={r.zdroj_url} stiahnute={r.stiahnute} lang={lang} primoZaklad={primoZaklad} diely={dielyUrl} kodyDielov={kodyDielov} /></div>
       ) : (
@@ -187,6 +238,7 @@ const productLd = [{
             {obsah.strana && <p class="stavba-zdroj"><a href={KATALOG_PDF} target="_blank" rel="noopener">{tx.stranaKat(obsah.strana)}</a></p>}
           </div>
         </div>
+        {ohyb && ohybVariant && <Ohyb data={ohyb} nadpis={nv.ohyb.h2} popis={nv.ohyb.rad(model, ruryKratko(ohybVariant), ohyb.plast_mm, cislo(ohyb.polomer_m, 2))} poznamka={nv.ohyb.pozn} alt={nv.ohyb.alt(model, cislo(ohyb.polomer_m, 2))} kota={nv.ohyb.kota} hore={casti.length > 2 ? 132 : 72} horeM={casti.length > 2 ? 116 : 64} />}
       </section>
       ) : (
       <section class="wrap cast" id="stavba" aria-labelledby="h-stavba">

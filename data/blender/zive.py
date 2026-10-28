@@ -104,6 +104,7 @@ def ukaz_scenu():
     sc.render.preview_pixel_size = "2"
     sc.cycles.preview_samples = VZORKY_NAHLAD
     sc.cycles.use_preview_denoising = True
+    sc.cycles.preview_denoiser = "OPENIMAGEDENOISE"   # OptiX by bral pamäť grafickej karty dávke
     for win, area in oblasti("VIEW_3D"):
         sp = area.spaces.active
         sp.shading.type = "RENDERED"

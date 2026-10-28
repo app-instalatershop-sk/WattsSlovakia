@@ -32,11 +32,34 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import porovnanie  # noqa: E402  (zostavy vedľa seba)
 
 
+ZIVE_TEXT = [""]   # čo sa práve robí (text pre živé okno, nastavuje skupina dávky)
+
+
+def zive_stav(args):
+    """Stav pre živé okno (data/blender/zive.py): argumenty scény, popis a maska snímok z --out."""
+    args = [str(x) for x in args]
+    out = Path(args[args.index("--out") + 1]) if "--out" in args else None
+    stav = {"text": ZIVE_TEXT[0] or " ".join(args[:6]), "argumenty": args,
+            "snimky": str((out.parent / f"{out.stem}*.png").relative_to(REPO)) if out and out.is_absolute() and REPO in out.parents else ""}
+    cesta = REPO / "data" / "_3d" / "zive" / "stav.json"
+    cesta.parent.mkdir(parents=True, exist_ok=True)
+    docasny = cesta.with_suffix(".tmp")
+    docasny.write_text(json.dumps(stav, ensure_ascii=False), encoding="utf-8")
+    docasny.replace(cesta)
+
+
 def blender(*args, log=None):
     """Spustí potrubie.py v Blenderi; vráti riadky HOTOVO (časy). Pri chybe skončí."""
+    zive_stav(args)
     cmd = [str(BLENDER), "-b", "--factory-startup", "-P", str(SKRIPT), "--", *[str(a) for a in args]]
     t0 = time.time()
-    r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=REPO)
+    for pokus in range(3):
+        r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=REPO)
+        # pamäť grafickej karty môže na chvíľu zabrať iný program (živé okno, prehliadač): počkať a skúsiť znova
+        if "out of GPU" not in r.stdout + r.stderr or pokus == 2:
+            break
+        print(f"   pamäť grafickej karty plná, nový pokus o {60 * (pokus + 1)} s")
+        time.sleep(60 * (pokus + 1))
     riadky = [l for l in r.stdout.splitlines() if l.startswith(("HOTOVO", "Pozor", "POZOR"))]
     for l in riadky:
         print("  ", l)
@@ -375,7 +398,11 @@ MAKRA = (("plast", "microflex-duo-6-bar", "MD16032C", "makro-plast", []),
 # Zmenšenie dá na každý bod webu štyri body renderu: bunky peny, hrany vĺn a potlač rúr ostanú ostré a
 # odšumovač nemá čo rozmazať. (šírka v px, vzorky na pixel)
 KVALITA = {"hlavy": (3600, 1024), "hero": (5200, 1024), "rady": (2800, 1024), "makra": (2400, 512),
-           "rodina": (4800, 1024), "varianty": (2800, 512), "rozlozeny": (2000, 256)}
+           "rodina": (4800, 1024), "varianty": (2800, 512), "rozlozeny": (2000, 256),
+           # novinky 28. 10.: teplo v reze (emisia, stačí málo vzoriek), dimenzie v mierke, kotúč, ohyb
+           "teplo-hlavy": (3600, 64), "teplo-varianty": (2800, 48), "mierka": (2800, 512), "maska": (2800, 16),
+           "kotuc": (2400, 512), "kotuc-odvalenie": (2400, 256), "ohyb": (1600, 192)}
+OHYB_SNIMOK = 40      # web ich ukazuje najviac v 1200 px; DUO 6 bar má 48 snímok v 2000 px z návrhu (28. 10.)
 
 
 def geometria_skriptu():
@@ -529,6 +556,10 @@ def web_rodina(a, log):
         rs = cas_renderu(blender("--pohlad", "rodina", "--azimut", 40, "--elevacia", 18, "--sirka", sirka,
                                  "--vzorky", vzorky, "--out", png, log=log))
         dokonci_na_mieste(png)
+    maska = o / "rodina-maska.png"      # rodina na ťuknutie (data/novinky_web.py rodina): ten istý záber
+    if not hotove_bez_tiena(maska):
+        blender("--pohlad", "rodina", "--azimut", 40, "--elevacia", 18, "--sirka", sirka, "--vzorky", 16, "--maska",
+                "--out", maska, log=log)
     prehlad("rodina", [(png, f"rodina/rodina.png ({sirka} px)")], stlpce=1, vyska=600)
     zapis_stav(f"rodina (6 systémov, {popis_kvality('rodina')})", 1, rs, time.time() - t0)
 
@@ -581,6 +612,184 @@ def web_rozlozeny(a, log):
         prehlad("rozlozeny", panely)
 
 
+# =============================================================================================
+# Novinky z 3D modelu (Juraj 28. 10. 2026: „všetko sa mi páči, chcem to implementovať“)
+# =============================================================================================
+# Teplo v reze: príklad prevádzky (°C) pre médiá v poradí rúr variantu (rura_text), pôdu a rozsah palety.
+# Strata na meter len pri radoch, pre ktoré ju katalóg Watts uvádza v grafe (s. 38, web/src/data/straty.json):
+# UNO a DUO vykurovanie a PRIMO; ΔT = teplota média (UNO) alebo priemer prívodu a spiatočky (DUO) mínus pôda.
+# COOL s vyhrievacím káblom nemá teplo: výkon kábla v údajoch nie je a bez neho by obraz klamal.
+TERMO = {
+    "microflex-uno-6-bar": ([70], 10, (8, 72), "UNO"),
+    "microflex-uno-primo-6-bar": ([70], 10, (8, 72), "PRIMO UNO"),
+    "microflex-duo-6-bar": ([70, 50], 10, (8, 72), "DUO"),
+    "microflex-primo-duo-6-bar": ([70, 50], 10, (8, 72), "PRIMO DUO"),
+    "microflex-uno-10-bar": ([60], 10, (8, 72), None),
+    "microflex-duo-10-bar": ([60, 55], 10, (8, 72), None),
+    "microflex-primo-duo-10-bar": ([60, 55], 10, (8, 72), None),
+    "microflex-quadro": ([70, 50, 60, 55], 10, (8, 72), None),
+    "microflex-hp": ([45, 40], 10, (8, 72), None),
+    "microflex-cool": ([7], 15, (5, 17), None),
+    "microflex-cool-duo": ([7, 12], 15, (5, 17), None),
+}
+STRATY = json.loads((REPO / "web" / "src" / "data" / "straty.json").read_text(encoding="utf-8"))
+
+
+def strata_katalogu(rad, obj, teploty, t_poda):
+    """Strata na meter z grafu katalógu (W/m) pre obj. číslo bez koncových písmen, alebo None."""
+    graf = TERMO[rad][3]
+    if not graf:
+        return None
+    kod = re.sub(r"[A-Z]+$", "", obj.replace(" ", "").upper())
+    for g in [graf] + [x for x in STRATY if x != graf]:
+        if kod in STRATY[g]:
+            x0, y0, x1, y1 = STRATY[g][kod]
+            dT = sum(teploty) / len(teploty) - t_poda
+            return round(y0 + (y1 - y0) * (dT - x0) / (x1 - x0), 2)
+    return None
+
+
+def termo_argumenty(rad, obj):
+    teploty, t_poda, rozsah, _ = TERMO[rad]
+    q = strata_katalogu(rad, obj, teploty, t_poda)
+    args = ["--termo", ",".join(str(t) for t in [*teploty, t_poda]), "--termo-rozsah", f"{rozsah[0]},{rozsah[1]}"]
+    return args + (["--termo-q", q] if q else [])
+
+
+def hotove_bez_tiena(png):
+    j = Path(png).with_suffix(".json")
+    return Path(png).exists() and j.exists() and json.loads(j.read_text(encoding="utf-8")).get("geometria") == GEOMETRIA
+
+
+def varianty_radov(rady):
+    return [v for v in json.loads((REPO / "web" / "src" / "data" / "varianty.json").read_text(encoding="utf-8"))
+            if v.get("rad") in rady]
+
+
+def web_teplo(a, log):
+    """Termokamera v zábere hlavy (výrez C) pre hlavy aj všetky varianty radov s teplom."""
+    t0, rs, n = time.time(), 0.0, 0
+    o = WEB / "teplo-hlavy"
+    o.mkdir(parents=True, exist_ok=True)
+    sirka, vzorky = KVALITA["teplo-hlavy"]
+    for rad, obj in RADY12:
+        if rad not in TERMO:
+            continue
+        png = o / f"{rad}.png"
+        if not hotove_bez_tiena(png):
+            ZIVE_TEXT[0] = f"Teplo v reze: hlava {rad.replace('microflex-', '')} ({obj})"
+            rs += cas_renderu(blender("--rad", rad, "--obj", obj, "--pohlad", "studio", *ARG_C, *termo_argumenty(rad, obj),
+                                      "--sirka", sirka, "--vzorky", vzorky, "--bez-tiena", "--out", png, log=log))
+            n += 1
+    o = WEB / "teplo-varianty"
+    o.mkdir(parents=True, exist_ok=True)
+    sirka, vzorky = KVALITA["teplo-varianty"]
+    podla_mena = {}
+    for v in varianty_radov(set(TERMO)):
+        podla_mena.setdefault(meno_suboru(v["obj_cislo"]), []).append(v)
+    for meno, vs in podla_mena.items():
+        png = o / f"{meno}.png"
+        if not hotove_bez_tiena(png):
+            ZIVE_TEXT[0] = f"Teplo v reze: {vs[0]['rad'].replace('microflex-', '')} {vs[0]['obj_cislo']}"
+            rs += cas_renderu(blender("--rad", vs[0]["rad"], "--obj", vs[0]["obj_cislo"], "--pohlad", "studio", *ARG_C,
+                                      *termo_argumenty(vs[0]["rad"], vs[0]["obj_cislo"]), "--sirka", sirka,
+                                      "--vzorky", vzorky, "--bez-tiena", "--out", png, log=log))
+            n += 1
+    zapis_stav(f"teplo (hlavy {KVALITA['teplo-hlavy'][0]} px, varianty {KVALITA['teplo-varianty'][0]} px)",
+               len(podla_mena) + len(TERMO), rs, time.time() - t0, f"nových {n}")
+
+
+def kluc_mierky(v):
+    plast = float(v.get("plast_mm") or int(re.match(r"M[A-Z]?(\d{2,3})", v["obj_cislo"]).group(1)))
+    d = (v.get("rura") or {}).get("d") or 0
+    return (plast, d, v.get("poradie", 0))
+
+
+def web_mierka(a, log):
+    """Všetky dimenzie radu vedľa seba v skutočnom pomere (rodina so zoznamom variantov) a ich maska."""
+    o = WEB / "mierka"
+    o.mkdir(parents=True, exist_ok=True)
+    t0, rs, n = time.time(), 0.0, 0
+    sirka, vzorky = KVALITA["mierka"]
+    for rad, _ in RADY12:
+        vs = sorted(varianty_radov({rad}), key=kluc_mierky)
+        zoznam = ",".join(f"{rad}:{v['obj_cislo']}" for v in vs)
+        pomer = min(6.0, max(2.6, 0.55 * len(vs)))
+        spolu = ["--pohlad", "rodina", "--rodina", zoznam, "--rodina-krok", 0, "--rodina-dlzka", 1.4,
+                 "--rodina-pomer", round(pomer, 2), "--azimut", 14, "--elevacia", 10, "--ohnisko", 200, "--sirka", sirka]
+        png, maska = o / f"{rad}.png", o / f"{rad}-maska.png"
+        ZIVE_TEXT[0] = f"Dimenzie v mierke: {rad.replace('microflex-', '')}, {len(vs)} dimenzií"
+        if not hotove(png):
+            rs += cas_renderu(blender(*spolu, "--vzorky", vzorky, "--out", png, log=log))
+            dokonci_na_mieste(png)
+            n += 1
+        if not hotove_bez_tiena(maska):
+            rs += cas_renderu(blender(*spolu, "--vzorky", KVALITA["maska"][1], "--maska", "--out", maska, log=log))
+    zapis_stav(f"mierka (12 radov, {popis_kvality('mierka')}, masky)", 12, rs, time.time() - t0, f"nových {n}")
+
+
+KOTUC = ["--rad", "microflex-duo-6-bar", "--obj", "MD12525C", "--pohlad", "kotuc"]   # 100 m = 4 vrstvy po 5 závitoch
+
+
+def web_kotuc(a, log):
+    """Kotúč 100 m: záber s voľným koncom (článok Pokládka, reklama) a odvaľovanie pozdĺž ryhy (domov)."""
+    o = WEB / "kotuc"
+    o.mkdir(parents=True, exist_ok=True)
+    t0, rs = time.time(), 0.0
+    png = o / "kotuc.png"
+    if not hotove(png):
+        ZIVE_TEXT[0] = "Kotúč 100 m: záber s voľným koncom a rezom"
+        rs += cas_renderu(blender(*KOTUC, "--azimut", 30, "--elevacia", 15, "--kotuc-volny", 2.2,
+                                  "--sirka", KVALITA["kotuc"][0], "--vzorky", KVALITA["kotuc"][1], "--out", png, log=log))
+        dokonci_na_mieste(png)
+    png = o / "kotuc-clanok.png"        # na šírku (4 : 3) do hlavy článku Pokládka
+    if not hotove(png):
+        ZIVE_TEXT[0] = "Kotúč 100 m: záber na šírku do článku Pokládka"
+        rs += cas_renderu(blender(*KOTUC, "--azimut", 44, "--elevacia", 14, "--kotuc-volny", 3.0, "--sirka", 2400,
+                                  "--vyska", 1800, "--vzorky", KVALITA["kotuc"][1], "--out", png, log=log))
+        dokonci_na_mieste(png)
+    d = o / "odvalenie"
+    d.mkdir(parents=True, exist_ok=True)
+    snimky = sorted(d.glob("kotuc-[0-9][0-9][0-9].png"))
+    if not (len(snimky) == 48 and all(hotove(s, d / "kotuc.json") for s in snimky)):
+        ZIVE_TEXT[0] = "Kotúč sa odvaľuje pozdĺž ryhy: 48 snímok, 6 m"
+        rs += cas_renderu(blender(*KOTUC, "--azimut", 58, "--elevacia", 16, "--ohnisko", 50, "--kotuc-volny", 1.6,
+                                  "--kotuc-rozvin", 6, "--snimky", 48, "--sirka", KVALITA["kotuc-odvalenie"][0],
+                                  "--vzorky", KVALITA["kotuc-odvalenie"][1], "--out", d / "kotuc.png", log=log))
+        for f in sorted(d.glob("kotuc-[0-9][0-9][0-9].png")):
+            dokonci_na_mieste(f)
+    zapis_stav("kotuc (záber 2400 px a odvaľovanie 48 snímok)", 49, rs, time.time() - t0)
+
+
+def ohyb_hotovy(d):
+    """Sekvencia ohybu je celá (počet snímok podľa záznamu) a z aktuálnej verzie modelu."""
+    j = d / "ohyb.json"
+    if not j.exists():
+        return False
+    n = len(json.loads(j.read_text(encoding="utf-8")).get("body_px", {}))
+    snimky = sorted(d.glob("ohyb-[0-9][0-9][0-9].png"))
+    return n >= OHYB_SNIMOK and len(snimky) == n and all(hotove(s, j) for s in snimky)
+
+
+def web_ohyb(a, log):
+    """Ohyb na najmenší polomer z katalógu pre reprezentatívny variant každého radu."""
+    o = WEB / "ohyb"
+    sirka, vzorky = KVALITA["ohyb"]
+    for rad, obj in RADY12:
+        t0, rs = time.time(), 0.0
+        d = o / rad
+        d.mkdir(parents=True, exist_ok=True)
+        if not ohyb_hotovy(d):
+            for f in d.glob("ohyb-[0-9][0-9][0-9]*.png"):     # rozrobená sekvencia s iným počtom snímok
+                f.unlink()
+            ZIVE_TEXT[0] = f"Ohyb na najmenší polomer: {rad.replace('microflex-', '')} ({obj}), {OHYB_SNIMOK} snímok"
+            rs += cas_renderu(blender("--rad", rad, "--obj", obj, "--pohlad", "ohyb", "--elevacia", 32, "--azimut", 38,
+                                      "--snimky", OHYB_SNIMOK, "--sirka", sirka, "--vzorky", vzorky, "--out", d / "ohyb.png", log=log))
+            for f in sorted(d.glob("ohyb-[0-9][0-9][0-9].png")):
+                dokonci_na_mieste(f)
+            zapis_stav(f"ohyb/{rad} ({OHYB_SNIMOK} snímok, {popis_kvality('ohyb')})", OHYB_SNIMOK, rs, time.time() - t0)
+
+
 def obnov_realitu():
     """Stránka Model a skutočnosť (galéria, /realita) s tým, čo je už vyrenderované."""
     r = subprocess.run([sys.executable, "-I", "-X", "utf8", str(REPO / "data" / "blender" / "realita.py")], capture_output=True,
@@ -590,7 +799,8 @@ def obnov_realitu():
 
 def sada_web(a, log):
     kroky = {"hlavy": web_hlavy, "rady": web_rady, "hero": web_hero, "rodina": web_rodina, "makra": web_makra,
-             "varianty": web_varianty, "rozlozeny": web_rozlozeny}
+             "varianty": web_varianty, "rozlozeny": web_rozlozeny,
+             "teplo": web_teplo, "mierka": web_mierka, "kotuc": web_kotuc, "ohyb": web_ohyb}
     print("verzia modelu:", GEOMETRIA)
     for meno in (a.len.split(",") if a.len else list(kroky)):
         print("==", meno)
@@ -609,7 +819,8 @@ def nezaspi():
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("sada", choices=["najlepsie", "final", "rady", "prvy", "ramovanie", "rady12", "web"])
-    p.add_argument("--len", default=None, help="sada web: len vybrané skupiny (hlavy,rady,hero,rodina,makra,varianty,rozlozeny; poradie behu)")
+    p.add_argument("--len", default=None, help="sada web: len vybrané skupiny (hlavy,rady,hero,rodina,makra,varianty,rozlozeny,"
+                                               "teplo,mierka,kotuc,ohyb; poradie behu)")
     p.add_argument("--vzorky", type=int, default=512)
     p.add_argument("--vzorky-sekvencia", type=int, default=256)
     p.add_argument("--vzorky-makro", type=int, default=512, help="makrá sa renderujú 2x a zmenšia (4x viac vzoriek na pixel)")

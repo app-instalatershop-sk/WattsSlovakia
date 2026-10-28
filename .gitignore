@@ -13,3 +13,7 @@ data/_*
 makety/out/
 .astro/
 __pycache__/
+
+# reklamné podklady z 3D modelu (data/reklama.py): stovky MB, dajú sa vytvoriť znova; v gite len README
+/reklama/*
+!/reklama/README.md

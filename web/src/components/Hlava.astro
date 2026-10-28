@@ -76,6 +76,8 @@ const leskMaska = rozlozenie === 'studio' && zdrojMasky && zdrojMasky.format !==
           <div class="hs-tien"><Obraz src={obraz} alt={obrazAlt} widths={[700, 1000, 1300]} sizes={`(max-width: 760px) 100vw, ${obrazMax}px`} loading="eager" fetchpriority="high" /></div>
           {leskMaska && <span class="hs-lesk" aria-hidden="true" style={`--maska: url("${leskMaska}")`} data-lesk></span>}
           <Koty koty={koty} label={kotyLabel} />
+          {/* Vrstvy nad obrazom, ktoré sa hýbu s ním: teplo v reze (stránka radu), rodina na ťuknutie (Potrubia). */}
+          <slot name="na-obraze" />
         </div>
       </div>
     </div>

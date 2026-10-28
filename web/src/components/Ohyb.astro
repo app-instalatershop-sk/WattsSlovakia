@@ -9,8 +9,8 @@
 import { sadzba } from '../lib/sadzba';
 
 export interface OhybData { snimok: number; pomer: number; sirky: number[]; cesta: string; rad?: string; obj_cislo?: string; polomer_m: number; plast_mm: number; body: { stred: number[]; os: number[] }[] }
-interface Props { data: OhybData; nadpis: string; popis: string; poznamka?: string; alt: string; kota: string; class?: string; hore?: number; horeM?: number; id?: string }
-const { data, nadpis, popis, poznamka, alt, kota, class: trieda, hore = 72, horeM = 64, id = 'h-ohyb' } = Astro.props;
+interface Props { data: OhybData; nadpis: string; popis: string; poznamka?: string; alt: string; kota: string; class?: string; hore?: number; horeM?: number; id?: string; tma?: boolean }
+const { data, nadpis, popis, poznamka, alt, kota, class: trieda, hore = 72, horeM = 64, id = 'h-ohyb', tma = false } = Astro.props;
 const DIEL = 0.42;
 const koniec = data.body[data.snimok - 1];
 const k0 = [koniec.os[0] + DIEL * (koniec.stred[0] - koniec.os[0]), koniec.os[1] + DIEL * (koniec.stred[1] - koniec.os[1])];
@@ -18,7 +18,7 @@ const sirka = Math.max(...data.sirky);
 const posledna = `${data.cesta}${sirka}/${String(data.snimok - 1).padStart(3, '0')}`;
 const polomer = data.polomer_m.toFixed(2).replace('.', ',');
 ---
-<section class:list={['ohyb', trieda]} aria-labelledby={id} style={`--oh-top: ${hore}px; --oh-top-m: ${horeM}px`} data-ohyb data-cesta={data.cesta} data-snimok={data.snimok} data-sirky={data.sirky.join(',')} data-body={JSON.stringify(data.body)}>
+<section class:list={['ohyb', trieda, { 'oh-tma': tma }]} aria-labelledby={id} style={`--oh-top: ${hore}px; --oh-top-m: ${horeM}px`} data-ohyb data-cesta={data.cesta} data-snimok={data.snimok} data-sirky={data.sirky.join(',')} data-body={JSON.stringify(data.body)}>
   <div class="oh-sticky">
     <div class="wrap oh-grid">
       <div class="oh-text">
@@ -73,6 +73,14 @@ const polomer = data.polomer_m.toFixed(2).replace('.', ',');
   .ohyb.oh-js .oh-bod { transform: translate3d(calc(var(--xn, 0) * 1cqw), calc(var(--yn, 0) * 1cqw / var(--pomer)), 0); }
   .ohyb.oh-js .oh-stitok { transform: translate3d(calc(var(--xn, 0) * 1cqw), calc(var(--yn, 0) * 1cqw / var(--pomer)), 0) translate(14px, -50%); -webkit-backdrop-filter: none; backdrop-filter: none; background: rgb(255 255 255 / 0.94); }
   .ohyb.oh-js.oh-kota .oh-polomer, .ohyb.oh-js.oh-kota .oh-bod, .ohyb.oh-js.oh-kota .oh-stitok { opacity: 1; }
+
+  /* Tmavá scéna (domov, Juraj 28. 10. 2026): pozadie dáva stránka, tu je text na tmavom a za rúrou jemné modré
+     svetlo ako v ateliéri. Svetlo ide s obrazom (pseudoprvok rámika), nie s výškou okna, takže na mobile nie je pás. */
+  .oh-tma .oh-text h2 { color: #fff; }
+  .oh-tma .oh-text .lead, .oh-tma .oh-pozn { color: var(--color-on-dark-muted); }
+  .oh-tma .oh-stage::before { content: ""; position: absolute; inset: -28% -22%; pointer-events: none;
+    background: radial-gradient(closest-side, rgb(150 190 255 / 0.45) 0%, rgb(120 165 245 / 0.2) 50%, rgb(120 165 245 / 0) 100%); }
+  .oh-tma .oh-polomer line { stroke: #fff; filter: none; }
 
   @media (max-width: 900px) {
     .ohyb { height: 200vh; }

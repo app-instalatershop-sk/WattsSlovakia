@@ -104,8 +104,11 @@ Základ je prevzatý z CSS premenných watts.eu (`--primary #005db9`, `--dark-pr
   `--blue-50`) a jeden tmavý blok (`--blue-900`, spravidla pätička alebo Pre firmy).
   Výnimka je domov (Juraj 23. 9. 2026, „zostup pod zem“): pozadie od hero po pätičku plynulo tmavne
   cez štyri tóny `--zem-1` až `--zem-4` (global.css) do tmavomodrej; koniec jednej sekcie je začiatok
-  ďalšej, takže medzi pásmi nie je biela ani schod.
-- Žiadne prechody (gradienty) okrem tmavého presahu cez hero fotku kvôli čitateľnosti textu.
+  ďalšej, takže medzi pásmi nie je biela ani schod. Ohyb (Juraj 28. 10. 2026, návrh C) je v tomto zostupe
+  tmavá scéna: rozložený rez prejde ohnutou hranou do tmavomodrej, pod ohybom sa rovnakou hranou vráti do
+  svetlej pokládky („klasická, nie modrá“) a tmavé do konca je až podzemie.
+- Žiadne prechody (gradienty) okrem tmavého presahu cez hero fotku kvôli čitateľnosti textu a svetla za rúrou
+  v tmavom ohybe na domove (svetlo ateliéru za 3D modelom, nie ozdoba plochy).
 - Zelená a červená sú výlučne stavové, nikdy dekoratívne.
 - Kontrast: `--blue-700` na bielej 6,3 : 1, `--ink` na `--yellow-500` 12 : 1, `--ink` na
   `--blue-100` 13 : 1. Biely text na `--blue-700` 6,3 : 1. Všetko spĺňa AA aj pre malý text.
@@ -274,9 +277,10 @@ Pravidlá:
 Každá novinka niečo dokazuje alebo vysvetľuje číslom z katalógu, nie je to efekt. Prevod renderov:
 `data/novinky_web.py`, rendery: `data/blender/davka.py web --len teplo,mierka,kotuc,ohyb`.
 
-- **Ohyb na najmenší polomer** (`Ohyb.astro`): domov medzi stavbou potrubia a pokládkou (DUO 160,
-  R 0,60 m) a stránka radu v časti Stavba a montáž (reprezentatívny variant radu). Polomer je na osi
-  potrubia; kóta ide ako na výkrese od osi k stredu oblúka (stred býva mimo záberu).
+- **Ohyb na najmenší polomer** (`Ohyb.astro`): len domov, medzi stavbou potrubia a pokládkou (DUO 160,
+  R 0,60 m), ako tmavá scéna (vlastnosť `tma`: text na tmavom, biela kóta, za rúrou jemné modré svetlo).
+  Na stránkach radov nie je (Juraj 28. 10.: najmenší polomer platí pre jeden variant, nie pre celý rad).
+  Polomer je na osi potrubia; kóta ide ako na výkrese od osi k stredu oblúka (stred býva mimo záberu).
 - **Teplo v reze** (`TeploRezim.astro` a `TeploVrstva.astro` v hlave radu): prepínač Pohľad a Teplota,
   ten istý záber ako obraz termokamery na tmavej obrazovke. Teploty sú vždy „príklad prevádzky“
   s podmienkami pod prepínačom (vykurovanie 70/50 °C, sanita 60/55 °C, HP 45/40 °C, COOL 7 °C pri
@@ -400,9 +404,9 @@ len vodorovne (`overflow-x: clip`), zvislo nie, takže tieň rúry mäkko dopadn
 ostrá hrana. Kružnice za rezom doznejú ešte nad šikmou hranou, cez pás neprechádzajú (Juraj 23. 9.:
 „sivé kruhy prelínajú šikmú vrstvu, robí to sivý tieň a odrezanie“).
 
-Tvar šikmých hrán (Juraj 28. 10. 2026, variant „ohyb“): všetky štyri (pás katalógu, podzemie, spodok hlavy
-vnútorných stránok, záver) stúpajú zľava doprava, ale nie rovno: hrana sa ohne ako rúra v oblúku, ako hlavná
-vlastnosť výrobku. Jeden tvar pre všetky, `--hrana-ohyb` v `global.css` (maska pásu výšky hrany). Súmerný
+Tvar šikmých hrán (Juraj 28. 10. 2026, variant „ohyb“): všetky (pás katalógu, podzemie, spodok hlavy
+vnútorných stránok, záver, horná aj spodná hrana tmavého ohybu na domove) stúpajú zľava doprava, ale nie
+rovno: hrana sa ohne ako rúra v oblúku, ako hlavná vlastnosť výrobku. Jeden tvar pre všetky, `--hrana-ohyb` v `global.css` (maska pásu výšky hrany). Súmerný
 oblúk ani vlnky nie: vlnky sú znak šablónových webov a oblúk sa nehodí k fotke, ktorá hranu pretína.
 
 Navigácia po stránke s číslami kapitol (obsah v hero, čísla nad nadpismi, koľajnica pri okraji) bola

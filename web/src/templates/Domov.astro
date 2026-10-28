@@ -144,7 +144,7 @@ const popisy = heroVariant && heroRad ? [
 
   {/* Ohyb (Juraj 28. 10. 2026): dôkaz hlavnej vety, že potrubie sa ohne okolo prekážky; medzi stavbou
       potrubia a pokládkou: z čoho je, ako sa ohne, ako sa kladie. */}
-  {ohybDomov && <Ohyb data={ohybDomov} class="ohyb-domov" nadpis={nv.ohyb.h2} popis={nv.ohyb.domov} poznamka={nv.ohyb.pozn} alt={nv.ohyb.alt('Microflex DUO', '0,60')} kota={nv.ohyb.kota} />}
+  {ohybDomov && <Ohyb data={ohybDomov} class="ohyb-domov" tma nadpis={nv.ohyb.h2} popis={nv.ohyb.domov} poznamka={nv.ohyb.pozn} alt={nv.ohyb.alt('Microflex DUO', '0,60')} kota={nv.ohyb.kota} />}
 
   <section class:list={['section pokladka', { 'ma-kotuc': odvalenie }]} aria-labelledby="h-pokladka">
     {odvalenie ? (
@@ -377,6 +377,18 @@ const popisy = heroVariant && heroRad ? [
   .rodina { background: linear-gradient(180deg, var(--zem-2) 0%, var(--zem-3) 100%); padding-top: 0; padding-bottom: 24px; overflow-x: clip; overflow-y: visible; }
   /* Rozložený rez pokračuje zostupom pod zem: rovnaký tón ako koniec rodiny a začiatok pokládky. */
   :global(.rozklad.rozklad-domov) { background: var(--zem-3); }
+  /* Ohyb je tmavá scéna medzi svetlými sekciami (Juraj 28. 10. 2026: návrh C, pokládka ostáva svetlá). Tón rezu
+     prejde hore ohnutou hranou do tmy a dole sa rovnakou hranou vráti do tónu pokládky. Obe hrany sú vnútri
+     sekcie (obsah lepkavej časti k nim nedosiahne), takže neprekrývajú rez ani nadpis pokládky. */
+  :global(.ohyb.ohyb-domov) { isolation: isolate; background: var(--zem-3); }
+  :global(.ohyb.ohyb-domov)::before, :global(.ohyb.ohyb-domov)::after { content: ""; position: absolute; z-index: -1; left: 0; right: 0; pointer-events: none; }
+  :global(.ohyb.ohyb-domov)::before { top: 0; bottom: 0; background: linear-gradient(180deg, #11397a 0%, #0e3374 100%);
+    -webkit-mask: var(--hrana-ohyb) left top / 100% var(--sikmina-zaver) no-repeat, linear-gradient(#000 0 0) left var(--sikmina-zaver) / 100% 100% no-repeat;
+    mask: var(--hrana-ohyb) left top / 100% var(--sikmina-zaver) no-repeat, linear-gradient(#000 0 0) left var(--sikmina-zaver) / 100% 100% no-repeat; }
+  :global(.ohyb.ohyb-domov)::after { bottom: 0; height: var(--sikmina-zaver); background: var(--zem-3);
+    -webkit-mask: var(--hrana-ohyb) center / 100% 100% no-repeat; mask: var(--hrana-ohyb) center / 100% 100% no-repeat; }
+  /* Pri obmedzenom pohybe sekcia nelepí a obsah má len 64 px okraj; hrana býva až 96 px. */
+  @media (prefers-reduced-motion: reduce) { :global(.ohyb.ohyb-domov .oh-sticky) { padding-block: calc(var(--sikmina-zaver) + 40px); } }
   .rodina-grid { position: relative; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px; align-items: start; }
   /* Text rodiny začína vyššie, v páse, cez ktorý prechádza render (pás katalógu má dole 200 px pre jeho
      presah); vľavo by inak ostala prázdna plocha (DOLADENIE kap. 2.4, bod 4). */
@@ -387,7 +399,6 @@ const popisy = heroVariant && heroRad ? [
   .rodina-obraz { width: max(146%, calc(104% + var(--bleed) + 24px)); max-width: none; margin: -196px 0 0 -4%; position: relative; z-index: 2; }
   .rodina-wrap { position: relative; filter: drop-shadow(0 28px 36px rgb(11 27 51 / 0.2)); }
   .rodina-hint { margin-top: 12px; font-size: 14px; color: var(--color-ink-soft); }
-  :global(.ohyb.ohyb-domov) { background: var(--zem-3); }
   .rodina-wrap :global(.rodina-img) { width: 100%; height: auto; display: block; -webkit-mask-image: linear-gradient(to top right, #000 66%, transparent 97%); mask-image: linear-gradient(to top right, #000 66%, transparent 97%); }
   /* Rodina z 3D modelu: celé telá a vlastný kontaktný tieň, bez doznenia a bez tieňa z CSS. Na počítači
      sa zmestí celá (text menuje aj COOL a HP, tie by za okrajom chýbali), vpravo do okraja obrazovky. */
@@ -422,8 +433,9 @@ const popisy = heroVariant && heroRad ? [
   .pk-hlava .lead { margin-top: 18px; max-width: 40em; }
   .pk-pozn { margin-top: 8px; font-size: 14px; color: var(--color-ink-soft); }
   /* clip namiesto hidden: hidden by vypol lepkavý obraz kotúča (sticky v KotucSekvencia) */
-  /* Ohyb a kotúč sú jedna kapitola o pokládke (Juraj 28. 10.): kotúč nadväzuje na ohyb bez veľkej medzery. */
-  .pokladka.ma-kotuc { padding-top: 32px; overflow: clip; }
+  /* Ohyb a kotúč sú jedna kapitola o pokládke (Juraj 28. 10.): kotúč nadväzuje na ohyb bez veľkej medzery.
+     Medzera je len taká, aby nadpis vľavo neprilipol k tmavému ohybu (hrana tam siaha až po spodok sekcie). */
+  .pokladka.ma-kotuc { padding-top: clamp(40px, 2.5vw + 32px, 72px); overflow: clip; }
   .pokladka.ma-kotuc .pokladka-pata { margin-top: 8px; }
   .pokladka-text { grid-column: 7 / 13; }
   .pokladka h2 { font-size: clamp(32px, 3vw + 12px, 58px); line-height: 1.04; letter-spacing: -0.03em; max-width: 11em; }
@@ -511,7 +523,6 @@ const popisy = heroVariant && heroRad ? [
 
   /* ---------- Tablet ---------- */
   @media (max-width: 1100px) {
-    .pokladka.ma-kotuc { padding-top: 24px; }
     .hero-in { grid-template-columns: minmax(0, 46fr) minmax(0, 54fr); }
     .hero h1 { font-size: clamp(34px, 3.4vw + 10px, 50px); }
     .rodina-grid { grid-template-columns: 1fr; }

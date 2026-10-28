@@ -3,7 +3,7 @@
  * Ohyb na najmenší polomer (Juraj 28. 10. 2026): pri rolovaní sa rúra z vlastného 3D modelu ohne z rovnej
  * do oblúka s polomerom z katalógu (data/blender/ohyb.py, data/novinky_web.py ohyb) a pri oblúku sa objaví
  * kóta. Stred oblúka býva mimo záberu, preto kóta ide ako na výkrese: od osi rúry smerom k stredu (časť
- * polomeru) a štítok stojí na jej konci. Prehrávač ako pri rozloženom reze (Rozklad.astro): snímky na
+ * polomeru) a štítok stojí na jej konci. Prehrávač ako pri rozloženom reze (lib/sekvencia.ts): snímky na
  * <canvas>, sťahovanie až pri sekcii, bez skriptu a pri „obmedziť pohyb“ stojí obraz ohnutý s kótou.
  */
 import { sadzba } from '../lib/sadzba';
@@ -26,7 +26,7 @@ const polomer = data.polomer_m.toFixed(2).replace('.', ',');
         <p class="lead">{sadzba(popis)}</p>
         {poznamka && <p class="oh-pozn">{sadzba(poznamka)}</p>}
       </div>
-      <div class="oh-stage" style={`aspect-ratio: ${data.pomer}`}>
+      <div class="oh-stage" style={`aspect-ratio: ${data.pomer}; --pomer: ${data.pomer}`}>
         <picture class="oh-obr">
           <source type="image/avif" srcset={`${posledna}.avif`} />
           <img src={`${posledna}.webp`} alt={alt} width={sirka} height={Math.round(sirka / data.pomer)} loading="lazy" decoding="async" />
@@ -43,13 +43,15 @@ const polomer = data.polomer_m.toFixed(2).replace('.', ',');
 </section>
 
 <style>
-  .ohyb { position: relative; height: 250vh; }
-  .oh-sticky { position: sticky; top: var(--oh-top); height: calc(100vh - var(--oh-top)); display: flex; align-items: center; overflow: clip; }
-  .oh-grid { width: 100%; display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 24px 48px; align-items: center; }
+  .ohyb { --oh-pad: clamp(12px, 3vh, 32px); position: relative; height: 270vh; }
+  /* Obsah v strede okna pod hlavičkou; okraje auto ho pri vyššom obsahu zarovnajú hore (nič sa neoreže). */
+  .oh-sticky { position: sticky; top: var(--oh-top); height: calc(100vh - var(--oh-top)); display: flex; padding-block: var(--oh-pad); overflow: clip; }
+  .oh-grid { width: 100%; margin-block: auto; display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 24px 48px; align-items: center; }
   .oh-text h2 { font-size: clamp(28px, 2.2vw + 14px, 42px); letter-spacing: -0.02em; }
   .oh-text .lead { margin-top: 14px; }
   .oh-pozn { margin-top: 18px; padding-left: 18px; border-left: 3px solid var(--color-yellow-500); font-size: 15px; line-height: 1.55; color: var(--color-ink-soft); max-width: 30em; }
-  .oh-stage { position: relative; width: 100%; max-height: calc(100vh - var(--oh-top) - 60px); margin-inline: auto; container-type: inline-size; }
+  /* Obraz nikdy vyšší ako okno: šírka z voľnej výšky a pomeru strán (samotná max-height by ho roztiahla do šírky). */
+  .oh-stage { position: relative; width: min(100%, calc((100vh - var(--oh-top) - 2 * var(--oh-pad)) * var(--pomer))); margin-inline: auto; container-type: inline-size; }
   .oh-obr :global(img), .oh-canvas, .oh-polomer { position: absolute; inset: 0; width: 100%; height: 100%; }
   .oh-canvas { opacity: 0; }
   .ohyb.oh-bezi .oh-canvas { opacity: 1; }
@@ -68,13 +70,13 @@ const polomer = data.polomer_m.toFixed(2).replace('.', ',');
   .ohyb.oh-js.oh-kota .oh-polomer, .ohyb.oh-js.oh-kota .oh-bod, .ohyb.oh-js.oh-kota .oh-stitok { opacity: 1; }
 
   @media (max-width: 900px) {
-    .ohyb { height: 220vh; }
+    .ohyb { height: 230vh; }
     .oh-sticky { top: var(--oh-top-m); height: calc(100svh - var(--oh-top-m)); }
     .oh-grid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
     .oh-text h2 { font-size: clamp(24px, 5vw + 8px, 32px); }
     .oh-text .lead { font-size: 16px; }
     .oh-pozn { display: none; }
-    .oh-stage { margin-inline: calc(-1 * var(--gutter)); width: calc(100% + 2 * var(--gutter)); max-height: none; }
+    .oh-stage { margin-inline: calc(-1 * var(--gutter)); width: calc(100% + 2 * var(--gutter)); }
     /* štítok pod koncom kóty: vpravo od nej by na úzkom displeji vyšiel z obrazu */
     .oh-stitok { transform: translate(-50%, 14px); }
   }
@@ -85,8 +87,10 @@ const polomer = data.polomer_m.toFixed(2).replace('.', ',');
 </style>
 
 <script>
-  // Priebeh 0 až 1 cez sekciu: na začiatku a na konci obraz chvíľu stojí; kóta príde pri dokončenom oblúku.
-  const ZACIATOK = 0.12, KONIEC = 0.82, KOTA = 0.9, DIEL = 0.42;
+  import { prehravaj, zmensiObraz } from '../lib/sekvencia';
+  // Dráha 0 až 1 cez sekciu: na začiatku obraz chvíľu stojí, kóta príde pri dokončenom oblúku a hotový ohyb
+  // s kótou drží ešte asi pol okna rolovania, kým sekcia odíde.
+  const OD = 0.08, DO = 0.74, KOTA = 0.9, DIEL = 0.42;
   const stopky: AbortController[] = [];
 
   function initOhyb() {
@@ -95,90 +99,40 @@ const polomer = data.polomer_m.toFixed(2).replace('.', ',');
     document.querySelectorAll<HTMLElement>('[data-ohyb]').forEach((sek) => {
       const stop = new AbortController();
       stopky.push(stop);
-      const signal = stop.signal;
       sek.classList.add('oh-js');
       const n = Number(sek.dataset.snimok);
       const body: { stred: number[]; os: number[] }[] = JSON.parse(sek.dataset.body ?? '[]');
-      const sirky = (sek.dataset.sirky ?? '').split(',').map(Number).sort((a, b) => a - b);
       const stage = sek.querySelector<HTMLElement>('.oh-stage')!;
-      const platno = sek.querySelector<HTMLCanvasElement>('.oh-canvas')!;
-      const ctx = platno.getContext('2d')!;
       const ciara = sek.querySelector<SVGLineElement>('.oh-polomer line')!;
       const bod = sek.querySelector<HTMLElement>('.oh-bod')!;
       const stitok = sek.querySelector<HTMLElement>('.oh-stitok')!;
-      const snimky: (HTMLImageElement | undefined)[] = new Array(n);
-      let sirka = sirky[sirky.length - 1], nakreslena = -1, rafId = 0;
-
-      const velkost = () => {
-        const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        platno.width = Math.round(stage.clientWidth * dpr);
-        platno.height = Math.round(stage.clientHeight * dpr);
-        nakreslena = -1;
-      };
-      const priebeh = () => {
-        const r = sek.getBoundingClientRect();
-        const p = Math.min(1, Math.max(0, -r.top / Math.max(1, sek.offsetHeight - window.innerHeight)));
-        return Math.min(1, Math.max(0, (p - ZACIATOK) / (KONIEC - ZACIATOK)));
-      };
-      const najblizsia = (i: number) => {
-        for (let d = 0; d < n; d++) {
-          if (snimky[i - d]) return i - d;
-          if (snimky[i + d]) return i + d;
-        }
-        return -1;
-      };
-      const kresli = () => {
-        rafId = 0;
-        const f = priebeh();
-        const i = Math.round(f * (n - 1));
-        const j = najblizsia(i);
-        if (j >= 0 && j !== nakreslena) {
-          ctx.clearRect(0, 0, platno.width, platno.height);
-          ctx.drawImage(snimky[j]!, 0, 0, platno.width, platno.height);
-          nakreslena = j;
-          sek.classList.add('oh-bezi');
-        }
-        const b = body[i];
-        const k = [b.os[0] + DIEL * (b.stred[0] - b.os[0]), b.os[1] + DIEL * (b.stred[1] - b.os[1])];
-        ciara.setAttribute('x1', String(b.os[0])); ciara.setAttribute('y1', String(b.os[1]));
-        ciara.setAttribute('x2', String(k[0])); ciara.setAttribute('y2', String(k[1]));
-        for (const [el, p] of [[bod, b.os], [stitok, k]] as const) {
-          el.style.setProperty('--x', `${p[0]}%`);
-          el.style.setProperty('--y', `${p[1]}%`);
-        }
-        sek.classList.toggle('oh-kota', f >= KOTA);
-      };
-      const naplanuj = () => { if (!rafId) rafId = requestAnimationFrame(kresli); };
-
-      let zacate = false;
-      const nacitaj = async (i: number) => {
-        const im = new Image();
-        im.src = `${sek.dataset.cesta}${sirka}/${String(i).padStart(3, '0')}.avif`;
-        await im.decode();
-        snimky[i] = im;
-        naplanuj();
-      };
-      const stiahni = async () => {
-        if (zacate) return;
-        zacate = true;
-        const potrebna = stage.clientWidth * Math.min(window.devicePixelRatio || 1, 2);
-        sirka = sirky.find((s) => s >= potrebna * 0.85) ?? sirky[sirky.length - 1];
+      prehravaj({
+        koren: sek, stage, platno: sek.querySelector<HTMLCanvasElement>('.oh-canvas')!, cesta: sek.dataset.cesta ?? '', n,
+        sirky: (sek.dataset.sirky ?? '').split(',').map(Number), od: OD, do: DO, signal: stop.signal,
+        bezi: () => sek.classList.add('oh-bezi'),
         // Prehliadač bez AVIF dostane statický ohnutý obraz s kótou (WebP), bez pohybu.
-        try { await nacitaj(0); } catch { sek.classList.remove('oh-js'); stop.abort(); return; }
-        const poradie: number[] = [];
-        for (const krok of [n - 1, 8, 4, 2, 1]) for (let i = 0; i < n; i += krok) if (!snimky[i] && !poradie.includes(i)) poradie.push(i);
-        if (!snimky[n - 1] && !poradie.includes(n - 1)) poradie.unshift(n - 1);
-        let k = 0;
-        const vlakno = async () => { while (k < poradie.length && !signal.aborted) { try { await nacitaj(poradie[k++]); } catch { /* susedná snímka */ } } };
-        await Promise.all([vlakno(), vlakno(), vlakno(), vlakno()]);
-      };
-      const pozorovatel = new IntersectionObserver((z) => { if (z.some((e) => e.isIntersecting)) { stiahni(); pozorovatel.disconnect(); } }, { rootMargin: '100% 0px' });
-      pozorovatel.observe(sek);
-      signal.addEventListener('abort', () => pozorovatel.disconnect());
-      velkost();
-      window.addEventListener('scroll', naplanuj, { passive: true, signal });
-      window.addEventListener('resize', () => { velkost(); naplanuj(); }, { signal });
-      naplanuj();
+        zlyhalo: () => { sek.classList.remove('oh-js'); stop.abort(); },
+        popisy: (_p, x) => {
+          const i = Math.min(n - 2, Math.floor(x)), t = x - i;
+          const medzi = (a: number[], b: number[]) => [a[0] + t * (b[0] - a[0]), a[1] + t * (b[1] - a[1])];
+          const os = medzi(body[i].os, body[i + 1].os), stred = medzi(body[i].stred, body[i + 1].stred);
+          const k = [os[0] + DIEL * (stred[0] - os[0]), os[1] + DIEL * (stred[1] - os[1])];
+          ciara.setAttribute('x1', String(os[0])); ciara.setAttribute('y1', String(os[1]));
+          ciara.setAttribute('x2', String(k[0])); ciara.setAttribute('y2', String(k[1]));
+          for (const [el, q] of [[bod, os], [stitok, k]] as const) {
+            el.style.setProperty('--x', `${q[0]}%`);
+            el.style.setProperty('--y', `${q[1]}%`);
+          }
+          sek.classList.toggle('oh-kota', x / (n - 1) >= KOTA);
+        },
+      });
+      // Telefón s nízkym oknom: obraz sa zmenší, aby sa nadpis, text aj celý oblúk zmestili do okna.
+      const sticky = sek.querySelector<HTMLElement>('.oh-sticky')!;
+      const grid = sek.querySelector<HTMLElement>('.oh-grid')!;
+      const prisposob = () => zmensiObraz(sticky, grid, stage);
+      prisposob();
+      document.fonts?.ready.then(prisposob);
+      window.addEventListener('resize', prisposob, { signal: stop.signal });
     });
   }
 

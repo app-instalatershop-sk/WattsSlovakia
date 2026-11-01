@@ -71,7 +71,10 @@ function skenuj(zar) {
   const rozsir = (r) => { const cx = r.left + r.width / 2, cy = r.top + r.height / 2, w = Math.max(24, r.width), h = Math.max(24, r.height); return { l: cx - w / 2, r: cx + w / 2, t: cy - h / 2, b: cy + h / 2 }; };
   const prekryva = (a, b) => a.l < b.r && b.l < a.r && a.t < b.b && b.t < a.b;
   if (zar === 'mobil') for (const [ix, e] of ciele.entries()) {
-    const r = obd[ix]; const cs = getComputedStyle(e);
+    const r0 = obd[ix]; const cs = getComputedStyle(e);
+    // plocha na dotyk vrátane neviditeľného presahu (::after, global.css „Dotyková plocha“)
+    const pa = getComputedStyle(e, '::after');
+    const r = pa.content !== 'none' && pa.position === 'absolute' ? { width: Math.max(r0.width, parseFloat(pa.width) || 0), height: Math.max(r0.height, parseFloat(pa.height) || 0), left: r0.left, right: r0.right, top: r0.top, bottom: r0.bottom } : r0;
     const vVete = cs.display === 'inline' && e.parentElement && /^(P|LI|DD|SPAN|SMALL|TD|FIGCAPTION)$/.test(e.parentElement.tagName) && e.parentElement.textContent.trim().length > e.textContent.trim().length + 15;
     if (vVete) continue;
     const m = Math.min(r.width, r.height);

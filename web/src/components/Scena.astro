@@ -12,11 +12,13 @@ import type { Kota } from '../lib/koty';
 interface Props {
   obraz: ImageMetadata; alt: string; koty?: Kota[];
   widths?: number[]; sizes?: string; class?: string; label?: string;
+  /** 'low' pre fotky pod hlavou stránky: nesmú brať pásmo fotke v hlave (prvok LCP), polish 1. 11. */
+  priorita?: 'low';
 }
-const { obraz, alt, koty = [], widths = [640, 960, 1200], sizes = '(max-width: 900px) 100vw, 66vw', class: trieda, label } = Astro.props;
+const { obraz, alt, koty = [], widths = [640, 960, 1200], sizes = '(max-width: 900px) 100vw, 66vw', class: trieda, label, priorita } = Astro.props;
 ---
 <figure class:list={['scena', trieda]}>
-  <Obraz src={obraz} alt={alt} widths={widths.filter((w) => w <= obraz.width)} sizes={sizes} class="scena-img" />
+  <Obraz src={obraz} alt={alt} widths={widths.filter((w) => w <= obraz.width)} sizes={sizes} class="scena-img" fetchpriority={priorita} />
   <Koty koty={koty} label={label} />
 </figure>
 

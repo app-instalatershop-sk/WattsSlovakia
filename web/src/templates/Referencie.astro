@@ -63,11 +63,11 @@ const bloky = await Promise.all(refs.map(async (r) => {
     {bloky.map(({ r, fotky, rad, k }, i) => (
       <section class:list={['wrap ref', { vpravo: i % 2 === 1 }]} id={r.id} aria-labelledby={`h-${r.id}`}>
         <div class="galeria" data-galeria style={`--pomer: ${fotky[0].src.width} / ${fotky[0].src.height}`}>
-          <Scena class="hlavna" obraz={fotky[0].src} alt={r.nazov} koty={r.scena?.koty ?? []} label={ui.home.projektyKoty} widths={[640, 900, 1100]} sizes="(max-width: 900px) 100vw, 56vw" />
+          <Scena class="hlavna" obraz={fotky[0].src} alt={r.nazov} koty={r.scena?.koty ?? []} label={ui.home.projektyKoty} widths={[640, 900, 1100]} sizes="(max-width: 900px) 100vw, 56vw" priorita="low" />
           {fotky.length > 1 && (
             <ul class="nahlady">
               {fotky.map((f, j) => (
-                <li><button type="button" aria-pressed={j === 0 ? 'true' : 'false'} data-velka={f.velka} aria-label={tx.fotka(j + 1)}><Obraz src={f.src} alt="" width={120} height={90} densities={[1, 2]} /></button></li>
+                <li><button type="button" aria-pressed={j === 0 ? 'true' : 'false'} data-velka={f.velka} aria-label={tx.fotka(j + 1)}><Obraz src={f.src} alt="" width={120} height={90} densities={[1, 2]} fetchpriority="low" /></button></li>
               ))}
             </ul>
           )}

@@ -151,7 +151,7 @@ const katRadu = (r: Rad) => kat.find((k) => k.id === r.kategoria)!;
   .vykresy th { background: #fff; }
   .v-nazov { font-weight: 600; white-space: normal !important; }
   .v-rady { white-space: normal !important; color: var(--color-ink-soft); }
-  .v-rady a { font-weight: 500; }
+  .v-rady a { font-weight: 500; padding-block: 3px; } /* plocha 24 px na dotyk (WCAG 2.5.8) bez zmeny riadku */
   .format { display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: var(--radius-m); background: var(--color-blue-50); font-family: var(--font-display); font-stretch: 112.5%; font-weight: 700; font-size: 13px; letter-spacing: .03em; color: var(--color-blue-900); transition: background-color 150ms var(--ease-soft); }
   .format:hover { background: var(--color-blue-100); color: var(--color-blue-900); }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }

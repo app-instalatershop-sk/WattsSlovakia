@@ -24,9 +24,10 @@ const druhyRiadok = new Set(zlava.filter((_, i) => i % 2 === 1));
 ---
 <figure class="mierka" data-mierka data-cesta={data.cesta} data-krok={data.krok}>
   <figcaption class="mi-hlava"><strong>{nadpis}</strong> {popisDotyk ? <span><span class="len-mys">{popis}</span><span class="len-dotyk">{popisDotyk}</span></span> : <span>{popis}</span>}</figcaption>
-  <div class:list={['mi-obal', { 's-popiskami': sPopiskom > 0, 'popisky-2r': sPopiskom > 8, 'popisky-2r-m': sPopiskom > 5 }]}>
+  {/* Na telefóne sa pás posúva do strany: musí sa dať dosiahnuť aj klávesnicou (polish 1. 11., axe). */}
+  <div class:list={['mi-obal', { 's-popiskami': sPopiskom > 0, 'popisky-2r': sPopiskom > 8, 'popisky-2r-m': sPopiskom > 5 }]} tabindex="0" role="region" aria-label={nadpis}>
   <div class="mi-stage" style={`aspect-ratio: ${data.pomer}`}>
-    <img class="mi-zaklad" src={w2.src} srcset={`${w1.src} 1200w, ${w2.src} 2000w`} sizes="(max-width: 1300px) 100vw, 1240px" alt={alt} width="2000" height={Math.round(2000 / data.pomer)} loading="lazy" decoding="async" />
+    <img class="mi-zaklad" src={w2.src} srcset={`${w1.src} 1200w, ${w2.src} 2000w`} sizes="(max-width: 760px) 760px, (max-width: 1300px) 100vw, 1240px" alt={alt} width="2000" height={Math.round(2000 / data.pomer)} loading="lazy" decoding="async" />
     <img class="mi-svetlo" src={svetlo} alt="" aria-hidden="true" loading="lazy" decoding="async" />
     {data.systemy.map((s, k) => (
       <p class="mi-stitok" data-k={k} data-kotva={kotvaKodu(s.obj)} style={`--x: ${s.bod[0]}%; --y: ${s.bod[1]}%`} hidden>
@@ -61,7 +62,7 @@ const druhyRiadok = new Set(zlava.filter((_, i) => i % 2 === 1));
   .mi-stitok { position: absolute; z-index: 2; left: var(--x); top: var(--y); transform: translate(-50%, calc(-100% - 12px)); display: grid; justify-items: center; gap: 1px;
     margin: 0; padding: 6px 11px; border-radius: var(--radius-m); background: rgb(255 255 255 / 0.94); box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.08), var(--elev-2); white-space: nowrap; pointer-events: none; }
   .mi-stitok strong { font-family: var(--font-display); font-stretch: 112%; font-weight: 600; font-size: 16px; color: var(--color-blue-900); font-variant-numeric: tabular-nums; }
-  .mi-stitok span { font-size: 13px; color: #3f4b5e; }
+  .mi-stitok span { font-size: 13px; color: var(--color-ink-soft); }
   .mi-obal.s-popiskami { padding-bottom: 46px; }
   .mi-obal.popisky-2r { padding-bottom: 86px; }
   .popisky-2r .mi-popis.rad2 { top: calc(100% + 46px); }

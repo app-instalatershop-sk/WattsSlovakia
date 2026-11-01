@@ -12,13 +12,14 @@ import { getImage, type LocalImageProps } from 'astro:assets';
 import type { ImageMetadata, UnresolvedImageTransform } from 'astro';
 import nahlady from '../data/nahlady.json';
 
-type Props = LocalImageProps;
+/** kvalita: AVIF pre túto fotku inak ako 60 (napr. fotka v hlave, prvok LCP, 50; polish 1. 11.). */
+type Props = LocalImageProps & { kvalita?: number };
 
-const props = Astro.props;
+const { kvalita, ...props } = Astro.props;
 const src = props.src as ImageMetadata;
 const foto = src.format === 'jpg' || src.format === 'jpeg';
 const [avif, webp] = await Promise.all([
-  getImage({ ...props, format: 'avif', quality: foto ? 60 : 50 } as UnresolvedImageTransform),
+  getImage({ ...props, format: 'avif', quality: kvalita ?? (foto ? 60 : 50) } as UnresolvedImageTransform),
   getImage({ ...props, format: 'webp' } as UnresolvedImageTransform),
 ]);
 // Pri hustotách (1x, 2x) obsahuje srcSet len vyššie hustoty, 1x je samotné src (ako v Picture z Astro).

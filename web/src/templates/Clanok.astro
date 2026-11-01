@@ -53,7 +53,7 @@ const ld = [{
               : (
                 <figure class="tabulka">
                   {b.tabulka.nadpis && <figcaption>{b.tabulka.nadpis}</figcaption>}
-                  <div class="tabulka-obal"><table class="data">
+                  <div class="tabulka-obal" tabindex="0" role="region" aria-label={b.tabulka.nadpis ?? b.tabulka.hlavicky.join(', ')}><table class="data">
                     <thead><tr>{b.tabulka.hlavicky.map((h) => <th scope="col">{h}</th>)}</tr></thead>
                     <tbody>{b.tabulka.riadky.map((r) => <tr>{r.map((x, j) => (j === 0 ? <th scope="row">{x}</th> : <td>{x}</td>))}</tr>)}</tbody>
                   </table></div>
@@ -96,7 +96,7 @@ const ld = [{
   .clanok { padding: 40px 48px 44px; }
   .clanok section + section { margin-top: 40px; }
   .clanok h2 { font-size: clamp(22px, 0.8vw + 16px, 28px); letter-spacing: -0.015em; margin-bottom: 14px; }
-  .clanok p { font-size: 17px; line-height: 1.65; max-width: 40em; }
+  .clanok p { font-size: 17px; line-height: 1.65; max-width: 36em; }
   .clanok p + p, .clanok * + p { margin-top: 14px; }
   .kroky { counter-reset: krok; margin-top: 18px; }
   .kroky li { counter-increment: krok; position: relative; display: flex; flex-direction: column; gap: 2px; padding: 0 0 20px 54px; }

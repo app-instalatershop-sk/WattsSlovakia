@@ -241,8 +241,9 @@ const productLd = [{
 
     {obsah && (
       rozklad ? (
-      <section class="cast" id="stavba" aria-labelledby="h-rozklad">
-        {/* Hore stojí lepkavá hlavička (72 px) a pás častí stránky; obraz rozkladu sa drží pod nimi. */}
+      <div class="cast" id="stavba">
+        {/* Obal len pre kotvu „Stavba a montáž“, nie vlastná oblasť: rozložený rez má oblasť s tým istým nadpisom.
+            Hore stojí lepkavá hlavička (72 px) a pás častí stránky; obraz rozkladu sa drží pod nimi. */}
         <Rozklad data={rozklad} nadpis={tx.stavbaH2} popis={obsah.popis[0]} vrstvy={vrstvyRozkladu} alt={tx.rozkladAlt(model)} label={ui.home.lupyLabel} hore={casti.length > 2 ? 132 : 72} horeM={casti.length > 2 ? 116 : 64} />
         <div class="wrap stavba stavba-pod">
           <div class="stavba-text">
@@ -256,7 +257,7 @@ const productLd = [{
             {obsah.strana && <p class="stavba-zdroj"><a href={KATALOG_PDF} target="_blank" rel="noopener">{tx.stranaKat(obsah.strana)}</a></p>}
           </div>
         </div>
-      </section>
+      </div>
       ) : (
       <section class="wrap cast" id="stavba" aria-labelledby="h-stavba">
         {/* Stavba (Juraj 22. 10. 2026, návrh B): render s kótami je veľký v hlave, tu sú vrstvy ako
@@ -341,7 +342,7 @@ const productLd = [{
 <style>
   .hlava-fakty { display: flex; flex-wrap: wrap; gap: 14px 30px; margin: 26px 0 0; }
   .hlava-fakty dt { font-size: 13px; color: var(--color-ink-soft); }
-  .hlava-fakty dd { margin: 2px 0 0; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: clamp(17px, 0.6vw + 13px, 21px); letter-spacing: -0.01em; color: var(--color-blue-900); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .hlava-fakty dd { margin: 2px 0 0; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: clamp(17px, 0.6vw + 13px, 22px); letter-spacing: -0.01em; color: var(--color-blue-900); white-space: nowrap; font-variant-numeric: tabular-nums; }
   .hlava-sestry { margin-top: 20px; font-size: 15px; color: var(--color-ink-soft); }
   .hlava-sestry a { font-weight: 600; }
 

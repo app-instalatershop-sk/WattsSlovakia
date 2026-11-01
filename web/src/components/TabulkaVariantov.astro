@@ -36,7 +36,7 @@ const idDetailu = (v: Variant) => `pr-${v.obj_cislo.replace(/[^A-Za-z0-9]/g, '')
           <span class="tv-meno">{tx.filterRura} Ø</span>
           <div class="chips">
             <button type="button" class="chip" aria-pressed="true" data-rura="">{tx.vsetky}</button>
-            {rury.map((d) => <button type="button" class="chip" aria-pressed="false" data-rura={d}>{d}</button>)}
+            {rury.map((d) => <button type="button" class="chip chip-cislo" aria-pressed="false" data-rura={d}>{d}</button>)}
           </div>
         </div>
       )}
@@ -129,7 +129,7 @@ const idDetailu = (v: Variant) => `pr-${v.obj_cislo.replace(/[^A-Za-z0-9]/g, '')
   .tv-filter { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px 36px; padding: 22px 24px 18px; border-bottom: 1px solid rgb(10 42 94 / 0.08); }
   .tv-skupina { display: flex; flex-direction: column; gap: 8px; }
   .tv-meno { font-size: 13px; color: var(--color-ink-soft); }
-  .tv-filter .chip { min-width: 44px; justify-content: center; font-variant-numeric: tabular-nums; }
+  .tv-filter .chip { min-width: 44px; }
   .tv-pocet { margin-left: auto; font-size: 14px; color: var(--color-ink-soft); padding-bottom: 7px; }
 
   .tv-obal { overflow-x: auto; scrollbar-width: thin; padding: 4px 12px 8px; }
@@ -176,7 +176,6 @@ const idDetailu = (v: Variant) => `pr-${v.obj_cislo.replace(/[^A-Za-z0-9]/g, '')
   @media (max-width: 760px) {
     .tv-filter { padding: 18px 18px 14px; gap: 14px; }
     /* Pri 390 px sa šesť čipov (Všetky a päť priemerov) zmestí do riadku, posledný sa nezalomí sám. */
-    .tv-filter .chips { gap: 6px; }
     .tv-filter .chip { min-width: 40px; padding: 0 10px; }
     .tv-pocet { margin-left: 0; padding-bottom: 0; }
     .tv-obal { padding: 0; overflow: visible; }

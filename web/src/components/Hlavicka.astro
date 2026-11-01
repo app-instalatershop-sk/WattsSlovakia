@@ -44,7 +44,7 @@ const nasIndex = `${route(lang, 'hladat')}index.json`;
 const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, ciastocne: ui.search.ciastocne, sprievodca: ui.search.sprievodca, skupiny: ui.search.skupiny, sprievodcaUrl: route(lang, 'vyber') });
 ---
 <!-- Horný pás nie je prilepený: odroluje prirodzene, hlavička pod ním ostáva. -->
-<div class="topbar" transition:name="horny-pas" transition:animate="none">
+<div class="topbar" role="region" aria-label={ui.partner.pas} transition:name="horny-pas" transition:animate="none">
   <div class="wrap topbar-in">
     <a class="partner" href={route(lang, 'kontakt')} aria-label={ui.partner.veta}>
       <span>{ui.partner.veta}</span>

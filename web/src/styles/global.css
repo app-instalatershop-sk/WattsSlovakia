@@ -2,6 +2,14 @@
 @import "tailwindcss";
 /* Archivo (osi šírky a hrúbky) a IBM Plex Sans 400/500/600, len znaky slovenčiny a češtiny (data/pisma.py). */
 @import "./pisma.css";
+/* Záložné písmo s rozmermi Plex a Archiva (polish 1. 11. 2026): kým sa webové písmo načíta, text v Ariale zaberie
+   to isté miesto, takže sa po načítaní nepreskladá (Hľadanie malo posun CLS 0,16 len z výmeny písma). Šírka podľa
+   priemernej šírky znaku na slovenskom texte, výška riadku z hhea; prepočet data/pisma_zalozne.py. */
+@font-face { font-family: 'Plex nahrada'; src: local('Arial'), local('ArialMT'); font-weight: 100 550; size-adjust: 100.16%; ascent-override: 102.34%; descent-override: 27.46%; line-gap-override: 0%; }
+@font-face { font-family: 'Plex nahrada'; src: local('Arial Bold'), local('Arial-BoldMT'); font-weight: 551 900; size-adjust: 96.71%; ascent-override: 105.98%; descent-override: 28.43%; line-gap-override: 0%; }
+@font-face { font-family: 'Archivo nahrada'; src: local('Arial'), local('ArialMT'); font-weight: 100 550; size-adjust: 113.84%; ascent-override: 77.13%; descent-override: 18.45%; line-gap-override: 0%; }
+@font-face { font-family: 'Archivo nahrada'; src: local('Arial Bold'), local('Arial-BoldMT'); font-weight: 551 650; size-adjust: 108.37%; ascent-override: 81.02%; descent-override: 19.38%; line-gap-override: 0%; }
+@font-face { font-family: 'Archivo nahrada'; src: local('Arial Bold'), local('Arial-BoldMT'); font-weight: 651 900; size-adjust: 111.08%; ascent-override: 79.05%; descent-override: 18.91%; line-gap-override: 0%; }
 
 @theme {
   --color-*: initial;
@@ -20,8 +28,8 @@
   --color-error: #c8353a;
   --color-on-dark-muted: #b8c7de;
 
-  --font-display: 'Archivo Variable', 'Helvetica Neue', Arial, sans-serif;
-  --font-text: 'IBM Plex Sans', 'Segoe UI', Arial, sans-serif;
+  --font-display: 'Archivo Variable', 'Archivo nahrada', 'Helvetica Neue', Arial, sans-serif;
+  --font-text: 'IBM Plex Sans', 'Plex nahrada', 'Segoe UI', Arial, sans-serif;
 
   /* Zaoblenie podľa úrovne prvku (docs/DOLADENIE.md, A1). Vnorený prvok má o stupeň menšie zaoblenie
      ako jeho obal (koľajnica prepínača 12, segment v nej 8). Lišty a značky 1 až 3 px, kruhy 50 %. */
@@ -201,7 +209,7 @@
   /* Nadpis sekcie vnútornej stránky: nadpis, popis pod ním a odkaz vpravo. */
   .s-hlava { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px 32px; align-items: end; margin-bottom: 28px; }
   .s-hlava h2 { font-size: clamp(26px, 1.4vw + 17px, 36px); letter-spacing: -0.02em; }
-  .s-hlava p { grid-column: 1; color: var(--color-ink-soft); max-width: 44em; }
+  .s-hlava p { grid-column: 1; color: var(--color-ink-soft); max-width: 36em; } /* najviac 70 znakov na riadok */
   .s-hlava > a { grid-column: 2; grid-row: 1 / span 2; align-self: end; display: inline-flex; align-items: center; gap: 6px; font-weight: 500; white-space: nowrap; border-bottom: 1px solid currentColor; padding-bottom: 2px; }
   @media (max-width: 760px) { .s-hlava { grid-template-columns: minmax(0, 1fr); } .s-hlava > a { grid-column: 1; grid-row: auto; justify-self: start; } .telo { padding-top: 32px; } .telo > .wrap + .wrap, .telo > section + section { margin-top: 64px; } }
   /* Odkaz s podčiarknutím a ikonou (druhá akcia vedľa tlačidla). */
@@ -227,7 +235,8 @@
   table.data { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
   table.data th, table.data td { text-align: left; padding: 12px 14px; border-bottom: var(--line); white-space: nowrap; }
   table.data th { font-weight: 500; color: var(--color-ink-soft); background: var(--color-white); position: sticky; top: 0; font-size: 13px; }
-  table.data th small { display: block; font-weight: 400; color: #7a8494; }
+  /* jednotka pod názvom stĺpca: 12 px zo škály a kontrast 7,4 : 1 (predtým 10,4 px a 3,77 : 1, polish 1. 11.) */
+  table.data th small { display: block; font-size: 12px; font-weight: 400; color: var(--color-ink-soft); }
   table.data tbody tr { transition: background-color 150ms var(--ease-soft); }
   table.data tbody tr:hover { background: var(--color-blue-50); }
   table.data tbody tr:last-child td { border-bottom: 0; }
@@ -236,15 +245,20 @@
   .source { font-size: 13px; color: var(--color-ink-soft); margin-top: 12px; }
 
   /* Čipy */
-  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  /* Voľba jednej možnosti (čipy) vyzerá ako výber priemeru v hlave radu (VolbaDimenzie): biela koľajnica, zvolený
+     segment tmavomodrý. Rovnaký význam, rovnaká podoba (polish 1. 11. 2026, POLISH.md M4; predtým samostatné
+     ohraničené čipy s modrým prechodom). Čísla písmom nadpisov ako v hlave radu (chip-cislo). */
+  .chips { display: inline-flex; flex-wrap: wrap; gap: 2px; max-width: 100%; padding: 4px; border-radius: var(--radius-l);
+    background: rgb(255 255 255 / 0.86); box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.1), var(--elev-1); }
   .chip {
-    height: 34px; padding: 0 12px; border-radius: var(--radius-s); border: var(--line); background: var(--color-white); color: var(--color-ink);
-    font: 500 14px/1 var(--font-text); cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
-    transition: background-color 150ms var(--ease-soft), border-color 150ms var(--ease-soft), color 150ms var(--ease-soft);
+    height: 40px; padding: 0 13px; border: 0; border-radius: var(--radius-m); background: transparent; color: var(--color-ink);
+    font: 500 15px/1 var(--font-text); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    transition: background-color 150ms var(--ease-soft), color 150ms var(--ease-soft);
   }
-  .chip:hover { border-color: var(--color-blue-700); }
-  .chip[aria-pressed="true"] { background: linear-gradient(180deg, #1467c1 0%, var(--color-blue-700) 100%); border-color: var(--color-blue-700); color: #fff; }
-  .chip-yellow[aria-pressed="true"] { background: var(--color-yellow-500); border-color: var(--color-yellow-500); color: var(--color-ink); }
+  .chip-cislo { font: 600 15px/1 var(--font-display); font-stretch: 112.5%; font-variant-numeric: tabular-nums; }
+  @media (hover: hover) and (pointer: fine) { .chip:not([aria-pressed="true"]):hover { color: var(--color-blue-700); } }
+  .chip[aria-pressed="true"] { background: linear-gradient(180deg, #123a7a 0%, var(--color-blue-900) 100%); color: #fff; box-shadow: var(--elev-1); }
+  .chip-yellow[aria-pressed="true"] { background: var(--color-yellow-500); color: var(--color-ink); }
 
   /* Drobčeky */
   .crumbs { display: flex; flex-wrap: wrap; gap: 8px; font-size: 14px; color: var(--color-ink-soft); padding-block: 16px; }
@@ -268,4 +282,11 @@
   /* Text podľa ovládania: „kliknite“ pre myš, „ťuknite“ pre prst (napr. nápoveda pri rodine systémov). */
   @media (hover: none), (pointer: coarse) { .len-mys { display: none; } }
   @media (hover: hover) and (pointer: fine) { .len-dotyk { display: none; } }
+  /* Dotyková plocha aspoň 44 × 44 px bez zmeny vzhľadu (Apple 44 pt, Material 48 dp, WCAG 2.5.8; polish 1. 11. 2026):
+     neviditeľný presah okolo malých ovládacích prvkov, len na dotykovej obrazovke. Vo vrstve components, takže
+     vlastné umiestnenie prvku v komponente má prednosť; prvky v zozname nesmú mať vlastný ::after. */
+  @media (pointer: coarse) {
+    :where(.ftr li > a, .kopia, .tv-shop a, .tp-shop a, .langs a, .brand, .s-hlava > a, .partner, .topbar-kontakt a, .chip, .volba-seg button, .hl-btn, .menu-btn, a.format, .tv-pr, .odkaz, td.nazov > a, .proj-odkaz, .proj-vsetky, .zdroj a, .kat-taby a, .tr-seg button, .v-rady a, .podpora-sluzby a, .sys-rady a, .zaver .wrap > a, .crumbs a, .casti a, th > a, h3 > a) { position: relative; }
+    :where(.ftr li > a, .kopia, .tv-shop a, .tp-shop a, .langs a, .brand, .s-hlava > a, .partner, .topbar-kontakt a, .chip, .volba-seg button, .hl-btn, .menu-btn, a.format, .tv-pr, .odkaz, td.nazov > a, .proj-odkaz, .proj-vsetky, .zdroj a, .kat-taby a, .tr-seg button, .v-rady a, .podpora-sluzby a, .sys-rady a, .zaver .wrap > a, .crumbs a, .casti a, th > a, h3 > a)::after { content: ""; position: absolute; left: 50%; top: 50%; width: max(100%, 44px); height: max(100%, 44px); transform: translate(-50%, -50%); }
+  }
 }

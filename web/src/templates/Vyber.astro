@@ -133,7 +133,7 @@ const obrazky = await Promise.all(systemy.map(async ({ k }) => { const p = obraz
         <div class="k3-kw" data-kw-blok>
           <label for="kw">{tx.kw}</label>
           <div class="kw-pole"><input id="kw" type="number" inputmode="decimal" min="1" max="2000" step="1" placeholder={tx.kwHint} data-kw-vstup /><span>{tx.kwJ}</span></div>
-          <div class="chips">{[10, 20, 30, 60, 100, 200].map((n) => <button type="button" class="chip" data-kw-rychlo={n}>{n} kW</button>)}</div>
+          <div class="chips">{[10, 20, 30, 60, 100, 200].map((n) => <button type="button" class="chip" aria-pressed="false" data-kw-rychlo={n}>{n} kW</button>)}</div>
           <p class="k3-alebo">{tx.kwAlebo}</p>
         </div>
         <div class="k3-d">
@@ -340,7 +340,7 @@ const obrazky = await Promise.all(systemy.map(async ({ k }) => { const p = obraz
       kwVstup.value = stav.kw ? String(stav.kw) : '';
       const vs = data.varianty.filter((v) => v.r === r);
       const d = [...new Set(vs.flatMap((v) => v.d))].sort((a, b) => a - b);
-      dChips.innerHTML = d.map((x) => `<button type="button" class="chip" aria-pressed="${x === stav.d}" data-d="${x}">${x}</button>`).join('');
+      dChips.innerHTML = d.map((x) => `<button type="button" class="chip chip-cislo" aria-pressed="${x === stav.d}" data-d="${x}">${x}</button>`).join('');
       krok3.hidden = false;
       vypis();
       if (posun) krok3.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -360,6 +360,8 @@ const obrazky = await Promise.all(systemy.map(async ({ k }) => { const p = obraz
     }
 
     function vypis() {
+      // rýchla voľba výkonu ukazuje zvolenú hodnotu ako segment prepínača (polish 1. 11.)
+      kor.querySelectorAll<HTMLElement>('[data-kw-rychlo]').forEach((b) => b.setAttribute('aria-pressed', String(Number(b.dataset.kwRychlo) === stav.kw)));
       const vs = data.varianty.filter((v) => v.r === stav.r);
       dChips.querySelectorAll<HTMLElement>('[data-d]').forEach((b) => b.setAttribute('aria-pressed', String(Number(b.dataset.d) === stav.d)));
       let obsah = '';

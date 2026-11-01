@@ -43,7 +43,7 @@ const texty = { skupiny: tx.skupiny, vysledkov: [tx.vysledkov(1), tx.vysledkov(2
 ---
 <Base lang={lang} alternates={staticAlternates('hladat')} title={tx.title} description={tx.desc} drobceky={[{ text: tx.title }]} vizualneDrobceky={false} robots="noindex, follow">
   <Hlava lang={lang} nadpis={tx.title} drobceky={[{ text: tx.title }]} lead={tx.lead}>
-    <form class="hl-form" role="search" action={route(lang, 'hladat')} method="get" data-hl-form>
+    <form class="hl-form" role="search" aria-label={tx.title} action={route(lang, 'hladat')} method="get" data-hl-form>
       <Ikona nazov="search" velkost={22} />
       <input name="q" type="search" placeholder={tx.placeholder} aria-label={tx.placeholder} autocomplete="off" data-hl-q />
       <button type="submit" class="btn btn-yellow">{tx.hladat}</button>
@@ -51,8 +51,11 @@ const texty = { skupiny: tx.skupiny, vysledkov: [tx.vysledkov(1), tx.vysledkov(2
     <p class="hl-navrhy"><span>{tx.skuste}:</span> {tx.navrhy.map((n) => <a href={`${route(lang, 'hladat')}?q=${encodeURIComponent(n)}`} data-hl-navrh>{n}</a>)}</p>
   </Hlava>
 
+  {/* Pri hľadaní (?q=) sa výsledky dočítajú až po načítaní stránky: miesto pre ne je vyhradené vopred, inak by
+      odsunuli záver, ktorý je na prvej obrazovke (CLS 0,43, polish 1. 11.). Trieda sa nastaví ešte pred vykreslením. */}
+  <script is:inline>if (new URLSearchParams(location.search).get('q')) document.documentElement.classList.add('hl-dotaz');</script>
   <div class="telo">
-    <section class="wrap" aria-live="polite">
+    <section class="wrap hl-sekcia" aria-live="polite">
       <p class="hl-stav" data-hl-stav></p>
       <template data-hl-ikona><Ikona nazov="chevron-right" velkost={16} /></template>
       <template data-hl-ikona-ext><Ikona nazov="external-link" velkost={15} /></template>
@@ -82,6 +85,7 @@ const texty = { skupiny: tx.skupiny, vysledkov: [tx.vysledkov(1), tx.vysledkov(2
 
   .hl-stav { font-size: 15px; color: var(--color-ink-soft); margin-bottom: 20px; }
   .hl-stav :global(strong) { color: var(--color-ink); }
+  :global(.hl-dotaz) .hl-sekcia { min-height: 100svh; }
   .hl-vysledky { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; align-items: start; }
   .hl-vysledky :global(.hl-sk) { padding: 22px 26px 14px; }
   .hl-vysledky :global(.hl-sk h2) { font-size: 15px; font-weight: 600; color: var(--color-blue-700); margin-bottom: 6px; }

@@ -12,6 +12,10 @@ export interface Referencia {
   id: string; rad: string | null; kategoria: string; fotky: string[]; zdroj: string;
   nazov: string; miesto: string; kedy: string; perex: string; fakty: [string, string][]; realizacia: string;
   scena?: { fotka: string; koty: Kota[] };
+  /** Fotka s potrubím (výkop, trasa) pre domov a stránky radov, keď `scena` ukazuje niečo iné (kotolňu). */
+  scenaPotrubie?: { fotka: string; koty: Kota[] };
+  /** Vlastná dodávka prevádzkovateľa webu (štítok „Naša dodávka“); ostatné sú referencie výrobcu. */
+  nasa?: boolean;
 }
 
 const sk: Referencia[] = [
@@ -21,9 +25,13 @@ const sk: Referencia[] = [
     zdroj: 'https://www.watts.eu/sk/references/microflex-big-project-in-pova-bystrica',
     nazov: 'Rozvod tepla pre obytný súbor v Považskej Bystrici', miesto: 'Považská Bystrica, Slovensko', kedy: 'dodávky 12/2022 až 02/2023',
     perex: 'Kompletný vykurovací rozvod z predizolovaného potrubia Microflex pre 30 rodinných domov a jeden bytový dom, napojený na kotolňu s kotlami na pelety.',
-    fakty: [['Napojené budovy', '30 rodinných domov a 1 bytový dom'], ['Zdroj tepla', 'kotolňa, 2 kotly ETA na pelety po 350 kW'], ['Revízne šachty', '4'], ['Dodávka', 'potrubie Microflex, pevné body, tesnenia a systémové príslušenstvo']],
+    // Dodávka hneď za budovami: stránka radu ukazuje prvé dva údaje a tam patrí potrubie, nie kotly.
+    fakty: [['Napojené budovy', '30 rodinných domov a 1 bytový dom'], ['Dodávka', 'potrubie Microflex, pevné body, tesnenia a systémové príslušenstvo'], ['Zdroj tepla', 'kotolňa, 2 kotly ETA na pelety po 350 kW'], ['Revízne šachty', '4']],
     realizacia: 'Ponuku a dodávku zabezpečila Ohrievacia Technika, s. r. o., prevádzkovateľ tohto webu, s podporou Watts.',
     scena: { fotka: 'povazska-7.jpg', koty: [{ x: 27, y: 58, l: 12, smer: 'hore-vpravo', hodnota: '2 × 350 kW', text: 'kotly na pelety' }] },
+    // Stavenisko so žeriavom: rúra v popredí (modré pixely pri 45 % šírky ležia na 76 % výšky fotky).
+    scenaPotrubie: { fotka: 'povazska-3.jpg', koty: [{ x: 45, y: 76, l: 12, smer: 'hore-vpravo', hodnota: '31 budov', text: 'rozvod z jednej kotolne' }] },
+    nasa: true,
   },
   {
     id: 'fackov', rad: 'microflex-primo-duo-6-bar', kategoria: 'vykurovanie',
@@ -60,15 +68,16 @@ const sk: Referencia[] = [
   },
 ];
 /** Kóty v češtine: tie isté body, iný text. */
-const kotyCs = (r: Referencia, texty: string[]): Referencia['scena'] => r.scena && { ...r.scena, koty: r.scena.koty.map((k, i) => ({ ...k, text: texty[i] ?? k.text })) };
+const kotyCs = (sc: Referencia['scena'], texty: string[]): Referencia['scena'] => sc && { ...sc, koty: sc.koty.map((k, i) => ({ ...k, text: texty[i] ?? k.text })) };
 
 const cs: Referencia[] = [
   { ...sk[0],
     nazov: 'Rozvod tepla pro obytný soubor v Považské Bystrici', miesto: 'Považská Bystrica, Slovensko', kedy: 'dodávky 12/2022 až 02/2023',
     perex: 'Kompletní topný rozvod z předizolovaného potrubí Microflex pro 30 rodinných domů a jeden bytový dům, napojený na kotelnu s kotli na pelety.',
-    fakty: [['Napojené budovy', '30 rodinných domů a 1 bytový dům'], ['Zdroj tepla', 'kotelna, 2 kotle ETA na pelety po 350 kW'], ['Revizní šachty', '4'], ['Dodávka', 'potrubí Microflex, pevné body, těsnění a systémové příslušenství']],
+    fakty: [['Napojené budovy', '30 rodinných domů a 1 bytový dům'], ['Dodávka', 'potrubí Microflex, pevné body, těsnění a systémové příslušenství'], ['Zdroj tepla', 'kotelna, 2 kotle ETA na pelety po 350 kW'], ['Revizní šachty', '4']],
     realizacia: 'Nabídku a dodávku zajistila Ohrievacia Technika, s. r. o., provozovatel tohoto webu, s podporou Watts.',
-    scena: kotyCs(sk[0], ['kotle na pelety']) },
+    scena: kotyCs(sk[0].scena, ['kotle na pelety']),
+    scenaPotrubie: kotyCs(sk[0].scenaPotrubie, ['rozvod z jedné kotelny']) },
   { ...sk[1],
     nazov: 'Rodinný dům s garáží ve Fačkově', miesto: 'Fačkov, Slovensko', kedy: 'listopad 2024',
     perex: 'Rozvod topné vody z kotle na pelety do rodinného domu a do garáže s dílnou, která stojí 15 metrů od domu.',
@@ -84,7 +93,7 @@ const cs: Referencia[] = [
     perex: 'Staré ocelové potrubí, které vedlo teplou vodu z hlavní kotelny do budov areálu, nahradilo asi 800 metrů potrubí Microflex.',
     fakty: [['Potrubí', 'Microflex UNO, průměr 63, 75 a 90 mm'], ['Délka', 'asi 800 m'], ['Dodávka', 'potrubí a příslušenství']],
     realizacia: 'Realizace: Fauché, údržba budov.',
-    scena: kotyCs(sk[3], ['Microflex UNO', 'z kotelny do budov areálu']) },
+    scena: kotyCs(sk[3].scena, ['Microflex UNO', 'z kotelny do budov areálu']) },
 ];
 
 export const referencie = (lang: Lang) => (lang === 'cs' ? cs : sk);

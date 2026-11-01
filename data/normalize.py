@@ -55,7 +55,7 @@ RADY = {
     '1-microflex-uno-6-bar': dict(slug='microflex-uno-6-bar', nazov='Microflex UNO, vykurovanie 6 bar', medium='vykurovacia voda', tlak_bar=6, pocet_rur=1, piktogram='rad-uno-kurenie.png',
         kratky_popis='Jedna rúra PE-Xa v plášti. Prívod alebo spiatočka, teplá voda k vzdialenému odberu.'),
     '2-microflex-duo-6-bar': dict(slug='microflex-duo-6-bar', nazov='Microflex DUO, vykurovanie 6 bar', medium='vykurovacia voda', tlak_bar=6, pocet_rur=2, piktogram='rad-duo-kurenie.png',
-        kratky_popis='Prívod a spiatočka v jednom plášti. Najčastejšia voľba pre prípojku domu alebo tepelného čerpadla.'),
+        kratky_popis='Prívod a spiatočka v jednom plášti. Najčastejšia voľba pre prípojku domu alebo tepelného čerpadla aj pre rozvod tepla z jednej kotolne do viacerých budov.'),
     '2-single-microflex-uno-primo-6-bar': dict(slug='microflex-uno-primo-6-bar', nazov='Microflex UNO PRIMO, vykurovanie 6 bar', medium='vykurovacia voda', tlak_bar=6, pocet_rur=1, piktogram='rad-uno-kurenie.png',
         kratky_popis='Jedna rúra s ešte ohybnejším plášťom pre trasy s mnohými zmenami smeru.'),
     '3-microflex-primo-duo-6-bar': dict(slug='microflex-primo-duo-6-bar', nazov='Microflex PRIMO DUO, vykurovanie 6 bar', medium='vykurovacia voda', tlak_bar=6, pocet_rur=2, piktogram='rad-duo-kurenie.png',
@@ -106,7 +106,7 @@ KATEGORIE_CS = {
 
 RADY_CS = {
     '1-microflex-uno-6-bar': dict(nazov='Microflex UNO, vytápění 6 bar', medium='topná voda', kratky_popis='Jedna trubka PE-Xa v plášti. Přívod nebo zpátečka, teplá voda ke vzdálenému odběru.'),
-    '2-microflex-duo-6-bar': dict(nazov='Microflex DUO, vytápění 6 bar', medium='topná voda', kratky_popis='Přívod a zpátečka v jednom plášti. Nejčastější volba pro přípojku domu nebo tepelného čerpadla.'),
+    '2-microflex-duo-6-bar': dict(nazov='Microflex DUO, vytápění 6 bar', medium='topná voda', kratky_popis='Přívod a zpátečka v jednom plášti. Nejčastější volba pro přípojku domu nebo tepelného čerpadla i pro rozvod tepla z jedné kotelny do více budov.'),
     '2-single-microflex-uno-primo-6-bar': dict(nazov='Microflex UNO PRIMO, vytápění 6 bar', medium='topná voda', kratky_popis='Jedna trubka s ještě ohebnějším pláštěm pro trasy s mnoha změnami směru.'),
     '3-microflex-primo-duo-6-bar': dict(nazov='Microflex PRIMO DUO, vytápění 6 bar', medium='topná voda', kratky_popis='Dvě trubky v ohebnějším plášti PRIMO. Pro stísněné výkopy a krátké přípojky.'),
     '1-microflex-uno-10-bar': dict(nazov='Microflex UNO, sanita 10 bar', medium='pitná voda', kratky_popis='Jedna trubka na pitnou vodu, 10 bar. Teplá nebo studená voda ke vzdálenému odběru.'),

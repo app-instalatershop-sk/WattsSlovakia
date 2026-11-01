@@ -7,7 +7,6 @@ import Ikona from '../components/Ikona.astro';
 import Katalog from '../components/Katalog.astro';
 import Scena from '../components/Scena.astro';
 import { referencie } from '../content/referencie';
-import type { Kota } from '../lib/koty';
 import { kategorie, cislo } from '../lib/katalog';
 import { fotka, fotkaReferencie, render3d, maska3d, rozkladRadu, makroRury, ohybRadu, kotuc as kotucData } from '../lib/obrazky';
 import Rozklad from '../components/Rozklad.astro';
@@ -64,9 +63,10 @@ const refs = referencie(lang);
 const sOrange = refs.find((r) => r.id === 'orange')!.scena!;
 const orangeScena = fotkaReferencie(sOrange.fotka)!;
 const kotyOrange = sOrange.koty;
-// Stavenisko so žeriavom: rúra v popredí (modré pixely pri 45 % šírky ležia na 76 % výšky fotky).
-const stavenisko = fotkaReferencie('povazska-3.jpg')!;
-const kotyStavenisko: Kota[] = [{ x: 45, y: 76, l: 12, smer: 'hore-vpravo', hodnota: pp.stavenisko.kota[0], text: pp.stavenisko.kota[1] }];
+// Stavenisko so žeriavom a rúrou v popredí: tá istá fotka s kótou ako pri referencii na stránkach radov.
+const sPovazska = refs.find((r) => r.id === 'povazska-bystrica')!.scenaPotrubie!;
+const stavenisko = fotkaReferencie(sPovazska.fotka)!;
+const kotyStavenisko = sPovazska.koty;
 // Rozložený rez na domove: DUO vykurovanie ako vzor celej rodiny, texty vrstiev z ui.ts (od plášťa po rúru,
 // v poradí, v akom sa pri rolovaní oddelia), makrá materiálov z 3D modelu, keď sú.
 const rozklad = rozkladRadu('microflex-duo-6-bar');

@@ -79,16 +79,16 @@ const idDetailu = (v: Variant) => `pr-${v.obj_cislo.replace(/[^A-Za-z0-9]/g, '')
               <span class="tv-kod">{v.obj_cislo}</span>
               <button type="button" class="kopia" data-kopia={v.obj_cislo} aria-label={`${tx.kopirovat} ${v.obj_cislo}`} title={tx.kopirovat}><Ikona nazov="copy" velkost={15} /></button>
             </span></td>
-            {maRuru && <td class:list={['right', { viac: ruraText(v).includes('+') }]} data-l={ui.tabulka.rura}>{ruraText(v)}</td>}
+            {maRuru && <td class:list={['right', { viac: ruraText(v).includes('+') }]} data-l={ui.tabulka.rura}>{ruraText(v)}{ruraText(v) ? <span class="tv-j">&nbsp;mm</span> : null}</td>}
             {ma('dn') && <td data-l={ui.tabulka.dn}>{v.dn ?? ''}</td>}
-            {ma('plast_mm') && <td class="right" data-l={ui.tabulka.plast}>{cislo(v.plast_mm)}</td>}
-            {maVykon && <td class="right" data-l={`${tx.vykon}, kW`}>{v.vykon_kw ? `~${cislo(v.vykon_kw)}` : ''}</td>}
-            {ma('tlak_bar') && <td class="right" data-l={ui.tabulka.tlak}>{cislo(v.tlak_bar)}</td>}
-            {ma('hmotnost_kg_m') && <td class="right" data-l={`${ui.tabulka.hmotnost}, kg/m`}>{cislo(v.hmotnost_kg_m, 2)}</td>}
-            {ma('polomer_ohybu_m') && <td class="right" data-l={`${ui.tabulka.polomer}, m`}>{cislo(v.polomer_ohybu_m, 2)}</td>}
-            {ma('kotuc') && <td class="right" data-l={`${ui.tabulka.kotuc}, m`}>{v.kotuc ? `${cislo(v.kotuc.d, 2)} / ${cislo(v.kotuc.sirka, 2)}` : ''}</td>}
+            {ma('plast_mm') && <td class="right" data-l={ui.tabulka.plast}>{cislo(v.plast_mm)}{v.plast_mm ? <span class="tv-j">&nbsp;mm</span> : null}</td>}
+            {maVykon && <td class="right" data-l={tx.vykon}>{v.vykon_kw ? `~${cislo(v.vykon_kw)}` : ''}{v.vykon_kw ? <span class="tv-j">&nbsp;kW</span> : null}</td>}
+            {ma('tlak_bar') && <td class="right" data-l={ui.tabulka.tlak}>{cislo(v.tlak_bar)}{v.tlak_bar ? <span class="tv-j">&nbsp;bar</span> : null}</td>}
+            {ma('hmotnost_kg_m') && <td class="right" data-l={ui.tabulka.hmotnost}>{cislo(v.hmotnost_kg_m, 2)}{v.hmotnost_kg_m ? <span class="tv-j">&nbsp;kg/m</span> : null}</td>}
+            {ma('polomer_ohybu_m') && <td class="right" data-l={ui.tabulka.polomer}>{cislo(v.polomer_ohybu_m, 2)}{v.polomer_ohybu_m ? <span class="tv-j">&nbsp;m</span> : null}</td>}
+            {ma('kotuc') && <td class="right tv-kotuc" data-l={ui.tabulka.kotuc}>{v.kotuc ? `${cislo(v.kotuc.d, 2)} / ${cislo(v.kotuc.sirka, 2)}` : ''}{v.kotuc ? <span class="tv-j">&nbsp;m</span> : null}</td>}
             {izolacie.size > 0 && <td data-l={ui.tabulka.izolacia}>{v.izolacia && <span class:list={['tv-iz', { zos: v.izolacia === 'zosilnena' }]}>{v.izolacia === 'zosilnena' ? ui.tabulka.zosilnena : ui.tabulka.standard}</span>}</td>}
-            {maPrisl && <td class="tv-pr-td">{v.prislusenstvo?.length ? <button type="button" class="tv-pr" aria-expanded="false" aria-controls={idDetailu(v)} data-pr>{tx.dielov(v.prislusenstvo.length)} <Ikona nazov="chevron-down" velkost={16} /></button> : null}</td>}
+            {maPrisl && <td class="tv-pr-td" data-l={v.prislusenstvo?.length ? tx.prislusenstvo : undefined}>{v.prislusenstvo?.length ? <button type="button" class="tv-pr" aria-expanded="false" aria-controls={idDetailu(v)} data-pr>{tx.dielov(v.prislusenstvo.length)} <Ikona nazov="chevron-down" velkost={16} /></button> : null}</td>}
             <td class="tv-shop"><a href={v.eshop_url} target="_blank" rel="noopener">{ui.common.doEshopu} <Ikona nazov="external-link" velkost={14} /></a></td>
           </tr>
           {v.prislusenstvo?.length ? (
@@ -163,6 +163,9 @@ const idDetailu = (v: Variant) => `pr-${v.obj_cislo.replace(/[^A-Za-z0-9]/g, '')
   .tv-shop a { display: inline-flex; align-items: center; gap: 6px; font-weight: 500; color: var(--color-blue-700); }
   .tv-shop a:hover { color: var(--color-blue-900); }
 
+  /* Jednotka pri hodnote len v mobilnej karte; na počítači je v záhlaví stĺpca (posúdenie 29. 10.: čísla bez
+     jednotky splývajú, popis s jednotkou sa zalamoval). */
+  .tv-j { display: none; }
   .tv-pozn { padding: 14px 26px 22px; border-top: 1px solid rgb(10 42 94 / 0.08); font-size: 13px; line-height: 1.5; color: var(--color-ink-soft); }
   .tv-pozn p + p { margin-top: 4px; }
   /* Odkaz vo vete sa od textu líši aj inak ako farbou (prístupnosť, kontrola Lighthouse). */
@@ -183,9 +186,12 @@ const idDetailu = (v: Variant) => `pr-${v.obj_cislo.replace(/[^A-Za-z0-9]/g, '')
     .tv-tab tbody tr:hover { background: transparent; }
     .tv-tab tbody tr[data-rury] { scroll-margin-top: 140px; }
     .tv-tab td { display: block; padding: 0; border: 0; white-space: normal; text-align: left; font-size: 15px; }
+    .tv-j { display: inline; }
     .tv-tab td[data-l]::before { content: attr(data-l); display: block; font-size: 12px; line-height: 1.3; color: var(--color-ink-soft); margin-bottom: 1px; }
     .tv-tab td:empty { display: none; }
     .tv-tab td.viac, .tv-tab td.tv-pr-td { grid-column: 1 / -1; }
+    /* priemer a šírka kotúča s jednotkou sa do tretiny karty nezmestia bez zalomenia */
+    .tv-tab td.tv-kotuc { grid-column: span 2; }
     .tv-tab tbody tr.tv-det { display: block; padding: 0 18px 16px; border-bottom: 1px solid rgb(10 42 94 / 0.08); }
     .tv-tab tbody tr.tv-det[hidden] { display: none; }
     .tv-tab tr.tv-det > td { display: block; padding: 12px; border-radius: var(--radius-l); }
@@ -194,6 +200,12 @@ const idDetailu = (v: Variant) => `pr-${v.obj_cislo.replace(/[^A-Za-z0-9]/g, '')
     .tv-kod-obal { font-size: 17px; }
     .tv-tab td.tv-shop { grid-column: 3; grid-row: 1; justify-self: end; align-self: center; white-space: nowrap; }
       .tv-pozn { padding: 14px 18px 20px; }
+  }
+  /* Veľmi úzky telefón: údaje v dvoch stĺpcoch, obj. číslo a odkaz do e-shopu každý na vlastnom riadku. */
+  @media (max-width: 359px) {
+    .tv-tab tbody tr { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .tv-tab td.code { grid-column: 1 / -1; }
+    .tv-tab td.tv-shop { grid-column: 1 / -1; grid-row: 2; justify-self: start; }
   }
 </style>
 

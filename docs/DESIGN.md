@@ -287,7 +287,10 @@ Každá novinka niečo dokazuje alebo vysvetľuje číslom z katalógu, nie je t
   pôde 15 °C). Strata na meter len tam, kde je v grafe katalógu (s. 38: UNO, DUO, PRIMO), nikdy
   vlastný výpočet. COOL s vyhrievacím káblom teplo nemá: bez výkonu kábla by obraz klamal.
 - **Dimenzie v mierke** (`Mierka.astro` nad tabuľkou variantov): všetky dimenzie radu v jednej rovine,
-  dlhý objektív; rez a riadok tabuľky sa zvýraznia navzájom.
+  dlhý objektív; rez a riadok tabuľky sa zvýraznia navzájom. Pod každým rezom trvalý popis v zápise katalógu
+  (plášť/rúry, napr. 125/2 × 25, pri rade s oboma izoláciami aj „zosilnená“), aby sa porovnávalo aj bez myši;
+  pri veľa rezoch (od 9, na telefóne od 6) striedavo v dvoch riadkoch ako legenda výkresu. Pokyn je zvlášť
+  pre myš a pre dotyk (posúdenie stránky radu 29. 10.).
 - **Rodina na ťuknutie** (`RodinaVyber.astro` na domove aj v hlave Potrubí): systém pod myšou, prstom
   alebo v ohnisku sa zvýrazní a ostatné stmavnú; štítok s faktami z katalógu a odkazom na rad.
 - **Kotúč sa odvaľuje** (`KotucSekvencia.astro` v pokládke na domove namiesto fotky): 100 m DUO
@@ -516,7 +519,12 @@ Každá vnútorná stránka má rovnakú kostru, aby web pôsobil ako celok:
   položky sú vizuálne skryté, čítačka obrazovky ich prečíta. Celá cesta na dieloch a článkoch sa na mobile
   zalomila do dvoch riadkov a brala 15 % pozornosti prvej obrazovky.
 - Tabuľky obj. čísel: kopírovanie jedným klikom, odkaz do e-shopu v riadku, na mobile karta
-  s tromi stĺpcami údajov. Pri filtri sa riadky plynulo presunú (FLIP), nové prídu odstupňovane.
+  s tromi stĺpcami údajov (pod 360 px s dvoma). V karte je jednotka pri hodnote (4,03 kg/m, 0,80 m), nie
+  v popise: popis s jednotkou sa zalamoval a čísla bez jednotky vedľa seba sa dali zle prečítať. Pri filtri
+  sa riadky plynulo presunú (FLIP), nové prídu odstupňovane.
+- Referencie na stránke radu: nadpis „Kde tento rad leží“ len keď každá ukázaná stavba uvádza práve tento rad,
+  inak „Kde už Microflex leží“. Fotka s potrubím (`scenaPotrubie`), ak ju stavba má, a štítok roly ako na
+  domove: „Naša dodávka“ žltý, „Referencia výrobcu“ obrysom.
 - **Živé kóty** (stránka radu, od 26. 10. 2026, `components/VolbaDimenzie.astro`; Juraj: „chcel by som
   to živé a čo najlepšie“): pod nadpisom (na počítači vľavo vedľa renderu, na telefóne pod renderom)
   je prepínač priemeru nosnej rúry; keď je render dimenzie z 3D modelu, obraz sa prelínaním vymení na

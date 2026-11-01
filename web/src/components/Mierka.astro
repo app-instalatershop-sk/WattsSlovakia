@@ -10,14 +10,21 @@ import type { ImageMetadata } from 'astro';
 import { kotvaKodu } from '../lib/katalog';
 import type { SystemyData } from '../lib/obrazky';
 
-interface Props { data: SystemyData; obraz: ImageMetadata; stitky: Record<string, [string, string]>; nadpis: string; popis: string; alt: string }
-const { data, obraz, stitky, nadpis, popis, alt } = Astro.props;
+/** popisky: trvalý popis pod rezom (zápis z katalógu a pri potrebe druhý riadok, napr. „zosilnená“), aby sa rezy
+ *  dali porovnať aj bez myši a na dotykovej obrazovke; popisDotyk: pokyn namiesto „prejdite myšou“. */
+interface Props { data: SystemyData; obraz: ImageMetadata; stitky: Record<string, [string, string]>; popisky?: Record<string, [string, string]>; nadpis: string; popis: string; popisDotyk?: string; alt: string }
+const { data, obraz, stitky, popisky = {}, nadpis, popis, popisDotyk, alt } = Astro.props;
 const [w1, w2] = await Promise.all([1200, 2000].map((width) => getImage({ src: obraz, width, format: 'webp', quality: 86 })));
 const svetlo = w2.src;
+// Popisy pod rezmi: pri veľa rezoch striedavo v dvoch riadkoch ako na výkrese (zľava doprava podľa polohy rezu),
+// na počítači od 9 rezov, na telefóne (pás 760 px) od 6.
+const sPopiskom = data.systemy.filter((s) => popisky[s.obj]).length;
+const zlava = data.systemy.map((s, k) => ({ k, x: s.bod[0] })).sort((a, b) => a.x - b.x).map((o) => o.k);
+const druhyRiadok = new Set(zlava.filter((_, i) => i % 2 === 1));
 ---
 <figure class="mierka" data-mierka data-cesta={data.cesta} data-krok={data.krok}>
-  <figcaption class="mi-hlava"><strong>{nadpis}</strong> <span>{popis}</span></figcaption>
-  <div class="mi-obal">
+  <figcaption class="mi-hlava"><strong>{nadpis}</strong> {popisDotyk ? <span><span class="len-mys">{popis}</span><span class="len-dotyk">{popisDotyk}</span></span> : <span>{popis}</span>}</figcaption>
+  <div class:list={['mi-obal', { 's-popiskami': sPopiskom > 0, 'popisky-2r': sPopiskom > 8, 'popisky-2r-m': sPopiskom > 5 }]}>
   <div class="mi-stage" style={`aspect-ratio: ${data.pomer}`}>
     <img class="mi-zaklad" src={w2.src} srcset={`${w1.src} 1200w, ${w2.src} 2000w`} sizes="(max-width: 1300px) 100vw, 1240px" alt={alt} width="2000" height={Math.round(2000 / data.pomer)} loading="lazy" decoding="async" />
     <img class="mi-svetlo" src={svetlo} alt="" aria-hidden="true" loading="lazy" decoding="async" />
@@ -25,6 +32,10 @@ const svetlo = w2.src;
       <p class="mi-stitok" data-k={k} data-kotva={kotvaKodu(s.obj)} style={`--x: ${s.bod[0]}%; --y: ${s.bod[1]}%`} hidden>
         <strong>{stitky[s.obj]?.[0]}</strong><span>{stitky[s.obj]?.[1]}</span>
       </p>
+    ))}
+    {/* Popisy pod rezmi ako legenda výkresu: vodorovne pod stredom rezu (bod štítku), všetky v jednom riadku. */}
+    {data.systemy.map((s, k) => popisky[s.obj] && (
+      <p class:list={['mi-popis', { rad2: druhyRiadok.has(k) }]} data-k={k} style={`--x: ${s.bod[0]}%`}><strong>{popisky[s.obj][0]}</strong>{popisky[s.obj][1] && <span>{popisky[s.obj][1]}</span>}</p>
     ))}
   </div>
   </div>
@@ -51,6 +62,20 @@ const svetlo = w2.src;
     margin: 0; padding: 6px 11px; border-radius: var(--radius-m); background: rgb(255 255 255 / 0.94); box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.08), var(--elev-2); white-space: nowrap; pointer-events: none; }
   .mi-stitok strong { font-family: var(--font-display); font-stretch: 112%; font-weight: 600; font-size: 16px; color: var(--color-blue-900); font-variant-numeric: tabular-nums; }
   .mi-stitok span { font-size: 13px; color: #3f4b5e; }
+  .mi-obal.s-popiskami { padding-bottom: 46px; }
+  .mi-obal.popisky-2r { padding-bottom: 86px; }
+  .popisky-2r .mi-popis.rad2 { top: calc(100% + 46px); }
+  @media (max-width: 760px) {
+    .mi-obal.popisky-2r-m { padding-bottom: 86px; }
+    .popisky-2r-m .mi-popis.rad2 { top: calc(100% + 46px); }
+  }
+  .mi-popis { position: absolute; top: calc(100% + 8px); left: var(--x); transform: translateX(-50%); display: grid; justify-items: center; margin: 0; white-space: nowrap; pointer-events: none;
+    transition: opacity 200ms var(--ease-soft); }
+  .mi-popis strong { font-family: var(--font-display); font-stretch: 112%; font-weight: 600; font-size: 14px; line-height: 1.3; color: var(--color-blue-900); font-variant-numeric: tabular-nums; }
+  .mi-popis span { font-size: 12px; line-height: 1.3; color: var(--color-blue-700); }
+  /* rez pod myšou alebo z riadku tabuľky: jeho popis zvýraznený, ostatné ustúpia */
+  .mierka.je-vyber .mi-popis:not(.on) { opacity: 0.45; }
+  .mi-popis.on strong { color: var(--color-blue-700); }
   /* riadok tabuľky zvýraznený z rezu (TabulkaVariantov) */
   :global(tr.je-mierka > td) { background: rgb(247 181 28 / 0.16); }
   @media (prefers-reduced-motion: reduce) { .mi-zaklad, .mi-svetlo { transition: none; } }
@@ -63,6 +88,7 @@ const svetlo = w2.src;
       const stage = sek.querySelector<HTMLElement>('.mi-stage')!;
       const svetlo = sek.querySelector<HTMLImageElement>('.mi-svetlo')!;
       const stitky = [...sek.querySelectorAll<HTMLElement>('.mi-stitok')];
+      const popisky = [...sek.querySelectorAll<HTMLElement>('.mi-popis')];
       const cesta = sek.dataset.cesta!;
       const krok = Number(sek.dataset.krok);
       const riadok = (k: number) => (k >= 0 ? document.getElementById(stitky[k].dataset.kotva!) : null);
@@ -78,6 +104,7 @@ const svetlo = w2.src;
         }
         sek.classList.toggle('je-vyber', k >= 0);
         stitky.forEach((s, i) => { s.hidden = i !== k; });
+        popisky.forEach((p) => p.classList.toggle('on', Number(p.dataset.k) === k));
         riadok(k)?.classList.add('je-mierka');
       };
       const platno = document.createElement('canvas');

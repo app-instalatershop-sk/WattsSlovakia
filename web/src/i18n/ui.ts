@@ -129,7 +129,7 @@ const sk = {
         kde: 'Považská Bystrica, december 2022 až február 2023', h3: '31 budov napojených na jednu kotolňu',
         p: 'Rozvod tepla pre 30 rodinných domov a bytový dom zo spoločnej kotolne na pelety, so štyrmi revíznymi šachtami. Ponuku a dodávku sme zabezpečili s podporou Watts.',
         alt: 'Kotolňa obytného súboru v Považskej Bystrici so zásobníkom peliet a akumulačnými nádržami',
-        stavenisko: { alt: 'Stavenisko obytného súboru v Považskej Bystrici s bagrom a potrubím Microflex', kota: ['31 budov', 'rozvod z jednej kotolne'] as [string, string] },
+        stavenisko: { alt: 'Stavenisko obytného súboru v Považskej Bystrici s bagrom a potrubím Microflex' },
       },
     },
     // Projektová podpora a miesto pre budúci konfigurátor trasy (samostatná etapa).
@@ -214,6 +214,7 @@ const sk = {
     mierka: {
       h3: 'Všetky dimenzie v skutočnom pomere',
       popis: 'Rezy stoja v jednej rovine ako na výkrese. Prejdite myšou po reze alebo po riadku tabuľky.',
+      popisDotyk: 'Rezy stoja v jednej rovine ako na výkrese. Ťuknutím na rez prejdete na jeho riadok v tabuľke.',
       alt: (model: string) => `Všetky dimenzie ${model} vedľa seba v skutočnom pomere veľkostí`,
     },
     rodina: { hint: { mys: 'Kliknite na potrubie, otvorí sa jeho rad.', dotyk: 'Ťuknite na potrubie a potom na jeho názov.' }, systemy: 'Systémy Microflex', pozriet: 'Pozrieť rad', plast: 'plášť', rura: 'rúra', rury: 'rúry' },
@@ -339,7 +340,7 @@ const cs: typeof sk = {
         kde: 'Považská Bystrica, prosinec 2022 až únor 2023', h3: '31 budov napojených na jednu kotelnu',
         p: 'Rozvod tepla pro 30 rodinných domů a bytový dům ze společné kotelny na pelety, se čtyřmi revizními šachtami. Nabídku a dodávku jsme zajistili s podporou Watts.',
         alt: 'Kotelna obytného souboru v Považské Bystrici se zásobníkem pelet a akumulačními nádržemi',
-        stavenisko: { alt: 'Staveniště obytného souboru v Považské Bystrici s bagrem a potrubím Microflex', kota: ['31 budov', 'rozvod z jedné kotelny'] },
+        stavenisko: { alt: 'Staveniště obytného souboru v Považské Bystrici s bagrem a potrubím Microflex' },
       },
     },
     podporaH2: 'U velkého projektu s Vámi od trasy po dodávku.',
@@ -420,6 +421,7 @@ const cs: typeof sk = {
     mierka: {
       h3: 'Všechny dimenze ve skutečném poměru',
       popis: 'Řezy stojí v jedné rovině jako na výkresu. Přejeďte myší po řezu nebo po řádku tabulky.',
+      popisDotyk: 'Řezy stojí v jedné rovině jako na výkresu. Ťuknutím na řez přejdete na jeho řádek v tabulce.',
       alt: (model: string) => `Všechny dimenze ${model} vedle sebe ve skutečném poměru velikostí`,
     },
     rodina: { hint: { mys: 'Klikněte na potrubí, otevře se jeho řada.', dotyk: 'Ťukněte na potrubí a potom na jeho název.' }, systemy: 'Systémy Microflex', pozriet: 'Zobrazit řadu', plast: 'plášť', rura: 'trubka', rury: 'trubky' },

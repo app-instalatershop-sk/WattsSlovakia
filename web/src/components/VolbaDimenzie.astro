@@ -72,14 +72,12 @@ const data = skupiny.map((g) => ({
     };
   }),
 }));
-const payload = { model, detail: tx.volbaDetail, vybrat: tx.vybrat, objText: ui.tabulka.obj, bodyHlavy: bodyHlavy ?? null };
+const payload = { model, detail: tx.volbaDetail, vybrat: tx.vybrat, kupit: tx.kupit, kupitVariant: tx.kupitVariant('{k}'), objText: ui.tabulka.obj, bodyHlavy: bodyHlavy ?? null };
 // Varianty s rovnakým plášťom aj izoláciou (COOL s káblom a bez neho) rozlíši až obj. číslo.
 for (const g of data) if (new Set(g.vs.map((x) => x.l2)).size < g.vs.length) g.vs.forEach((x) => { x.l2 = x.obj; });
-// Riadok výsledku má stálu výšku; s druhou úrovňou (plášť) sa na telefóne zalomí, preto dva riadky.
-const maPlast = skupiny.some((g) => g.vs.length > 1);
 ---
 {skupiny.length > 1 && (
-<div class:list={['volba', { 'volba-2r': maPlast }]} data-volba>
+<div class="volba" data-volba>
   <div class="volba-riadok">
     <span class="volba-meno" id="volba-l1">{tx.filterRura} Ø</span>
     <div class="volba-seg" role="group" aria-labelledby="volba-l1" data-seg>
@@ -148,10 +146,11 @@ const maPlast = skupiny.some((g) => g.vs.length > 1);
   @media (prefers-reduced-motion: reduce) { :global(.hlava [data-koty] .kota) { transition: none; } }
   :global(.zk-kruh) { position: absolute; left: -7px; top: -7px; width: 14px; height: 14px; border-radius: 50%; box-shadow: 0 0 0 2px var(--color-blue-700); pointer-events: none; }
 
+  /* Telefón: výber je pod renderom, pod ním už len prepínač Pohľad/Teplota, nie obraz. Stála výška riadku výsledku
+     by tu len nechala prázdne miesto okolo pokynu (posúdenie 29. 10.); detail sa po výbere rozbalí pod lištou. */
   @media (max-width: 760px) {
     .volba-riadok { flex-direction: column; align-items: flex-start; gap: 8px; }
-    .volba-vysledok { min-height: 48px; }
-    .volba-2r .volba-vysledok { min-height: 92px; }
+    .volba-vysledok { min-height: 0; }
     .volba-fakty { display: none; }
   }
 </style>
@@ -160,7 +159,7 @@ const maPlast = skupiny.some((g) => g.vs.length > 1);
   type Body = { plast?: number[]; rura?: number[]; ohyb?: number[]; lr?: number };
   type Obr = { avif: string; webp: string; src: string; body: Body };
   type V = { obj: string; kotva: string; l2: string; kp: string | null; kpt: string | null; kr: string; ko: string | null; fakty: string; tr: string; ti: string; obr: Obr | null };
-  type Data = { model: string; detail: string; vybrat: string; objText: string; bodyHlavy: Body | null; skupiny: { k: string; vs: V[] }[] };
+  type Data = { model: string; detail: string; vybrat: string; kupit: string; kupitVariant: string; objText: string; bodyHlavy: Body | null; skupiny: { k: string; vs: V[] }[] };
 
   let ac: AbortController | undefined;
 
@@ -188,6 +187,11 @@ const maPlast = skupiny.some((g) => g.vs.length > 1);
     const cta = hlava.querySelector<HTMLAnchorElement>('[data-cta]');
     const ctaText = cta?.querySelector<HTMLElement>('[data-cta-text]');
     const ctaHref = cta?.getAttribute('href') ?? '#varianty';
+    // Kúpiť v e-shope ide po výbere na zvolený variant: rovnaká adresa ako Do e-shopu v jeho riadku tabuľky
+    // (dnes hľadanie obj. čísla, po spárovaní s e-shopom priamo produkt), pri „Všetky“ späť na celý rad.
+    const eshop = hlava.querySelector<HTMLAnchorElement>('[data-eshop]');
+    const eshopText = eshop?.querySelector<HTMLElement>('[data-eshop-text]');
+    const eshopHref = eshop?.getAttribute('href') ?? '';
     const kota = (kod: string) => {
       const li = hlava.querySelector<HTMLElement>(`[data-koty] .k-${kod}`);
       const hodnota = li?.querySelector<HTMLElement>('.stitok strong') ?? null;
@@ -335,6 +339,11 @@ const maPlast = skupiny.some((g) => g.vs.length > 1);
       if (cta) {
         cta.setAttribute('href', v ? `#${v.kotva}` : ctaHref);
         if (ctaText) ctaText.textContent = v ? data.detail : data.vybrat;
+      }
+      if (eshop) {
+        const vRiadku = v ? document.getElementById(v.kotva)?.querySelector<HTMLAnchorElement>('.tv-shop a')?.getAttribute('href') : null;
+        eshop.setAttribute('href', vRiadku ?? eshopHref);
+        if (eshopText) eshopText.textContent = vRiadku ? data.kupitVariant.replace('{k}', v!.obj) : data.kupit;
       }
       // Teplo v reze (TeploVrstva) a ďalšie vrstvy nad obrazom počúvajú zvolený variant.
       koren.dataset.aktivny = v?.obj ?? '';

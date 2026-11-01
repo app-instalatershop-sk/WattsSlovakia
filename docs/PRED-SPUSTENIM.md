@@ -12,6 +12,11 @@ Tlačidlá „Do e-shopu“ pri obj. číslach a „Kúpiť v e-shope“ dnes ot
 - [ ] Spárované obj. čísla: odkaz priamo na produkt v e-shope, nie na hľadanie.
 - [ ] Obj. čísla, ktoré e-shop nemá: namiesto prázdneho hľadania „Poslať dopyt na tento variant“ s vyplneným obj. číslom.
 - [ ] S vedením rozhodnúť, či e-shop doplní chýbajúce produkty (otázka č. 6 v dokumente otázok pre manažéra).
+- [ ] Veta v závere každej stránky je od 1. 11. 2026 opatrná: „Cenu a dostupnosť nájdete v e-shope. Ak tam obj. číslo
+  nenájdete…“ (predtým „…každého obj. čísla“, posúdenie stránky radu 29. 10.). Keď e-shop bude mať všetky obj. čísla,
+  dá sa vrátiť. Kde: `web/src/content/stranky.ts` → `zaver.text` (SK aj CS).
+- [ ] Po spárovaní overiť „Kúpiť v e-shope“ v úvode radu: po výbere variantu berie adresu z jeho riadku tabuľky
+  (`VolbaDimenzie.astro`), takže priamy odkaz na produkt sa tam prenesie sám.
 
 Kde v kóde: `data/normalize.py` (`eshop_url`), `web/src/i18n/ui.ts` (`ESHOP`, `ESHOP_SEARCH`), `Rad.astro`, `Produkt.astro`,
 `TabulkaVariantov.astro`, `Vyber.astro`.

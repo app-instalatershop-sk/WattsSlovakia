@@ -130,6 +130,23 @@ const podmienkyTepla = hlavaTepla && role ? [
 const mierka = mierkaRadu(r.id);
 const mierkaObr = render3d('mierka', r.id);
 const stitkyMierky = Object.fromEntries(varianty.map((v) => [v.obj_cislo, [`Ø ${cislo(v.plast_mm ?? 0)} mm`, ruryKratko(v)] as [string, string]]));
+// Trvalý popis pod každým rezom v zápise katalógu (plášť/rúry, napr. 125/2 × 25), aby sa rezy dali porovnať aj bez
+// myši (posúdenie 29. 10.); pri rade s oboma izoláciami pod ním „zosilnená“. Rezy s rovnakými rozmermi (COOL s káblom)
+// majú rovnaký popis, líšia sa až obj. číslom v tabuľke. Pozor: regulárny výraz vo vnorenom `${}` kompilátor Astro 7
+// nezvládne (hlási chybu na riadku importu), preto zápis bez neho.
+const obeIzolacie = new Set(varianty.map((v) => v.izolacia).filter(Boolean)).size > 1;
+const zapisRezu = (v: (typeof varianty)[number]) => {
+  const rury = ruryKratko(v).replace(' mm', '');
+  return v.plast_mm ? cislo(v.plast_mm) + '/' + rury : rury;
+};
+const popiskyMierky: Record<string, [string, string]> = Object.fromEntries(varianty.map((v) => [v.obj_cislo,
+  [zapisRezu(v), obeIzolacie && v.izolacia === 'zosilnena' ? ui.tabulka.zosilnena : '']]));
+
+// Úvod variantov: keď je variantov viac ako priemerov nosnej rúry (dve izolácie), povedať oboje, lebo priemer sám
+// ešte neurčuje obj. číslo; podmienky výkonu hneď tu, nie až pod tabuľkou (posúdenie 29. 10.).
+const priemerov = new Set(varianty.map((v) => v.rura?.d)).size;
+const pocetText = varianty.every((v) => v.rura?.d) && priemerov < varianty.length ? tx.pocetVariantov(varianty.length, priemerov) : tx.pocetDim(varianty.length);
+const maVykon = varianty.some((v) => v.vykon_kw);
 
 // Stavba pod lupou: kľúčové číslo plášťa berie rozsah z tabuľky, nosnej rúry aj priemery.
 const vrstvy = obsah ? (['rura', 'pena', 'plast'] as const).map((id) => {
@@ -160,6 +177,9 @@ const kodyDielov = Object.fromEntries(produkty.flatMap((p) => p.tabulky.flatMap(
   .filter(Boolean).map((kod) => [`${p.id}|${kod}`, `${dielyUrl[p.id]}#${kotvaKodu(kod)}`])));
 
 const refs = referencie(lang).filter((x) => x.rad === r.slug || (x.rad === null && x.kategoria === k.id)).sort((a, b) => Number(b.rad === r.slug) - Number(a.rad === r.slug)).slice(0, 2);
+// „Kde tento rad leží“ len keď každá ukázaná stavba uvádza práve tento rad; inak všeobecnejší nadpis (Juraj 1. 11.:
+// pri Považskej Bystrici nevie, ktorý rad tam leží).
+const refyRadu = refs.length > 0 && refs.every((x) => x.rad === r.slug);
 
 const casti = [
   { id: 'varianty', text: tx.navVarianty },
@@ -193,7 +213,7 @@ const productLd = [{
     {zaberyTepla && <TeploVrstva slot="na-obraze" zabery={zaberyTepla} alt={nv.teplo.alt(model)} label={nv.teplo.stupnica} />}
     <div class="hlava-akcie">
       <a class="btn btn-yellow btn-lg" href="#varianty" data-cta><span data-cta-text>{tx.vybrat}</span> <Ikona nazov="arrow-down" velkost={18} /></a>
-      <a class="odkaz" href={eshop} target="_blank" rel="noopener">{tx.kupit} <Ikona nazov="external-link" velkost={16} /></a>
+      <a class="odkaz" href={eshop} target="_blank" rel="noopener" data-eshop><span data-eshop-text>{tx.kupit}</span> <Ikona nazov="external-link" velkost={16} /></a>
     </div>
     {sestry.length > 0 && (
       <p class="hlava-sestry">{tx.ajVo} {sestry.map((x, i) => <>{i > 0 && ', '}<a href={cestaRadu(k, x, lang)}>{rNazov(x, lang).split(',')[0].trim()}</a></>)}</p>
@@ -206,9 +226,9 @@ const productLd = [{
     <section class="wrap cast" id="varianty" aria-labelledby="h-var">
       <div class="s-hlava">
         <h2 id="h-var">{ui.rad.variantyH2}</h2>
-        <p>{varianty.length ? <>{tx.pocetDim(varianty.length)}{zosilnene ? tx.zosilnenych(zosilnene) : ''}. {tx.variantyP}</> : tx.chybaju(model, obsah?.strana ?? null)}</p>
+        <p>{varianty.length ? <>{pocetText}{zosilnene ? tx.zosilnenych(zosilnene) : ''}. {maVykon && `${tx.vykonKratko} `}{tx.variantyP}</> : tx.chybaju(model, obsah?.strana ?? null)}</p>
       </div>
-      {mierka && mierkaObr && varianty.length > 1 && <Mierka data={mierka} obraz={mierkaObr} stitky={stitkyMierky} nadpis={nv.mierka.h3} popis={nv.mierka.popis} alt={nv.mierka.alt(model)} />}
+      {mierka && mierkaObr && varianty.length > 1 && <Mierka data={mierka} obraz={mierkaObr} stitky={stitkyMierky} popisky={popiskyMierky} nadpis={nv.mierka.h3} popis={nv.mierka.popis} popisDotyk={nv.mierka.popisDotyk} alt={nv.mierka.alt(model)} />}
       {varianty.length > 0 ? (
         <div class="harok"><TabulkaVariantov varianty={varianty} zdroj={r.zdroj_url} stiahnute={r.stiahnute} lang={lang} primoZaklad={primoZaklad} diely={dielyUrl} kodyDielov={kodyDielov} /></div>
       ) : (
@@ -277,12 +297,14 @@ const productLd = [{
 
     {refs.length > 0 && (
       <section class="wrap cast" id="referencie" aria-labelledby="h-ref">
-        <div class="s-hlava"><h2 id="h-ref">{tx.refH2}</h2><p>{tx.refP}</p><a href={route(lang, 'referencie')}>{tx.refVsetky} <Ikona nazov="arrow-right" velkost={16} /></a></div>
-        {/* Referencia ako scéna s kótou (Juraj 22. 10. 2026, návrh E), druhá zrkadlovo. */}
+        <div class="s-hlava"><h2 id="h-ref">{refyRadu ? tx.refH2 : tx.refH2Vseob}</h2><p>{refyRadu ? tx.refP : tx.refPVseob}</p><a href={route(lang, 'referencie')}>{tx.refVsetky} <Ikona nazov="arrow-right" velkost={16} /></a></div>
+        {/* Referencia ako scéna s kótou (Juraj 22. 10. 2026, návrh E), druhá zrkadlovo. Na stránke potrubia fotka
+            potrubia, ak ju stavba má (scenaPotrubie), a rola ako na domove: naša dodávka alebo referencia výrobcu. */}
         {refs.map((x, i) => (
           <article class:list={['ref', { 'ref-vpravo': i % 2 === 1 }]} aria-labelledby={`h-ref-${x.id}`}>
-            <Scena class="ref-scena" obraz={fotkaReferencie(x.scena?.fotka ?? x.fotky[0])!} alt={x.nazov} koty={x.scena?.koty ?? []} label={ui.home.projektyKoty} widths={[640, 900, 1200]} sizes="(max-width: 900px) 100vw, 56vw" />
+            <Scena class="ref-scena" obraz={fotkaReferencie((x.scenaPotrubie ?? x.scena)?.fotka ?? x.fotky[0])!} alt={x.nazov} koty={(x.scenaPotrubie ?? x.scena)?.koty ?? []} label={ui.home.projektyKoty} widths={[640, 900, 1200]} sizes="(max-width: 900px) 100vw, 56vw" />
             <div class="ref-text">
+              <p class:list={['ref-rola', { nasa: x.nasa }]}>{x.nasa ? ui.home.rolaNasa : ui.home.rolaVyrobca}</p>
               <p class="ref-kde">{x.miesto}, {x.kedy}</p>
               <h3 id={`h-ref-${x.id}`}>{sadzba(x.nazov)}</h3>
               <dl class="ref-fakty">{x.fakty.slice(0, 2).map(([dt, dd]) => <div><dt>{dt}</dt><dd>{sadzba(dd)}</dd></div>)}</dl>
@@ -365,6 +387,9 @@ const productLd = [{
   .ref-vpravo { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
   .ref-vpravo :global(.ref-scena) { order: 2; margin-left: 0; margin-right: calc(-1 * var(--bleed)); }
   .ref-vpravo :global(.ref-scena .scena-img) { border-radius: var(--radius-xl) 0 0 var(--radius-xl); }
+  /* Rola stavby ako na domove: naša dodávka žltá, referencia výrobcu len obrysom. */
+  .ref-rola { display: inline-flex; align-items: center; height: 28px; margin-bottom: 12px; padding: 0 12px; border-radius: 999px; font-size: 14px; font-weight: 600; color: var(--color-ink-soft); box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.22); }
+  .ref-rola.nasa { background: var(--color-yellow-500); color: var(--color-ink); box-shadow: none; }
   .ref-kde { font-size: 15px; font-weight: 500; color: var(--color-blue-700); }
   .ref-text h3 { margin-top: 8px; font-size: clamp(24px, 1.2vw + 16px, 32px); line-height: 1.15; letter-spacing: -0.015em; }
   .ref-fakty { display: grid; gap: 6px; margin: 20px 0 22px; }

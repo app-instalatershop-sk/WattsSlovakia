@@ -10,6 +10,10 @@
 @font-face { font-family: 'Archivo nahrada'; src: local('Arial'), local('ArialMT'); font-weight: 100 550; size-adjust: 113.84%; ascent-override: 77.13%; descent-override: 18.45%; line-gap-override: 0%; }
 @font-face { font-family: 'Archivo nahrada'; src: local('Arial Bold'), local('Arial-BoldMT'); font-weight: 551 650; size-adjust: 108.37%; ascent-override: 81.02%; descent-override: 19.38%; line-gap-override: 0%; }
 @font-face { font-family: 'Archivo nahrada'; src: local('Arial Bold'), local('Arial-BoldMT'); font-weight: 651 900; size-adjust: 111.08%; ascent-override: 79.05%; descent-override: 18.91%; line-gap-override: 0%; }
+/* Archivo pri šírke 100 % (nadpisy na telefóne) je približne ako Arial; s rozmermi pre 112,5 % by sa nadpis po načítaní zúžil. */
+@font-face { font-family: 'Archivo nahrada uzke'; src: local('Arial'), local('ArialMT'); font-weight: 100 550; size-adjust: 100.11%; ascent-override: 87.71%; descent-override: 20.98%; line-gap-override: 0%; }
+@font-face { font-family: 'Archivo nahrada uzke'; src: local('Arial Bold'), local('Arial-BoldMT'); font-weight: 551 650; size-adjust: 95.11%; ascent-override: 92.32%; descent-override: 22.08%; line-gap-override: 0%; }
+@font-face { font-family: 'Archivo nahrada uzke'; src: local('Arial Bold'), local('Arial-BoldMT'); font-weight: 651 900; size-adjust: 98.19%; ascent-override: 89.42%; descent-override: 21.39%; line-gap-override: 0%; }
 
 @theme {
   --color-*: initial;
@@ -63,6 +67,11 @@
     --zem-2: #e1ebf7;
     --zem-3: #d8e5f5;
     --zem-4: #cddff2;
+    /* Biele polopriesvitné plochy v troch úrovniach skla (polish 1. 11. 2026, POLISH.md F2; predtým 12 hodnôt 0,6 až 0,96):
+       1 ľahká plocha na svetlom poli, 2 koľajnica prepínača a hlavička, 3 štítok kóty a plocha, cez ktorú sa číta. */
+    --sklo-1: rgb(255 255 255 / 0.7);
+    --sklo-2: rgb(255 255 255 / 0.86);
+    --sklo-3: rgb(255 255 255 / 0.94);
     /* Výška šikmej hrany tmavého záveru a podzemia. */
     --sikmina-zaver: clamp(28px, 5vw, 96px);
     /* Tvar šikmých hrán (Juraj 28. 10., variant „ohyb“): stúpa zľava doprava, ale nie rovno, ohne sa ako rúra
@@ -118,7 +127,7 @@
   h2 { font-size: clamp(25px, 1.4vw + 16px, 31px); line-height: 1.15; font-weight: 600; }
   h3 { font-size: 20px; line-height: 1.25; font-weight: 600; }
   @media (max-width: 760px) {
-    h1, h2, h3, .display { font-stretch: 100%; }
+    h1, h2, h3, .display { font-stretch: 100%; font-family: 'Archivo Variable', 'Archivo nahrada uzke', 'Helvetica Neue', Arial, sans-serif; }
   }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
@@ -142,14 +151,14 @@
   .num { font-variant-numeric: tabular-nums; }
   .section { padding-block: 64px; }
   @media (max-width: 760px) { .section { padding-block: 48px; } }
-  .section-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px 24px; align-items: baseline; margin-bottom: 32px; }
+  .section-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 24px; align-items: baseline; margin-bottom: 32px; }
   .section-head h2 { grid-column: 1; }
   .section-head > a { grid-column: 2; grid-row: 1; white-space: nowrap; font-weight: 500; }
   .section-head p { grid-column: 1 / -1; max-width: 44em; }
 
   /* Tlačidlá */
   .btn {
-    display: inline-flex; align-items: center; gap: 10px; height: 48px; padding: 0 22px;
+    display: inline-flex; align-items: center; gap: 8px; height: 48px; padding: 0 24px;
     border-radius: var(--radius-s); font: 500 16px/1 var(--font-text); text-decoration: none; cursor: pointer;
     border: 1px solid transparent; white-space: nowrap;
     transition: background-color 150ms var(--ease-soft), border-color 150ms var(--ease-soft), color 150ms var(--ease-soft), transform 120ms var(--ease-soft);
@@ -167,10 +176,10 @@
   /* Žltá = farba jadra rúry. Jediné miesto, kde je akciou: hlavné tlačidlo na tmavom hero. */
   .btn-yellow { background: linear-gradient(180deg, #f8d123 0%, var(--color-yellow-500) 100%); color: var(--color-ink); box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35); }
   .btn-yellow:hover { background: linear-gradient(180deg, #efc70c 0%, #e3b800 100%); color: var(--color-ink); }
-  .btn-sm { height: 36px; padding: 0 14px; font-size: 14px; }
+  .btn-sm { height: 36px; padding: 0 16px; font-size: 14px; }
   /* Hlavné tlačidlo v hlave stránky, jedno na stránku (docs/PLAN-ZLEPSENIA.md krok 5): väčšie tlačidlo
      dostalo v meraní pozornosti na mobile o 1,2 až 2,5 bodu viac. Ostatné tlačidlá ostávajú .btn. */
-  .btn-lg { height: 56px; padding: 0 30px; font-size: 18px; font-weight: 600;
+  .btn-lg { height: 56px; padding: 0 32px; font-size: 18px; font-weight: 600;
     transition: background-color 150ms var(--ease-soft), border-color 150ms var(--ease-soft), color 150ms var(--ease-soft), transform 120ms var(--ease-soft), box-shadow 200ms var(--ease-soft); }
   .btn-yellow.btn-lg { box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), 0 12px 24px -12px rgb(176 138 0 / 0.65); }
   @media (hover: hover) and (pointer: fine) { .btn-yellow.btn-lg:hover { box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), 0 14px 26px -12px rgb(176 138 0 / 0.8); } }
@@ -189,7 +198,7 @@
   .card .body { padding: 16px 24px 24px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
   .card .body p { color: var(--color-ink-soft); }
   .card .meta { margin-top: auto; font-size: 14px; color: var(--color-ink-soft); display: flex; justify-content: space-between; align-items: center; gap: 8px; padding-top: 8px; }
-  .card .meta strong { color: var(--color-blue-700); font-weight: 500; display: inline-flex; align-items: center; gap: 6px; }
+  .card .meta strong { color: var(--color-blue-700); font-weight: 500; display: inline-flex; align-items: center; gap: 8px; }
   .card .meta svg { width: 16px; height: 16px; }
   .pikto { object-fit: contain; flex: none; }
 
@@ -200,20 +209,20 @@
      hranou tmavého záveru. overflow-x: clip: čo dobieha za okraj obrazovky (--bleed, žiary za
      obrázkami), nesmie urobiť vodorovný posuvník; sticky a zvislý presah ostávajú. */
   .telo { position: relative; overflow-x: clip; background: linear-gradient(180deg, var(--zem-1) 0%, var(--zem-2) 45%, var(--zem-3) 100%); padding: 48px 0 calc(var(--sikmina-zaver) + 88px); }
-  .telo > .wrap + .wrap, .telo > section + section { margin-top: 88px; }
+  .telo > .wrap + .wrap, .telo > :is(section, .cast) + :is(section, .cast) { margin-top: 88px; } /* .cast: obal časti radu bez vlastnej oblasti (div#stavba) */
   /* Hárok: biela plocha pre tabuľky a zoznamy na modrom tele, jemne nadvihnutá. */
   /* Sekcia, na ktorú skáče plávajúca navigácia častí: hlavička a pás častí ju neprekryjú. */
   .cast { scroll-margin-top: 150px; }
   @media (max-width: 760px) { .cast { scroll-margin-top: 130px; } }
   .harok { background: #fff; border-radius: var(--radius-xl); box-shadow: 0 1px 0 rgb(10 42 94 / 0.05), var(--elev-4); }
   /* Nadpis sekcie vnútornej stránky: nadpis, popis pod ním a odkaz vpravo. */
-  .s-hlava { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px 32px; align-items: end; margin-bottom: 28px; }
+  .s-hlava { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 32px; align-items: end; margin-bottom: 28px; }
   .s-hlava h2 { font-size: clamp(26px, 1.4vw + 17px, 36px); letter-spacing: -0.02em; }
-  .s-hlava p { grid-column: 1; color: var(--color-ink-soft); max-width: 36em; } /* najviac 70 znakov na riadok */
-  .s-hlava > a { grid-column: 2; grid-row: 1 / span 2; align-self: end; display: inline-flex; align-items: center; gap: 6px; font-weight: 500; white-space: nowrap; border-bottom: 1px solid currentColor; padding-bottom: 2px; }
-  @media (max-width: 760px) { .s-hlava { grid-template-columns: minmax(0, 1fr); } .s-hlava > a { grid-column: 1; grid-row: auto; justify-self: start; } .telo { padding-top: 32px; } .telo > .wrap + .wrap, .telo > section + section { margin-top: 64px; } }
+  .s-hlava p { grid-column: 1; color: var(--color-ink-soft); max-width: 34em; } /* najviac 70 znakov na riadok */
+  .s-hlava > a { grid-column: 2; grid-row: 1 / span 2; align-self: end; display: inline-flex; align-items: center; gap: 8px; font-weight: 500; white-space: nowrap; border-bottom: 1px solid currentColor; padding-bottom: 2px; }
+  @media (max-width: 760px) { .s-hlava { grid-template-columns: minmax(0, 1fr); } .s-hlava > a { grid-column: 1; grid-row: auto; justify-self: start; } .telo { padding-top: 32px; } .telo > .wrap + .wrap, .telo > :is(section, .cast) + :is(section, .cast) { margin-top: 64px; } }
   /* Odkaz s podčiarknutím a ikonou (druhá akcia vedľa tlačidla). */
-  .odkaz { display: inline-flex; align-items: center; gap: 8px; font-weight: 500; color: var(--color-blue-700); border-bottom: 1px solid currentColor; padding-bottom: 3px; }
+  .odkaz { display: inline-flex; align-items: center; gap: 8px; font-weight: 500; color: var(--color-blue-700); border-bottom: 1px solid currentColor; padding-bottom: 4px; }
   .odkaz .meta { font-weight: 400; font-size: 14px; color: var(--color-ink-soft); }
   .band-soft { background: linear-gradient(180deg, var(--color-white) 0, var(--color-blue-50) 140px, var(--color-blue-50) 100%); }
   .band-dark { background: linear-gradient(170deg, #0e3676 0%, var(--color-blue-900) 100%); color: #fff; }
@@ -226,14 +235,14 @@
 
   /* Pás parametrov (čísla ako podpis webu) */
   .spec { display: grid; background: linear-gradient(135deg, #e2edf8 0%, var(--color-blue-100) 60%, #cfe0f2 100%); border-radius: var(--radius-s); overflow: hidden; margin: 0; }
-  .spec > div { padding: 14px 18px; border-right: 1px solid rgb(0 93 185 / 0.16); border-bottom: 1px solid rgb(0 93 185 / 0.16); display: flex; flex-direction: column; gap: 2px; }
+  .spec > div { padding: 16px 16px; border-right: 1px solid rgb(0 93 185 / 0.16); border-bottom: 1px solid rgb(0 93 185 / 0.16); display: flex; flex-direction: column; gap: 2px; }
   .spec dt { font-size: 13px; color: var(--color-ink-soft); }
   .spec dd { margin: 0; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 20px; line-height: 1.2; font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
 
   /* Tabuľky */
   .table-wrap { overflow-x: auto; border: var(--line); border-radius: var(--radius-s); scrollbar-width: thin; }
   table.data { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
-  table.data th, table.data td { text-align: left; padding: 12px 14px; border-bottom: var(--line); white-space: nowrap; }
+  table.data th, table.data td { text-align: left; padding: 12px 16px; border-bottom: var(--line); white-space: nowrap; }
   table.data th { font-weight: 500; color: var(--color-ink-soft); background: var(--color-white); position: sticky; top: 0; font-size: 13px; }
   /* jednotka pod názvom stĺpca: 12 px zo škály a kontrast 7,4 : 1 (predtým 10,4 px a 3,77 : 1, polish 1. 11.) */
   table.data th small { display: block; font-size: 12px; font-weight: 400; color: var(--color-ink-soft); }
@@ -249,10 +258,10 @@
      segment tmavomodrý. Rovnaký význam, rovnaká podoba (polish 1. 11. 2026, POLISH.md M4; predtým samostatné
      ohraničené čipy s modrým prechodom). Čísla písmom nadpisov ako v hlave radu (chip-cislo). */
   .chips { display: inline-flex; flex-wrap: wrap; gap: 2px; max-width: 100%; padding: 4px; border-radius: var(--radius-l);
-    background: rgb(255 255 255 / 0.86); box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.1), var(--elev-1); }
+    background: var(--sklo-2); box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.1), var(--elev-1); }
   .chip {
-    height: 40px; padding: 0 13px; border: 0; border-radius: var(--radius-m); background: transparent; color: var(--color-ink);
-    font: 500 15px/1 var(--font-text); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    height: 40px; padding: 0 12px; border: 0; border-radius: var(--radius-m); background: transparent; color: var(--color-ink);
+    font: 500 15px/1 var(--font-text); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
     transition: background-color 150ms var(--ease-soft), color 150ms var(--ease-soft);
   }
   .chip-cislo { font: 600 15px/1 var(--font-display); font-stretch: 112.5%; font-variant-numeric: tabular-nums; }
@@ -271,7 +280,7 @@
   @media (max-width: 760px) {
     .crumbs { position: relative; }
     .crumbs li:not(:nth-last-child(2)) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-    .crumbs li:nth-last-child(2)::before { content: "‹"; content: "‹" / ""; margin-right: 6px; color: var(--color-ink-soft); }
+    .crumbs li:nth-last-child(2)::before { content: "‹"; content: "‹" / ""; margin-right: 8px; color: var(--color-ink-soft); }
     .crumbs a { display: inline-block; padding-block: 12px; margin-block: -12px; }
   }
 

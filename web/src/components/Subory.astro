@@ -37,7 +37,7 @@ const polozky = subory.map((s) => { const p = popisSuboru(s, lang); return { ...
 <style>
   .stol { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 36px 28px; align-items: end; }
   .dok { display: flex; flex-direction: column; gap: 4px; color: var(--color-ink); }
-  .dok strong { margin-top: 18px; font-family: var(--font-display); font-stretch: 112.5%; font-size: 17px; line-height: 1.25; transition: color 150ms var(--ease-soft); }
+  .dok strong { margin-top: 16px; font-family: var(--font-display); font-stretch: 112.5%; font-size: 17px; line-height: 1.25; transition: color 150ms var(--ease-soft); }
   .dok:hover { color: var(--color-ink); }
   .dok:hover strong { color: var(--color-blue-700); }
   .meta { font-size: 14px; color: var(--color-ink-soft); }
@@ -50,17 +50,17 @@ const polozky = subory.map((s) => { const p = popisSuboru(s, lang); return { ...
   /* Podklad bez obálky je biely list ako skutočný dokument vedľa obálok katalógu a brožúry, nie farebný
      blok (DOLADENIE kap. 2.2): hore formát, dole čo dokument obsahuje. Výkres má papier s jemnou
      mriežkou, rámik a rohovú pečiatku ako technický výkres. */
-  .format { display: flex; flex-direction: column; justify-content: space-between; gap: 10px; padding: 16px; color: var(--color-blue-900); background: #fff; }
-  .format b { position: relative; z-index: 1; align-self: flex-start; padding: 6px 8px 5px; border-radius: var(--radius-s); background: var(--color-blue-900); color: #fff;
+  .format { display: flex; flex-direction: column; justify-content: space-between; gap: 8px; padding: 16px; color: var(--color-blue-900); background: #fff; }
+  .format b { position: relative; z-index: 1; align-self: flex-start; padding: 8px 8px 4px; border-radius: var(--radius-s); background: var(--color-blue-900); color: #fff;
     font-family: var(--font-display); font-stretch: 112.5%; font-weight: 700; font-size: 13px; line-height: 1; letter-spacing: 0.03em; }
   .format em { position: relative; z-index: 1; font-style: normal; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 15px; line-height: 1.25; text-wrap: balance; }
-  .format em small { display: block; margin-top: 6px; font-family: var(--font-text); font-stretch: 100%; font-weight: 400; font-size: 13px; color: var(--color-ink-soft); }
+  .format em small { display: block; margin-top: 8px; font-family: var(--font-text); font-stretch: 100%; font-weight: 400; font-size: 13px; color: var(--color-ink-soft); }
   /* Zahnutý roh listu. */
   .format::before { content: ""; position: absolute; z-index: 2; top: 0; right: 0; width: 30px; height: 30px; background: linear-gradient(225deg, var(--zem-2) 50%, #dce5f0 50%); box-shadow: -2px 2px 4px rgb(10 42 94 / 0.12); }
   .format-vykres { background-color: #fff;
     background-image: linear-gradient(rgb(0 93 185 / 0.07) 1px, transparent 1px), linear-gradient(90deg, rgb(0 93 185 / 0.07) 1px, transparent 1px); background-size: 14px 14px; background-position: 8px 8px; }
   .format-vykres::after { content: ""; position: absolute; inset: 8px; border: 1px solid rgb(10 42 94 / 0.32); pointer-events: none; }
   .format-vykres b { margin: 4px 0 0 4px; }
-  .format-vykres em { align-self: flex-end; max-width: 86%; margin: 0 -8px -8px 0; padding: 8px 10px; border: 1px solid rgb(10 42 94 / 0.32); background: #fff; font-size: 13px; }
+  .format-vykres em { align-self: flex-end; max-width: 86%; margin: 0 -8px -8px 0; padding: 8px 8px; border: 1px solid rgb(10 42 94 / 0.32); background: #fff; font-size: 13px; }
   @media (max-width: 760px) { .stol { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 20px; } }
 </style>

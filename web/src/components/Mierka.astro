@@ -44,10 +44,10 @@ const druhyRiadok = new Set(zlava.filter((_, i) => i % 2 === 1));
 
 <style>
   .mierka { margin: 0 0 28px; }
-  .mi-hlava { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; margin-bottom: 10px; }
+  .mi-hlava { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; margin-bottom: 8px; }
   .mi-hlava strong { font-family: var(--font-display); font-size: 18px; color: var(--color-blue-900); }
   .mi-hlava span { font-size: 15px; color: var(--color-ink-soft); }
-  .mi-obal { padding-top: 34px; }   /* miesto pre štítok nad najvyšším rezom */
+  .mi-obal { padding-top: 32px; }   /* miesto pre štítok nad najvyšším rezom */
   .mi-stage { position: relative; width: 100%; }
   /* Telefón: rad dimenzií by bol pár desiatok pixelov vysoký; dá sa ním posúvať do strany. */
   @media (max-width: 760px) {
@@ -60,14 +60,14 @@ const druhyRiadok = new Set(zlava.filter((_, i) => i % 2 === 1));
   .mierka.je-vyber .mi-zaklad { filter: saturate(0.35) brightness(0.88) contrast(0.92); }
   .mierka.je-vyber .mi-svetlo { opacity: 1; }
   .mi-stitok { position: absolute; z-index: 2; left: var(--x); top: var(--y); transform: translate(-50%, calc(-100% - 12px)); display: grid; justify-items: center; gap: 1px;
-    margin: 0; padding: 6px 11px; border-radius: var(--radius-m); background: rgb(255 255 255 / 0.94); box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.08), var(--elev-2); white-space: nowrap; pointer-events: none; }
+    margin: 0; padding: 8px 12px; border-radius: var(--radius-m); background: var(--sklo-3); box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.08), var(--elev-2); white-space: nowrap; pointer-events: none; }
   .mi-stitok strong { font-family: var(--font-display); font-stretch: 112%; font-weight: 600; font-size: 16px; color: var(--color-blue-900); font-variant-numeric: tabular-nums; }
   .mi-stitok span { font-size: 13px; color: var(--color-ink-soft); }
-  .mi-obal.s-popiskami { padding-bottom: 46px; }
-  .mi-obal.popisky-2r { padding-bottom: 86px; }
+  .mi-obal.s-popiskami { padding-bottom: 48px; }
+  .mi-obal.popisky-2r { padding-bottom: 88px; }
   .popisky-2r .mi-popis.rad2 { top: calc(100% + 46px); }
   @media (max-width: 760px) {
-    .mi-obal.popisky-2r-m { padding-bottom: 86px; }
+    .mi-obal.popisky-2r-m { padding-bottom: 88px; }
     .popisky-2r-m .mi-popis.rad2 { top: calc(100% + 46px); }
   }
   .mi-popis { position: absolute; top: calc(100% + 8px); left: var(--x); transform: translateX(-50%); display: grid; justify-items: center; margin: 0; white-space: nowrap; pointer-events: none;

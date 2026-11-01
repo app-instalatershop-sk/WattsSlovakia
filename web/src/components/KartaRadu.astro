@@ -70,16 +70,16 @@ const pod = [rad.pocet_rur ? ui.home.rury(rad.pocet_rur) : '', varianty.length ?
     /* Štítok plášťa by vyšiel z karty vpravo: v úzkom poli rastie doľava. */
     .karta .karta-stage :global(.k-plast .stitok) { left: auto; right: -0.75px; align-items: flex-end; text-align: right; border-radius: var(--radius-l); border-bottom-right-radius: 2px; }
   }
-  .karta-telo { display: flex; flex-direction: column; gap: 6px; padding: 22px 28px 26px; }
+  .karta-telo { display: flex; flex-direction: column; gap: 8px; padding: 24px 28px 24px; }
   .karta h3 { font-size: 24px; letter-spacing: -0.015em; }
   .karta h3 a { color: var(--color-ink); }
   .karta h3 a:hover { color: var(--color-blue-700); }
   .karta-pod { color: var(--color-ink-soft); font-size: 15px; }
-  .karta-popis { margin-top: 6px; font-size: 16px; max-width: 34em; }
-  .karta-akcie { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; margin-top: 16px; }
-  .karta-vyh { display: inline-flex; align-items: baseline; gap: 6px; padding: 7px 12px; border-radius: 999px; background: var(--color-blue-50); color: var(--color-ink); font-size: 15px; transition: background-color 150ms var(--ease-soft); }
+  .karta-popis { margin-top: 8px; font-size: 16px; max-width: 34em; }
+  .karta-akcie { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px; margin-top: 16px; }
+  .karta-vyh { display: inline-flex; align-items: baseline; gap: 8px; padding: 8px 12px; border-radius: 999px; background: var(--color-blue-50); color: var(--color-ink); font-size: 15px; transition: background-color 150ms var(--ease-soft); }
   .karta-vyh:hover { background: var(--color-blue-100); color: var(--color-ink); }
   .karta-vyh strong { font-weight: 600; }
   .karta-vyh span { color: var(--color-ink-soft); font-size: 13px; }
-  @media (max-width: 760px) { .karta-studio { height: auto; padding: 22px 12px 8px; } .karta-telo { padding: 18px 20px 22px; } }
+  @media (max-width: 760px) { .karta-studio { height: auto; padding: 24px 12px 8px; } .karta-telo { padding: 16px 20px 24px; } }
 </style>

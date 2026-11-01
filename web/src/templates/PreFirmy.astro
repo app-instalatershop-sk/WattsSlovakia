@@ -170,11 +170,11 @@ const polia = { meno: tx.meno, firma: tx.firma, email: tx.email, telefon: tx.tel
   .pre { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 40px 56px; align-items: center; }
   .pre-velka { margin: 0 0 0 calc(-1 * var(--bleed)); }
   .pre-velka :global(img) { display: block; width: 100%; height: auto; aspect-ratio: 5 / 4; object-fit: cover; object-position: 40% 50%; border-radius: 0 var(--radius-xl) var(--radius-xl) 0; box-shadow: var(--elev-4); }
-  .pre-zoznam { display: grid; gap: 34px; }
+  .pre-zoznam { display: grid; gap: 32px; }
   .pre-zoznam li { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 24px; align-items: start; }
   .pre-zoznam h2 { font-size: 22px; letter-spacing: -0.015em; }
-  .pre-zoznam p { margin-top: 6px; color: var(--color-ink-soft); font-size: 16px; line-height: 1.55; }
-  .pre-zoznam .odkaz { margin-top: 10px; }
+  .pre-zoznam p { margin-top: 8px; color: var(--color-ink-soft); font-size: 16px; line-height: 1.55; }
+  .pre-zoznam .odkaz { margin-top: 8px; }
   /* Lupa: prstenec vo farbách vrstiev potrubia (jadro, pena, plášť) a odlesk skla. */
   .pre-lupa { --ring: var(--color-blue-700); position: relative; display: block; width: 96px; height: 96px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 5px #fff, 0 0 0 7px var(--ring), var(--elev-2); }
   .pre-zoznam li:nth-child(1) .pre-lupa { --ring: #e0b400; }
@@ -188,31 +188,31 @@ const polia = { meno: tx.meno, firma: tx.firma, email: tx.email, telefon: tx.tel
   .dokaz :global(.dokaz-scena .scena-img) { border-radius: 0 var(--radius-xl) var(--radius-xl) 0; box-shadow: var(--elev-4); }
   .dokaz-text h2 { font-size: clamp(28px, 1.6vw + 17px, 40px); letter-spacing: -0.02em; line-height: 1.1; }
   .dokaz-text > p { margin-top: 16px; font-size: 17px; line-height: 1.6; max-width: 32em; }
-  .dokaz-odkazy { display: flex; flex-wrap: wrap; gap: 12px 26px; margin-top: 20px; }
+  .dokaz-odkazy { display: flex; flex-wrap: wrap; gap: 12px 24px; margin-top: 20px; }
   .odkaz-tichy { color: var(--color-ink-soft); }
-  .istota { margin-top: 32px; padding: 20px 22px; border-radius: var(--radius-xl); background: rgb(255 255 255 / 0.72); }
+  .istota { margin-top: 32px; padding: 20px 24px; border-radius: var(--radius-xl); background: var(--sklo-1); }
   .istota h3 { font-size: 16px; }
-  .istota p { margin-top: 6px; font-size: 15px; line-height: 1.6; color: var(--color-ink-soft); }
+  .istota p { margin-top: 8px; font-size: 15px; line-height: 1.6; color: var(--color-ink-soft); }
 
   .dopyt { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 32px 56px; align-items: start; }
   .dopyt h2 { font-size: clamp(28px, 1.6vw + 17px, 40px); letter-spacing: -0.02em; }
-  .dopyt-p { margin-top: 14px; color: var(--color-ink-soft); max-width: 30em; }
+  .dopyt-p { margin-top: 16px; color: var(--color-ink-soft); max-width: 30em; }
   .postup { counter-reset: krok; margin-top: 28px; }
-  .postup li { counter-increment: krok; position: relative; display: flex; flex-direction: column; gap: 2px; padding: 0 0 22px 56px; }
+  .postup li { counter-increment: krok; position: relative; display: flex; flex-direction: column; gap: 2px; padding: 0 0 24px 56px; }
   .postup li::before { content: counter(krok); position: absolute; left: 0; top: -2px; width: 38px; height: 38px; border-radius: var(--radius-l); display: grid; place-items: center; background: #fff; box-shadow: var(--elev-1); font-family: var(--font-display); font-stretch: 112.5%; font-weight: 700; color: var(--color-blue-900); }
   .postup li:not(:last-child)::after { content: ""; position: absolute; left: 18px; top: 42px; bottom: 4px; width: 2px; background: rgb(10 42 94 / 0.12); }
   .postup strong { font-size: 17px; }
   .postup span { color: var(--color-ink-soft); font-size: 15px; }
-  .telefon { margin-top: 12px; padding-top: 22px; border-top: 1px solid rgb(10 42 94 / 0.12); display: flex; flex-direction: column; gap: 10px; }
+  .telefon { margin-top: 12px; padding-top: 24px; border-top: 1px solid rgb(10 42 94 / 0.12); display: flex; flex-direction: column; gap: 8px; }
   .telefon h3 { font-size: 16px; }
-  .telefon a { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; }
+  .telefon a { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; }
 
-  .formular { display: flex; flex-direction: column; gap: 18px; padding: 32px; }
-  .riadok { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
-  .pole { display: flex; flex-direction: column; gap: 7px; border: 0; margin: 0; padding: 0; min-width: 0; }
+  .formular { display: flex; flex-direction: column; gap: 16px; padding: 32px; }
+  .riadok { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .pole { display: flex; flex-direction: column; gap: 8px; border: 0; margin: 0; padding: 0; min-width: 0; }
   .pole > span, .pole legend { font-size: 14px; font-weight: 600; color: var(--color-ink); padding: 0; }
   .pole em { font-style: normal; font-weight: 400; font-size: 13px; color: var(--color-ink-soft); margin-left: 4px; }
-  .pole input, .pole textarea { width: 100%; min-height: 46px; padding: 11px 14px; border: 1px solid rgb(10 42 94 / 0.18); border-radius: var(--radius-l); background: #f8fafd; font: inherit; font-size: 16px; color: var(--color-ink); transition: border-color 150ms var(--ease-soft), box-shadow 150ms var(--ease-soft), background-color 150ms var(--ease-soft); }
+  .pole input, .pole textarea { width: 100%; min-height: 46px; padding: 12px 16px; border: 1px solid rgb(10 42 94 / 0.18); border-radius: var(--radius-l); background: #f8fafd; font: inherit; font-size: 16px; color: var(--color-ink); transition: border-color 150ms var(--ease-soft), box-shadow 150ms var(--ease-soft), background-color 150ms var(--ease-soft); }
   .pole textarea { resize: vertical; min-height: 110px; }
   .pole input::placeholder, .pole textarea::placeholder { color: #8a93a2; }
   .pole input:focus, .pole textarea:focus { outline: none; background: #fff; border-color: var(--color-blue-700); box-shadow: 0 0 0 4px rgb(0 93 185 / 0.12); }
@@ -220,7 +220,7 @@ const polia = { meno: tx.meno, firma: tx.firma, email: tx.email, telefon: tx.tel
   .volby { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
   .volba { position: relative; }
   .volba input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
-  .volba span { display: inline-flex; align-items: center; height: 38px; padding: 0 14px; border-radius: var(--radius-m); border: 1px solid rgb(10 42 94 / 0.18); background: #f8fafd; font-size: 15px; font-weight: 500; transition: background-color 150ms var(--ease-soft), border-color 150ms var(--ease-soft), color 150ms var(--ease-soft); }
+  .volba span { display: inline-flex; align-items: center; height: 38px; padding: 0 16px; border-radius: var(--radius-m); border: 1px solid rgb(10 42 94 / 0.18); background: #f8fafd; font-size: 15px; font-weight: 500; transition: background-color 150ms var(--ease-soft), border-color 150ms var(--ease-soft), color 150ms var(--ease-soft); }
   .volba input:checked + span { background: var(--color-blue-900); border-color: var(--color-blue-900); color: #fff; }
   .volba input:focus-visible + span { box-shadow: 0 0 0 4px rgb(0 93 185 / 0.2); }
   .formular .btn { align-self: flex-start; margin-top: 4px; }
@@ -228,7 +228,7 @@ const polia = { meno: tx.meno, firma: tx.firma, email: tx.email, telefon: tx.tel
   .formular-pozn { font-size: 14px; color: var(--color-ink-soft); }
   @media (max-width: 900px) { .pre { grid-template-columns: minmax(0, 1fr); } .pre-velka { margin-inline: calc(-1 * var(--gutter)); } .pre-velka :global(img) { border-radius: 0; aspect-ratio: 16 / 10; } }
   @media (max-width: 900px) { .dopyt, .dokaz { grid-template-columns: minmax(0, 1fr); } .dokaz :global(.dokaz-scena) { margin-inline: calc(-1 * var(--gutter)); } .dokaz :global(.dokaz-scena .scena-img) { border-radius: 0; } }
-  @media (max-width: 760px) { .riadok { grid-template-columns: minmax(0, 1fr); } .formular { padding: 22px 18px; } }
+  @media (max-width: 760px) { .riadok { grid-template-columns: minmax(0, 1fr); } .formular { padding: 24px 16px; } }
 </style>
 
 <script>

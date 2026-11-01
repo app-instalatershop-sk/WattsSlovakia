@@ -100,17 +100,17 @@ for (const g of data) if (new Set(g.vs.map((x) => x.l2)).size < g.vs.length) g.v
 )}
 
 <style>
-  .volba-riadok { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+  .volba-riadok { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
   .volba-meno { font-size: 14px; color: var(--color-ink-soft); }
   /* Segmentový prepínač: biela koľajnica, tmavomodrý jazdec sa pružne presúva pod vybranú hodnotu.
      Tlačidlá druhej úrovne pridáva skript, preto štýly tlačidiel cez :global (bez značky komponentu). */
   .volba-seg { position: relative; display: flex; gap: 2px; max-width: 100%; padding: 4px; border-radius: var(--radius-l); overflow-x: auto; scrollbar-width: none;
-    background: rgb(255 255 255 / 0.86); box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.1), var(--elev-1); }
+    background: var(--sklo-2); box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.1), var(--elev-1); }
   .volba-seg::-webkit-scrollbar { display: none; }
   /* Na počítači sa lišta v úzkom stĺpci (hlava s renderom 3D modelu) zalomí, nie posúva: posúvanie bez
      posuvníka by myš neobjavila. Jazdec ide aj na druhý riadok. Telefón ostáva posúvateľný riadok. */
   @media (min-width: 761px) { .volba-seg { flex-wrap: wrap; overflow: visible; } }
-  .volba-seg :global(button) { position: relative; z-index: 1; flex: none; min-width: 44px; height: 40px; padding: 0 13px; border: 0; border-radius: var(--radius-m); background: transparent;
+  .volba-seg :global(button) { position: relative; z-index: 1; flex: none; min-width: 44px; height: 40px; padding: 0 12px; border: 0; border-radius: var(--radius-m); background: transparent;
     font: 600 15px/1 var(--font-display); font-stretch: 112.5%; font-variant-numeric: tabular-nums; color: var(--color-ink); cursor: pointer; white-space: nowrap;
     transition: color 200ms var(--ease-soft); }
   .volba-seg :global(button[data-k=""]) { font: 500 15px/1 var(--font-text); }
@@ -126,10 +126,10 @@ for (const g of data) if (new Set(g.vs.map((x) => x.l2)).size < g.vs.length) g.v
   .volba-vysledok { display: flex; align-items: center; min-height: 52px; margin-top: 8px; }
   .volba-hint { font-size: 14px; color: var(--color-ink-soft); }
   .volba-detail { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; }
-  .volba-seg-2 { padding: 3px; border-radius: var(--radius-l); }
+  .volba-seg-2 { padding: 4px; border-radius: var(--radius-l); }
   .volba-seg-2 :global(button) { height: 34px; padding: 0 12px; border-radius: var(--radius-m); font: 500 14px/1 var(--font-text); }
   .volba-seg-2 .volba-jazdec { height: 34px; border-radius: var(--radius-m); }
-  .volba-obj { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--color-ink-soft); }
+  .volba-obj { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: var(--color-ink-soft); }
   .volba-obj strong { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 16px; letter-spacing: 0.01em; color: var(--color-blue-900); }
   .volba-obj :global(.kopia) { opacity: 1; }
   .volba-fakty { font-size: 14px; color: var(--color-ink-soft); }

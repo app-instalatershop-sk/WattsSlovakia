@@ -152,6 +152,15 @@ nadpisy plynulo cez `clamp()`. Polovičné veľkosti (14,5 px a pod.) sa nepouž
 - Žiadne malé nadpisy nad nadpismi (tzv. eyebrow), žiadne zvýraznenie jedného slova v nadpise
   inou farbou.
 - Písma hostujeme sami (Fontsource), s `font-display: swap` a predom načítaným rezom pre hero.
+- **Sadzba na celom webe** (polish 1. 11. 2026, STN 01 6910): nezlomiteľná medzera za jednopísmenovou predložkou
+  a spojkou, pred jednotkou (25 mm, 80 °C, 3,10 kg/m), za Ø a λ, okolo × a v „s. 36“ a dátume. Pravidlá sú v
+  `web/src/lib/sadzba.ts`; po builde ich `web/integrations/sadzba.mjs` použije na celý text každej stránky (mimo
+  skriptov, štýlov, kódu, SVG a atribútov), nielen na texty, ktoré `sadzba()` volajú.
+- **Záložné písmo s rovnakými rozmermi** (`Plex nahrada`, `Archivo nahrada` v `global.css`; prepočet
+  `data/pisma_zalozne.py`): Arial so `size-adjust` a výškou riadku Plex a Archiva, takže text sa po načítaní
+  webového písma nepreskladá (Hľadanie malo kvôli tomu posun CLS 0,16).
+- Plynulo (`clamp`) sa menia len nadpisy, štítky kót a čísla faktov v hlave; ich krajné hodnoty sú zo škály
+  (štítok najmenej 12 px, fakt najviac 22 px). Riadok súvislého textu najviac 70 znakov (`max-width: 36em`).
 
 ---
 
@@ -171,6 +180,13 @@ nadpisy plynulo cez `clamp()`. Polovičné veľkosti (14,5 px a pod.) sa nepouž
   sa nepridáva; `data/kontrola_webu.py` ju nahlási.
 - **Linky** 1 px `--grey-300`; hrubšia linka 2 px `--blue-700` len pod aktívnou položkou
   podnavigácie.
+- **Medzery na mriežke 4 px** (polish 1. 11. 2026; Material 4 a 8 dp): margin, padding a gap len v násobkoch 4 px,
+  pri voľbe medzi dvoma prednosť násobku 8. Výnimky: 1 a 2 px (optické doladenie), záporné okraje (geometria
+  prekrytí), plynulé hodnoty v `clamp()` a `calc()` a vyrovnanie výšky hlavičky (76 − 62 px). Predtým 59 hodnôt,
+  násobky 4 px len 46 % výskytov. `data/kontrola_webu.py` hodnotu mimo mriežky nahlási.
+- **Sklo:** biele polopriesvitné plochy len v troch úrovniach: `--sklo-1` 0,7 (ľahká plocha na svetlom poli),
+  `--sklo-2` 0,86 (koľajnica prepínača, hlavička), `--sklo-3` 0,94 (štítok kóty, plocha, cez ktorú sa číta).
+  Predtým 12 hodnôt od 0,6 do 0,96; deliaca čiara a efekt prejdenia na tmavom (0,3 a 0,1) ostávajú.
 
 ### Piktogramy radov = rendery výrobcu
 
@@ -657,6 +673,15 @@ drobčeky, prázdny stav, pätička.
 Každý komponent má stav: predvolený, prejdenie myšou, fokus (obrys 2 px `--blue-700` s odsadením
 2 px), aktívny, vypnutý, načítava sa, prázdny, chyba.
 
+**Voľba jednej možnosti** (čipy vo filtri tabuľky variantov a vo Výbere, výber priemeru v hlave radu) má jeden
+vzhľad od 1. 11. 2026: biela koľajnica (`--sklo-2`, obrys a `--elev-1`), segmenty vysoké 40 px s `--radius-m`,
+zvolený segment v tmavomodrom prechode s bielym textom; čísla písmom nadpisov (`chip-cislo`). Prejdenie myšou
+mení len farbu textu a len pri myši.
+
+**Dotyková plocha aspoň 44 × 44 px** (Apple 44 pt, Material 48 dp, WCAG 2.5.8): malé ovládacie prvky majú na
+dotykovej obrazovke neviditeľný presah (`::after`, zoznam v `global.css`, vrstva components). Prvok v zozname nesmie
+mať vlastný `::after`.
+
 ---
 
 ## 12. Odporúčané knižnice a nástroje
@@ -703,6 +728,9 @@ kód. Makety vieme robiť ako artefakty v Claude, takže ich Juraj otvorí v pre
   BreadcrumbList, Organization, FAQPage; sitemap; kanonické adresy; alt texty. Podrobný plán
   kľúčových slov a adres bude v samostatnom SEO dokumente.
 - Tmavý režim: v 1. fáze nie (prezentačný web postavený na fotkách na bielej). ❔
+- **Kontrolný zoznam polishu** `docs/POLISH.md` (37 pravidiel so zdrojmi) a automatický audit
+  `data/polish-audit.mjs` (axe, sadzba, dotykové ciele, ostrosť, súpis štýlov na všetkých stránkach SK aj CS);
+  po každej väčšej zmene ho pustiť a súhrn `data/polish_suhrn.py` porovnať s posledným behom.
 
 ---
 

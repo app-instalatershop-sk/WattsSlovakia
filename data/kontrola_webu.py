@@ -80,7 +80,8 @@ for s in css:
                 len_predpona.add(f'-webkit-{v} v {{{blok[:90]}}}')
 print(f'vlastnosti len s predponou -webkit-: {len(len_predpona)}', *[f'\n  {x}' for x in sorted(len_predpona)[:8]])
 
-# Stráž tokenov v zdrojoch: hodnoty mimo zaoblení, úrovní hĺbky a škály písma (global.css, DOLADENIE A1).
+# Stráž tokenov v zdrojoch: hodnoty mimo zaoblení, úrovní hĺbky a škály písma (global.css, DOLADENIE A1), od polishu
+# 1. 11. 2026 aj medzery mimo mriežky 4 px a biele polopriesvitné plochy mimo var(--sklo-*) (docs/POLISH.md M1, F2).
 SRC = os.path.join(os.path.dirname(D), 'src')
 SKALA_PISMA = {12, 13, 14, 15, 16, 17, 18, 20, 22, 24, 28}
 NAVY = re.compile(r'rgb\((?:10 42 94|11 27 51|2 10 30|4 16 40) / [0-9.]+\)')
@@ -103,5 +104,15 @@ for koren, _, subory in os.walk(SRC):
             for v in re.findall(r'(?<![-\w])font-size:\s*(\d+(?:\.\d+)?)px', riadok) + re.findall(r'(?<![-\w])font:\s*(?:\d{3}\s+)?(\d+(?:\.\d+)?)px', riadok):
                 if float(v) not in SKALA_PISMA:
                     mimo['písmo mimo škály'].append(f'{rel}:{i} {v}px')
-for k in ('zaoblenie mimo var(--radius-*)', 'tieň mimo var(--elev-*)', 'písmo mimo škály'):
+            # medzery: px v margin*, padding*, gap mimo násobkov 4 (bez 0 až 2 px, záporných, funkcií a vyrovnania hlavičky)
+            for vl, h in re.findall(r'(?<![-\w])((?:margin|padding)(?:-[a-z-]+)?|gap|row-gap|column-gap):\s*([^;}"\n]+)', riadok):
+                if '(' in h or 'is-scrolled' in riadok:
+                    continue
+                for v in re.findall(r'(?<![\w.-])(\d+(?:\.\d+)?)px', h):
+                    if float(v) > 2 and float(v) % 4:
+                        mimo['medzera mimo mriežky 4 px'].append(f'{rel}:{i} {vl}: {h.strip()}')
+            for a in re.findall(r'(?<![-\w])background(?:-color)?:\s*rgba?\(\s*255[\s,]+255[\s,]+255\s*[/,]\s*(0?\.\d+)\s*\)\s*[;}]', riadok):
+                if float(a) > 0.5:
+                    mimo['biela plocha mimo var(--sklo-*)'].append(f'{rel}:{i} {a}')
+for k in ('zaoblenie mimo var(--radius-*)', 'tieň mimo var(--elev-*)', 'písmo mimo škály', 'medzera mimo mriežky 4 px', 'biela plocha mimo var(--sklo-*)'):
     print(f'{k}: {len(mimo[k])}', *[f'\n  {x}' for x in mimo[k][:8]])

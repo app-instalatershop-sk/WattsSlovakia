@@ -72,13 +72,13 @@ const posledna = `${data.cesta}${sirka}/${String(data.snimok - 1).padStart(3, '0
   .rz-sticky { position: sticky; top: var(--rz-top, 72px); height: calc(100vh - var(--rz-top, 72px)); display: flex; padding-block: var(--rz-pad); overflow: clip; }
   .rz-grid { width: 100%; margin-block: auto; display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 24px 48px; align-items: center; }
   .rz-text h2 { font-size: clamp(28px, 2.2vw + 14px, 42px); letter-spacing: -0.02em; }
-  .rz-text .lead { margin-top: 14px; }
-  .rz-vrstvy { margin-top: 28px; display: grid; gap: 18px; }
+  .rz-text .lead { margin-top: 16px; }
+  .rz-vrstvy { margin-top: 28px; display: grid; gap: 16px; }
   /* Vrstva sa rozsvieti, keď sa na obraze oddelí; dovtedy je tichá. */
-  .rz-vrstvy li { padding-left: 18px; border-left: 3px solid rgb(10 42 94 / 0.12); transition: border-color 300ms var(--ease-soft), opacity 300ms var(--ease-soft); }
+  .rz-vrstvy li { padding-left: 16px; border-left: 3px solid rgb(10 42 94 / 0.12); transition: border-color 300ms var(--ease-soft), opacity 300ms var(--ease-soft); }
   .rz-vrstvy h3 { font-size: 18px; }
   .rz-kluc { margin-top: 2px; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 15px; color: var(--color-blue-900); }
-  .rz-popis { margin-top: 6px; font-size: 15px; line-height: 1.55; color: var(--color-ink-soft); max-width: 30em; }
+  .rz-popis { margin-top: 8px; font-size: 15px; line-height: 1.55; color: var(--color-ink-soft); max-width: 30em; }
   /* Malá lupa s makrom materiálu vrstvy: prstenec vo farbe vrstvy, sklo s odleskom. */
   .rz-vrstvy li.ma-lupu { display: grid; grid-template-columns: 56px minmax(0, 1fr); column-gap: 16px; align-items: start; }
   .rz-vrstvy li.ma-lupu > :not(.rz-lupa) { grid-column: 2; }
@@ -104,7 +104,7 @@ const posledna = `${data.cesta}${sirka}/${String(data.snimok - 1).padStart(3, '0
      cez transform (--xn, --yn v percentách obrazu, 1cqw = 1 % šírky rámika): plynulo aj o zlomky pixela a bez
      nového rozloženia stránky pri každom snímku. Štítok bez rozmazania pozadia, pod ním sa každý snímok mení obraz. */
   .rozklad.rz-js .rz-stage :global(.kota) { left: 0; top: 0; transform: translate3d(calc(var(--xn, 0) * 1cqw), calc(var(--yn, 0) * 1cqw / var(--pomer)), 0); will-change: transform; opacity: 0; transition: opacity 260ms var(--ease-soft); }
-  .rozklad.rz-js .rz-stage :global(.stitok) { -webkit-backdrop-filter: none; backdrop-filter: none; background: rgb(255 255 255 / 0.94); }
+  .rozklad.rz-js .rz-stage :global(.stitok) { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--sklo-3); }
   .rozklad.rz-js .rz-stage :global(.kota.rz-vid) { opacity: 1; }
   .rozklad.rz-js .rz-stage :global(.kota.rz-vid .bod) { opacity: 1; animation: rz-bod 420ms var(--ease-soft) both; }
   .rozklad.rz-js .rz-stage :global(.kota.rz-vid .ciara) { opacity: 1; animation: rz-ciara 520ms 120ms var(--ease-soft) both; }
@@ -116,10 +116,10 @@ const posledna = `${data.cesta}${sirka}/${String(data.snimok - 1).padStart(3, '0
   /* Nízke okno (skript pridá rz-tesne): popis len pri vrstve, ktorá sa práve oddelila, ostatné ukážu názov
      a číslo; rz-tesnejsie skryje aj úvodný odsek. Zoznam drží výšku s najdlhším popisom, stĺpec sa nehýbe. */
   @media (min-width: 901px) {
-    .rozklad.rz-tesne .rz-vrstvy { gap: 14px; }
+    .rozklad.rz-tesne .rz-vrstvy { gap: 16px; }
     .rozklad.rz-tesne .rz-popis-obal { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 420ms var(--ease-soft), opacity 220ms var(--ease-soft); }
     .rozklad.rz-tesne li.is-aktivna .rz-popis-obal { grid-template-rows: 1fr; opacity: 1; transition-delay: 0ms, 140ms; }
-    .rozklad.rz-tesne .rz-popis { min-height: 0; overflow: hidden; margin-top: 0; padding-top: 6px; }
+    .rozklad.rz-tesne .rz-popis { min-height: 0; overflow: hidden; margin-top: 0; padding-top: 8px; }
     .rozklad.rz-tesnejsie .rz-text .lead { display: none; }
     .rozklad.rz-meria .rz-popis-obal { transition: none; }
   }

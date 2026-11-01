@@ -11,7 +11,7 @@ export function sadzba(text: string): string {
     // „a uzavretými“, „s dvojitou“, „v jednom“ – aj za sebou („a v“), preto lookbehind.
     .replace(/(?<=^|[\s(„])([aikosuvzAIKOSUVZ]) /g, `$1${NBSP}`)
     // „95 °C“, „16 bar“, „1 %“, „0,5 až 6 m“, „60 t“, „3,10 kg/m“, „255 m²“, „λ 0,0372 W/m·K“
-    .replace(/(\d) (°C|bar|%|mm|cm|km|m²|m³|m|t|kg\/m|kg|kW|W\/m·K|W|K|min|ks)(?=[\s.,;:)/]|$)/g, `$1${NBSP}$2`)
+    .replace(/(\d) (°C|bar|%|mm|cm|km|m²|m³|m|t|kg\/m|kg|kW|W\/m·K|W|K|min|h|ks)(?=[\s.,;:)/?!]|$)/g, `$1${NBSP}$2`)
     // „EN ISO 15875“, „DIN 4726“, „PE 100“, „SDR 11“
     .replace(/\b(EN|ISO|DIN|PE|SDR) (?=\d|ISO)/g, `$1${NBSP}`)
     // „Ø 125“, „λ 0,0372“, „2 × 25“

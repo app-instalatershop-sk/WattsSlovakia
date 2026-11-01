@@ -48,8 +48,8 @@ const polomer = data.polomer_m.toFixed(2).replace('.', ',');
   .oh-sticky { position: sticky; top: var(--oh-top); height: calc(100vh - var(--oh-top)); display: flex; padding-block: var(--oh-pad); overflow: clip; }
   .oh-grid { width: 100%; margin-block: auto; display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 24px 48px; align-items: center; }
   .oh-text h2 { font-size: clamp(28px, 2.2vw + 14px, 42px); letter-spacing: -0.02em; }
-  .oh-text .lead { margin-top: 14px; }
-  .oh-pozn { margin-top: 18px; padding-left: 18px; border-left: 3px solid var(--color-yellow-500); font-size: 15px; line-height: 1.55; color: var(--color-ink-soft); max-width: 30em; }
+  .oh-text .lead { margin-top: 16px; }
+  .oh-pozn { margin-top: 16px; padding-left: 16px; border-left: 3px solid var(--color-yellow-500); font-size: 15px; line-height: 1.55; color: var(--color-ink-soft); max-width: 30em; }
   /* Obraz nikdy vyšší ako okno: šírka z voľnej výšky a pomeru strán (samotná max-height by ho roztiahla do šírky). */
   .oh-stage { position: relative; width: min(100%, calc((100vh - var(--oh-top) - 2 * var(--oh-pad)) * var(--pomer))); margin-inline: auto; container-type: inline-size; }
   .oh-obr :global(img), .oh-canvas, .oh-polomer { position: absolute; inset: 0; width: 100%; height: 100%; }
@@ -61,8 +61,8 @@ const polomer = data.polomer_m.toFixed(2).replace('.', ',');
   .oh-polomer { overflow: visible; pointer-events: none; }
   .oh-polomer line { stroke: var(--color-blue-900); stroke-width: 2px; vector-effect: non-scaling-stroke; stroke-linecap: round; filter: drop-shadow(0 0 1.5px rgb(255 255 255 / 0.9)); }
   .oh-bod { position: absolute; left: var(--x); top: var(--y); width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%; background: #fff; box-shadow: inset 0 0 0 3px var(--color-blue-900), 0 0 0 4px rgb(255 255 255 / 0.5), 0 3px 10px rgb(4 16 40 / 0.4); }
-  .oh-stitok { position: absolute; left: var(--x); top: var(--y); transform: translate(14px, -50%); display: flex; flex-direction: column; gap: 3px; white-space: nowrap;
-    padding: clamp(6px, 0.9cqw, 11px) clamp(9px, 1.3cqw, 15px); border-radius: var(--radius-l); background: rgb(255 255 255 / 0.88);
+  .oh-stitok { position: absolute; left: var(--x); top: var(--y); transform: translate(14px, -50%); display: flex; flex-direction: column; gap: 4px; white-space: nowrap;
+    padding: clamp(6px, 0.9cqw, 11px) clamp(9px, 1.3cqw, 15px); border-radius: var(--radius-l); background: var(--sklo-2);
     -webkit-backdrop-filter: blur(10px) saturate(1.4); backdrop-filter: blur(10px) saturate(1.4); box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.08), var(--elev-2); }
   .oh-stitok strong { font-family: var(--font-display); font-stretch: 118%; font-weight: 600; font-size: clamp(16px, 3.1cqw, 30px); line-height: 1.02; letter-spacing: -0.02em; color: var(--color-blue-900); font-variant-numeric: tabular-nums; }
   .oh-stitok span { font-size: clamp(12px, 1.6cqw, 15px); line-height: 1.3; font-weight: 500; color: var(--color-ink-soft); }
@@ -71,7 +71,7 @@ const polomer = data.polomer_m.toFixed(2).replace('.', ',');
      plynulo a bez nového rozloženia pri každom snímku; štítok bez rozmazania pozadia, pod ním sa mení obraz. */
   .ohyb.oh-js .oh-bod, .ohyb.oh-js .oh-stitok { left: 0; top: 0; will-change: transform; }
   .ohyb.oh-js .oh-bod { transform: translate3d(calc(var(--xn, 0) * 1cqw), calc(var(--yn, 0) * 1cqw / var(--pomer)), 0); }
-  .ohyb.oh-js .oh-stitok { transform: translate3d(calc(var(--xn, 0) * 1cqw), calc(var(--yn, 0) * 1cqw / var(--pomer)), 0) translate(14px, -50%); -webkit-backdrop-filter: none; backdrop-filter: none; background: rgb(255 255 255 / 0.94); }
+  .ohyb.oh-js .oh-stitok { transform: translate3d(calc(var(--xn, 0) * 1cqw), calc(var(--yn, 0) * 1cqw / var(--pomer)), 0) translate(14px, -50%); -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--sklo-3); }
   .ohyb.oh-js.oh-kota .oh-polomer, .ohyb.oh-js.oh-kota .oh-bod, .ohyb.oh-js.oh-kota .oh-stitok { opacity: 1; }
 
   /* Tmavá scéna (domov, Juraj 28. 10. 2026): pozadie dáva stránka, tu je text na tmavom a za rúrou jemné modré

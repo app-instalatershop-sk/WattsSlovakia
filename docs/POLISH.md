@@ -154,6 +154,32 @@ ostane. V hustých tabuľkách sa plochy susedných tlačidiel nesmú prekryť.
 - Lighthouse (mobil, 16 šablón): prístupnosť a odporúčané postupy 100 všade; SEO 100 okrem Hľadania (69, zámerne
   `noindex`); výkon 90 až 94 okrem bodu 10; CLS 0 okrem bodu 9 (R1, P3).
 
+## Výsledky po opravách (1. 11. 2026, Juraj: „urob všetko“)
+
+Všetky body priorít 1 až 3 sú urobené (commity fd00522 a nasledujúci). Audit znova na 146 stránkach × 2 zariadenia.
+
+| Meranie | Pred | Po |
+|---|---|---|
+| axe, porušenia (WCAG 2.2 AA a odporúčané postupy) | 4 pravidlá na 146 stránkach | 0 |
+| Predložka alebo spojka na konci riadku | 2 052 | 0 |
+| Číslo oddelené od jednotky / Ø a × bez nezlomiteľnej medzery | 638 / 160 | 0 / 0 |
+| Riadky nad 75 znakov | 24 na 18 stránkach | 1 (76 znakov, CS Príslušenstvo) |
+| Dotykové ciele pod 44 px na telefóne | 6 583 | 376 |
+| Neostré obrázky na telefóne 2× | 26 stránok | 0 |
+| Medzery v násobkoch 4 px | 46 % výskytov | 92 % (zvyšok z em a plynulých hodnôt) |
+| Farby textu / biele polopriesvitné plochy | 9 / 12 hodnôt v zdrojoch | 7 / 3 úrovne skla |
+| Hľadanie: posun rozloženia CLS | 0,431 | 0,006 |
+| Lighthouse výkon na mobile (16 šablón) | 90 až 94; pod 90 Referencie 82, Poradňa 86, Pre firmy 88, Hľadanie 74 | 90 až 94; pod 90 len Referencie 87; CLS 0 všade okrem Hľadania (0,007) |
+| Revízia: chyby, odkazy, presah | 0 | 0 |
+
+Ako: sadzba po builde na celý text (`web/integrations/sadzba.mjs`), záložné písmo s rozmermi Plex a Archiva,
+záložné písmo aj pre úzky Archivo v nadpisoch na telefóne, neviditeľný dotykový presah, prepínače v jednom vzhľade, mriežka medzier a tri úrovne skla so strážou
+v `data/kontrola_webu.py`, fotka v hlave pre telefón (700 px, AVIF 50), fotky pod hlavou s nízkou prioritou.
+Pravidlá sú v `docs/DESIGN.md` (kap. 5, 6, 11 a 13).
+
+Neopravené: Referencie zostali na 87 (z 82) (fotka v hlave a 155 kB písiem, ktoré dizajn potrebuje); na 90 a viac by
+bolo treba ľahšiu úvodnú fotku, to je obsahové rozhodnutie. Odsek s 76 znakmi v českej verzii Príslušenstva nechávam.
+
 ### Ďalej
 
 - Ručne po opravách priority 1: stavy prvkov (O2), ovládanie klávesnicou (O3), lepiaca lišta a kotvy (O4), pohyb (P1, P2).

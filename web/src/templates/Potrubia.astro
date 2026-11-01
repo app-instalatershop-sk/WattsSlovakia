@@ -153,7 +153,7 @@ const produktySkupiny = (id: string) => produkty.filter((p) => p.skupina === id)
 </Base>
 
 <style>
-  .rodina-hint { margin-top: 10px; font-size: 14px; color: var(--color-ink-soft); }
+  .rodina-hint { margin-top: 8px; font-size: 14px; color: var(--color-ink-soft); }
   /* Systémy hadovito: render striedavo vľavo a vpravo, text na opačnej strane. */
   .systemy { display: flex; flex-direction: column; gap: 8px; }
   .sys { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 16px 64px; align-items: center; }
@@ -171,12 +171,12 @@ const produktySkupiny = (id: string) => produkty.filter((p) => p.skupina === id)
   .sys-text h3 { font-size: clamp(22px, 1vw + 16px, 28px); letter-spacing: -0.015em; }
   .sys-text h3 a { color: var(--color-ink); }
   .sys-text h3 a:hover { color: var(--color-blue-700); }
-  .sys-text > p { margin-top: 10px; color: var(--color-ink-soft); max-width: 36em; }
-  .sys-fakty { display: grid; grid-template-columns: repeat(4, minmax(0, auto)); justify-content: start; gap: 4px 28px; margin: 22px 0 0; }
+  .sys-text > p { margin-top: 8px; color: var(--color-ink-soft); max-width: 36em; }
+  .sys-fakty { display: grid; grid-template-columns: repeat(4, minmax(0, auto)); justify-content: start; gap: 4px 28px; margin: 24px 0 0; }
   .sys-fakty dt { font-size: 13px; color: var(--color-ink-soft); }
   .sys-fakty dd { margin: 2px 0 0; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 17px; letter-spacing: -0.01em; color: var(--color-blue-900); font-variant-numeric: tabular-nums; white-space: nowrap; }
-  .sys-rady { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 20px; }
-  .sys-rady a { display: inline-flex; align-items: center; height: 34px; padding: 0 14px; border-radius: 999px; background: rgb(255 255 255 / 0.8); box-shadow: inset 0 0 0 1px rgb(0 93 185 / 0.18); color: var(--color-blue-900); font-weight: 600; font-size: 14px; letter-spacing: .01em; transition: background-color 150ms var(--ease-soft), box-shadow 150ms var(--ease-soft); }
+  .sys-rady { display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0 20px; }
+  .sys-rady a { display: inline-flex; align-items: center; height: 34px; padding: 0 16px; border-radius: 999px; background: var(--sklo-2); box-shadow: inset 0 0 0 1px rgb(0 93 185 / 0.18); color: var(--color-blue-900); font-weight: 600; font-size: 14px; letter-spacing: .01em; transition: background-color 150ms var(--ease-soft), box-shadow 150ms var(--ease-soft); }
   @media (hover: hover) and (pointer: fine) { .sys-rady a:hover { background: #fff; box-shadow: inset 0 0 0 1px var(--color-blue-700); color: var(--color-blue-700); } }
 
   /* Tabuľka všetkých radov na bielom hárku; kategória je riadok nadpisu skupiny. */
@@ -184,7 +184,7 @@ const produktySkupiny = (id: string) => produkty.filter((p) => p.skupina === id)
   .prehlad { min-width: 820px; }
   .prehlad td, .prehlad th { white-space: nowrap; }
   .prehlad thead th { background: #fff; }
-  .prehlad .skupina th { padding-top: 22px; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 15px; color: var(--color-blue-700); background: #fff; position: static; border-bottom: 2px solid var(--color-blue-100); }
+  .prehlad .skupina th { padding-top: 24px; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 15px; color: var(--color-blue-700); background: #fff; position: static; border-bottom: 2px solid var(--color-blue-100); }
   .prehlad .skupina a { color: inherit; }
   .prehlad td.nazov a { font-weight: 600; color: var(--color-ink); }
   .prehlad td.nazov a:hover { color: var(--color-blue-700); }
@@ -198,8 +198,8 @@ const produktySkupiny = (id: string) => produkty.filter((p) => p.skupina === id)
   .diel h3 { font-size: 22px; }
   .diel h3 a { color: var(--color-ink); }
   .diel-text > p { margin-top: 8px; font-size: 15px; color: var(--color-ink-soft); }
-  .diel ul { margin-top: 14px; }
-  .diel li a { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-top: 1px solid rgb(10 42 94 / 0.1); font-size: 15px; font-weight: 500; }
+  .diel ul { margin-top: 16px; }
+  .diel li a { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-top: 1px solid rgb(10 42 94 / 0.1); font-size: 15px; font-weight: 500; }
   .diel .pocet { font-weight: 400; color: var(--color-ink-soft); white-space: nowrap; }
 
   @media (max-width: 1100px) { .diely { grid-template-columns: minmax(0, 1fr); } }
@@ -207,7 +207,7 @@ const produktySkupiny = (id: string) => produkty.filter((p) => p.skupina === id)
     .sys, .sys-vpravo { grid-template-columns: minmax(0, 1fr); }
     .sys-vpravo .sys-obraz { order: 0; }
     .sys-obraz :global(img) { max-width: 420px; }
-    .sys-fakty { grid-template-columns: repeat(2, minmax(0, auto)); gap: 10px 28px; }
+    .sys-fakty { grid-template-columns: repeat(2, minmax(0, auto)); gap: 8px 28px; }
   }
   @media (max-width: 560px) { .diel { grid-template-columns: minmax(0, 1fr); } .diel-obraz :global(img) { max-width: 260px; } }
 </style>

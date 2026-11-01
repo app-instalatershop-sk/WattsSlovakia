@@ -189,88 +189,88 @@ const obrazky = await Promise.all(systemy.map(async ({ k }) => { const p = obraz
 
   /* Krok 1: render systému prekračuje hornú hranu karty (zásada z 21. 9.: priehľadný render je predmet,
      nie obrázok v rámčeku); karta je podstavec s názvom. Predtým päť rovnakých kariet s malým renderom. */
-  .volby-k1 { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 40px 18px; padding-top: 34px; }
+  .volby-k1 { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 40px 16px; padding-top: 32px; }
   .volba-k, .volba-r { position: relative; border: 0; font: inherit; color: var(--color-ink); text-align: left; cursor: pointer; transition: transform 200ms var(--ease-soft), box-shadow 200ms var(--ease-soft); }
-  .volba-k { display: flex; flex-direction: column; gap: 4px; padding: 0 18px 20px; }
-  .volba-k img { width: calc(100% + 16px); max-width: none; height: auto; aspect-ratio: 9 / 7; margin: -40px -8px 6px; object-fit: contain; object-position: center bottom; transition: transform 300ms var(--ease-soft); }
+  .volba-k { display: flex; flex-direction: column; gap: 4px; padding: 0 16px 20px; }
+  .volba-k img { width: calc(100% + 16px); max-width: none; height: auto; aspect-ratio: 9 / 7; margin: -40px -8px 8px; object-fit: contain; object-position: center bottom; transition: transform 300ms var(--ease-soft); }
   @media (hover: hover) and (pointer: fine) { .volba-k:hover, .volba-r:hover { transform: translateY(-3px); } }
   @media (hover: hover) and (pointer: fine) { .volba-k:hover img { transform: translateY(-3px); } }
   .volba-k[aria-checked="true"], .volba-r[aria-checked="true"] { box-shadow: 0 0 0 3px var(--color-blue-700), var(--elev-3); }
   .volba-k[aria-checked="true"]::after, .volba-r[aria-checked="true"]::after { content: ""; position: absolute; top: 14px; right: 14px; width: 12px; height: 12px; border-radius: 50%; background: var(--color-yellow-500); box-shadow: 0 0 0 4px rgb(247 201 0 / 0.25); }
   .volba-nazov { font-weight: 700; font-size: 17px; font-family: var(--font-display); letter-spacing: -0.01em; }
   .volba-pod { font-size: 14px; color: var(--color-ink-soft); }
-  .volby-k2 { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
-  .volba-r { display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: 16px; align-items: center; padding: 14px 20px 14px 12px; }
+  .volby-k2 { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+  .volba-r { display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: 16px; align-items: center; padding: 16px 20px 16px 12px; }
   .volba-r :global(.volba-r-img) { width: 104px; height: 80px; object-fit: contain; }
   .volba-r-text { display: flex; flex-direction: column; gap: 2px; }
-  .volba-popis { margin-top: 6px; font-size: 14px; line-height: 1.45; color: var(--color-ink-soft); }
+  .volba-popis { margin-top: 8px; font-size: 14px; line-height: 1.45; color: var(--color-ink-soft); }
 
-  .k3 { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px 48px; padding: 28px 30px; align-items: start; }
-  .k3-kw label, .k3-l { display: block; font-weight: 600; margin-bottom: 10px; }
-  .kw-pole { display: flex; align-items: center; gap: 10px; max-width: 260px; margin-bottom: 14px; }
+  .k3 { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px 48px; padding: 28px 32px; align-items: start; }
+  .k3-kw label, .k3-l { display: block; font-weight: 600; margin-bottom: 8px; }
+  .kw-pole { display: flex; align-items: center; gap: 8px; max-width: 260px; margin-bottom: 16px; }
   .kw-pole input { width: 100%; height: 56px; padding: 0 16px; border: 1px solid rgb(10 42 94 / 0.18); border-radius: var(--radius-l); background: #f8fafd; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 24px; color: var(--color-blue-900); }
   .kw-pole input:focus { outline: none; background: #fff; border-color: var(--color-blue-700); box-shadow: 0 0 0 4px rgb(0 93 185 / 0.12); }
   .kw-pole span { font-family: var(--font-display); font-weight: 600; font-size: 20px; color: var(--color-ink-soft); }
-  .k3-alebo { margin-top: 18px; font-size: 14px; color: var(--color-ink-soft); }
+  .k3-alebo { margin-top: 16px; font-size: 14px; color: var(--color-ink-soft); }
   .k3-kw[hidden] + .k3-d { grid-column: 1 / -1; }
 
   .vysledok { margin-top: 28px; }
-  .vysledok :global(.vy-h) { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 10px 20px; margin-bottom: 16px; }
+  .vysledok :global(.vy-h) { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 20px; margin-bottom: 16px; }
   .vysledok :global(.vy-h h3) { font-size: 22px; }
-  .vysledok :global(.vy-karty) { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 18px; }
-  .vysledok :global(.vy-k) { position: relative; padding: 20px 22px 18px; display: flex; flex-direction: column; gap: 12px; }
+  .vysledok :global(.vy-karty) { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 16px; }
+  .vysledok :global(.vy-k) { position: relative; padding: 20px 24px 16px; display: flex; flex-direction: column; gap: 12px; }
   .vysledok :global(.vy-k.top) { box-shadow: 0 0 0 3px var(--color-yellow-500), var(--elev-3); }
-  .vysledok :global(.vy-stitok) { align-self: flex-start; padding: 4px 10px; border-radius: var(--radius-m); background: var(--color-yellow-500); font-size: 13px; font-weight: 700; color: var(--color-ink); }
+  .vysledok :global(.vy-stitok) { align-self: flex-start; padding: 4px 8px; border-radius: var(--radius-m); background: var(--color-yellow-500); font-size: 13px; font-weight: 700; color: var(--color-ink); }
   .vysledok :global(.vy-stitok.jemny) { background: var(--color-blue-50); color: var(--color-blue-900); }
-  .vysledok :global(.vy-kod) { display: flex; align-items: center; gap: 6px; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 700; font-size: 22px; color: var(--color-blue-900); }
+  .vysledok :global(.vy-kod) { display: flex; align-items: center; gap: 8px; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 700; font-size: 22px; color: var(--color-blue-900); }
   .vysledok :global(.vy-kod) { flex-wrap: wrap; }
   .vysledok :global(.vy-kod small) { flex-basis: 100%; font-family: var(--font-text); font-weight: 400; font-size: 14px; color: var(--color-ink-soft); margin-top: -2px; }
-  .vysledok :global(.vy-udaje) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 14px; margin: 0; }
+  .vysledok :global(.vy-udaje) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 16px; margin: 0; }
   .vysledok :global(.vy-udaje dt) { font-size: 13px; color: var(--color-ink-soft); }
   .vysledok :global(.vy-udaje dd) { margin: 1px 0 0; font-weight: 600; font-size: 15px; }
-  .vysledok :global(.vy-odkazy) { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: auto; padding-top: 10px; border-top: 1px solid rgb(10 42 94 / 0.08); font-size: 15px; font-weight: 500; }
-  .vysledok :global(.vy-odkazy a) { display: inline-flex; align-items: center; gap: 6px; }
+  .vysledok :global(.vy-odkazy) { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: auto; padding-top: 8px; border-top: 1px solid rgb(10 42 94 / 0.08); font-size: 15px; font-weight: 500; }
+  .vysledok :global(.vy-odkazy a) { display: inline-flex; align-items: center; gap: 8px; }
   .vysledok :global(.vy-zoznam) { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; border: 1px solid var(--color-blue-700); border-radius: var(--radius-m); background: #fff; font: inherit; font-size: 15px; font-weight: 600; color: var(--color-blue-700); cursor: pointer; transition: background-color 150ms var(--ease-soft); }
   .vysledok :global(.vy-zoznam:hover) { background: var(--color-blue-50); }
   .vysledok :global(.vy-pozn) { margin-top: 16px; font-size: 14px; color: var(--color-ink-soft); max-width: 60em; }
-  .vysledok :global(.vy-varovanie) { padding: 18px 22px; border-radius: var(--radius-l); background: #fff7df; color: #7a5200; font-weight: 500; margin-bottom: 16px; }
+  .vysledok :global(.vy-varovanie) { padding: 16px 24px; border-radius: var(--radius-l); background: #fff7df; color: #7a5200; font-weight: 500; margin-bottom: 16px; }
   .vysledok :global(.vy-akcie) { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; margin-top: 24px; }
   .vysledok :global(.vy-zdiel) { padding: 0; border: 0; background: none; font: inherit; font-weight: 500; color: var(--color-blue-700); cursor: pointer; border-bottom: 1px solid currentColor; }
-  .k4-p { margin: -8px 0 22px; color: var(--color-ink-soft); max-width: 48em; }
+  .k4-p { margin: -8px 0 24px; color: var(--color-ink-soft); max-width: 48em; }
   .k4 { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px; align-items: start; }
-  .k4-vstupy { padding: 24px 26px; display: flex; flex-direction: column; gap: 20px; }
+  .k4-vstupy { padding: 24px 24px; display: flex; flex-direction: column; gap: 20px; }
   .k4-pre { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 700; font-size: 20px; color: var(--color-blue-900); }
   .k4-pre :global(small) { display: block; font-family: var(--font-text); font-weight: 400; font-size: 14px; color: var(--color-ink-soft); }
   .k4-polia { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-  .k4-pole { display: flex; flex-direction: column; gap: 5px; }
+  .k4-pole { display: flex; flex-direction: column; gap: 4px; }
   .k4-l { font-weight: 600; font-size: 15px; }
   .k4-vstup { display: flex; align-items: center; gap: 8px; }
-  .k4-vstup input { width: 100%; height: 48px; padding: 0 14px; border: 1px solid rgb(10 42 94 / 0.18); border-radius: var(--radius-l); background: #f8fafd; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 20px; color: var(--color-blue-900); }
+  .k4-vstup input { width: 100%; height: 48px; padding: 0 16px; border: 1px solid rgb(10 42 94 / 0.18); border-radius: var(--radius-l); background: #f8fafd; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 20px; color: var(--color-blue-900); }
   .k4-vstup input:focus { outline: none; background: #fff; border-color: var(--color-blue-700); box-shadow: 0 0 0 4px rgb(0 93 185 / 0.12); }
   .k4-vstup span { color: var(--color-ink-soft); font-weight: 500; }
   .k4-pole small { font-size: 13px; color: var(--color-ink-soft); }
-  .k4-konce { border: 0; margin: 0; padding: 16px 0 0; border-top: 1px solid rgb(10 42 94 / 0.08); display: flex; flex-direction: column; gap: 10px; }
+  .k4-konce { border: 0; margin: 0; padding: 16px 0 0; border-top: 1px solid rgb(10 42 94 / 0.08); display: flex; flex-direction: column; gap: 8px; }
   .k4-konce legend { font-weight: 600; font-size: 15px; padding: 0; }
   .k4-konce p { font-size: 14px; color: var(--color-ink-soft); }
-  .k4-chk { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; align-items: start; font-size: 15px; cursor: pointer; }
+  .k4-chk { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 8px; align-items: start; font-size: 15px; cursor: pointer; }
   .k4-chk input { width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--color-blue-700); }
   .k4-kr { display: flex; flex-wrap: wrap; gap: 8px; padding-left: 32px; }
   .k4-kr .volba { position: relative; }
   .k4-kr .volba input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
   .k4-kr .volba span { display: inline-flex; align-items: center; height: 34px; padding: 0 12px; border-radius: var(--radius-m); border: 1px solid rgb(10 42 94 / 0.18); background: #f8fafd; font-size: 14px; font-weight: 500; }
   .k4-kr .volba input:checked + span { background: var(--color-blue-900); border-color: var(--color-blue-900); color: #fff; }
-  .k4-paska { padding-top: 14px; border-top: 1px solid rgb(10 42 94 / 0.08); }
-  .k4-zoznam { padding: 22px 24px; }
+  .k4-paska { padding-top: 16px; border-top: 1px solid rgb(10 42 94 / 0.08); }
+  .k4-zoznam { padding: 24px 24px; }
   .k4-zoznam :global(.k4-h) { font-family: var(--font-display); font-weight: 700; font-size: 20px; margin-bottom: 4px; }
-  .k4-zoznam :global(.k4-trasa) { font-size: 14px; color: var(--color-ink-soft); margin-bottom: 14px; }
+  .k4-zoznam :global(.k4-trasa) { font-size: 14px; color: var(--color-ink-soft); margin-bottom: 16px; }
   .k4-zoznam :global(table) { width: 100%; border-collapse: collapse; font-size: 15px; }
-  .k4-zoznam :global(th) { text-align: left; font-size: 13px; font-weight: 500; color: var(--color-ink-soft); padding: 8px 10px; border-bottom: 1px solid rgb(10 42 94 / 0.12); }
-  .k4-zoznam :global(td) { padding: 11px 10px; border-bottom: 1px solid rgb(10 42 94 / 0.08); vertical-align: top; }
+  .k4-zoznam :global(th) { text-align: left; font-size: 13px; font-weight: 500; color: var(--color-ink-soft); padding: 8px 8px; border-bottom: 1px solid rgb(10 42 94 / 0.12); }
+  .k4-zoznam :global(td) { padding: 12px 8px; border-bottom: 1px solid rgb(10 42 94 / 0.08); vertical-align: top; }
   .k4-zoznam :global(td.k4-mn) { text-align: right; white-space: nowrap; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 700; font-size: 17px; color: var(--color-blue-900); }
   .k4-zoznam :global(.k4-kod) { display: inline-flex; align-items: center; gap: 4px; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; color: var(--color-blue-900); white-space: nowrap; }
   .k4-zoznam :global(.k4-pozn) { display: block; font-size: 13px; color: var(--color-ink-soft); margin-top: 2px; }
   .k4-zoznam :global(.k4-pozn.over) { color: #8a5a00; }
-  .k4-zoznam :global(.k4-akcie) { display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: center; margin-top: 18px; }
+  .k4-zoznam :global(.k4-akcie) { display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center; margin-top: 16px; }
   .k4-zoznam :global(.k4-akcie button) { padding: 0; border: 0; background: none; font: inherit; font-weight: 500; color: var(--color-blue-700); cursor: pointer; border-bottom: 1px solid currentColor; }
   .k4-zoznam :global(.k4-prazdny) { color: var(--color-ink-soft); }
   @media print {
@@ -281,7 +281,7 @@ const obrazky = await Promise.all(systemy.map(async ({ k }) => { const p = obraz
   }
   @media (max-width: 1000px) { .k4 { grid-template-columns: minmax(0, 1fr); } }
   @media (max-width: 760px) {
-    .k4-vstupy, .k4-zoznam { padding: 20px 18px; }
+    .k4-vstupy, .k4-zoznam { padding: 20px 16px; }
     .k4-zoznam :global(table), .k4-zoznam :global(tbody), .k4-zoznam :global(td) { display: block; }
     .k4-zoznam :global(thead) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
     .k4-zoznam :global(tr) { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; padding: 12px 0; border-bottom: 1px solid rgb(10 42 94 / 0.08); }
@@ -290,7 +290,7 @@ const obrazky = await Promise.all(systemy.map(async ({ k }) => { const p = obraz
   }
   @media (max-width: 1100px) { .volby-k1 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
   @media (max-width: 900px) { .k3 { grid-template-columns: minmax(0, 1fr); } }
-  @media (max-width: 760px) { .volby-k1 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 44px 12px; padding-top: 28px; } .volba-k { padding: 0 14px 16px; } .volba-k img { margin-top: -30px; } .k3 { padding: 22px 18px; } }
+  @media (max-width: 760px) { .volby-k1 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 44px 12px; padding-top: 28px; } .volba-k { padding: 0 16px 16px; } .volba-k img { margin-top: -30px; } .k3 { padding: 24px 16px; } }
 </style>
 
 <script>

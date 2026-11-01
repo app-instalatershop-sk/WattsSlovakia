@@ -149,11 +149,11 @@ const dielSkupiny = (r: Rad) => fotkaProduktu(TYPICKY[r.id] ?? '') ?? r.produkty
   .t-list { grid-column: 2; grid-row: 2; position: relative; z-index: 2; border-top: var(--line); }
   .t-panely { grid-column: 1 / -1; grid-row: 1 / -1; display: grid; grid-template-columns: subgrid; grid-template-rows: subgrid; }
   .t-panel { grid-column: 1 / -1; grid-row: 1 / -1; display: none; grid-template-columns: subgrid; grid-template-rows: subgrid; }
-  .vsetko { grid-column: 2; grid-row: 4; align-self: end; justify-self: start; position: relative; z-index: 2; display: inline-flex; align-items: center; gap: 6px; font-weight: 500; border-bottom: 1px solid currentColor; padding-bottom: 2px; }
+  .vsetko { grid-column: 2; grid-row: 4; align-self: end; justify-self: start; position: relative; z-index: 2; display: inline-flex; align-items: center; gap: 8px; font-weight: 500; border-bottom: 1px solid currentColor; padding-bottom: 2px; }
   .vsetko :global(svg) { width: 16px; height: 16px; }
 
   /* Register: riadok = kategória a počet radov. Vybraná má žltú značku, farbu jadra rúry. */
-  .t-lbl { position: relative; display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 15px 0 15px 20px; border-bottom: var(--line); cursor: pointer; color: var(--color-ink-soft); transition: color 150ms var(--ease-soft); }
+  .t-lbl { position: relative; display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 16px 0 16px 20px; border-bottom: var(--line); cursor: pointer; color: var(--color-ink-soft); transition: color 150ms var(--ease-soft); }
   .t-lbl::before { content: ""; position: absolute; left: 0; top: 50%; width: 4px; height: 0; border-radius: 2px; background: var(--color-yellow-500); transform: translateY(-50%); transition: height 250ms var(--ease-soft); }
   .t-lbl input { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; }
   .t-nazov { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 500; font-size: 20px; line-height: 1.25; letter-spacing: -0.01em; }
@@ -198,14 +198,14 @@ const dielSkupiny = (r: Rad) => fotkaProduktu(TYPICKY[r.id] ?? '') ?? r.produkty
   .rad-obj.je3d::after { display: none; }
   .rad-obj.je3d :global(.rad-img) { -webkit-mask-image: none; mask-image: none; }
   @media (hover: hover) and (pointer: fine) { .rad:has(a:hover) .rad-obj { transform: translateY(-6px); } }
-  .rad-txt { display: flex; flex-direction: column; align-self: start; padding-top: 22px; border-top: 1px solid rgb(10 42 94 / 0.14); margin-top: 18px; }
+  .rad-txt { display: flex; flex-direction: column; align-self: start; padding-top: 24px; border-top: 1px solid rgb(10 42 94 / 0.14); margin-top: 16px; }
   .rad-hlavny { display: flex; flex-direction: column; gap: 2px; color: var(--color-ink); }
   .rad-hlavny strong { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 22px; line-height: 1.2; letter-spacing: -0.01em; color: var(--color-ink); transition: color 150ms var(--ease-soft); }
   .rad-hlavny:hover strong, .rad:has(.rad-obj:hover) .rad-hlavny strong { color: var(--color-blue-700); }
   .rad-rury { font-size: 15px; color: var(--color-ink-soft); }
   .rad-data { font-size: 14px; color: #7a8494; font-variant-numeric: tabular-nums; }
   /* Vyhotovenie so spoločným renderom: vlastný riadok s názvom a tým, čím sa líši. */
-  .rad-vyh { display: flex; flex-direction: column; gap: 1px; margin-top: 14px; padding-top: 12px; border-top: 1px solid rgb(10 42 94 / 0.1); color: var(--color-ink); }
+  .rad-vyh { display: flex; flex-direction: column; gap: 1px; margin-top: 16px; padding-top: 12px; border-top: 1px solid rgb(10 42 94 / 0.1); color: var(--color-ink); }
   .rad-vyh strong { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 17px; line-height: 1.25; letter-spacing: -0.005em; transition: color 150ms var(--ease-soft); }
   .rad-vyh span { font-size: 14px; color: var(--color-ink-soft); }
   .rad-vyh:hover strong { color: var(--color-blue-700); }
@@ -216,11 +216,11 @@ const dielSkupiny = (r: Rad) => fotkaProduktu(TYPICKY[r.id] ?? '') ?? r.produkty
 
   .diely { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px 28px; margin-top: 56px; padding-top: 28px; border-top: var(--line); }
   .diely h3 { font-family: var(--font-text); font-stretch: 100%; font-size: 16px; font-weight: 600; letter-spacing: 0; }
-  .diely ul { display: flex; flex-wrap: wrap; gap: 6px 26px; }
+  .diely ul { display: flex; flex-wrap: wrap; gap: 8px 24px; }
   .diely .diely-vstup { display: none; }
   .diely li a { display: inline-flex; align-items: center; gap: 4px; font-size: 15px; font-weight: 500; }
   /* Výrez dielu stojí pri názve skupiny s tieňom dopadu, ako diely na podlahe štúdia. */
-  .diel-obr { position: relative; flex: none; display: grid; place-items: center; width: 48px; height: 48px; margin-right: 6px; }
+  .diel-obr { position: relative; flex: none; display: grid; place-items: center; width: 48px; height: 48px; margin-right: 8px; }
   .diel-obr::before { content: ""; position: absolute; left: 10%; right: 10%; bottom: 2px; height: 8px; border-radius: 50%; background: radial-gradient(closest-side, rgb(10 42 94 / 0.22), rgb(10 42 94 / 0)); }
   .diel-obr :global(img) { position: relative; width: 48px; height: 48px; object-fit: contain; transition: transform 300ms var(--ease-soft); }
   @media (hover: hover) and (pointer: fine) { .diely li a:hover .diel-obr :global(img) { transform: translateY(-3px); } }
@@ -234,7 +234,7 @@ const dielSkupiny = (r: Rad) => fotkaProduktu(TYPICKY[r.id] ?? '') ?? r.produkty
     .kat-hlava { grid-column: 1; grid-row: 1; }
     .t-list { grid-column: 1; grid-row: 2; display: flex; gap: 4px; border-top: 0; border-bottom: var(--line); overflow-x: auto; scrollbar-width: none; margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); }
     .t-list::-webkit-scrollbar { display: none; }
-    .t-lbl { flex: none; padding: 12px 16px 14px; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+    .t-lbl { flex: none; padding: 12px 16px 16px; border-bottom: 2px solid transparent; margin-bottom: -1px; }
     .t-lbl:first-child { padding-left: 0; }
     .t-lbl::before { display: none; }
     .t-lbl:has(input:checked) { border-bottom-color: var(--color-yellow-500); }
@@ -256,7 +256,7 @@ const dielSkupiny = (r: Rad) => fotkaProduktu(TYPICKY[r.id] ?? '') ?? r.produkty
     .studio[data-pocet="1"] { grid-auto-columns: 100%; }
     /* Systémy ako zalomené voľby: jediný vodorovný posuvný pás na telefóne sú rady pod nimi (Juraj 28. 10.). */
     .t-list { flex-wrap: wrap; gap: 8px; overflow: visible; margin-inline: 0; padding-inline: 0; border-bottom: 0; }
-    .t-lbl, .t-lbl:first-child { align-items: center; min-height: 44px; padding: 0 16px; margin: 0; border: 0; border-radius: var(--radius-l); background: rgb(255 255 255 / 0.72); box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.12); }
+    .t-lbl, .t-lbl:first-child { align-items: center; min-height: 44px; padding: 0 16px; margin: 0; border: 0; border-radius: var(--radius-l); background: var(--sklo-1); box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.12); }
     .t-lbl:has(input:checked) { background: var(--color-blue-900); color: #fff; box-shadow: var(--elev-1); }
     .t-lbl:has(input:checked) .t-nazov { font-weight: 600; }
     .t-nazov { font-size: 16px; }
@@ -266,7 +266,7 @@ const dielSkupiny = (r: Rad) => fotkaProduktu(TYPICKY[r.id] ?? '') ?? r.produkty
     .diely h3 { width: 100%; }
     .diely .diely-skupiny { display: none; }
     .diely .diely-vstup { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; width: 100%; }
-    .diely-vstup a { display: flex; align-items: center; gap: 6px; min-width: 0; min-height: 60px; padding: 6px 14px 6px 8px; border-radius: var(--radius-l); background: rgb(255 255 255 / 0.72); box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.12); font-size: 16px; font-weight: 600; }
+    .diely-vstup a { display: flex; align-items: center; gap: 8px; min-width: 0; min-height: 60px; padding: 8px 16px 8px 8px; border-radius: var(--radius-l); background: var(--sklo-1); box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.12); font-size: 16px; font-weight: 600; }
     .diely-vstup a > span:not(.diel-obr) { flex: 1; }
   }
   @media (prefers-reduced-motion: reduce) { .studio-bodky span { transition: none; } }

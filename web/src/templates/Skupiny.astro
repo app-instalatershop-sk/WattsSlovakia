@@ -70,7 +70,7 @@ const druhaObraz = fotka(jeSpojky ? 'vykop-spojky.jpg' : 'montaz-odbocka.jpg');
 </Base>
 
 <style>
-  .hlava-fakty { display: flex; flex-wrap: wrap; gap: 14px 30px; margin: 26px 0 0; }
+  .hlava-fakty { display: flex; flex-wrap: wrap; gap: 16px 32px; margin: 24px 0 0; }
   .hlava-fakty dt { font-size: 13px; color: var(--color-ink-soft); }
   .hlava-fakty dd { margin: 2px 0 0; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: clamp(17px, 0.6vw + 13px, 22px); letter-spacing: -0.01em; color: var(--color-blue-900); font-variant-numeric: tabular-nums; }
 
@@ -81,10 +81,10 @@ const druhaObraz = fotka(jeSpojky ? 'vykop-spojky.jpg' : 'montaz-odbocka.jpg');
   .druha-foto { align-self: stretch; }
   .druha-foto :global(img) { display: block; width: 100%; height: 100%; min-height: 260px; object-fit: cover; transition: transform 700ms var(--ease-soft); }
   @media (hover: hover) and (pointer: fine) { .druha:hover .druha-foto :global(img) { transform: scale(1.03); } }
-  .druha-text { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 36px 44px; }
+  .druha-text { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; padding: 36px 44px; }
   .druha-nad { font-size: 15px; font-weight: 500; color: var(--color-blue-700); }
   .druha-nazov { font-family: var(--font-display); font-weight: 700; font-size: clamp(24px, 1.2vw + 16px, 32px); letter-spacing: -0.02em; line-height: 1.15; }
   .druha-p { color: var(--color-ink-soft); max-width: 34em; }
   .druha .odkaz { margin-top: 8px; }
-  @media (max-width: 760px) { .produkty { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; } .druha { grid-template-columns: minmax(0, 1fr); } .druha-foto :global(img) { min-height: 0; aspect-ratio: 16 / 9; } .druha-text { padding: 24px 22px 28px; } }
+  @media (max-width: 760px) { .produkty { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; } .druha { grid-template-columns: minmax(0, 1fr); } .druha-foto :global(img) { min-height: 0; aspect-ratio: 16 / 9; } .druha-text { padding: 24px 24px 28px; } }
 </style>

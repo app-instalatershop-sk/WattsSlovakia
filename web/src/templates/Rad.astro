@@ -340,7 +340,7 @@ const productLd = [{
 </Base>
 
 <style>
-  .hlava-fakty { display: flex; flex-wrap: wrap; gap: 14px 30px; margin: 26px 0 0; }
+  .hlava-fakty { display: flex; flex-wrap: wrap; gap: 16px 32px; margin: 24px 0 0; }
   .hlava-fakty dt { font-size: 13px; color: var(--color-ink-soft); }
   .hlava-fakty dd { margin: 2px 0 0; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: clamp(17px, 0.6vw + 13px, 22px); letter-spacing: -0.01em; color: var(--color-blue-900); white-space: nowrap; font-variant-numeric: tabular-nums; }
   .hlava-sestry { margin-top: 20px; font-size: 15px; color: var(--color-ink-soft); }
@@ -359,11 +359,11 @@ const productLd = [{
   .stavba-zoznamy * + h3 { margin-top: 28px; }
   /* Parametre bez vlasových čiar: riadky na jemných plochách. */
   .parametre { display: grid; gap: 4px; margin: 0; }
-  .parametre > div { display: flex; justify-content: space-between; gap: 16px; padding: 9px 14px; border-radius: var(--radius-m); background: rgb(255 255 255 / 0.7); }
+  .parametre > div { display: flex; justify-content: space-between; gap: 16px; padding: 8px 16px; border-radius: var(--radius-m); background: var(--sklo-1); }
   .parametre dt { color: var(--color-ink-soft); font-size: 15px; }
   .parametre dd { margin: 0; text-align: right; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 16px; color: var(--color-blue-900); }
-  .montaz li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; font-size: 15px; line-height: 1.5; }
-  .montaz li + li { margin-top: 10px; }
+  .montaz li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 8px; font-size: 15px; line-height: 1.5; }
+  .montaz li + li { margin-top: 8px; }
   .montaz :global(.icon) { color: #1f8a4c; margin-top: 2px; }
   .stavba-zdroj { margin-top: 20px; font-size: 13px; }
   .stavba-zdroj a { color: var(--color-ink-soft); border-bottom: 1px solid currentColor; }
@@ -393,21 +393,21 @@ const productLd = [{
   .ref-rola.nasa { background: var(--color-yellow-500); color: var(--color-ink); box-shadow: none; }
   .ref-kde { font-size: 15px; font-weight: 500; color: var(--color-blue-700); }
   .ref-text h3 { margin-top: 8px; font-size: clamp(24px, 1.2vw + 16px, 32px); line-height: 1.15; letter-spacing: -0.015em; }
-  .ref-fakty { display: grid; gap: 6px; margin: 20px 0 22px; }
-  .ref-fakty > div { display: grid; grid-template-columns: 9em minmax(0, 1fr); gap: 12px; padding: 11px 14px; border-radius: var(--radius-l); background: rgb(255 255 255 / 0.7); }
+  .ref-fakty { display: grid; gap: 8px; margin: 20px 0 24px; }
+  .ref-fakty > div { display: grid; grid-template-columns: 9em minmax(0, 1fr); gap: 12px; padding: 12px 16px; border-radius: var(--radius-l); background: var(--sklo-1); }
   .ref-fakty dt { color: var(--color-ink-soft); font-size: 15px; }
   .ref-fakty dd { margin: 0; font-weight: 600; }
 
   .rel { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; align-items: start; }
-  .rel-skupina { padding: 22px 24px 16px; }
-  .rel-hlava { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+  .rel-skupina { padding: 24px 24px 16px; }
+  .rel-hlava { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
   /* Diel stojí na podlahe ako v kartách dielov, nie v štvorčeku ako ikona (znak šablóny, DOLADENIE 2.5).
      Fotky Watts majú biele pozadie, násobenie ho na bielom hárku skryje; tieň dopadu je elipsa pod dielom. */
   .rel-ikona { position: relative; flex: none; width: 68px; height: 68px; display: grid; place-items: center; mix-blend-mode: multiply; }
   .rel-ikona::before { content: ""; position: absolute; left: 12%; right: 12%; bottom: 3px; height: 9px; border-radius: 50%; background: radial-gradient(closest-side, rgb(10 42 94 / 0.22), rgb(10 42 94 / 0)); }
   .rel-ikona :global(img) { position: relative; width: 64px; height: 64px; object-fit: contain; }
   .rel-skupina h3 { font-size: 18px; }
-  .rel-skupina li a { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid rgb(10 42 94 / 0.08); font-size: 15px; font-weight: 500; }
+  .rel-skupina li a { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 8px 0; border-top: 1px solid rgb(10 42 94 / 0.08); font-size: 15px; font-weight: 500; }
   .rel-skupina :global(.icon) { color: var(--color-blue-700); flex: none; }
 
   .oznacenie { margin-top: 56px !important; font-size: 13px; color: var(--color-ink-soft); }
@@ -428,11 +428,11 @@ const productLd = [{
     :global(.harok) { box-shadow: none !important; border-radius: 0 !important; }
     :global(.wrap) { max-width: none !important; padding-inline: 0 !important; }
     :global(table.data) { font-size: 9.5pt; }
-    :global(table.data th), :global(table.data td) { padding: 5px 6px !important; }
+    :global(table.data th), :global(table.data td) { padding: 4px 8px !important; }
     :global(.tv-tab thead) { display: table-header-group; }
     :global(.tv-tab tbody tr) { break-inside: avoid; }
   }
 
   @media (max-width: 900px) { .stavba, .ref, .ref-vpravo { grid-template-columns: minmax(0, 1fr); } .lupy { grid-template-columns: minmax(0, 1fr); gap: 24px; } .ref :global(.ref-scena), .ref-vpravo :global(.ref-scena) { order: 0; margin-inline: calc(-1 * var(--gutter)); } .ref :global(.ref-scena .scena-img), .ref-vpravo :global(.ref-scena .scena-img) { border-radius: 0; } }
-  @media (max-width: 760px) { .lupa { display: grid; grid-template-columns: 92px minmax(0, 1fr); column-gap: 18px; } .lupa-okno { grid-row: 1 / span 3; width: 92px; height: 92px; margin: 4px 0 0; } }
+  @media (max-width: 760px) { .lupa { display: grid; grid-template-columns: 92px minmax(0, 1fr); column-gap: 16px; } .lupa-okno { grid-row: 1 / span 3; width: 92px; height: 92px; margin: 4px 0 0; } }
 </style>

@@ -70,7 +70,7 @@ const dielSkupiny = (r: Rad) => fotkaProduktu(TYPICKY[r.id] ?? '') ?? r.produkty
       <div class="t-list" role="radiogroup" aria-labelledby="h-kat">
         {panely.map((p, i) => (
           <label class="t-lbl">
-            <input type="radio" name="katalog-tab" value={p.kat.id} checked={i === 0} />
+            <input type="radio" name="katalog-tab" value={p.kat.id} aria-controls={`katalog-panel-${p.kat.id}`} checked={i === 0} />
             <span class="t-nazov">{kKratky(p.kat, lang)}</span>
             <span class="t-pocet">{ui.sklonovanie.radov(p.pocet)}</span>
           </label>
@@ -79,11 +79,11 @@ const dielSkupiny = (r: Rad) => fotkaProduktu(TYPICKY[r.id] ?? '') ?? r.produkty
 
       <div class="t-panely">
         {panely.map((p) => (
-          <div class="t-panel" role="group" aria-label={kKratky(p.kat, lang)}>
+          <div id={`katalog-panel-${p.kat.id}`} class="t-panel" role="group" aria-label={kKratky(p.kat, lang)}>
             <div class="t-info">
               <p>{sadzba(kPopis(p.kat, lang))}</p>
             </div>
-            <div class="studio" data-pocet={p.dlazdice.length}>
+            <div id={`katalog-rady-${p.kat.id}`} class="studio" data-pocet={p.dlazdice.length}>
               {p.dlazdice.map(({ rad: r, vyhotovenia }) => { const img = obrazRadu(r); const href = cestaRadu(p.kat, r, lang); return (
                 <div class="rad">
                   <a class:list={['rad-obj', { je3d: je3d(img) }]} href={href} tabindex="-1" aria-hidden="true" style={`view-transition-name: rad-${r.id}`}>
@@ -106,7 +106,7 @@ const dielSkupiny = (r: Rad) => fotkaProduktu(TYPICKY[r.id] ?? '') ?? r.produkty
               ); })}
             </div>
             {/* Telefón: poloha v páse radov (Juraj 28. 10.: jeden posuvný pás, s viditeľnou polohou). */}
-            {p.dlazdice.length > 1 && <div class="studio-bodky" aria-hidden="true">{p.dlazdice.map((_, i) => <span class:list={{ 'je-tu': i === 0 }}></span>)}</div>}
+            {p.dlazdice.length > 1 && <div class="studio-bodky">{p.dlazdice.map(({ rad }, i) => <button type="button" class:list={{ 'je-tu': i === 0 }} aria-label={h.zobrazitRad(model(rad))} aria-controls={`katalog-rady-${p.kat.id}`} aria-pressed={i === 0}><span aria-hidden="true"></span></button>)}</div>}
           </div>
         ))}
       </div>
@@ -157,7 +157,7 @@ const dielSkupiny = (r: Rad) => fotkaProduktu(TYPICKY[r.id] ?? '') ?? r.produkty
   .t-lbl::before { content: ""; position: absolute; left: 0; top: 50%; width: 4px; height: 0; border-radius: 2px; background: var(--color-yellow-500); transform: translateY(-50%); transition: height 250ms var(--ease-soft); }
   .t-lbl input { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; }
   .t-nazov { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 500; font-size: 20px; line-height: 1.25; letter-spacing: -0.01em; }
-  .t-pocet { font-size: 14px; font-variant-numeric: tabular-nums; white-space: nowrap; color: #7a8494; }
+  .t-pocet { font-size: 14px; font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--color-ink-soft); }
   .t-lbl:hover { color: var(--color-ink); }
   .t-lbl:has(input:checked) { color: var(--color-ink); }
   .t-lbl:has(input:checked) .t-nazov { font-weight: 650; }
@@ -203,7 +203,7 @@ const dielSkupiny = (r: Rad) => fotkaProduktu(TYPICKY[r.id] ?? '') ?? r.produkty
   .rad-hlavny strong { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 22px; line-height: 1.2; letter-spacing: -0.01em; color: var(--color-ink); transition: color 150ms var(--ease-soft); }
   .rad-hlavny:hover strong, .rad:has(.rad-obj:hover) .rad-hlavny strong { color: var(--color-blue-700); }
   .rad-rury { font-size: 15px; color: var(--color-ink-soft); }
-  .rad-data { font-size: 14px; color: #7a8494; font-variant-numeric: tabular-nums; }
+  .rad-data { font-size: 14px; color: var(--color-ink-soft); font-variant-numeric: tabular-nums; }
   /* Vyhotovenie so spoločným renderom: vlastný riadok s názvom a tým, čím sa líši. */
   .rad-vyh { display: flex; flex-direction: column; gap: 1px; margin-top: 16px; padding-top: 12px; border-top: 1px solid rgb(10 42 94 / 0.1); color: var(--color-ink); }
   .rad-vyh strong { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 17px; line-height: 1.25; letter-spacing: -0.005em; transition: color 150ms var(--ease-soft); }
@@ -226,18 +226,16 @@ const dielSkupiny = (r: Rad) => fotkaProduktu(TYPICKY[r.id] ?? '') ?? r.produkty
   @media (hover: hover) and (pointer: fine) { .diely li a:hover .diel-obr :global(img) { transform: translateY(-3px); } }
   .diely li :global(svg) { width: 15px; height: 15px; }
 
-  /* Pod 1 100 px: register je vodorovný pás záložiek, popis pod ním, rendery ako koľajnica na posun prstom. */
+  /* Tablet: všetky použitia viditeľné v mriežke, bez druhého vodorovného posuvníka. */
   @media (max-width: 1100px) {
     .katalog { padding-bottom: 140px; }
     .kat-taby { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto auto auto auto auto; }
     .studio-bodky { grid-column: 1; grid-row: 5; }
     .kat-hlava { grid-column: 1; grid-row: 1; }
-    .t-list { grid-column: 1; grid-row: 2; display: flex; gap: 4px; border-top: 0; border-bottom: var(--line); overflow-x: auto; scrollbar-width: none; margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); }
-    .t-list::-webkit-scrollbar { display: none; }
-    .t-lbl { flex: none; padding: 12px 16px 16px; border-bottom: 2px solid transparent; margin-bottom: -1px; }
-    .t-lbl:first-child { padding-left: 0; }
+    .t-list { grid-column: 1; grid-row: 2; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; border: 0; }
+    .t-lbl { align-items: center; min-height: 56px; padding: 12px 16px; border: 1px solid rgb(10 42 94 / 0.16); border-radius: var(--radius-m); background: var(--sklo-1); }
     .t-lbl::before { display: none; }
-    .t-lbl:has(input:checked) { border-bottom-color: var(--color-yellow-500); }
+    .t-lbl:has(input:checked) { background: var(--color-blue-900); color: #fff; border-color: var(--color-blue-900); }
     .t-nazov { font-size: 17px; }
     .t-pocet { display: none; }
     .t-panel { grid-row: 1 / -1; }
@@ -254,15 +252,17 @@ const dielSkupiny = (r: Rad) => fotkaProduktu(TYPICKY[r.id] ?? '') ?? r.produkty
     .studio::before { display: none; }
     .rad { scroll-snap-align: start; }
     .studio[data-pocet="1"] { grid-auto-columns: 100%; }
-    /* Systémy ako zalomené voľby: jediný vodorovný posuvný pás na telefóne sú rady pod nimi (Juraj 28. 10.). */
-    .t-list { flex-wrap: wrap; gap: 8px; overflow: visible; margin-inline: 0; padding-inline: 0; border-bottom: 0; }
-    .t-lbl, .t-lbl:first-child { align-items: center; min-height: 44px; padding: 0 16px; margin: 0; border: 0; border-radius: var(--radius-l); background: var(--sklo-1); box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.12); }
-    .t-lbl:has(input:checked) { background: var(--color-blue-900); color: #fff; box-shadow: var(--elev-1); }
+    /* Päť plných názvov v troch riadkoch. Rady pod nimi ostávajú jediným posuvným pásom. */
+    .t-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .t-lbl { min-height: 56px; padding: 8px 12px; }
+    .t-lbl:last-child:nth-child(odd) { grid-column: 1 / -1; }
     .t-lbl:has(input:checked) .t-nazov { font-weight: 600; }
-    .t-nazov { font-size: 16px; }
-    .studio-bodky { display: flex; justify-content: center; gap: 8px; margin-top: 16px; }
-    .studio-bodky span { width: 8px; height: 8px; border-radius: 999px; background: rgb(10 42 94 / 0.22); cursor: pointer; transition: width 250ms var(--ease-soft), background-color 250ms var(--ease-soft); }
-    .studio-bodky span.je-tu { width: 22px; background: var(--color-blue-900); }
+    .t-nazov { font-size: 15px; line-height: 1.35; }
+    .studio-bodky { display: flex; justify-content: center; gap: 4px; margin-top: 8px; }
+    .studio-bodky button { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: var(--radius-m); background: transparent; cursor: pointer; }
+    .studio-bodky span { width: 8px; height: 8px; border-radius: 999px; background: var(--color-ink-soft); pointer-events: none; transition: width 250ms var(--ease-soft), background-color 250ms var(--ease-soft); }
+    .studio-bodky .je-tu span { width: 22px; background: var(--color-blue-900); }
+    .studio-bodky button:hover { background: var(--sklo-1); }
     .diely h3 { width: 100%; }
     .diely .diely-skupiny { display: none; }
     .diely .diely-vstup { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; width: 100%; }
@@ -279,14 +279,17 @@ const dielSkupiny = (r: Rad) => fotkaProduktu(TYPICKY[r.id] ?? '') ?? r.produkty
       const bodky = pas.parentElement?.querySelector<HTMLElement>('.studio-bodky');
       if (!bodky) return;
       pas.dataset.bodky = '1';
-      const body = [...bodky.children] as HTMLElement[];
+      const body = [...bodky.querySelectorAll<HTMLButtonElement>('button')];
       const rady = [...pas.querySelectorAll<HTMLElement>('.rad')];
       let raf = 0;
       const obnov = () => {
         raf = 0;
         const krok = rady.length > 1 ? rady[1].offsetLeft - rady[0].offsetLeft : 1;
         const i = Math.min(body.length - 1, Math.max(0, Math.round(pas.scrollLeft / Math.max(1, krok))));
-        body.forEach((b, j) => b.classList.toggle('je-tu', j === i));
+        body.forEach((b, j) => {
+          b.classList.toggle('je-tu', j === i);
+          b.setAttribute('aria-pressed', String(j === i));
+        });
       };
       pas.addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(obnov); }, { passive: true });
       body.forEach((b, j) => b.addEventListener('click', () => {

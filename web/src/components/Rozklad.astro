@@ -21,8 +21,8 @@ type Id = 'plast' | 'pena' | 'rura';
 /** img: makro materiálu vrstvy (data/_3d/web/makra) v malej lupe pri texte; bez neho len text. */
 interface Vrstva { id: Id; nazov: string; kluc: string; text: string; img?: ImageMetadata }
 /** class: trieda koreňa (pozadie podľa stránky); hore: odstup lepkavého obrazu (hlavička, pás častí stránky). */
-interface Props { data: Data; nadpis: string; popis?: string; vrstvy: Vrstva[]; alt: string; label: string; class?: string; hore?: number; horeM?: number }
-const { data, nadpis, popis, vrstvy, alt, label, class: trieda, hore = 72, horeM = 64 } = Astro.props;
+interface Props { data: Data; nadpis: string; popis?: string; vrstvy: Vrstva[]; alt: string; label: string; class?: string; id?: string; hore?: number; horeM?: number }
+const { data, nadpis, popis, vrstvy, alt, label, class: trieda, id, hore = 72, horeM = 64 } = Astro.props;
 
 // Kóta: názov vrstvy veľkým, kľúčové číslo malým; smer štítka tak, aby nezakryl inú vrstvu.
 const SMER: Record<Id, Pick<Kota, 'smer' | 'smerM' | 'l'>> = {
@@ -35,7 +35,7 @@ const koty: Kota[] = vrstvy.map((v) => ({ x: koniec[v.id][0], y: koniec[v.id][1]
 const sirka = Math.max(...data.sirky);
 const posledna = `${data.cesta}${sirka}/${String(data.snimok - 1).padStart(3, '0')}`;
 ---
-<section class:list={['rozklad', trieda]} style={`--rz-top: ${hore}px; --rz-top-m: ${horeM}px`} aria-labelledby="h-rozklad" data-rozklad data-cesta={data.cesta} data-snimok={data.snimok} data-sirky={data.sirky.join(',')} data-body={JSON.stringify(data.body)}>
+<section id={id} class:list={['rozklad', trieda]} style={`--rz-top: ${hore}px; --rz-top-m: ${horeM}px`} aria-labelledby="h-rozklad" data-rozklad data-cesta={data.cesta} data-snimok={data.snimok} data-sirky={data.sirky.join(',')} data-body={JSON.stringify(data.body)}>
   <div class="rz-sticky">
     <div class="wrap rz-grid">
       <div class="rz-text">
@@ -87,7 +87,7 @@ const posledna = `${data.cesta}${sirka}/${String(data.snimok - 1).padStart(3, '0
   [data-vrstva="rura"] .rz-lupa { --ring: #e0b400; }
   .rz-lupa :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; }
   .rz-lupa::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(70% 55% at 30% 18%, rgb(255 255 255 / 0.34), rgb(255 255 255 / 0) 62%); box-shadow: inset 0 -8px 16px rgb(11 27 51 / 0.24); }
-  .rozklad.rz-js .rz-vrstvy li { opacity: 0.45; }
+  .rozklad.rz-js .rz-vrstvy li { opacity: var(--rz-neaktivna-opacity, 0.45); }
   .rozklad.rz-js .rz-vrstvy li.is-on { opacity: 1; }
   .rz-vrstvy li[data-vrstva="rura"].is-on, .rozklad:not(.rz-js) .rz-vrstvy li[data-vrstva="rura"] { border-color: var(--color-yellow-500); }
   .rz-vrstvy li[data-vrstva="pena"].is-on, .rozklad:not(.rz-js) .rz-vrstvy li[data-vrstva="pena"] { border-color: #8e97a3; }

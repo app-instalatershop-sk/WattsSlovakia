@@ -68,7 +68,7 @@ const dlzka = Math.floor(data.kotuc.dlzka_m);
   .ks-cislo { font-family: var(--font-display); font-weight: 700; font-size: 18px; color: var(--color-blue-700); }
   .ks-kroky h3 { margin-top: 2px; font-size: 18px; line-height: 1.3; }
   .ks-kroky p { margin-top: 4px; font-size: 15px; line-height: 1.5; color: var(--color-ink-soft); }
-  .ks.ks-js .ks-kroky li { opacity: 0.5; }
+  .ks.ks-js .ks-kroky li { opacity: var(--ks-neaktivny-opacity, 0.5); }
   .ks.ks-js .ks-kroky li.is-on { opacity: 1; border-top-color: var(--color-blue-700); }
   @media (max-width: 900px) {
     .ks { height: 185vh; }

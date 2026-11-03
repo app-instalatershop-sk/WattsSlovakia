@@ -84,6 +84,12 @@ const popisy = heroVariant && heroRad ? [
   { id: 'rura', hodnota: `${heroRad.pocet_rur && heroRad.pocet_rur > 1 ? `${heroRad.pocet_rur} × ` : ''}${cislo(heroVariant.rura?.d ?? 0)} mm`, text: h.popisy.rury(heroRad.tlak_bar ?? 0) },
   { id: 'ohyb', hodnota: `${cislo(heroVariant.polomer_ohybu_m ?? 0, 2)} m`, text: h.popisy.polomer },
 ] : [];
+const skratky = [
+  { href: '#vyber', text: h.skratky.potrubia },
+  ...(rozklad ? [{ href: '#konstrukcia', text: h.skratky.konstrukcia }] : []),
+  { href: '#pokladka', text: h.skratky.pokladka },
+  { href: '#projekty', text: h.skratky.projekty },
+];
 ---
 <Base lang={lang} alternates={staticAlternates('domov')} title={ui.domov.title} description={ui.domov.description}>
   <section class="hero" aria-labelledby="h-hero" data-mys>
@@ -117,6 +123,11 @@ const popisy = heroVariant && heroRad ? [
           </ul>
         </div>
       </div>
+      <nav class="hero-skratky" aria-label={h.skratky.label}>
+        <ul>
+          {skratky.map((s) => <li><a href={s.href}>{s.text}<Ikona nazov="arrow-down" velkost={16} /></a></li>)}
+        </ul>
+      </nav>
     </div>
   </section>
 
@@ -140,13 +151,13 @@ const popisy = heroVariant && heroRad ? [
 
   {/* Rozložený rez (Juraj 26. 10. 2026 namiesto „rezu pod lupou“): vlastný 3D model DUO sa pri rolovaní
       rozloží na plášť, penu a nosné rúry, pri každej vrstve kóta. Kým nie sú snímky, ostáva len rodina. */}
-  {rozklad && <Rozklad class="rozklad-domov" data={rozklad} nadpis={tx.stavbaH2} popis={tx.stavbaP} vrstvy={vrstvyRozkladu} alt={tx.rozkladAlt('Microflex DUO')} label={h.lupyLabel} />}
+  {rozklad && <Rozklad id="konstrukcia" class="rozklad-domov" data={rozklad} nadpis={tx.stavbaH2} popis={tx.stavbaP} vrstvy={vrstvyRozkladu} alt={tx.rozkladAlt('Microflex DUO')} label={h.lupyLabel} />}
 
   {/* Ohyb (Juraj 28. 10. 2026): dôkaz hlavnej vety, že potrubie sa ohne okolo prekážky; medzi stavbou
       potrubia a pokládkou: z čoho je, ako sa ohne, ako sa kladie. */}
   {ohybDomov && <Ohyb data={ohybDomov} class="ohyb-domov" tma nadpis={nv.ohyb.h2} popis={nv.ohyb.domov} poznamka={nv.ohyb.pozn} alt={nv.ohyb.alt('Microflex DUO', '0,60')} kota={nv.ohyb.kota} />}
 
-  <section class:list={['section pokladka', { 'ma-kotuc': odvalenie }]} aria-labelledby="h-pokladka">
+  <section id="pokladka" class:list={['section pokladka', { 'ma-kotuc': odvalenie }]} aria-labelledby="h-pokladka">
     {odvalenie ? (
       /* Kotúč z 3D modelu sa pri rolovaní odvaľuje cez celú šírku a pod ním sa rozsvecujú kroky pokládky
          (Juraj 28. 10. 2026, namiesto fotky kotúča a rastúcej čiary). */
@@ -201,7 +212,7 @@ const popisy = heroVariant && heroRad ? [
     {/* Projekty (Juraj 28. 10. 2026): vlastná dodávka v Považskej Bystrici vpredu a veľká, referencia výrobcu
         (Orange) menšia a označená. Fotka a text projektu sú jeden celok, aj na telefóne (predtým tri fotky
         a pod nimi texty, takže text o Orange stál pod fotkou z Považskej). Kotolňa je na stránke referencií. */}
-    <section class="projekty wrap" aria-labelledby="h-projekty">
+    <section id="projekty" class="projekty wrap" aria-labelledby="h-projekty">
       <div class="proj-hlava">
         <h2 id="h-projekty">{h.projektyH2}</h2>
         <p class="proj-uvod">{sadzba(h.projektyP)}</p>
@@ -259,14 +270,14 @@ const popisy = heroVariant && heroRad ? [
   /* ---------- Hero: svetlé pole, farbu nesie výrobok ---------- */
   /* Spodných --presah pixelov hero je bez pozadia: je pod nimi šikmá horná hrana pásu katalógu,
      ktorú spodok renderu pretína, rovnako ako fotka z výkopu pretína hranu podzemia. */
-  .hero { --presah: var(--presah-hero); position: relative; display: flex; align-items: center; min-height: clamp(540px, 70vh, 720px); overflow-x: clip; z-index: 1; color: var(--color-ink);
+  .hero { --presah: var(--presah-hero); position: relative; display: flex; align-items: center; min-height: clamp(540px, 66vh, 680px); overflow-x: clip; z-index: 1; color: var(--color-ink);
     background:
       linear-gradient(to bottom, rgb(255 255 255 / 0) 62%, #ffffff 100%),
       radial-gradient(52% 62% at 76% 52%, rgb(0 93 185 / 0.08) 0%, rgb(0 93 185 / 0) 72%),
       linear-gradient(158deg, #ffffff 0%, #fafbfd 46%, #eef2f7 100%);
     background-size: 100% calc(100% - var(--presah)); background-repeat: no-repeat; }
-  .hero-in { position: relative; width: 100%; display: grid; grid-template-columns: minmax(0, 44fr) minmax(0, 56fr); grid-template-areas: "text obraz"; column-gap: 24px; }
-  .hero-text { grid-area: text; align-self: center; max-width: 620px; padding-block: 72px; display: flex; flex-direction: column; align-items: flex-start; position: relative; z-index: 3; }
+  .hero-in { position: relative; width: 100%; display: grid; grid-template-columns: minmax(0, 44fr) minmax(0, 56fr); grid-template-areas: "text obraz" "skratky skratky"; gap: 20px 24px; }
+  .hero-text { grid-area: text; align-self: center; max-width: 620px; padding-block: 56px; display: flex; flex-direction: column; align-items: flex-start; position: relative; z-index: 3; }
   .hero-text > * { animation: rise 680ms var(--ease-soft) both; }
   .hero-text > :nth-child(2) { animation-delay: 220ms; }
   .hero-text > :nth-child(3) { animation-delay: 320ms; }
@@ -289,6 +300,12 @@ const popisy = heroVariant && heroRad ? [
   .hero-dodavatel { margin-top: 24px; font-size: 15px; line-height: 1.5; color: var(--color-ink-soft); }
   .hero-dodavatel a { font-weight: 600; color: var(--color-ink); text-decoration: underline; text-decoration-color: rgb(10 42 94 / 0.3); text-underline-offset: 3px; }
   @media (hover: hover) and (pointer: fine) { .hero-dodavatel a:hover { color: var(--color-blue-700); text-decoration-color: currentColor; } }
+  /* Priamy vstup do obsahu aj pre návštevníka, ktorý nechce prejsť všetky 3D ukážky. */
+  .hero-skratky { grid-area: skratky; position: relative; z-index: 3; padding-bottom: 12px; }
+  .hero-skratky ul { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
+  .hero-skratky a { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 52px; padding-block: 12px; border-top: 1px solid rgb(10 42 94 / 0.18); color: var(--color-ink-soft); font-size: 15px; font-weight: 500; }
+  .hero-skratky a:hover { color: var(--color-blue-700); border-top-color: currentColor; }
+  .hero-skratky :global(svg) { flex: none; width: 16px; height: 16px; color: var(--color-blue-700); }
   /* Rúra prekračuje pravý okraj obsahovej mriežky až za okraj obrazovky. */
   /* Render sedí na spodku hero, takže jeho dolná časť pretne šikmú hranu pásu katalógu. */
   .hero-product { grid-area: obraz; position: relative; z-index: 2; align-self: end; margin-left: -9%;
@@ -376,7 +393,16 @@ const popisy = heroVariant && heroRad ? [
   /* Pod rodinou hneď pokračuje rozložený rez (lupy sú preč), preto len malý spodný okraj. */
   .rodina { background: linear-gradient(180deg, var(--zem-2) 0%, var(--zem-3) 100%); padding-top: 0; padding-bottom: 24px; overflow-x: clip; overflow-y: visible; }
   /* Rozložený rez pokračuje zostupom pod zem: rovnaký tón ako koniec rodiny a začiatok pokládky. */
-  :global(.rozklad.rozklad-domov) { background: var(--zem-3); }
+  :global(.rozklad.rozklad-domov) { background: var(--zem-3); --rz-neaktivna-opacity: 1; }
+  /* Kratšia cesta na domove; detailné stránky si ponechávajú vlastné tempo ukážok. */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.rozklad.rozklad-domov) { height: 220vh; }
+    :global(.ohyb.ohyb-domov) { height: 180vh; }
+    .pokladka.ma-kotuc :global(.ks) { height: 175vh; }
+  }
+  /* Text ostáva čitateľný aj pred zvýraznením vrstvy alebo kroku. */
+  .pokladka { --ks-neaktivny-opacity: 1; }
+  :global(#konstrukcia), #pokladka, #projekty { scroll-margin-top: 96px; }
   /* Ohyb je tmavá scéna medzi svetlými sekciami (Juraj 28. 10. 2026: návrh C, pokládka ostáva svetlá). Tón rezu
      prejde hore ohnutou hranou do tmy a dole sa rovnakou hranou vráti do tónu pokládky. Obe hrany sú vnútri
      sekcie (obsah lepkavej časti k nim nedosiahne), takže neprekrývajú rez ani nadpis pokládky. */
@@ -459,7 +485,7 @@ const popisy = heroVariant && heroRad ? [
   .zataz { display: flex; align-items: baseline; gap: 12px; }
   .zataz strong { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 28px; letter-spacing: -0.02em; color: var(--color-blue-900); white-space: nowrap; }
   .zataz span { font-size: 15px; color: var(--color-ink-soft); }
-  .zdroj { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 24px; font-size: 13px; color: #7a8494; }
+  .zdroj { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 24px; font-size: 14px; color: var(--color-ink-soft); }
   .zdroj a { display: inline-flex; align-items: center; gap: 4px; font-weight: 500; }
   .zdroj .zdroj-clanok { font-size: 15px; font-weight: 600; }
   .zdroj :global(svg) { width: 14px; height: 14px; }
@@ -473,6 +499,7 @@ const popisy = heroVariant && heroRad ? [
   .podzemie h2 { color: #fff; }
   .podzemie a:not(.btn) { color: #fff; }
   .podzemie a:not(.btn):hover { color: var(--color-yellow-500); }
+  .podzemie a:focus-visible { outline-color: var(--color-yellow-500); }
 
   /* ---------- Projekty: vlastná dodávka veľká, referencia výrobcu menšia; fotka a text spolu ---------- */
   .projekty { position: relative; padding-top: 24px; }
@@ -552,14 +579,21 @@ const popisy = heroVariant && heroRad ? [
   /* ---------- Telefón ---------- */
   @media (max-width: 760px) {
     .hero { min-height: 0; }
-    .hero-in { grid-template-columns: 1fr; grid-template-areas: "text" "obraz"; row-gap: 8px; }
-    .hero-text { padding-block: 44px 0; max-width: none; }
+    .hero-in { grid-template-columns: 1fr; grid-template-areas: "text" "obraz" "skratky"; row-gap: 16px; }
+    .hero-text { padding-block: 32px 0; max-width: none; }
     /* Na telefóne sa nadpis môže zalomiť, inak by na úzkom displeji pretiekol. */
     .hero h1 { font-size: clamp(30px, 8.2vw, 44px); text-wrap: wrap; }
     .hero .lead { margin-top: 16px; font-size: 17px; }
-    .hero-actions { margin-top: 24px; }
-    .hero-product { margin: 44px 0 0; margin-right: calc(-1 * var(--gutter)); margin-left: calc(-1 * var(--gutter)); justify-self: stretch; }
-    .hero { padding-bottom: 28px; }
+    .hero-actions { width: 100%; margin-top: 24px; gap: 8px 16px; }
+    .hero-actions .btn-lg { height: 52px; padding-inline: 20px; font-size: 16px; }
+    .hero-odkaz { min-height: 44px; font-size: 15px; border: 0; text-decoration: underline; text-underline-offset: 5px; }
+    .hero-dodavatel { margin-top: 16px; font-size: 14px; }
+    .hero-product { margin: 32px 0 0; margin-right: calc(-1 * var(--gutter)); margin-left: calc(-1 * var(--gutter)); justify-self: stretch; }
+    .hero { padding-bottom: 16px; }
+    .hero-skratky { padding-top: 12px; padding-bottom: 0; }
+    .hero-skratky ul { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 20px; }
+    .hero-skratky a { min-height: 48px; font-size: 14px; }
+    :global(#konstrukcia), #pokladka, #projekty { scroll-margin-top: 88px; }
     /* Popisy na telefóne: kratšie čiary a menšie písmo, aby sa zmestili okolo renderu. */
     .rodina { padding-bottom: 16px; }
     .rodina-obraz { margin-top: -72px; }
@@ -575,5 +609,10 @@ const popisy = heroVariant && heroRad ? [
     .proj :global(.scena-img) { border-radius: 0; }
     .podpora { margin-top: 96px; row-gap: 40px; }
     .podpora-sluzby { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  }
+  @media (max-width: 900px) and (prefers-reduced-motion: no-preference) {
+    :global(.rozklad.rozklad-domov) { height: 200vh; }
+    :global(.ohyb.ohyb-domov) { height: 165vh; }
+    .pokladka.ma-kotuc :global(.ks) { height: 160vh; }
   }
 </style>

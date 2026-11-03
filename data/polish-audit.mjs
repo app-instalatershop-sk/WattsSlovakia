@@ -53,7 +53,12 @@ function skenuj(zar) {
   // Dĺžka riadku a zarovnanie odsekov (len počítač, dlhšie texty).
   if (zar === 'pocitac') for (const e of document.querySelectorAll('main p, main li, main dd, main figcaption, main blockquote')) {
     if (!viditelny(e) || e.closest('table, nav, [role="tablist"]')) continue;
-    const t = e.textContent.replace(/\s+/g, ' ').trim(); if (t.length < 140) continue;
+    // Len viditeľný text: zbalený popis (vrstvy rezu v nízkom okne, rz-tesne: výška 0, nepriehľadnosť 0) sa nepočíta,
+    // inak delí celý text dvoma riadkami nadpisu a hodnoty (3. 11. 2026: falošných 98 znakov na riadok).
+    const skryty = (x) => { for (; x && x !== e; x = x.parentElement) if (getComputedStyle(x).display !== 'contents' && !viditelny(x)) return true; return false; };
+    const tw = document.createTreeWalker(e, NodeFilter.SHOW_TEXT);
+    let t = ''; for (let n; (n = tw.nextNode());) if (!skryty(n.parentElement)) t += n.nodeValue + ' ';
+    t = t.replace(/\s+/g, ' ').trim(); if (t.length < 140) continue;
     const cs = getComputedStyle(e); const lh = parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.5;
     const riadkov = Math.max(1, Math.round(e.getBoundingClientRect().height / lh));
     if (riadkov < 2) continue;

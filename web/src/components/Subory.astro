@@ -56,7 +56,9 @@ const ajDxf = lang === 'cs' ? 'I ve formátu DXF' : 'Aj vo formáte DXF';
   .stol li:nth-child(even) .list { --r: 1deg; }
   @media (hover: hover) and (pointer: fine) { .dok:hover .list { transform: translateY(-8px) rotate(0deg); box-shadow: 0 1px 0 rgb(10 42 94 / 0.08), var(--elev-4); } }
   .list :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; }
-  /* Výkres je list A3 naležato, teda dva listy A4 vedľa seba: na stole zaberá dva stĺpce. */
+  /* Výkres je list A3 naležato, teda dva listy A4 vedľa seba: na stole zaberá dva stĺpce. Pri troch
+     stĺpcoch (tablet na výšku) sa za dve obálky nezmestí, dense miesto po ňom vyplní ďalším listom. */
+  .stol { grid-auto-flow: row dense; }
   .stol .a3 { grid-column: span 2; }
   .a3 .list { aspect-ratio: 420 / 297; }
   .dxf { margin-top: 8px; font-size: 14px; }

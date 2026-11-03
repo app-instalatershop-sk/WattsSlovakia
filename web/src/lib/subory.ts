@@ -17,6 +17,26 @@ export function nazovVykresu(meta: string, lang: Lang): string {
     .replace('sanitary water', 'pitná voda').replace('with heating cable', cs ? 's topným kabelem' : 's vyhrievacím káblom');
 }
 
+/**
+ * Náhľad podkladu na stole dokumentov (data/nahlady_dokumentov.py) podľa čísla podkladu na watts.eu.
+ * Výkres DWG a DXF je ten istý výkres v dvoch formátoch, preto majú jeden náhľad.
+ */
+const NAHLADY: Record<string, string> = {
+  '28702': 'vyhlasenie-o-zhode.jpg',
+  'epd-microflex': 'epd.jpg',
+  '21118': 'technicky-list-hp.jpg',
+  '31000': 'vykres-uno-vykurovanie.jpg', '30999': 'vykres-uno-vykurovanie.jpg',
+  '30992': 'vykres-duo-vykurovanie.jpg', '30991': 'vykres-duo-vykurovanie.jpg',
+  '30997': 'vykres-uno-pitna-voda.jpg', '30998': 'vykres-uno-pitna-voda.jpg',
+  '30989': 'vykres-duo-pitna-voda.jpg', '30990': 'vykres-duo-pitna-voda.jpg',
+  '30995': 'vykres-quadro.jpg', '30996': 'vykres-quadro.jpg',
+  '30987': 'vykres-cool-uno.jpg', '30988': 'vykres-cool-uno.jpg',
+  '30985': 'vykres-cool-uno-kabel.jpg', '30986': 'vykres-cool-uno-kabel.jpg',
+  '30984': 'vykres-cool-duo.jpg', '30983': 'vykres-cool-duo.jpg',
+  '30993': 'vykres-hp.jpg', '30994': 'vykres-hp.jpg',
+};
+export const nahladSuboru = (s: Subor): string | undefined => NAHLADY[s.url.replace(/\/$/, '').split('/').pop() ?? ''];
+
 export function popisSuboru(s: Subor, lang: Lang): PopisSuboru {
   const cs = lang === 'cs';
   const n = s.nazov;

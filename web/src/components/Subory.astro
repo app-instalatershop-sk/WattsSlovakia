@@ -1,28 +1,36 @@
 ---
 /**
- * Podklady výrobcu na stiahnutie ako dokumenty na stole (Juraj 22. 10. 2026, návrh B): katalóg
- * a brožúra so skutočnou obálkou (prvá strana PDF), výkresy, vyhlásenia a EPD ako list papiera
- * s veľkou skratkou formátu. Pod dokumentom druh a doplnok („Výkres DWG“ + „DUO a DUO PRIMO …“).
+ * Podklady výrobcu na stiahnutie ako dokumenty na stole (Juraj 22. 10. 2026, návrh B). Od 3. 11. 2026
+ * (variant A z 1. 11.) ukazuje každý list skutočný obsah: obálku katalógu a brožúry, prvú stranu PDF
+ * alebo výkres (data/nahlady_dokumentov.py). Pod listom druh a doplnok („Výkres DWG“ + „DUO a DUO
+ * PRIMO …“), názov len raz. Výkres je list A3 naležato cez dva stĺpce; DWG a DXF je ten istý výkres,
+ * preto jeden list a DXF ako odkaz pod ním. Podklad bez náhľadu je list s veľkou skratkou formátu.
  * Katalóg vedie priamo na PDF, ostatné na stránku podkladu na watts.eu.
  */
 import Obraz from './Obraz.astro';
-import { popisSuboru, type Subor } from '../lib/subory';
-import { fotka } from '../lib/obrazky';
+import { nahladSuboru, popisSuboru, type Subor } from '../lib/subory';
+import { fotka, nahladDokumentu } from '../lib/obrazky';
 import { type Lang, KATALOG_PDF } from '../i18n/ui';
 interface Props { subory: Subor[]; lang: Lang }
 const { subory, lang } = Astro.props;
-// Katalóg a brožúra prvé (majú obálku), potom technické listy, výkresy, vyhlásenia a EPD.
-const poradie: Record<string, number> = { katalog: 0, brozura: 1, list: 2, vykres: 3, zhoda: 4, iny: 5, epd: 6 };
+// Katalóg a brožúra prvé, za nimi výkres (na telefóne celý riadok, takže v mriežke neostane diera),
+// potom technické listy, vyhlásenia a EPD.
+const poradie: Record<string, number> = { katalog: 0, brozura: 1, vykres: 2, list: 3, zhoda: 4, iny: 5, epd: 6 };
 const obalky: Partial<Record<string, ReturnType<typeof fotka>>> = { katalog: fotka('katalog-obalka.jpg'), brozura: fotka('brozura-obalka.jpg') };
-const polozky = subory.map((s) => { const p = popisSuboru(s, lang); return { ...p, url: p.druh === 'katalog' ? KATALOG_PDF : s.url, obalka: obalky[p.druh] }; })
+const vsetky = subory.map((s) => { const p = popisSuboru(s, lang); return { ...p, url: p.druh === 'katalog' ? KATALOG_PDF : s.url, obalka: obalky[p.druh] ?? nahladDokumentu(nahladSuboru(s)) }; });
+const dvojca = (p: (typeof vsetky)[number], typ: string) => vsetky.find((q) => q.druh === 'vykres' && q.typ === typ && q.meta === p.meta);
+const polozky = vsetky
+  .filter((p) => !(p.typ === 'DXF' && dvojca(p, 'DWG')))
+  .map((p) => ({ ...p, dxf: p.typ === 'DWG' ? dvojca(p, 'DXF') : undefined, a3: p.druh === 'vykres' && Boolean(p.obalka) }))
   .sort((a, b) => poradie[a.druh] - poradie[b.druh]);
+const ajDxf = lang === 'cs' ? 'I ve formátu DXF' : 'Aj vo formáte DXF';
 ---
 <ul class="stol">
   {polozky.map((p) => (
-    <li>
+    <li class:list={{ a3: p.a3 }}>
       <a class="dok" href={p.url} target="_blank" rel="noopener">
         {p.obalka ? (
-          <span class="list"><Obraz src={p.obalka} alt="" widths={[240, 460]} sizes="(max-width: 760px) 44vw, 220px" /></span>
+          <span class="list"><Obraz src={p.obalka} alt="" widths={p.a3 ? [480, 920] : [240, 460]} sizes={p.a3 ? '(max-width: 760px) 92vw, 440px' : '(max-width: 760px) 44vw, 220px'} /></span>
         ) : (
           // Výkres: v rohovej pečiatke, čo zobrazuje; ostatné listy majú názov ako titulná strana.
           <span class:list={['list', 'format', `format-${p.druh}`]}><b>{p.typ}</b>{p.druh === 'vykres' ? p.meta && <em>{p.meta}</em> : <em>{p.nazov}{p.meta && <small>{p.meta}</small>}</em>}</span>
@@ -30,6 +38,7 @@ const polozky = subory.map((s) => { const p = popisSuboru(s, lang); return { ...
         <strong>{p.nazov}</strong>
         {p.meta && p.obalka && <span class="meta">{p.meta}</span>}
       </a>
+      {p.dxf && <a class="odkaz dxf" href={p.dxf.url} target="_blank" rel="noopener" aria-label={`${ajDxf}: ${p.dxf.meta}`}>{ajDxf}</a>}
     </li>
   ))}
 </ul>
@@ -47,6 +56,10 @@ const polozky = subory.map((s) => { const p = popisSuboru(s, lang); return { ...
   .stol li:nth-child(even) .list { --r: 1deg; }
   @media (hover: hover) and (pointer: fine) { .dok:hover .list { transform: translateY(-8px) rotate(0deg); box-shadow: 0 1px 0 rgb(10 42 94 / 0.08), var(--elev-4); } }
   .list :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; }
+  /* Výkres je list A3 naležato, teda dva listy A4 vedľa seba: na stole zaberá dva stĺpce. */
+  .stol .a3 { grid-column: span 2; }
+  .a3 .list { aspect-ratio: 420 / 297; }
+  .dxf { margin-top: 8px; font-size: 14px; }
   /* Podklad bez obálky je biely list ako skutočný dokument vedľa obálok katalógu a brožúry, nie farebný
      blok (DOLADENIE kap. 2.2): hore formát, dole čo dokument obsahuje. Výkres má papier s jemnou
      mriežkou, rámik a rohovú pečiatku ako technický výkres. */

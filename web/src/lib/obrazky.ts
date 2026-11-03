@@ -8,6 +8,8 @@ const fotky = import.meta.glob<{ default: ImageMetadata }>('/src/assets/fotky/*.
 const referencie = import.meta.glob<{ default: ImageMetadata }>('/src/assets/referencie/*.jpg', { eager: true });
 /** Detaily materiálov vyrezané z renderov výrobcu (plášť, pena, nosná rúra). */
 const detaily = import.meta.glob<{ default: ImageMetadata }>('/src/assets/detaily/*.{jpg,png}', { eager: true });
+/** Prvé strany PDF a výkresy z DXF výrobcu pre stôl dokumentov (data/nahlady_dokumentov.py). */
+const dokumenty = import.meta.glob<{ default: ImageMetadata }>('/src/assets/dokumenty/*.jpg', { eager: true });
 
 function najdi(mapa: Record<string, { default: ImageMetadata }>, subor: string | null | undefined): ImageMetadata | undefined {
   if (!subor) return undefined;
@@ -20,6 +22,7 @@ export const piktogram = (subor: string | null | undefined) => najdi(piktogramy,
 export const fotka = (subor: string | null | undefined) => najdi(fotky, subor);
 export const detail = (subor: string | null | undefined) => najdi(detaily, subor);
 export const fotkaReferencie = (subor: string | null | undefined) => najdi(referencie, subor);
+export const nahladDokumentu = (subor: string | null | undefined) => najdi(dokumenty, subor);
 
 /** Fotky spojok a príslušenstva z galérie watts.eu podľa id produktu: zväčšené a vyrezané z bieleho
  *  pozadia (priehľadné WebP, data/vylepsi_obrazky.py). Nový diel bez úpravy má pôvodné JPG. */

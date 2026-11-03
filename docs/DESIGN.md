@@ -885,4 +885,4 @@ Na webe je:
 | Stavba radu | rozložený rez pri rolovaní (keď má rad snímky), pod ním popis, parametre a montáž; inak vrstvy ako tri lupy s makrami | `Rad.astro`, `Rozklad.astro` |
 | Referencia na stránke radu | scéna s kótou, druhá zrkadlovo | `Rad.astro` |
 | Pre firmy | veľká fotka areálu a tri skupiny s lupou | `PreFirmy.astro` |
-| Podklady | dokumenty na stole: obálka katalógu a brožúry, ostatné ako list so skratkou formátu | `Subory.astro` |
+| Podklady | dokumenty na stole so skutočným obsahom: obálka katalógu a brožúry, prvá strana PDF, výkres ako list A3 naležato cez dva stĺpce (DWG, pod ním odkaz na DXF), názov len pod listom; podklad bez náhľadu ako list so skratkou formátu | `Subory.astro`, `data/nahlady_dokumentov.py` |

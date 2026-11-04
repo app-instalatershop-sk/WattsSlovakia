@@ -59,12 +59,13 @@ const c = {
   konfig: (process.env.FTP_KONFIG || '/konfig').replace(/\/+$/, ''),
   adresa: (process.env.WEB_ADRESA || 'https://microflex.sk').replace(/\/+$/, ''),
   spojenia: Math.max(1, Math.min(8, Number(process.env.FTP_SPOJENIA || 4))),
+  tlsMax: process.env.FTP_TLS_MAX || undefined,
 };
 // Git Bash prepisuje premennú prostredia „/web“ na cestu vo Windows (C:/Program Files/Git/web).
 if (/^[A-Za-z]:|\\/.test(c.web + c.konfig) || !c.web.startsWith('/') || !c.konfig.startsWith('/')) {
   koniec(`FTP_WEB (${c.web}) a FTP_KONFIG (${c.konfig}) sú cesty na FTP, napríklad /web. Zapíš ich do nasadenie/.env, v Git Bash prípadne s MSYS_NO_PATHCONV=1.`);
 }
-const konfigVoWebe = c.konfig.startsWith(c.web + '/');
+let konfigVoWebe = c.konfig.startsWith(c.web + '/');
 const zaciatok = Date.now();
 
 if (!ARG.has('--bez-buildu') && !SKUSOBNE) {
@@ -110,6 +111,7 @@ try {
   krok(`Pripojenie na ${c.server}:${c.port} (FTPS)`);
   klienti.push(await pripoj());
   const hlavny = klienti[0];
+  await zistiPriecinky(hlavny);
   if (!SKUSOBNE) {
     try {
       await hlavny.ensureDir(c.konfig);
@@ -241,7 +243,8 @@ async function pripoj() {
   // FTP_LADENIE=1: výpis príkazov a odpovedí FTP (basic-ftp heslo zakryje ako „PASS ###“).
   k.ftp.verbose = process.env.FTP_LADENIE === '1';
   await k.connect(c.server, c.port);
-  const tls = { host: c.server, rejectUnauthorized: !c.odtlacok, ...(isIP(c.server) ? {} : { servername: c.server }) };
+  // FTP_TLS_MAX=TLSv1.2 v .env len ako záloha, keby server prestal prijímať TLS 1.3 v dátovom kanáli.
+  const tls = { host: c.server, rejectUnauthorized: !c.odtlacok, ...(c.tlsMax ? { maxVersion: c.tlsMax } : {}), ...(isIP(c.server) ? {} : { servername: c.server }) };
   try {
     await k.useTLS(tls);
   } catch (e) {
@@ -333,7 +336,31 @@ async function skusHtaccess(k, obsah) {
   }
 }
 
+/**
+ * Koreň webu na FTP. FTP účet domény vidí /web, účet celého hostingu /<doména>/web (u Websupportu oba,
+ * overené 4. 11. 2026: účet microflex.sk vidí /microflex.sk/{web,logs,sub}). FTP_WEB v .env má prednosť.
+ */
+async function zistiPriecinky(k) {
+  if (!process.env.FTP_WEB) {
+    const domena = new URL(c.adresa).hostname;
+    const moznosti = [['/web', '/konfig'], [`/${domena}/web`, `/${domena}/konfig`]];
+    const najdene = [];
+    for (const [web, konfig] of moznosti) {
+      if ((await k.sendIgnoringError(`CWD ${web}`)).code === 250) najdene.push([web, konfig]);
+    }
+    await k.cd('/');
+    if (!najdene.length) throw new Error(`na FTP nie je ${moznosti.map(([w]) => w).join(' ani ')}. Nastav FTP_WEB a FTP_KONFIG v nasadenie/.env.`);
+    c.web = najdene[0][0];
+    if (!process.env.FTP_KONFIG) c.konfig = najdene[0][1];
+  }
+  konfigVoWebe = c.konfig.startsWith(c.web + '/');
+  console.log(`  Koreň webu ${c.web}, konfigurácia ${c.konfig}${konfigVoWebe ? ' (vo webe, zamknutá .htaccess)' : ' (mimo webu)'}.`);
+}
+
 async function stiahniText(k, cesta) {
+  // Najprv SIZE (len riadiaci kanál): RETR chýbajúceho súboru smerovač Websupportu ohlási zhodením dátového
+  // spojenia (ECONNRESET), nie kódom 550.
+  if ((await k.sendIgnoringError(`SIZE ${cesta}`)).code >= 400) return null;
   const casti = [];
   const ciel = new Writable({ write(kus, _k, hotovo) { casti.push(kus); hotovo(); } });
   try {

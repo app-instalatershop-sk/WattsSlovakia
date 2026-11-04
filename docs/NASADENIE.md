@@ -33,6 +33,8 @@ DMARC `p=quarantine`. Dopyt odchádza cez SMTP Websupportu s podpisom DKIM, tak�
    `/web`. Z Prihlasovacích údajov zapísať meno a heslo do `web/nasadenie/.env` (vzor `web/nasadenie/env.vzor`)
    a ako server `ftp.r6.websupport.sk`: na tento názov je vydaný certifikát FTP servera, microflex.sk ukazuje na
    ten istý server (37.9.175.196, overené 4. 11. 2026). Ak má FTP obmedzenie podľa krajiny alebo IP, povoliť Slovensko.
+   FTP účet hostingu vidí koreň s priečinkom `microflex.sk/` (v ňom `web`, `logs`, `sub`); skript koreň webu nájde sám
+   (`/web` alebo `/microflex.sk/web`) a konfiguráciu dá vedľa (`/microflex.sk/konfig`).
 5. **Schránka na odosielanie.** E-maily → vytvoriť schránku `web@microflex.sk` so silným heslom. Skopírovať
    `web/nasadenie/dopyt.konfig.vzor.php` ako `dopyt.konfig.php`, doplniť heslo a ľubovoľný dlhý text ako soľ.
    SMTP server overiť v E-maily → Prihlasovacie údaje (vzor má `smtp.m1.websupport.sk`). Odporúčam presmerovať
@@ -109,6 +111,7 @@ mikrofónu, polohy, platieb a USB. Typy súborov: AVIF, WebP, WOFF2, SVG, JSON a
 | Príznak | Čo s tým |
 | --- | --- |
 | Certifikát FTP servera sa nepodarilo overiť | server zadať názvom z certifikátu (`ftp.r6.websupport.sk`), inak porovnať certifikát s WebAdminom a zapísať `FTP_ODTLACOK` |
+| FTP `ECONNRESET (data socket)` | smerovač zhodí dátové spojenie pri RETR neexistujúceho súboru; skript preto najprv pýta `SIZE`. Keby padali aj iné prenosy, skúsiť `FTP_TLS_MAX=TLSv1.2` v `.env` |
 | FTP `530 Login incorrect` | meno alebo heslo nesedí s WebAdminom (FTP účty → Prihlasovacie údaje), alebo účet obmedzuje IP; neskúšať opakovane, server môže adresu zablokovať |
 | SMTP `535 authentication failed` | heslo schránky web@microflex.sk nesedí (meno je celá adresa, server smtp.m1.websupport.sk:465 podľa automatickej konfigurácie Websupportu) |
 | Skúška `.htaccess` vrátila 404 alebo parkovaciu stránku | doména ešte neukazuje na hosting (krok 2), alebo `FTP_WEB` nie je koreň webu |

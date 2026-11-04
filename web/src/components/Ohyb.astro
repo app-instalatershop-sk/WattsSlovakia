@@ -1,16 +1,20 @@
 ---
 /**
- * Ohyb na najmenší polomer (Juraj 28. 10. 2026): pri rolovaní sa rúra z vlastného 3D modelu ohne z rovnej
- * do oblúka s polomerom z katalógu (data/blender/ohyb.py, data/novinky_web.py ohyb) a pri oblúku sa objaví
- * kóta. Stred oblúka býva mimo záberu, preto kóta ide ako na výkrese: od osi rúry smerom k stredu (časť
- * polomeru) a štítok stojí na jej konci. Prehrávač ako pri rozloženom reze (lib/sekvencia.ts): snímky na
- * <canvas>, sťahovanie až pri sekcii, bez skriptu a pri „obmedziť pohyb“ stojí obraz ohnutý s kótou.
+ * Ohyb na najmenší polomer (Juraj 28. 10. 2026): rúra z vlastného 3D modelu sa ohne z rovnej do oblúka
+ * s polomerom z katalógu (data/blender/ohyb.py, data/novinky_web.py ohyb) a pri oblúku sa objaví kóta. Stred
+ * oblúka býva mimo záberu, preto kóta ide ako na výkrese: od osi rúry smerom k stredu (časť polomeru) a štítok
+ * stojí na jej konci.
+ * Pohyb sa prehrá sám, keď je obraz v okne (Juraj 4. 11. 2026, predtým rolovanie cez 1,8 okna); ohyb je jeden
+ * pohyb, preto návrhy A a B sú tu rovnaké, C sa dá potom ťahať. Prehrávač ako pri rozloženom reze
+ * (lib/sekvencia.ts): snímky na <canvas>, sťahovanie až pri sekcii, bez skriptu a pri „obmedziť pohyb“ stojí
+ * obraz ohnutý s kótou.
  */
+import SekvenciaOvladanie from './SekvenciaOvladanie.astro';
 import { sadzba } from '../lib/sadzba';
 
 export interface OhybData { snimok: number; pomer: number; sirky: number[]; cesta: string; rad?: string; obj_cislo?: string; polomer_m: number; plast_mm: number; body: { stred: number[]; os: number[] }[] }
-interface Props { data: OhybData; nadpis: string; popis: string; poznamka?: string; alt: string; kota: string; class?: string; hore?: number; horeM?: number; id?: string; tma?: boolean }
-const { data, nadpis, popis, poznamka, alt, kota, class: trieda, hore = 72, horeM = 64, id = 'h-ohyb', tma = false } = Astro.props;
+interface Props { data: OhybData; nadpis: string; popis: string; poznamka?: string; alt: string; kota: string; ovladanie: { znova: string; tahaj: string }; class?: string; hore?: number; horeM?: number; id?: string; tma?: boolean }
+const { data, nadpis, popis, poznamka, alt, kota, ovladanie, class: trieda, hore = 72, horeM = 64, id = 'h-ohyb', tma = false } = Astro.props;
 const DIEL = 0.42;
 const koniec = data.body[data.snimok - 1];
 const k0 = [koniec.os[0] + DIEL * (koniec.stred[0] - koniec.os[0]), koniec.os[1] + DIEL * (koniec.stred[1] - koniec.os[1])];
@@ -19,7 +23,7 @@ const posledna = `${data.cesta}${sirka}/${String(data.snimok - 1).padStart(3, '0
 const polomer = data.polomer_m.toFixed(2).replace('.', ',');
 ---
 <section class:list={['ohyb', trieda, { 'oh-tma': tma }]} aria-labelledby={id} style={`--oh-top: ${hore}px; --oh-top-m: ${horeM}px`} data-ohyb data-cesta={data.cesta} data-snimok={data.snimok} data-sirky={data.sirky.join(',')} data-body={JSON.stringify(data.body)}>
-  <div class="oh-sticky">
+  <div class="oh-obal">
     <div class="wrap oh-grid">
       <div class="oh-text">
         <h2 id={id}>{nadpis}</h2>
@@ -37,25 +41,30 @@ const polomer = data.polomer_m.toFixed(2).replace('.', ',');
         </svg>
         <span class="oh-bod" style={`--x: ${koniec.os[0]}%; --y: ${koniec.os[1]}%`} aria-hidden="true"></span>
         <p class="oh-stitok" style={`--x: ${k0[0]}%; --y: ${k0[1]}%`}><strong>R {polomer} m</strong><span>{kota}</span></p>
+        <SekvenciaOvladanie znova={ovladanie.znova} tahaj={ovladanie.tahaj} />
       </div>
     </div>
   </div>
 </section>
 
 <style>
-  .ohyb { --oh-pad: clamp(12px, 3vh, 32px); position: relative; height: 225vh; }
-  /* Obsah v strede okna pod hlavičkou; okraje auto ho pri vyššom obsahu zarovnajú hore (nič sa neoreže). */
-  .oh-sticky { position: sticky; top: var(--oh-top); height: calc(100vh - var(--oh-top)); display: flex; padding-block: var(--oh-pad); overflow: clip; }
-  .oh-grid { width: 100%; margin-block: auto; display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 24px 48px; align-items: center; }
+  /* Sekcia je taká vysoká ako obsah; obraz nikdy vyšší ako okno pod hlavičkou (--oh-hore). */
+  .ohyb { --oh-pad: clamp(12px, 3vh, 32px); --oh-hore: var(--oh-top, 72px); position: relative; }
+  /* clip: svetlo za rúrou (pseudoprvok rámika, presah 22 až 28 %) nesmie urobiť vodorovný posuvník. */
+  .oh-obal { padding-block: 64px; overflow: clip; }
+  .oh-grid { width: 100%; display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 24px 48px; align-items: center; }
   .oh-text h2 { font-size: clamp(28px, 2.2vw + 14px, 42px); letter-spacing: -0.02em; }
   .oh-text .lead { margin-top: 16px; }
   .oh-pozn { margin-top: 16px; padding-left: 16px; border-left: 3px solid var(--color-yellow-500); font-size: 15px; line-height: 1.55; color: var(--color-ink-soft); max-width: 30em; }
   /* Obraz nikdy vyšší ako okno: šírka z voľnej výšky a pomeru strán (samotná max-height by ho roztiahla do šírky). */
-  .oh-stage { position: relative; width: min(100%, calc((100vh - var(--oh-top) - 2 * var(--oh-pad)) * var(--pomer))); margin-inline: auto; container-type: inline-size; }
+  .oh-stage { position: relative; width: min(100%, calc((100vh - var(--oh-hore) - 2 * var(--oh-pad)) * var(--pomer))); margin-inline: auto; container-type: inline-size; }
   .oh-obr :global(img), .oh-canvas, .oh-polomer { position: absolute; inset: 0; width: 100%; height: 100%; }
   .oh-canvas { opacity: 0; }
   .ohyb.oh-bezi .oh-canvas { opacity: 1; }
   .ohyb.oh-bezi .oh-obr { visibility: hidden; }
+  /* C: rúra sa dá ťahaním ohýbať; zvislé rolovanie prstom ostáva stránke. */
+  .oh-stage.sq-tahatelne { touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
+  .oh-stage.sq-taha { cursor: grabbing; }
 
   /* Kóta polomeru: rovnaký jazyk ako kóty na reze (Koty.astro): bod, čiara s bielym lemom, mliečny štítok. */
   .oh-polomer { overflow: visible; pointer-events: none; }
@@ -83,8 +92,8 @@ const polomer = data.polomer_m.toFixed(2).replace('.', ',');
   .oh-tma .oh-polomer line { stroke: #fff; filter: none; }
 
   @media (max-width: 900px) {
-    .ohyb { height: 200vh; }
-    .oh-sticky { top: var(--oh-top-m); height: calc(100svh - var(--oh-top-m)); }
+    .ohyb { --oh-hore: var(--oh-top-m, 64px); }
+    .oh-obal { padding-block: 48px; }
     .oh-grid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
     .oh-text h2 { font-size: clamp(24px, 5vw + 8px, 32px); }
     .oh-text .lead { font-size: 16px; }
@@ -94,25 +103,23 @@ const polomer = data.polomer_m.toFixed(2).replace('.', ',');
     .oh-stitok { transform: translate(-50%, 14px); }
     .ohyb.oh-js .oh-stitok { transform: translate3d(calc(var(--xn, 0) * 1cqw), calc(var(--yn, 0) * 1cqw / var(--pomer)), 0) translate(-50%, 14px); }
   }
-  @media (prefers-reduced-motion: reduce) {
-    .ohyb { height: auto; }
-    .oh-sticky { position: static; height: auto; padding-block: 64px; }
-  }
 </style>
 
 <script>
-  import { prehravaj, zmensiObraz } from '../lib/sekvencia';
-  // Dráha 0 až 1 cez sekciu: na začiatku obraz chvíľu stojí, kóta príde pri dokončenom oblúku a hotový ohyb
-  // s kótou drží ešte asi pol okna rolovania, kým sekcia odíde.
-  const OD = 0.08, DO = 0.74, KOTA = 0.9, DIEL = 0.42;
+  import { prehravaj, ovladaj, rezimAnimacii, cisloCss } from '../lib/sekvencia';
+  // Kóta príde pri dokončenom oblúku (podiel ohybu); ohyb trvá 2,2 s.
+  const KOTA = 0.9, DIEL = 0.42, TRVANIE = 2200;
   const stopky: AbortController[] = [];
 
   function initOhyb() {
     stopky.splice(0).forEach((s) => s.abort());
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const rezim = rezimAnimacii();
     document.querySelectorAll<HTMLElement>('[data-ohyb]').forEach((sek) => {
       const stop = new AbortController();
+      const signal = stop.signal;
       stopky.push(stop);
+      sek.dataset.rezim = rezim;
       sek.classList.add('oh-js');
       const n = Number(sek.dataset.snimok);
       const body: { stred: number[]; os: number[] }[] = JSON.parse(sek.dataset.body ?? '[]');
@@ -120,13 +127,13 @@ const polomer = data.polomer_m.toFixed(2).replace('.', ',');
       const ciara = sek.querySelector<SVGLineElement>('.oh-polomer line')!;
       const bod = sek.querySelector<HTMLElement>('.oh-bod')!;
       const stitok = sek.querySelector<HTMLElement>('.oh-stitok')!;
-      prehravaj({
+      const prehravac = prehravaj({
         koren: sek, stage, platno: sek.querySelector<HTMLCanvasElement>('.oh-canvas')!, cesta: sek.dataset.cesta ?? '', n,
-        sirky: (sek.dataset.sirky ?? '').split(',').map(Number), od: OD, do: DO, signal: stop.signal,
+        sirky: (sek.dataset.sirky ?? '').split(',').map(Number), zaciatok: 0, signal,
         bezi: () => sek.classList.add('oh-bezi'),
         // Prehliadač bez AVIF dostane statický ohnutý obraz s kótou (WebP), bez pohybu.
-        zlyhalo: () => { sek.classList.remove('oh-js'); stop.abort(); },
-        popisy: (_p, x) => {
+        zlyhalo: () => { sek.classList.remove('oh-js'); delete sek.dataset.rezim; stop.abort(); },
+        popisy: (x) => {
           const i = Math.min(n - 2, Math.floor(x)), t = x - i;
           const medzi = (a: number[], b: number[]) => [a[0] + t * (b[0] - a[0]), a[1] + t * (b[1] - a[1])];
           const os = medzi(body[i].os, body[i + 1].os), stred = medzi(body[i].stred, body[i + 1].stred);
@@ -140,13 +147,9 @@ const polomer = data.polomer_m.toFixed(2).replace('.', ',');
           sek.classList.toggle('oh-kota', x / (n - 1) >= KOTA);
         },
       });
-      // Telefón s nízkym oknom: obraz sa zmenší, aby sa nadpis, text aj celý oblúk zmestili do okna.
-      const sticky = sek.querySelector<HTMLElement>('.oh-sticky')!;
-      const grid = sek.querySelector<HTMLElement>('.oh-grid')!;
-      const prisposob = () => zmensiObraz(sticky, grid, stage);
-      prisposob();
-      document.fonts?.ready.then(prisposob);
-      window.addEventListener('resize', prisposob, { signal: stop.signal });
+
+      // Prehranie pri zobrazení, Prehrať znova, v C ťahanie (doprava sa rúra ohýba).
+      ovladaj({ koren: sek, stage, prehravac, hore: cisloCss(sek, '--oh-hore', 72), scenar: [[1, TRVANIE, 0]], rezim, smerTahu: 1, signal });
     });
   }
 

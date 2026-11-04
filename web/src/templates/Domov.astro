@@ -179,11 +179,11 @@ const skratky = [
 
   {/* Rozložený rez (Juraj 26. 10. 2026 namiesto „rezu pod lupou“): vlastný 3D model DUO sa pri rolovaní
       rozloží na plášť, penu a nosné rúry, pri každej vrstve kóta. Kým nie sú snímky, ostáva len rodina. */}
-  {rozklad && <Rozklad id="konstrukcia" class="rozklad-domov" data={rozklad} nadpis={tx.stavbaH2} popis={tx.stavbaP} vrstvy={vrstvyRozkladu} alt={tx.rozkladAlt('Microflex DUO')} label={h.lupyLabel} />}
+  {rozklad && <Rozklad id="konstrukcia" class="rozklad-domov" data={rozklad} nadpis={tx.stavbaH2} popis={tx.stavbaP} vrstvy={vrstvyRozkladu} alt={tx.rozkladAlt('Microflex DUO')} label={h.lupyLabel} ovladanie={nv.sekvencia} />}
 
   {/* Ohyb (Juraj 28. 10. 2026): dôkaz hlavnej vety, že potrubie sa ohne okolo prekážky; medzi stavbou
       potrubia a pokládkou: z čoho je, ako sa ohne, ako sa kladie. */}
-  {ohybDomov && <Ohyb data={ohybDomov} class="ohyb-domov" tma nadpis={nv.ohyb.h2} popis={nv.ohyb.domov} poznamka={nv.ohyb.pozn} alt={nv.ohyb.alt('Microflex DUO', '0,60')} kota={nv.ohyb.kota} />}
+  {ohybDomov && <Ohyb data={ohybDomov} class="ohyb-domov" tma nadpis={nv.ohyb.h2} popis={nv.ohyb.domov} poznamka={nv.ohyb.pozn} alt={nv.ohyb.alt('Microflex DUO', '0,60')} kota={nv.ohyb.kota} ovladanie={nv.sekvencia} />}
 
   <section id="pokladka" class:list={['section pokladka', { 'ma-kotuc': odvalenie }]} aria-labelledby="h-pokladka">
     {odvalenie ? (
@@ -196,7 +196,7 @@ const skratky = [
           {/* Podmienka času hneď pri tvrdení o čase, nie pod iným údajom (Juraj 28. 10.). */}
           <p class="pk-pozn">{h.pokladkaZdroj}</p>
         </div>
-        <KotucSekvencia data={odvalenie} texty={{ priemer: nv.kotuc.priemer, ostava: nv.kotuc.ostava, label: nv.kotuc.label }} celo={['2 × 25 mm', 'DUO v plášti 125 mm']} alt={nv.kotuc.alt} kroky={h.kroky} krokyLabel={h.krokyLabel} />
+        <KotucSekvencia data={odvalenie} texty={{ priemer: nv.kotuc.priemer, ostava: nv.kotuc.ostava, label: nv.kotuc.label }} celo={['2 × 25 mm', 'DUO v plášti 125 mm']} alt={nv.kotuc.alt} kroky={h.kroky} krokyLabel={h.krokyLabel} ovladanie={nv.sekvencia} />
         <div class="wrap">
           <div class="pokladka-pata">
             <p class="zataz"><strong>{h.zataz[0]}</strong><span>{sadzba(h.zataz[1])}</span></p>
@@ -451,18 +451,12 @@ const skratky = [
   .rodina { background: linear-gradient(180deg, var(--zem-2) 0%, var(--zem-3) 100%); padding-top: 0; padding-bottom: 24px; overflow-x: clip; overflow-y: visible; }
   /* Rozložený rez pokračuje zostupom pod zem: rovnaký tón ako koniec rodiny a začiatok pokládky. */
   :global(.rozklad.rozklad-domov) { background: var(--zem-3); --rz-neaktivna-opacity: 1; }
-  /* Kratšia cesta na domove; detailné stránky si ponechávajú vlastné tempo ukážok. */
-  @media (prefers-reduced-motion: no-preference) {
-    :global(.rozklad.rozklad-domov) { height: 220vh; }
-    :global(.ohyb.ohyb-domov) { height: 180vh; }
-    .pokladka.ma-kotuc :global(.ks) { height: 175vh; }
-  }
   /* Text ostáva čitateľný aj pred zvýraznením vrstvy alebo kroku. */
   .pokladka { --ks-neaktivny-opacity: 1; }
   :global(#konstrukcia), #pokladka, #projekty { scroll-margin-top: 96px; }
   /* Ohyb je tmavá scéna medzi svetlými sekciami (Juraj 28. 10. 2026: návrh C, pokládka ostáva svetlá). Tón rezu
      prejde hore ohnutou hranou do tmy a dole sa rovnakou hranou vráti do tónu pokládky. Obe hrany sú vnútri
-     sekcie (obsah lepkavej časti k nim nedosiahne), takže neprekrývajú rez ani nadpis pokládky. */
+     sekcie (obsah má nad nimi okraj), takže neprekrývajú rez ani nadpis pokládky. */
   :global(.ohyb.ohyb-domov) { isolation: isolate; background: var(--zem-3); }
   :global(.ohyb.ohyb-domov)::before, :global(.ohyb.ohyb-domov)::after { content: ""; position: absolute; z-index: -1; left: 0; right: 0; pointer-events: none; }
   :global(.ohyb.ohyb-domov)::before { top: 0; bottom: 0; background: linear-gradient(180deg, #11397a 0%, #0e3374 100%);
@@ -470,8 +464,8 @@ const skratky = [
     mask: var(--hrana-ohyb) left top / 100% var(--sikmina-zaver) no-repeat, linear-gradient(#000 0 0) left var(--sikmina-zaver) / 100% 100% no-repeat; }
   :global(.ohyb.ohyb-domov)::after { bottom: 0; height: var(--sikmina-zaver); background: var(--zem-3);
     -webkit-mask: var(--hrana-ohyb) center / 100% 100% no-repeat; mask: var(--hrana-ohyb) center / 100% 100% no-repeat; }
-  /* Pri obmedzenom pohybe sekcia nelepí a obsah má len 64 px okraj; hrana býva až 96 px. */
-  @media (prefers-reduced-motion: reduce) { :global(.ohyb.ohyb-domov .oh-sticky) { padding-block: calc(var(--sikmina-zaver) + 40px); } }
+  /* Obsah ohybu má okraj nad oboma ohnutými hranami (hrana býva až 96 px). */
+  :global(.ohyb.ohyb-domov .oh-obal) { padding-block: calc(var(--sikmina-zaver) + 48px); }
   .rodina-grid { position: relative; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px; align-items: start; }
   /* Text rodiny začína vyššie, v páse, cez ktorý prechádza render (pás katalógu má dole 200 px pre jeho
      presah); vľavo by inak ostala prázdna plocha (DOLADENIE kap. 2.4, bod 4). */
@@ -515,7 +509,7 @@ const skratky = [
   .pk-hlava h2 { font-size: clamp(32px, 3vw + 12px, 58px); line-height: 1.04; letter-spacing: -0.03em; max-width: 11em; }
   .pk-hlava .lead { margin-top: 16px; max-width: 40em; }
   .pk-pozn { margin-top: 8px; font-size: 14px; color: var(--color-ink-soft); }
-  /* clip namiesto hidden: hidden by vypol lepkavý obraz kotúča (sticky v KotucSekvencia) */
+  /* clip: kóta nad kotúčom ani svetlo za ním nevybehnú do strany (bez vodorovného posuvníka). */
   /* Ohyb a kotúč sú jedna kapitola o pokládke (Juraj 28. 10.): kotúč nadväzuje na ohyb bez veľkej medzery.
      Medzera je len taká, aby nadpis vľavo neprilipol k tmavému ohybu (hrana tam siaha až po spodok sekcie). */
   .pokladka.ma-kotuc { padding-top: clamp(40px, 2.5vw + 32px, 72px); overflow: clip; }
@@ -668,10 +662,5 @@ const skratky = [
     .proj :global(.scena-img) { border-radius: 0; }
     .podpora { margin-top: 96px; row-gap: 40px; }
     .podpora-sluzby { grid-template-columns: minmax(0, 1fr); gap: 28px; }
-  }
-  @media (max-width: 900px) and (prefers-reduced-motion: no-preference) {
-    :global(.rozklad.rozklad-domov) { height: 200vh; }
-    :global(.ohyb.ohyb-domov) { height: 165vh; }
-    .pokladka.ma-kotuc :global(.ks) { height: 160vh; }
   }
 </style>

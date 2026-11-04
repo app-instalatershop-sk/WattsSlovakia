@@ -32,7 +32,7 @@ ponúkne ten istý dopyt ako vyplnený e-mail (mailto) a telefón.
       (namiesto pôvodného návrhu Cloudflare Pages Function + Resend + Turnstile; vyskúšané lokálne, `docs/NASADENIE.md`).
 - [x] Schránka web@microflex.sk a `web/nasadenie/dopyt.konfig.php` s jej heslom (prihlásenie overené 4. 11. 2026).
 - [x] Skúšobný dopyt z ostrého webu: server ho prijal a odoslal (4. 11. 2026, `npm run overit -- --skusobny-dopyt`).
-- [ ] Juraj potvrdí, že skúšobný dopyt prišiel na dotazy@instalatershop.sk (nie do spamu) a Odpovedať mieri na zákazníka.
+- [x] Skúšobný dopyt prišiel na dotazy@instalatershop.sk (Juraj 4. 11. 2026).
 - [x] Veta o spracúvaní osobných údajov pod tlačidlom s odkazom na https://www.instalatershop.sk/gdpr/ (Juraj 4. 11. 2026).
 - [ ] Firma doplní web a formulár do podmienok ochrany osobných údajov (otázka č. 5 pre manažéra).
 
@@ -58,7 +58,8 @@ Rozhodnutie Juraja 4. 11. 2026: bez cookies a bez lišty. Hľadanosť v Search C
 štatistikách (zdroj microflex.sk), dopyty v e-maile.
 
 - [x] Značky UTM pri všetkých odkazoch do e-shopu (`web/integrations/utm.mjs`, 2 114 odkazov; štruktúrované dáta bez UTM).
-- [ ] Search Console: vlastníctvo Doména microflex.sk overené TXT záznamom vo WebAdmine (Juraj), po spustení mapa webu.
+- [ ] Search Console: vlastníctvo Doména microflex.sk overené TXT záznamom vo WebAdmine (nastaví šéf Juraja,
+      postup v `docs/NASADENIE.md`, Po spustení), po spustení mapa webu.
 - [ ] Overiť v štatistikách e-shopu, že sa zdroj microflex.sk zobrazuje (po prvých prechodoch).
 
 ## 6. SEO pred spustením (4. 11. 2026)
@@ -70,7 +71,16 @@ Rozhodnutie Juraja 4. 11. 2026: bez cookies a bez lišty. Hľadanosť v Search C
 - [ ] Pri spustení: nasadiť bez `--neindexovat`, `npm run overit`, `npm run indexnow`, v Search Console odoslať mapu
       webu a požiadať o indexovanie hlavných stránok, Bing Webmaster Tools (import zo Search Console).
 
-## 7. Posledná kontrola
+## 7. Nápady a úlohy (TODO)
+
+- [ ] Animácie viazané na rolovanie zmeniť na automatické pri zobrazení (Juraj 4. 11. 2026): „Z čoho je potrubie“
+      (rozložený rez, domov aj rady), „Ohne sa okolo prekážky“ (ohyb, 225 vh) a kotúč pri pokládke (200 vh).
+      Rolovanie cez ne trvá dlho; návrh: prehrať raz pri zobrazení, tlačidlo Prehrať znova, kratšia sekcia,
+      pri obmedzenom pohybe hneď posledná snímka.
+- [ ] Slogan o montáži bez lisovacích klieští a zvárania (Juraj 4. 11. 2026, katalóg s. 5 a 22): miesto a znenie vyberie Juraj.
+- [ ] Odkazy do e-shopu spárovať po exporte produktov zo Shoptetu (export dodá Juraj, bod 1).
+
+## 8. Posledná kontrola
 
 - [ ] Lighthouse na mobile aspoň 90 na každej stránke (`docs/RYCHLOST.md`).
 - [ ] `python data/kontrola_webu.py` bez chýb (spúšťa ho aj `npm run nasadit`).

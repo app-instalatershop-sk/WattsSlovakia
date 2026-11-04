@@ -11,7 +11,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "nasadit": "node nasadenie/nasad.mjs",
-    "overit": "node nasadenie/over.mjs"
+    "overit": "node nasadenie/over.mjs",
+    "indexnow": "node nasadenie/indexnow.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^6.0.6",

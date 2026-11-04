@@ -6,6 +6,7 @@ import Paticka from '../components/Paticka.astro';
 import { type Lang, type Alternates, LOCALE, t, route } from '../i18n/ui';
 import { titulok, popisMeta } from '../lib/seo';
 import { ogObrazok } from '../lib/og';
+import { FIRMA } from '../content/firma';
 
 interface Drobcek { text: string; href?: string }
 interface Props {
@@ -31,13 +32,27 @@ const popis = popisMeta(description, lang);
 const ogCesta = ogImage ?? (await ogObrazok(Astro.url.pathname, lang));
 const ogAlt = `${title}, ${ui.site.name}`;
 
+// Web prevádzkuje Ohrievacia Technika (predajňa Inštalatérshop); @id spája organizáciu na všetkých stránkach.
+// Logo zámerne nie: MICROFLEX® je značka Watts, nie znak tejto organizácie.
 const organizacia = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
+  '@id': new URL('/#organizacia', site).href,
   name: ui.site.name,
+  legalName: FIRMA.nazov,
   url: site.href,
   description: ui.site.tagline,
+  email: FIRMA.email,
+  telephone: FIRMA.telefon,
+  vatID: FIRMA.icdph,
+  address: { '@type': 'PostalAddress', streetAddress: FIRMA.sidlo.ulica, postalCode: FIRMA.sidlo.psc, addressLocality: FIRMA.sidlo.mesto, addressCountry: 'SK' },
+  sameAs: [FIRMA.eshop],
 };
+// Názov webu vo výsledkoch Google (site name) berie Google zo štruktúrovaných dát WebSite na úvodnej stránke.
+const domov = Astro.url.pathname === route(lang, 'domov');
+const web = domov
+  ? { '@context': 'https://schema.org', '@type': 'WebSite', name: ui.site.name, alternateName: ['Microflex SK', 'microflex.sk'], url: new URL(route(lang, 'domov'), site).href, inLanguage: lang, publisher: { '@id': organizacia['@id'] } }
+  : null;
 const breadcrumbs = drobceky.length
   ? {
       '@context': 'https://schema.org',
@@ -47,7 +62,7 @@ const breadcrumbs = drobceky.length
       })),
     }
   : null;
-const ld = [organizacia, ...(breadcrumbs ? [breadcrumbs] : []), ...jsonLd];
+const ld = [organizacia, ...(web ? [web] : []), ...(breadcrumbs ? [breadcrumbs] : []), ...jsonLd];
 
 /* Prechod medzi stránkami: hlavička stojí, obsah starej stránky rýchlo zmizne a nový vystúpi.
    Rendery s rovnakým menom (transition:name) medzitým preletia na svoje miesto na novej stránke.

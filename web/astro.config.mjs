@@ -26,8 +26,8 @@ export default defineConfig({
   integrations: [
     react(),
     sitemap({
-      // Pracovné stránky s návrhmi do mapy webu nepatria.
-      filter: (page) => !page.includes('/navrhy/'),
+      // Do mapy webu nepatria pracovné návrhy ani hľadanie (má noindex, Search Console by hlásila rozpor).
+      filter: (page) => !/\/(navrhy|hladat|hledat)\//.test(page),
       i18n: { defaultLocale: 'sk', locales: { sk: 'sk-SK', cs: 'cs-CZ' } },
     }),
     // Slovenská sadzba na celý text stránok po builde (nezlomiteľné medzery, docs/POLISH.md T4).

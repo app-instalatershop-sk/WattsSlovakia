@@ -92,11 +92,12 @@ for (const [n, ma] of [['strict-transport-security', 'max-age='], ['x-content-ty
 if (NEINDEXOVAT) zapis(/noindex/.test(h('x-robots-tag')), 'skúšobné nasadenie: vyhľadávače web nezaradia', h('x-robots-tag') || 'chýba X-Robots-Tag');
 else zapis(!h('x-robots-tag'), 'web sa smie indexovať', h('x-robots-tag') ? `X-Robots-Tag: ${h('x-robots-tag')} (nasadené s --neindexovat)` : '');
 
-// Prístupy a konfigurácia nesmú byť z prehliadača dostupné (sú mimo /web alebo ich server zakáže).
-for (const cesta of ['/.env', '/nasadenie/.env', '/web/nasadenie/.env', '/konfig/dopyt.php', '/konfig/nasadenie.json', '/api/konfig/dopyt.php', '/.htaccess', '/.git/config']) {
+// Konfigurácia dopytu a zoznam nasadenia nesmú byť z prehliadača dostupné (sú mimo /web alebo ich server zakáže).
+// Len cesty, ktoré náš web môže mať: skúšanie /.env či /.git ochrana Websupportu (WAF) trestá kódmi 466, 429, 509.
+for (const cesta of ['/konfig/dopyt.php', '/konfig/nasadenie.json', '/api/konfig/dopyt.php', '/.htaccess']) {
   const r = await ziskaj(adresa + cesta);
   const telo = await r.text();
-  zapis([403, 404].includes(r.status) && !/FTP_HESLO|smtp_heslo|"subory"/.test(telo), `nedostupné ${cesta}`, String(r.status));
+  zapis(r.status >= 400 && !/smtp_heslo|"subory"|RewriteEngine/.test(telo), `nedostupné ${cesta}`, `${r.status}${[403, 404].includes(r.status) ? '' : ' (ochrana servera)'}`);
 }
 
 // Presmerovania na jednu adresu stránky.

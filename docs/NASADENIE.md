@@ -120,6 +120,21 @@ mikrofónu, polohy, platieb a USB. Typy súborov: AVIF, WebP, WOFF2, SVG, JSON a
 | Dopyt hlási, že sa nepodaril | `/konfig/dopyt-stav/chyby.log` cez WebFTP: 535 = zlé heslo schránky, chyba spojenia = SMTP z hostingu nejde (`'sposob' => 'mail'`) |
 | `npm run overit`: dopyt 500 | chýba `/konfig/dopyt.php`: vyplniť `dopyt.konfig.php` a nasadiť |
 
+## Prvé nasadenie 4. 11. 2026 (skúšobné, bez indexovania)
+
+- `npm run nasadit -- --neindexovat` (commit f0785c1): 4 658 súborov, 205 MB za 1 min 47 s; skúška `.htaccess`
+  v pomocnom priečinku na Apache Websupportu prešla (`Options`, `DirectoryIndex`, `<If>` a hlavičky povolené).
+- Zástupná stránka Websupportu (`index.php`, 20 285 B, „Registrácia domén, hosting a servery“) presunutá do
+  `/microflex.sk/konfig/zaloha/websupport-index.php`.
+- `npm run overit -- --neindexovat --skusobny-dopyt`: 32 kontrol v poriadku (kompresia br, cache, všetky hlavičky,
+  www → bez www, lomka, 404, typy súborov, 146 stránok z mapy webu, dopyt: GET, pasca, zlý e-mail, cudzí pôvod,
+  skutočné odoslanie 200). Neprešlo http → https (v WebAdmine ešte nezapnuté).
+- Ochrana Websupportu (WAF) na skúšanie `/.env`, `/.git/config` či `/.htaccess` odpovedá kódmi 466, 429 a 509,
+  nie 403/404; `npm run overit` preto skúša len cesty, ktoré náš web môže mať, a berie každý kód ≥ 400 ako zamknuté.
+- Limit dopytov počíta skutočnú adresu návštevníka (odtlačok IP v `limity.json` sedí), `chyby.log` prázdny.
+- Chrome, 18 stránok × počítač a telefón: bez chýb v konzole, bez neúspešných požiadaviek a nenačítaných
+  obrázkov; prechod medzi stránkami (ClientRouter) a index hľadania fungujú.
+
 ## Overené 4. 11. 2026
 
 - PHP skript v PHP 8.4 (php-wasm; windows.php.net blokuje bezpečnostný DNS filter poskytovateľa) s falošným SMTP

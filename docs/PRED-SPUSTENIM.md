@@ -30,8 +30,9 @@ ponúkne ten istý dopyt ako vyplnený e-mail (mailto) a telefón.
 
 - [x] Odosielanie na serveri s potvrdením o prijatí a chybovým stavom, pasca na roboty a limit odoslaní
       (namiesto pôvodného návrhu Cloudflare Pages Function + Resend + Turnstile; vyskúšané lokálne, `docs/NASADENIE.md`).
-- [ ] Schránka web@microflex.sk a `web/nasadenie/dopyt.konfig.php` s jej heslom (Juraj, `docs/NASADENIE.md` krok 5).
-- [ ] Otestovať celú cestu až po prijatý e-mail: `npm run overit -- --skusobny-dopyt`.
+- [x] Schránka web@microflex.sk a `web/nasadenie/dopyt.konfig.php` s jej heslom (prihlásenie overené 4. 11. 2026).
+- [x] Skúšobný dopyt z ostrého webu: server ho prijal a odoslal (4. 11. 2026, `npm run overit -- --skusobny-dopyt`).
+- [ ] Juraj potvrdí, že skúšobný dopyt prišiel na dotazy@instalatershop.sk (nie do spamu) a Odpovedať mieri na zákazníka.
 - [ ] Informácia o spracúvaní osobných údajov pod formulárom: odkaz na zásady podľa odpovede na otázku č. 5
       v dokumente otázok pre manažéra (návrh: zásady instalatershop.sk doplnené o web a formulár).
 
@@ -39,8 +40,10 @@ ponúkne ten istý dopyt ako vyplnený e-mail (mailto) a telefón.
 
 - [x] Hosting: Websupport (Juraj 4. 11. 2026). Doména aj DNS ostávajú na Websupporte, NS sa nemenia, DNSSEC netreba vypínať.
 - [x] Konfigurácia servera (`web/public/.htaccess`), skript nasadenia `npm run nasadit` a kontrola `npm run overit`.
-- [ ] Vo WebAdmine: hosting, priradenie domény, HTTPS, FTP účet do `web/nasadenie/.env` (Juraj, `docs/NASADENIE.md` kroky 1 až 4).
-- [ ] Prvé nasadenie a `npm run overit` bez chýb.
+- [x] Vo WebAdmine: hosting, priradenie domény, FTP účet do `web/nasadenie/.env` (4. 11. 2026).
+- [ ] Vo WebAdmine zapnúť Presmerovanie na HTTPS (Web → Služby → Upraviť); http://microflex.sk zatiaľ vracia 200.
+- [x] Prvé nasadenie, zatiaľ bez indexovania (`--neindexovat`, 4. 11. 2026, `docs/NASADENIE.md`).
+- [ ] `npm run overit` bez chýb po zapnutí HTTPS, potom ostré nasadenie bez `--neindexovat` (na pokyn Juraja).
 - [ ] Workflow GitHub Pages (`.github/workflows/astro.yml`) sa s Websupportom nepoužije a od 23. 9. zlyháva; zmazať, ak Juraj súhlasí.
 - [ ] Firemný repozitár vrátiť na súkromný: GitHub Pages už netreba (otázka č. 1 v dokumente otázok pre manažéra).
 

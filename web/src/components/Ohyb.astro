@@ -4,8 +4,8 @@
  * s polomerom z katalógu (data/blender/ohyb.py, data/novinky_web.py ohyb) a pri oblúku sa objaví kóta. Stred
  * oblúka býva mimo záberu, preto kóta ide ako na výkrese: od osi rúry smerom k stredu (časť polomeru) a štítok
  * stojí na jej konci.
- * Pohyb sa prehrá sám, keď je obraz v okne (Juraj 4. 11. 2026, predtým rolovanie cez 1,8 okna); ohyb je jeden
- * pohyb, preto návrhy A a B sú tu rovnaké, C sa dá potom ťahať. Prehrávač ako pri rozloženom reze
+ * Rúra sa ohne sama, raz a plynulo za 2,2 s, keď je obraz v okne (Juraj 4. 11. 2026, návrh A; predtým rolovanie
+ * cez 1,8 okna); jediné ovládanie je tlačidlo Prehrať znova. Prehrávač ako pri rozloženom reze
  * (lib/sekvencia.ts): snímky na <canvas>, sťahovanie až pri sekcii, bez skriptu a pri „obmedziť pohyb“ stojí
  * obraz ohnutý s kótou.
  */
@@ -13,7 +13,7 @@ import SekvenciaOvladanie from './SekvenciaOvladanie.astro';
 import { sadzba } from '../lib/sadzba';
 
 export interface OhybData { snimok: number; pomer: number; sirky: number[]; cesta: string; rad?: string; obj_cislo?: string; polomer_m: number; plast_mm: number; body: { stred: number[]; os: number[] }[] }
-interface Props { data: OhybData; nadpis: string; popis: string; poznamka?: string; alt: string; kota: string; ovladanie: { znova: string; tahaj: string }; class?: string; hore?: number; horeM?: number; id?: string; tma?: boolean }
+interface Props { data: OhybData; nadpis: string; popis: string; poznamka?: string; alt: string; kota: string; ovladanie: { znova: string }; class?: string; hore?: number; horeM?: number; id?: string; tma?: boolean }
 const { data, nadpis, popis, poznamka, alt, kota, ovladanie, class: trieda, hore = 72, horeM = 64, id = 'h-ohyb', tma = false } = Astro.props;
 const DIEL = 0.42;
 const koniec = data.body[data.snimok - 1];
@@ -41,7 +41,7 @@ const polomer = data.polomer_m.toFixed(2).replace('.', ',');
         </svg>
         <span class="oh-bod" style={`--x: ${koniec.os[0]}%; --y: ${koniec.os[1]}%`} aria-hidden="true"></span>
         <p class="oh-stitok" style={`--x: ${k0[0]}%; --y: ${k0[1]}%`}><strong>R {polomer} m</strong><span>{kota}</span></p>
-        <SekvenciaOvladanie znova={ovladanie.znova} tahaj={ovladanie.tahaj} />
+        <SekvenciaOvladanie znova={ovladanie.znova} />
       </div>
     </div>
   </div>
@@ -62,9 +62,6 @@ const polomer = data.polomer_m.toFixed(2).replace('.', ',');
   .oh-canvas { opacity: 0; }
   .ohyb.oh-bezi .oh-canvas { opacity: 1; }
   .ohyb.oh-bezi .oh-obr { visibility: hidden; }
-  /* C: rúra sa dá ťahaním ohýbať; zvislé rolovanie prstom ostáva stránke. */
-  .oh-stage.sq-tahatelne { touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
-  .oh-stage.sq-taha { cursor: grabbing; }
 
   /* Kóta polomeru: rovnaký jazyk ako kóty na reze (Koty.astro): bod, čiara s bielym lemom, mliečny štítok. */
   .oh-polomer { overflow: visible; pointer-events: none; }
@@ -106,7 +103,7 @@ const polomer = data.polomer_m.toFixed(2).replace('.', ',');
 </style>
 
 <script>
-  import { prehravaj, ovladaj, rezimAnimacii, cisloCss } from '../lib/sekvencia';
+  import { prehravaj, ovladaj, cisloCss } from '../lib/sekvencia';
   // Kóta príde pri dokončenom oblúku (podiel ohybu); ohyb trvá 2,2 s.
   const KOTA = 0.9, DIEL = 0.42, TRVANIE = 2200;
   const stopky: AbortController[] = [];
@@ -114,12 +111,10 @@ const polomer = data.polomer_m.toFixed(2).replace('.', ',');
   function initOhyb() {
     stopky.splice(0).forEach((s) => s.abort());
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const rezim = rezimAnimacii();
     document.querySelectorAll<HTMLElement>('[data-ohyb]').forEach((sek) => {
       const stop = new AbortController();
       const signal = stop.signal;
       stopky.push(stop);
-      sek.dataset.rezim = rezim;
       sek.classList.add('oh-js');
       const n = Number(sek.dataset.snimok);
       const body: { stred: number[]; os: number[] }[] = JSON.parse(sek.dataset.body ?? '[]');
@@ -129,10 +124,10 @@ const polomer = data.polomer_m.toFixed(2).replace('.', ',');
       const stitok = sek.querySelector<HTMLElement>('.oh-stitok')!;
       const prehravac = prehravaj({
         koren: sek, stage, platno: sek.querySelector<HTMLCanvasElement>('.oh-canvas')!, cesta: sek.dataset.cesta ?? '', n,
-        sirky: (sek.dataset.sirky ?? '').split(',').map(Number), zaciatok: 0, signal,
+        sirky: (sek.dataset.sirky ?? '').split(',').map(Number), signal,
         bezi: () => sek.classList.add('oh-bezi'),
         // Prehliadač bez AVIF dostane statický ohnutý obraz s kótou (WebP), bez pohybu.
-        zlyhalo: () => { sek.classList.remove('oh-js'); delete sek.dataset.rezim; stop.abort(); },
+        zlyhalo: () => { sek.classList.remove('oh-js'); stop.abort(); },
         popisy: (x) => {
           const i = Math.min(n - 2, Math.floor(x)), t = x - i;
           const medzi = (a: number[], b: number[]) => [a[0] + t * (b[0] - a[0]), a[1] + t * (b[1] - a[1])];
@@ -148,8 +143,7 @@ const polomer = data.polomer_m.toFixed(2).replace('.', ',');
         },
       });
 
-      // Prehranie pri zobrazení, Prehrať znova, v C ťahanie (doprava sa rúra ohýba).
-      ovladaj({ koren: sek, stage, prehravac, hore: cisloCss(sek, '--oh-hore', 72), scenar: [[1, TRVANIE, 0]], rezim, smerTahu: 1, signal });
+      ovladaj({ koren: sek, stage, prehravac, hore: cisloCss(sek, '--oh-hore', 72), trvanie: TRVANIE, signal });
     });
   }
 

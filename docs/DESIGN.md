@@ -261,7 +261,7 @@ každému renderu Blender zapíše polohy bodov (stred rezu, okraj plášťa, r�
 | `hero` | DUO, rez vľavo, telo za pravým okrajom | hero domova |
 | `rodina` | šesť systémov vedľa seba | domov, hlava Potrubí, článok Ako vybrať |
 | `makra` | plášť, pena, rúra žltá, biela a čierna | lupy pri vrstvách |
-| rozložený rez | 72 snímok, vrstvy sa oddelia pri rolovaní | domov a stránky radov („Z čoho je potrubie“) |
+| rozložený rez | 72 snímok, vrstvy sa oddelia samy, keď je rez v okne | domov a stránky radov („Z čoho je potrubie“) |
 
 Pravidlá:
 - Render má celé telo a vlastný kontaktný tieň: žiadne dozvenie maskou, žiadny tieň z CSS (trieda
@@ -325,14 +325,22 @@ Každá novinka niečo dokazuje alebo vysvetľuje číslom z katalógu, nie je t
   ohybné potrubie; render súčasne dosadne sprava. Spolu do 1,2 s. Animácia nemá koncový stav, cieľom
   je šírka, ktorú má nadpis podľa šírky okna (na mobile 100 %). Popisky nad fotkou prierezu sa
   nepoužívajú (Juraj 21. 9.: „nie popisky ako dieťaťu“).
-- **Pohyb viazaný na rolovanie má význam, nie ozdobu** (`web/src/scripts/pohyb.ts`): rúra pri
-  krokoch pokládky sa s rolovaním rozvinie a kroky, ku ktorým dorazí, sa rozsvietia (`data-rozvin`);
-  kotúč sa jemne pootočí, akoby sa odvíjal (`data-otacaj`); vrstvy potrubia prídu zvonka dnu
-  (`data-reveal-seq`). Všeobecné vynáranie sekcií sa nepridáva.
+- **Animácie z 3D modelu sa prehrajú samy, keď sú v okne** (Juraj 4. 11. 2026, z návrhov A, B, C vybral A;
+  predtým ich poháňalo rolovanie cez 1,75 až 2,8 okna, „scrollovanie dole celkom dlho trvá“): rozložený rez,
+  ohyb a kotúč (`web/src/lib/sekvencia.ts`) sa prehrajú raz a plynulo, keď stred obrazu príde do horných 70 %
+  okna a ostane tam 250 ms (rýchle prerolovanie okolo ich nespustí). Rez trvá 2,6 s, ohyb 2,2 s, kotúč 3,6 s,
+  mäkký rozbeh aj dojazd; kóty a texty vrstiev či krokov sa rozsvecujú s obrazom. Pohyb pod 5 s, preto
+  netreba tlačidlo na zastavenie (WCAG 2.2.2); keď obraz počas prehrania odíde z okna, počká a dohrá po
+  návrate. Na konci je v obraze tlačidlo Prehrať znova (`SekvenciaOvladanie.astro`). **V obraze žiadne iné
+  interakcie** (klik na vrstvu, ťahanie): Juraj, „nie každý to uvidí, že sa to dá robiť“. Sekcia je len taká
+  vysoká ako obsah a texty všetkých vrstiev a krokov sú stále vidieť.
+- Pohyb viazaný na rolovanie ostáva len tam, kde nie je 3D sekvencia (`web/src/scripts/pohyb.ts`): pokládka
+  bez snímok kotúča rozvinie rúru a rozsvieti kroky (`data-rozvin`). Všeobecné vynáranie sekcií sa nepridáva.
 - Všetok ostatný pohyb je odpoveď na akciu človeka: prepnutie kategórie v katalógu, rozbalenie filtra,
   prepnutie kroku sprievodcu (posun 150–200 ms), zobrazenie výsledkov hľadania, potvrdenie formulára.
 - Žiadne zväčšovanie kariet pri prejdení myšou, žiadne karusely. Pri `prefers-reduced-motion` sa
-  nehýbe nič a všetko je hneď viditeľné (kroky pokládky plné, rúra rozvinutá).
+  nehýbe nič a všetko je hneď viditeľné (rez rozložený so všetkými kótami, ohyb s polomerom, kroky
+  pokládky plné, bez tlačidla Prehrať znova).
 - Od 26. 10. 2026 (`docs/DOLADENIE.md`): pohyb viazaný na rolovanie bez spätnej väzby do skriptu ide do
   CSS (`animation-timeline: view()` alebo pomenovaná časová os sekcie), beží mimo hlavného vlákna; kde to
   prehliadač nevie, prvok stojí. Pružný dojazd má token `--ease-pruzina` (CSS `linear()`, prekmit 3 %).
@@ -453,9 +461,9 @@ okraja obrazovky, lebo text menuje aj COOL a HP; na tablete a mobile ide nad tex
 Pôvodne render Watts prechádzal cez švík z pásu katalógu a za pravý okraj obrazovky.
 
 **Z čoho je potrubie** (od 26. 10. 2026, `components/Rozklad.astro`, Juraj: domov aj stránky radov):
-rozložený rez z 3D modelu. Sekcia je vysoká (280 % výšky okna) a jej obsah stojí; pri rolovaní sa
-rúra rozloží na plášť, penu a nosné rúry (72 snímok na plátne), pri každej vrstve sa objaví kóta
-a vľavo jej popis s malou lupou makra. Na telefóne a tablete (do 900 px) je na obraze len bod práve
+rozložený rez z 3D modelu. Sekcia je len taká vysoká ako obsah; keď je rez v okne, rúra sa sama
+rozloží na plášť, penu a nosné rúry (72 snímok na plátne, 2,6 s, kap. 8), pri každej vrstve sa objaví
+kóta a vľavo sa rozsvieti jej popis s malou lupou makra (popisy všetkých vrstiev sú stále vidieť). Na telefóne a tablete (do 900 px) je na obraze len bod práve
 odkrytej vrstvy vo farbe jej prstenca lupy a pod obrazom jej popis; štítok tam nie je, lebo vedľa rezu
 nie je miesto a štítok peny by ležal na plášti (overené 27. 10. na všetkých radoch).
 Snímky sa načítajú, až keď sa sekcia blíži (najprv posledná, potom každá ôsma, štvrtá…); bez AVIF
@@ -882,7 +890,7 @@ Na webe je:
 | Projekty na domove | mozaika: výkop Orange, kotolňa a stavenisko, každá fotka s kótou | `Domov.astro`; s fotkou od 2 400 px prejsť na fotku cez celú šírku |
 | Karty radov | štúdio s kótami na renderi; v úzkej karte kóta polomeru ustúpi a plášť ide doľava | `KartaRadu.astro` |
 | Diely | na podlahe štúdia bez bielej karty | `KartaProduktu.astro` |
-| Stavba radu | rozložený rez pri rolovaní (keď má rad snímky), pod ním popis, parametre a montáž; inak vrstvy ako tri lupy s makrami | `Rad.astro`, `Rozklad.astro` |
+| Stavba radu | rozložený rez, ktorý sa prehrá sám (keď má rad snímky), pod ním popis, parametre a montáž; inak vrstvy ako tri lupy s makrami | `Rad.astro`, `Rozklad.astro` |
 | Referencia na stránke radu | scéna s kótou, druhá zrkadlovo | `Rad.astro` |
 | Pre firmy | veľká fotka areálu a tri skupiny s lupou | `PreFirmy.astro` |
 | Podklady | dokumenty na stole so skutočným obsahom: obálka katalógu a brožúry, prvá strana PDF, výkres ako list A3 naležato cez dva stĺpce (DWG, pod ním odkaz na DXF), názov len pod listom; podklad bez náhľadu ako list so skratkou formátu | `Subory.astro`, `data/nahlady_dokumentov.py` |

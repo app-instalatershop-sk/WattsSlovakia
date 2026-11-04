@@ -4,10 +4,9 @@
  * (data/blender, data/rozklad_web.py) na <canvas>. Plášť sa odsunie, nosné rúry sa vysunú a pri každej
  * vrstve sa objaví kóta; text vrstvy vedľa sa rozsvieti v tom istom poradí.
  *
- * Pohyb sa prehrá sám, keď je obraz v okne (Juraj 4. 11. 2026; predtým ho poháňalo rolovanie cez 2,8 okna),
- * sekcia je len taká vysoká ako obsah. Návrhy na výber (dočasne ?animacie=a|b|c, lib/sekvencia.ts):
- *  A: raz plynulo celý rez, B: po vrstvách s krátkou zastávkou a vrstvy sa dajú vybrať, C: raz plynulo
- *  a potom sa rez dá ťahať do strán.
+ * Rez sa rozloží sám, raz a plynulo za 2,6 s, keď je obraz v okne (Juraj 4. 11. 2026, návrh A; predtým ho
+ * poháňalo rolovanie cez 2,8 okna). Sekcia je len taká vysoká ako obsah, všetky texty vrstiev sú stále vidieť
+ * a jediné ovládanie je tlačidlo Prehrať znova; vrstvy sa neklikajú (nie každý by uvidel, že sa to dá).
  * Prehrávanie, sťahovanie a plynulosť: lib/sekvencia.ts. Prehliadač s AVIF dostane pohyb, ostatné
  * statický WebP; šírka podľa veľkosti plátna a hustoty displeja.
  * Bez skriptu a pri „obmedziť pohyb“ stojí obraz v rozloženom stave so všetkými kótami a všetkými textami.
@@ -24,8 +23,8 @@ type Id = 'plast' | 'pena' | 'rura';
 /** img: makro materiálu vrstvy (data/_3d/web/makra) v malej lupe pri texte; bez neho len text. */
 interface Vrstva { id: Id; nazov: string; kluc: string; text: string; img?: ImageMetadata }
 /** class: trieda koreňa (pozadie podľa stránky); hore: čo prekrýva vrch okna (hlavička, pás častí stránky).
- *  ovladanie: texty tlačidla Prehrať znova a pokynu na ťahanie. */
-interface Props { data: Data; nadpis: string; popis?: string; vrstvy: Vrstva[]; alt: string; label: string; ovladanie: { znova: string; tahaj: string }; class?: string; id?: string; hore?: number; horeM?: number }
+ *  ovladanie: text tlačidla Prehrať znova. */
+interface Props { data: Data; nadpis: string; popis?: string; vrstvy: Vrstva[]; alt: string; label: string; ovladanie: { znova: string }; class?: string; id?: string; hore?: number; horeM?: number }
 const { data, nadpis, popis, vrstvy, alt, label, ovladanie, class: trieda, id, hore = 72, horeM = 64 } = Astro.props;
 
 // Kóta: názov vrstvy veľkým, kľúčové číslo malým; smer štítka tak, aby nezakryl inú vrstvu.
@@ -51,7 +50,7 @@ const posledna = `${data.cesta}${sirka}/${String(data.snimok - 1).padStart(3, '0
               {v.img && <span class="rz-lupa" aria-hidden="true"><Obraz src={v.img} alt="" width={72} height={72} densities={[1, 2]} loading="lazy" /></span>}
               <h3>{v.nazov}</h3>
               <p class="rz-kluc">{sadzba(v.kluc)}</p>
-              <div class="rz-popis-obal"><p class="rz-popis">{sadzba(v.text)}</p></div>
+              <p class="rz-popis">{sadzba(v.text)}</p>
             </li>
           ))}
         </ol>
@@ -63,15 +62,14 @@ const posledna = `${data.cesta}${sirka}/${String(data.snimok - 1).padStart(3, '0
         </picture>
         <canvas class="rz-canvas" aria-hidden="true"></canvas>
         <Koty koty={koty} label={label} />
-        <SekvenciaOvladanie znova={ovladanie.znova} tahaj={ovladanie.tahaj} />
+        <SekvenciaOvladanie znova={ovladanie.znova} />
       </div>
     </div>
   </div>
 </section>
 
 <style>
-  /* Sekcia je taká vysoká ako obsah. Obraz nikdy nie je vyšší ako okno pod hlavičkou (--rz-hore), aby bolo
-     vidieť obraz aj text, ktorý sa pri vrstve rozsvieti. */
+  /* Sekcia je taká vysoká ako obsah. Obraz nikdy nie je vyšší ako okno pod hlavičkou (--rz-hore). */
   .rozklad { --rz-pad: clamp(12px, 3vh, 32px); --rz-hore: var(--rz-top, 72px); position: relative; }
   /* clip: kóty a svetlo pri obraze nevybehnú za okraj sekcie (na telefóne ide obraz cez celú šírku). */
   .rz-obal { padding-block: 72px 80px; overflow: clip; }
@@ -80,7 +78,7 @@ const posledna = `${data.cesta}${sirka}/${String(data.snimok - 1).padStart(3, '0
   .rz-text .lead { margin-top: 16px; }
   .rz-vrstvy { margin-top: 28px; display: grid; gap: 16px; }
   /* Vrstva sa rozsvieti, keď sa na obraze oddelí; dovtedy je tichá. */
-  .rz-vrstvy li { position: relative; isolation: isolate; padding-left: 16px; border-left: 3px solid rgb(10 42 94 / 0.12); transition: border-color 300ms var(--ease-soft), opacity 300ms var(--ease-soft); }
+  .rz-vrstvy li { padding-left: 16px; border-left: 3px solid rgb(10 42 94 / 0.12); transition: border-color 300ms var(--ease-soft), opacity 300ms var(--ease-soft); }
   .rz-vrstvy h3 { font-size: 18px; }
   .rz-kluc { margin-top: 2px; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 15px; color: var(--color-blue-900); }
   .rz-popis { margin-top: 8px; font-size: 15px; line-height: 1.55; color: var(--color-ink-soft); max-width: 30em; }
@@ -98,28 +96,12 @@ const posledna = `${data.cesta}${sirka}/${String(data.snimok - 1).padStart(3, '0
   .rz-vrstvy li[data-vrstva="pena"].is-on, .rozklad:not(.rz-js) .rz-vrstvy li[data-vrstva="pena"] { border-color: #8e97a3; }
   .rz-vrstvy li[data-vrstva="plast"].is-on, .rozklad:not(.rz-js) .rz-vrstvy li[data-vrstva="plast"] { border-color: var(--color-blue-700); }
 
-  /* B: vrstvy sú tlačidlá (skript vloží <button> do nadpisu, klikateľný je celý riadok). Vybraná vrstva má
-     pod sebou mliečnu plochu; plocha je pseudoprvok, takže sa pri prepnutí nič neposunie. */
-  .rozklad[data-rezim="b"] .rz-vrstvy li::before { content: ""; position: absolute; z-index: -1; inset: -8px -12px -8px 0; border-radius: 0 var(--radius-l) var(--radius-l) 0; background: var(--sklo-1); box-shadow: var(--elev-1); opacity: 0; transition: opacity 250ms var(--ease-soft); }
-  .rozklad[data-rezim="b"] .rz-vrstvy li.is-aktivna::before { opacity: 1; }
-  .rz-vrstvy :global(.rz-vyber) { margin: 0; padding: 0; border: 0; background: none; font: inherit; color: inherit; text-align: inherit; cursor: pointer; }
-  .rz-vrstvy :global(.rz-vyber)::after { content: ""; position: absolute; inset: -8px -12px -8px -19px; border-radius: 0 var(--radius-l) var(--radius-l) 0; }
-  .rz-vrstvy :global(.rz-vyber:focus-visible) { outline: none; }
-  .rz-vrstvy :global(.rz-vyber:focus-visible)::after { outline: 2px solid var(--color-blue-700); outline-offset: 2px; }
-  @media (hover: hover) and (pointer: fine) {
-    .rozklad[data-rezim="b"] .rz-vrstvy li:not(.is-aktivna):hover { border-left-color: rgb(10 42 94 / 0.3); }
-    .rozklad[data-rezim="b"] .rz-vrstvy li:not(.is-aktivna):hover h3 { color: var(--color-blue-700); }
-  }
-
   /* Obraz nikdy vyšší ako okno pod hlavičkou: šírka z voľnej výšky a pomeru strán. */
   .rz-stage { position: relative; width: min(100%, calc((100vh - var(--rz-hore) - 2 * var(--rz-pad)) * var(--pomer))); margin-inline: auto; container-type: inline-size; }
   .rz-obr :global(img), .rz-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
   .rz-canvas { opacity: 0; }
   .rozklad.rz-bezi .rz-canvas { opacity: 1; }
   .rozklad.rz-bezi .rz-obr { visibility: hidden; }
-  /* C: rez sa dá ťahať do strán; zvislé rolovanie prstom ostáva stránke. */
-  .rz-stage.sq-tahatelne { touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
-  .rz-stage.sq-taha { cursor: grabbing; }
 
   /* Kóty vrstiev: so skriptom sa objavia, až keď sa vrstva oddelí (poradie a polohu riadi skript). Poloha ide
      cez transform (--xn, --yn v percentách obrazu, 1cqw = 1 % šírky rámika): plynulo aj o zlomky pixela a bez
@@ -133,17 +115,6 @@ const posledna = `${data.cesta}${sirka}/${String(data.snimok - 1).padStart(3, '0
   @keyframes rz-bod { from { transform: scale(0.3); } to { transform: none; } }
   @keyframes rz-ciara { from { transform: scaleY(0); } to { transform: scaleY(1); } }
   @keyframes rz-stitok { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-
-  /* B, keď sa obsah nezmestí do okna (skript pridá rz-tesne; na telefóne vždy): popis len pri vybranej vrstve,
-     ostatné ukážu názov a číslo; rz-tesnejsie na počítači skryje aj úvodný odsek. Zoznam drží výšku
-     s najdlhším popisom, takže sa pri prepnutí nič pod ním nehýbe. */
-  .rozklad.rz-tesne .rz-popis-obal { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 420ms var(--ease-soft), opacity 220ms var(--ease-soft); }
-  .rozklad.rz-tesne li.is-aktivna .rz-popis-obal { grid-template-rows: 1fr; opacity: 1; transition-delay: 0ms, 140ms; }
-  .rozklad.rz-tesne .rz-popis { min-height: 0; overflow: hidden; margin-top: 0; padding-top: 8px; }
-  .rozklad.rz-meria .rz-popis-obal { transition: none; }
-  @media (min-width: 901px) {
-    .rozklad.rz-tesnejsie .rz-text .lead { display: none; }
-  }
 
   /* Telefón: nadpis, obraz a pod ním vrstvy. Úvodný odsek sekcie je v texte vrstiev, preto sa skryje. */
   @media (max-width: 900px) {
@@ -164,22 +135,15 @@ const posledna = `${data.cesta}${sirka}/${String(data.snimok - 1).padStart(3, '0
     .rz-text .lead { display: none; }
     .rz-stage { order: 1; margin-inline: calc(-1 * var(--gutter)); width: calc(100% + 2 * var(--gutter)); }
     .rz-vrstvy { order: 2; margin-top: 4px; gap: 16px; }
-    .rozklad[data-rezim="b"] .rz-vrstvy { gap: 12px; }
-    .rozklad[data-rezim="b"] .rz-vrstvy li::before { right: 0; }
-    .rz-vrstvy :global(.rz-vyber)::after { right: 0; }
   }
 </style>
 
 <script>
-  import { prehravaj, ovladaj, rezimAnimacii, volnaVyska, zmensiObraz, cisloCss, type Krok } from '../lib/sekvencia';
+  import { prehravaj, ovladaj, cisloCss } from '../lib/sekvencia';
   // Kedy sa vrstva „oddelí“ (podiel rozloženia): plášť ide prvý, potom pena, nakoniec rúry.
   const PRAH: Record<string, number> = { plast: 0.28, pena: 0.5, rura: 0.7 };
-  // Kde rez stojí pri vybranej vrstve (B): vrstva je už oddelená a jej kóta sa stihne ukázať.
-  const STOJ: Record<string, number> = { plast: 0.34, pena: 0.56, rura: 1 };
-  // Scenár (cieľ, ms pohybu, ms zastávky). A a C: celý rez naraz. B: po vrstvách. Spolu pod 5 s: dlhší pohyb,
-  // ktorý sa spustí sám, by potreboval tlačidlo na zastavenie (WCAG 2.2.2).
-  const NARAZ: Krok[] = [[1, 2600, 0]];
-  const PO_VRSTVACH: Krok[] = [[STOJ.plast, 1000, 800], [STOJ.pena, 800, 800], [STOJ.rura, 1100, 0]];
+  // Celý rez za 2,6 s: pod 5 s, takže pohyb, ktorý sa spustí sám, nepotrebuje tlačidlo na zastavenie (WCAG 2.2.2).
+  const TRVANIE = 2600;
 
   let stop: AbortController | undefined;
 
@@ -189,8 +153,6 @@ const posledna = `${data.cesta}${sirka}/${String(data.snimok - 1).padStart(3, '0
     if (!sek || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     stop = new AbortController();
     const signal = stop.signal;
-    const rezim = rezimAnimacii();
-    sek.dataset.rezim = rezim;
     sek.classList.add('rz-js');
 
     const n = Number(sek.dataset.snimok);
@@ -202,10 +164,10 @@ const posledna = `${data.cesta}${sirka}/${String(data.snimok - 1).padStart(3, '0
 
     const prehravac = prehravaj({
       koren: sek, stage, platno: sek.querySelector<HTMLCanvasElement>('.rz-canvas')!, cesta: sek.dataset.cesta ?? '', n,
-      sirky: (sek.dataset.sirky ?? '').split(',').map(Number), zaciatok: 0, signal,
+      sirky: (sek.dataset.sirky ?? '').split(',').map(Number), signal,
       bezi: () => sek.classList.add('rz-bezi'),
       // Prehliadač bez AVIF: statický rozložený rez so všetkými kótami (WebP), bez pohybu.
-      zlyhalo: () => { sek.classList.remove('rz-js', 'rz-tesne', 'rz-tesnejsie'); delete sek.dataset.rezim; stop?.abort(); },
+      zlyhalo: () => { sek.classList.remove('rz-js'); stop?.abort(); },
       popisy: (x) => {
         const f = x / (n - 1), i = Math.min(n - 2, Math.floor(x)), t = x - i;
         let aktivna = '';
@@ -217,64 +179,14 @@ const posledna = `${data.cesta}${sirka}/${String(data.snimok - 1).padStart(3, '0
           if (li.classList.contains('rz-vid') !== vid) li.classList.toggle('rz-vid', vid);
           if (vid) aktivna = id;
         }
-        // texty a kóta práve oddelenej vrstvy sa menia len pri prahu vrstvy
+        // texty a kóta práve oddelenej vrstvy (telefón ukáže len ju) sa menia len pri prahu vrstvy
         if (aktivna === naposledy) return;
         naposledy = aktivna;
         for (const [id, li] of Object.entries(koty)) li.classList.toggle('rz-aktivna', id === aktivna);
-        texty.forEach((el) => {
-          const a = el.dataset.vrstva === (aktivna || 'plast');
-          el.classList.toggle('is-on', f >= PRAH[el.dataset.vrstva!]);
-          el.classList.toggle('is-aktivna', a);
-          el.querySelector('.rz-vyber')?.setAttribute('aria-pressed', String(a));
-        });
+        texty.forEach((el) => el.classList.toggle('is-on', f >= PRAH[el.dataset.vrstva!]));
       },
     });
-
-    // Prehranie pri zobrazení, Prehrať znova, v C ťahanie (doprava sa rez rozkladá); v B vrstvy ako tlačidlá.
-    const ovl = ovladaj({ koren: sek, stage, prehravac, hore: cisloCss(sek, '--rz-hore', 72), scenar: rezim === 'b' ? PO_VRSTVACH : NARAZ, rezim, smerTahu: 1, signal });
-    if (rezim === 'b') {
-      for (const li of texty) {
-        const h3 = li.querySelector('h3')!;
-        const tlacidlo = document.createElement('button');
-        tlacidlo.type = 'button';
-        tlacidlo.className = 'rz-vyber';
-        tlacidlo.textContent = h3.textContent;
-        tlacidlo.setAttribute('aria-pressed', String(li.classList.contains('is-aktivna')));
-        h3.replaceChildren(tlacidlo);
-        tlacidlo.addEventListener('click', () => { void ovl.vyber(STOJ[li.dataset.vrstva!]); }, { signal });
-      }
-    }
-
-    // B: obraz a vrstvy sa musia zmestiť do okna pod hlavičkou. Počítač: popis len pri vybranej vrstve, potom
-    // bez úvodného odseku. Telefón: vždy len popis vybranej vrstvy, zoznam drží výšku najdlhšej vrstvy (obsah
-    // sa pri prepnutí nehýbe) a pri nízkom okne sa zmenší obraz. A a C ukážu všetko, sekcia nelepí.
-    const grid = sek.querySelector<HTMLElement>('.rz-grid')!;
-    const zoznam = sek.querySelector<HTMLElement>('.rz-vrstvy')!;
-    const prisposob = () => {
-      sek.classList.remove('rz-tesne', 'rz-tesnejsie');
-      zoznam.style.minHeight = '';
-      stage.style.width = '';
-      stage.style.marginInline = '';
-      if (rezim !== 'b' || !sek.classList.contains('rz-js')) return;
-      const mobil = window.matchMedia('(max-width: 900px)').matches;
-      const volno = volnaVyska(cisloCss(sek, '--rz-hore', 72), Math.min(32, Math.max(12, 0.03 * window.innerHeight)));
-      if (!mobil && grid.offsetHeight <= volno) return;
-      sek.classList.add('rz-meria', 'rz-tesne');
-      const aktivne = texty.map((el) => el.classList.contains('is-aktivna'));
-      let max = 0;
-      for (const el of texty) {
-        texty.forEach((x) => x.classList.toggle('is-aktivna', x === el));
-        max = Math.max(max, zoznam.offsetHeight);
-      }
-      texty.forEach((x, k) => x.classList.toggle('is-aktivna', aktivne[k]));
-      zoznam.style.minHeight = `${max}px`;
-      if (mobil) zmensiObraz(volno, grid, stage);
-      else if (grid.offsetHeight > volno) sek.classList.add('rz-tesnejsie');
-      requestAnimationFrame(() => sek.classList.remove('rz-meria'));
-    };
-    prisposob();
-    document.fonts?.ready.then(prisposob);
-    window.addEventListener('resize', prisposob, { signal });
+    ovladaj({ koren: sek, stage, prehravac, hore: cisloCss(sek, '--rz-hore', 72), trvanie: TRVANIE, signal });
   }
 
   initRozklad();

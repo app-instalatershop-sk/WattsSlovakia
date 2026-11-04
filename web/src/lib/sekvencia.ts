@@ -2,12 +2,10 @@
  * Prehrávač sekvencie snímok z 3D modelu na <canvas>: rozložený rez (Rozklad.astro), ohyb (Ohyb.astro)
  * a odvaľovanie kotúča (KotucSekvencia.astro).
  *
- * Pohyb sa spúšťa sám, keď je obraz v okne, nie rolovaním (Juraj 4. 11. 2026: rolovanie cez dlhé sekcie
- * trvalo dlho). Sekcia je preto len taká vysoká ako jej obsah. Prehrávač vie:
- *  - chod(f, ms): plynulo na polohu f (0 až 1 celej sekvencie) za ms, s mäkkým rozbehom aj dojazdom;
- *    chod na tú istú polohu je čakanie, ktoré sa dá prerušiť aj pozastaviť ako pohyb,
- *  - sleduj(f) a pusti(): obraz dobieha polohu, ktorú určuje ťahanie (časová konštanta TAU), a po pustení
- *    dobehne na najbližšiu celú snímku,
+ * Pohyb sa prehrá sám, raz a plynulo, keď je obraz v okne (Juraj 4. 11. 2026: rolovanie cez dlhé sekcie trvalo
+ * dlho; z návrhov A, B, C vybral A, bez interakcií v obraze, lebo nie každý uvidí, že sa to dá). Sekcia je preto
+ * len taká vysoká ako obsah a jediné ovládanie je tlačidlo Prehrať znova (SekvenciaOvladanie.astro).
+ *  - chod(f, ms): plynulo na polohu f (0 až 1 celej sekvencie) za ms, s mäkkým rozbehom aj dojazdom,
  *  - nastav(f): hneď na polohu.
  * Plynulosť (Juraj 28. 10. 2026: „pôsobia sekavo“): poloha je desatinná a susedné snímky sa prelínajú,
  * stojaci obraz je vždy celá snímka, teda ostrý.
@@ -15,7 +13,7 @@
  * Dekódované snímky držia pamäť, preto ich je najviac za rozpočet bajtov okolo práve zobrazenej a sekcia
  * ďaleko od okna ich uvoľní. Stiahnuté súbory ostávajú.
  * Sťahovanie začne, keď je sekcia do jeden a pol okna od zobrazenia: prvá snímka (overí AVIF), posledná,
- * potom hrubo po 8, 4, 2 a nakoniec všetky. Prehranie počká, kým sú snímky pripravené, najviac pár sekúnd;
+ * potom hrubo po 8, 4, 2 a nakoniec všetky. Prehranie počká, kým sú snímky pripravené, najviac 2,5 s;
  * na pomalom pripojení potom ide s tým, čo je (chýbajúcu snímku nahradí najbližšia).
  */
 
@@ -28,8 +26,6 @@ export interface Sekvencia {
   cesta: string;
   n: number;
   sirky: number[];
-  /** Poloha pred prvým pohybom, 0 až 1 (predvolene začiatok). */
-  zaciatok?: number;
   /** Popisy k obrazu pri každom snímku: x = desatinný index snímky 0 až n − 1. */
   popisy: (x: number) => void;
   /** Prvá snímka je na plátne. */
@@ -40,23 +36,16 @@ export interface Sekvencia {
 }
 
 export interface Prehravac {
-  /** Plynulo na polohu f za ms. Splní sa true po dobehnutí, false keď ho prerušil iný pohyb alebo ťahanie. */
+  /** Plynulo na polohu f za ms. Splní sa true po dobehnutí, false keď ho prerušil iný pohyb. */
   chod: (f: number, ms: number) => Promise<boolean>;
-  /** Ťahanie: obraz dobieha polohu f. */
-  sleduj: (f: number) => void;
-  /** Koniec ťahania: dobehne na najbližšiu celú snímku. */
-  pusti: () => void;
   /** Hneď na polohu f. */
   nastav: (f: number) => void;
   /** Splní sa, keď sú snímky stiahnuté a dekódované na plynulé prehranie, najneskôr po max ms. */
   pripravene: (max: number) => Promise<void>;
   /** Pozastaví bežiaci pohyb (obraz mimo okna); jeho čas stojí. */
   pauza: (b: boolean) => void;
-  /** Poloha 0 až 1. */
-  poloha: () => number;
 }
 
-const TAU = 0.09;      // s; ťahanie: 95 % rozdielu dobehne za 0,27 s
 const VLAKNA = 4;      // súbežné sťahovanie
 const DEKODERY = 3;    // súbežné dekódovanie
 
@@ -77,7 +66,7 @@ export function prehravaj(s: Sekvencia): Prehravac {
   const rozpocet = ((navigator as { deviceMemory?: number }).deviceMemory ?? 4) >= 8 ? 240e6 : 100e6;
   const cela = (f: number) => Math.round(Math.min(1, Math.max(0, f)) * (n - 1)) / (n - 1);
   let sirka = sirky[sirky.length - 1], sirkaDek = sirka, najviac = n;
-  let p = cela(s.zaciatok ?? 0), ciel = p, smer = 1, stred = Math.round(p * (n - 1));
+  let p = 0, smer = 1, stred = 0;
   let nakreslene = '', raf = 0, cas = 0, dokoncene = 0;
   let blizko = false, zacate = false, bezi = false, koniec = false, pozastavene = false;
   let pohyb: { od: number; do: number; ms: number; t: number; hotovo: (b: boolean) => void } | null = null;
@@ -128,6 +117,7 @@ export function prehravaj(s: Sekvencia): Prehravac {
     if (!bezi) { bezi = true; s.bezi(); }
   };
 
+  // Pohyb ide podľa uplynutého času, nie podľa hodín: pozastavenie (obraz mimo okna) ani skrytá karta ho nepreskočia.
   const tik = (t: number) => {
     raf = 0;
     const dt = cas ? Math.min(64, t - cas) : 1000 / 60;
@@ -136,16 +126,13 @@ export function prehravaj(s: Sekvencia): Prehravac {
       if (!pozastavene) pohyb.t = Math.min(pohyb.ms, pohyb.t + dt);
       const u = pohyb.ms > 0 ? pohyb.t / pohyb.ms : 1;
       p = pohyb.od + (pohyb.do - pohyb.od) * krivka(u);
-      if (u >= 1) { const h = pohyb.hotovo; pohyb = null; p = ciel; h(true); }
-    } else if (p !== ciel) {
-      const d = ciel - p;
-      p = Math.abs(d) < 2e-4 ? ciel : p + d * (1 - Math.exp(-dt / 1000 / TAU));
+      if (u >= 1) { const h = pohyb.hotovo; p = pohyb.do; pohyb = null; h(true); }
     }
     const x = p * (n - 1);
     kresli(x);
     s.popisy(x);
     if (Math.round(x) !== stred) { stred = Math.round(x); planuj(); }
-    if ((pohyb && !pozastavene) || p !== ciel) raf = requestAnimationFrame(tik);
+    if (pohyb && !pozastavene) raf = requestAnimationFrame(tik);
     else cas = 0;
   };
   const naplanuj = () => { if (!raf && !signal.aborted) raf = requestAnimationFrame(tik); };
@@ -245,37 +232,36 @@ export function prehravaj(s: Sekvencia): Prehravac {
   }, { rootMargin: '150% 0px' });
   pozorovatel.observe(koren);
 
-  // plátno podľa rámika, aj keď ho zmení prispôsobenie výške okna (zmensiObraz), nielen zmena okna
+  // plátno podľa rámika, aj keď sa zmení len rámik, nie okno
   const pozorVelkost = new ResizeObserver(() => { velkost(); planuj(); naplanuj(); });
   pozorVelkost.observe(stage);
   window.addEventListener('resize', naplanuj, { signal });
 
   const zrus = () => { if (pohyb) { const h = pohyb.hotovo; pohyb = null; h(false); } };
-  const zastav = () => { koniec = true; zrus(); cakaju.splice(0).forEach((f) => f()); };
-  signal.addEventListener('abort', () => { zastav(); pozorovatel.disconnect(); pozorVelkost.disconnect(); cancelAnimationFrame(raf); uvolni(); });
+  signal.addEventListener('abort', () => {
+    koniec = true;
+    zrus();
+    cakaju.splice(0).forEach((f) => f());
+    pozorovatel.disconnect();
+    pozorVelkost.disconnect();
+    cancelAnimationFrame(raf);
+    uvolni();
+  });
   naplanuj();
 
   return {
     chod: (f, ms) => new Promise<boolean>((hotovo) => {
       zrus();
       if (signal.aborted) { hotovo(false); return; }
-      ciel = cela(f);
-      if (ciel !== p) smer = ciel > p ? 1 : -1;
-      pohyb = { od: p, do: ciel, ms: Math.max(0, ms), t: 0, hotovo };
+      const c = cela(f);
+      if (c !== p) smer = c > p ? 1 : -1;
+      pohyb = { od: p, do: c, ms: Math.max(0, ms), t: 0, hotovo };
       planuj();
       naplanuj();
     }),
-    sleduj: (f) => {
-      zrus();
-      const c = Math.min(1, Math.max(0, f));
-      if (c !== ciel) smer = c > ciel ? 1 : -1;
-      ciel = c;
-      naplanuj();
-    },
-    pusti: () => { ciel = cela(ciel); naplanuj(); },
     nastav: (f) => {
       zrus();
-      p = ciel = cela(f);
+      p = cela(f);
       stred = Math.round(p * (n - 1));
       planuj();
       naplanuj();
@@ -293,7 +279,6 @@ export function prehravaj(s: Sekvencia): Prehravac {
       cas = 0;
       if (!b) naplanuj();
     },
-    poloha: () => p,
   };
 }
 
@@ -324,116 +309,25 @@ export function priZobrazeni(el: HTMLElement, hore: number, signal: AbortSignal,
   signal.addEventListener('abort', () => { spust.disconnect(); pozor.disconnect(); clearTimeout(casovac); });
 }
 
-/** Krok scenára: cieľ (0 až 1), ms pohybu, ms zastávky po ňom. */
-export type Krok = [number, number, number];
-
 /**
- * Prehranie a ovládanie spoločné pre rez, ohyb a kotúč (tlačidlá zo SekvenciaOvladanie.astro): raz samo pri
- * zobrazení (priZobrazeni), potom tlačidlom Prehrať znova, v návrhu C aj ťahaním. Pozastaví sa len prehranie,
- * ktoré sa spustilo samo, keď obraz odíde z okna; čo spustil človek, dobehne. Každá akcia človeka zruší
- * bežiace prehranie a samé prehranie po nej už nepríde. vyber(f): skok na vrstvu alebo krok (návrh B).
+ * Prehranie spoločné pre rez, ohyb a kotúč: raz samo pri zobrazení (priZobrazeni) celé za `trvanie` ms, potom
+ * tlačidlom Prehrať znova, ktoré sa ukáže, keď pohyb dobehne. Samé prehranie sa mimo okna pozastaví a po
+ * návrate dohrá; prehranie tlačidlom dobehne vždy.
  */
-export function ovladaj(o: { koren: HTMLElement; stage: HTMLElement; prehravac: Prehravac; hore: number; scenar: Krok[]; rezim: Rezim; smerTahu: 1 | -1; signal: AbortSignal }) {
+export function ovladaj(o: { koren: HTMLElement; stage: HTMLElement; prehravac: Prehravac; hore: number; trvanie: number; signal: AbortSignal }) {
   const { koren, stage, prehravac, signal } = o;
   const znova = koren.querySelector<HTMLButtonElement>('.sq-znova')!;
-  const tahaj = koren.querySelector<HTMLElement>('.sq-tahaj')!;
-  let beh = 0, samo = false, ovladal = false, tahal = false;
-  const pokoj = () => { znova.hidden = false; if (o.rezim === 'c' && !tahal) tahaj.hidden = false; };
-  const clovek = () => { ovladal = true; samo = false; prehravac.pauza(false); znova.hidden = true; tahaj.hidden = true; return ++beh; };
+  let beh = 0, samo = false;
   const prehraj = async (moj: number) => {
     znova.hidden = true;
-    tahaj.hidden = true;
     await prehravac.pripravene(2500);
     if (moj !== beh) return;
     prehravac.nastav(0);
-    for (const [f, ms, stoj] of o.scenar) {
-      if (!(await prehravac.chod(f, ms)) || moj !== beh) return;
-      if (stoj && (!(await prehravac.chod(f, stoj)) || moj !== beh)) return;
-    }
-    samo = false;
-    pokoj();
+    if ((await prehravac.chod(1, o.trvanie)) && moj === beh) { samo = false; znova.hidden = false; }
   };
-  priZobrazeni(stage, o.hore, signal, () => { if (ovladal) return; samo = true; void prehraj(++beh); }, (b) => prehravac.pauza(samo && !b));
-  znova.addEventListener('click', () => { void prehraj(clovek()); }, { signal });
-  if (o.rezim === 'c') {
-    stage.classList.add('sq-tahatelne');
-    tahanie(stage, prehravac, o.smerTahu, signal, () => { clovek(); tahal = true; }, () => { znova.hidden = false; });
-  }
-  signal.addEventListener('abort', () => { znova.hidden = true; tahaj.hidden = true; });
-  return {
-    vyber: async (f: number, msNaCelu = 900) => {
-      const moj = clovek();
-      if ((await prehravac.chod(f, 350 + msNaCelu * Math.abs(f - prehravac.poloha()))) && moj === beh) pokoj();
-    },
-  };
-}
-
-/**
- * Ťahanie obrazu do strán posúva sekvenciu (návrh C). smer: 1 = ťah doprava ide ďalej, −1 = ťah doľava.
- * Ťah sa začne až po 6 px do strany, takže prst, ktorý roluje stránku, pohyb nezastaví; zvislé rolovanie
- * ostáva prehliadaču (touch-action: pan-y v CSS).
- */
-export function tahanie(stage: HTMLElement, prehravac: Prehravac, smer: 1 | -1, signal: AbortSignal, zacal: () => void, skoncil: () => void) {
-  let zac: { x: number; f: number; id: number } | null = null, taha = false;
-  stage.addEventListener('pointerdown', (e) => {
-    if (e.button !== 0 || zac) return;
-    zac = { x: e.clientX, f: prehravac.poloha(), id: e.pointerId };
-  }, { signal });
-  stage.addEventListener('pointermove', (e) => {
-    if (!zac || e.pointerId !== zac.id) return;
-    const dx = e.clientX - zac.x;
-    if (!taha) {
-      if (Math.abs(dx) < 6) return;
-      taha = true;
-      zac.x = e.clientX;
-      zac.f = prehravac.poloha();
-      stage.setPointerCapture(e.pointerId);
-      stage.classList.add('sq-taha');
-      zacal();
-      return;
-    }
-    prehravac.sleduj(zac.f + (smer * dx) / Math.max(1, stage.clientWidth * 0.8));
-  }, { signal });
-  const pusti = (e: PointerEvent) => {
-    if (!zac || e.pointerId !== zac.id) return;
-    zac = null;
-    if (!taha) return;
-    taha = false;
-    stage.classList.remove('sq-taha');
-    prehravac.pusti();
-    skoncil();
-  };
-  stage.addEventListener('pointerup', pusti, { signal });
-  stage.addEventListener('pointercancel', pusti, { signal });
-}
-
-/** Návrh 4. 11. 2026, dočasné na porovnanie: ?animacie=a|b|c (drží sa pri prechode na ďalšiu stránku).
- *  Po výbere Juraja ostane jeden režim a toto zmizne. */
-export type Rezim = 'a' | 'b' | 'c';
-export function rezimAnimacii(): Rezim {
-  let r = new URLSearchParams(location.search).get('animacie');
-  try {
-    if (r) sessionStorage.setItem('animacie', r);
-    else r = sessionStorage.getItem('animacie');
-  } catch { /* súkromné okno: len z adresy */ }
-  return r === 'a' || r === 'c' ? r : 'b';
-}
-
-/** Výška okna pod hlavičkou (a pásom častí stránky) bez okrajov, ktorú má obsah sekcie, aby bol obraz
- *  a text naraz na obrazovke. */
-export function volnaVyska(hore: number, okraj: number) {
-  return window.innerHeight - hore - 2 * okraj;
-}
-
-/** Telefón s nízkym oknom: keď je obsah vyšší ako voľná výška, zmenší sa obraz a text ostane celý. */
-export function zmensiObraz(volno: number, obsah: HTMLElement, stage: HTMLElement) {
-  stage.style.width = '';
-  stage.style.marginInline = '';
-  const nad = obsah.offsetHeight - volno;
-  if (nad <= 0) return;
-  const w = stage.offsetWidth, h = stage.offsetHeight;
-  stage.style.width = `${Math.max(0.55 * w, (w * (h - nad)) / h)}px`;
-  stage.style.marginInline = 'auto';
+  priZobrazeni(stage, o.hore, signal, () => { samo = true; void prehraj(++beh); }, (b) => prehravac.pauza(samo && !b));
+  znova.addEventListener('click', () => { samo = false; prehravac.pauza(false); void prehraj(++beh); }, { signal });
+  signal.addEventListener('abort', () => { znova.hidden = true; });
 }
 
 /** Číslo z CSS premennej prvku (napr. --rz-hore: 72px). */

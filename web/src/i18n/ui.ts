@@ -242,8 +242,8 @@ const sk = {
       altZaber: 'Kotúč potrubia Microflex DUO, 100 m vo štyroch vrstvách so zelenými páskami a voľný koniec s rezom',
       label: 'Rozmery kotúča',
     },
-    // Ovládanie animácií z 3D modelu (rez, ohyb, kotúč), ktoré sa prehrajú samy pri zobrazení.
-    sekvencia: { znova: 'Prehrať znova', tahaj: 'Potiahnite obraz do strany' },
+    // Animácie z 3D modelu (rez, ohyb, kotúč) sa prehrajú samy pri zobrazení; potom ich spustí znova toto tlačidlo.
+    sekvencia: { znova: 'Prehrať znova' },
   },
 };
 
@@ -462,7 +462,7 @@ const cs: typeof sk = {
       altZaber: 'Kotouč potrubí Microflex DUO, 100 m ve čtyřech vrstvách se zelenými páskami a volný konec s řezem',
       label: 'Rozměry kotouče',
     },
-    sekvencia: { znova: 'Přehrát znovu', tahaj: 'Táhněte obrázek do strany' },
+    sekvencia: { znova: 'Přehrát znovu' },
   },
 };
 

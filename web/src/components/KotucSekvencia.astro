@@ -5,8 +5,8 @@
  * (data/blender/potrubie.py pohľad kotuc, data/novinky_web.py kotuc). Záber je široký (kotúč prejde celý
  * obraz), preto ide cez celú šírku a pod ním sú kroky pokládky v rade; rozsvietia sa s pohybom.
  * Kóta nad kotúčom ide s ním: najprv priemer kotúča, pri odvaľovaní koľko metrov na ňom ostáva.
- * Pohyb sa prehrá sám, keď je obraz v okne (Juraj 4. 11. 2026, predtým rolovanie cez 1,75 okna); návrhy ako
- * pri rozloženom reze: A raz plynulo, B po krokoch so zastávkou a kroky sa dajú vybrať, C potom ťahaním.
+ * Kotúč sa odvalí sám, raz a plynulo za 3,6 s, keď je obraz v okne (Juraj 4. 11. 2026, návrh A; predtým
+ * rolovanie cez 1,75 okna); všetky kroky sú stále vidieť a jediné ovládanie je tlačidlo Prehrať znova.
  * Prehrávač: lib/sekvencia.ts. Bez skriptu a pri „obmedziť pohyb“ stojí prvý záber s kótami a všetky kroky.
  */
 import Koty from './Koty.astro';
@@ -16,7 +16,7 @@ import type { KotucData } from '../lib/obrazky';
 import { sadzba } from '../lib/sadzba';
 
 type Odvalenie = NonNullable<KotucData['odvalenie']>;
-interface Props { data: Odvalenie; texty: { priemer: string; ostava: string; label: string }; celo: [string, string]; alt: string; kroky: [string, string][]; krokyLabel: string; ovladanie: { znova: string; tahaj: string } }
+interface Props { data: Odvalenie; texty: { priemer: string; ostava: string; label: string }; celo: [string, string]; alt: string; kroky: [string, string][]; krokyLabel: string; ovladanie: { znova: string } }
 const { data, texty, celo, alt, kroky, krokyLabel, ovladanie } = Astro.props;
 const prvy = data.body[0];
 const sirka = Math.max(...data.sirky);
@@ -38,7 +38,7 @@ const dlzka = Math.floor(data.kotuc.dlzka_m);
         </picture>
         <canvas class="ks-canvas" aria-hidden="true"></canvas>
         <Koty koty={koty} label={texty.label} />
-        <SekvenciaOvladanie znova={ovladanie.znova} tahaj={ovladanie.tahaj} roh="vpravo-hore" />
+        <SekvenciaOvladanie znova={ovladanie.znova} roh="vpravo-hore" />
       </div>
       <ol class="ks-kroky" aria-label={krokyLabel}>
         {kroky.map(([nazov, text], i) => (
@@ -61,67 +61,41 @@ const dlzka = Math.floor(data.kotuc.dlzka_m);
   .ks-canvas { opacity: 0; }
   .ks.ks-bezi .ks-canvas { opacity: 1; }
   .ks.ks-bezi .ks-obr { visibility: hidden; }
-  /* C: kotúč sa dá ťahaním odvaľovať; zvislé rolovanie prstom ostáva stránke. */
-  .ks-stage.sq-tahatelne { touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
-  .ks-stage.sq-taha { cursor: grabbing; }
   /* Kóta nad kotúčom ide s ním cez transform (plynulo, bez nového rozloženia pri každom snímku) a bez rozmazania
      pozadia, pod ňou sa každý snímok mení obraz. --pomer je na koreni, 1cqw = 1 % šírky rámika. */
   .ks.ks-js .ks-stage :global(.k-kotuc) { left: 0; top: 0; transform: translate3d(calc(var(--xn, 0) * 1cqw), calc(var(--yn, 0) * 1cqw / var(--pomer)), 0); will-change: transform; }
   .ks.ks-js .ks-stage :global(.stitok) { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--sklo-3); }
   /* Kroky v rade pod obrazom: rozsvieti sa ten, ku ktorému kotúč dorazil (bez skriptu všetky). */
   .ks-kroky { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; margin: 0; padding: 0; list-style: none; }
-  .ks-kroky li { position: relative; isolation: isolate; padding-top: 16px; border-top: 3px solid rgb(10 42 94 / 0.14); transition: border-color 300ms var(--ease-soft), opacity 300ms var(--ease-soft); }
+  .ks-kroky li { position: relative; padding-top: 16px; border-top: 3px solid rgb(10 42 94 / 0.14); transition: border-color 300ms var(--ease-soft), opacity 300ms var(--ease-soft); }
   .ks-cislo { font-family: var(--font-display); font-weight: 700; font-size: 18px; color: var(--color-blue-700); }
   .ks-kroky h3 { margin-top: 2px; font-size: 18px; line-height: 1.3; }
   .ks-kroky p { margin-top: 4px; font-size: 15px; line-height: 1.5; color: var(--color-ink-soft); }
   .ks.ks-js .ks-kroky li { opacity: var(--ks-neaktivny-opacity, 0.5); }
   .ks.ks-js .ks-kroky li.is-on { opacity: 1; border-top-color: var(--color-blue-700); }
 
-  /* B: kroky sú tlačidlá (skript vloží <button> do nadpisu, klikateľný je celý krok); vybraný krok má pod sebou
-     mliečnu plochu (pseudoprvok, pri prepnutí sa nič neposunie). */
-  .ks[data-rezim="b"] .ks-kroky li::before { content: ""; position: absolute; z-index: -1; inset: 0 -12px -12px; border-radius: 0 0 var(--radius-l) var(--radius-l); background: var(--sklo-1); box-shadow: var(--elev-1); opacity: 0; transition: opacity 250ms var(--ease-soft); }
-  .ks[data-rezim="b"] .ks-kroky li.is-aktivny::before { opacity: 1; }
-  .ks-kroky :global(.ks-vyber) { margin: 0; padding: 0; border: 0; background: none; font: inherit; color: inherit; text-align: inherit; cursor: pointer; }
-  .ks-kroky :global(.ks-vyber)::after { content: ""; position: absolute; inset: -3px -12px -12px; border-radius: 0 0 var(--radius-l) var(--radius-l); }
-  .ks-kroky :global(.ks-vyber:focus-visible) { outline: none; }
-  .ks-kroky :global(.ks-vyber:focus-visible)::after { outline: 2px solid var(--color-blue-700); outline-offset: 2px; }
-  @media (hover: hover) and (pointer: fine) {
-    .ks[data-rezim="b"] .ks-kroky li:not(.is-aktivny):hover h3 { color: var(--color-blue-700); }
-  }
-
   @media (max-width: 900px) {
     .ks-obal { padding-block: 56px 16px; }
     .ks-stage { width: calc(100% + 2 * var(--gutter)); margin-inline: calc(-1 * var(--gutter)); }
     .ks-kroky { grid-template-columns: minmax(0, 1fr); gap: 16px; }
-    /* B: popis len pri vybranom kroku, ostatné ukážu číslo a názov (zoznam drží výšku, skript). */
-    .ks[data-rezim="b"] .ks-kroky { gap: 12px; }
-    .ks[data-rezim="b"] .ks-kroky li { display: grid; grid-template-columns: 24px minmax(0, 1fr); column-gap: 8px; align-items: baseline; padding-top: 12px; }
-    .ks[data-rezim="b"] .ks-kroky li > :not(.ks-cislo) { grid-column: 2; }
-    .ks[data-rezim="b"] .ks-kroky h3 { margin-top: 0; }
-    .ks[data-rezim="b"] .ks-kroky p { display: none; }
-    .ks[data-rezim="b"] .ks-kroky li.is-aktivny p { display: block; }
-    .ks[data-rezim="b"] .ks-kroky li::before, .ks-kroky :global(.ks-vyber)::after { left: -8px; right: -8px; }
   }
 </style>
 
 <script>
-  import { prehravaj, ovladaj, rezimAnimacii, type Krok } from '../lib/sekvencia';
+  import { prehravaj, ovladaj } from '../lib/sekvencia';
   // Kedy sa rozsvieti krok (podiel odvalenia): kotúč pri výkope, rozvinutie, spojky, páska a zásyp na konci.
   const KROK = [0, 0.36, 0.85, 1];
-  // Scenár (cieľ, ms pohybu, ms zastávky). A a C: odvalenie naraz. B: po krokoch. Spolu pod 5 s (WCAG 2.2.2).
-  const NARAZ: Krok[] = [[1, 3600, 0]];
-  const PO_KROKOCH: Krok[] = [[0, 0, 500], [KROK[1], 1000, 600], [KROK[2], 1200, 600], [KROK[3], 600, 0]];
+  // Celé odvalenie za 3,6 s: pod 5 s, takže netreba tlačidlo na zastavenie (WCAG 2.2.2).
+  const TRVANIE = 3600;
   const stopky: AbortController[] = [];
 
   function initKotuc() {
     stopky.splice(0).forEach((s) => s.abort());
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const rezim = rezimAnimacii();
     document.querySelectorAll<HTMLElement>('[data-kotuc]').forEach((koren) => {
       const stop = new AbortController();
       const signal = stop.signal;
       stopky.push(stop);
-      koren.dataset.rezim = rezim;
       koren.classList.add('ks-js');
       const n = Number(koren.dataset.snimok);
       const body: { vrch: number[]; celo: number[]; volny_m: number }[] = JSON.parse(koren.dataset.body ?? '[]');
@@ -135,9 +109,9 @@ const dlzka = Math.floor(data.kotuc.dlzka_m);
       let naposledy = -1;
       const prehravac = prehravaj({
         koren, stage, platno: koren.querySelector<HTMLCanvasElement>('.ks-canvas')!,
-        cesta: koren.dataset.cesta ?? '', n, sirky: (koren.dataset.sirky ?? '').split(',').map(Number), zaciatok: 0, signal,
+        cesta: koren.dataset.cesta ?? '', n, sirky: (koren.dataset.sirky ?? '').split(',').map(Number), signal,
         bezi: () => koren.classList.add('ks-bezi'),
-        zlyhalo: () => { koren.classList.remove('ks-js'); delete koren.dataset.rezim; stop.abort(); },
+        zlyhalo: () => { koren.classList.remove('ks-js'); stop.abort(); },
         popisy: (x) => {
           // kóta ide s kotúčom plynulo (medzi bodmi susedných snímok), metre na ňom ubúdajú po jednom
           const i = Math.min(n - 2, Math.floor(x)), t = x - i, a = body[i], b = body[i + 1];
@@ -149,48 +123,16 @@ const dlzka = Math.floor(data.kotuc.dlzka_m);
           const novyText = ide ? koren.dataset.ostava! : priemerText;
           if (hodnota.textContent !== novaHodnota) hodnota.textContent = novaHodnota;
           if (text.textContent !== novyText) text.textContent = novyText;
+          // krok sa rozsvieti, keď k nemu kotúč dorazí
           const f = x / (n - 1);
-          let aktivny = 0;
-          KROK.forEach((k, j) => { if (f >= k - 1e-6) aktivny = j; });
-          if (aktivny === naposledy) return;
-          naposledy = aktivny;
-          kroky.forEach((li, j) => {
-            li.classList.toggle('is-on', j <= aktivny);
-            li.classList.toggle('is-aktivny', j === aktivny);
-            li.querySelector('.ks-vyber')?.setAttribute('aria-pressed', String(j === aktivny));
-          });
+          let dosiel = 0;
+          KROK.forEach((k, j) => { if (f >= k - 1e-6) dosiel = j; });
+          if (dosiel === naposledy) return;
+          naposledy = dosiel;
+          kroky.forEach((li, j) => li.classList.toggle('is-on', j <= dosiel));
         },
       });
-
-      // Prehranie pri zobrazení, Prehrať znova, v C ťahanie (kotúč ide sprava doľava: ťah doľava ho odvaľuje ďalej).
-      const ovl = ovladaj({ koren, stage, prehravac, hore: window.matchMedia('(max-width: 900px)').matches ? 64 : 72, scenar: rezim === 'b' ? PO_KROKOCH : NARAZ, rezim, smerTahu: -1, signal });
-
-      if (rezim === 'b') {
-        kroky.forEach((li, j) => {
-          const h3 = li.querySelector('h3')!;
-          const tlacidlo = document.createElement('button');
-          tlacidlo.type = 'button';
-          tlacidlo.className = 'ks-vyber';
-          tlacidlo.textContent = h3.textContent;
-          tlacidlo.setAttribute('aria-pressed', 'false');
-          h3.replaceChildren(tlacidlo);
-          tlacidlo.addEventListener('click', () => { void ovl.vyber(KROK[j], 1100); }, { signal });
-        });
-        // telefón: zoznam drží výšku s najdlhším popisom, pod ním sa pri prepnutí kroku nič nehýbe
-        const zoznam = koren.querySelector<HTMLElement>('.ks-kroky')!;
-        const drzVysku = () => {
-          zoznam.style.minHeight = '';
-          if (!window.matchMedia('(max-width: 900px)').matches) return;
-          const aktivne = kroky.map((li) => li.classList.contains('is-aktivny'));
-          let max = 0;
-          for (const li of kroky) { kroky.forEach((x) => x.classList.toggle('is-aktivny', x === li)); max = Math.max(max, zoznam.offsetHeight); }
-          kroky.forEach((x, k) => x.classList.toggle('is-aktivny', aktivne[k]));
-          zoznam.style.minHeight = `${max}px`;
-        };
-        drzVysku();
-        document.fonts?.ready.then(drzVysku);
-        window.addEventListener('resize', drzVysku, { signal });
-      }
+      ovladaj({ koren, stage, prehravac, hore: window.matchMedia('(max-width: 900px)').matches ? 64 : 72, trvanie: TRVANIE, signal });
     });
   }
 

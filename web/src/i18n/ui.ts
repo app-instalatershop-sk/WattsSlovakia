@@ -9,10 +9,11 @@ export const ESHOP_SEARCH = 'https://www.instalatershop.sk/vyhledavani/?string='
 export const KATALOG_PDF = 'https://www.watts.eu/dfsmedia/0533DBBA-1771-4B1A-B581-AB07A4CBB521/640504-source/639239694230000000/MICROFLEX_SK_PDF.pdf';
 
 const sk = {
-  site: { name: 'Microflex Slovensko', sub: 'Slovensko', tagline: 'Predizolované ohybné potrubie Microflex pre Slovensko' },
+  site: { name: 'Microflex Slovensko', sub: 'Slovensko', tagline: 'Predizolované ohybné potrubie Microflex pre Česko a Slovensko' },
   nav: { potrubia: 'Potrubia', vyber: 'Výber potrubia', stiahnut: 'Na stiahnutie', firmy: 'Pre firmy', poradna: 'Poradňa', referencie: 'Referencie', kontakt: 'Kontakt', podklady: 'Podklady', eshop: 'E-shop', menu: 'Menu', zavriet: 'Zavrieť', hlavna: 'Hlavná navigácia', domov: 'Domov', celyKatalog: 'Celý katalóg potrubí', katalogPdf: 'Katalóg PDF, 19 MB' },
   search: { placeholder: 'Obj. číslo, rad', label: 'Hľadať v katalógu', button: 'Hľadať', vsetky: 'Všetky výsledky', nic: 'Nič sme nenašli. Skúste obj. číslo, rad alebo sprievodcu výberom.', ciastocne: 'Presnú zhodu sme nenašli. Najbližšie:', sprievodca: 'Sprievodca výberom potrubia', skupiny: { rad: 'Rad', kod: 'Obj. číslo', diel: 'Diel', stranka: 'Stránka' } },
-  partner: { kratke: 'Oficiálny partner', veta: 'Oficiálny partner Watts pre Microflex na Slovensku', vyrobca: 'Výrobca', pas: 'Partner, kontakt a jazyk' },
+  // Juraj 4. 11. 2026: sme jediní partneri Watts pre Microflex v Česku aj na Slovensku (znenie potvrdí manažér, otázka č. 21).
+  partner: { kratke: 'Jediný partner pre CZ a SK', veta: 'Jediný oficiálny partner Watts pre Microflex v Česku a na Slovensku', vyrobca: 'Výrobca', pas: 'Partner, kontakt a jazyk' },
   jazyk: { prepnut: 'Jazyk', sk: 'Slovensky', cs: 'Česky' },
   crumbs: { label: 'Kde ste' },
   common: {
@@ -71,7 +72,7 @@ const sk = {
     // Hlavná akcia vedie do sprievodcu (rovnako ako položka menu), druhá k dopytu na projekt.
     cta: 'Vybrať potrubie', cta2: 'Dopyt na projekt',
     // Dodávateľ viditeľne pri úvode (Juraj 28. 10.: Microflex je hlavná značka, predáva Inštalatérshop).
-    dodavatel: 'Predaj a sklad Microflex na Slovensku:', dodavatelOdkaz: 'Inštalatérshop, Raková',
+    dodavatel: 'Predaj a sklad:', dodavatelOdkaz: 'Inštalatérshop, Raková',
     // Pás pod úvodom (Juraj 4. 11. 2026, variant B): potrubie ide do zeme a spája sa bez lisu a zvárania.
     // Zdroj: katalóg výrobcu s. 5 (bez špeciálneho náradia a zvárača, prekážky bez spojok), s. 22 (svorná spojka,
     // objímka so skrutkou z nehrdzavejúcej ocele), s. 37 (hĺbka 0,5 až 6 m).
@@ -195,12 +196,12 @@ const sk = {
   },
   subory: { slovensky: 'slovensky', anglicky: 'anglicky', cesky: 'česky' },
   footer: {
-    popis: 'Prezentačný web predizolovaného potrubia Microflex pre Slovensko. Predaj a sklad zabezpečuje',
+    popis: 'Prezentačný web predizolovaného potrubia Microflex pre Česko a Slovensko. Predaj a sklad zabezpečuje',
     potrubia: 'Potrubia a diely', podklady: 'Podklady', prevadzkovatel: 'Prevádzkovateľ', vyrobca: 'Výrobca',
     katalog: 'Katalóg Microflex (PDF, 19 MB)', technicke: 'Technické listy', bim: 'BIM a CAD', vyhlasenia: 'Vyhlásenia o zhode a EPD', poradna: 'Poradňa',
     ico: 'IČO', icdph: 'IČ DPH', kontakt: 'Kontakt a predajňa', predajna: 'Predajňa a sklad', sidlo: 'sídlo',
     znamka: 'Microflex je ochranná známka skupiny Watts. Web prevádzkuje oficiálny partner, nie výrobca.',
-    vyrobcaText: 'Microflex vyrába Watts. Sme oficiálny partner pre Slovensko.',
+    vyrobcaText: 'Microflex vyrába Watts. Sme jediný oficiálny partner pre Česko a Slovensko.',
   },
   sklonovanie: {
     variantov: (n: number) => (n === 1 ? '1 variant' : n >= 2 && n <= 4 ? `${n} varianty` : `${n} variantov`),
@@ -244,10 +245,10 @@ const sk = {
 };
 
 const cs: typeof sk = {
-  site: { name: 'Microflex Slovensko', sub: 'Slovensko', tagline: 'Předizolované ohebné potrubí Microflex' },
+  site: { name: 'Microflex Slovensko', sub: 'Slovensko', tagline: 'Předizolované ohebné potrubí Microflex pro Česko a Slovensko' },
   nav: { potrubia: 'Potrubí', vyber: 'Výběr potrubí', stiahnut: 'Ke stažení', firmy: 'Pro firmy', poradna: 'Poradna', referencie: 'Reference', kontakt: 'Kontakt', podklady: 'Podklady', eshop: 'E-shop', menu: 'Menu', zavriet: 'Zavřít', hlavna: 'Hlavní navigace', domov: 'Domů', celyKatalog: 'Celý katalog potrubí', katalogPdf: 'Katalog PDF, 19 MB, slovensky' },
   search: { placeholder: 'Obj. číslo, řada', label: 'Hledat v katalogu', button: 'Hledat', vsetky: 'Všechny výsledky', nic: 'Nic jsme nenašli. Zkuste obj. číslo, řadu nebo průvodce výběrem.', ciastocne: 'Přesnou shodu jsme nenašli. Nejbližší:', sprievodca: 'Průvodce výběrem potrubí', skupiny: { rad: 'Řada', kod: 'Obj. číslo', diel: 'Díl', stranka: 'Stránka' } },
-  partner: { kratke: 'Oficiální partner', veta: 'Oficiální partner Watts pro Microflex na Slovensku', vyrobca: 'Výrobce', pas: 'Partner, kontakt a jazyk' },
+  partner: { kratke: 'Jediný partner pro CZ a SK', veta: 'Jediný oficiální partner Watts pro Microflex v Česku a na Slovensku', vyrobca: 'Výrobce', pas: 'Partner, kontakt a jazyk' },
   jazyk: { prepnut: 'Jazyk', sk: 'Slovensky', cs: 'Česky' },
   crumbs: { label: 'Kde jste' },
   common: {
@@ -303,7 +304,7 @@ const cs: typeof sk = {
     h1a: 'Flexibilní potrubí.', h1b: 'Precizní řešení.',
     lead: 'Pro vytápění, pitnou vodu, chlazení a tepelná čerpadla.',
     cta: 'Vybrat potrubí', cta2: 'Poptávka na projekt',
-    dodavatel: 'Prodej a sklad Microflex na Slovensku:', dodavatelOdkaz: 'Inštalatérshop, Raková',
+    dodavatel: 'Prodej a sklad:', dodavatelOdkaz: 'Inštalatérshop, Raková',
     doZeme: {
       kicker: 'Pokládka a montáž', h2a: 'Do země.', h2b: 'Bez lisu a svařování.',
       p1: ['Potrubí Microflex se ukládá do pískového lože ', '0,5 až 6 m pod zemí', '. Kolem překážek se ohne bez kolen a spojí se svěrnými spojkami: ', 'nosnou trubku zasunete, objímku dotáhnete šrouby.'] as string[],
@@ -414,12 +415,12 @@ const cs: typeof sk = {
   },
   subory: { slovensky: 'slovensky', anglicky: 'anglicky', cesky: 'česky' },
   footer: {
-    popis: 'Prezentační web předizolovaného potrubí Microflex. Prodej a sklad zajišťuje',
+    popis: 'Prezentační web předizolovaného potrubí Microflex pro Česko a Slovensko. Prodej a sklad zajišťuje',
     potrubia: 'Potrubí a díly', podklady: 'Podklady', prevadzkovatel: 'Provozovatel', vyrobca: 'Výrobce',
     katalog: 'Katalog Microflex (PDF, 19 MB)', technicke: 'Technické listy', bim: 'BIM a CAD', vyhlasenia: 'Prohlášení o shodě a EPD', poradna: 'Poradna',
     ico: 'IČO', icdph: 'DIČ', kontakt: 'Kontakt a prodejna', predajna: 'Prodejna a sklad', sidlo: 'sídlo',
     znamka: 'Microflex je ochranná známka skupiny Watts. Web provozuje oficiální partner, nikoli výrobce.',
-    vyrobcaText: 'Microflex vyrábí Watts. Jsme oficiální partner pro Slovensko.',
+    vyrobcaText: 'Microflex vyrábí Watts. Jsme jediný oficiální partner pro Česko a Slovensko.',
   },
   sklonovanie: {
     variantov: (n: number) => (n === 1 ? '1 varianta' : n >= 2 && n <= 4 ? `${n} varianty` : `${n} variant`),

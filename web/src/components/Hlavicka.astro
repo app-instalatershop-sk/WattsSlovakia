@@ -46,13 +46,15 @@ const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, 
 <!-- Horný pás nie je prilepený: odroluje prirodzene, hlavička pod ním ostáva. -->
 <div class="topbar" role="region" aria-label={ui.partner.pas} transition:name="horny-pas" transition:animate="none">
   <div class="wrap topbar-in">
+    {/* Juraj 4. 11. 2026: jediný partner pre Česko a Slovensko, na telefóne krátko (celá veta ostáva pre čítačky). */}
     <a class="partner" href={route(lang, 'kontakt')} aria-label={ui.partner.veta}>
-      <span>{ui.partner.veta}</span>
+      <span class="partner-plne">{ui.partner.veta}</span>
+      <span class="partner-kratke" aria-hidden="true">{ui.partner.kratke}</span>
       <WattsLogo height={14} farba="biela" />
     </a>
     {/* Kontakt je vždy na očiach: telefón na jeden ťuk a stránka kontaktu (audit prvého dojmu, č. 5). */}
     <div class="topbar-kontakt">
-      <a class="topbar-tel" href={FIRMA.telefonHref}><Ikona nazov="phone" velkost={14} />{FIRMA.telefon}</a>
+      <a class="topbar-tel" href={FIRMA.telefonHref} aria-label={FIRMA.telefon}><Ikona nazov="phone" velkost={14} /><span class="topbar-tel-cislo">{FIRMA.telefon}</span></a>
       <a href={route(lang, 'kontakt')} aria-current={aktivna === 'kontakt' ? 'page' : undefined}>{ui.nav.kontakt}</a>
     </div>
     <nav class="langs" aria-label={ui.jazyk.prepnut}>
@@ -154,6 +156,7 @@ const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, 
   .partner { display: inline-flex; align-items: center; gap: 12px; color: #fff; white-space: nowrap; }
   .partner:hover { color: var(--color-yellow-500); }
   .partner :global(svg) { display: block; }
+  .partner-kratke { display: none; }
   .topbar-kontakt { margin-left: auto; display: inline-flex; align-items: center; gap: 20px; }
   .topbar-kontakt a { color: var(--color-on-dark-muted); font-weight: 500; white-space: nowrap; }
   .topbar-kontakt a:hover, .topbar-kontakt a[aria-current] { color: #fff; }
@@ -300,10 +303,22 @@ const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, 
     .brand { gap: 8px; }
     .brand, .hdr.is-scrolled .brand { --logo-h: 17px; }
     .brand-sub { font-size: 13px; padding-left: 8px; }
-    .partner span { display: none; }
+    .partner-plne { display: none; }
+    .partner-kratke { display: inline; }
     /* Na telefóne ostáva v páse len číslo; stránka Kontakt je v menu. */
     .topbar-kontakt a:not(.topbar-tel) { display: none; }
     .topbar-kontakt + .langs { padding-left: 16px; }
+  }
+  /* Celá veta o partnerstve sa vedľa telefónu, kontaktu a jazykov zmestí od 1024 px; užšie krátka verzia. */
+  @media (max-width: 1023px) { .partner-plne { display: none; } .partner-kratke { display: inline; } }
+  /* Telefón: v hornom páse partnerstvo a ikona telefónu (číslo je v aria-label, ťuk stále volá). */
+  @media (max-width: 520px) { .topbar-tel-cislo { display: none; } }
+  /* Úzky telefón (360 px): menšie písmo a medzery, aby sa pás nezalomil ani nepretiekol. */
+  @media (max-width: 400px) {
+    .topbar { font-size: 12px; }
+    .topbar-in { gap: 8px; }
+    .partner { gap: 8px; }
+    .topbar-kontakt + .langs { padding-left: 12px; }
   }
   /* Úzky telefón: logo, lupa a menu sa zmestia len s tlačidlom menu bez textu (text ostáva pre čítačky). */
   @media (max-width: 420px) {

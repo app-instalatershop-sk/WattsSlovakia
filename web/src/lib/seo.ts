@@ -10,8 +10,9 @@ const MIN_POPIS = 120;
 const MAX_POPIS = 160;
 
 const doplnky: Record<Lang, string[]> = {
-  sk: ['Obj. čísla, podklady výrobcu a nákup na instalatershop.sk.', 'Oficiálny partner Watts pre Slovensko.'],
-  cs: ['Obj. čísla, podklady výrobce a nákup na instalatershop.sk.', 'Oficiální partner Watts pro Slovensko.'],
+  // Posledná je kratšia náhrada vety o partnerstve, keď sa dlhá do 160 znakov nezmestí (začiatok sa neopakuje).
+  sk: ['Obj. čísla, podklady výrobcu a nákup na instalatershop.sk.', 'Jediný partner Watts pre Česko a Slovensko.', 'Jediný partner Watts pre CZ a SK.'],
+  cs: ['Obj. čísla, podklady výrobce a nákup na instalatershop.sk.', 'Jediný partner Watts pro Česko a Slovensko.', 'Jediný partner Watts pro CZ a SK.'],
 };
 
 /** „Názov | Microflex Slovensko“, pri dlhom názve „Názov | Microflex“, inak len názov. */

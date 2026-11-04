@@ -65,7 +65,7 @@ async function nakresli(z: OgZaznam): Promise<Buffer> {
   const [fonts, { microflex, watts }, img] = await Promise.all([nacitajPisma(), nacitajLoga(), obraz(z)]);
   const velkost = z.nadpis.length <= 30 ? 66 : z.nadpis.length <= 46 ? 56 : 48;
   const sirkaTextu = z.druh === 'foto' ? 600 : 560;
-  const partner = z.lang === 'cs' ? 'Oficiální partner pro Slovensko' : 'Oficiálny partner pre Slovensko';
+  const partner = z.lang === 'cs' ? 'Jediný oficiální partner pro Česko a Slovensko' : 'Jediný oficiálny partner pre Česko a Slovensko';
 
   const obrazUzol = !img ? null
     : z.druh === 'render'

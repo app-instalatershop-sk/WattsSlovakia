@@ -4,6 +4,7 @@ import Obraz from '../components/Obraz.astro';
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Ikona from '../components/Ikona.astro';
+import WattsLogo from '../components/WattsLogo.astro';
 import Katalog from '../components/Katalog.astro';
 import Scena from '../components/Scena.astro';
 import { referencie } from '../content/referencie';
@@ -114,7 +115,11 @@ const skratky = [
           <a class="btn btn-yellow btn-lg" href={route(lang, 'vyber')}>{h.cta} <Ikona nazov="arrow-right" velkost={18} /></a>
           <a class="hero-odkaz" href={`${route(lang, 'firmy')}#dopyt`}>{h.cta2}</a>
         </div>
-        <p class="hero-dodavatel">{h.dodavatel} <a href={route(lang, 'kontakt')}>{h.dodavatelOdkaz}</a></p>
+        {/* Partnerstvo viditeľne v úvode (Juraj 4. 11. 2026): jediný partner Watts pre Česko a Slovensko, pod ním predaj. */}
+        <div class="hero-partner">
+          <WattsLogo height={20} farba="original" class="hero-partner-logo" />
+          <p><strong>{sadzba(ui.partner.veta)}</strong><span>{h.dodavatel} <a href={route(lang, 'kontakt')}>{h.dodavatelOdkaz}</a></span></p>
+        </div>
       </div>
       <div class:list={['hero-product', { je3d: hero3d }]}>
         <div class:list={['hero-stage', { je3d: hero3d }]} style={heroBody?.stred ? `--kx: ${((heroBody.stred[0] + 50) / 190 * 100).toFixed(1)}%; --ky: ${((heroBody.stred[1] + 15) / 115 * 100).toFixed(1)}%` : undefined}>
@@ -320,9 +325,14 @@ const skratky = [
   /* Druhá akcia nie je tlačidlo: nemá súperiť so žltým, len ponúknuť cestu k dopytu na projekt. */
   .hero-odkaz { display: inline-flex; align-items: center; gap: 8px; font-weight: 500; color: var(--color-blue-700); border-bottom: 1px solid currentColor; padding-bottom: 4px; }
   /* Kto predáva: tichý riadok pod akciami, odkaz na predajňu (Microflex ostáva hlavná značka). */
-  .hero-dodavatel { margin-top: 24px; font-size: 15px; line-height: 1.5; color: var(--color-ink-soft); }
-  .hero-dodavatel a { font-weight: 600; color: var(--color-ink); text-decoration: underline; text-decoration-color: rgb(10 42 94 / 0.3); text-underline-offset: 3px; }
-  @media (hover: hover) and (pointer: fine) { .hero-dodavatel a:hover { color: var(--color-blue-700); text-decoration-color: currentColor; } }
+  /* Logo nad textom na každej šírke: blok je úzky a nesiaha pod kóty renderu (1024 px). */
+  .hero-partner { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin-top: 28px; }
+  .hero-partner :global(.hero-partner-logo) { flex: none; }
+  .hero-partner :global(.hero-partner-logo svg) { display: block; }
+  .hero-partner p { display: flex; flex-direction: column; gap: 4px; max-width: 22em; font-size: 15px; line-height: 1.45; color: var(--color-ink-soft); }
+  .hero-partner strong { color: var(--color-ink); font-weight: 600; }
+  .hero-partner a { font-weight: 600; color: var(--color-ink); text-decoration: underline; text-decoration-color: rgb(10 42 94 / 0.3); text-underline-offset: 3px; }
+  @media (hover: hover) and (pointer: fine) { .hero-partner a:hover { color: var(--color-blue-700); text-decoration-color: currentColor; } }
   /* Priamy vstup do obsahu aj pre návštevníka, ktorý nechce prejsť všetky 3D ukážky. */
   .hero-skratky { grid-area: skratky; position: relative; z-index: 3; padding-bottom: 12px; }
   .hero-skratky ul { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
@@ -634,7 +644,9 @@ const skratky = [
     .hero-actions { width: 100%; margin-top: 24px; gap: 8px 16px; }
     .hero-actions .btn-lg { height: 52px; padding-inline: 20px; font-size: 16px; }
     .hero-odkaz { min-height: 44px; font-size: 15px; border: 0; text-decoration: underline; text-underline-offset: 5px; }
-    .hero-dodavatel { margin-top: 16px; font-size: 14px; }
+    .hero-partner { margin-top: 20px; }
+    .hero-partner :global(.hero-partner-logo svg) { height: 18px; width: auto; }
+    .hero-partner p { font-size: 14px; }
     .hero-product { margin: 32px 0 0; margin-right: calc(-1 * var(--gutter)); margin-left: calc(-1 * var(--gutter)); justify-self: stretch; }
     .hero { padding-bottom: 16px; }
     .hero-skratky { padding-top: 12px; padding-bottom: 0; }

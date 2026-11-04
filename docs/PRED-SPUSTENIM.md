@@ -49,7 +49,11 @@ ponúkne ten istý dopyt ako vyplnený e-mail (mailto) a telefón.
 
 ## 4. Značka a texty
 
-- [ ] Potvrdiť s Watts presné znenie partnerstva („oficiálny partner“ alebo „autorizovaný predajca“), `docs/DESIGN.md` kap. 14.
+- [x] Názov webu „Microflex Česko a Slovensko“, pri logu „Česko a Slovensko“, na telefóne „CZ · SK“ (Juraj 4. 11. 2026).
+- [x] Na webe „Jediný oficiálny partner Watts pre Microflex v Česku a na Slovensku“: horný pás (užšie „Jediný partner
+      pre CZ a SK“), úvod domova s logom Watts, pätička, Kontakt, popisy pre vyhľadávače, náhľady OG (Juraj 4. 11. 2026).
+- [ ] Watts potvrdí toto znenie vrátane slova „jediný“ (otázka č. 10 pre manažéra; ak výhradnosť nie je v zmluve, vypustiť ho).
+- [ ] Doména microflex.cz patrí tretej strane (do 15. 1. 2027), otázka č. 21 pre manažéra.
 - [ ] Služby na stránke Pre firmy zladiť s tým, čo firma naozaj poskytuje.
 
 ## 5. Meranie a súkromie
@@ -77,7 +81,7 @@ Rozhodnutie Juraja 4. 11. 2026: bez cookies a bez lišty. Hľadanosť v Search C
       (rozložený rez, domov aj rady), „Ohne sa okolo prekážky“ (ohyb, 225 vh) a kotúč pri pokládke (200 vh).
       Rolovanie cez ne trvá dlho; návrh: prehrať raz pri zobrazení, tlačidlo Prehrať znova, kratšia sekcia,
       pri obmedzenom pohybe hneď posledná snímka.
-- [ ] Slogan o montáži bez lisovacích klieští a zvárania (Juraj 4. 11. 2026, katalóg s. 5 a 22): miesto a znenie vyberie Juraj.
+- [x] Pás „Do zeme. Bez lisu a zvárania.“ pod úvodom domova so skutočnou fotkou výkopu (Juraj 4. 11. 2026, variant B).
 - [ ] Odkazy do e-shopu spárovať po exporte produktov zo Shoptetu (export dodá Juraj, bod 1).
 
 ## 8. Posledná kontrola

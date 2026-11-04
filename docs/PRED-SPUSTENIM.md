@@ -78,9 +78,12 @@ Rozhodnutie Juraja 4. 11. 2026: bez cookies a bez lišty. Hľadanosť v Search C
 ## 7. Nápady a úlohy (TODO)
 
 - [x] Animácie viazané na rolovanie zmeniť na automatické pri zobrazení (Juraj 4. 11. 2026): „Z čoho je potrubie“
-      (rozložený rez, domov aj rady), „Ohne sa okolo prekážky“ (ohyb) a kotúč pri pokládke. Juraj vybral návrh A:
-      prehrá sa raz a plynulo, keď je obraz v okne, potom len tlačidlo Prehrať znova, bez iných interakcií.
-      Domov na počítači 12,5 → 8,9 okna, na telefóne 14,9 → 12,1. Pravidlo: `docs/DESIGN.md` kap. 8.
+      (rozložený rez, domov aj rady), „Ohne sa okolo prekážky“ (ohyb, 225 vh) a kotúč pri pokládke (200 vh).
+      Rolovanie cez ne trvá dlho; návrh: prehrať raz pri zobrazení, tlačidlo Prehrať znova, kratšia sekcia,
+      pri obmedzenom pohybe hneď posledná snímka.
+      **Rozhodnuté 4. 11. 2026: ostáva pôvodné rolovanie.** Juraj si vyskúšal návrhy A, B, C (videá
+      `snimky-stranok/navrh-animacie/`), vybral A (raz samo, bez interakcií) a potom ho vrátil do pôvodného stavu.
+      Návrh A je v histórii gitu (commit bb021f3, späť revertom), keby sa k nemu chcel vrátiť.
 - [x] Pás „Do zeme. Bez lisu a zvárania.“ pod úvodom domova so skutočnou fotkou výkopu (Juraj 4. 11. 2026, variant B).
 - [ ] Odkazy do e-shopu spárovať po exporte produktov zo Shoptetu (export dodá Juraj, bod 1).
 

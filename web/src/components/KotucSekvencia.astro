@@ -1,23 +1,21 @@
 ---
 /**
  * Kotúč sa odvaľuje (Juraj 28. 10. 2026, v pokládke na domove namiesto fotky): 100 m potrubia DUO
- * (4 vrstvy po 5 závitoch z rozmerov kotúča v katalógu) sa odvaľuje pozdĺž ryhy a za ním ostáva položená rúra
- * (data/blender/potrubie.py pohľad kotuc, data/novinky_web.py kotuc). Záber je široký (kotúč prejde celý
- * obraz), preto ide cez celú šírku a pod ním sú kroky pokládky v rade; rozsvietia sa s pohybom.
+ * (4 vrstvy po 5 závitoch z rozmerov kotúča v katalógu) sa pri rolovaní odvaľuje pozdĺž ryhy a za ním ostáva
+ * položená rúra (data/blender/potrubie.py pohľad kotuc, data/novinky_web.py kotuc). Záber je široký (kotúč
+ * prejde celý obraz), preto ide cez celú šírku a pod ním sú kroky pokládky v rade; rozsvietia sa s pohybom.
  * Kóta nad kotúčom ide s ním: najprv priemer kotúča, pri odvaľovaní koľko metrov na ňom ostáva.
- * Kotúč sa odvalí sám, raz a plynulo za 3,6 s, keď je obraz v okne (Juraj 4. 11. 2026, návrh A; predtým
- * rolovanie cez 1,75 okna); všetky kroky sú stále vidieť a jediné ovládanie je tlačidlo Prehrať znova.
- * Prehrávač: lib/sekvencia.ts. Bez skriptu a pri „obmedziť pohyb“ stojí prvý záber s kótami a všetky kroky.
+ * Dlhá dráha so stojacim obsahom a prehrávač ako rozložený rez (lib/sekvencia.ts). Bez skriptu a pri
+ * „obmedziť pohyb“ stojí prvý záber s kótami a všetky kroky.
  */
 import Koty from './Koty.astro';
-import SekvenciaOvladanie from './SekvenciaOvladanie.astro';
 import type { Kota } from '../lib/koty';
 import type { KotucData } from '../lib/obrazky';
 import { sadzba } from '../lib/sadzba';
 
 type Odvalenie = NonNullable<KotucData['odvalenie']>;
-interface Props { data: Odvalenie; texty: { priemer: string; ostava: string; label: string }; celo: [string, string]; alt: string; kroky: [string, string][]; krokyLabel: string; ovladanie: { znova: string } }
-const { data, texty, celo, alt, kroky, krokyLabel, ovladanie } = Astro.props;
+interface Props { data: Odvalenie; texty: { priemer: string; ostava: string; label: string }; celo: [string, string]; alt: string; kroky: [string, string][]; krokyLabel: string }
+const { data, texty, celo, alt, kroky, krokyLabel } = Astro.props;
 const prvy = data.body[0];
 const sirka = Math.max(...data.sirky);
 const zaber0 = `${data.cesta}${sirka}/000`;
@@ -29,7 +27,7 @@ const koty: Kota[] = [
 const dlzka = Math.floor(data.kotuc.dlzka_m);
 ---
 <div class="ks" data-kotuc data-cesta={data.cesta} data-snimok={data.snimok} data-sirky={data.sirky.join(',')} data-body={JSON.stringify(data.body)} data-dlzka={dlzka} data-ostava={texty.ostava} data-priemer={`Ø ${m(data.kotuc.d_m)} m|${texty.priemer}`} style={`--pomer: ${data.pomer}`}>
-  <div class="ks-obal">
+  <div class="ks-sticky">
     <div class="wrap ks-obsah">
       <div class="ks-stage" style={`aspect-ratio: ${data.pomer}`}>
         <picture class="ks-obr">
@@ -38,7 +36,6 @@ const dlzka = Math.floor(data.kotuc.dlzka_m);
         </picture>
         <canvas class="ks-canvas" aria-hidden="true"></canvas>
         <Koty koty={koty} label={texty.label} />
-        <SekvenciaOvladanie znova={ovladanie.znova} roh="vpravo-hore" />
       </div>
       <ol class="ks-kroky" aria-label={krokyLabel}>
         {kroky.map(([nazov, text], i) => (
@@ -50,11 +47,11 @@ const dlzka = Math.floor(data.kotuc.dlzka_m);
 </div>
 
 <style>
-  .ks { position: relative; margin-top: 8px; }
-  /* Sekcia je taká vysoká ako obsah. Hore miesto pre kótu nad kotúčom, ktorá stojí nad horným okrajom obrazu
-     (Juraj 28. 10.: štítok bol orezaný) a s kotúčom prejde až pod text pokládky vľavo; nesmie ho prekryť. */
-  .ks-obal { padding-block: 104px 24px; overflow: clip visible; }
-  .ks-obsah { width: 100%; display: grid; gap: 16px; }
+  .ks { position: relative; height: 200vh; margin-top: 8px; }
+  /* Obsah v strede okna pod hlavičkou; okraje auto ho pri vyššom obsahu zarovnajú hore. Zvisle sa neorezáva:
+     kóta priemeru stojí nad kotúčom, teda nad horným okrajom obrazu (Juraj 28. 10.: štítok bol orezaný). */
+  .ks-sticky { position: sticky; top: 72px; height: calc(100vh - 72px); display: flex; overflow: clip visible; }
+  .ks-obsah { width: 100%; margin-block: auto; display: grid; gap: 16px; }
   /* Široký záber: kotúč prejde celý obraz; výška obmedzená, aby sa pod ním zmestili kroky a nad ním kóta. */
   .ks-stage { position: relative; width: min(100%, calc((100vh - 72px - 360px) * var(--pomer))); margin-inline: auto; container-type: inline-size; }
   .ks-obr :global(img), .ks-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
@@ -73,20 +70,26 @@ const dlzka = Math.floor(data.kotuc.dlzka_m);
   .ks-kroky p { margin-top: 4px; font-size: 15px; line-height: 1.5; color: var(--color-ink-soft); }
   .ks.ks-js .ks-kroky li { opacity: var(--ks-neaktivny-opacity, 0.5); }
   .ks.ks-js .ks-kroky li.is-on { opacity: 1; border-top-color: var(--color-blue-700); }
-
   @media (max-width: 900px) {
-    .ks-obal { padding-block: 56px 16px; }
+    .ks { height: 185vh; }
+    .ks-sticky { top: 64px; height: calc(100svh - 64px); padding-top: 56px; }
     .ks-stage { width: calc(100% + 2 * var(--gutter)); margin-inline: calc(-1 * var(--gutter)); }
-    .ks-kroky { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+    .ks-kroky { grid-template-columns: minmax(0, 1fr); }
+    /* telefón: len krok, ku ktorému kotúč práve dorazil */
+    .ks.ks-js .ks-kroky li { display: none; }
+    .ks.ks-js .ks-kroky li.is-aktivny { display: block; opacity: 1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ks { height: auto; }
+    /* hore miesto pre kótu priemeru nad kotúčom */
+    .ks-sticky { position: static; height: auto; padding-block: clamp(56px, 6vw, 96px) 24px; }
   }
 </style>
 
 <script>
-  import { prehravaj, ovladaj } from '../lib/sekvencia';
-  // Kedy sa rozsvieti krok (podiel odvalenia): kotúč pri výkope, rozvinutie, spojky, páska a zásyp na konci.
-  const KROK = [0, 0.36, 0.85, 1];
-  // Celé odvalenie za 3,6 s: pod 5 s, takže netreba tlačidlo na zastavenie (WCAG 2.2.2).
-  const TRVANIE = 3600;
+  import { prehravaj } from '../lib/sekvencia';
+  // Priebeh 0 až 1 cez dráhu: odvaľovanie do 0,72, potom kotúč stojí; krok sa rozsvieti v štvrtinách.
+  const OD = 0.06, DO = 0.72, KROKY = [0.0, 0.3, 0.62, 0.86];
   const stopky: AbortController[] = [];
 
   function initKotuc() {
@@ -94,25 +97,22 @@ const dlzka = Math.floor(data.kotuc.dlzka_m);
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     document.querySelectorAll<HTMLElement>('[data-kotuc]').forEach((koren) => {
       const stop = new AbortController();
-      const signal = stop.signal;
       stopky.push(stop);
       koren.classList.add('ks-js');
       const n = Number(koren.dataset.snimok);
       const body: { vrch: number[]; celo: number[]; volny_m: number }[] = JSON.parse(koren.dataset.body ?? '[]');
       const dlzka = Number(koren.dataset.dlzka);
       const [priemer, priemerText] = (koren.dataset.priemer ?? '|').split('|');
-      const stage = koren.querySelector<HTMLElement>('.ks-stage')!;
       const kota = koren.querySelector<HTMLElement>('.k-kotuc')!;
       const hodnota = kota.querySelector<HTMLElement>('strong')!;
       const text = kota.querySelector<HTMLElement>('.stitok > span')!;
       const kroky = [...koren.querySelectorAll<HTMLElement>('.ks-kroky li')];
-      let naposledy = -1;
-      const prehravac = prehravaj({
-        koren, stage, platno: koren.querySelector<HTMLCanvasElement>('.ks-canvas')!,
-        cesta: koren.dataset.cesta ?? '', n, sirky: (koren.dataset.sirky ?? '').split(',').map(Number), signal,
+      prehravaj({
+        koren, stage: koren.querySelector<HTMLElement>('.ks-stage')!, platno: koren.querySelector<HTMLCanvasElement>('.ks-canvas')!,
+        cesta: koren.dataset.cesta ?? '', n, sirky: (koren.dataset.sirky ?? '').split(',').map(Number), od: OD, do: DO, signal: stop.signal,
         bezi: () => koren.classList.add('ks-bezi'),
         zlyhalo: () => { koren.classList.remove('ks-js'); stop.abort(); },
-        popisy: (x) => {
+        popisy: (p, x) => {
           // kóta ide s kotúčom plynulo (medzi bodmi susedných snímok), metre na ňom ubúdajú po jednom
           const i = Math.min(n - 2, Math.floor(x)), t = x - i, a = body[i], b = body[i + 1];
           kota.style.setProperty('--xn', (a.vrch[0] + t * (b.vrch[0] - a.vrch[0])).toFixed(3));
@@ -123,16 +123,11 @@ const dlzka = Math.floor(data.kotuc.dlzka_m);
           const novyText = ide ? koren.dataset.ostava! : priemerText;
           if (hodnota.textContent !== novaHodnota) hodnota.textContent = novaHodnota;
           if (text.textContent !== novyText) text.textContent = novyText;
-          // krok sa rozsvieti, keď k nemu kotúč dorazí
-          const f = x / (n - 1);
-          let dosiel = 0;
-          KROK.forEach((k, j) => { if (f >= k - 1e-6) dosiel = j; });
-          if (dosiel === naposledy) return;
-          naposledy = dosiel;
-          kroky.forEach((li, j) => li.classList.toggle('is-on', j <= dosiel));
+          let aktivny = 0;
+          kroky.forEach((li, k) => { const on = p >= KROKY[k]; li.classList.toggle('is-on', on); if (on) aktivny = k; });
+          kroky.forEach((li, k) => li.classList.toggle('is-aktivny', k === aktivny));
         },
       });
-      ovladaj({ koren, stage, prehravac, hore: window.matchMedia('(max-width: 900px)').matches ? 64 : 72, trvanie: TRVANIE, signal });
     });
   }
 

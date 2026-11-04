@@ -1,24 +1,21 @@
 /**
- * Prehrávač sekvencie snímok z 3D modelu na <canvas>: rozložený rez (Rozklad.astro), ohyb (Ohyb.astro)
- * a odvaľovanie kotúča (KotucSekvencia.astro).
+ * Prehrávač sekvencie snímok z 3D modelu na <canvas>, ktorý poháňa rolovanie: rozložený rez (Rozklad.astro),
+ * ohyb (Ohyb.astro) a odvaľovanie kotúča (KotucSekvencia.astro).
  *
- * Pohyb sa prehrá sám, raz a plynulo, keď je obraz v okne (Juraj 4. 11. 2026: rolovanie cez dlhé sekcie trvalo
- * dlho; z návrhov A, B, C vybral A, bez interakcií v obraze, lebo nie každý uvidí, že sa to dá). Sekcia je preto
- * len taká vysoká ako obsah a jediné ovládanie je tlačidlo Prehrať znova (SekvenciaOvladanie.astro).
- *  - chod(f, ms): plynulo na polohu f (0 až 1 celej sekvencie) za ms, s mäkkým rozbehom aj dojazdom,
- *  - nastav(f): hneď na polohu.
- * Plynulosť (Juraj 28. 10. 2026: „pôsobia sekavo“): poloha je desatinná a susedné snímky sa prelínajú,
- * stojaci obraz je vždy celá snímka, teda ostrý.
- * Snímky sú vopred dekódované (ImageBitmap v rozmere plátna), kreslenie nečaká na dekódovanie AVIF.
- * Dekódované snímky držia pamäť, preto ich je najviac za rozpočet bajtov okolo práve zobrazenej a sekcia
- * ďaleko od okna ich uvoľní. Stiahnuté súbory ostávajú.
- * Sťahovanie začne, keď je sekcia do jeden a pol okna od zobrazenia: prvá snímka (overí AVIF), posledná,
- * potom hrubo po 8, 4, 2 a nakoniec všetky. Prehranie počká, kým sú snímky pripravené, najviac 2,5 s;
- * na pomalom pripojení potom ide s tým, čo je (chýbajúcu snímku nahradí najbližšia).
+ * Plynulosť (Juraj 28. 10. 2026: „pôsobia sekavo“):
+ *  - Obraz nesleduje rolovanie skokom (jeden zub kolieska posunie stránku o 100 px, to je 5 až 8 snímok),
+ *    ale ho dobieha s časovou konštantou TAU, takže každý snímok obrazovky ho posunie len o kúsok.
+ *  - Poloha je desatinná a susedné snímky sa prelínajú. Keď rolovanie stojí, obraz dobehne na najbližšiu
+ *    celú snímku, aby stál ostrý.
+ *  - Snímky sú vopred dekódované (ImageBitmap v rozmere plátna), kreslenie nečaká na dekódovanie AVIF.
+ *    Dekódované snímky držia pamäť, preto ich je najviac za rozpočet bajtov okolo práve zobrazenej a sekcia
+ *    ďaleko od okna ich uvoľní. Stiahnuté súbory ostávajú.
+ * Sťahovanie začne, až keď je sekcia do jedného okna od zobrazenia: prvá snímka (overí AVIF), posledná,
+ * potom hrubo po 8, 4, 2 a nakoniec všetky, takže pohyb funguje hneď a spresňuje sa.
  */
 
 export interface Sekvencia {
-  /** Sekcia: pri nej sa začne sťahovať, ďaleko od nej sa uvoľní pamäť. */
+  /** Dlhá sekcia, ktorej rolovanie poháňa pohyb. */
   koren: HTMLElement;
   /** Rámik plátna (z neho rozmer) a plátno. */
   stage: HTMLElement;
@@ -26,8 +23,11 @@ export interface Sekvencia {
   cesta: string;
   n: number;
   sirky: number[];
-  /** Popisy k obrazu pri každom snímku: x = desatinný index snímky 0 až n − 1. */
-  popisy: (x: number) => void;
+  /** Časť dráhy (0 až 1), v ktorej beží pohyb snímok; pred ňou a po nej obraz stojí. */
+  od: number;
+  do: number;
+  /** Popisy k obrazu: p = priebeh dráhy 0 až 1, x = desatinný index snímky 0 až n − 1. */
+  popisy: (p: number, x: number) => void;
   /** Prvá snímka je na plátne. */
   bezi: () => void;
   /** Prehliadač nevie AVIF: ostáva statický obraz. */
@@ -35,27 +35,15 @@ export interface Sekvencia {
   signal: AbortSignal;
 }
 
-export interface Prehravac {
-  /** Plynulo na polohu f za ms. Splní sa true po dobehnutí, false keď ho prerušil iný pohyb. */
-  chod: (f: number, ms: number) => Promise<boolean>;
-  /** Hneď na polohu f. */
-  nastav: (f: number) => void;
-  /** Splní sa, keď sú snímky stiahnuté a dekódované na plynulé prehranie, najneskôr po max ms. */
-  pripravene: (max: number) => Promise<void>;
-  /** Pozastaví bežiaci pohyb (obraz mimo okna); jeho čas stojí. */
-  pauza: (b: boolean) => void;
-}
-
+const TAU = 0.09;      // s; 95 % rozdielu dobehne za 0,27 s
+const POKOJ = 140;     // ms bez rolovania, potom dobeh na celú snímku
 const VLAKNA = 4;      // súbežné sťahovanie
 const DEKODERY = 3;    // súbežné dekódovanie
-
-/** Pohyb predmetu: mäkký rozbeh aj dojazd (nie odozva rozhrania, tá má --ease-soft). */
-const krivka = (u: number) => (u < 0.5 ? 4 * u * u * u : 1 - (-2 * u + 2) ** 3 / 2);
 
 type Snimka = ImageBitmap | HTMLImageElement;
 const zavri = (o: Snimka | undefined) => { if (o && 'close' in o) o.close(); };
 
-export function prehravaj(s: Sekvencia): Prehravac {
+export function prehravaj(s: Sekvencia) {
   const { koren, stage, platno, n, signal } = s;
   const ctx = platno.getContext('2d')!;
   const sirky = [...s.sirky].sort((a, b) => a - b);
@@ -64,13 +52,9 @@ export function prehravaj(s: Sekvencia): Prehravac {
   const dekoduje = new Set<number>();
   // stolný počítač (deviceMemory 8) unesie celú sekvenciu aj pri jemnom displeji, telefón okolo 100 MB
   const rozpocet = ((navigator as { deviceMemory?: number }).deviceMemory ?? 4) >= 8 ? 240e6 : 100e6;
-  const cela = (f: number) => Math.round(Math.min(1, Math.max(0, f)) * (n - 1)) / (n - 1);
   let sirka = sirky[sirky.length - 1], sirkaDek = sirka, najviac = n;
-  let p = 0, smer = 1, stred = 0;
-  let nakreslene = '', raf = 0, cas = 0, dokoncene = 0;
-  let blizko = false, zacate = false, bezi = false, koniec = false, pozastavene = false;
-  let pohyb: { od: number; do: number; ms: number; t: number; hotovo: (b: boolean) => void } | null = null;
-  const cakaju: (() => void)[] = [];
+  let p = -1, smer = 1, stred = 0, nakreslene = '', raf = 0, cas = 0, casovac = 0;
+  let pokoj = true, blizko = false, zacate = false, bezi = false;
 
   const dpr = () => Math.min(window.devicePixelRatio || 1, 2);
   const velkost = () => {
@@ -80,6 +64,11 @@ export function prehravaj(s: Sekvencia): Prehravac {
     const bajty = sirkaDek * sirkaDek * (h / Math.max(1, w)) * 4;
     najviac = Math.max(12, Math.min(n, Math.floor(rozpocet / Math.max(1, bajty))));
   };
+  const ciel = () => {
+    const r = koren.getBoundingClientRect();
+    return Math.min(1, Math.max(0, -r.top / Math.max(1, koren.offsetHeight - window.innerHeight)));
+  };
+  const index = (q: number) => Math.min(1, Math.max(0, (q - s.od) / (s.do - s.od))) * (n - 1);
   const najblizsia = (i: number) => {
     for (let d = 0; d < n; d++) {
       if (snimky[i - d]) return i - d;
@@ -117,33 +106,29 @@ export function prehravaj(s: Sekvencia): Prehravac {
     if (!bezi) { bezi = true; s.bezi(); }
   };
 
-  // Pohyb ide podľa uplynutého času, nie podľa hodín: pozastavenie (obraz mimo okna) ani skrytá karta ho nepreskočia.
   const tik = (t: number) => {
     raf = 0;
-    const dt = cas ? Math.min(64, t - cas) : 1000 / 60;
-    cas = t;
-    if (pohyb) {
-      if (!pozastavene) pohyb.t = Math.min(pohyb.ms, pohyb.t + dt);
-      const u = pohyb.ms > 0 ? pohyb.t / pohyb.ms : 1;
-      p = pohyb.od + (pohyb.do - pohyb.od) * krivka(u);
-      if (u >= 1) { const h = pohyb.hotovo; p = pohyb.do; pohyb = null; h(true); }
+    let c = ciel();
+    if (pokoj) {
+      const xc = index(c);
+      if (xc > 0 && xc < n - 1) c = s.od + (Math.round(xc) / (n - 1)) * (s.do - s.od);
     }
-    const x = p * (n - 1);
+    const dt = cas ? Math.min(0.064, (t - cas) / 1000) : 1 / 60;
+    cas = t;
+    if (p < 0) p = c;   // prvý tik (stránka otvorená uprostred sekcie): bez dobiehania
+    else {
+      const d = c - p;
+      if (d) smer = d > 0 ? 1 : -1;
+      p = Math.abs(d) < 2e-4 ? c : p + d * (1 - Math.exp(-dt / TAU));
+    }
+    const x = index(p);
     kresli(x);
-    s.popisy(x);
+    s.popisy(p, x);
     if (Math.round(x) !== stred) { stred = Math.round(x); planuj(); }
-    if (pohyb && !pozastavene) raf = requestAnimationFrame(tik);
+    if (p !== c) raf = requestAnimationFrame(tik);
     else cas = 0;
   };
-  const naplanuj = () => { if (!raf && !signal.aborted) raf = requestAnimationFrame(tik); };
-
-  // Pripravené na prehranie: všetky súbory sťahovanie skúsilo a dekódovaných je toľko, koľko unesie pamäť.
-  const skontroluj = () => {
-    if (!cakaju.length) return;
-    const mam = snimky.reduce((k, o) => k + (o ? 1 : 0), 0);
-    const ma = subory.reduce((k, o) => k + (o ? 1 : 0), 0);
-    if (koniec || (dokoncene >= n && mam >= Math.min(najviac, ma))) cakaju.splice(0).forEach((f) => f());
-  };
+  const naplanuj = () => { if (!raf) raf = requestAnimationFrame(tik); };
 
   // Dekódovanie: snímky podľa vzdialenosti od zobrazenej, vpred v smere pohybu skôr; nad rozpočet sa
   // zahodí najvzdialenejšia.
@@ -168,7 +153,6 @@ export function prehravaj(s: Sekvencia): Prehravac {
     } catch { /* poškodená snímka: kreslí sa susedná */ }
     dekoduje.delete(i);
     planuj();
-    skontroluj();
   };
   const planuj = () => {
     if (!blizko || signal.aborted) return;
@@ -193,31 +177,25 @@ export function prehravaj(s: Sekvencia): Prehravac {
     sirka = sirky.find((w) => w >= potrebna * 0.85) ?? sirky[sirky.length - 1];
     velkost();
     const nacitaj = async (i: number) => {
-      try {
-        const r = await fetch(url(i), { signal });
-        if (!r.ok) throw new Error(String(r.status));
-        subory[i] = await r.blob();
-      } finally { dokoncene++; }
+      const r = await fetch(url(i), { signal });
+      if (!r.ok) throw new Error(String(r.status));
+      subory[i] = await r.blob();
     };
-    const prva = stred;
     try {
-      await nacitaj(prva);
-      snimky[prva] = await obraz(prva);
+      await nacitaj(0);
+      snimky[0] = await obraz(0);
     } catch {
-      koniec = true;
-      skontroluj();
       if (!signal.aborted) s.zlyhalo();
       return;
     }
     naplanuj();
     const poradie: number[] = [];
-    for (const krok of [n - 1, 8, 4, 2, 1]) for (let i = 0; i < n; i += krok) if (i !== prva && !poradie.includes(i)) poradie.push(i);
-    if (prva !== n - 1 && !poradie.includes(n - 1)) poradie.unshift(n - 1);
+    for (const krok of [n - 1, 8, 4, 2, 1]) for (let i = 0; i < n; i += krok) if (!subory[i] && !poradie.includes(i)) poradie.push(i);
+    if (!subory[n - 1] && !poradie.includes(n - 1)) poradie.unshift(n - 1);
     let k = 0;
     const vlakno = async () => {
       while (k < poradie.length && !signal.aborted) {
         try { await nacitaj(poradie[k++]); planuj(); } catch { /* chýbajúca snímka: použije sa susedná */ }
-        skontroluj();
       }
     };
     await Promise.all(Array.from({ length: VLAKNA }, vlakno));
@@ -229,109 +207,38 @@ export function prehravaj(s: Sekvencia): Prehravac {
     blizko = b;
     if (blizko) { void stiahni(); planuj(); naplanuj(); }
     else uvolni();
-  }, { rootMargin: '150% 0px' });
+  }, { rootMargin: '100% 0px' });
   pozorovatel.observe(koren);
 
-  // plátno podľa rámika, aj keď sa zmení len rámik, nie okno
+  // plátno podľa rámika, aj keď ho zmení prispôsobenie výške okna (zmensiObraz), nielen zmena okna
   const pozorVelkost = new ResizeObserver(() => { velkost(); planuj(); naplanuj(); });
   pozorVelkost.observe(stage);
+  window.addEventListener('scroll', () => {
+    if (!blizko) return;
+    pokoj = false;
+    clearTimeout(casovac);
+    casovac = window.setTimeout(() => { pokoj = true; naplanuj(); }, POKOJ);
+    naplanuj();
+  }, { passive: true, signal });
   window.addEventListener('resize', naplanuj, { signal });
-
-  const zrus = () => { if (pohyb) { const h = pohyb.hotovo; pohyb = null; h(false); } };
-  signal.addEventListener('abort', () => {
-    koniec = true;
-    zrus();
-    cakaju.splice(0).forEach((f) => f());
-    pozorovatel.disconnect();
-    pozorVelkost.disconnect();
-    cancelAnimationFrame(raf);
-    uvolni();
-  });
+  signal.addEventListener('abort', () => { pozorovatel.disconnect(); pozorVelkost.disconnect(); cancelAnimationFrame(raf); clearTimeout(casovac); uvolni(); });
   naplanuj();
-
-  return {
-    chod: (f, ms) => new Promise<boolean>((hotovo) => {
-      zrus();
-      if (signal.aborted) { hotovo(false); return; }
-      const c = cela(f);
-      if (c !== p) smer = c > p ? 1 : -1;
-      pohyb = { od: p, do: c, ms: Math.max(0, ms), t: 0, hotovo };
-      planuj();
-      naplanuj();
-    }),
-    nastav: (f) => {
-      zrus();
-      p = cela(f);
-      stred = Math.round(p * (n - 1));
-      planuj();
-      naplanuj();
-    },
-    pripravene: (max) => new Promise<void>((hotovo) => {
-      let raz = false;
-      const f = () => { if (!raz) { raz = true; hotovo(); } };
-      cakaju.push(f);
-      window.setTimeout(f, max);
-      skontroluj();
-    }),
-    pauza: (b) => {
-      if (b === pozastavene) return;
-      pozastavene = b;
-      cas = 0;
-      if (!b) naplanuj();
-    },
-  };
 }
 
-/**
- * Spustenie pri zobrazení: `start` príde raz, keď stred obrazu prejde do horných 70 % okna pod hlavičkou
- * (polovica obrazu je v tom páse) a obraz tam ostane 250 ms, takže rýchle prerolovanie okolo ho nespustí
- * a na telefóne sa nespustí, kým je obraz len pri spodnom okraji. Potom `vidno` hlási, či je z obrazu
- * v okne aspoň tretina (na pozastavenie pohybu, ktorý sa spustil sám).
- * hore: hlavička (a pás častí stránky) prekrýva vrch okna, tá časť sa nepočíta.
- */
-export function priZobrazeni(el: HTMLElement, hore: number, signal: AbortSignal, start: () => void, vidno: (b: boolean) => void) {
-  let spustene = false, casovac = 0, naposledy: boolean | undefined;
-  const prahy = Array.from({ length: 21 }, (_, i) => i / 20);
-  const spust = new IntersectionObserver(([e]) => {
-    const pas = e.rootBounds?.height ?? window.innerHeight * 0.7 - hore;
-    if (e.isIntersecting && e.intersectionRect.height >= 0.5 * Math.min(e.boundingClientRect.height, pas)) {
-      if (!casovac) casovac = window.setTimeout(() => { spustene = true; spust.disconnect(); start(); }, 250);
-    } else { clearTimeout(casovac); casovac = 0; }
-  }, { rootMargin: `-${Math.round(hore)}px 0px -30% 0px`, threshold: prahy });
-  const pozor = new IntersectionObserver(([e]) => {
-    if (!spustene) return;
-    const h = e.isIntersecting ? e.intersectionRect.height : 0;
-    const b = h >= Math.min(e.boundingClientRect.height, window.innerHeight - hore) / 3;
-    if (b !== naposledy) { naposledy = b; vidno(b); }
-  }, { rootMargin: `-${Math.round(hore)}px 0px 0px 0px`, threshold: prahy });
-  spust.observe(el);
-  pozor.observe(el);
-  signal.addEventListener('abort', () => { spust.disconnect(); pozor.disconnect(); clearTimeout(casovac); });
+/** Výška, ktorú má obsah lepkavej časti k dispozícii (okno pod hlavičkou bez vnútorných okrajov). */
+export function volnaVyska(sticky: HTMLElement) {
+  const cs = getComputedStyle(sticky);
+  return sticky.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
 }
 
-/**
- * Prehranie spoločné pre rez, ohyb a kotúč: raz samo pri zobrazení (priZobrazeni) celé za `trvanie` ms, potom
- * tlačidlom Prehrať znova, ktoré sa ukáže, keď pohyb dobehne. Samé prehranie sa mimo okna pozastaví a po
- * návrate dohrá; prehranie tlačidlom dobehne vždy.
- */
-export function ovladaj(o: { koren: HTMLElement; stage: HTMLElement; prehravac: Prehravac; hore: number; trvanie: number; signal: AbortSignal }) {
-  const { koren, stage, prehravac, signal } = o;
-  const znova = koren.querySelector<HTMLButtonElement>('.sq-znova')!;
-  let beh = 0, samo = false;
-  const prehraj = async (moj: number) => {
-    znova.hidden = true;
-    await prehravac.pripravene(2500);
-    if (moj !== beh) return;
-    prehravac.nastav(0);
-    if ((await prehravac.chod(1, o.trvanie)) && moj === beh) { samo = false; znova.hidden = false; }
-  };
-  priZobrazeni(stage, o.hore, signal, () => { samo = true; void prehraj(++beh); }, (b) => prehravac.pauza(samo && !b));
-  znova.addEventListener('click', () => { samo = false; prehravac.pauza(false); void prehraj(++beh); }, { signal });
-  signal.addEventListener('abort', () => { znova.hidden = true; });
-}
-
-/** Číslo z CSS premennej prvku (napr. --rz-hore: 72px). */
-export function cisloCss(el: HTMLElement, meno: string, inak = 0) {
-  const v = parseFloat(getComputedStyle(el).getPropertyValue(meno));
-  return Number.isFinite(v) ? v : inak;
+/** Telefón s nízkym oknom: keď je obsah vyšší ako okno, zmenší sa obraz a text ostane celý; inak by spodok
+ *  obrazu ostal pod okrajom okna. */
+export function zmensiObraz(sticky: HTMLElement, obsah: HTMLElement, stage: HTMLElement) {
+  stage.style.width = '';
+  stage.style.marginInline = '';
+  const nad = obsah.offsetHeight - volnaVyska(sticky);
+  if (nad <= 0) return;
+  const w = stage.offsetWidth, h = stage.offsetHeight;
+  stage.style.width = `${Math.max(0.55 * w, (w * (h - nad)) / h)}px`;
+  stage.style.marginInline = 'auto';
 }

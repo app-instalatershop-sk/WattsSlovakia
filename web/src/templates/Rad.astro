@@ -243,8 +243,8 @@ const productLd = [{
       rozklad ? (
       <div class="cast" id="stavba">
         {/* Obal len pre kotvu „Stavba a montáž“, nie vlastná oblasť: rozložený rez má oblasť s tým istým nadpisom.
-            Hore stojí lepkavá hlavička (72 px) a pás častí stránky; obraz rozkladu sa zmestí do okna pod nimi. */}
-        <Rozklad data={rozklad} nadpis={tx.stavbaH2} popis={obsah.popis[0]} vrstvy={vrstvyRozkladu} alt={tx.rozkladAlt(model)} label={ui.home.lupyLabel} ovladanie={nv.sekvencia} hore={casti.length > 2 ? 132 : 72} horeM={casti.length > 2 ? 116 : 64} />
+            Hore stojí lepkavá hlavička (72 px) a pás častí stránky; obraz rozkladu sa drží pod nimi. */}
+        <Rozklad data={rozklad} nadpis={tx.stavbaH2} popis={obsah.popis[0]} vrstvy={vrstvyRozkladu} alt={tx.rozkladAlt(model)} label={ui.home.lupyLabel} hore={casti.length > 2 ? 132 : 72} horeM={casti.length > 2 ? 116 : 64} />
         <div class="wrap stavba stavba-pod">
           <div class="stavba-text">
             {obsah.popis.slice(1).map((p) => <p class="stavba-popis">{sadzba(p)}</p>)}

@@ -2,8 +2,11 @@
 /**
  * Pre firmy: čo dostanú projektanti, montážne firmy a veľkoobchod, dôkaz z vlastnej dodávky (sieť pre
  * 31 budov s kótou na fotke), istota výrobcu, podklady a dopyt na projekt.
- * Web nemá server: formulár z vyplnených polí zloží e-mail na FIRMA.emailDopyt a otvorí ho
- * v e-mailovom programe (mailto). Parameter ?rad= predvyplní potrubie (odkazy zo stránok radov).
+ * Dopyt odosiela PHP skript na hostingu (web/public/api/dopyt.php) e-mailom na FIRMA.emailDopyt; skript stránky
+ * ho pošle cez fetch a ukáže potvrdenie priamo vo formulári. Keď odoslanie zlyhá, ponúkne rovnaký dopyt
+ * ako vyplnený e-mail (mailto). Bez JavaScriptu formulár odošle prehliadač a skript ho vráti na kotvu
+ * #dopyt-odoslany alebo #dopyt-chyba (zobrazí ich :target). Parameter ?rad= predvyplní potrubie (odkazy
+ * zo stránok radov), ?zoznam= vloží zoznam materiálu zo sprievodcu výberom do poznámky.
  */
 import Base from '../layouts/Base.astro';
 import Hlava from '../components/Hlava.astro';
@@ -38,9 +41,12 @@ const tx = {
     medium: 'Čo potrubím povediete', media: ['Vykurovanie', 'Teplá a studená voda', 'Vykurovanie aj teplá voda', 'Studená alebo chladená voda', 'Tepelné čerpadlo', 'Neviem, poraďte'],
     potrubie: 'Potrubie a dĺžky', potrubieHint: 'napríklad DUO 125/2 × 32, asi 40 m', termin: 'Termín', terminHint: 'napríklad jar 2027',
     poznamka: 'Poznámka', poznamkaHint: 'Spojky, prestupy stenou, počet odbočiek, zdroj tepla…',
-    povinne: 'povinné', odoslat: 'Pripraviť e-mail s dopytom',
-    pozn: (e: string) => `Tlačidlo otvorí Váš e-mailový program s vyplneným dopytom na ${e}. Môžete napísať aj priamo alebo zavolať.`,
+    povinne: 'povinné', odoslat: 'Odoslať dopyt', odosielam: 'Odosielam dopyt…',
+    pozn: (e: string) => `Dopyt príde na ${e}. Môžete napísať aj priamo alebo zavolať.`,
     predmet: 'Dopyt Microflex', chyba: 'Vyplňte meno a e-mail, aby sme Vám mohli odpovedať.',
+    chybaPolia: 'Skontrolujte označené polia.', pasca: 'Toto pole nevypĺňajte',
+    uspechH: 'Dopyt sme prijali', uspechP: 'Ďakujeme. Ozveme sa Vám na e-mail alebo telefón, ktorý ste uviedli.', uspechTel: 'Ak sa ponáhľate, zavolajte na',
+    zlyhanieH: 'Dopyt sa nepodarilo odoslať.', zlyhanieP: 'Skúste to o chvíľu znova alebo nám ho pošlite e-mailom či zavolajte.', mailto: 'Pripraviť e-mail s dopytom',
     postupH2: 'Ako dopyt prebieha', postup: [['Pošlete trasu', 'Médium, dĺžky, dimenzie alebo výkon a miesto stavby. Stačí aj náčrt trasy v prílohe e-mailu.'], ['Pripravíme ponuku', 'Potrubie, spojky a príslušenstvo na celú trasu s dostupnosťou.'], ['Objednáte', 'Objednávka podľa ponuky, menšie množstvá priamo v e-shope instalatershop.sk.']] as [string, string][],
     kontaktH3: 'Radšej telefonicky?',
   },
@@ -62,9 +68,12 @@ const tx = {
     medium: 'Co potrubím povedete', media: ['Vytápění', 'Teplá a studená voda', 'Vytápění i teplá voda', 'Studená nebo chlazená voda', 'Tepelné čerpadlo', 'Nevím, poraďte'],
     potrubie: 'Potrubí a délky', potrubieHint: 'například DUO 125/2 × 32, asi 40 m', termin: 'Termín', terminHint: 'například jaro 2027',
     poznamka: 'Poznámka', poznamkaHint: 'Spojky, prostupy stěnou, počet odboček, zdroj tepla…',
-    povinne: 'povinné', odoslat: 'Připravit e-mail s poptávkou',
-    pozn: (e: string) => `Tlačítko otevře Váš e-mailový program s vyplněnou poptávkou na ${e}. Můžete napsat i přímo nebo zavolat.`,
+    povinne: 'povinné', odoslat: 'Odeslat poptávku', odosielam: 'Odesílám poptávku…',
+    pozn: (e: string) => `Poptávka přijde na ${e}. Můžete napsat i přímo nebo zavolat.`,
     predmet: 'Poptávka Microflex', chyba: 'Vyplňte jméno a e-mail, abychom Vám mohli odpovědět.',
+    chybaPolia: 'Zkontrolujte označená pole.', pasca: 'Toto pole nevyplňujte',
+    uspechH: 'Poptávku jsme přijali', uspechP: 'Děkujeme. Ozveme se Vám na e-mail nebo telefon, který jste uvedli.', uspechTel: 'Pokud spěcháte, zavolejte na',
+    zlyhanieH: 'Poptávku se nepodařilo odeslat.', zlyhanieP: 'Zkuste to za chvíli znovu, nebo nám ji pošlete e-mailem či zavolejte.', mailto: 'Připravit e-mail s poptávkou',
     postupH2: 'Jak poptávka probíhá', postup: [['Pošlete trasu', 'Médium, délky, dimenze nebo výkon a místo stavby. Stačí i náčrt trasy v příloze e-mailu.'], ['Připravíme nabídku', 'Potrubí, spojky a příslušenství na celou trasu s dostupností.'], ['Objednáte', 'Objednávka podle nabídky, menší množství přímo v e-shopu instalatershop.sk.']] as [string, string][],
     kontaktH3: 'Raději telefonicky?',
   },
@@ -77,6 +86,8 @@ const fotkaPre = (f: string) => fotka(f) ?? fotkaReferencie(f);
 const areal = fotka('areal-vykop.jpg')!;
 const povazska = referencie(lang).find((r) => r.id === 'povazska-bystrica')!;
 const polia = { meno: tx.meno, firma: tx.firma, email: tx.email, telefon: tx.telefon, miesto: tx.miesto, medium: tx.medium, potrubie: tx.potrubie, termin: tx.termin, poznamka: tx.poznamka };
+/** PHP skript na hostingu Websupport; dĺžky polí (maxlength) sú rovnaké ako POLIA v ňom. */
+const DOPYT_URL = '/api/dopyt.php';
 ---
 <Base lang={lang} alternates={staticAlternates('firmy')} title={tx.title} description={tx.desc} aktivna="firmy" drobceky={[{ text: tx.kratko }]} vizualneDrobceky={false}>
   <Hlava lang={lang} nadpis={tx.title} drobceky={[{ text: tx.kratko }]} lead={tx.lead} obraz={obraz} obrazAlt={tx.foto} druh="foto">
@@ -136,28 +147,44 @@ const polia = { meno: tx.meno, firma: tx.firma, email: tx.email, telefon: tx.tel
         </div>
       </div>
 
-      <form class="harok formular" data-dopyt data-komu={FIRMA.emailDopyt} data-predmet={tx.predmet} data-chyba={tx.chyba} novalidate>
+      <form class="harok formular" action={DOPYT_URL} method="post" data-astro-reload data-dopyt data-komu={FIRMA.emailDopyt} data-predmet={tx.predmet} data-chyba={tx.chyba} data-chyba-polia={tx.chybaPolia} data-odosielam={tx.odosielam}>
+        <input type="hidden" name="jazyk" value={lang} />
         <div class="riadok">
-          <label class="pole"><span>{tx.meno} <em>{tx.povinne}</em></span><input name="meno" autocomplete="name" required /></label>
-          <label class="pole"><span>{tx.firma}</span><input name="firma" autocomplete="organization" /></label>
+          <label class="pole"><span>{tx.meno} <em>{tx.povinne}</em></span><input name="meno" autocomplete="name" maxlength="120" required /></label>
+          <label class="pole"><span>{tx.firma}</span><input name="firma" autocomplete="organization" maxlength="160" /></label>
         </div>
         <div class="riadok">
-          <label class="pole"><span>{tx.email} <em>{tx.povinne}</em></span><input name="email" type="email" autocomplete="email" required /></label>
-          <label class="pole"><span>{tx.telefon}</span><input name="telefon" type="tel" autocomplete="tel" /></label>
+          <label class="pole"><span>{tx.email} <em>{tx.povinne}</em></span><input name="email" type="email" autocomplete="email" maxlength="200" required /></label>
+          <label class="pole"><span>{tx.telefon}</span><input name="telefon" type="tel" autocomplete="tel" maxlength="40" /></label>
         </div>
         <div class="riadok">
-          <label class="pole"><span>{tx.miesto}</span><input name="miesto" autocomplete="address-level2" /></label>
-          <label class="pole"><span>{tx.termin}</span><input name="termin" placeholder={tx.terminHint} /></label>
+          <label class="pole"><span>{tx.miesto}</span><input name="miesto" autocomplete="address-level2" maxlength="160" /></label>
+          <label class="pole"><span>{tx.termin}</span><input name="termin" placeholder={tx.terminHint} maxlength="80" /></label>
         </div>
         <fieldset class="pole">
           <legend>{tx.medium}</legend>
           <div class="volby">{tx.media.map((m, i) => <label class="volba"><input type="radio" name="medium" value={m} checked={i === 0} /><span>{m}</span></label>)}</div>
         </fieldset>
-        <label class="pole"><span>{tx.potrubie}</span><input name="potrubie" placeholder={tx.potrubieHint} data-rad /></label>
-        <label class="pole"><span>{tx.poznamka}</span><textarea name="poznamka" rows="4" placeholder={tx.poznamkaHint}></textarea></label>
+        <label class="pole"><span>{tx.potrubie}</span><input name="potrubie" placeholder={tx.potrubieHint} maxlength="400" data-rad /></label>
+        <label class="pole"><span>{tx.poznamka}</span><textarea name="poznamka" rows="4" maxlength="8000" placeholder={tx.poznamkaHint}></textarea></label>
+        {/* Pasca na roboty: človek pole nevidí a klávesnicou sa naň nedostane, robot ho vyplní a skript dopyt zahodí. */}
+        <div class="pasca" aria-hidden="true"><label>{tx.pasca} <input name="web" tabindex="-1" autocomplete="off" /></label></div>
         <p class="chyba" role="alert" data-chyba-text hidden></p>
-        <button type="submit" class="btn btn-yellow">{tx.odoslat} <Ikona nazov="mail" velkost={18} /></button>
+        <button type="submit" class="btn btn-yellow" data-odoslat><span data-popis>{tx.odoslat}</span> <Ikona nazov="arrow-right" velkost={18} /></button>
         <p class="formular-pozn">{tx.pozn(FIRMA.emailDopyt)}</p>
+        <div class="dopyt-zlyhanie" id="dopyt-chyba" role="alert" tabindex="-1" data-zlyhanie>
+          <p><strong>{tx.zlyhanieH}</strong> {tx.zlyhanieP}</p>
+          <div class="dopyt-zlyhanie-akcie">
+            <a class="btn btn-secondary" href={`mailto:${FIRMA.emailDopyt}`} data-mailto><Ikona nazov="mail" velkost={18} /> {tx.mailto}</a>
+            <a class="dopyt-tel" href={FIRMA.telefonHref}><Ikona nazov="phone" velkost={18} /> {FIRMA.telefon}</a>
+          </div>
+        </div>
+        <div class="dopyt-uspech" id="dopyt-odoslany" data-uspech>
+          <span class="dopyt-uspech-znak"><Ikona nazov="check" velkost={28} /></span>
+          <h3 tabindex="-1">{tx.uspechH}</h3>
+          <p>{tx.uspechP}</p>
+          <p>{tx.uspechTel} <a class="dopyt-tel" href={FIRMA.telefonHref}>{FIRMA.telefon}</a>.</p>
+        </div>
         <script type="application/json" data-polia set:html={JSON.stringify(polia)} />
       </form>
     </section>
@@ -216,7 +243,7 @@ const polia = { meno: tx.meno, firma: tx.firma, email: tx.email, telefon: tx.tel
   .pole textarea { resize: vertical; min-height: 110px; }
   .pole input::placeholder, .pole textarea::placeholder { color: #8a93a2; }
   .pole input:focus, .pole textarea:focus { outline: none; background: #fff; border-color: var(--color-blue-700); box-shadow: 0 0 0 4px rgb(0 93 185 / 0.12); }
-  .pole input[aria-invalid="true"] { border-color: #c2410c; box-shadow: 0 0 0 4px rgb(194 65 12 / 0.12); }
+  .pole input[aria-invalid="true"], .pole textarea[aria-invalid="true"] { border-color: #c2410c; box-shadow: 0 0 0 4px rgb(194 65 12 / 0.12); }
   .volby { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
   .volba { position: relative; }
   .volba input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
@@ -226,9 +253,30 @@ const polia = { meno: tx.meno, firma: tx.firma, email: tx.email, telefon: tx.tel
   .formular .btn { align-self: flex-start; margin-top: 4px; }
   .chyba { color: #c2410c; font-weight: 500; font-size: 15px; }
   .formular-pozn { font-size: 14px; color: var(--color-ink-soft); }
+  /* Pasca na roboty mimo obrazovky (nie display: none, také pole roboty často vynechajú). */
+  .pasca { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+
+  /* Stavy odoslania: so skriptom triedy na formulári, bez neho kotva z presmerovania (:target). */
+  .dopyt-zlyhanie, .dopyt-uspech { display: none; scroll-margin-top: 150px; }
+  .formular.je-zlyhanie .dopyt-zlyhanie, .dopyt-zlyhanie:target { display: block; }
+  .formular.je-odoslany > :not(.dopyt-uspech), .formular:has(.dopyt-uspech:target) > :not(.dopyt-uspech) { display: none; }
+  .formular.je-odoslany .dopyt-uspech, .dopyt-uspech:target { display: grid; }
+  .dopyt-zlyhanie { padding: 16px 20px; border-radius: var(--radius-l); background: rgb(194 65 12 / 0.07); outline: none; }
+  .dopyt-zlyhanie p { font-size: 15px; line-height: 1.55; }
+  .dopyt-zlyhanie strong { color: #c2410c; }
+  .dopyt-zlyhanie-akcie { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; margin-top: 12px; }
+  .dopyt-zlyhanie-akcie .btn { align-self: auto; margin-top: 0; }
+  .dopyt-tel { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; white-space: nowrap; }
+  /* Potvrdenie: zelená značka (--color-ok, DESIGN.md kap. 4) a krátky posun ako odpoveď na odoslanie. */
+  .dopyt-uspech { grid-template-columns: 56px minmax(0, 1fr); gap: 4px 20px; align-content: start; padding: 8px 0; animation: dopyt-potvrdenie 220ms var(--ease-soft) both; }
+  .dopyt-uspech-znak { grid-row: 1 / span 3; display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; background: var(--color-ok); color: #fff; box-shadow: var(--elev-2); }
+  .dopyt-uspech h3 { align-self: center; font-size: 24px; letter-spacing: -0.015em; outline: none; }
+  .dopyt-uspech p { color: var(--color-ink-soft); font-size: 16px; line-height: 1.55; }
+  .dopyt-uspech .dopyt-tel { display: inline; color: var(--color-blue-700); }
+  @keyframes dopyt-potvrdenie { from { opacity: 0; transform: translateY(8px); } }
   @media (max-width: 900px) { .pre { grid-template-columns: minmax(0, 1fr); } .pre-velka { margin-inline: calc(-1 * var(--gutter)); } .pre-velka :global(img) { border-radius: 0; aspect-ratio: 16 / 10; } }
   @media (max-width: 900px) { .dopyt, .dokaz { grid-template-columns: minmax(0, 1fr); } .dokaz :global(.dokaz-scena) { margin-inline: calc(-1 * var(--gutter)); } .dokaz :global(.dokaz-scena .scena-img) { border-radius: 0; } }
-  @media (max-width: 760px) { .riadok { grid-template-columns: minmax(0, 1fr); } .formular { padding: 24px 16px; } }
+  @media (max-width: 760px) { .riadok { grid-template-columns: minmax(0, 1fr); } .formular { padding: 24px 16px; } .dopyt-zlyhanie, .dopyt-uspech { scroll-margin-top: 130px; } }
 </style>
 
 <script>
@@ -244,19 +292,67 @@ const polia = { meno: tx.meno, firma: tx.firma, email: tx.email, telefon: tx.tel
     const zoznam = new URLSearchParams(location.search).get('zoznam');
     const poznamka = f.elements.namedItem('poznamka') as HTMLTextAreaElement | null;
     if (zoznam && poznamka && !poznamka.value) { poznamka.value = zoznam; poznamka.rows = Math.min(16, zoznam.split('\n').length + 1); }
+    // Kontrolu polí robí skript (vlastné hlásenie); bez skriptu ostáva kontrola prehliadača.
+    f.noValidate = true;
     const chyba = f.querySelector<HTMLElement>('[data-chyba-text]')!;
-    f.addEventListener('submit', (e) => {
+    const zlyhanie = f.querySelector<HTMLElement>('[data-zlyhanie]')!;
+    const uspech = f.querySelector<HTMLElement>('[data-uspech]')!;
+    const tlacidlo = f.querySelector<HTMLButtonElement>('[data-odoslat]')!;
+    const popis = tlacidlo.querySelector<HTMLElement>('[data-popis]')!;
+    const odoslat = popis.textContent ?? '';
+    const pole = (meno: string) => {
+      const x = f.elements.namedItem(meno);
+      return x instanceof HTMLInputElement || x instanceof HTMLTextAreaElement ? x : null;
+    };
+
+    // Záloha, keď server dopyt neprijme: ten istý dopyt ako vyplnený e-mail v e-mailovom programe.
+    f.querySelector<HTMLAnchorElement>('[data-mailto]')?.addEventListener('click', (e) => {
       e.preventDefault();
       const d = new FormData(f);
-      const meno = f.elements.namedItem('meno') as HTMLInputElement;
-      const email = f.elements.namedItem('email') as HTMLInputElement;
-      const zle = [meno, email].filter((x) => !x.value.trim() || !x.checkValidity());
-      [meno, email].forEach((x) => x.setAttribute('aria-invalid', String(zle.includes(x))));
-      if (zle.length) { chyba.textContent = f.dataset.chyba ?? ''; chyba.hidden = false; zle[0].focus(); return; }
-      chyba.hidden = true;
       const riadky = Object.entries(polia).map(([k, nazov]) => [nazov, String(d.get(k) ?? '').trim()]).filter(([, v]) => v).map(([n, v]) => `${n}: ${v}`);
       const predmet = `${f.dataset.predmet} – ${String(d.get('firma') || d.get('meno')).trim()}`;
       location.href = `mailto:${f.dataset.komu}?subject=${encodeURIComponent(predmet)}&body=${encodeURIComponent(riadky.join('\n'))}`;
+    });
+
+    const oznac = (zle: string[], text: string) => {
+      ['meno', 'email', ...zle].forEach((m) => pole(m)?.setAttribute('aria-invalid', String(zle.includes(m))));
+      chyba.textContent = text;
+      chyba.hidden = false;
+      pole(zle[0])?.focus();
+    };
+
+    f.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (f.dataset.odosiela) return;
+      const zle = ['meno', 'email'].filter((m) => { const x = pole(m); return !x || !x.value.trim() || !x.checkValidity(); });
+      if (zle.length) { oznac(zle, f.dataset.chyba ?? ''); return; }
+      ['meno', 'email'].forEach((m) => pole(m)?.setAttribute('aria-invalid', 'false'));
+      chyba.hidden = true;
+      f.classList.remove('je-zlyhanie');
+      f.dataset.odosiela = '1';
+      tlacidlo.disabled = true;
+      popis.textContent = f.dataset.odosielam ?? odoslat;
+      try {
+        const odpoved = await fetch(f.action, { method: 'POST', body: new FormData(f), headers: { Accept: 'application/json' } });
+        const data = await odpoved.json().catch(() => null) as { ok?: boolean; polia?: string[] } | null;
+        if (odpoved.ok && data?.ok) {
+          // Polia zmiznú a formulár sa skráti: potvrdenie môže ostať nad oknom (telefón), preto posun k nemu.
+          f.classList.add('je-odoslany');
+          uspech.scrollIntoView({ block: 'nearest' });
+          uspech.querySelector<HTMLElement>('h3')?.focus({ preventScroll: true });
+          return;
+        }
+        if (odpoved.status === 422 && data?.polia?.length) { oznac(data.polia, f.dataset.chybaPolia ?? ''); return; }
+        throw new Error(`dopyt: ${odpoved.status}`);
+      } catch {
+        f.classList.add('je-zlyhanie');
+        zlyhanie.scrollIntoView({ block: 'nearest' });
+        zlyhanie.focus({ preventScroll: true });
+      } finally {
+        delete f.dataset.odosiela;
+        tlacidlo.disabled = false;
+        popis.textContent = odoslat;
+      }
     });
   }
   initDopyt();

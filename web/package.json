@@ -9,7 +9,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "nasadit": "node nasadenie/nasad.mjs",
+    "overit": "node nasadenie/over.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^6.0.6",
@@ -34,6 +36,7 @@
   "devDependencies": {
     "@fontsource/archivo": "^5.3.0",
     "@resvg/resvg-js": "^2.6.2",
+    "basic-ftp": "6.2.3",
     "satori": "^0.33.5"
   }
 }

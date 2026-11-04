@@ -1,6 +1,7 @@
 # Pred spustením
 
-Čo musí byť hotové, kým web pôjde na microflex.sk. Stav k 28. 10. 2026; hotové položky odškrtnúť tu.
+Čo musí byť hotové, kým web pôjde na microflex.sk. Stav k 4. 11. 2026; hotové položky odškrtnúť tu.
+Postup nasadenia na hosting Websupport: `docs/NASADENIE.md`.
 
 ## 1. Odkazy do e-shopu (Juraj 28. 10. 2026: „urobíme pred spustením“)
 
@@ -23,17 +24,25 @@ Kde v kóde: `data/normalize.py` (`eshop_url`), `web/src/i18n/ui.ts` (`ESHOP`, `
 
 ## 2. Odosielanie dopytu
 
-Formulár Dopyt na projekt (Pre firmy) a dopyt zo sprievodcu dnes len pripravia e-mail na dotazy@instalatershop.sk
-(mailto), web nemá server.
+Formulár Dopyt na projekt (Pre firmy, aj so zoznamom zo sprievodcu) od 4. 11. 2026 posiela PHP skript na hostingu
+(`web/public/api/dopyt.php`) cez schránku web@microflex.sk na dotazy@instalatershop.sk. Keď odoslanie zlyhá, stránka
+ponúkne ten istý dopyt ako vyplnený e-mail (mailto) a telefón.
 
-- [ ] Po výbere hostingu odosielať na serveri (návrh: Cloudflare Pages Function, e-mail cez Resend, ochrana Turnstile),
-      s potvrdením o prijatí a chybovým stavom.
-- [ ] Otestovať celú cestu až po prijatý e-mail.
+- [x] Odosielanie na serveri s potvrdením o prijatí a chybovým stavom, pasca na roboty a limit odoslaní
+      (namiesto pôvodného návrhu Cloudflare Pages Function + Resend + Turnstile; vyskúšané lokálne, `docs/NASADENIE.md`).
+- [ ] Schránka web@microflex.sk a `web/nasadenie/dopyt.konfig.php` s jej heslom (Juraj, `docs/NASADENIE.md` krok 5).
+- [ ] Otestovať celú cestu až po prijatý e-mail: `npm run overit -- --skusobny-dopyt`.
+- [ ] Informácia o spracúvaní osobných údajov pod formulárom: odkaz na zásady podľa odpovede na otázku č. 5
+      v dokumente otázok pre manažéra (návrh: zásady instalatershop.sk doplnené o web a formulár).
 
 ## 3. Hosting a doména
 
-- [ ] Rozhodnúť hosting (návrh: Cloudflare Pages).
-- [ ] microflex.sk (Websupport, DNSSEC zapnutý): pri prechode na Cloudflare najprv vypnúť DNSSEC, počkať, až potom zmeniť NS.
+- [x] Hosting: Websupport (Juraj 4. 11. 2026). Doména aj DNS ostávajú na Websupporte, NS sa nemenia, DNSSEC netreba vypínať.
+- [x] Konfigurácia servera (`web/public/.htaccess`), skript nasadenia `npm run nasadit` a kontrola `npm run overit`.
+- [ ] Vo WebAdmine: hosting, priradenie domény, HTTPS, FTP účet do `web/nasadenie/.env` (Juraj, `docs/NASADENIE.md` kroky 1 až 4).
+- [ ] Prvé nasadenie a `npm run overit` bez chýb.
+- [ ] Workflow GitHub Pages (`.github/workflows/astro.yml`) sa s Websupportom nepoužije a od 23. 9. zlyháva; zmazať, ak Juraj súhlasí.
+- [ ] Firemný repozitár vrátiť na súkromný: GitHub Pages už netreba (otázka č. 1 v dokumente otázok pre manažéra).
 
 ## 4. Značka a texty
 
@@ -47,6 +56,7 @@ Formulár Dopyt na projekt (Pre firmy) a dopyt zo sprievodcu dnes len pripravia 
 ## 6. Posledná kontrola
 
 - [ ] Lighthouse na mobile aspoň 90 na každej stránke (`docs/RYCHLOST.md`).
-- [ ] `python data/kontrola_webu.py` bez chýb.
+- [ ] `python data/kontrola_webu.py` bez chýb (spúšťa ho aj `npm run nasadit`).
+- [ ] `npm run overit` na ostrom serveri bez chýb.
 - [ ] Push na oba repozitáre (len na pokyn „pushni“).
-- [ ] Po spustení: Search Console, mapa stránok, Core Web Vitals.
+- [ ] Po spustení: Search Console, mapa stránok, Core Web Vitals (`docs/NASADENIE.md`, Po spustení).

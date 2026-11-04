@@ -19,3 +19,7 @@ __pycache__/
 !/reklama/README.md
 # snímky stránok na celú výšku pre ChatGPT a porovnanie (scratchpad snimky-stranok.mjs); dajú sa urobiť znova
 /snimky-stranok/
+
+# prístupy na hosting (web/nasadenie): FTP v .env, heslo schránky na odosielanie dopytu
+web/nasadenie/.env
+web/nasadenie/dopyt.konfig.php

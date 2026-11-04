@@ -1,0 +1,3 @@
+# Súbory pre server Websupport (Apache, PHP) vždy s LF, aj pri core.autocrlf na Windows.
+.htaccess text eol=lf
+*.php text eol=lf

@@ -1,0 +1,67 @@
+# Microflex Slovensko: nastavenie webového servera na hostingu Websupport (Apache za nginx).
+#
+# Súbor ide z web/public do koreňa webu (priečinok /web na FTP). Presmerovanie z http na https
+# zapína Websupport priamo na serveri (WebAdmin → Web → Služby → Upraviť → Presmerovanie na HTTPS),
+# preto tu nie je. Tu je len to, čo server sám nevie: jedna adresa stránky, chybová stránka,
+# typy súborov, ukladanie do vyrovnávacej pamäte prehliadača a bezpečnostné hlavičky.
+# Postup nasadenia: docs/NASADENIE.md. Kontrola po nahratí: npm run overit (v priečinku web).
+# Skript nasadenia nový .htaccess najprv skúsi v pomocnom priečinku, až potom ho dá do koreňa.
+
+Options -Indexes
+# Len index.html: zástupný index.php od hostingu by inak mohol mať prednosť pred úvodnou stránkou.
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+
+AddDefaultCharset utf-8
+AddCharset utf-8 .css .js .json .xml .svg .txt
+AddType image/avif .avif
+AddType image/webp .webp
+AddType font/woff2 .woff2
+AddType image/svg+xml .svg
+AddType application/json .json
+AddType text/javascript .js
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Kanonická adresa je bez www (astro.config.mjs → site).
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
+
+  # /…/index.html → /…/ (len adresa napísaná priamo, nie vnútorné podanie indexu adresára).
+  RewriteCond %{THE_REQUEST} ^[A-Z]+\s(/(?:[^?\s]*/)?)index\.html[?\s]
+  RewriteRule ^ https://%{HTTP_HOST}%1 [R=301,L]
+
+  # Stránka bez lomky na konci → s lomkou, rovno na https (Apache za nginx by inak presmeroval na http).
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^(.*[^/])$ https://%{HTTP_HOST}/$1/ [R=301,L]
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=31536000"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Content-Security-Policy "frame-ancestors 'self'; base-uri 'self'; object-src 'none'; form-action 'self'"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+
+  # Stránky, dáta hľadania a mapa webu: prehliadač sa vždy spýta, či nie je novšia verzia
+  # (zmena po nasadení je hneď vidieť, nezmenený súbor sa nesťahuje znova).
+  <FilesMatch "\.(html|json|xml|txt)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+
+  # Súbory z buildu majú odtlačok obsahu v názve (_astro/…): rok, nikdy sa nemenia.
+  <If "%{REQUEST_URI} =~ m#^/_astro/#">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </If>
+
+  # Snímky 3D sekvencií a náhľady pre sociálne siete nemajú odtlačok v názve: deň, potom potichu overiť.
+  <If "%{REQUEST_URI} =~ m#^/(3d|og)/#">
+    Header set Cache-Control "public, max-age=86400, stale-while-revalidate=604800"
+  </If>
+
+  <Files "favicon.svg">
+    Header set Cache-Control "public, max-age=86400"
+  </Files>
+</IfModule>

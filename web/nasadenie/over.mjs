@@ -8,6 +8,7 @@
  *   npm run overit                           https://microflex.sk
  *   npm run overit -- https://iná.adresa      iná adresa (presmerovania http a www sa skúsia, ak existujú)
  *   npm run overit -- --skusobny-dopyt        navyše pošle jeden skutočný dopyt označený ako skúška
+ *   npm run overit -- --neindexovat           po skúšobnom nasadení s --neindexovat (očakáva X-Robots-Tag noindex)
  */
 import { existsSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -16,6 +17,7 @@ import { fileURLToPath } from 'node:url';
 const DIST = join(dirname(dirname(fileURLToPath(import.meta.url))), 'dist');
 const argumenty = process.argv.slice(2);
 const SKUSOBNY_DOPYT = argumenty.includes('--skusobny-dopyt');
+const NEINDEXOVAT = argumenty.includes('--neindexovat');
 const adresa = (argumenty.find((a) => /^https?:\/\//.test(a)) ?? process.env.WEB_ADRESA ?? 'https://microflex.sk').replace(/\/+$/, '');
 const { host, protocol } = new URL(adresa);
 /** Kanonická adresa webu (astro.config.mjs → site), aj keď sa kontroluje iná adresa. */
@@ -87,7 +89,15 @@ zapis(html.includes(`<link rel="canonical" href="${KANONICKA}/">`), 'kanonická 
 for (const [n, ma] of [['strict-transport-security', 'max-age='], ['x-content-type-options', 'nosniff'], ['referrer-policy', 'strict-origin'], ['x-frame-options', 'SAMEORIGIN'], ['content-security-policy', "frame-ancestors 'self'"], ['permissions-policy', 'camera=()']]) {
   zapis(h(n).includes(ma), `hlavička ${n}`, h(n) || 'chýba');
 }
-zapis(!h('x-robots-tag'), 'web sa smie indexovať', h('x-robots-tag') ? `X-Robots-Tag: ${h('x-robots-tag')} (nasadené s --neindexovat)` : '');
+if (NEINDEXOVAT) zapis(/noindex/.test(h('x-robots-tag')), 'skúšobné nasadenie: vyhľadávače web nezaradia', h('x-robots-tag') || 'chýba X-Robots-Tag');
+else zapis(!h('x-robots-tag'), 'web sa smie indexovať', h('x-robots-tag') ? `X-Robots-Tag: ${h('x-robots-tag')} (nasadené s --neindexovat)` : '');
+
+// Prístupy a konfigurácia nesmú byť z prehliadača dostupné (sú mimo /web alebo ich server zakáže).
+for (const cesta of ['/.env', '/nasadenie/.env', '/web/nasadenie/.env', '/konfig/dopyt.php', '/konfig/nasadenie.json', '/api/konfig/dopyt.php', '/.htaccess', '/.git/config']) {
+  const r = await ziskaj(adresa + cesta);
+  const telo = await r.text();
+  zapis([403, 404].includes(r.status) && !/FTP_HESLO|smtp_heslo|"subory"/.test(telo), `nedostupné ${cesta}`, String(r.status));
+}
 
 // Presmerovania na jednu adresu stránky.
 if (protocol === 'https:') await presmerovanie('http → https', `http://${host}/`, `https://${host}/`);

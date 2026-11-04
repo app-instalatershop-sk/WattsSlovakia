@@ -40,6 +40,14 @@ const NOINDEX = '\n# Dočasne bez indexovania (npm run nasadit -- --neindexovat)
   + '<IfModule mod_headers.c>\n  Header always set X-Robots-Tag "noindex, nofollow"\n</IfModule>\n';
 const ZAKAZ = '# Konfigurácia dopytu: z prehliadača nedostupná.\nRequire all denied\n';
 
+// Vzory sú v gite: vyplnené heslo v nich by odišlo ďalším commitom a pushom na GitHub.
+const vzorEnv = readFileSync(join(TU, 'env.vzor'), 'utf8');
+const vzorKonfig = readFileSync(join(TU, 'dopyt.konfig.vzor.php'), 'utf8');
+if (/^[ \t]*FTP_(HESLO|POUZIVATEL)=\S/m.test(vzorEnv) || !/'smtp_heslo'\s*=>\s*'SEM-HESLO-SCHRANKY'/.test(vzorKonfig)) {
+  koniec('Vo vzore env.vzor alebo dopyt.konfig.vzor.php je vyplnený prístup. Vzory sú v gite, heslá patria len do nasadenie/.env\n'
+    + 'a nasadenie/dopyt.konfig.php (mimo gitu). Presuň ich tam a vzory vráť: git checkout -- web/nasadenie/env.vzor web/nasadenie/dopyt.konfig.vzor.php');
+}
+
 if (existsSync(join(TU, '.env'))) process.loadEnvFile(join(TU, '.env'));
 const c = {
   server: (process.env.FTP_SERVER ?? '').trim(),
@@ -230,6 +238,8 @@ try {
 /** Pripojí sa, zapne TLS, overí certifikát (alebo pripnutý odtlačok) a až potom pošle meno a heslo. */
 async function pripoj() {
   const k = new Client(60_000);
+  // FTP_LADENIE=1: výpis príkazov a odpovedí FTP (basic-ftp heslo zakryje ako „PASS ###“).
+  k.ftp.verbose = process.env.FTP_LADENIE === '1';
   await k.connect(c.server, c.port);
   const tls = { host: c.server, rejectUnauthorized: !c.odtlacok, ...(isIP(c.server) ? {} : { servername: c.server }) };
   try {
@@ -245,7 +255,8 @@ async function pripoj() {
       throw new Error(`odtlačok certifikátu FTP servera ${odtl} nesedí s FTP_ODTLACOK v nasadenie/.env. Ak Websupport certifikát vymenil, over nový vo WebAdmine a zapíš ho.`);
     }
   }
-  await k.sendIgnoringError('OPTS UTF8 ON');
+  // Hneď po TLS meno a heslo: smerovač Websupportu (ing.r6) podľa mena vyberie server a iný príkaz pred
+  // prihlásením (napr. OPTS UTF8 ON ako v basic-ftp access()) spojenie zavrie. UTF-8 zapne useDefaultSettings.
   await k.login(c.pouzivatel, c.heslo);
   await k.useDefaultSettings();
   return k;

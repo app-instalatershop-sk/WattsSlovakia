@@ -30,14 +30,17 @@ DMARC `p=quarantine`. Dopyt odchádza cez SMTP Websupportu s podpisom DKIM, tak�
    nechať zapnutú. Verzia PHP 8.4 (8.2 až 8.5 sú v poriadku).
 4. **FTP.** Služby → microflex.sk → Pokročilá konfigurácia → FTP účty. Hlavný účet, alebo nový s prístupom do
    hlavného priečinka (pole Sprístupniť adresár nemeniť), lebo skript potrebuje aj priečinok `/konfig` vedľa
-   `/web`. Z Prihlasovacích údajov zapísať IP adresu servera, meno a heslo do `web/nasadenie/.env` (vzor
-   `web/nasadenie/env.vzor`). Ak má FTP obmedzenie podľa krajiny alebo IP, povoliť Slovensko.
+   `/web`. Z Prihlasovacích údajov zapísať meno a heslo do `web/nasadenie/.env` (vzor `web/nasadenie/env.vzor`)
+   a ako server `ftp.r6.websupport.sk`: na tento názov je vydaný certifikát FTP servera, microflex.sk ukazuje na
+   ten istý server (37.9.175.196, overené 4. 11. 2026). Ak má FTP obmedzenie podľa krajiny alebo IP, povoliť Slovensko.
 5. **Schránka na odosielanie.** E-maily → vytvoriť schránku `web@microflex.sk` so silným heslom. Skopírovať
    `web/nasadenie/dopyt.konfig.vzor.php` ako `dopyt.konfig.php`, doplniť heslo a ľubovoľný dlhý text ako soľ.
    SMTP server overiť v E-maily → Prihlasovacie údaje (vzor má `smtp.m1.websupport.sk`). Odporúčam presmerovať
    kópiu tejto schránky na vlastný e-mail: prídu sem vrátené správy, keby adresa dopytov prestala fungovať.
 
-Heslá netreba písať do chatu: stačí ich zapísať do `.env` a `dopyt.konfig.php`, oba súbory sú v `.gitignore`.
+Heslá netreba písať do chatu: stačí ich zapísať do `.env` a `dopyt.konfig.php`. Do gitu z priečinka `web/nasadenie`
+idú len štyri súbory skriptov a vzorov (`.gitignore`), všetko ostatné git ignoruje. Vzory `env.vzor` a
+`dopyt.konfig.vzor.php` sú v gite, preto musia ostať prázdne; `npm run nasadit` s vyplneným vzorom odmietne bežať.
 
 ## Nasadenie (Claude na pokyn „nasaď“)
 
@@ -93,6 +96,8 @@ mikrofónu, polohy, platieb a USB. Typy súborov: AVIF, WebP, WOFF2, SVG, JSON a
 
 **Skript nasadenia (`web/nasadenie/nasad.mjs`).**
 - FTPS na porte 21; certifikát servera je overený alebo pripnutý odtlačkom a heslo ide až potom.
+- FTP Websupportu má vpredu smerovač (`ing.r6.websupport.sk`, pozdrav `220 ftp.websupport.sk`): po `AUTH TLS` čaká
+  hneď `USER` a každý iný príkaz pred prihlásením spojenie zavrie. Výpis protokolu: `FTP_LADENIE=1` (heslo zakryté).
 - Porovná SHA-256 súborov so zoznamom `/konfig/nasadenie.json` z minulého nasadenia. Poradie: obrázky, skripty a
   dáta, potom stránky, mapa webu a robots.txt, nakoniec `.htaccess`.
 - Nový `.htaccess` najprv skúsi v pomocnom priečinku `_skuska-htaccess-…`; chyba v ňom by inak zhodila celý web.
@@ -103,7 +108,9 @@ mikrofónu, polohy, platieb a USB. Typy súborov: AVIF, WebP, WOFF2, SVG, JSON a
 
 | Príznak | Čo s tým |
 | --- | --- |
-| Certifikát FTP servera sa nepodarilo overiť | porovnať vypísaný certifikát s WebAdminom, zapísať `FTP_ODTLACOK` |
+| Certifikát FTP servera sa nepodarilo overiť | server zadať názvom z certifikátu (`ftp.r6.websupport.sk`), inak porovnať certifikát s WebAdminom a zapísať `FTP_ODTLACOK` |
+| FTP `530 Login incorrect` | meno alebo heslo nesedí s WebAdminom (FTP účty → Prihlasovacie údaje), alebo účet obmedzuje IP; neskúšať opakovane, server môže adresu zablokovať |
+| SMTP `535 authentication failed` | heslo schránky web@microflex.sk nesedí (meno je celá adresa, server smtp.m1.websupport.sk:465 podľa automatickej konfigurácie Websupportu) |
 | Skúška `.htaccess` vrátila 404 alebo parkovaciu stránku | doména ešte neukazuje na hosting (krok 2), alebo `FTP_WEB` nie je koreň webu |
 | Skúška `.htaccess` vrátila 500 | hosting nedovolí niektorý príkaz; v koreni ostal starý, opraviť `web/public/.htaccess` |
 | Celý web vracia 500 | zmazať `/web/.htaccess` cez WebFTP a nasadiť znova |

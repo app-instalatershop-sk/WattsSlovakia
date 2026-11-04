@@ -160,6 +160,13 @@ mikrofónu, polohy, platieb a USB. Typy súborov: AVIF, WebP, WOFF2, SVG, JSON a
   prístupnosť a postupy 100, CLS 0, TBT 0 ms, odpoveď servera 40 až 60 ms. SEO 69 len pre noindex (`is-crawlable`),
   po ostrom nasadení bez `--neindexovat` zmizne.
 
+## Ďalšie nasadenia (stále bez indexovania)
+
+| Dátum | Commit | Čo | Výsledok |
+| --- | --- | --- | --- |
+| 4. 11. 2026 | 1611de7 | názov Microflex Česko a Slovensko, jediný partner CZ a SK, pás Do zeme | 163 súborov, `overit` 33/33 |
+| 4. 11. 2026 | 8dccf9c | rozmery: pri rúre vonkajší priemer × stena aj DN z katalógu | 241 súborov, 33 MB za 47 s, `overit` 33/33, 144 z 144 stránok |
+
 ## Overené 4. 11. 2026
 
 - PHP skript v PHP 8.4 (php-wasm; windows.php.net blokuje bezpečnostný DNS filter poskytovateľa) s falošným SMTP

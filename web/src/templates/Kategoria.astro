@@ -10,7 +10,7 @@ import Hlava from '../components/Hlava.astro';
 import Zaver from '../components/Zaver.astro';
 import Ikona from '../components/Ikona.astro';
 import KartaRadu from '../components/KartaRadu.astro';
-import { kategorie, radyKategorie, cestaKategorie, cestaRadu, cestaProduktu, alternatyKategorie, kNazov, kKratky, kPopis, rNazov, pNazov, cislo, rozsah, rozsahRur, tlakyRadov, tlakText, datum, type Kategoria, type Rad, type Variant } from '../lib/katalog';
+import { kategorie, radyKategorie, cestaKategorie, cestaRadu, cestaProduktu, alternatyKategorie, kNazov, kKratky, kPopis, rNazov, pNazov, cislo, rozsah, rozsahRur, rozsahDn, tlakyRadov, tlakText, datum, type Kategoria, type Rad, type Variant } from '../lib/katalog';
 import { piktogram, render3d, radPiktogramu, fotkaRadu } from '../lib/obrazky';
 import { kotyRenderu, kotyRenderu3d } from '../lib/koty';
 import { sadzba } from '../lib/sadzba';
@@ -51,14 +51,14 @@ for (const r of rady) {
 
 const fakty: [string, string][] = [
   ...(tlaky.length ? [[ui.kategoria.tlak, `${tlaky.join(' / ')} bar`] as [string, string]] : []),
-  ...(varianty.length ? [[ui.kategoria.rura, rozsahRur(varianty, lang)] as [string, string]] : []),
+  ...(varianty.length ? [[ui.kategoria.rura, [`Ø ${rozsahRur(varianty, lang)}`, rozsahDn(varianty)].filter(Boolean).join(', ')] as [string, string]] : []),
   ...(varianty.length ? [[ui.kategoria.plast, rozsah(varianty.map((v) => v.plast_mm), 'mm', lang)] as [string, string]] : []),
   ...(polomery.length ? [[ui.kategoria.polomer, `${ui.common.od} ${cislo(Math.min(...polomery), 2)} m`] as [string, string]] : []),
 ];
 // Kóty na renderi systému, rovnako ako na stránke radu; zoznam faktov ostáva len bez nich.
 const hodnotyHlavy = {
   plast: varianty.length ? [`Ø ${rozsah(varianty.map((v) => v.plast_mm), 'mm', lang)}`, ui.home.popisy.plast] as [string, string] : undefined,
-  rura: varianty.length ? [rozsahRur(varianty, lang), [ui.kategoria.rura.toLowerCase(), tlaky.length ? `${tlaky.join(' / ')} bar` : ''].filter(Boolean).join(', ')] as [string, string] : undefined,
+  rura: varianty.length ? [`Ø ${rozsahRur(varianty, lang)}`, [[ui.kategoria.rura.toLowerCase(), rozsahDn(varianty)].filter(Boolean).join(' '), tlaky.length ? `${tlaky.join(' / ')} bar` : ''].filter(Boolean).join(', ')] as [string, string] : undefined,
   ohyb: polomery.length ? [`${ui.common.od} ${cislo(Math.min(...polomery), 2)} m`, ui.home.popisy.polomer] as [string, string] : undefined,
 };
 const kotyHlavy = (hlava3d ? kotyRenderu3d('hlavy', radSystemu, hodnotyHlavy) : rad3d ? kotyRenderu3d('rady', radSystemu, hodnotyHlavy) : null) ?? kotyRenderu(k.piktogram, hodnotyHlavy);
@@ -69,6 +69,7 @@ const riadky: Array<[string, (r: Rad, vs: Variant[]) => string]> = [
   [ui.kategoria.cmpRows.rury, (r) => (r.pocet_rur ? String(r.pocet_rur) : pk)],
   [ui.kategoria.cmpRows.tlak, (r) => tlakText(r) || pk],
   [ui.kategoria.cmpRows.rura, (_r, vs) => rozsahRur(vs, lang) || pk],
+  [ui.kategoria.cmpRows.dn, (_r, vs) => rozsahDn(vs).replace(/^DN /, '') || pk],
   [ui.kategoria.cmpRows.plast, (_r, vs) => (vs.length ? rozsah(vs.map((v) => v.plast_mm), 'mm', lang) : pk)],
   [ui.kategoria.cmpRows.polomer, (_r, vs) => { const p = vs.map((v) => v.polomer_ohybu_m).filter((x): x is number => typeof x === 'number'); return p.length ? `${ui.common.od} ${cislo(Math.min(...p), 2)} m` : pk; }],
   [ui.kategoria.cmpRows.zosilnena, (_r, vs) => { const n = vs.filter((v) => v.izolacia === 'zosilnena').length; return vs.length ? (n ? ui.sklonovanie.dimenzii(n) : ui.common.nie) : pk; }],

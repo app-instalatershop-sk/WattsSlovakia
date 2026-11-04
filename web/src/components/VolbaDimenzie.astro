@@ -10,9 +10,11 @@
  * pohyb“ sa čísla vymenia bez pohybu. Prvá úroveň = priemer nosnej rúry (pri rade s rôznymi rúrami
  * v jednom plášti ich kombinácia, napr. „28 + 18“), druhá = plášť, keď má rúra viac variantov
  * (štandardná a zosilnená izolácia).
+ * Číslo na tlačidle je vonkajší priemer rúry, pod ním DN (Juraj 4. 11. 2026: DN 25 nie je rúra 25, ale 32 × 2,9);
+ * po výbere ukáže DN aj kóta rúry na renderi.
  */
 import Ikona from './Ikona.astro';
-import { cislo, kotvaKodu, type Variant } from '../lib/katalog';
+import { cislo, kotvaKodu, dnVariantu, type Variant } from '../lib/katalog';
 import { stranky } from '../content/stranky';
 import { type Lang, t } from '../i18n/ui';
 
@@ -20,8 +22,9 @@ type Body = { plast?: number[]; rura?: number[]; ohyb?: number[]; lr?: number };
 /** obrazy: render presnej dimenzie (3D model, čelný záber v spoločnom rámci s hlavou) podľa obj. čísla;
  *  bodyHlavy: body kót na obraze hlavy (návrat pri „Všetky“). Bez nich sa menia len čísla. */
 export interface ObrazVariantu { avif: string; webp: string; src: string; body: Body }
-interface Props { lang: Lang; varianty: Variant[]; pocetRur: number | null; model: string; obrazy?: Record<string, ObrazVariantu>; bodyHlavy?: Body }
-const { lang, varianty, pocetRur, model, obrazy = {}, bodyHlavy } = Astro.props;
+/** tlak: do popisu kóty rúry („nosná rúra DN 25, 6 bar“). */
+interface Props { lang: Lang; varianty: Variant[]; pocetRur: number | null; model: string; obrazy?: Record<string, ObrazVariantu>; bodyHlavy?: Body; tlak?: string }
+const { lang, varianty, pocetRur, model, obrazy = {}, bodyHlavy, tlak = '' } = Astro.props;
 const ui = t(lang);
 const tx = stranky(lang).rad;
 
@@ -51,8 +54,9 @@ const data = skupiny.map((g) => ({
   vs: g.vs.map((v) => {
     const c = casti(v);
     const ruraKota = c.length === 1 && v.rura?.d
-      ? `${(pocetRur ?? 1) > 1 ? `${pocetRur} × ` : ''}${cislo(c[0].d)} × ${cislo(c[0].s, 1)} mm`
-      : `${c.map((x) => `${x.n > 1 ? `${x.n} × ` : ''}${x.d}`).join(' + ')} mm`;
+      ? `${(pocetRur ?? 1) > 1 ? `${pocetRur} × ` : ''}Ø ${cislo(c[0].d)} × ${cislo(c[0].s, 1)} mm`
+      : `Ø ${c.map((x) => `${x.n > 1 ? `${x.n} × ` : ''}${x.d}`).join(' + ')} mm`;
+    const dn = dnVariantu(v);
     const zos = v.izolacia === 'zosilnena';
     const izSlovo = zos ? tx.zosilnena.toLowerCase() : g.vs.some((x) => x.izolacia === 'zosilnena') && v.izolacia === 'standard' ? tx.standard.toLowerCase() : '';
     return {
@@ -63,6 +67,7 @@ const data = skupiny.map((g) => ({
       kp: v.plast_mm ? nbsp(`Ø ${cislo(v.plast_mm)} mm`) : null,
       kpt: zos ? `${ui.home.popisy.plast}, ${tx.volbaZosilnena}` : null,
       kr: nbsp(ruraKota),
+      krt: [`${ui.rad.rura.toLowerCase()}${dn ? ` DN ${dn}` : ''}`, tlak].filter(Boolean).join(', '),
       ko: v.polomer_ohybu_m ? nbsp(`${cislo(v.polomer_ohybu_m, 2)} m`) : null,
       fakty: [v.vykon_kw ? tx.volbaVykon(cislo(v.vykon_kw)) : '', v.hmotnost_kg_m ? nbsp(`${cislo(v.hmotnost_kg_m, 2)} kg/m`) : ''].filter(Boolean).join(', '),
       // Filter tabuľky: priemer len pri rade s jednou rúrou (tabuľka filtruje po jednotlivých priemeroch).
@@ -72,6 +77,9 @@ const data = skupiny.map((g) => ({
     };
   }),
 }));
+// DN pod číslom na tlačidle: pri rade s jednou rúrou (pri QUADRO a zmiešaných rúrach je DN v kóte po výbere).
+const dnSkupiny = skupiny.map((g) => (jednoduche ? dnVariantu(g.vs[0]) : ''));
+const maDn = dnSkupiny.some(Boolean);
 const payload = { model, detail: tx.volbaDetail, vybrat: tx.vybrat, kupit: tx.kupit, kupitVariant: tx.kupitVariant('{k}'), objText: ui.tabulka.obj, bodyHlavy: bodyHlavy ?? null };
 // Varianty s rovnakým plášťom aj izoláciou (COOL s káblom a bez neho) rozlíši až obj. číslo.
 for (const g of data) if (new Set(g.vs.map((x) => x.l2)).size < g.vs.length) g.vs.forEach((x) => { x.l2 = x.obj; });
@@ -79,11 +87,13 @@ for (const g of data) if (new Set(g.vs.map((x) => x.l2)).size < g.vs.length) g.v
 {skupiny.length > 1 && (
 <div class="volba" data-volba>
   <div class="volba-riadok">
-    <span class="volba-meno" id="volba-l1">{tx.filterRura} Ø</span>
-    <div class="volba-seg" role="group" aria-labelledby="volba-l1" data-seg>
+    <span class="volba-meno" id="volba-l1">{tx.filterRuraVonk}</span>
+    <div class:list={['volba-seg', { 'ma-dn': maDn }]} role="group" aria-labelledby="volba-l1" data-seg>
       <span class="volba-jazdec" aria-hidden="true"></span>
       <button type="button" aria-pressed="true" data-k="">{tx.vsetky}</button>
-      {skupiny.map((g, i) => <button type="button" aria-pressed="false" data-k={i}>{g.k}</button>)}
+      {skupiny.map((g, i) => (dnSkupiny[i]
+        ? <button type="button" aria-pressed="false" data-k={i} aria-label={`${g.k} mm, DN ${dnSkupiny[i]}`}><span>{g.k}</span><small>DN {dnSkupiny[i]}</small></button>
+        : <button type="button" aria-pressed="false" data-k={i}>{g.k}</button>))}
     </div>
   </div>
   <div class="volba-vysledok" data-vysledok>
@@ -115,6 +125,11 @@ for (const g of data) if (new Set(g.vs.map((x) => x.l2)).size < g.vs.length) g.v
     transition: color 200ms var(--ease-soft); }
   .volba-seg :global(button[data-k=""]) { font: 500 15px/1 var(--font-text); }
   .volba-seg :global(button[aria-pressed="true"]) { color: #fff; }
+  /* Vonkajší priemer a pod ním DN rúry. */
+  .volba-seg.ma-dn :global(button) { height: 48px; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
+  .volba-seg.ma-dn .volba-jazdec { height: 48px; }
+  .volba-seg :global(button small) { font: 500 12px/1 var(--font-text); font-stretch: 100%; color: var(--color-ink-soft); transition: color 200ms var(--ease-soft); }
+  .volba-seg :global(button[aria-pressed="true"] small) { color: rgb(255 255 255 / 0.8); }
   .volba-jazdec { position: absolute; z-index: 0; top: 0; left: 0; height: 40px; width: 0; border-radius: var(--radius-m); background: linear-gradient(180deg, #123a7a 0%, var(--color-blue-900) 100%);
     box-shadow: var(--elev-1); transition: transform 460ms var(--ease-pruzina), width 460ms var(--ease-pruzina); }
   .volba-jazdec.bez-pohybu { transition: none; }
@@ -158,7 +173,7 @@ for (const g of data) if (new Set(g.vs.map((x) => x.l2)).size < g.vs.length) g.v
 <script>
   type Body = { plast?: number[]; rura?: number[]; ohyb?: number[]; lr?: number };
   type Obr = { avif: string; webp: string; src: string; body: Body };
-  type V = { obj: string; kotva: string; l2: string; kp: string | null; kpt: string | null; kr: string; ko: string | null; fakty: string; tr: string; ti: string; obr: Obr | null };
+  type V = { obj: string; kotva: string; l2: string; kp: string | null; kpt: string | null; kr: string; krt: string; ko: string | null; fakty: string; tr: string; ti: string; obr: Obr | null };
   type Data = { model: string; detail: string; vybrat: string; kupit: string; kupitVariant: string; objText: string; bodyHlavy: Body | null; skupiny: { k: string; vs: V[] }[] };
 
   let ac: AbortController | undefined;
@@ -327,6 +342,7 @@ for (const g of data) if (new Set(g.vs.map((x) => x.l2)).size < g.vs.length) g.v
       prepis(koty.plast.hodnota, v?.kp ?? koty.plast.hodnota?.dataset.povodna ?? '', opts.animuj, koty.plast.li);
       prepis(koty.plast.text, v?.kpt ?? koty.plast.text?.dataset.povodna ?? '', false);
       prepis(koty.rura.hodnota, v?.kr ?? koty.rura.hodnota?.dataset.povodna ?? '', opts.animuj, koty.rura.li);
+      prepis(koty.rura.text, v?.krt ?? koty.rura.text?.dataset.povodna ?? '', false);
       prepis(koty.ohyb.hodnota, v?.ko ?? koty.ohyb.hodnota?.dataset.povodna ?? '', opts.animuj, koty.ohyb.li);
       ukazObraz(v?.obr ?? null, opts.animuj);
 
@@ -334,7 +350,7 @@ for (const g of data) if (new Set(g.vs.map((x) => x.l2)).size < g.vs.length) g.v
         objEl.textContent = v.obj;
         kopia.dataset.kopia = v.obj;
         faktyEl.textContent = v.fakty;
-        srEl.textContent = [`${data.model} ${g!.k}`, v.kp, v.kr, v.ko, `${data.objText} ${v.obj}`].filter(Boolean).join(', ');
+        srEl.textContent = [`${data.model} ${g!.k}`, v.kp, v.kr, v.krt, v.ko, `${data.objText} ${v.obj}`].filter(Boolean).join(', ');
       } else srEl.textContent = '';
       if (cta) {
         cta.setAttribute('href', v ? `#${v.kotva}` : ctaHref);

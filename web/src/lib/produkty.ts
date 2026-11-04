@@ -1,6 +1,6 @@
 import { getCollection } from 'astro:content';
 import { stranky } from '../content/stranky';
-import { cislo, type Produkt, type Rad } from './katalog';
+import { cislo, dnBunky, type Produkt, type Rad } from './katalog';
 import type { Lang } from '../i18n/ui';
 
 /** Stĺpec tabuľky produktu podľa hlavičky (slovenské hlavičky sú rovnaké pre obe jazykové verzie). */
@@ -19,16 +19,24 @@ function rozsahMm(hodnoty: string[]): string {
   return min === max ? `${cislo(min)} mm` : `${cislo(min)} až ${cislo(max)} mm`;
 }
 
-/** Kľúčové údaje produktu do hlavy a na kartu: počet obj. čísel, rozsah rúr alebo plášťa, závity. */
+/** Rozsah DN rúr zo stĺpca rúry dielu: „DN 20 až 102“, prázdne bez DN. */
+function rozsahDnRur(hodnoty: string[]): string {
+  const dn = hodnoty.flatMap((h) => dnBunky(h).split(' + ')).filter(Boolean).map(Number);
+  if (!dn.length) return '';
+  const min = Math.min(...dn), max = Math.max(...dn);
+  return min === max ? `DN ${min}` : `DN ${min} až ${max}`;
+}
+
+/** Kľúčové údaje produktu do hlavy a na kartu: počet obj. čísel, rozsah rúr (vonkajší Ø a DN) alebo plášťa, závity. */
 export function faktyProduktu(p: Produkt, lang: Lang): [string, string][] {
   const tx = stranky(lang).produkt;
   const out: [string, string][] = [];
   const kody = kodyProduktu(p);
   if (kody.length) out.push([tx.pocet, String(kody.length)]);
   const rura = rozsahMm(stlpec(p, /^Rúra PE-X/));
-  if (rura) out.push([tx.rura, rura]);
+  if (rura) out.push([tx.rura, [`Ø ${rura}`, rozsahDnRur(stlpec(p, /^Rúra PE-X/))].filter(Boolean).join(', ')]);
   const plast = rozsahMm(stlpec(p, /^Plášť potrubia|^Plášť \/ rúra/).map((h) => h.split('/')[0]));
-  if (plast && !rura) out.push([tx.plast, plast]);
+  if (plast && !rura) out.push([tx.plast, `Ø ${plast}`]);
   const zavity = [...new Set(stlpec(p, /^Závit/).filter((z) => /″/.test(z) && !/[+×]/.test(z)))];
   if (zavity.length && !rura) out.push([tx.zavit, zavity.length > 1 ? `${zavity[0]} až ${zavity[zavity.length - 1]}` : zavity[0]]);
   return out;

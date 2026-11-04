@@ -2,7 +2,7 @@ import { getCollection } from 'astro:content';
 import { getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import { obrazRadu, fotkaProduktu } from './obrazky';
-import { cestaKategorie, cestaRadu, cestaProduktu, kNazov, kPopis, rNazov, rKratky, pNazov, tlakText, ruraText, cislo, kotvaKodu, type Kategoria, type Produkt } from './katalog';
+import { cestaKategorie, cestaRadu, cestaProduktu, kNazov, kPopis, rNazov, rKratky, pNazov, tlakText, ruraText, ruraSDn, ruryVariantu, dnRury, dnBunky, cislo, kotvaKodu, type Kategoria, type Produkt } from './katalog';
 import { clanky } from '../content/clanky';
 import { type Lang, t, route, ESHOP } from '../i18n/ui';
 import type { Polozka } from './hladanie-klient';
@@ -15,7 +15,7 @@ import type { Polozka } from './hladanie-klient';
  */
 export type { Polozka, Skupina } from './hladanie-klient';
 
-/** Hlavný rozmer riadku tabuľky dielu do doplnku výsledku: „rúra 32 × 2,9 mm“, „plášť 125 mm“, „závit 3/4″ F“. */
+/** Hlavný rozmer riadku tabuľky dielu do doplnku výsledku: „rúra 32 × 2,9 mm, DN 25“, „plášť 125 mm“, „závit 3/4″ F“. */
 const ROZMERY: [RegExp, string, string][] = [
   [/^Rúra PE-X/, 'rúra', 'trubka'],
   [/^Plášť potrubia/, 'plášť', 'plášť'],
@@ -25,7 +25,10 @@ const ROZMERY: [RegExp, string, string][] = [
 function rozmerRiadku(tab: Produkt['tabulky'][number], riadok: string[], lang: Lang): string {
   for (const [re, sk, cs] of ROZMERY) {
     const i = tab.hlavicky.findIndex((h, j) => j > 0 && re.test(h));
-    if (i > 0 && riadok[i]) return `${lang === 'cs' ? cs : sk} ${riadok[i]}${tab.jednotky[i] ? ` ${tab.jednotky[i]}` : ''}`;
+    if (i > 0 && riadok[i]) {
+      const dn = /^Rúra PE-X/.test(tab.hlavicky[i]) ? dnBunky(riadok[i]) : '';
+      return `${lang === 'cs' ? cs : sk} ${riadok[i]}${tab.jednotky[i] ? ` ${tab.jednotky[i]}` : ''}${dn ? `, DN ${dn}` : ''}`;
+    }
   }
   return '';
 }
@@ -61,11 +64,13 @@ export async function indexHladania(lang: Lang): Promise<Polozka[]> {
     const k = katId(r.kategoria);
     const model = rNazov(r, lang).split(',')[0].trim();
     const rura = ruraText(v);
-    const d = [model, rura && `${cs ? 'trubka' : 'rúra'} ${rura}`, v.plast_mm && `plášť ${cislo(v.plast_mm)} mm`].filter(Boolean).join(', ');
-    // „125/32“, „125/2x32“: bežný zápis dimenzie plášť/rúry v objednávkach; „DN 25“ z tabuľky výrobcu
+    // Doplnok výsledku: rúra vonkajším priemerom × stenou a jej DN, aby „DN 25“ a „rúra 25“ nikto nezamenil.
+    const d = [model, rura && `${cs ? 'trubka' : 'rúra'} ${ruraSDn(v)}`, v.plast_mm && `plášť Ø ${cislo(v.plast_mm)} mm`].filter(Boolean).join(', ');
+    // „125/32“, „125/2x32“: bežný zápis dimenzie plášť/rúry v objednávkach; „DN 25“ aj „DN25“ z katalógu výrobcu
+    const dn = [...new Set(ruryVariantu(v).map((c) => dnRury(c.d, c.s)).filter((x): x is number => x !== null))];
     const d0 = v.rura?.d ?? (rura.match(/\d{2,3}/)?.[0] ?? '');
     const pocet = r.pocet_rur && r.pocet_rur > 1 ? `${r.pocet_rur}x` : '';
-    const kluce = [model, `${v.plast_mm ?? ''}/${d0}`, `${v.plast_mm ?? ''}/${pocet}${d0}`, rura, v.dn ? `DN ${v.dn}` : '', ...(v.prislusenstvo ?? []).map((x) => x.obj)];
+    const kluce = [model, `${v.plast_mm ?? ''}/${d0}`, `${v.plast_mm ?? ''}/${pocet}${d0}`, rura, ...dn.flatMap((x) => [`DN ${x}`, `DN${x}`]), ...(v.prislusenstvo ?? []).map((x) => x.obj)];
     out.push({ s: 'kod', n: v.obj_cislo, d, u: `${cestaRadu(k, r, lang)}#${kotvaKodu(v.obj_cislo)}`, k: kluce.filter(Boolean).join(' '), v: 1, o: await male(obrazRadu(r)) });
   }
 
@@ -85,7 +90,9 @@ export async function indexHladania(lang: Lang): Promise<Polozka[]> {
         if (!kod || videne.has(kod)) continue;
         videne.add(kod);
         const rozmer = rozmerRiadku(tab, riadok, lang);
-        out.push({ s: 'kod', n: kod, d: [pNazov(p, lang), rozmer].filter(Boolean).join(', '), u: `${cesta}#${kotvaKodu(kod)}`, k: riadok.slice(1).map((c, i) => `${hlavicky[i + 1] ?? ''} ${c}`).join(' '), o: obr });
+        const iR = tab.hlavicky.findIndex((h) => /^Rúra PE-X/.test(h));
+        const dnR = iR > 0 && riadok[iR] ? dnBunky(riadok[iR]).split(' + ').filter(Boolean).flatMap((x) => [`DN ${x}`, `DN${x}`]) : [];
+        out.push({ s: 'kod', n: kod, d: [pNazov(p, lang), rozmer].filter(Boolean).join(', '), u: `${cesta}#${kotvaKodu(kod)}`, k: [...riadok.slice(1).map((c, i) => `${hlavicky[i + 1] ?? ''} ${c}`), ...dnR].join(' '), o: obr });
       }
     }
   }

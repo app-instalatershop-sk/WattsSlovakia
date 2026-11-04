@@ -18,7 +18,7 @@ import CastiStranky from '../components/CastiStranky.astro';
 import Kopirovanie from '../components/Kopirovanie.astro';
 import VolbaDimenzie, { type ObrazVariantu } from '../components/VolbaDimenzie.astro';
 import rendery from '../data/rendery.json';
-import { kategorie, radyKategorie, variantyRadu, cestaKategorie, cestaRadu, cestaProduktu, alternatyRadu, kKratky, rNazov, rKratky, rMedium, rOznacenie, pNazov, cislo, rozsah, rozsahRur, tlakText, kotvaKodu, type Kategoria, type Rad } from '../lib/katalog';
+import { kategorie, radyKategorie, variantyRadu, cestaKategorie, cestaRadu, cestaProduktu, alternatyRadu, kKratky, rNazov, rKratky, rMedium, rOznacenie, pNazov, cislo, rozsah, rozsahRur, rozsahDn, ruraSDn, tlakText, kotvaKodu, type Kategoria, type Rad } from '../lib/katalog';
 import { piktogram, render3d, fotkaRadu, detail, fotkaReferencie, rozkladRadu, makroRury } from '../lib/obrazky';
 import Rozklad from '../components/Rozklad.astro';
 import Mierka from '../components/Mierka.astro';
@@ -55,12 +55,15 @@ const primoZaklad = /primo/.test(r.slug) && zaklad && varianty.every((v) => type
 const polomery = varianty.map((v) => v.polomer_ohybu_m).filter((x): x is number => typeof x === 'number');
 const zosilnene = varianty.filter((v) => v.izolacia === 'zosilnena').length;
 const ruraRozsah = rozsahRur(varianty, lang);
+// Vonkajší priemer rúry vždy s DN (Juraj 4. 11. 2026): „2 × Ø 25 až 63 mm“ a „DN 20 až 50“.
+const dnRozsah = rozsahDn(varianty);
+const ruraPred = r.pocet_rur && r.pocet_rur > 1 && varianty.some((v) => v.rura) ? `${r.pocet_rur} × ` : '';
 const plastRozsah = varianty.some((v) => v.plast_mm) ? rozsah(varianty.map((v) => v.plast_mm), 'mm', lang) : '';
 const ruryText = r.pocet_rur === 1 ? ui.rad.jednaRura : r.pocet_rur === 2 ? ui.rad.dveRury : r.pocet_rur ? ui.rad.rury(r.pocet_rur) : '';
 const fakty: [string, string][] = [
   ...(rMedium(r, lang) ? [[ui.rad.medium, rMedium(r, lang)!] as [string, string]] : []),
   ...(tlakText(r) ? [[ui.rad.tlak, tlakText(r)] as [string, string]] : []),
-  ...(ruraRozsah ? [[ui.rad.rura, `${r.pocet_rur && r.pocet_rur > 1 && varianty.some((v) => v.rura) ? `${r.pocet_rur} × ` : ''}${ruraRozsah}`] as [string, string]] : []),
+  ...(ruraRozsah ? [[ui.rad.rura, `${ruraPred}Ø ${ruraRozsah}${dnRozsah ? `, ${dnRozsah}` : ''}`] as [string, string]] : []),
   ...(plastRozsah ? [[ui.rad.plast, plastRozsah] as [string, string]] : []),
   ...(polomery.length ? [[ui.rad.polomer, `${ui.common.od} ${cislo(Math.min(...polomery), 2)} m`] as [string, string]] : []),
 ];
@@ -68,7 +71,7 @@ const fakty: [string, string][] = [
 // Keď sú na obraze aspoň dve, zoznam faktov pod nadpisom sa nezobrazí (čísla by boli dvakrát).
 const hodnotyHlavy = {
   plast: plastRozsah ? [`Ø ${plastRozsah}`, ui.home.popisy.plast] as [string, string] : undefined,
-  rura: ruraRozsah ? [`${r.pocet_rur && r.pocet_rur > 1 && varianty.some((v) => v.rura) ? `${r.pocet_rur} × ` : ''}${ruraRozsah}`, [ui.rad.rura.toLowerCase(), tlakText(r)].filter(Boolean).join(', ')] as [string, string] : undefined,
+  rura: ruraRozsah ? [`${ruraPred}Ø ${ruraRozsah}`, [`${ui.rad.rura.toLowerCase()}${dnRozsah ? ` ${dnRozsah}` : ''}`, tlakText(r)].filter(Boolean).join(', ')] as [string, string] : undefined,
   ohyb: polomery.length ? [`${ui.common.od} ${cislo(Math.min(...polomery), 2)} m`, ui.home.popisy.polomer] as [string, string] : undefined,
 };
 const kotyHlavy = (hlava3d ? kotyRenderu3d('hlavy', r.id, hodnotyHlavy) : rad3d ? kotyRenderu3d('rady', r.id, hodnotyHlavy) : null) ?? kotyRenderu(r.piktogram, hodnotyHlavy);
@@ -151,7 +154,7 @@ const maVykon = varianty.some((v) => v.vykon_kw);
 // Stavba pod lupou: kľúčové číslo plášťa berie rozsah z tabuľky, nosnej rúry aj priemery.
 const vrstvy = obsah ? (['rura', 'pena', 'plast'] as const).map((id) => {
   const v = obsah.vrstvy[id];
-  const kluc = id === 'plast' ? (plastRozsah ? `Ø ${plastRozsah}` : ui.home.lupy.find((l) => l.id === 'plast')!.kluc) : id === 'rura' && ruraRozsah && !/^\d/.test(v.kluc ?? '') ? `Ø ${ruraRozsah}, ${v.kluc?.replace(/^PE-Xa, |^PE 100, /, '')}` : v.kluc ?? '';
+  const kluc = id === 'plast' ? (plastRozsah ? `Ø ${plastRozsah}` : ui.home.lupy.find((l) => l.id === 'plast')!.kluc) : id === 'rura' && ruraRozsah && !/^\d/.test(v.kluc ?? '') ? `Ø ${ruraRozsah}${dnRozsah ? `, ${dnRozsah}` : ''}, ${v.kluc?.replace(/^PE-Xa, |^PE 100, /, '')}` : v.kluc ?? '';
   // Makro materiálu z 3D modelu, kým nie je, dočasný výrez z podkladov Watts.
   return { id, nazov: tx.vrstvy[id], kluc, text: v.text, img: (id === 'rura' ? makroRury(k.id) : render3d('makra', id)) ?? detail(`vrstva-${id}.jpg`)! };
 }) : [];
@@ -192,7 +195,7 @@ const casti = [
 const eshop = ESHOP_SEARCH + encodeURIComponent(model);
 // Popis pre vyhľadávače: čo rad je, jeho čísla a počet dimenzií (Base ho zarovná na 120 až 160 znakov).
 const cs = lang === 'cs';
-const faktyVeta = [tlakText(r) && `${ui.rad.tlak} ${tlakText(r)}`, ruraRozsah && `${cs ? 'nosná trubka' : 'nosná rúra'} ${ruraRozsah}`, plastRozsah && `plášť ${plastRozsah}`].filter(Boolean).join(', ');
+const faktyVeta = [tlakText(r) && `${ui.rad.tlak} ${tlakText(r)}`, ruraRozsah && `${cs ? 'nosná trubka' : 'nosná rúra'} Ø ${ruraRozsah}${dnRozsah ? `, ${dnRozsah}` : ''}`, plastRozsah && `plášť ${plastRozsah}`].filter(Boolean).join(', ');
 const meta = [`${model}: ${kratky ?? obsah?.popis[0] ?? ''}`, faktyVeta && `${faktyVeta}.`, varianty.length && `${tx.pocetDim(varianty.length)} ${cs ? 's obj. čísly' : 's obj. číslami'}.`].filter(Boolean).join(' ');
 const ldObraz = pikto ? (await getImage({ src: pikto, width: 800, format: 'webp' })).src : undefined;
 const drobceky = [{ text: ui.nav.potrubia, href: route(lang, 'potrubia') }, { text: kKratky(k, lang), href: cestaKategorie(k, lang) }, { text: model }];
@@ -201,14 +204,15 @@ const productLd = [{
   brand: { '@type': 'Brand', name: 'Microflex' }, manufacturer: { '@type': 'Organization', name: 'Watts' },
   url: new URL(cestaRadu(k, r, lang), Astro.site).href, productGroupID: r.slug,
   ...(ldObraz ? { image: new URL(ldObraz, Astro.site).href } : {}),
-  hasVariant: varianty.map((v) => ({ '@type': 'Product', sku: v.obj_cislo, mpn: v.obj_cislo, name: `${model} ${v.obj_cislo}` })),
+  hasVariant: varianty.map((v) => ({ '@type': 'Product', sku: v.obj_cislo, mpn: v.obj_cislo, name: `${model} ${v.obj_cislo}`,
+    ...(ruraSDn(v) ? { size: [`${cs ? 'trubka' : 'rúra'} Ø ${ruraSDn(v)}`, v.plast_mm ? `plášť Ø ${cislo(v.plast_mm)} mm` : ''].filter(Boolean).join(', ') } : {}) })),
 }];
 ---
 <Base lang={lang} alternates={alternatyRadu(k, r)} title={nazov} description={meta} aktivna="potrubia" drobceky={drobceky} vizualneDrobceky={false} jsonLd={productLd}>
   <Hlava lang={lang} nadpis={nazov} drobceky={drobceky} pred={[kKratky(k, lang), ruryText].filter(Boolean).join(', ')} lead={kratky ?? undefined} obraz={pikto} obrazAlt={ui.rad.fotoAlt(nazov)} obrazMax={860} prechod={`rad-${r.id}`} koty={kotyHlavy} kotyLabel={ui.home.popisy.label} rozlozenie="studio">
     {faktyHlavy.length > 0 && <dl class="hlava-fakty">{faktyHlavy.map(([dt, dd]) => <div><dt>{dt}</dt><dd>{dd}</dd></div>)}</dl>}
     {/* Živé kóty: výber dimenzie nad renderom prepíše kóty na ňom (len keď sú na obraze aspoň dve). */}
-    {kotyHlavy.length >= 2 && varianty.length > 1 && <VolbaDimenzie slot="nad-obrazom" lang={lang} varianty={varianty} pocetRur={r.pocet_rur} model={model} obrazy={obrazyVariantov} bodyHlavy={bodyHlavy} />}
+    {kotyHlavy.length >= 2 && varianty.length > 1 && <VolbaDimenzie slot="nad-obrazom" lang={lang} varianty={varianty} pocetRur={r.pocet_rur} model={model} obrazy={obrazyVariantov} bodyHlavy={bodyHlavy} tlak={tlakText(r)} />}
     {zaberyTepla && td && <TeploRezim slot="nad-obrazom" texty={nv.teplo} podmienky={podmienkyTepla} rozsah={hlavaTepla!.rozsah} paleta={td.paleta} />}
     {zaberyTepla && <TeploVrstva slot="na-obraze" zabery={zaberyTepla} alt={nv.teplo.alt(model)} label={nv.teplo.stupnica} />}
     <div class="hlava-akcie">

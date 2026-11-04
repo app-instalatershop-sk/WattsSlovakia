@@ -40,6 +40,7 @@ const druhaObraz = fotka(jeSpojky ? 'vykop-spojky.jpg' : 'montaz-odbocka.jpg');
 <Base lang={lang} alternates={alternatyKategorie(k)} title={titulokSeo} description={`${kPopis(k, lang)} ${tx.produktov(produkty.length)} a ${tx.objCisel(pocetKodov)} s fotkou a tabuľkou rozmerov.`} aktivna="potrubia" drobceky={[{ text: kKratky(k, lang) }]} vizualneDrobceky={false}>
   <Hlava lang={lang} nadpis={kNazov(k, lang)} drobceky={[{ text: kKratky(k, lang) }]} lead={kPopis(k, lang)} obraz={obraz} obrazAlt={jeSpojky ? tx.fotoSpojky : tx.fotoPrislusenstvo} druh={jeSpojky ? 'biely' : 'foto'} obrazMax={jeSpojky ? 620 : 760}>
     <dl class="hlava-fakty">{fakty.map(([dt, dd]) => <div><dt>{dt}</dt><dd>{dd}</dd></div>)}</dl>
+    {jeSpojky && <p class="hlava-pozn">{stranky(lang).produkt.legendaSpojky}</p>}
   </Hlava>
 
   <div class="telo">
@@ -73,6 +74,7 @@ const druhaObraz = fotka(jeSpojky ? 'vykop-spojky.jpg' : 'montaz-odbocka.jpg');
 
 <style>
   .hlava-fakty { display: flex; flex-wrap: wrap; gap: 16px 32px; margin: 24px 0 0; }
+  .hlava-pozn { margin-top: 16px; max-width: 34em; font-size: 14px; line-height: 1.5; color: var(--color-ink-soft); }
   .hlava-fakty dt { font-size: 13px; color: var(--color-ink-soft); }
   .hlava-fakty dd { margin: 2px 0 0; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: clamp(17px, 0.6vw + 13px, 22px); letter-spacing: -0.01em; color: var(--color-blue-900); font-variant-numeric: tabular-nums; }
 

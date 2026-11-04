@@ -1,0 +1,38 @@
+{
+  "zdroj": "Katalóg Watts Microflex, slovenské vydanie, s. 8 až 18, stĺpec „PEX-a DN“ (data/dn_katalog.py)",
+  "pozn": "Kľúč je vonkajší priemer x hrúbka steny nosnej rúry v mm. DN je približne vnútorný priemer.",
+  "dn": {
+    "18x2.5": 13,
+    "20x2.8": 14,
+    "22x3": 16,
+    "25x2.3": 20,
+    "25x3.5": 18,
+    "28x4": 20,
+    "32x2.9": 25,
+    "32x3.5": 23,
+    "32x4.4": 23,
+    "40x3.7": 32,
+    "40x5.5": 29,
+    "50x4.6": 40,
+    "50x6.9": 36,
+    "63x5.7": 50,
+    "63x5.8": 50,
+    "63x8.7": 45,
+    "75x6.8": 61,
+    "75x10.3": 54,
+    "90x8.2": 72,
+    "90x12.3": 65,
+    "110x10": 90,
+    "125x11.4": 102
+  },
+  "vynechane": [
+    {
+      "rura": "110x15.1",
+      "dn_katalog": 94,
+      "vnutorny_mm": 79.8,
+      "strany": [
+        12
+      ]
+    }
+  ]
+}

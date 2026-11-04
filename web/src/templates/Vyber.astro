@@ -12,7 +12,7 @@ import Hlava from '../components/Hlava.astro';
 import Zaver from '../components/Zaver.astro';
 import Ikona from '../components/Ikona.astro';
 import Kopirovanie from '../components/Kopirovanie.astro';
-import { cestaRadu, cestaProduktu, kKratky, rNazov, rKratky, tlakText, priemery, ruraText, cislo } from '../lib/katalog';
+import { cestaRadu, cestaProduktu, kKratky, rNazov, rKratky, tlakText, ruryVariantu, dnRury, dnVariantu, ruraText, cislo } from '../lib/katalog';
 import { obrazPiktogramu, obrazRadu } from '../lib/obrazky';
 import { materialVariantu } from '../lib/material';
 import { kodyProduktu } from '../lib/produkty';
@@ -27,8 +27,8 @@ const tx = {
     desc: 'Vyberte predizolované potrubie Microflex v troch krokoch: médium, rad a dimenzia podľa výkonu v kW alebo priemeru rúry. S obj. číslami a odkazom do e-shopu.',
     lead: 'Tri kroky od média k obj. číslu. Pri vykurovaní navrhneme dimenziu podľa výkonu z katalógu výrobcu.',
     k1: 'Čo potrubím povediete', k2: 'Ktorý rad', k3: 'Aká dimenzia',
-    kw: 'Potrebný výkon', kwHint: 'napríklad 25', kwJ: 'kW', kwAlebo: 'alebo vyberte priemer nosnej rúry',
-    rura: 'Priemer nosnej rúry', vysledok: 'Vhodné obj. čísla',
+    kw: 'Potrebný výkon', kwHint: 'napríklad 25', kwJ: 'kW', kwAlebo: 'alebo vyberte vonkajší priemer nosnej rúry (pod ním je jej DN)',
+    rura: 'Nosná rúra, vonkajší Ø v mm', vysledok: 'Vhodné obj. čísla',
     kwPozn: 'Výkon je orientačný prenášaný výkon podľa katalógu výrobcu pri 80 °C a rozdiele 20 K. Pri dlhej trase alebo inom teplotnom spáde overte tlakové straty v katalógu alebo nám pošlite dopyt.',
     kwNad: (max: number) => `Výkon nad ${max} kW tento rad jednou trasou neprenesie. Zvážte UNO vo väčšej dimenzii alebo dve vetvy, radi poradíme.`,
     odporucame: 'Odporúčame', aj: 'Aj s väčšou rezervou', ruraL: 'Rúra', plastL: 'Plášť', vykonL: 'Výkon', polomerL: 'Polomer ohybu', izolaciaL: 'Izolácia',
@@ -51,8 +51,8 @@ const tx = {
     desc: 'Vyberte předizolované potrubí Microflex ve třech krocích: médium, řada a dimenze podle výkonu v kW nebo průměru trubky. S obj. čísly a odkazem do e-shopu.',
     lead: 'Tři kroky od média k obj. číslu. U vytápění navrhneme dimenzi podle výkonu z katalogu výrobce.',
     k1: 'Co potrubím povedete', k2: 'Která řada', k3: 'Jaká dimenze',
-    kw: 'Potřebný výkon', kwHint: 'například 25', kwJ: 'kW', kwAlebo: 'nebo vyberte průměr nosné trubky',
-    rura: 'Průměr nosné trubky', vysledok: 'Vhodná obj. čísla',
+    kw: 'Potřebný výkon', kwHint: 'například 25', kwJ: 'kW', kwAlebo: 'nebo vyberte vnější průměr nosné trubky (pod ním je její DN)',
+    rura: 'Nosná trubka, vnější Ø v mm', vysledok: 'Vhodná obj. čísla',
     kwPozn: 'Výkon je orientační přenášený výkon podle katalogu výrobce při 80 °C a rozdílu 20 K. U dlouhé trasy nebo jiného teplotního spádu ověřte tlakové ztráty v katalogu nebo nám pošlete poptávku.',
     kwNad: (max: number) => `Výkon nad ${max} kW tato řada jednou trasou nepřenese. Zvažte UNO ve větší dimenzi nebo dvě větve, rádi poradíme.`,
     odporucame: 'Doporučujeme', aj: 'I s větší rezervou', ruraL: 'Trubka', plastL: 'Plášť', vykonL: 'Výkon', polomerL: 'Poloměr ohybu', izolaciaL: 'Izolace',
@@ -82,7 +82,7 @@ const systemy = kat.map((k) => ({ k, rady: rady.filter((r) => r.kategoria === k.
 const data = {
   rady: Object.fromEntries(rady.map((r) => [r.slug, { model: rNazov(r, lang).split(',')[0].trim(), url: cestaRadu(kat.find((k) => k.id === r.kategoria)!, r, lang) }])),
   varianty: varianty.filter((v) => rady.some((r) => r.id === v.rad)).map((v) => ({
-    r: rady.find((r) => r.id === v.rad)!.slug, o: v.obj_cislo, d: priemery(v), t: ruraText(v), p: v.plast_mm ? cislo(v.plast_mm) : '',
+    r: rady.find((r) => r.id === v.rad)!.slug, o: v.obj_cislo, d: ruryVariantu(v).map((c) => c.d), dn: ruryVariantu(v).map((c) => dnRury(c.d, c.s)), t: ruraText(v), n: dnVariantu(v), p: v.plast_mm ? cislo(v.plast_mm) : '',
     kw: v.vykon_kw ?? null, pol: v.polomer_ohybu_m ? cislo(v.polomer_ohybu_m, 2) : '', iz: v.izolacia ?? '', e: v.eshop_url,
     m: materialVariantu(v, rady.find((r) => r.id === v.rad)!, produkty),
   })),
@@ -296,7 +296,7 @@ const obrazky = await Promise.all(systemy.map(async ({ k }) => { const p = obraz
 <script>
   type Diel = { kod: string; n: number; poz?: string; over?: boolean };
   type M = { rury: number; T: Diel[]; P: Diel[]; PR: Diel[]; MFP: Diel[]; MK?: string; MG?: string; IST?: string; ISP?: string; MP?: string; paska: string };
-  type V = { r: string; o: string; d: number[]; t: string; p: string; kw: number | null; pol: string; iz: string; e: string; m: M };
+  type V = { r: string; o: string; d: number[]; dn: (number | null)[]; t: string; n: string; p: string; kw: number | null; pol: string; iz: string; e: string; m: M };
   type Data = { rady: Record<string, { model: string; url: string }>; varianty: V[]; diely: Record<string, string> };
 
   function initVyber() {
@@ -340,7 +340,11 @@ const obrazky = await Promise.all(systemy.map(async ({ k }) => { const p = obraz
       kwVstup.value = stav.kw ? String(stav.kw) : '';
       const vs = data.varianty.filter((v) => v.r === r);
       const d = [...new Set(vs.flatMap((v) => v.d))].sort((a, b) => a - b);
-      dChips.innerHTML = d.map((x) => `<button type="button" class="chip chip-cislo" aria-pressed="${x === stav.d}" data-d="${x}">${x}</button>`).join('');
+      const dnPre = (x: number) => { const s = [...new Set(vs.flatMap((v) => v.d.map((y, i) => (y === x ? v.dn[i] : undefined)).filter((z) => z !== undefined)))]; return s.length === 1 && s[0] !== null ? s[0] : null; };
+      const sDn = d.some((x) => dnPre(x) !== null);
+      dChips.innerHTML = d.map((x) => { const dn = dnPre(x); return dn !== null
+        ? `<button type="button" class="chip chip-cislo chip-dn" aria-pressed="${x === stav.d}" data-d="${x}" aria-label="${x} mm, DN ${dn}"><span>${x}</span><small>DN ${dn}</small></button>`
+        : `<button type="button" class="chip chip-cislo${sDn ? ' chip-dn' : ''}" aria-pressed="${x === stav.d}" data-d="${x}">${x}</button>`; }).join('');
       krok3.hidden = false;
       vypis();
       if (posun) krok3.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -349,7 +353,7 @@ const obrazky = await Promise.all(systemy.map(async ({ k }) => { const p = obraz
 
     function karta(v: V, stitok = '', jemny = false) {
       const rad = data.rady[v.r];
-      const u = [[tx.ruraL, v.t], [tx.plastL, v.p ? `${v.p} mm` : ''], [tx.vykonL, v.kw ? `~${v.kw} kW` : ''], [tx.polomerL, v.pol ? `${v.pol} m` : ''], [tx.izolaciaL, v.iz ? (v.iz === 'zosilnena' ? tx.zosilnena : tx.standard) : '']].filter(([, x]) => x);
+      const u = [[tx.ruraL, v.t ? `${v.t} mm${v.n ? `, DN ${v.n}` : ''}` : ''], [tx.plastL, v.p ? `Ø ${v.p} mm` : ''], [tx.vykonL, v.kw ? `~${v.kw} kW` : ''], [tx.polomerL, v.pol ? `${v.pol} m` : ''], [tx.izolaciaL, v.iz ? (v.iz === 'zosilnena' ? tx.zosilnena : tx.standard) : '']].filter(([, x]) => x);
       return `<article class="harok vy-k${stitok && !jemny ? ' top' : ''}">
         ${stitok ? `<span class="vy-stitok${jemny ? ' jemny' : ''}">${esc(stitok)}</span>` : ''}
         <div class="vy-kod">${esc(v.o)}<button type="button" class="kopia" data-kopia="${esc(v.o)}" aria-label="${esc(v.o)}">${copy}</button><small>${esc(rad.model)}</small></div>
@@ -427,7 +431,7 @@ const obrazky = await Promise.all(systemy.map(async ({ k }) => { const p = obraz
       const v = data.varianty.find((x) => x.o === stav.v && x.r === stav.r);
       if (!v) return;
       const m = v.m, rad = data.rady[v.r];
-      kor.querySelector<HTMLElement>('[data-k4-pre]')!.innerHTML = `${esc(v.o)}<small>${esc(rad.model)}, ${esc(v.t)}${v.p ? `, ${esc(tx.plastL.toLowerCase())} ${esc(v.p)} mm` : ''}</small>`;
+      kor.querySelector<HTMLElement>('[data-k4-pre]')!.innerHTML = `${esc(v.o)}<small>${esc(rad.model)}, ${esc(v.t)} mm${v.n ? `, DN ${esc(v.n)}` : ''}${v.p ? `, ${esc(tx.plastL.toLowerCase())} Ø ${esc(v.p)} mm` : ''}</small>`;
       kor.querySelector<HTMLElement>('[data-k4-mfp]')!.hidden = !m.MFP.length;
       if (!stav.l) { zoznamEl.innerHTML = `<p class="k4-prazdny">${esc(tx.prazdny)}</p>`; return; }
       const kon = 2 + stav.t;

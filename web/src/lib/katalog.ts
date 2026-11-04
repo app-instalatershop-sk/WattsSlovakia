@@ -1,5 +1,6 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { type Lang, ROUTES, type Alternates } from '../i18n/ui';
+import dnKatalog from '../data/dn.json';
 
 export type Kategoria = CollectionEntry<'kategorie'>['data'];
 export type Rad = CollectionEntry<'rady'>['data'];
@@ -95,6 +96,50 @@ export function priemery(v: Variant): number[] {
 export function rozsahRur(vs: Variant[], lang: Lang): string {
   const d = vs.flatMap(priemery);
   return d.length ? rozsah(d, 'mm', lang) : '';
+}
+
+/* ---------- DN nosnej rúry (Juraj 4. 11. 2026: zákazník musí vedieť, či číslo je vonkajší priemer, alebo DN) ----------
+ * Rúra sa označuje vonkajším priemerom × hrúbkou steny („25 × 2,3“, tak ju označuje katalóg aj spojky).
+ * DN je menovitá svetlosť, približne vnútorný priemer: rúra 25 × 2,3 má DN 20, rúra 32 × 2,9 má DN 25.
+ * DN je z katalógu výrobcu (data/dn_katalog.py → data/dn.json); keď ho katalóg neuvádza alebo nesedí
+ * s rozmerom, DN sa nepíše. */
+
+/** Nosná rúra: vonkajší priemer d a hrúbka steny s v mm, n rovnakých rúr. */
+export type RuraCast = { n: number; d: number; s: number };
+/** Nosné rúry variantu. Pri jednej rúre z dát (DUO má v dátach jednu rúru, počet je pri rade), pri viacerých
+ *  z textu katalógu („1x28/4.01x18/2.5“, „2 x 25/2,3 1 x 25/3,5“). */
+export function ruryVariantu(v: Variant): RuraCast[] {
+  if (v.rura?.d) return [{ n: 1, d: v.rura.d, s: v.rura.s ?? 0 }];
+  return [...(v.rura_text ?? '').matchAll(/(?:(\d)\s*[x×]\s*)?(\d{2,3})\s*[/x×]\s*(\d{1,2}[.,]\d)/g)]
+    .map(([, n, d, s]) => ({ n: Number(n ?? 1), d: Number(d), s: Number(s.replace(',', '.')) }));
+}
+/** DN nosnej rúry s vonkajším priemerom d × stena s podľa katalógu výrobcu, null keď ho katalóg neuvádza. */
+export function dnRury(d: number, s: number): number | null {
+  return (dnKatalog.dn as Record<string, number>)[`${d}x${s}`] ?? null;
+}
+/** DN rúr variantu: „20“, pri rôznych rúrach „23 + 18“, s počtom „2× 20 + 18 + 14“; prázdne, keď niektoré chýba. */
+export function dnVariantu(v: Variant): string {
+  const casti = ruryVariantu(v);
+  const dn = casti.map((c) => dnRury(c.d, c.s));
+  if (!casti.length || dn.some((x) => x === null)) return '';
+  return casti.map((c, i) => `${c.n > 1 ? `${c.n}× ` : ''}${dn[i]}`).join(' + ');
+}
+/** Rozsah DN nosných rúr skupiny variantov: „DN 20 až 102“, „DN 25“, prázdne bez DN. */
+export function rozsahDn(vs: Variant[]): string {
+  const dn = vs.flatMap((v) => ruryVariantu(v).map((c) => dnRury(c.d, c.s))).filter((x): x is number => x !== null);
+  if (!dn.length) return '';
+  const min = Math.min(...dn), max = Math.max(...dn);
+  return min === max ? `DN ${min}` : `DN ${min} až ${max}`;
+}
+/** DN rúr v bunke tabuľky dielu („25 × 2,3“ → „20“, „40 × 3,7 + 32 × 2,9“ → „32 + 25“); prázdne, keď niektoré chýba. */
+export function dnBunky(text: string): string {
+  const dn = [...text.matchAll(/(\d{2,3})\s*×\s*(\d{1,2}(?:,\d)?)/g)].map((m) => dnRury(Number(m[1]), Number(m[2].replace(',', '.'))));
+  return dn.length && dn.every((x) => x !== null) ? dn.join(' + ') : '';
+}
+/** Rúra variantu do vety a výsledkov: „32 × 2,9 mm, DN 25“ (bez DN, keď ho katalóg neuvádza). */
+export function ruraSDn(v: Variant): string {
+  const r = ruraText(v), dn = dnVariantu(v);
+  return r ? `${r} mm${dn ? `, DN ${dn}` : ''}` : '';
 }
 
 /**

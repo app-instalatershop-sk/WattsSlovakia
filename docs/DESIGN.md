@@ -59,7 +59,7 @@ a ekoshop.sk. Podrobný plán kľúčových slov bude v samostatnom SEO dokument
 
 ---
 
-## 3. Päť zásad dizajnu
+## 3. Šesť zásad dizajnu
 
 1. **Produkt je hrdina.** Prierez rúry (modrý zvlnený plášť, sivá pena, žlté jadro) je hlavný
    vizuálny motív celého webu. Žiadne ilustrácie, abstraktné tvary ani stock fotky ľudí v helmách.
@@ -75,6 +75,14 @@ a ekoshop.sk. Podrobný plán kľúčových slov bude v samostatnom SEO dokument
    riadok. Nikdy žltý text, nikdy žltá ako pozadie sekcie.
 5. **Technická dôvera.** Tabuľky s tabulkovými číslicami, jednotky pri každom čísle, zdroj údajov
    (katalóg Watts + dátum) pod každou tabuľkou. Žiadne superlatívy bez čísla.
+6. **Rozmer vždy povie, čo meria** (Juraj 4. 11. 2026: DN 25 nie je rúra 25). Nosná rúra sa píše vonkajším
+   priemerom × hrúbkou steny (`32 × 2,9 mm`, ako katalóg a spojky) a vždy pri nej DN z katalógu, ktoré je
+   približne vnútorný priemer (`DN 25`): kóta „2 × Ø 32 mm“ + „nosné rúry DN 25“, rozsah „Ø 25 až 125 mm,
+   DN 20 až 102“, tlačidlo priemeru s malým „DN 20“ pod číslom. Plášť je vždy vonkajší priemer (`Ø 125 mm`).
+   Hlavička tabuľky má pod názvom význam čísla („vonkajší, mm“, „vnútorný Ø“), pod tabuľkou jedna veta legendy,
+   pri závitoch „M vonkajší, F vnútorný“. DN je v `web/src/data/dn.json` (`data/dn_katalog.py`), zobrazujú ho
+   funkcie `dnVariantu`, `rozsahDn`, `dnBunky` v `web/src/lib/katalog.ts`; keď DN v katalógu nie je alebo nesedí
+   s rozmerom, nepíše sa (otázka č. 22 pre manažéra).
 
 ---
 

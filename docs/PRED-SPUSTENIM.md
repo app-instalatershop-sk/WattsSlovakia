@@ -84,6 +84,9 @@ Rozhodnutie Juraja 4. 11. 2026: bez cookies a bez lišty. Hľadanosť v Search C
       **Rozhodnuté 4. 11. 2026: ostáva pôvodné rolovanie.** Juraj si vyskúšal návrhy A, B, C (videá
       `snimky-stranok/navrh-animacie/`), vybral A (raz samo, bez interakcií) a potom ho vrátil do pôvodného stavu.
       Návrh A je v histórii gitu (commit bb021f3, späť revertom), keby sa k nemu chcel vrátiť.
+- [x] Rozmery bez zámeny DN a vonkajšieho priemeru (Juraj 4. 11. 2026: „DN25 a D25“): pri každej rúre vonkajší
+      priemer × stena aj DN z katalógu (výber priemeru, sprievodca, tabuľky, kóty, spojky, hľadanie aj „DN25“, texty);
+      pravidlo v `docs/DESIGN.md` kap. 3, zásada 6. Otvorené: DN rúry M200110S (otázka č. 22 pre manažéra).
 - [x] Pás „Do zeme. Bez lisu a zvárania.“ pod úvodom domova so skutočnou fotkou výkopu (Juraj 4. 11. 2026, variant B).
 - [ ] Odkazy do e-shopu spárovať po exporte produktov zo Shoptetu (export dodá Juraj, bod 1).
 

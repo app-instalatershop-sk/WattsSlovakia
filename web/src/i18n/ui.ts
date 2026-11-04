@@ -91,7 +91,7 @@ const sk = {
       label: 'Rozmery a vlastnosti potrubia na obrázku',
       plast: 'plášť z HDPE',
       polomer: 'polomer ohybu',
-      rury: (tlak: number) => `nosné rúry, ${tlak} bar`,
+      rury: (tlak: number, dn = '') => `nosné rúry${dn ? ` ${dn}` : ''}, ${tlak} bar`,
     },
     skratky: { label: 'Rýchle odkazy na domovskej stránke', potrubia: 'Potrubia', konstrukcia: 'Konštrukcia', pokladka: 'Pokládka', projekty: 'Referencie' },
     katalogH2: 'Vyberte potrubie podľa použitia.',
@@ -172,7 +172,7 @@ const sk = {
     tlak: 'Prevádzkový tlak', rura: 'Nosná rúra', plast: 'Plášť', polomer: 'Polomer ohybu', rady: 'Rady',
     pocet: (rady: string, dim: string) => `${rady}, ${dim} s obj. číslom podľa katalógu`,
     cmpH2: 'Ktorý rad zvoliť', cmpP: 'Porovnanie radov v kategórii podľa katalógu výrobcu.',
-    cmpRows: { rury: 'Počet rúr v plášti', tlak: 'Prevádzkový tlak', rura: 'Nosná rúra', plast: 'Plášť HDPE', polomer: 'Polomer ohybu', zosilnena: 'Zosilnená izolácia', dimenzii: 'Dimenzií s obj. číslom' },
+    cmpRows: { rury: 'Počet rúr v plášti', tlak: 'Prevádzkový tlak', rura: 'Nosná rúra, vonkajší Ø', dn: 'DN nosnej rúry', plast: 'Plášť HDPE, vonkajší Ø', polomer: 'Polomer ohybu', zosilnena: 'Zosilnená izolácia', dimenzii: 'Dimenzií s obj. číslom' },
     cmpZdroj: 'Rady bez tabuľky doplníme z PDF katalógu.',
     faqH2: 'Otázky pred výberom', faqP: 'Čo sa nás pýtajú najčastejšie. Ak vám odpoveď chýba,', faqNapisat: 'napíšte nám',
     piktoAlt: (k: string) => `${k}, rez potrubím`,
@@ -191,7 +191,10 @@ const sk = {
     fotoAlt: (n: string) => `${n}: rez potrubím, plášť, izolácia a nosná rúra`,
   },
   tabulka: {
-    obj: 'Obj. číslo', plast: 'Plášť Ø', rura: 'Rúra Ø × hrúbka', hmotnost: 'Hmotnosť', izolacia: 'Izolácia', polomer: 'Polomer ohybu', kotuc: 'Kotúč Ø / šírka', dn: 'DN', tlak: 'Tlak', eshop: 'E-shop',
+    obj: 'Obj. číslo', plast: 'Plášť Ø', rura: 'Rúra Ø × stena', hmotnost: 'Hmotnosť', izolacia: 'Izolácia', polomer: 'Polomer ohybu', kotuc: 'Kotúč Ø / šírka', dn: 'DN', tlak: 'Tlak', eshop: 'E-shop',
+    // Čo číslo znamená (Juraj 4. 11. 2026: DN je vnútorný priemer, rúra sa označuje vonkajším): pod hlavičkou a v karte na telefóne.
+    vonk: 'vonkajší', vnut: 'vnútorný Ø', plastL: 'Plášť, vonkajší Ø', ruraL: 'Rúra, vonkajší Ø × stena', dnL: 'DN, vnútorný Ø',
+    legenda: 'Rúra sa označuje vonkajším priemerom × hrúbkou steny, tak ako v katalógu a pri spojkách. DN je menovitá svetlosť, približne vnútorný priemer: rúra 32 × 2,9 mm má DN 25.',
     standard: 'štandardná', zosilnena: 'zosilnená',
     zdrojPozn: 'Hmotnosť je na meter potrubia, kotúč ako priemer a šírka.',
   },
@@ -213,7 +216,7 @@ const sk = {
   novinky: {
     ohyb: {
       h2: 'Ohne sa okolo prekážky.',
-      domov: 'Microflex sa ohýba priamo vo výkope, bez kolien a bez zvárania. DUO 2 × 32 mm v plášti 160 mm zvládne oblúk s polomerom 0,60 m, menšie plášte ešte tesnejší: UNO v plášti 75 mm od 0,20 m.',
+      domov: 'Microflex sa ohýba priamo vo výkope, bez kolien a bez zvárania. DUO s rúrami 2 × 32 mm (DN 25) v plášti 160 mm zvládne oblúk s polomerom 0,60 m, menšie plášte ešte tesnejší: UNO v plášti 75 mm od 0,20 m.',
       pozn: 'Polomer platí pre os potrubia. Najmenší polomer každej dimenzie je v tabuľke variantov.',
       kota: 'najmenší polomer ohybu',
       alt: (model: string, polomer: string) => `Potrubie ${model} ohnuté do oblúka s polomerom ${polomer} m`,
@@ -230,8 +233,8 @@ const sk = {
     },
     mierka: {
       h3: 'Všetky dimenzie v skutočnom pomere',
-      popis: 'Rezy stoja v jednej rovine ako na výkrese. Prejdite myšou po reze alebo po riadku tabuľky.',
-      popisDotyk: 'Rezy stoja v jednej rovine ako na výkrese. Ťuknutím na rez prejdete na jeho riadok v tabuľke.',
+      popis: 'Rezy stoja v jednej rovine ako na výkrese. Pod rezom je plášť / rúry vo vonkajšom priemere v mm. Prejdite myšou po reze alebo po riadku tabuľky.',
+      popisDotyk: 'Rezy stoja v jednej rovine ako na výkrese. Pod rezom je plášť / rúry vo vonkajšom priemere v mm. Ťuknutím na rez prejdete na jeho riadok v tabuľke.',
       alt: (model: string) => `Všetky dimenzie ${model} vedľa seba v skutočnom pomere veľkostí`,
     },
     rodina: { hint: { mys: 'Kliknite na potrubie, otvorí sa jeho rad.', dotyk: 'Ťuknite na potrubie a potom na jeho názov.' }, systemy: 'Systémy Microflex', pozriet: 'Pozrieť rad', plast: 'plášť', rura: 'rúra', rury: 'rúry' },
@@ -320,7 +323,7 @@ const cs: typeof sk = {
       label: 'Rozměry a vlastnosti potrubí na obrázku',
       plast: 'plášť z HDPE',
       polomer: 'poloměr ohybu',
-      rury: (tlak: number) => `nosné trubky, ${tlak} bar`,
+      rury: (tlak: number, dn = '') => `nosné trubky${dn ? ` ${dn}` : ''}, ${tlak} bar`,
     },
     skratky: { label: 'Rychlé odkazy na domovské stránce', potrubia: 'Potrubí', konstrukcia: 'Konstrukce', pokladka: 'Pokládka', projekty: 'Reference' },
     katalogH2: 'Vyberte potrubí podle použití.',
@@ -391,7 +394,7 @@ const cs: typeof sk = {
     tlak: 'Provozní tlak', rura: 'Nosná trubka', plast: 'Plášť', polomer: 'Poloměr ohybu', rady: 'Řady',
     pocet: (rady: string, dim: string) => `${rady}, ${dim} s obj. číslem podle katalogu`,
     cmpH2: 'Kterou řadu zvolit', cmpP: 'Porovnání řad v kategorii podle katalogu výrobce.',
-    cmpRows: { rury: 'Počet trubek v plášti', tlak: 'Provozní tlak', rura: 'Nosná trubka', plast: 'Plášť HDPE', polomer: 'Poloměr ohybu', zosilnena: 'Zesílená izolace', dimenzii: 'Dimenzí s obj. číslem' },
+    cmpRows: { rury: 'Počet trubek v plášti', tlak: 'Provozní tlak', rura: 'Nosná trubka, vnější Ø', dn: 'DN nosné trubky', plast: 'Plášť HDPE, vnější Ø', polomer: 'Poloměr ohybu', zosilnena: 'Zesílená izolace', dimenzii: 'Dimenzí s obj. číslem' },
     cmpZdroj: 'Řady bez tabulky doplníme z PDF katalogu.',
     faqH2: 'Otázky před výběrem', faqP: 'Na co se nás ptají nejčastěji. Pokud vám odpověď chybí,', faqNapisat: 'napište nám',
     piktoAlt: (k: string) => `${k}, řez potrubím`,
@@ -410,7 +413,9 @@ const cs: typeof sk = {
     fotoAlt: (n: string) => `${n}: řez potrubím, plášť, izolace a nosná trubka`,
   },
   tabulka: {
-    obj: 'Obj. číslo', plast: 'Plášť Ø', rura: 'Trubka Ø × tloušťka', hmotnost: 'Hmotnost', izolacia: 'Izolace', polomer: 'Poloměr ohybu', kotuc: 'Kotouč Ø / šířka', dn: 'DN', tlak: 'Tlak', eshop: 'E-shop',
+    obj: 'Obj. číslo', plast: 'Plášť Ø', rura: 'Trubka Ø × stěna', hmotnost: 'Hmotnost', izolacia: 'Izolace', polomer: 'Poloměr ohybu', kotuc: 'Kotouč Ø / šířka', dn: 'DN', tlak: 'Tlak', eshop: 'E-shop',
+    vonk: 'vnější', vnut: 'vnitřní Ø', plastL: 'Plášť, vnější Ø', ruraL: 'Trubka, vnější Ø × stěna', dnL: 'DN, vnitřní Ø',
+    legenda: 'Trubka se označuje vnějším průměrem × tloušťkou stěny, stejně jako v katalogu a u spojek. DN je jmenovitá světlost, přibližně vnitřní průměr: trubka 32 × 2,9 mm má DN 25.',
     standard: 'standardní', zosilnena: 'zesílená',
     zdrojPozn: 'Hmotnost je na metr potrubí, kotouč jako průměr a šířka.',
   },
@@ -431,7 +436,7 @@ const cs: typeof sk = {
   novinky: {
     ohyb: {
       h2: 'Ohne se kolem překážky.',
-      domov: 'Microflex se ohýbá přímo ve výkopu, bez kolen a bez svařování. DUO 2 × 32 mm v plášti 160 mm zvládne oblouk o poloměru 0,60 m, menší pláště ještě těsnější: UNO v plášti 75 mm od 0,20 m.',
+      domov: 'Microflex se ohýbá přímo ve výkopu, bez kolen a bez svařování. DUO s trubkami 2 × 32 mm (DN 25) v plášti 160 mm zvládne oblouk o poloměru 0,60 m, menší pláště ještě těsnější: UNO v plášti 75 mm od 0,20 m.',
       pozn: 'Poloměr platí pro osu potrubí. Nejmenší poloměr každé dimenze je v tabulce variant.',
       kota: 'nejmenší poloměr ohybu',
       alt: (model: string, polomer: string) => `Potrubí ${model} ohnuté do oblouku o poloměru ${polomer} m`,
@@ -448,8 +453,8 @@ const cs: typeof sk = {
     },
     mierka: {
       h3: 'Všechny dimenze ve skutečném poměru',
-      popis: 'Řezy stojí v jedné rovině jako na výkresu. Přejeďte myší po řezu nebo po řádku tabulky.',
-      popisDotyk: 'Řezy stojí v jedné rovině jako na výkresu. Ťuknutím na řez přejdete na jeho řádek v tabulce.',
+      popis: 'Řezy stojí v jedné rovině jako na výkresu. Pod řezem je plášť / trubky ve vnějším průměru v mm. Přejeďte myší po řezu nebo po řádku tabulky.',
+      popisDotyk: 'Řezy stojí v jedné rovině jako na výkresu. Pod řezem je plášť / trubky ve vnějším průměru v mm. Ťuknutím na řez přejdete na jeho řádek v tabulce.',
       alt: (model: string) => `Všechny dimenze ${model} vedle sebe ve skutečném poměru velikostí`,
     },
     rodina: { hint: { mys: 'Klikněte na potrubí, otevře se jeho řada.', dotyk: 'Ťukněte na potrubí a potom na jeho název.' }, systemy: 'Systémy Microflex', pozriet: 'Zobrazit řadu', plast: 'plášť', rura: 'trubka', rury: 'trubky' },

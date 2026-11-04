@@ -8,7 +8,7 @@ import WattsLogo from '../components/WattsLogo.astro';
 import Katalog from '../components/Katalog.astro';
 import Scena from '../components/Scena.astro';
 import { referencie } from '../content/referencie';
-import { kategorie, cislo } from '../lib/katalog';
+import { kategorie, cislo, dnVariantu } from '../lib/katalog';
 import { fotka, fotkaReferencie, render3d, maska3d, rozkladRadu, makroRury, ohybRadu, kotuc as kotucData } from '../lib/obrazky';
 import Rozklad from '../components/Rozklad.astro';
 import Ohyb from '../components/Ohyb.astro';
@@ -90,7 +90,7 @@ const leskMaska = (await getImage({ src: heroMaska ?? heroRez, width: 760, forma
    hero-rez-duo.png; dĺžky sú v cqw (percentá šírky štúdia), takže celá vrstva rastie s obrázkom. */
 const popisy = heroVariant && heroRad ? [
   { id: 'plast', hodnota: `Ø ${cislo(heroVariant.plast_mm ?? 0)} mm`, text: h.popisy.plast },
-  { id: 'rura', hodnota: `${heroRad.pocet_rur && heroRad.pocet_rur > 1 ? `${heroRad.pocet_rur} × ` : ''}${cislo(heroVariant.rura?.d ?? 0)} mm`, text: h.popisy.rury(heroRad.tlak_bar ?? 0) },
+  { id: 'rura', hodnota: `${heroRad.pocet_rur && heroRad.pocet_rur > 1 ? `${heroRad.pocet_rur} × ` : ''}Ø ${cislo(heroVariant.rura?.d ?? 0)} mm`, text: h.popisy.rury(heroRad.tlak_bar ?? 0, dnVariantu(heroVariant) ? `DN ${dnVariantu(heroVariant)}` : '') },
   { id: 'ohyb', hodnota: `${cislo(heroVariant.polomer_ohybu_m ?? 0, 2)} m`, text: h.popisy.polomer },
 ] : [];
 const skratky = [
@@ -196,7 +196,7 @@ const skratky = [
           {/* Podmienka času hneď pri tvrdení o čase, nie pod iným údajom (Juraj 28. 10.). */}
           <p class="pk-pozn">{h.pokladkaZdroj}</p>
         </div>
-        <KotucSekvencia data={odvalenie} texty={{ priemer: nv.kotuc.priemer, ostava: nv.kotuc.ostava, label: nv.kotuc.label }} celo={['2 × 25 mm', 'DUO v plášti 125 mm']} alt={nv.kotuc.alt} kroky={h.kroky} krokyLabel={h.krokyLabel} />
+        <KotucSekvencia data={odvalenie} texty={{ priemer: nv.kotuc.priemer, ostava: nv.kotuc.ostava, label: nv.kotuc.label }} celo={['2 × Ø 25 mm', 'DUO DN 20 v plášti 125 mm']} alt={nv.kotuc.alt} kroky={h.kroky} krokyLabel={h.krokyLabel} />
         <div class="wrap">
           <div class="pokladka-pata">
             <p class="zataz"><strong>{h.zataz[0]}</strong><span>{sadzba(h.zataz[1])}</span></p>
@@ -427,6 +427,8 @@ const skratky = [
     .popis-rura .stitok { right: -0.75px; top: var(--l); border-top-right-radius: 2px; align-items: flex-end; text-align: right; }
     .popis-ohyb .stitok { left: -0.75px; top: var(--l); border-top-left-radius: 2px; }
   }
+  /* 901 až 1023 px: štítok rúr s DN (Juraj 4. 11. 2026) je širší, dlhšia čiara ho dá pod blok partnera Watts. */
+  @media (min-width: 901px) and (max-width: 1023px) { .popis-rura { --l: 9.2cqw; } }
   /* Telefón: plášť a ohyb nad výrobkom, rúra pod ním; štítky sa neprekrývajú ani nevyjdú z displeja. */
   @media (max-width: 760px) {
     .popis-plast { --x: 27%; --y: 31%; --l: 14.4cqw; }

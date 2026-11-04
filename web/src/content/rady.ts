@@ -58,20 +58,20 @@ function obsah(lang: Lang): Record<string, RadObsah> {
     'microflex-uno-6-bar': {
       strana: 8, parametre: vyk(), vrstvy: vrstvyVyk, montaz: montazVyk,
       popis: c ? [
-        'Microflex UNO má v plášti jednu nosnou trubku z PE-Xa. Vede přívod nebo zpátečku vytápění, kde se obě větve vedou odděleně, a v největších dimenzích přenese i velké výkony: trubka 125 mm podle katalogu výrobce zhruba 900 kW.',
+        'Microflex UNO má v plášti jednu nosnou trubku z PE-Xa. Vede přívod nebo zpátečku vytápění, kde se obě větve vedou odděleně, a v největších dimenzích přenese i velké výkony: trubka 125 × 11,4 mm (DN 102) podle katalogu výrobce zhruba 900 kW.',
         'Potrubí je ohebné a samokompenzační. Dodává se v rolích po 100 m, takže překážky na trase obejde bez spojek a předizolovaných kolen.',
       ] : [
-        'Microflex UNO má v plášti jednu nosnú rúru z PE-Xa. Vedie prívod alebo spiatočku vykurovania tam, kde sa obe vetvy vedú oddelene, a v najväčších dimenziách prenesie aj veľké výkony: rúra 125 mm podľa katalógu výrobcu približne 900 kW.',
+        'Microflex UNO má v plášti jednu nosnú rúru z PE-Xa. Vedie prívod alebo spiatočku vykurovania tam, kde sa obe vetvy vedú oddelene, a v najväčších dimenziách prenesie aj veľké výkony: rúra 125 × 11,4 mm (DN 102) podľa katalógu výrobcu približne 900 kW.',
         'Potrubie je ohybné a samokompenzačné. Dodáva sa v rolkách po 100 m, takže prekážky na trase obíde bez spojok a predizolovaných kolien.',
       ],
     },
     'microflex-uno-primo-6-bar': {
       strana: 9, parametre: vyk(), vrstvy: vrstvyVyk, montaz: montazVyk,
       popis: c ? [
-        'UNO PRIMO je UNO s tenčí vrstvou izolace: pro stejnou nosnou trubku má menší plášť. Trubka 63 mm leží v plášti 125 mm místo 160 mm u zesílené izolace.',
+        'UNO PRIMO je UNO s tenčí vrstvou izolace: pro stejnou nosnou trubku má menší plášť. Trubka 63 × 5,8 mm (DN 50) leží v plášti 125 mm místo 160 mm u zesílené izolace.',
         'Potrubí je lehčí a ohebnější, vejde se do užšího výkopu a snáz sleduje trasu s mnoha změnami směru.',
       ] : [
-        'UNO PRIMO je UNO s tenšou vrstvou izolácie: pre tú istú nosnú rúru má menší plášť. Rúra 63 mm leží v plášti 125 mm namiesto 160 mm pri zosilnenej izolácii.',
+        'UNO PRIMO je UNO s tenšou vrstvou izolácie: pre tú istú nosnú rúru má menší plášť. Rúra 63 × 5,8 mm (DN 50) leží v plášti 125 mm namiesto 160 mm pri zosilnenej izolácii.',
         'Potrubie je ľahšie a ohybnejšie, zmestí sa do užšieho výkopu a ľahšie sleduje trasu s mnohými zmenami smeru.',
       ],
     },
@@ -88,11 +88,11 @@ function obsah(lang: Lang): Record<string, RadObsah> {
     'microflex-primo-duo-6-bar': {
       strana: 11, parametre: vyk(), vrstvy: vrstvyVyk, montaz: montazVyk,
       popis: c ? [
-        'PRIMO DUO jsou přívod a zpátečka vytápění v plášti s tenčí izolací. Pro stejné trubky má menší plášť než DUO se zesílenou izolací, například 2 × 25 mm v plášti 125 mm místo 160 mm, proto se snáz ohýbá a vejde se do užšího výkopu.',
-        'Katalog výrobce uvádí tři dimenze s trubkami 25, 32 a 50 mm.',
+        'PRIMO DUO jsou přívod a zpátečka vytápění v plášti s tenčí izolací. Pro stejné trubky má menší plášť než DUO se zesílenou izolací, například 2 × 25 mm (DN 20) v plášti 125 mm místo 160 mm, proto se snáz ohýbá a vejde se do užšího výkopu.',
+        'Katalog výrobce uvádí tři dimenze s trubkami 25, 32 a 50 mm (DN 20, 25 a 40).',
       ] : [
-        'PRIMO DUO sú prívod a spiatočka vykurovania v plášti s tenšou izoláciou. Pre tie isté rúry má menší plášť ako DUO so zosilnenou izoláciou, napríklad 2 × 25 mm v plášti 125 mm namiesto 160 mm, preto sa ľahšie ohýba a zmestí sa do užšieho výkopu.',
-        'Katalóg výrobcu uvádza tri dimenzie s rúrami 25, 32 a 50 mm.',
+        'PRIMO DUO sú prívod a spiatočka vykurovania v plášti s tenšou izoláciou. Pre tie isté rúry má menší plášť ako DUO so zosilnenou izoláciou, napríklad 2 × 25 mm (DN 20) v plášti 125 mm namiesto 160 mm, preto sa ľahšie ohýba a zmestí sa do užšieho výkopu.',
+        'Katalóg výrobcu uvádza tri dimenzie s rúrami 25, 32 a 50 mm (DN 20, 25 a 40).',
       ],
     },
     'microflex-uno-10-bar': {
@@ -108,11 +108,11 @@ function obsah(lang: Lang): Record<string, RadObsah> {
     'microflex-duo-10-bar': {
       strana: 13, parametre: san, vrstvy: vrstvySan, montaz,
       popis: c ? [
-        'Dvě trubky na pitnou vodu v jednom plášti, 10 bar. Většina dimenzí má trubky různých průměrů, například 32 a 22 mm, pro teplou vodu a cirkulaci; izolační středový kus z PE je od sebe tepelně odděluje.',
-        'Pro dvě stejné trubky jsou dimenze 2 × 25 mm a 2 × 63 mm.',
+        'Dvě trubky na pitnou vodu v jednom plášti, 10 bar. Většina dimenzí má trubky různých průměrů, například 32 a 22 mm (DN 23 a 16), pro teplou vodu a cirkulaci; izolační středový kus z PE je od sebe tepelně odděluje.',
+        'Pro dvě stejné trubky jsou dimenze 2 × 25 mm (DN 18) a 2 × 63 mm (DN 45).',
       ] : [
-        'Dve rúry na pitnú vodu v jednom plášti, 10 bar. Väčšina dimenzií má rúry rôznych priemerov, napríklad 32 a 22 mm, na teplú vodu a cirkuláciu; izolačný stredový kus z PE ich od seba tepelne oddeľuje.',
-        'Pre dve rovnaké rúry sú dimenzie 2 × 25 mm a 2 × 63 mm.',
+        'Dve rúry na pitnú vodu v jednom plášti, 10 bar. Väčšina dimenzií má rúry rôznych priemerov, napríklad 32 a 22 mm (DN 23 a 16), na teplú vodu a cirkuláciu; izolačný stredový kus z PE ich od seba tepelne oddeľuje.',
+        'Pre dve rovnaké rúry sú dimenzie 2 × 25 mm (DN 18) a 2 × 63 mm (DN 45).',
       ],
     },
     'microflex-primo-duo-10-bar': {

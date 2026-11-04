@@ -59,10 +59,10 @@ const sk: Referencia[] = [
     zdroj: 'https://www.watts.eu/sk/references/microflex-in-orange-military-base',
     nazov: 'Rozvod tepla na vojenskej základni v Orange', miesto: 'Orange, Francúzsko', kedy: 'október 2022',
     perex: 'Staré oceľové potrubia, ktoré viedli teplú vodu z hlavnej kotolne do budov areálu, nahradilo asi 800 metrov potrubia Microflex.',
-    fakty: [['Potrubie', 'Microflex UNO, priemer 63, 75 a 90 mm'], ['Dĺžka', 'asi 800 m'], ['Dodávka', 'potrubie a príslušenstvo']],
+    fakty: [['Potrubie', 'Microflex UNO, rúry Ø 63, 75 a 90 mm (DN 50, 61 a 72)'], ['Dĺžka', 'asi 800 m'], ['Dodávka', 'potrubie a príslušenstvo']],
     realizacia: 'Realizácia: Fauché, údržba budov.',
     scena: { fotka: 'orange-5-scena.jpg', koty: [
-      { x: 41, y: 87, l: 15, smer: 'hore-vlavo', hodnota: 'Ø 63 až 90 mm', text: 'Microflex UNO' },
+      { x: 41, y: 87, l: 15, smer: 'hore-vlavo', hodnota: 'Ø 63 až 90 mm', text: 'Microflex UNO, DN 50 až 72' },
       { x: 60.5, y: 54, l: 13, smer: 'hore-vpravo', smerM: 'hore-vlavo', hodnota: 'asi 800 m', text: 'z kotolne do budov areálu' },
     ] },
   },
@@ -91,7 +91,7 @@ const cs: Referencia[] = [
   { ...sk[3],
     nazov: 'Rozvod tepla na vojenské základně v Orange', miesto: 'Orange, Francie', kedy: 'říjen 2022',
     perex: 'Staré ocelové potrubí, které vedlo teplou vodu z hlavní kotelny do budov areálu, nahradilo asi 800 metrů potrubí Microflex.',
-    fakty: [['Potrubí', 'Microflex UNO, průměr 63, 75 a 90 mm'], ['Délka', 'asi 800 m'], ['Dodávka', 'potrubí a příslušenství']],
+    fakty: [['Potrubí', 'Microflex UNO, trubky Ø 63, 75 a 90 mm (DN 50, 61 a 72)'], ['Délka', 'asi 800 m'], ['Dodávka', 'potrubí a příslušenství']],
     realizacia: 'Realizace: Fauché, údržba budov.',
     scena: kotyCs(sk[3].scena, ['Microflex UNO', 'z kotelny do budov areálu']) },
 ];

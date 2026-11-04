@@ -1,5 +1,5 @@
 import { getCollection } from 'astro:content';
-import { cestaKategorie, cestaRadu, cestaProduktu, kNazov, kKratky, rNazov, pNazov, rozsah, rozsahRur, tlakText, tlakyRadov, type Kategoria } from './katalog';
+import { cestaKategorie, cestaRadu, cestaProduktu, kNazov, kKratky, rNazov, pNazov, rozsah, rozsahRur, rozsahDn, tlakText, tlakyRadov, type Kategoria } from './katalog';
 import { faktyProduktu, kodyProduktu } from './produkty';
 import { fotkaProduktu, render3d, radPiktogramu } from './obrazky';
 import { clanky } from '../content/clanky';
@@ -68,8 +68,8 @@ async function zostav(): Promise<OgZaznam[]> {
       if (k.typ === 'potrubie') {
         const fakty: [string, string][] = [];
         if (tlakyRadov(rr).length) fakty.push([tx.tlak, `${tlakyRadov(rr).join(' / ')} bar`]);
-        if (rozsahRur(vs, lang)) fakty.push([tx.rura, rozsahRur(vs, lang)]);
-        if (vs.some((v) => v.plast_mm)) fakty.push([tx.plast, rozsah(vs.map((v) => v.plast_mm), 'mm', lang)]);
+        if (rozsahRur(vs, lang)) fakty.push([tx.rura, [`Ø ${rozsahRur(vs, lang)}`, rozsahDn(vs)].filter(Boolean).join(', ')]);
+        if (vs.some((v) => v.plast_mm)) fakty.push([tx.plast, `Ø ${rozsah(vs.map((v) => v.plast_mm), 'mm', lang)}`]);
         out.push({ kluc: klucOg(cestaKategorie(k, lang)), lang, nadpis: kNazov(k, lang), pred: tx.potrubia2, fakty, obraz: z3d('rady', radPiktogramu(k.piktogram), k.piktogram ? `piktogramy/${k.piktogram}` : undefined), druh: 'render' });
       } else {
         const ps = produkty.filter((p) => p.kategoria === k.id);
@@ -82,8 +82,8 @@ async function zostav(): Promise<OgZaznam[]> {
       const vs = varianty.filter((v) => v.rad === r.id);
       const fakty: [string, string][] = [];
       if (tlakText(r)) fakty.push([tx.tlak, tlakText(r)]);
-      if (rozsahRur(vs, lang)) fakty.push([tx.rura, rozsahRur(vs, lang)]);
-      if (vs.some((v) => v.plast_mm)) fakty.push([tx.plast, rozsah(vs.map((v) => v.plast_mm), 'mm', lang)]);
+      if (rozsahRur(vs, lang)) fakty.push([tx.rura, [`Ø ${rozsahRur(vs, lang)}`, rozsahDn(vs)].filter(Boolean).join(', ')]);
+      if (vs.some((v) => v.plast_mm)) fakty.push([tx.plast, `Ø ${rozsah(vs.map((v) => v.plast_mm), 'mm', lang)}`]);
       out.push({ kluc: klucOg(cestaRadu(k, r, lang)), lang, nadpis: rNazov(r, lang), pred: kKratky(k, lang), fakty, obraz: z3d('rady', r.id, r.piktogram ? `piktogramy/${r.piktogram}` : undefined), druh: 'render' });
     }
     for (const p of produkty) {

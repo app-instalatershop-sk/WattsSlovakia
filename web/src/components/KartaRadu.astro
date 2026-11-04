@@ -11,7 +11,7 @@ import Koty from './Koty.astro';
 import { obrazRadu, je3d } from '../lib/obrazky';
 import { sadzba } from '../lib/sadzba';
 import { kotyRenderu, kotyRenderu3d } from '../lib/koty';
-import { rozsah, rozsahRur, rNazov, rKratky, cislo, tlakText, type Rad, type Variant } from '../lib/katalog';
+import { rozsah, rozsahRur, rozsahDn, rNazov, rKratky, cislo, tlakText, type Rad, type Variant } from '../lib/katalog';
 import { stranky } from '../content/stranky';
 import { type Lang, t } from '../i18n/ui';
 
@@ -25,11 +25,12 @@ const z3d = je3d(img);
 const model = rNazov(rad, lang).split(',')[0].trim();
 const kratky = rKratky(rad, lang);
 const pol = varianty.map((v) => v.polomer_ohybu_m).filter((x): x is number => typeof x === 'number');
-const rura = varianty.length ? `${rad.pocet_rur && rad.pocet_rur > 1 && varianty.some((v) => v.rura) ? `${rad.pocet_rur} × ` : ''}${rozsahRur(varianty, lang)}` : '';
+const rura = varianty.length && rozsahRur(varianty, lang) ? `${rad.pocet_rur && rad.pocet_rur > 1 && varianty.some((v) => v.rura) ? `${rad.pocet_rur} × ` : ''}Ø ${rozsahRur(varianty, lang)}` : '';
+const dn = rozsahDn(varianty);
 const plast = varianty.some((v) => v.plast_mm) ? rozsah(varianty.map((v) => v.plast_mm), 'mm', lang) : '';
 const hodnoty = {
   plast: plast ? [`Ø ${plast}`, ui.home.popisy.plast] as [string, string] : undefined,
-  rura: rura ? [rura, [ui.rad.rura.toLowerCase(), tlakText(rad)].filter(Boolean).join(', ')] as [string, string] : undefined,
+  rura: rura ? [rura, [[ui.rad.rura.toLowerCase(), dn].filter(Boolean).join(' '), tlakText(rad)].filter(Boolean).join(', ')] as [string, string] : undefined,
   ohyb: pol.length ? [`${ui.common.od} ${cislo(Math.min(...pol), 2)} m`, ui.home.popisy.polomer] as [string, string] : undefined,
 };
 const koty = (z3d && kotyRenderu3d('rady', rad.id, hodnoty)) || kotyRenderu(rad.piktogram, hodnoty);

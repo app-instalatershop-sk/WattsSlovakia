@@ -4,7 +4,7 @@
  */
 import { getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
-import { kategorie, variantyRadu, rNazov, rMedium, tlakText, rozsah, rozsahRur, cestaRadu, type Rad } from './katalog';
+import { kategorie, variantyRadu, rNazov, rMedium, tlakText, rozsah, rozsahRur, rozsahDn, cestaRadu, type Rad } from './katalog';
 import { rodinaMasky } from './obrazky';
 import { type Lang, t } from '../i18n/ui';
 import type { SystemRodiny } from '../components/RodinaVyber.astro';
@@ -26,7 +26,7 @@ export async function rodinaNaTuknutie(rady: Rad[], obraz: ImageMetadata, lang: 
       nazov: rNazov(r, lang).replace(/^Microflex /, ''),
       fakty: [
         [rury && rury.charAt(0).toUpperCase() + rury.slice(1), rMedium(r, lang), tlakText(r)].filter(Boolean).join(', '),
-        [plast && `${ui.novinky.rodina.plast} ${plast}`, ruraRozsah && `${(r.pocet_rur ?? 1) > 1 ? ui.novinky.rodina.rury : ui.novinky.rodina.rura} ${ruraRozsah}`].filter(Boolean).join(', '),
+        [plast && `${ui.novinky.rodina.plast} Ø ${plast}`, ruraRozsah && `${(r.pocet_rur ?? 1) > 1 ? ui.novinky.rodina.rury : ui.novinky.rodina.rura} Ø ${ruraRozsah}`, rozsahDn(vs)].filter(Boolean).join(', '),
       ],
       odkaz: cestaRadu(k, r, lang),
     };

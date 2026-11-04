@@ -11,7 +11,7 @@ import Zaver from '../components/Zaver.astro';
 import Ikona from '../components/Ikona.astro';
 import RodinaVyber from '../components/RodinaVyber.astro';
 import { rodinaNaTuknutie } from '../lib/novinky';
-import { kategorie, cestaKategorie, cestaRadu, kNazov, kKratky, kPopis, rNazov, rMedium, cislo, rozsah, rozsahRur, tlakyRadov, tlakText, type Kategoria, type Rad, type Variant } from '../lib/katalog';
+import { kategorie, cestaKategorie, cestaRadu, kNazov, kKratky, kPopis, rNazov, rMedium, cislo, rozsah, rozsahRur, rozsahDn, tlakyRadov, tlakText, type Kategoria, type Rad, type Variant } from '../lib/katalog';
 import { obrazPiktogramu, je3d, fotka, render3d } from '../lib/obrazky';
 import { sadzba } from '../lib/sadzba';
 import { stranky } from '../content/stranky';
@@ -49,7 +49,7 @@ function fakty(k: Kategoria) {
   const pol = vs.map((v) => v.polomer_ohybu_m).filter((x): x is number => typeof x === 'number');
   return [
     [tx.tlak, tlaky.length ? `${tlaky.join(' / ')} bar` : pk],
-    [tx.rura, rozsahRur(vs, lang) || pk],
+    [tx.rura, rozsahRur(vs, lang) ? [`Ø ${rozsahRur(vs, lang)}`, rozsahDn(vs)].filter(Boolean).join(', ') : pk],
     [tx.plast, vs.length ? rozsah(vs.map((v) => v.plast_mm), 'mm', lang) : pk],
     [tx.polomer, pol.length ? `${ui.common.od} ${cislo(Math.min(...pol), 2)} m` : pk],
   ];
@@ -62,6 +62,7 @@ function riadok(r: Rad) {
     rury: r.pocet_rur ? String(r.pocet_rur) : nic,
     tlak: tlakText(r) || nic,
     rura: rozsahRur(vs, lang) || nic,
+    dn: rozsahDn(vs).replace(/^DN /, '') || nic,
     plast: vs.length ? rozsah(vs.map((v) => v.plast_mm), 'mm', lang) : nic,
     polomer: pol.length ? `${ui.common.od} ${cislo(Math.min(...pol), 2)} m` : nic,
     dim: vs.length ? String(vs.length) : nic,
@@ -119,6 +120,7 @@ const produktySkupiny = (id: string) => produkty.filter((p) => p.skupina === id)
                   <td class="right">{d.rury}</td>
                   <td class="right">{d.tlak}</td>
                   <td class="right">{d.rura}</td>
+                  <td class="right">{d.dn}</td>
                   <td class="right">{d.plast}</td>
                   <td class="right">{d.polomer}</td>
                   <td class="right">{d.dim}</td>

@@ -6,7 +6,7 @@ type Otazka = { q: string; a: string };
 const sk: Record<string, Otazka[]> = {
   vykurovanie: [
     { q: 'UNO alebo DUO: kedy sa oplatia dve rúry v jednom plášti?', a: 'Keď potrebujete prívod aj spiatočku na jednej trase, napríklad od tepelného čerpadla alebo kotolne k domu. DUO znamená jeden výkop a jednu pokládku. UNO použijete, keď vediete len jednu vetvu, alebo pri väčších dimenziách, ktoré sa v DUO nevyrábajú.' },
-    { q: 'Akú dimenziu potrubia zvoliť?', a: 'Podľa výkonu. Katalóg výrobcu uvádza pri každej dimenzii orientačný prenášaný výkon pri 80 °C a rozdiele 20 K, napríklad rúra 32 mm približne 60 kW a rúra 40 mm približne 90 kW. Dimenziu podľa výkonu navrhne sprievodca výberom; pri dlhej trase overte aj tlakovú stratu v tabuľkách katalógu.' },
+    { q: 'Akú dimenziu potrubia zvoliť?', a: 'Podľa výkonu. Katalóg výrobcu uvádza pri každej dimenzii orientačný prenášaný výkon pri 80 °C a rozdiele 20 K, napríklad rúra 32 × 2,9 mm (DN 25) približne 60 kW a rúra 40 × 3,7 mm (DN 32) približne 90 kW. Dimenziu podľa výkonu navrhne sprievodca výberom; pri dlhej trase overte aj tlakovú stratu v tabuľkách katalógu.' },
     { q: 'Ako hlboko sa potrubie ukladá a ako sa spája?', a: 'Do pieskového lôžka v hĺbke 0,5 až 6 m, mierne hadovito a s dodržaním polomeru ohybu. Spája sa svornými spojkami PE-X bez zvárania, konce sa uzatvárajú krytkami a vstup do budovy tesnením MICRO PRESS alebo MICRO SEAL.' },
     { q: 'Čo znamená štandardná a zosilnená izolácia?', a: 'Pri zosilnenej izolácii je rovnaká nosná rúra v hrubšom plášti, takže tepelná strata trasy je menšia. Oplatí sa pri dlhších trasách a vyšších teplotách. V tabuľke variantov ju označujeme pri každom obj. čísle.' },
   ],
@@ -24,14 +24,14 @@ const sk: Record<string, Otazka[]> = {
   ],
   'tepelne-cerpadla': [
     { q: 'Čím sa Microflex HP líši od DUO?', a: 'HP má v jednom plášti prívod a spiatočku a navyše dve chráničky na napájací a dátový kábel vonkajšej jednotky. Káble sú uložené v poriadku a dajú sa neskôr vymeniť bez výkopu.' },
-    { q: 'Na aké tepelné čerpadlá je HP určené?', a: 'Podľa výrobcu na monoblokové tepelné čerpadlá, na vykurovanie aj chladenie. Nosné rúry PE-Xa SDR 11 od 25 × 2,3 do 40 × 3,7 mm, prevádzkový tlak 6 bar.' },
+    { q: 'Na aké tepelné čerpadlá je HP určené?', a: 'Podľa výrobcu na monoblokové tepelné čerpadlá, na vykurovanie aj chladenie. Nosné rúry PE-Xa SDR 11 od 25 × 2,3 do 40 × 3,7 mm (DN 20 až 32), prevádzkový tlak 6 bar.' },
   ],
 };
 
 const cs: Record<string, Otazka[]> = {
   vykurovanie: [
     { q: 'UNO nebo DUO: kdy se vyplatí dvě trubky v jednom plášti?', a: 'Když potřebujete přívod i zpátečku na jedné trase, například od tepelného čerpadla nebo kotelny k domu. DUO znamená jeden výkop a jednu pokládku. UNO použijete, když vedete jen jednu větev, nebo u větších dimenzí, které se v DUO nevyrábějí.' },
-    { q: 'Jakou dimenzi potrubí zvolit?', a: 'Podle výkonu. Katalog výrobce uvádí u každé dimenze orientační přenášený výkon při 80 °C a rozdílu 20 K, například trubka 32 mm přibližně 60 kW a trubka 40 mm přibližně 90 kW. Dimenzi podle výkonu navrhne průvodce výběrem; u dlouhé trasy ověřte i tlakovou ztrátu v tabulkách katalogu.' },
+    { q: 'Jakou dimenzi potrubí zvolit?', a: 'Podle výkonu. Katalog výrobce uvádí u každé dimenze orientační přenášený výkon při 80 °C a rozdílu 20 K, například trubka 32 × 2,9 mm (DN 25) přibližně 60 kW a trubka 40 × 3,7 mm (DN 32) přibližně 90 kW. Dimenzi podle výkonu navrhne průvodce výběrem; u dlouhé trasy ověřte i tlakovou ztrátu v tabulkách katalogu.' },
     { q: 'Jak hluboko se potrubí ukládá a jak se spojuje?', a: 'Do pískového lože v hloubce 0,5 až 6 m, mírně hadovitě a s dodržením poloměru ohybu. Spojuje se svěrnými spojkami PE-X bez svařování, konce se uzavírají krytkami a vstup do budovy těsněním MICRO PRESS nebo MICRO SEAL.' },
     { q: 'Co znamená standardní a zesílená izolace?', a: 'U zesílené izolace je stejná nosná trubka v silnějším plášti, takže tepelná ztráta trasy je menší. Vyplatí se u delších tras a vyšších teplot. V tabulce variant ji označujeme u každého obj. čísla.' },
   ],
@@ -49,7 +49,7 @@ const cs: Record<string, Otazka[]> = {
   ],
   'tepelne-cerpadla': [
     { q: 'Čím se Microflex HP liší od DUO?', a: 'HP má v jednom plášti přívod a zpátečku a navíc dvě chráničky na napájecí a datový kabel venkovní jednotky. Kabely jsou uložené v pořádku a dají se později vyměnit bez výkopu.' },
-    { q: 'Pro jaká tepelná čerpadla je HP určené?', a: 'Podle výrobce pro monobloková tepelná čerpadla, pro vytápění i chlazení. Nosné trubky PE-Xa SDR 11 od 25 × 2,3 do 40 × 3,7 mm, provozní tlak 6 bar.' },
+    { q: 'Pro jaká tepelná čerpadla je HP určené?', a: 'Podle výrobce pro monobloková tepelná čerpadla, pro vytápění i chlazení. Nosné trubky PE-Xa SDR 11 od 25 × 2,3 do 40 × 3,7 mm (DN 20 až 32), provozní tlak 6 bar.' },
   ],
 };
 

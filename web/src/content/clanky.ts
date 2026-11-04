@@ -34,19 +34,20 @@ const sk: Clanok[] = [
       ] },
       { h: 'Jedna rúra, alebo dve v jednom plášti', bloky: [
         { p: 'UNO má v plášti jednu nosnú rúru, DUO dve. Pre prípojku domu z kotolne alebo od tepelného čerpadla je najčastejšou voľbou DUO: prívod aj spiatočka ležia v jednom výkope a pokladá sa jeden kotúč.' },
-        { p: 'UNO sa oplatí pri veľkých výkonoch, keď treba rúru nad 63 mm, alebo keď sa prívod a spiatočka vedú inou trasou. QUADRO vedie štyri rúry naraz: vykurovanie aj teplú vodu s cirkuláciou do vedľajšej budovy.' },
+        { p: 'UNO sa oplatí pri veľkých výkonoch, keď treba rúru nad 63 mm (DN 50), alebo keď sa prívod a spiatočka vedú inou trasou. QUADRO vedie štyri rúry naraz: vykurovanie aj teplú vodu s cirkuláciou do vedľajšej budovy.' },
       ] },
       { h: 'Štandardná, alebo zosilnená izolácia', bloky: [
-        { p: 'Tá istá nosná rúra sa dodáva v dvoch veľkostiach plášťa. Zosilnená izolácia má väčší plášť a menšie tepelné straty, štandardná (rady PRIMO) je ľahšia, ohybnejšia a zmestí sa do užšieho výkopu. Napríklad rúra 63 mm leží v plášti 125 mm so štandardnou izoláciou a v plášti 160 mm so zosilnenou.' },
+        { p: 'Tá istá nosná rúra sa dodáva v dvoch veľkostiach plášťa. Zosilnená izolácia má väčší plášť a menšie tepelné straty, štandardná (rady PRIMO) je ľahšia, ohybnejšia a zmestí sa do užšieho výkopu. Napríklad rúra 63 × 5,8 mm (DN 50) leží v plášti 125 mm so štandardnou izoláciou a v plášti 160 mm so zosilnenou.' },
         { p: 'Pri dlhej trase alebo celoročnej prevádzke rozhodujú tepelné straty, pri krátkej prípojke a stiesnenom výkope ohybnosť a menší plášť.' },
       ] },
       { h: 'Dimenzia podľa výkonu', bloky: [
+        { p: 'Rúra sa označuje vonkajším priemerom × hrúbkou steny, napríklad 32 × 2,9 mm. DN je menovitá svetlosť, približne vnútorný priemer, a je menšie: rúra 32 × 2,9 mm má DN 25. Keď projekt uvádza DN, hľadajte rúru podľa DN, nie podľa vonkajšieho priemeru.' },
         { p: 'Katalóg uvádza pri každej vykurovacej dimenzii orientačný prenášaný výkon pri teplote vody 80 °C a rozdiele 20 K. Pre rad UNO:' },
-        { tabulka: { hlavicky: ['Nosná rúra', 'DN', 'Výkon'], riadky: [
+        { tabulka: { hlavicky: ['Nosná rúra, vonkajší Ø × stena', 'DN', 'Výkon'], riadky: [
           ['25 × 2,3 mm', '20', '~30 kW'], ['32 × 2,9 mm', '25', '~60 kW'], ['40 × 3,7 mm', '32', '~90 kW'], ['50 × 4,6 mm', '40', '~140 kW'], ['63 × 5,8 mm', '50', '~220 kW'],
           ['75 × 6,8 mm', '61', '~330 kW'], ['90 × 8,2 mm', '72', '~480 kW'], ['110 × 10,0 mm', '90', '~700 kW'], ['125 × 11,4 mm', '102', '~900 kW'],
         ], pozn: 'Katalóg Watts Microflex, s. 8. Pri zosilnenej izolácii a malom plášti uvádza katalóg pre niektoré dimenzie nižší výkon.' } },
-        { p: 'Pri inom teplotnom spáde alebo dlhej trase treba overiť prietok a tlakovú stratu. Katalóg má na s. 39 a 40 tabuľky rýchlosti prúdenia a tlakovej straty v Pa/m pre každú rúru od 25 do 125 mm.' },
+        { p: 'Pri inom teplotnom spáde alebo dlhej trase treba overiť prietok a tlakovú stratu. Katalóg má na s. 39 a 40 tabuľky rýchlosti prúdenia a tlakovej straty v Pa/m pre každú rúru od 25 do 125 mm vonkajšieho priemeru.' },
       ] },
     ],
     suvisiace: [{ text: 'Sprievodca výberom podľa výkonu', kam: 'vyber' }, { text: 'Všetky potrubia a rady', kam: 'potrubia' }],
@@ -160,16 +161,17 @@ const cs: Clanok[] = [
       ] },
       { h: 'Jedna trubka, nebo dvě v jednom plášti', bloky: [
         { p: 'UNO má v plášti jednu nosnou trubku, DUO dvě. Pro přípojku domu z kotelny nebo od tepelného čerpadla je nejčastější volbou DUO: přívod i zpátečka leží v jednom výkopu a pokládá se jeden kotouč.' },
-        { p: 'UNO se vyplatí u velkých výkonů, kdy je třeba trubka nad 63 mm, nebo když se přívod a zpátečka vedou jinou trasou. QUADRO vede čtyři trubky najednou: vytápění i teplou vodu s cirkulací do vedlejší budovy.' },
+        { p: 'UNO se vyplatí u velkých výkonů, kdy je třeba trubka nad 63 mm (DN 50), nebo když se přívod a zpátečka vedou jinou trasou. QUADRO vede čtyři trubky najednou: vytápění i teplou vodu s cirkulací do vedlejší budovy.' },
       ] },
       { h: 'Standardní, nebo zesílená izolace', bloky: [
-        { p: 'Stejná nosná trubka se dodává ve dvou velikostech pláště. Zesílená izolace má větší plášť a menší tepelné ztráty, standardní (řady PRIMO) je lehčí, ohebnější a vejde se do užšího výkopu. Například trubka 63 mm leží v plášti 125 mm se standardní izolací a v plášti 160 mm se zesílenou.' },
+        { p: 'Stejná nosná trubka se dodává ve dvou velikostech pláště. Zesílená izolace má větší plášť a menší tepelné ztráty, standardní (řady PRIMO) je lehčí, ohebnější a vejde se do užšího výkopu. Například trubka 63 × 5,8 mm (DN 50) leží v plášti 125 mm se standardní izolací a v plášti 160 mm se zesílenou.' },
         { p: 'U dlouhé trasy nebo celoročního provozu rozhodují tepelné ztráty, u krátké přípojky a stísněného výkopu ohebnost a menší plášť.' },
       ] },
       { h: 'Dimenze podle výkonu', bloky: [
+        { p: 'Trubka se označuje vnějším průměrem × tloušťkou stěny, například 32 × 2,9 mm. DN je jmenovitá světlost, přibližně vnitřní průměr, a je menší: trubka 32 × 2,9 mm má DN 25. Když projekt uvádí DN, hledejte trubku podle DN, ne podle vnějšího průměru.' },
         { p: 'Katalog uvádí u každé topné dimenze orientační přenášený výkon při teplotě vody 80 °C a rozdílu 20 K. Pro řadu UNO:' },
-        { tabulka: { hlavicky: ['Nosná trubka', 'DN', 'Výkon'], riadky: sk[0].sekcie[3].bloky.flatMap((b) => ('tabulka' in b ? b.tabulka.riadky : [])), pozn: 'Katalog Watts Microflex, s. 8. U zesílené izolace a malého pláště uvádí katalog pro některé dimenze nižší výkon.' } },
-        { p: 'Při jiném teplotním spádu nebo dlouhé trase je třeba ověřit průtok a tlakovou ztrátu. Katalog má na s. 39 a 40 tabulky rychlosti proudění a tlakové ztráty v Pa/m pro každou trubku od 25 do 125 mm.' },
+        { tabulka: { hlavicky: ['Nosná trubka, vnější Ø × stěna', 'DN', 'Výkon'], riadky: sk[0].sekcie[3].bloky.flatMap((b) => ('tabulka' in b ? b.tabulka.riadky : [])), pozn: 'Katalog Watts Microflex, s. 8. U zesílené izolace a malého pláště uvádí katalog pro některé dimenze nižší výkon.' } },
+        { p: 'Při jiném teplotním spádu nebo dlouhé trase je třeba ověřit průtok a tlakovou ztrátu. Katalog má na s. 39 a 40 tabulky rychlosti proudění a tlakové ztráty v Pa/m pro každou trubku od 25 do 125 mm vnějšího průměru.' },
       ] },
     ],
     suvisiace: [{ text: 'Průvodce výběrem podle výkonu', kam: 'vyber' }, { text: 'Všechna potrubí a řady', kam: 'potrubia' }],

@@ -5,9 +5,11 @@
  * tej istej rúry stoja pod sebou. Príslušenstvo z katalógu (krytky, pevné body) sa rozbalí pod riadkom.
  * Každý riadok má kotvu podľa obj. čísla (#MD12532C): hľadanie a sprievodca vedú naň, riadok sa zvýrazní
  * a rozbalí sa jeho príslušenstvo. Pod 760 px je každý variant karta.
+ * Rozmery (Juraj 4. 11. 2026): rúra ako vonkajší priemer × stena, pri nej DN z katalógu (približne vnútorný
+ * priemer), plášť ako vonkajší priemer; čo číslo znamená, je pod hlavičkou, vo filtri aj v legende.
  */
 import Ikona from './Ikona.astro';
-import { cislo, datum, priemery, ruraText, kotvaKodu, type Variant } from '../lib/katalog';
+import { cislo, datum, priemery, ruraText, ruryVariantu, dnRury, dnVariantu, kotvaKodu, type Variant } from '../lib/katalog';
 import { stranky } from '../content/stranky';
 import { type Lang, t, ESHOP_SEARCH } from '../i18n/ui';
 
@@ -20,12 +22,19 @@ const ma = (k: keyof Variant) => varianty.some((v) => v[k] !== null && v[k] !== 
 const maRuru = varianty.some((v) => v.rura || v.rura_text);
 const zoradene = [...varianty].sort((a, b) => (priemery(a)[0] ?? 0) - (priemery(b)[0] ?? 0) || (a.plast_mm ?? 0) - (b.plast_mm ?? 0) || a.poradie - b.poradie);
 const rury = [...new Set(varianty.flatMap(priemery))].sort((a, b) => a - b);
+// DN pod číslom vo filtri: len keď majú všetky rúry s týmto vonkajším priemerom v tabuľke rovnaké DN.
+const dnFiltra = new Map(rury.map((d) => {
+  const dn = [...new Set(varianty.flatMap(ruryVariantu).filter((c) => c.d === d).map((c) => dnRury(c.d, c.s)))];
+  return [d, dn.length === 1 && dn[0] !== null ? dn[0] : null] as const;
+}));
+const filterDn = [...dnFiltra.values()].some((x) => x !== null);
+const maDn = varianty.some((v) => dnVariantu(v));
 const izolacie = new Set(varianty.map((v) => v.izolacia).filter(Boolean));
 const strany = [...new Set(varianty.map((v) => v.zdroj_strana).filter((x): x is number => typeof x === 'number'))];
 const zKatalogu = strany.length > 0 && varianty.every((v) => typeof v.zdroj_strana === 'number');
 const maVykon = ma('vykon_kw');
 const maPrisl = varianty.some((v) => v.prislusenstvo?.length);
-const stlpcov = 2 + [maRuru, ma('dn'), ma('plast_mm'), maVykon, ma('tlak_bar'), ma('hmotnost_kg_m'), ma('polomer_ohybu_m'), ma('kotuc'), izolacie.size > 0, maPrisl].filter(Boolean).length;
+const stlpcov = 2 + [maRuru, maDn, ma('plast_mm'), maVykon, ma('tlak_bar'), ma('hmotnost_kg_m'), ma('polomer_ohybu_m'), ma('kotuc'), izolacie.size > 0, maPrisl].filter(Boolean).length;
 const idDetailu = (v: Variant) => `pr-${v.obj_cislo.replace(/[^A-Za-z0-9]/g, '')}`;
 ---
 <div class="tv" data-tv>
@@ -33,10 +42,12 @@ const idDetailu = (v: Variant) => `pr-${v.obj_cislo.replace(/[^A-Za-z0-9]/g, '')
     <div class="tv-filter" role="group" aria-label={tx.filterRura}>
       {rury.length > 2 && (
         <div class="tv-skupina">
-          <span class="tv-meno">{tx.filterRura} Ø</span>
+          <span class="tv-meno">{tx.filterRuraVonk}</span>
           <div class="chips">
-            <button type="button" class="chip" aria-pressed="true" data-rura="">{tx.vsetky}</button>
-            {rury.map((d) => <button type="button" class="chip chip-cislo" aria-pressed="false" data-rura={d}>{d}</button>)}
+            <button type="button" class:list={['chip', { 'chip-dn': filterDn }]} aria-pressed="true" data-rura="">{tx.vsetky}</button>
+            {rury.map((d) => dnFiltra.get(d)
+              ? <button type="button" class="chip chip-cislo chip-dn" aria-pressed="false" data-rura={d} aria-label={`${d} mm, DN ${dnFiltra.get(d)}`}><span>{d}</span><small>DN {dnFiltra.get(d)}</small></button>
+              : <button type="button" class:list={['chip chip-cislo', { 'chip-dn': filterDn }]} aria-pressed="false" data-rura={d}>{d}</button>)}
           </div>
         </div>
       )}
@@ -59,9 +70,9 @@ const idDetailu = (v: Variant) => `pr-${v.obj_cislo.replace(/[^A-Za-z0-9]/g, '')
       <thead>
         <tr>
           <th scope="col">{ui.tabulka.obj}</th>
-          {maRuru && <th scope="col" class="right">{ui.tabulka.rura}<small>mm</small></th>}
-          {ma('dn') && <th scope="col">{ui.tabulka.dn}</th>}
-          {ma('plast_mm') && <th scope="col" class="right">{ui.tabulka.plast}<small>mm</small></th>}
+          {maRuru && <th scope="col" class="right">{ui.tabulka.rura}<small>{ui.tabulka.vonk}, mm</small></th>}
+          {maDn && <th scope="col" class="right">{ui.tabulka.dn}<small>{ui.tabulka.vnut}</small></th>}
+          {ma('plast_mm') && <th scope="col" class="right">{ui.tabulka.plast}<small>{ui.tabulka.vonk}, mm</small></th>}
           {maVykon && <th scope="col" class="right">{tx.vykon}<small>kW</small></th>}
           {ma('tlak_bar') && <th scope="col" class="right">{ui.tabulka.tlak}<small>bar</small></th>}
           {ma('hmotnost_kg_m') && <th scope="col" class="right">{ui.tabulka.hmotnost}<small>kg/m</small></th>}
@@ -79,9 +90,9 @@ const idDetailu = (v: Variant) => `pr-${v.obj_cislo.replace(/[^A-Za-z0-9]/g, '')
               <span class="tv-kod">{v.obj_cislo}</span>
               <button type="button" class="kopia" data-kopia={v.obj_cislo} aria-label={`${tx.kopirovat} ${v.obj_cislo}`} title={tx.kopirovat}><Ikona nazov="copy" velkost={15} /></button>
             </span></td>
-            {maRuru && <td class:list={['right', { viac: ruraText(v).includes('+') }]} data-l={ui.tabulka.rura}>{ruraText(v)}{ruraText(v) ? <span class="tv-j">&nbsp;mm</span> : null}</td>}
-            {ma('dn') && <td data-l={ui.tabulka.dn}>{v.dn ?? ''}</td>}
-            {ma('plast_mm') && <td class="right" data-l={ui.tabulka.plast}>{cislo(v.plast_mm)}{v.plast_mm ? <span class="tv-j">&nbsp;mm</span> : null}</td>}
+            {maRuru && <td class:list={['right', { viac: ruraText(v).includes('+') }]} data-l={ui.tabulka.ruraL}>{ruraText(v)}{ruraText(v) ? <span class="tv-j">&nbsp;mm</span> : null}</td>}
+            {maDn && <td class:list={['right', { viac: dnVariantu(v).includes('+') }]} data-l={ui.tabulka.dnL}>{dnVariantu(v)}</td>}
+            {ma('plast_mm') && <td class="right" data-l={ui.tabulka.plastL}>{cislo(v.plast_mm)}{v.plast_mm ? <span class="tv-j">&nbsp;mm</span> : null}</td>}
             {maVykon && <td class="right" data-l={tx.vykon}>{v.vykon_kw ? `~${cislo(v.vykon_kw)}` : ''}{v.vykon_kw ? <span class="tv-j">&nbsp;kW</span> : null}</td>}
             {ma('tlak_bar') && <td class="right" data-l={ui.tabulka.tlak}>{cislo(v.tlak_bar)}{v.tlak_bar ? <span class="tv-j">&nbsp;bar</span> : null}</td>}
             {ma('hmotnost_kg_m') && <td class="right" data-l={ui.tabulka.hmotnost}>{cislo(v.hmotnost_kg_m, 2)}{v.hmotnost_kg_m ? <span class="tv-j">&nbsp;kg/m</span> : null}</td>}
@@ -116,6 +127,7 @@ const idDetailu = (v: Variant) => `pr-${v.obj_cislo.replace(/[^A-Za-z0-9]/g, '')
   </div>
 
   <div class="tv-pozn">
+    {maRuru && <p>{ui.tabulka.legenda}</p>}
     {maVykon && <p>{tx.vykonPozn}</p>}
     {ma('hmotnost_kg_m') && <p>{ui.tabulka.zdrojPozn}</p>}
     {primoZaklad && <p>{tx.primoPozn(primoZaklad)}</p>}

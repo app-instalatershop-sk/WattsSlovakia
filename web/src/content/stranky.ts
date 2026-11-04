@@ -10,7 +10,7 @@ const sk = {
   },
   rad: {
     vybrat: 'Vybrať dimenziu', kupit: 'Kúpiť v e-shope', kupitVariant: (kod: string) => `Kúpiť ${kod} v e-shope`, oznacenie: 'Označenie výrobcu',
-    filterRura: 'Nosná rúra', filterIzolacia: 'Izolácia', vsetky: 'Všetky', standard: 'Štandardná', zosilnena: 'Zosilnená',
+    filterRura: 'Nosná rúra', filterRuraVonk: 'Nosná rúra, vonkajší Ø', filterIzolacia: 'Izolácia', vsetky: 'Všetky', standard: 'Štandardná', zosilnena: 'Zosilnená',
     zobrazene: (n: number, z: number) => `Zobrazené ${n} z ${z}`,
     kopirovat: 'Kopírovať obj. číslo', skopirovane: (k: string) => `Skopírované: ${k}`,
     vykon: 'Výkon', vykonPozn: 'Výkon je orientačný prenášaný výkon podľa katalógu výrobcu pri teplote vody 80 °C a rozdiele 20 K.',
@@ -66,6 +66,16 @@ const sk = {
     zdroj: 'Údaje z katalógu výrobcu a watts.eu.', strankaVyrobcu: 'Stránka produktu na watts.eu',
     oznacenie: 'Označenie výrobcu',
     rura: 'Nosná rúra', plast: 'Plášť potrubia', zavit: 'Závit', prePotrubie: 'Pre potrubie',
+    // Hlavičky tabuliek dielov z dát → názov a pod ním význam čísla (Juraj 4. 11. 2026: vonkajší priemer, alebo DN).
+    hlavicky: {
+      'Rúra PE-X, Ø × hrúbka': ['Rúra PE-X Ø × stena', 'vonkajší, mm'],
+      'Pripojenie, Ø rúr': ['Pripojenie, Ø rúr', 'vonkajší, mm'],
+      'Plášť potrubia Ø': ['Plášť potrubia Ø', 'vonkajší, mm'],
+      'Plášť / rúra': ['Plášť / rúra Ø', 'vonkajší, mm'],
+      'Závit': ['Závit', 'palce'],
+    } as Record<string, [string, string]>,
+    zavitMF: 'Závit: M je vonkajší, F vnútorný, pri viacerých koncoch po poradí (napríklad FF alebo MF).',
+    legendaSpojky: 'Rúry sú vo vonkajšom priemere × hrúbke steny, pri nich DN (približne vnútorný priemer). Závit M je vonkajší, F vnútorný.',
   },
   kategoria: {
     rady: 'Rady a obj. čísla', sprievodca: 'Sprievodca výberom',
@@ -84,7 +94,7 @@ const sk = {
     tabulkaH2: 'Všetky rady v jednej tabuľke',
     tabulkaP: 'Na porovnanie pri návrhu. Údaje sú z katalógu výrobcu; rozmery radov bez tabuľky nájdete v katalógu PDF.',
     legenda: 'Pomlčka: údaj je v katalógu výrobcu (PDF).',
-    stlpce: ['Rad', 'Médium', 'Rúry v plášti', 'Tlak', 'Nosná rúra', 'Plášť', 'Polomer ohybu', 'Dimenzie'],
+    stlpce: ['Rad', 'Médium', 'Rúry v plášti', 'Tlak', 'Nosná rúra, vonkajší Ø', 'DN nosnej rúry', 'Plášť, vonkajší Ø', 'Polomer ohybu', 'Dimenzie'],
     dielyH2: 'K potrubiu spojky a príslušenstvo',
     dielyP: 'Všetko, čo treba na jeden výkop: spojky PE-X, koncové krytky, izolačné sady na spoje pod zemou a prestupy stenou.',
     produktov: (n: number) => (n === 1 ? '1 produkt' : n >= 2 && n <= 4 ? `${n} produkty` : `${n} produktov`),
@@ -100,7 +110,7 @@ const cs: typeof sk = {
   },
   rad: {
     vybrat: 'Vybrat dimenzi', kupit: 'Koupit v e-shopu', kupitVariant: (kod: string) => `Koupit ${kod} v e-shopu`, oznacenie: 'Označení výrobce',
-    filterRura: 'Nosná trubka', filterIzolacia: 'Izolace', vsetky: 'Všechny', standard: 'Standardní', zosilnena: 'Zesílená',
+    filterRura: 'Nosná trubka', filterRuraVonk: 'Nosná trubka, vnější Ø', filterIzolacia: 'Izolace', vsetky: 'Všechny', standard: 'Standardní', zosilnena: 'Zesílená',
     zobrazene: (n: number, z: number) => `Zobrazeno ${n} z ${z}`,
     kopirovat: 'Kopírovat obj. číslo', skopirovane: (k: string) => `Zkopírováno: ${k}`,
     vykon: 'Výkon', vykonPozn: 'Výkon je orientační přenášený výkon podle katalogu výrobce při teplotě vody 80 °C a rozdílu 20 K.',
@@ -153,6 +163,15 @@ const cs: typeof sk = {
     zdroj: 'Údaje z katalogu výrobce a watts.eu.', strankaVyrobcu: 'Stránka produktu na watts.eu',
     oznacenie: 'Označení výrobce',
     rura: 'Nosná trubka', plast: 'Plášť potrubí', zavit: 'Závit', prePotrubie: 'Pro potrubí',
+    hlavicky: {
+      'Rúra PE-X, Ø × hrúbka': ['Trubka PE-X Ø × stěna', 'vnější, mm'],
+      'Pripojenie, Ø rúr': ['Připojení, Ø trubek', 'vnější, mm'],
+      'Plášť potrubia Ø': ['Plášť potrubí Ø', 'vnější, mm'],
+      'Plášť / rúra': ['Plášť / trubka Ø', 'vnější, mm'],
+      'Závit': ['Závit', 'palce'],
+    },
+    zavitMF: 'Závit: M je vnější, F vnitřní, u více konců po pořadí (například FF nebo MF).',
+    legendaSpojky: 'Trubky jsou ve vnějším průměru × tloušťce stěny, u nich DN (přibližně vnitřní průměr). Závit M je vnější, F vnitřní.',
   },
   kategoria: {
     rady: 'Řady a obj. čísla', sprievodca: 'Průvodce výběrem',
@@ -171,7 +190,7 @@ const cs: typeof sk = {
     tabulkaH2: 'Všechny řady v jedné tabulce',
     tabulkaP: 'Pro porovnání při návrhu. Údaje jsou z katalogu výrobce; rozměry řad bez tabulky najdete v katalogu PDF.',
     legenda: 'Pomlčka: údaj je v katalogu výrobce (PDF).',
-    stlpce: ['Řada', 'Médium', 'Trubky v plášti', 'Tlak', 'Nosná trubka', 'Plášť', 'Poloměr ohybu', 'Dimenze'],
+    stlpce: ['Řada', 'Médium', 'Trubky v plášti', 'Tlak', 'Nosná trubka, vnější Ø', 'DN nosné trubky', 'Plášť, vnější Ø', 'Poloměr ohybu', 'Dimenze'],
     dielyH2: 'K potrubí spojky a příslušenství',
     dielyP: 'Všechno, co je třeba na jeden výkop: spojky PE-X, koncové krytky, izolační sady na spoje pod zemí a prostupy stěnou.',
     produktov: (n: number) => (n === 1 ? '1 produkt' : n >= 2 && n <= 4 ? `${n} produkty` : `${n} produktů`),

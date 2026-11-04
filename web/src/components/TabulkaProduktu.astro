@@ -5,10 +5,12 @@
  * Pri krytkách a pevnom bode stĺpec „Pre potrubie“: obj. čísla potrubia z katalógu s odkazom na tabuľku radu.
  * Každý riadok má kotvu podľa obj. čísla (#MJ13032/29), na ktorú vedie hľadanie a príslušenstvo v tabuľke radu.
  * Pod 760 px je riadok karta, ako pri variantoch potrubia.
+ * Rozmery (Juraj 4. 11. 2026): hlavička povie, že Ø je vonkajší priemer; pri rúre PE-X stĺpec DN z katalógu
+ * (približne vnútorný priemer) a pod tabuľkou vysvetlivka rozmeru rúry a závitov M a F.
  */
 import Ikona from './Ikona.astro';
 import { stranky } from '../content/stranky';
-import { kotvaKodu } from '../lib/katalog';
+import { kotvaKodu, dnBunky } from '../lib/katalog';
 import { type Lang, t, ESHOP_SEARCH } from '../i18n/ui';
 
 interface Tabulka { hlavicky: string[]; hlavicky_cs: string[]; jednotky: (string | null)[]; riadky: string[][]; riadky_cs: string[][] }
@@ -23,13 +25,23 @@ const riadky = lang === 'cs' ? tabulka.riadky_cs : tabulka.riadky;
 const cisla = hlavicky.map((_, i) => i > 0 && riadky.every((r) => !r[i] || /^[\d\s,.×x+–/″Ø~-]+$/.test(r[i])));
 const txp = stranky(lang).produkt;
 const iPre = hlavicky.findIndex((x) => x === txp.prePotrubie);
+// Hlavička v dátach („Rúra PE-X, Ø × hrúbka“) → názov a pod ním význam čísla („vonkajší, mm“); hlavičky
+// v dátach sú slovenské aj pri českej verzii, preto sa hľadá podľa slovenskej.
+const zobraz = tabulka.hlavicky.map((h, i) => txp.hlavicky[h] ?? [hlavicky[i], tabulka.jednotky[i] ?? '']);
+// DN hneď za stĺpcom rúry, keď ho katalóg uvádza pri každom riadku
+const iRura = tabulka.hlavicky.findIndex((h) => /^Rúra PE-X/.test(h));
+const sDn = iRura > 0 && riadky.every((r) => !r[iRura] || dnBunky(r[iRura]));
+const maZavitMF = riadky.some((r) => r.some((c) => /″\s*(?:M|F|MF|FF|FFF|MM)\b/.test(c)));
 const pridatPre = iPre < 0 && riadky.some((r) => pouzitie[r[0]]?.length);
 ---
 <div class="tp-obal">
   <table class="data tp">
     <thead>
       <tr>
-        {hlavicky.map((h, i) => <th scope="col" class:list={{ right: cisla[i] }}>{h}{tabulka.jednotky[i] && <small>{tabulka.jednotky[i]}</small>}</th>)}
+        {hlavicky.map((_h, i) => <>
+          <th scope="col" class:list={{ right: cisla[i] }}>{zobraz[i][0]}{zobraz[i][1] && <small>{zobraz[i][1]}</small>}</th>
+          {sDn && i === iRura && <th scope="col" class="right">DN<small>{ui.tabulka.vnut}</small></th>}
+        </>)}
         {pridatPre && <th scope="col">{txp.prePotrubie}</th>}
         <th scope="col"><span class="sr">{ui.tabulka.eshop}</span></th>
       </tr>
@@ -43,7 +55,10 @@ const pridatPre = iPre < 0 && riadky.some((r) => pouzitie[r[0]]?.length);
           </span></td>
           {r.slice(1).map((c, j) => (j + 1 === iPre
             ? <td class="dlhy pre" data-l={txp.prePotrubie}>{c.split(', ').map((k, i) => <>{i > 0 && ', '}{potrubia[k] ? <a href={potrubia[k]}>{k}</a> : k}</>)}</td>
-            : <td class:list={{ right: cisla[j + 1], dlhy: c.length > 22 }} data-l={`${hlavicky[j + 1]}${tabulka.jednotky[j + 1] ? `, ${tabulka.jednotky[j + 1]}` : ''}`}>{c}</td>))}
+            : <>
+              <td class:list={{ right: cisla[j + 1], dlhy: c.length > 22 }} data-l={[zobraz[j + 1][0], zobraz[j + 1][1]].filter(Boolean).join(', ')}>{c}</td>
+              {sDn && j + 1 === iRura && <td class:list={{ right: true, viac: c.includes('+') }} data-l={ui.tabulka.dnL}>{dnBunky(c)}</td>}
+            </>))}
           {pridatPre && <td class="dlhy pre" data-l={txp.prePotrubie}>{(pouzitie[r[0]] ?? []).map((k, i) => <>{i > 0 && ', '}{potrubia[k] ? <a href={potrubia[k]}>{k}</a> : k}</>)}</td>}
           <td class="tp-shop"><a href={ESHOP_SEARCH + encodeURIComponent(r[0])} target="_blank" rel="noopener">{ui.common.doEshopu} <Ikona nazov="external-link" velkost={14} /></a></td>
         </tr>
@@ -51,9 +66,17 @@ const pridatPre = iPre < 0 && riadky.some((r) => pouzitie[r[0]]?.length);
     </tbody>
   </table>
 </div>
+{(iRura > 0 || maZavitMF) && (
+  <div class="tp-pozn">
+    {iRura > 0 && <p>{ui.tabulka.legenda}</p>}
+    {maZavitMF && <p>{txp.zavitMF}</p>}
+  </div>
+)}
 
 <style>
   .tp-obal { overflow-x: auto; scrollbar-width: thin; padding: 4px 12px 8px; }
+  .tp-pozn { padding: 16px 24px 24px; border-top: 1px solid rgb(10 42 94 / 0.08); font-size: 13px; line-height: 1.5; color: var(--color-ink-soft); }
+  .tp-pozn p + p { margin-top: 4px; }
   .tp th { background: #fff; }
   .tp th, .tp td { padding: 12px 16px; }
   .tp td.code { padding-block: 8px; }

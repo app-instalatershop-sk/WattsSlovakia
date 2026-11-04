@@ -25,12 +25,12 @@ const { lang } = Astro.props;
 const ui = t(lang);
 const tx = {
   sk: {
-    title: 'Referencie', desc: 'Stavby s predizolovaným potrubím Microflex: rozvod tepla pre obytný súbor v Považskej Bystrici, vojenská základňa vo Francúzsku, základná škola v Lehote pri Nitre a rodinný dom vo Fačkove.',
+    title: 'Referencie', titulok: 'Stavby s potrubím Microflex', desc: 'Stavby s predizolovaným potrubím Microflex: rozvod tepla pre obytný súbor v Považskej Bystrici, vojenská základňa vo Francúzsku, základná škola v Lehote pri Nitre a rodinný dom vo Fačkove.',
     lead: 'Rozvody tepla medzi budovami areálov a obytných súborov, výmena starých oceľových rozvodov aj prípojky domov.',
     fotoAlt: 'Dve potrubia Microflex UNO vo výkope na vojenskej základni v Orange', zdroj: 'Referencia na watts.eu', rad: 'Použitý rad', fotka: (n: number) => `Fotka ${n}`,
   },
   cs: {
-    title: 'Reference', desc: 'Stavby s předizolovaným potrubím Microflex: rozvod tepla pro obytný soubor v Považské Bystrici, vojenská základna ve Francii, základní škola v Lehotě pri Nitre a rodinný dům ve Fačkově.',
+    title: 'Reference', titulok: 'Reference: stavby s potrubím Microflex', desc: 'Stavby s předizolovaným potrubím Microflex: rozvod tepla pro obytný soubor v Považské Bystrici, vojenská základna ve Francii, základní škola v Lehotě pri Nitre a rodinný dům ve Fačkově.',
     lead: 'Rozvody tepla mezi budovami areálů a obytných souborů, výměna starých ocelových rozvodů i přípojky domů.',
     fotoAlt: 'Dvě potrubí Microflex UNO ve výkopu na vojenské základně v Orange', zdroj: 'Reference na watts.eu', rad: 'Použitá řada', fotka: (n: number) => `Fotka ${n}`,
   },
@@ -56,7 +56,7 @@ const bloky = await Promise.all(refs.map(async (r) => {
   return { r, fotky, rad, k };
 }));
 ---
-<Base lang={lang} alternates={staticAlternates('referencie')} title={tx.title} description={tx.desc} aktivna="referencie" drobceky={[{ text: tx.title }]} vizualneDrobceky={false}>
+<Base lang={lang} alternates={staticAlternates('referencie')} title={tx.titulok} description={tx.desc} aktivna="referencie" drobceky={[{ text: tx.title }]} vizualneDrobceky={false}>
   <Hlava lang={lang} nadpis={tx.title} drobceky={[{ text: tx.title }]} lead={tx.lead} obraz={hero} obrazAlt={tx.fotoAlt} druh="foto" />
 
   <div class="telo">

@@ -20,7 +20,7 @@ interface Props { lang: Lang }
 const { lang } = Astro.props;
 const tx = {
   sk: {
-    title: 'Na stiahnutie', desc: 'Katalóg Microflex v PDF, výkresy DWG a DXF pre projekt, vyhlásenie o zhode, environmentálne vyhlásenie EPD a technický list Microflex HP.',
+    title: 'Na stiahnutie', titulok: 'Katalóg a výkresy DWG na stiahnutie', desc: 'Katalóg Microflex v PDF, výkresy DWG a DXF pre projekt, vyhlásenie o zhode, environmentálne vyhlásenie EPD a technický list Microflex HP.',
     lead: 'Katalóg, výkresy pre projekt a vyhlásenia výrobcu na jednom mieste. Katalóg sa stiahne priamo, ostatné podklady sa otvoria na watts.eu.',
     katalogH2: 'Katalóg Microflex', katalogP: 'Všetky rady potrubia s tabuľkami rozmerov a výkonu, spojky, príslušenstvo, pokyny k inštalácii, tepelné a tlakové straty. Slovenské vydanie výrobcu.',
     stiahnut: 'Stiahnuť katalóg PDF', velkost: 'PDF, 19 MB, 44 strán',
@@ -31,7 +31,7 @@ const tx = {
     zdroj: 'Podklady vydáva výrobca Watts. Na watts.eu sú vždy v aktuálnej verzii.',
   },
   cs: {
-    title: 'Ke stažení', desc: 'Katalog Microflex v PDF, výkresy DWG a DXF pro projekt, prohlášení o shodě, environmentální prohlášení EPD a technický list Microflex HP.',
+    title: 'Ke stažení', titulok: 'Katalog a výkresy DWG ke stažení', desc: 'Katalog Microflex v PDF, výkresy DWG a DXF pro projekt, prohlášení o shodě, environmentální prohlášení EPD a technický list Microflex HP.',
     lead: 'Katalog, výkresy pro projekt a prohlášení výrobce na jednom místě. Katalog se stáhne přímo, ostatní podklady se otevřou na watts.eu.',
     katalogH2: 'Katalog Microflex', katalogP: 'Všechny řady potrubí s tabulkami rozměrů a výkonu, spojky, příslušenství, pokyny k instalaci, tepelné a tlakové ztráty. Slovenské vydání výrobce.',
     stiahnut: 'Stáhnout katalog PDF', velkost: 'PDF, 19 MB, 44 stran, slovensky',
@@ -71,7 +71,7 @@ const hpRad = rady.find((r) => r.slug === 'microflex-hp');
 const obalka = fotka('katalog-obalka.jpg')!;
 const katRadu = (r: Rad) => kat.find((k) => k.id === r.kategoria)!;
 ---
-<Base lang={lang} alternates={staticAlternates('stiahnut')} title={tx.title} description={tx.desc} aktivna="stiahnut" drobceky={[{ text: tx.title }]} vizualneDrobceky={false}>
+<Base lang={lang} alternates={staticAlternates('stiahnut')} title={tx.titulok} description={tx.desc} aktivna="stiahnut" drobceky={[{ text: tx.title }]} vizualneDrobceky={false}>
   <Hlava lang={lang} nadpis={tx.title} drobceky={[{ text: tx.title }]} lead={tx.lead}>
     <div class="hlava-akcie">
       <a class="btn btn-yellow btn-lg" href={KATALOG_PDF} target="_blank" rel="noopener">{tx.stiahnut} <Ikona nazov="download" velkost={18} /></a>

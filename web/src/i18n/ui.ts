@@ -23,7 +23,8 @@ const sk = {
     objCisel: (n: number) => `${n} obj. čísel`,
   },
   domov: {
-    title: 'Microflex Slovensko',
+    // Titulok v Google (Juraj 4. 11. 2026): značka a hlavné hľadané slovo; nadpis na stránke je h1.
+    title: 'Microflex Slovensko: predizolované ohybné potrubie',
     description: 'Predizolované ohybné potrubie Microflex pre vykurovanie, teplú a studenú vodu, chladenie a tepelné čerpadlá. Katalóg, obj. čísla, podklady a predaj cez instalatershop.sk.',
     h1: 'Predizolované potrubie, ktoré sa ohne okolo prekážky.',
     lead: 'Microflex vedie teplo, teplú aj studenú vodu a chlad pod zemou. Od kotolne alebo tepelného čerpadla až k domu v jednom kuse z kotúča, bez spojov vo výkope.',
@@ -245,7 +246,7 @@ const cs: typeof sk = {
     objCisel: (n: number) => `${n} obj. čísel`,
   },
   domov: {
-    title: 'Microflex Slovensko',
+    title: 'Microflex Slovensko: předizolované ohebné potrubí',
     description: 'Předizolované ohebné potrubí Microflex pro vytápění, teplou a studenou vodu, chlazení a tepelná čerpadla. Katalog, obj. čísla, podklady a prodej přes instalatershop.sk.',
     h1: 'Předizolované potrubí, které se ohne kolem překážky.',
     lead: 'Microflex vede teplo, teplou i studenou vodu a chlad pod zemí. Od kotelny nebo tepelného čerpadla až k domu v jednom kuse z kotouče, bez spojů ve výkopu.',

@@ -33,8 +33,8 @@ ponúkne ten istý dopyt ako vyplnený e-mail (mailto) a telefón.
 - [x] Schránka web@microflex.sk a `web/nasadenie/dopyt.konfig.php` s jej heslom (prihlásenie overené 4. 11. 2026).
 - [x] Skúšobný dopyt z ostrého webu: server ho prijal a odoslal (4. 11. 2026, `npm run overit -- --skusobny-dopyt`).
 - [ ] Juraj potvrdí, že skúšobný dopyt prišiel na dotazy@instalatershop.sk (nie do spamu) a Odpovedať mieri na zákazníka.
-- [ ] Informácia o spracúvaní osobných údajov pod formulárom: odkaz na zásady podľa odpovede na otázku č. 5
-      v dokumente otázok pre manažéra (návrh: zásady instalatershop.sk doplnené o web a formulár).
+- [x] Veta o spracúvaní osobných údajov pod tlačidlom s odkazom na https://www.instalatershop.sk/gdpr/ (Juraj 4. 11. 2026).
+- [ ] Firma doplní web a formulár do podmienok ochrany osobných údajov (otázka č. 5 pre manažéra).
 
 ## 3. Hosting a doména
 
@@ -54,9 +54,23 @@ ponúkne ten istý dopyt ako vyplnený e-mail (mailto) a telefón.
 
 ## 5. Meranie a súkromie
 
-- [ ] Meranie návštevnosti a cieľov (prechody do e-shopu, dopyty) a lišta súhlasu s cookies v našom dizajne.
+Rozhodnutie Juraja 4. 11. 2026: bez cookies a bez lišty. Hľadanosť v Search Console, prechody do e-shopu v jeho
+štatistikách (zdroj microflex.sk), dopyty v e-maile.
 
-## 6. Posledná kontrola
+- [x] Značky UTM pri všetkých odkazoch do e-shopu (`web/integrations/utm.mjs`, 2 114 odkazov; štruktúrované dáta bez UTM).
+- [ ] Search Console: vlastníctvo Doména microflex.sk overené TXT záznamom vo WebAdmine (Juraj), po spustení mapa webu.
+- [ ] Overiť v štatistikách e-shopu, že sa zdroj microflex.sk zobrazuje (po prvých prechodoch).
+
+## 6. SEO pred spustením (4. 11. 2026)
+
+- [x] Titulky s hľadanými slovami: domov SK a CS, Spojky, Referencie, Poradňa, Na stiahnutie, Kontakt (nadpisy ostali).
+- [x] Štruktúrované dáta WebSite (názov webu v Google) a Organization s údajmi firmy; články s dátumom.
+- [x] Mapa webu bez stránok hľadania (noindex), 144 adries; IndexNow pripravený (`npm run indexnow`).
+- [ ] Odkazy na microflex.sk z instalatershop.sk a od Watts (otázka č. 20 pre manažéra).
+- [ ] Pri spustení: nasadiť bez `--neindexovat`, `npm run overit`, `npm run indexnow`, v Search Console odoslať mapu
+      webu a požiadať o indexovanie hlavných stránok, Bing Webmaster Tools (import zo Search Console).
+
+## 7. Posledná kontrola
 
 - [ ] Lighthouse na mobile aspoň 90 na každej stránke (`docs/RYCHLOST.md`).
 - [ ] `python data/kontrola_webu.py` bez chýb (spúšťa ho aj `npm run nasadit`).

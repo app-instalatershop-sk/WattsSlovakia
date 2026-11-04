@@ -15,7 +15,7 @@ const { lang } = Astro.props;
 const f = firma(lang);
 const tx = {
   sk: {
-    title: 'Kontakt a predajňa', desc: 'Telefón, e-mail, predajňa a sklad potrubia Microflex v Rakovej pri Čadci. Otváracie hodiny a fakturačné údaje.',
+    title: 'Kontakt a predajňa', titulok: 'Kontakt a predajňa v Rakovej', desc: 'Telefón, e-mail, predajňa a sklad potrubia Microflex v Rakovej pri Čadci. Otváracie hodiny a fakturačné údaje.',
     lead: 'Microflex predávame cez e-shop instalatershop.sk a v predajni so skladom v Rakovej pri Čadci. Zavolajte alebo napíšte, s výberom dimenzie aj s ponukou na projekt poradíme.',
     telefon: 'Telefón', email: 'E-mail', dopyt: 'Dopyty na projekty', hodiny: 'Otváracie hodiny',
     predajnaH2: 'Predajňa a sklad', predajnaP: 'Potrubie v kotúčoch, spojky a príslušenstvo na jednom mieste.',
@@ -25,7 +25,7 @@ const tx = {
     zaverNadpis: 'Kúpiť alebo poslať dopyt', zaverText: 'Menšie množstvá objednáte priamo v e-shope. Na projekt pošlite dopyt, ozveme sa s ponukou a dostupnosťou.',
   },
   cs: {
-    title: 'Kontakt a prodejna', desc: 'Telefon, e-mail, prodejna a sklad potrubí Microflex v Rakové u Čadce. Otevírací doba a fakturační údaje.',
+    title: 'Kontakt a prodejna', titulok: 'Kontakt a prodejna v Rakové', desc: 'Telefon, e-mail, prodejna a sklad potrubí Microflex v Rakové u Čadce. Otevírací doba a fakturační údaje.',
     lead: 'Microflex prodáváme přes e-shop instalatershop.sk a v prodejně se skladem v Rakové u Čadce. Zavolejte nebo napište, s výběrem dimenze i s nabídkou na projekt poradíme.',
     telefon: 'Telefon', email: 'E-mail', dopyt: 'Poptávky na projekty', hodiny: 'Otevírací doba',
     predajnaH2: 'Prodejna a sklad', predajnaP: 'Potrubí v kotoučích, spojky a příslušenství na jednom místě.',
@@ -44,7 +44,7 @@ const ld = [{
   openingHours: FIRMA.hodinySchema,
 }];
 ---
-<Base lang={lang} alternates={staticAlternates('kontakt')} title={tx.title} description={tx.desc} aktivna="kontakt" drobceky={[{ text: tx.title }]} vizualneDrobceky={false} jsonLd={ld}>
+<Base lang={lang} alternates={staticAlternates('kontakt')} title={tx.titulok} description={tx.desc} aktivna="kontakt" drobceky={[{ text: tx.title }]} vizualneDrobceky={false} jsonLd={ld}>
   <Hlava lang={lang} nadpis={tx.title} drobceky={[{ text: tx.title }]} lead={tx.lead}>
     <div slot="bok" class="harok vizitka">
       <a class="vizitka-tel" href={FIRMA.telefonHref}><Ikona nazov="phone" velkost={22} /><span><small>{tx.telefon}</small>{FIRMA.telefon}</span></a>

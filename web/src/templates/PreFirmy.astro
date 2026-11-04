@@ -43,6 +43,7 @@ const tx = {
     poznamka: 'Poznámka', poznamkaHint: 'Spojky, prestupy stenou, počet odbočiek, zdroj tepla…',
     povinne: 'povinné', odoslat: 'Odoslať dopyt', odosielam: 'Odosielam dopyt…',
     pozn: (e: string) => `Dopyt príde na ${e}. Môžete napísať aj priamo alebo zavolať.`,
+    gdpr: ['Údaje z formulára použijeme na odpoveď na dopyt a prípravu ponuky. Viac v', 'podmienkach ochrany osobných údajov', '.'],
     predmet: 'Dopyt Microflex', chyba: 'Vyplňte meno a e-mail, aby sme Vám mohli odpovedať.',
     chybaPolia: 'Skontrolujte označené polia.', pasca: 'Toto pole nevypĺňajte',
     uspechH: 'Dopyt sme prijali', uspechP: 'Ďakujeme. Ozveme sa Vám na e-mail alebo telefón, ktorý ste uviedli.', uspechTel: 'Ak sa ponáhľate, zavolajte na',
@@ -70,6 +71,7 @@ const tx = {
     poznamka: 'Poznámka', poznamkaHint: 'Spojky, prostupy stěnou, počet odboček, zdroj tepla…',
     povinne: 'povinné', odoslat: 'Odeslat poptávku', odosielam: 'Odesílám poptávku…',
     pozn: (e: string) => `Poptávka přijde na ${e}. Můžete napsat i přímo nebo zavolat.`,
+    gdpr: ['Údaje z formuláře použijeme k odpovědi na poptávku a přípravě nabídky. Více v', 'podmínkách ochrany osobních údajů', ' (slovensky).'],
     predmet: 'Poptávka Microflex', chyba: 'Vyplňte jméno a e-mail, abychom Vám mohli odpovědět.',
     chybaPolia: 'Zkontrolujte označená pole.', pasca: 'Toto pole nevyplňujte',
     uspechH: 'Poptávku jsme přijali', uspechP: 'Děkujeme. Ozveme se Vám na e-mail nebo telefon, který jste uvedli.', uspechTel: 'Pokud spěcháte, zavolejte na',
@@ -172,6 +174,8 @@ const DOPYT_URL = '/api/dopyt.php';
         <p class="chyba" role="alert" data-chyba-text hidden></p>
         <button type="submit" class="btn btn-yellow" data-odoslat><span data-popis>{tx.odoslat}</span> <Ikona nazov="arrow-right" velkost={18} /></button>
         <p class="formular-pozn">{tx.pozn(FIRMA.emailDopyt)}</p>
+        {/* Informácia o spracúvaní údajov (Juraj 4. 11. 2026): odkaz na podmienky e-shopu, tá istá firma; otázka č. 5 pre manažéra. */}
+        <p class="formular-pozn">{tx.gdpr[0]} <a href={FIRMA.gdpr} target="_blank" rel="noopener">{tx.gdpr[1]}</a>{tx.gdpr[2]}</p>
         <div class="dopyt-zlyhanie" id="dopyt-chyba" role="alert" tabindex="-1" data-zlyhanie>
           <p><strong>{tx.zlyhanieH}</strong> {tx.zlyhanieP}</p>
           <div class="dopyt-zlyhanie-akcie">
@@ -253,6 +257,8 @@ const DOPYT_URL = '/api/dopyt.php';
   .formular .btn { align-self: flex-start; margin-top: 4px; }
   .chyba { color: #c2410c; font-weight: 500; font-size: 15px; }
   .formular-pozn { font-size: 14px; color: var(--color-ink-soft); }
+  /* Odkaz v texte poznámky: podčiarknutý, nielen farbou (WCAG 1.4.1, axe link-in-text-block). */
+  .formular-pozn a { color: var(--color-blue-700); text-decoration: underline; text-underline-offset: 2px; }
   /* Pasca na roboty mimo obrazovky (nie display: none, také pole roboty často vynechajú). */
   .pasca { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
 

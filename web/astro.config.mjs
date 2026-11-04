@@ -5,6 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import sadzbaWebu from './integrations/sadzba.mjs';
+import utmWebu from './integrations/utm.mjs';
 
 // Doména podľa rozhodnutia 1 (docs/PLAN-STAVBA.md kap. 9). Zmena na jednom mieste.
 const SITE = 'https://microflex.sk';
@@ -32,5 +33,7 @@ export default defineConfig({
     }),
     // Slovenská sadzba na celý text stránok po builde (nezlomiteľné medzery, docs/POLISH.md T4).
     sadzbaWebu(),
+    // Značky UTM pri odkazoch do e-shopu: meranie prechodov bez cookies (docs/NASADENIE.md).
+    utmWebu(),
   ],
 });

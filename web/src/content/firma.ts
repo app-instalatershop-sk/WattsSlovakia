@@ -18,6 +18,8 @@ export const FIRMA = {
   telefonHref: 'tel:+421414220422',
   email: 'info@instalatershop.sk',
   emailDopyt: 'dotazy@instalatershop.sk',
+  /** Podmienky ochrany osobných údajov (e-shop, tá istá firma); odkaz pod formulárom dopytu. */
+  gdpr: 'https://www.instalatershop.sk/gdpr/',
   /** schema.org openingHours */
   hodinySchema: ['Mo-Fr 07:00-16:00', 'Sa 08:00-12:00'],
 };

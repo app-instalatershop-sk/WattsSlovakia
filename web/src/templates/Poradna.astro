@@ -20,7 +20,7 @@ interface Props { lang: Lang }
 const { lang } = Astro.props;
 const tx = {
   sk: {
-    title: 'Poradňa', desc: 'Ako vybrať predizolované potrubie, pokládka krok za krokom, tlaková skúška podľa DIN 1988-2 a tepelné straty. Podľa katalógu výrobcu Microflex.',
+    title: 'Poradňa', titulok: 'Poradňa k predizolovanému potrubiu', desc: 'Ako vybrať predizolované potrubie, pokládka krok za krokom, tlaková skúška podľa DIN 1988-2 a tepelné straty. Podľa katalógu výrobcu Microflex.',
     lead: 'Výber, pokládka, skúška a tepelné straty. Stručne, s číslami z katalógu výrobcu a odkazom na stranu, kde ich nájdete.',
     foto: 'Rez výkopom s dvoma potrubiami Microflex v pieskovom lôžku a výstražnou páskou',
     clankyH2: 'Články', citanie: (n: number) => `${n} min čítania`, citat: 'Čítať',
@@ -28,7 +28,7 @@ const tx = {
     sprievodca: 'Sprievodca výberom',
   },
   cs: {
-    title: 'Poradna', desc: 'Jak vybrat předizolované potrubí, pokládka krok za krokem, tlaková zkouška podle DIN 1988-2 a tepelné ztráty. Podle katalogu výrobce Microflex.',
+    title: 'Poradna', titulok: 'Poradna k předizolovanému potrubí', desc: 'Jak vybrat předizolované potrubí, pokládka krok za krokem, tlaková zkouška podle DIN 1988-2 a tepelné ztráty. Podle katalogu výrobce Microflex.',
     lead: 'Výběr, pokládka, zkouška a tepelné ztráty. Stručně, s čísly z katalogu výrobce a odkazem na stranu, kde je najdete.',
     foto: 'Řez výkopem se dvěma potrubími Microflex v pískovém loži a výstražnou páskou',
     clankyH2: 'Články', citanie: (n: number) => `${n} min čtení`, citat: 'Číst',
@@ -41,7 +41,7 @@ const otazky = faqVsetky(lang);
 const kat = (await getCollection('kategorie')).map((k) => k.data).filter((k) => otazky[k.id]?.length).sort((a, b) => a.poradie - b.poradie);
 const obraz = fotka('vykop-rez.jpg');
 ---
-<Base lang={lang} alternates={staticAlternates('poradna')} title={tx.title} description={tx.desc} aktivna="poradna" drobceky={[{ text: tx.title }]} vizualneDrobceky={false}>
+<Base lang={lang} alternates={staticAlternates('poradna')} title={tx.titulok} description={tx.desc} aktivna="poradna" drobceky={[{ text: tx.title }]} vizualneDrobceky={false}>
   <Hlava lang={lang} nadpis={tx.title} drobceky={[{ text: tx.title }]} lead={tx.lead} obraz={obraz} obrazAlt={tx.foto} druh="foto" obrazMax={620}>
     <div class="hlava-akcie">
       <a class="btn btn-yellow btn-lg" href="#clanky">{tx.clankyH2} <Ikona nazov="arrow-down" velkost={18} /></a>

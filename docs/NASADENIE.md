@@ -134,6 +134,10 @@ mikrofónu, polohy, platieb a USB. Typy súborov: AVIF, WebP, WOFF2, SVG, JSON a
 - Limit dopytov počíta skutočnú adresu návštevníka (odtlačok IP v `limity.json` sedí), `chyby.log` prázdny.
 - Chrome, 18 stránok × počítač a telefón: bez chýb v konzole, bez neúspešných požiadaviek a nenačítaných
   obrázkov; prechod medzi stránkami (ClientRouter) a index hľadania fungujú.
+- Lighthouse 13.5 (lokálne; PageSpeed Insights bez kľúča mal vyčerpanú dennú kvótu) na domove, rade DUO 6 bar,
+  Pre firmy, Referenciách a Kontakte: mobil výkon 95 až 97 (LCP 2,1 až 2,6 s), počítač 100 (LCP 0,5 až 0,6 s),
+  prístupnosť a postupy 100, CLS 0, TBT 0 ms, odpoveď servera 40 až 60 ms. SEO 69 len pre noindex (`is-crawlable`),
+  po ostrom nasadení bez `--neindexovat` zmizne.
 
 ## Overené 4. 11. 2026
 

@@ -41,9 +41,11 @@ const NOINDEX = '\n# Dočasne bez indexovania (npm run nasadit -- --neindexovat)
 const ZAKAZ = '# Konfigurácia dopytu: z prehliadača nedostupná.\nRequire all denied\n';
 
 // Vzory sú v gite: vyplnené heslo v nich by odišlo ďalším commitom a pushom na GitHub.
-const vzorEnv = readFileSync(join(TU, 'env.vzor'), 'utf8');
-const vzorKonfig = readFileSync(join(TU, 'dopyt.konfig.vzor.php'), 'utf8');
-if (/^[ \t]*FTP_(HESLO|POUZIVATEL)=\S/m.test(vzorEnv) || !/'smtp_heslo'\s*=>\s*'SEM-HESLO-SCHRANKY'/.test(vzorKonfig)) {
+const vzor = (meno) => (existsSync(join(TU, meno)) ? readFileSync(join(TU, meno), 'utf8') : null);
+const vzorEnv = vzor('env.vzor');
+const vzorKonfig = vzor('dopyt.konfig.vzor.php');
+if ((vzorEnv !== null && /^[ \t]*FTP_(HESLO|POUZIVATEL)=\S/m.test(vzorEnv))
+  || (vzorKonfig !== null && !/'smtp_heslo'\s*=>\s*'SEM-HESLO-SCHRANKY'/.test(vzorKonfig))) {
   koniec('Vo vzore env.vzor alebo dopyt.konfig.vzor.php je vyplnený prístup. Vzory sú v gite, heslá patria len do nasadenie/.env\n'
     + 'a nasadenie/dopyt.konfig.php (mimo gitu). Presuň ich tam a vzory vráť: git checkout -- web/nasadenie/env.vzor web/nasadenie/dopyt.konfig.vzor.php');
 }

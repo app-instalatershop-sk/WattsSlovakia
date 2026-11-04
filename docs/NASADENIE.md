@@ -30,19 +30,40 @@ DMARC `p=quarantine`. Dopyt odchádza cez SMTP Websupportu s podpisom DKIM, tak�
    nechať zapnutú. Verzia PHP 8.4 (8.2 až 8.5 sú v poriadku).
 4. **FTP.** Služby → microflex.sk → Pokročilá konfigurácia → FTP účty. Hlavný účet, alebo nový s prístupom do
    hlavného priečinka (pole Sprístupniť adresár nemeniť), lebo skript potrebuje aj priečinok `/konfig` vedľa
-   `/web`. Z Prihlasovacích údajov zapísať meno a heslo do `web/nasadenie/.env` (vzor `web/nasadenie/env.vzor`)
+   `/web`. Z Prihlasovacích údajov zapísať meno a heslo do `web/nasadenie/.env` (obsah nižšie)
    a ako server `ftp.r6.websupport.sk`: na tento názov je vydaný certifikát FTP servera, microflex.sk ukazuje na
    ten istý server (37.9.175.196, overené 4. 11. 2026). Ak má FTP obmedzenie podľa krajiny alebo IP, povoliť Slovensko.
    FTP účet hostingu vidí koreň s priečinkom `microflex.sk/` (v ňom `web`, `logs`, `sub`); skript koreň webu nájde sám
    (`/web` alebo `/microflex.sk/web`) a konfiguráciu dá vedľa (`/microflex.sk/konfig`).
 5. **Schránka na odosielanie.** E-maily → vytvoriť schránku `web@microflex.sk` so silným heslom. Skopírovať
-   `web/nasadenie/dopyt.konfig.vzor.php` ako `dopyt.konfig.php`, doplniť heslo a ľubovoľný dlhý text ako soľ.
-   SMTP server overiť v E-maily → Prihlasovacie údaje (vzor má `smtp.m1.websupport.sk`). Odporúčam presmerovať
+   do `web/nasadenie/dopyt.konfig.php` (obsah nižšie) heslo a ľubovoľný dlhý text ako soľ.
+   SMTP server overiť v E-maily → Prihlasovacie údaje (pre microflex.sk `smtp.m1.websupport.sk`). Odporúčam presmerovať
    kópiu tejto schránky na vlastný e-mail: prídu sem vrátené správy, keby adresa dopytov prestala fungovať.
 
 Heslá netreba písať do chatu: stačí ich zapísať do `.env` a `dopyt.konfig.php`. Do gitu z priečinka `web/nasadenie`
-idú len štyri súbory skriptov a vzorov (`.gitignore`), všetko ostatné git ignoruje. Vzory `env.vzor` a
-`dopyt.konfig.vzor.php` sú v gite, preto musia ostať prázdne; `npm run nasadit` s vyplneným vzorom odmietne bežať.
+idú len skripty `nasad.mjs`, `over.mjs` a `indexnow.mjs` (`.gitignore`), všetko ostatné git ignoruje. Vzory sme 4. 11. 2026
+zmazali (Juraj); obsah oboch súborov je tu:
+
+```
+# web/nasadenie/.env (heslo s # alebo medzerou do jednoduchých úvodzoviek)
+FTP_SERVER=ftp.r6.websupport.sk
+FTP_POUZIVATEL=…
+FTP_HESLO='…'
+# nepovinné: FTP_PORT=21, FTP_WEB a FTP_KONFIG (skript ich nájde sám), FTP_ODTLACOK, FTP_TLS_MAX=TLSv1.2,
+# WEB_ADRESA=https://microflex.sk, FTP_SPOJENIA=4, FTP_LADENIE=1
+```
+
+```php
+<?php // web/nasadenie/dopyt.konfig.php → na serveri /microflex.sk/konfig/dopyt.php
+return [
+    'smtp_server' => 'smtp.m1.websupport.sk', 'smtp_port' => 465, 'smtp_sifrovanie' => 'ssl',
+    'smtp_meno' => 'web@microflex.sk', 'smtp_heslo' => '…',
+    'od' => 'web@microflex.sk', 'od_meno' => 'Web Microflex Slovensko',
+    'komu' => ['dotazy@instalatershop.sk'],
+    'sol' => '…dlhý náhodný text…',
+    // nepovinné: 'povolene_povody' => ['http://127.0.0.1:4350'], 'sposob' => 'mail'
+];
+```
 
 ## Nasadenie (Claude na pokyn „nasaď“)
 

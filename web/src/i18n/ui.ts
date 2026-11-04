@@ -9,7 +9,8 @@ export const ESHOP_SEARCH = 'https://www.instalatershop.sk/vyhledavani/?string='
 export const KATALOG_PDF = 'https://www.watts.eu/dfsmedia/0533DBBA-1771-4B1A-B581-AB07A4CBB521/640504-source/639239694230000000/MICROFLEX_SK_PDF.pdf';
 
 const sk = {
-  site: { name: 'Microflex Slovensko', sub: 'Slovensko', tagline: 'Predizolované ohybné potrubie Microflex pre Česko a Slovensko' },
+  // Názov webu a nápis pri logu (Juraj 4. 11. 2026): Česko a Slovensko, na telefóne skratky (inak sa nápis nezmestí).
+  site: { name: 'Microflex Česko a Slovensko', sub: 'Česko a Slovensko', subKratke: 'CZ · SK', tagline: 'Predizolované ohybné potrubie Microflex pre Česko a Slovensko' },
   nav: { potrubia: 'Potrubia', vyber: 'Výber potrubia', stiahnut: 'Na stiahnutie', firmy: 'Pre firmy', poradna: 'Poradňa', referencie: 'Referencie', kontakt: 'Kontakt', podklady: 'Podklady', eshop: 'E-shop', menu: 'Menu', zavriet: 'Zavrieť', hlavna: 'Hlavná navigácia', domov: 'Domov', celyKatalog: 'Celý katalóg potrubí', katalogPdf: 'Katalóg PDF, 19 MB' },
   search: { placeholder: 'Obj. číslo, rad', label: 'Hľadať v katalógu', button: 'Hľadať', vsetky: 'Všetky výsledky', nic: 'Nič sme nenašli. Skúste obj. číslo, rad alebo sprievodcu výberom.', ciastocne: 'Presnú zhodu sme nenašli. Najbližšie:', sprievodca: 'Sprievodca výberom potrubia', skupiny: { rad: 'Rad', kod: 'Obj. číslo', diel: 'Diel', stranka: 'Stránka' } },
   // Juraj 4. 11. 2026: sme jediní partneri Watts pre Microflex v Česku aj na Slovensku (znenie potvrdí manažér, otázka č. 21).
@@ -25,7 +26,7 @@ const sk = {
   },
   domov: {
     // Titulok v Google (Juraj 4. 11. 2026): značka a hlavné hľadané slovo; nadpis na stránke je h1.
-    title: 'Microflex Slovensko: predizolované ohybné potrubie',
+    title: 'Microflex Česko a Slovensko: predizolované potrubie',
     description: 'Predizolované ohybné potrubie Microflex pre vykurovanie, teplú a studenú vodu, chladenie a tepelné čerpadlá. Katalóg, obj. čísla, podklady a predaj cez instalatershop.sk.',
     h1: 'Predizolované potrubie, ktoré sa ohne okolo prekážky.',
     lead: 'Microflex vedie teplo, teplú aj studenú vodu a chlad pod zemou. Od kotolne alebo tepelného čerpadla až k domu v jednom kuse z kotúča, bez spojov vo výkope.',
@@ -245,7 +246,7 @@ const sk = {
 };
 
 const cs: typeof sk = {
-  site: { name: 'Microflex Slovensko', sub: 'Slovensko', tagline: 'Předizolované ohebné potrubí Microflex pro Česko a Slovensko' },
+  site: { name: 'Microflex Česko a Slovensko', sub: 'Česko a Slovensko', subKratke: 'CZ · SK', tagline: 'Předizolované ohebné potrubí Microflex pro Česko a Slovensko' },
   nav: { potrubia: 'Potrubí', vyber: 'Výběr potrubí', stiahnut: 'Ke stažení', firmy: 'Pro firmy', poradna: 'Poradna', referencie: 'Reference', kontakt: 'Kontakt', podklady: 'Podklady', eshop: 'E-shop', menu: 'Menu', zavriet: 'Zavřít', hlavna: 'Hlavní navigace', domov: 'Domů', celyKatalog: 'Celý katalog potrubí', katalogPdf: 'Katalog PDF, 19 MB, slovensky' },
   search: { placeholder: 'Obj. číslo, řada', label: 'Hledat v katalogu', button: 'Hledat', vsetky: 'Všechny výsledky', nic: 'Nic jsme nenašli. Zkuste obj. číslo, řadu nebo průvodce výběrem.', ciastocne: 'Přesnou shodu jsme nenašli. Nejbližší:', sprievodca: 'Průvodce výběrem potrubí', skupiny: { rad: 'Řada', kod: 'Obj. číslo', diel: 'Díl', stranka: 'Stránka' } },
   partner: { kratke: 'Jediný partner pro CZ a SK', veta: 'Jediný oficiální partner Watts pro Microflex v Česku a na Slovensku', vyrobca: 'Výrobce', pas: 'Partner, kontakt a jazyk' },
@@ -259,7 +260,7 @@ const cs: typeof sk = {
     objCisel: (n: number) => `${n} obj. čísel`,
   },
   domov: {
-    title: 'Microflex Slovensko: předizolované ohebné potrubí',
+    title: 'Microflex Česko a Slovensko: předizolované potrubí',
     description: 'Předizolované ohebné potrubí Microflex pro vytápění, teplou a studenou vodu, chlazení a tepelná čerpadla. Katalog, obj. čísla, podklady a prodej přes instalatershop.sk.',
     h1: 'Předizolované potrubí, které se ohne kolem překážky.',
     lead: 'Microflex vede teplo, teplou i studenou vodu a chlad pod zemí. Od kotelny nebo tepelného čerpadla až k domu v jednom kuse z kotouče, bez spojů ve výkopu.',

@@ -71,7 +71,7 @@ const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, 
   <div class="wrap hdr-in">
     <a class="brand" href={route(lang, 'domov')} aria-label={ui.site.name}>
       <MicroflexLogo height={21} popis={null} class="brand-logo" />
-      <span class="brand-sub">{ui.site.sub}</span>
+      <span class="brand-sub"><span class="brand-sub-plne">{ui.site.sub}</span><span class="brand-sub-kratke" aria-hidden="true">{ui.site.subKratke}</span></span>
     </a>
 
     <nav class="nav" id="nav" aria-label={ui.nav.hlavna}>
@@ -183,6 +183,7 @@ const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, 
   .brand :global(.brand-logo) { transition: height 250ms var(--ease-soft); }
   .hdr.is-scrolled .brand { --logo-h: 19px; }
   .brand-sub { font-size: 14px; font-weight: 500; color: var(--color-ink-soft); border-left: var(--line); padding-left: 12px; line-height: 1; }
+  .brand-sub-kratke { display: none; }
 
   /* Navigácia so žltou značkou, ktorá sa posúva pod položku. */
   .nav { position: relative; display: flex; align-items: center; gap: 2px; margin-left: 4px; flex: none; }
@@ -303,6 +304,8 @@ const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, 
     .brand { gap: 8px; }
     .brand, .hdr.is-scrolled .brand { --logo-h: 17px; }
     .brand-sub { font-size: 13px; padding-left: 8px; }
+    .brand-sub-plne { display: none; }
+    .brand-sub-kratke { display: inline; }
     .partner-plne { display: none; }
     .partner-kratke { display: inline; }
     /* Na telefóne ostáva v páse len číslo; stránka Kontakt je v menu. */

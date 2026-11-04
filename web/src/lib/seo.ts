@@ -15,7 +15,7 @@ const doplnky: Record<Lang, string[]> = {
   cs: ['Obj. čísla, podklady výrobce a nákup na instalatershop.sk.', 'Jediný partner Watts pro Česko a Slovensko.', 'Jediný partner Watts pro CZ a SK.'],
 };
 
-/** „Názov | Microflex Slovensko“, pri dlhom názve „Názov | Microflex“, inak len názov. */
+/** „Názov | Microflex Česko a Slovensko“, pri dlhom názve „Názov | Microflex“, inak len názov. */
 export function titulok(nazov: string, znacka: string): string {
   if (nazov === znacka) return nazov;
   for (const pripona of [` | ${znacka}`, ' | Microflex']) if ((nazov + pripona).length <= MAX_TITULOK) return nazov + pripona;

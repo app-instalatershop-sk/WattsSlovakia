@@ -7,7 +7,7 @@
  *
  * Prihlasovacie údaje do schránky nie sú v repozitári. Skript ich číta zo súboru konfig/dopyt.php, ktorý
  * leží na hostingu vedľa priečinka web, teda mimo dosahu prehliadača. Vzor je web/nasadenie/
- * dopyt.konfig.vzor.php, na server ho nahrá `npm run nasadit` (docs/NASADENIE.md).
+ * dopyt.konfig.php (obsah v docs/NASADENIE.md, krok 5), na server ho nahrá `npm run nasadit`.
  *
  * Odpoveď: skriptu stránky (Accept: application/json) JSON { ok, chyba?, polia? }; bez JavaScriptu
  * presmerovanie späť na formulár s kotvou #dopyt-odoslany alebo #dopyt-chyba.

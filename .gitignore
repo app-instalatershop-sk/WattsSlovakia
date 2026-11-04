@@ -20,11 +20,9 @@ __pycache__/
 # snímky stránok na celú výšku pre ChatGPT a porovnanie (scratchpad snimky-stranok.mjs); dajú sa urobiť znova
 /snimky-stranok/
 
-# Prístupy na hosting (web/nasadenie): FTP v .env, heslo schránky v dopyt.konfig.php. Do gitu ide z priečinka
-# len to, čo je tu vymenované; každý iný súbor (.env, dopyt.konfig.php, ich kópie a zálohy) git ignoruje.
+# Prístupy na hosting (web/nasadenie): FTP v .env, heslo schránky v dopyt.konfig.php (obsah: docs/NASADENIE.md).
+# Do gitu ide z priečinka len to, čo je tu vymenované; všetko ostatné (aj kópie a zálohy) git ignoruje.
 web/nasadenie/*
 !web/nasadenie/nasad.mjs
 !web/nasadenie/over.mjs
 !web/nasadenie/indexnow.mjs
-!web/nasadenie/env.vzor
-!web/nasadenie/dopyt.konfig.vzor.php

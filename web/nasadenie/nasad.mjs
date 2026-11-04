@@ -15,7 +15,8 @@
  *   npm run nasadit -- --bez-buildu    nahrá existujúci web/dist (build a kontrola už prebehli)
  *   npm run nasadit -- --neindexovat   vyhľadávače web zatiaľ neindexujú (hlavička X-Robots-Tag)
  *   npm run nasadit -- --bez-skusky    nahrá .htaccess bez skúšky (doména ešte neukazuje na hosting)
- * Prístup na FTP: nasadenie/.env (vzor nasadenie/env.vzor), mimo gitu. Po nasadení: npm run overit.
+ * Prístup na FTP: nasadenie/.env, schránka na dopyt: nasadenie/dopyt.konfig.php; oba mimo gitu, obsah v docs/NASADENIE.md.
+ * Po nasadení: npm run overit.
  */
 import { Client } from 'basic-ftp';
 import { execSync, spawnSync } from 'node:child_process';
@@ -83,7 +84,7 @@ if (!ARG.has('--bez-buildu') && !SKUSOBNE) {
 }
 
 if (!c.server || !c.pouzivatel || !c.heslo) {
-  koniec('Chýba prístup na FTP: skopíruj nasadenie/env.vzor ako nasadenie/.env a doplň FTP_SERVER, FTP_POUZIVATEL a FTP_HESLO (docs/NASADENIE.md, krok 4).');
+  koniec('Chýba prístup na FTP: vytvor nasadenie/.env s FTP_SERVER, FTP_POUZIVATEL a FTP_HESLO (docs/NASADENIE.md, krok 4).');
 }
 if (!existsSync(join(DIST, 'index.html')) || !existsSync(join(DIST, '.htaccess'))) {
   koniec('web/dist nie je úplný (chýba index.html alebo .htaccess). Spusti nasadenie bez --bez-buildu.');
@@ -100,7 +101,7 @@ for (const cesta of zoznamSuborov(DIST)) {
 let konfig = null;
 const konfigSubor = join(TU, 'dopyt.konfig.php');
 if (!existsSync(konfigSubor)) {
-  varuj('Chýba nasadenie/dopyt.konfig.php: formulár dopytu bude hlásiť chybu a ponúkne e-mail (vzor dopyt.konfig.vzor.php).');
+  varuj('Chýba nasadenie/dopyt.konfig.php: formulár dopytu bude hlásiť chybu a ponúkne e-mail (obsah: docs/NASADENIE.md, krok 5).');
 } else {
   const obsah = readFileSync(konfigSubor);
   if (/SEM-HESLO-SCHRANKY|ZMENTE-NA-NAHODNY-TEXT/.test(obsah.toString('utf8'))) varuj('V nasadenie/dopyt.konfig.php ostalo heslo alebo soľ zo vzoru, konfiguráciu dopytu nenahrám.');

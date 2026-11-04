@@ -21,17 +21,17 @@ const z3d = (druh: Parameters<typeof render3d>[0], id: string | undefined, inak:
 
 const texty = {
   sk: {
-    domov: ['Predizolované potrubia Microflex', 'Microflex Slovensko'], potrubia: ['Predizolované potrubia Microflex', 'Päť systémov podľa média'],
+    domov: ['Predizolované potrubia Microflex', 'Microflex Česko a Slovensko'], potrubia: ['Predizolované potrubia Microflex', 'Päť systémov podľa média'],
     vyber: ['Sprievodca výberom potrubia', 'Dimenzia podľa výkonu'], stiahnut: ['Katalóg, výkresy a vyhlásenia', 'Na stiahnutie'],
     firmy: ['Pre projektantov, montážne firmy a veľkoobchod', 'Pre firmy'], poradna: ['Výber, pokládka, skúška a tepelné straty', 'Poradňa'],
-    kontakt: ['Kontakt a predajňa', 'Raková pri Čadci'], referencie: ['Kde už Microflex leží', 'Referencie'], predvolene: ['Predizolované ohybné potrubie', 'Microflex Slovensko'],
+    kontakt: ['Kontakt a predajňa', 'Raková pri Čadci'], referencie: ['Kde už Microflex leží', 'Referencie'], predvolene: ['Predizolované ohybné potrubie', 'Microflex Česko a Slovensko'],
     tlak: 'Tlak', rura: 'Nosná rúra', plast: 'Plášť', systemy: 'Systémy', rady: 'Rady', produkty: 'Produkty', obj: 'Obj. čísla', potrubia2: 'Potrubia', clanok: 'Poradňa',
   },
   cs: {
-    domov: ['Předizolované potrubí Microflex', 'Microflex Slovensko'], potrubia: ['Předizolované potrubí Microflex', 'Pět systémů podle média'],
+    domov: ['Předizolované potrubí Microflex', 'Microflex Česko a Slovensko'], potrubia: ['Předizolované potrubí Microflex', 'Pět systémů podle média'],
     vyber: ['Průvodce výběrem potrubí', 'Dimenze podle výkonu'], stiahnut: ['Katalog, výkresy a prohlášení', 'Ke stažení'],
     firmy: ['Pro projektanty, montážní firmy a velkoobchod', 'Pro firmy'], poradna: ['Výběr, pokládka, zkouška a tepelné ztráty', 'Poradna'],
-    kontakt: ['Kontakt a prodejna', 'Raková u Čadce'], referencie: ['Kde už Microflex leží', 'Reference'], predvolene: ['Předizolované ohebné potrubí', 'Microflex Slovensko'],
+    kontakt: ['Kontakt a prodejna', 'Raková u Čadce'], referencie: ['Kde už Microflex leží', 'Reference'], predvolene: ['Předizolované ohebné potrubí', 'Microflex Česko a Slovensko'],
     tlak: 'Tlak', rura: 'Nosná trubka', plast: 'Plášť', systemy: 'Systémy', rady: 'Řady', produkty: 'Produkty', obj: 'Obj. čísla', potrubia2: 'Potrubí', clanok: 'Poradna',
   },
 };

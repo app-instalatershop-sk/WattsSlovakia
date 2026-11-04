@@ -51,7 +51,7 @@ const organizacia = {
 // Názov webu vo výsledkoch Google (site name) berie Google zo štruktúrovaných dát WebSite na úvodnej stránke.
 const domov = Astro.url.pathname === route(lang, 'domov');
 const web = domov
-  ? { '@context': 'https://schema.org', '@type': 'WebSite', name: ui.site.name, alternateName: ['Microflex SK', 'microflex.sk'], url: new URL(route(lang, 'domov'), site).href, inLanguage: lang, publisher: { '@id': organizacia['@id'] } }
+  ? { '@context': 'https://schema.org', '@type': 'WebSite', name: ui.site.name, alternateName: ['Microflex CZ · SK', 'microflex.sk'], url: new URL(route(lang, 'domov'), site).href, inLanguage: lang, publisher: { '@id': organizacia['@id'] } }
   : null;
 const breadcrumbs = drobceky.length
   ? {

@@ -54,6 +54,14 @@ const ohybDomov = ohybRadu('microflex-duo-6-bar');
 const odvalenie = kotucData()?.odvalenie;
 const clanokPokladka = clanky(lang).find((c) => c.slug.startsWith('pokladka'));
 const kotuc = fotka('kotuc.jpg')!;
+// Pás „Do zeme“: skutočná fotka výkopu so svornými spojkami; body kót v percentách fotky (fotka sa neorezáva).
+const vykop = fotka('vykop-spojky.jpg')!;
+const kotyDoZeme = h.doZeme.koty.map(([hodnota, text], i) => ({ hodnota, text, ...[
+  // spojka na T-kuse (na telefóne štítok dole vľavo, inak by vyšiel z fotky), ohyb rúry, spodná rúra v piesku
+  { x: 66, y: 44, l: 11, smer: 'hore-vpravo' as const, smerM: 'dole-vlavo' as const, lM: 4 },
+  { x: 49, y: 31, l: 7, smer: 'hore-vlavo' as const, lM: 6 },
+  { x: 14, y: 92, l: 6, smer: 'hore-vpravo' as const, lM: 4 },
+][i] }));
 
 /* Projekty: dve najväčšie stavby z referencií. Fotka a kóty (číslo na rúre alebo v kotolni) sú
    v content/referencie.ts, texty pre domov v ui.ts. */
@@ -128,6 +136,21 @@ const skratky = [
           {skratky.map((s) => <li><a href={s.href}>{s.text}<Ikona nazov="arrow-down" velkost={16} /></a></li>)}
         </ul>
       </nav>
+    </div>
+  </section>
+
+  {/* Do zeme, bez lisu a zvárania (Juraj 4. 11. 2026): hneď pod úvodom, aby bolo jasné, kam potrubie patrí
+      a ako jednoducho sa spája. Fotka vľavo cez okraj obrazovky ako na stránke Pre firmy, text vpravo. */}
+  <section class="dozeme" aria-labelledby="h-dozeme">
+    <div class="wrap dozeme-in">
+      <Scena class="dozeme-scena" obraz={vykop} alt={h.doZeme.alt} koty={kotyDoZeme} label={h.doZeme.kotyLabel} widths={[640, 960, 1280, 1600]} sizes="(max-width: 900px) 100vw, 58vw" priorita="low" />
+      <div class="dozeme-text">
+        <p class="dozeme-kicker">{h.doZeme.kicker}</p>
+        <h2 id="h-dozeme">{h.doZeme.h2a} <span>{h.doZeme.h2b}</span></h2>
+        <p class="dozeme-p">{h.doZeme.p1.map((kus, i) => (i % 2 ? <strong>{sadzba(kus)}</strong> : sadzba(kus)))}</p>
+        <p class="dozeme-p">{sadzba(h.doZeme.p2)}</p>
+        <a class="odkaz dozeme-odkaz" href="#pokladka">{h.doZeme.odkaz} <Ikona nazov="arrow-down" velkost={16} /></a>
+      </div>
     </div>
   </section>
 
@@ -306,6 +329,30 @@ const skratky = [
   .hero-skratky a { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 52px; padding-block: 12px; border-top: 1px solid rgb(10 42 94 / 0.18); color: var(--color-ink-soft); font-size: 15px; font-weight: 500; }
   .hero-skratky a:hover { color: var(--color-blue-700); border-top-color: currentColor; }
   .hero-skratky :global(svg) { flex: none; width: 16px; height: 16px; color: var(--color-blue-700); }
+
+  /* Do zeme (Juraj 4. 11. 2026): pás preberá od katalógu vlnitú hranu pod úvodom (render úvodu ňou prechádza),
+     katalóg za ním pokračuje rovno. Fotka výkopu vľavo cez okraj obrazovky, text vpravo; kóty z Koty.astro. */
+  .dozeme { position: relative; isolation: isolate; margin-top: calc(-1 * var(--presah-hero)); padding-top: calc(var(--presah-hero) + 72px); padding-bottom: 72px; overflow-x: clip; scroll-margin-top: calc(72px - var(--presah-hero)); }
+  .dozeme::before { content: ""; position: absolute; inset: 0 0 -1px; z-index: -1; background: var(--zem-1);
+    -webkit-mask: var(--hrana-ohyb) left top / 100% var(--presah-hero) no-repeat, linear-gradient(#000 0 0) left var(--presah-hero) / 100% 100% no-repeat;
+    mask: var(--hrana-ohyb) left top / 100% var(--presah-hero) no-repeat, linear-gradient(#000 0 0) left var(--presah-hero) / 100% 100% no-repeat; }
+  .dozeme + :global(.katalog) { margin-top: 0; padding-top: 64px; scroll-margin-top: 72px; }
+  .dozeme + :global(.katalog)::before { -webkit-mask: none; mask: none; }
+  .dozeme-in { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 40px 64px; align-items: center; }
+  .dozeme :global(.dozeme-scena) { margin-left: calc(-1 * var(--bleed)); }
+  .dozeme :global(.dozeme-scena .scena-img) { border-radius: 0 var(--radius-xl) var(--radius-xl) 0; box-shadow: var(--elev-4); }
+  .dozeme-kicker { font-size: 15px; font-weight: 600; color: var(--color-blue-700); }
+  .dozeme h2 { margin-top: 12px; font-size: clamp(30px, 2vw + 16px, 46px); line-height: 1.06; letter-spacing: -0.025em; }
+  .dozeme h2 span { display: block; color: var(--color-blue-700); }
+  .dozeme-p { margin-top: 20px; font-size: 17px; line-height: 1.6; color: var(--color-ink-soft); max-width: 30em; }
+  .dozeme-p strong { color: var(--color-ink); font-weight: 600; }
+  .dozeme-odkaz { margin-top: 24px; }
+  @media (max-width: 900px) {
+    .dozeme { padding-top: calc(var(--presah-hero) + 32px); padding-bottom: 40px; }
+    .dozeme-in { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+    .dozeme :global(.dozeme-scena) { margin-inline: calc(-1 * var(--gutter)); }
+    .dozeme :global(.dozeme-scena .scena-img) { border-radius: 0; }
+  }
   /* Rúra prekračuje pravý okraj obsahovej mriežky až za okraj obrazovky. */
   /* Render sedí na spodku hero, takže jeho dolná časť pretne šikmú hranu pásu katalógu. */
   .hero-product { grid-area: obraz; position: relative; z-index: 2; align-self: end; margin-left: -9%;

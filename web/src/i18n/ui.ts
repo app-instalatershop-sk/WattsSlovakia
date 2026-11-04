@@ -72,6 +72,18 @@ const sk = {
     cta: 'Vybrať potrubie', cta2: 'Dopyt na projekt',
     // Dodávateľ viditeľne pri úvode (Juraj 28. 10.: Microflex je hlavná značka, predáva Inštalatérshop).
     dodavatel: 'Predaj a sklad Microflex na Slovensku:', dodavatelOdkaz: 'Inštalatérshop, Raková',
+    // Pás pod úvodom (Juraj 4. 11. 2026, variant B): potrubie ide do zeme a spája sa bez lisu a zvárania.
+    // Zdroj: katalóg výrobcu s. 5 (bez špeciálneho náradia a zvárača, prekážky bez spojok), s. 22 (svorná spojka,
+    // objímka so skrutkou z nehrdzavejúcej ocele), s. 37 (hĺbka 0,5 až 6 m).
+    doZeme: {
+      kicker: 'Pokládka a montáž', h2a: 'Do zeme.', h2b: 'Bez lisu a zvárania.',
+      p1: ['Potrubie Microflex sa ukladá do pieskového lôžka ', '0,5 až 6 m pod zemou', '. Okolo prekážok sa ohne bez kolien a spojí sa svornými spojkami: ', 'nosnú rúrku zasuniete, objímku dotiahnete skrutkami.'] as string[],
+      p2: 'Lisovacie kliešte netreba: podľa katalógu výrobcu montáž nevyžaduje žiadne špeciálne náradie ani zvárača.',
+      odkaz: 'Ako prebieha pokládka',
+      alt: 'Potrubie Microflex vo výkope v pieskovom lôžku, ohnuté okolo odbočky so svornými spojkami',
+      kotyLabel: 'Čo je na fotke výkopu',
+      koty: [['svorná spojka', 'zasunúť a dotiahnuť skrutky'], ['bez kolena', 'rúra sa ohne okolo odbočky'], ['0,5 až 6 m', 'pod zemou, v pieskovom lôžku']] as [string, string][],
+    },
     heroAlt: 'Potrubie Microflex DUO v reze: zvlnený plášť z HDPE, izolácia z PE-X peny a dve nosné rúry',
     popisy: {
       label: 'Rozmery a vlastnosti potrubia na obrázku',
@@ -292,6 +304,15 @@ const cs: typeof sk = {
     lead: 'Pro vytápění, pitnou vodu, chlazení a tepelná čerpadla.',
     cta: 'Vybrat potrubí', cta2: 'Poptávka na projekt',
     dodavatel: 'Prodej a sklad Microflex na Slovensku:', dodavatelOdkaz: 'Inštalatérshop, Raková',
+    doZeme: {
+      kicker: 'Pokládka a montáž', h2a: 'Do země.', h2b: 'Bez lisu a svařování.',
+      p1: ['Potrubí Microflex se ukládá do pískového lože ', '0,5 až 6 m pod zemí', '. Kolem překážek se ohne bez kolen a spojí se svěrnými spojkami: ', 'nosnou trubku zasunete, objímku dotáhnete šrouby.'] as string[],
+      p2: 'Lisovací kleště nejsou potřeba: podle katalogu výrobce montáž nevyžaduje žádné speciální nářadí ani svářeče.',
+      odkaz: 'Jak probíhá pokládka',
+      alt: 'Potrubí Microflex ve výkopu v pískovém loži, ohnuté kolem odbočky se svěrnými spojkami',
+      kotyLabel: 'Co je na fotce výkopu',
+      koty: [['svěrná spojka', 'zasunout a dotáhnout šrouby'], ['bez kolena', 'trubka se ohne kolem odbočky'], ['0,5 až 6 m', 'pod zemí, v pískovém loži']] as [string, string][],
+    },
     heroAlt: 'Potrubí Microflex DUO v řezu: zvlněný plášť z HDPE, izolace z PE-X pěny a dvě nosné trubky',
     popisy: {
       label: 'Rozměry a vlastnosti potrubí na obrázku',

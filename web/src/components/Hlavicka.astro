@@ -1,9 +1,13 @@
 ---
 /**
- * Hlavička: horný pás s partnerstvom a jazykmi, pod ním lepkavá hlavička. Potrubia otvárajú panel
- * so všetkými piatimi systémami a ich rendermi, ostatné položky sú odkazy. Pod položkou, na ktorej je
- * myš alebo aktuálna stránka, sa posúva žltá značka. Hľadanie má skratku Ctrl K (⌘ K na Macu) a našepkávač
- * (lib/naseptavac.ts), na mobile lupu vedľa Menu, ktorá otvorí menu s poľom hľadania.
+ * Hlavička A (Juraj 6. 11. 2026, ako e-shop): prvý riadok je lepkavý a má logo, široké hľadanie v strede,
+ * telefón, jazyk a e-shop. Druhý riadok pod ním má menu, Kontakt a partnerstvo Watts; nie je lepkavý, odroluje
+ * so stránkou, takže lepkavá časť má stále 76 px (pri rolovaní 62 px) a 3D ukážky pod ňou sa nemenia. Keď druhý
+ * riadok odroluje, namiesto podtitulu značky sa ukáže tlačidlo Menu a otvorí panel Potrubia aj s ostatnými
+ * odkazmi. Pod položkou menu, na ktorej je myš alebo aktuálna stránka, sa posúva žltá značka. Hľadanie má skratku
+ * Ctrl K (⌘ K na Macu) a našepkávač (lib/naseptavac.ts). Telefón a tablet do 900 px: hľadanie v druhom riadku,
+ * po odrolovaní lupa vedľa Menu, ktorá otvorí menu s poľom hľadania. Tmavý horný pás s partnerstvom je
+ * v archiv/2026-11-06-horny-pas/.
  */
 import Obraz from './Obraz.astro';
 import { getCollection } from 'astro:content';
@@ -31,56 +35,34 @@ const radyKat = (k: Kategoria) => rady
   .join(', ');
 
 // Referencie sú v menu kvôli projektantom a dodávateľom veľkých stavieb (audit prvého dojmu, č. 6).
+// Kontakt je od hlavičky A posledná položka menu (predtým v hornom páse).
 const polozky = [
   { id: 'vyber', text: ui.nav.vyber, href: route(lang, 'vyber') },
   { id: 'referencie', text: ui.nav.referencie, href: route(lang, 'referencie') },
   { id: 'firmy', text: ui.nav.firmy, href: route(lang, 'firmy') },
   { id: 'stiahnut', text: ui.nav.podklady, href: route(lang, 'stiahnut') },
   { id: 'poradna', text: ui.nav.poradna, href: route(lang, 'poradna') },
+  { id: 'kontakt', text: ui.nav.kontakt, href: route(lang, 'kontakt') },
 ] as const;
 
 // Našepkávač: index hľadania a texty pre skript.
 const nasIndex = `${route(lang, 'hladat')}index.json`;
 const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, ciastocne: ui.search.ciastocne, sprievodca: ui.search.sprievodca, skupiny: ui.search.skupiny, sprievodcaUrl: route(lang, 'vyber') });
 ---
-<!-- Horný pás nie je prilepený: odroluje prirodzene, hlavička pod ním ostáva. -->
-<div class="topbar" role="region" aria-label={ui.partner.pas} transition:name="horny-pas" transition:animate="none">
-  <div class="wrap topbar-in">
-    {/* Juraj 4. 11. 2026: jediný partner pre Česko a Slovensko, na telefóne krátko (celá veta ostáva pre čítačky). */}
-    <a class="partner" href={route(lang, 'kontakt')} aria-label={ui.partner.veta}>
-      <span class="partner-plne">{ui.partner.veta}</span>
-      <span class="partner-kratke" aria-hidden="true">{ui.partner.kratke}</span>
-      <WattsLogo height={14} farba="biela" />
-    </a>
-    {/* Kontakt je vždy na očiach: telefón na jeden ťuk a stránka kontaktu (audit prvého dojmu, č. 5). */}
-    <div class="topbar-kontakt">
-      <a class="topbar-tel" href={FIRMA.telefonHref} aria-label={FIRMA.telefon}><Ikona nazov="phone" velkost={14} /><span class="topbar-tel-cislo">{FIRMA.telefon}</span></a>
-      <a href={route(lang, 'kontakt')} aria-current={aktivna === 'kontakt' ? 'page' : undefined}>{ui.nav.kontakt}</a>
-    </div>
-    <nav class="langs" aria-label={ui.jazyk.prepnut}>
-      {LANGS.map((l, i) => (
-        <>
-          {i > 0 && <span class="sep" aria-hidden="true"></span>}
-          <a href={alternates[l]} hreflang={l} lang={l} aria-current={l === lang ? 'page' : undefined} title={ui.jazyk[l]}>{l.toUpperCase()}</a>
-        </>
-      ))}
-    </nav>
-  </div>
-</div>
 <header class="hdr" id="hdr" transition:name="hlavicka" transition:animate="none">
   <div class="wrap hdr-in">
     <a class="brand" href={route(lang, 'domov')} aria-label={ui.site.name}>
       <MicroflexLogo height={21} popis={null} class="brand-logo" />
-      <span class="brand-sub"><span class="brand-sub-plne">{ui.site.sub}</span><span class="brand-sub-kratke" aria-hidden="true">{ui.site.subKratke}</span></span>
     </a>
 
-    <nav class="nav" id="nav" aria-label={ui.nav.hlavna}>
-      <button class="nav-link nav-mega" id="mega-btn" type="button" aria-expanded="false" aria-controls="mega" aria-current={aktivna === 'potrubia' ? 'page' : undefined}>
-        {ui.nav.potrubia}<Ikona nazov="chevron-down" velkost={16} />
+    {/* Doplnok značky a tlačidlo Menu na jednom mieste: na počítači sa po odrolovaní druhého riadku vymenia
+        a nič iné v hlavičke sa nepohne. Na tablete a telefóne je Menu vždy vpravo. Doplnok je v názve odkazu. */}
+    <div class="brand-miesto">
+      <span class="brand-sub" aria-hidden="true"><span class="brand-sub-plne">{ui.site.sub}</span><span class="brand-sub-kratke">{ui.site.subKratke}</span></span>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav" id="menu-btn">
+        <Ikona nazov="menu" velkost={20} class="i-menu" /><Ikona nazov="x" velkost={20} class="i-x" /><span data-open={ui.nav.menu} data-close={ui.nav.zavriet}>{ui.nav.menu}</span>
       </button>
-      {polozky.map((p) => <a class="nav-link" href={p.href} aria-current={aktivna === p.id ? 'page' : undefined}>{p.text}</a>)}
-      <span class="nav-ind" aria-hidden="true"></span>
-    </nav>
+    </div>
 
     <form class="search" role="search" action={route(lang, 'hladat')} method="get" data-index={nasIndex} data-texty={nasTexty}>
       <Ikona nazov="search" velkost={18} />
@@ -91,35 +73,18 @@ const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, 
       <template data-nas-ext><Ikona nazov="external-link" velkost={14} /></template>
     </form>
 
+    {/* Kontakt je vždy na očiach: telefón na jeden ťuk (audit prvého dojmu, č. 5); na telefóne len ikona. */}
+    <a class="hdr-tel" href={FIRMA.telefonHref} aria-label={FIRMA.telefon}><Ikona nazov="phone" velkost={18} /><span class="hdr-tel-cislo">{FIRMA.telefon}</span></a>
+    <nav class="langs" aria-label={ui.jazyk.prepnut}>
+      {LANGS.map((l, i) => (
+        <>
+          {i > 0 && <span class="sep" aria-hidden="true"></span>}
+          <a href={alternates[l]} hreflang={l} lang={l} aria-current={l === lang ? 'page' : undefined} title={ui.jazyk[l]}>{l.toUpperCase()}</a>
+        </>
+      ))}
+    </nav>
     <a class="eshop" href={ESHOP} target="_blank" rel="noopener">{ui.nav.eshop}<Ikona nazov="external-link" velkost={16} /></a>
     <button class="hl-btn" type="button" id="hl-btn" aria-label={ui.search.label} aria-controls="mobile-nav"><Ikona nazov="search" velkost={20} /></button>
-    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav" id="menu-btn">
-      <Ikona nazov="menu" velkost={20} class="i-menu" /><Ikona nazov="x" velkost={20} class="i-x" /><span data-open={ui.nav.menu} data-close={ui.nav.zavriet}>{ui.nav.menu}</span>
-    </button>
-  </div>
-
-  {/* Panel Potrubia: päť systémov s rendermi, pod nimi diely a katalóg. */}
-  <div class="mega" id="mega" hidden>
-    <div class="wrap mega-in">
-      <ul class="mega-kat">
-        {potrubia.map((k) => { const img = obrazPiktogramu(k.piktogram); return (
-          <li>
-            <a class="mega-k" href={cestaKategorie(k, lang)}>
-              <span class:list={['mega-obj', { je3d: je3d(img) }]}>{img && <Obraz src={img} alt="" widths={[240, 400]} sizes="200px" loading="lazy" class="mega-img" />}</span>
-              <strong>{kKratky(k, lang)}</strong>
-              <span>{radyKat(k)}</span>
-            </a>
-          </li>
-        ); })}
-      </ul>
-      <div class="mega-pata">
-        <div class="mega-diely">
-          {diely.map((k) => <a href={cestaKategorie(k, lang)}>{kKratky(k, lang)}<Ikona nazov="chevron-right" velkost={16} /></a>)}
-          <a href={route(lang, 'potrubia')}>{ui.nav.celyKatalog}<Ikona nazov="chevron-right" velkost={16} /></a>
-        </div>
-        <a class="mega-pdf" href={KATALOG_PDF} target="_blank" rel="noopener"><Ikona nazov="download" velkost={18} />{ui.nav.katalogPdf}</a>
-      </div>
-    </div>
   </div>
 
   {/* Mobilné menu: hľadanie, systémy s malými rendermi, ostatné odkazy, e-shop a jazyk. */}
@@ -141,7 +106,6 @@ const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, 
       <ul class="mnav-odkazy">
         {diely.map((k) => <li><a href={cestaKategorie(k, lang)}>{kKratky(k, lang)}</a></li>)}
         {polozky.map((p) => <li><a href={p.href}>{p.text}</a></li>)}
-        <li><a href={route(lang, 'kontakt')}>{ui.nav.kontakt}</a></li>
       </ul>
       <a class="mnav-tel" href={FIRMA.telefonHref}><Ikona nazov="phone" velkost={18} />{FIRMA.telefon}</a>
       <a class="eshop eshop-m" href={ESHOP} target="_blank" rel="noopener">{ui.nav.eshop} instalatershop.sk<Ikona nazov="external-link" velkost={16} /></a>
@@ -150,66 +114,101 @@ const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, 
   </div>
 </header>
 
-<style>
-  .topbar { background: linear-gradient(90deg, #0b2f6b 0%, var(--color-blue-900) 60%, #0e3676 100%); color: #fff; font-size: 13px; }
-  .topbar-in { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 36px; }
-  .partner { display: inline-flex; align-items: center; gap: 12px; color: #fff; white-space: nowrap; }
-  .partner:hover { color: var(--color-yellow-500); }
-  .partner :global(svg) { display: block; }
-  .partner-kratke { display: none; }
-  .topbar-kontakt { margin-left: auto; display: inline-flex; align-items: center; gap: 20px; }
-  .topbar-kontakt a { color: var(--color-on-dark-muted); font-weight: 500; white-space: nowrap; }
-  .topbar-kontakt a:hover, .topbar-kontakt a[aria-current] { color: #fff; }
-  .topbar-tel { display: inline-flex; align-items: center; gap: 8px; color: #fff !important; font-variant-numeric: tabular-nums; }
-  .topbar-tel :global(svg) { opacity: .75; }
-  .topbar-kontakt + .langs { padding-left: 20px; border-left: 1px solid rgb(255 255 255 / 0.22); }
-  .langs { display: inline-flex; align-items: center; gap: 8px; }
-  .langs a { color: var(--color-on-dark-muted); font-weight: 500; letter-spacing: .04em; padding: 2px 0; border-bottom: 1px solid transparent; }
-  .langs a:hover { color: #fff; }
-  .langs a[aria-current] { color: #fff; border-bottom-color: var(--color-yellow-500); }
-  .langs .sep { width: 1px; height: 12px; background: rgb(255 255 255 / 0.3); }
+{/* Druhý riadok: na počítači menu a partnerstvo, na telefóne pole hľadania. */}
+<div class="hdr-pas" id="hdr-pas" transition:name="hlavicka-menu" transition:animate="none">
+  <div class="wrap hdr-pas-in">
+    <nav class="nav" id="nav" aria-label={ui.nav.hlavna}>
+      <button class="nav-link nav-mega" id="mega-btn" type="button" aria-expanded="false" aria-controls="mega" aria-current={aktivna === 'potrubia' ? 'page' : undefined}>
+        {ui.nav.potrubia}<Ikona nazov="chevron-down" velkost={16} />
+      </button>
+      {polozky.map((p) => <a class="nav-link" href={p.href} aria-current={aktivna === p.id ? 'page' : undefined}>{p.text}</a>)}
+      <span class="nav-ind" aria-hidden="true"></span>
+    </nav>
 
+    {/* Juraj 4. 11. 2026: jediný partner pre Česko a Slovensko (celá veta pre čítačky, viditeľne kratšia). */}
+    <p class="partner">
+      <WattsLogo height={14} />
+      <span class="vizualne-skryte">{ui.partner.veta}</span>
+      <span class="partner-plne" aria-hidden="true">{ui.partner.riadok}</span>
+      <span class="partner-kratke" aria-hidden="true">{ui.partner.kratke}</span>
+    </p>
+
+    <form class="search search-p" role="search" action={route(lang, 'hladat')} method="get" data-index={nasIndex} data-texty={nasTexty}>
+      <Ikona nazov="search" velkost={18} />
+      <input name="q" type="search" placeholder={ui.search.placeholder} aria-label={ui.search.label} autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="nas-p" />
+      <button type="submit" class="vizualne-skryte">{ui.search.button}</button>
+      <div class="nas" data-nas hidden><p class="nas-pozn" data-nas-pozn hidden></p><div role="listbox" id="nas-p" aria-label={ui.search.label}></div></div>
+      <template data-nas-ext><Ikona nazov="external-link" velkost={14} /></template>
+    </form>
+  </div>
+
+  {/* Panel Potrubia: päť systémov s rendermi, pod nimi diely a katalóg. Z tlačidla Menu v zmenšenej hlavičke ho
+      skript presunie do hlavičky a ukáže aj ostatné odkazy menu (druhý riadok je vtedy odrolovaný). */}
+  <div class="mega" id="mega" hidden>
+    <div class="wrap mega-in">
+      <ul class="mega-odkazy">
+        {polozky.map((p) => <li><a href={p.href} aria-current={aktivna === p.id ? 'page' : undefined}>{p.text}</a></li>)}
+      </ul>
+      <ul class="mega-kat">
+        {potrubia.map((k) => { const img = obrazPiktogramu(k.piktogram); return (
+          <li>
+            <a class="mega-k" href={cestaKategorie(k, lang)}>
+              <span class:list={['mega-obj', { je3d: je3d(img) }]}>{img && <Obraz src={img} alt="" widths={[240, 400]} sizes="200px" loading="lazy" class="mega-img" />}</span>
+              <strong>{kKratky(k, lang)}</strong>
+              <span>{radyKat(k)}</span>
+            </a>
+          </li>
+        ); })}
+      </ul>
+      <div class="mega-pata">
+        <div class="mega-diely">
+          {diely.map((k) => <a href={cestaKategorie(k, lang)}>{kKratky(k, lang)}<Ikona nazov="chevron-right" velkost={16} /></a>)}
+          <a href={route(lang, 'potrubia')}>{ui.nav.celyKatalog}<Ikona nazov="chevron-right" velkost={16} /></a>
+        </div>
+        <a class="mega-pdf" href={KATALOG_PDF} target="_blank" rel="noopener"><Ikona nazov="download" velkost={18} />{ui.nav.katalogPdf}</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Prvý riadok: lepkavý. */
   .hdr { position: sticky; top: 0; z-index: 20; background: var(--sklo-2); -webkit-backdrop-filter: saturate(1.6) blur(14px); backdrop-filter: saturate(1.6) blur(14px); box-shadow: 0 1px 0 rgb(10 42 94 / 0.08); transition: box-shadow 250ms var(--ease-soft), background-color 250ms var(--ease-soft), margin-bottom 250ms var(--ease-soft); }
   .hdr.is-scrolled, .hdr.is-open { background: var(--sklo-3); box-shadow: 0 1px 0 rgb(10 42 94 / 0.08), var(--elev-2); }
-  .hdr-in { display: flex; align-items: center; gap: 28px; min-height: 76px; transition: min-height 250ms var(--ease-soft); }
+  .hdr-in { display: flex; align-items: center; gap: 24px; min-height: 76px; transition: min-height 250ms var(--ease-soft); }
   /* Pri rolovaní sa hlavička zmenší, ale miesto v stránke ostane rovnaké (o koľko ubudne výška, o toľko pribudne
      okraj pod ňou): obsah sa sám neposunie (Juraj 28. 10., plynulosť; predtým skočil o 14 px). */
   .hdr.is-scrolled { margin-bottom: 14px; }
   .hdr.is-scrolled .hdr-in { min-height: 62px; }
 
-  /* Značka: oficiálne logo MICROFLEX® (vektor z katalógu Watts) a náš doplnok Slovensko za vlasovou
-     čiarou. Pri rolovaní sa logo zmenší spolu s hlavičkou. */
-  .brand { display: inline-flex; align-items: center; gap: 12px; color: var(--color-ink); flex: none; }
+  /* Značka: oficiálne logo MICROFLEX® (vektor z katalógu Watts) a náš doplnok Česko a Slovensko za vlasovou
+     čiarou. Pri rolovaní sa logo zmenší spolu s hlavičkou a doplnok uvoľní miesto tlačidlu Menu. */
+  .brand { display: inline-flex; align-items: center; color: var(--color-ink); flex: none; }
   .brand :global(.brand-logo) { transition: height 250ms var(--ease-soft); }
   .hdr.is-scrolled .brand { --logo-h: 19px; }
-  .brand-sub { font-size: 14px; font-weight: 500; color: var(--color-ink-soft); border-left: var(--line); padding-left: 12px; line-height: 1; }
+  /* Doplnok a Menu v jednej bunke: bunka má šírku širšieho z nich, takže výmena nič neposunie. Menu je vpravo
+     v bunke, pri poli hľadania. Záporný okraj: doplnok je 12 px za logom, nie celú medzeru riadku. */
+  .brand-miesto { display: grid; align-items: center; justify-items: end; flex: none; margin-left: -12px; }
+  .brand-miesto > * { grid-area: 1 / 1; }
+  .brand-sub { justify-self: start; font-size: 14px; font-weight: 500; color: var(--color-ink-soft); border-left: var(--line); padding-left: 12px; line-height: 1; white-space: nowrap; transition: opacity 200ms var(--ease-soft), visibility 200ms; }
   .brand-sub-kratke { display: none; }
 
-  /* Navigácia so žltou značkou, ktorá sa posúva pod položku. */
-  .nav { position: relative; display: flex; align-items: center; gap: 2px; margin-left: 4px; flex: none; }
-  .nav-link { position: relative; display: inline-flex; align-items: center; gap: 4px; height: 40px; padding: 0 12px; border: 0; border-radius: var(--radius-m); background: transparent; color: var(--color-ink); font: 500 15px/1 var(--font-text); white-space: nowrap; cursor: pointer; transition: color 150ms var(--ease-soft), background-color 150ms var(--ease-soft); }
-  .nav-link:hover { color: var(--color-blue-700); background: rgb(0 93 185 / 0.06); }
-  .nav-link[aria-current] { color: var(--color-blue-700); }
-  .nav-mega :global(svg) { transition: transform 250ms var(--ease-soft); opacity: .7; }
-  .nav-mega[aria-expanded="true"] { color: var(--color-blue-700); background: rgb(0 93 185 / 0.08); }
-  .nav-mega[aria-expanded="true"] :global(svg) { transform: rotate(180deg); }
-  .nav-ind { position: absolute; left: 0; bottom: -18px; height: 3px; width: var(--w, 0); border-radius: 2px; background: var(--color-yellow-500); transform: translateX(var(--x, 0)); opacity: var(--o, 0); transition: transform 320ms var(--ease-soft), width 320ms var(--ease-soft), opacity 200ms var(--ease-soft), bottom 250ms var(--ease-soft); pointer-events: none; }
-  .hdr.is-scrolled .nav-ind { bottom: -11px; }
-
-  /* Hľadanie: pole s ikonou a skratkou, bez ťažkého tlačidla. Enter odošle. */
-  .search { position: relative; margin-left: auto; display: flex; align-items: center; height: 44px; min-width: 0; border-radius: 999px; background: #f1f5fa; box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.06); transition: box-shadow 150ms var(--ease-soft), background-color 150ms var(--ease-soft); }
+  /* Hľadanie: pole s ikonou a skratkou, bez ťažkého tlačidla. Enter odošle. V prvom riadku zaberie všetko
+     voľné miesto medzi značkou a telefónom (pred hlavičkou A malo 141 px, text sa nezmestil). */
+  .search { position: relative; display: flex; align-items: center; height: 48px; min-width: 0; border-radius: 999px; background: #f1f5fa; box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.06); transition: box-shadow 150ms var(--ease-soft), background-color 150ms var(--ease-soft); }
   @media (hover: hover) and (pointer: fine) { .search:hover { box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.16); } }
   .search:focus-within { background: #fff; box-shadow: inset 0 0 0 1px var(--color-blue-700), 0 0 0 4px rgb(0 93 185 / 0.12); }
   .search > :global(.icon) { position: absolute; left: 14px; color: #6b7686; pointer-events: none; }
-  .search input { width: 272px; max-width: 30vw; height: 100%; border: 0; padding: 0 56px 0 40px; background: transparent; font: inherit; font-size: 15px; color: var(--color-ink); outline: none; min-width: 0; transition: width 250ms var(--ease-soft); }
-  .search input:focus { width: 320px; }
+  .search input { width: 100%; min-width: 0; height: 100%; border: 0; padding: 0 16px 0 40px; background: transparent; font: inherit; font-size: 15px; color: var(--color-ink); outline: none; text-overflow: ellipsis; }
   .search input::placeholder { color: #7a8494; font-size: 15px; }
   .search input::-webkit-search-cancel-button { display: none; }
-  .search-kbd { position: absolute; right: 10px; padding: 4px 8px; border-radius: var(--radius-s); background: #fff; box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.14), 0 1px 0 rgb(10 42 94 / 0.12); font: 500 12px/1.2 var(--font-text); color: #6b7686; letter-spacing: .02em; pointer-events: none; transition: opacity 150ms var(--ease-soft); }
+  .hdr-in > .search { flex: 1 1 auto; max-width: 600px; margin: 0 auto 0 32px; }
+  .hdr-in > .search input { padding-right: 72px; }
+  .search-kbd { position: absolute; right: 12px; padding: 4px 8px; border-radius: var(--radius-s); background: #fff; box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.14), 0 1px 0 rgb(10 42 94 / 0.12); font: 500 12px/1.2 var(--font-text); color: #6b7686; letter-spacing: .02em; pointer-events: none; transition: opacity 150ms var(--ease-soft); }
   .search:focus-within .search-kbd { opacity: 0; }
 
   /* Našepkávač: biela karta pod poľom, šesť výsledkov a odkaz na všetky. Obsah vkladá skript, preto :global. */
-  .nas { position: absolute; top: calc(100% + 10px); right: 0; z-index: 30; width: min(480px, calc(100vw - 32px)); max-height: min(70vh, 560px); overflow-y: auto; padding: 8px; border-radius: var(--radius-xl); background: #fff; box-shadow: 0 0 0 1px rgb(10 42 94 / 0.08), var(--elev-3); text-align: left; }
+  .nas { position: absolute; top: calc(100% + 10px); left: 0; right: 0; z-index: 30; min-width: min(480px, calc(100vw - 32px)); max-height: min(70vh, 560px); overflow-y: auto; padding: 8px; border-radius: var(--radius-xl); background: #fff; box-shadow: 0 0 0 1px rgb(10 42 94 / 0.08), var(--elev-3); text-align: left; }
   .nas[hidden] { display: none; }
   .nas-pozn { padding: 8px 12px 8px; font-size: 14px; line-height: 1.45; color: var(--color-ink-soft); }
   .nas :global(.nas-o) { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 2px 12px; padding: 8px 12px; border-radius: var(--radius-l); color: var(--color-ink); transition: background-color 120ms var(--ease-soft); }
@@ -231,6 +230,16 @@ const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, 
   .nas :global(.nas-vsetky .nas-n) { font-weight: 500; font-size: 15px; color: var(--color-blue-700); }
   .nas :global(mark) { background: rgb(247 201 0 / 0.35); color: inherit; border-radius: 3px; padding: 0 1px; }
 
+  /* Telefón a jazyk v prvom riadku (predtým v tmavom hornom páse). */
+  .hdr-tel { display: inline-flex; align-items: center; gap: 8px; flex: none; color: var(--color-ink); font-weight: 600; font-size: 15px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .hdr-tel :global(svg) { opacity: .65; }
+  .hdr-tel:hover { color: var(--color-blue-700); }
+  .langs { display: inline-flex; align-items: center; gap: 8px; flex: none; }
+  .langs a { color: var(--color-ink-soft); font-weight: 600; font-size: 14px; letter-spacing: .04em; padding: 4px 0; }
+  .langs a:hover { color: var(--color-blue-700); }
+  .langs a[aria-current] { color: var(--color-ink); box-shadow: inset 0 -2px 0 var(--color-yellow-500); }
+  .langs .sep { width: 1px; height: 12px; background: rgb(10 42 94 / 0.2); }
+
   /* E-shop je cieľ webu, preto tlačidlo, nie odkaz. */
   .eshop { display: inline-flex; align-items: center; gap: 8px; height: 42px; padding: 0 16px; border-radius: 999px; background: linear-gradient(180deg, #123a7c 0%, var(--color-blue-900) 100%); color: #fff; font-weight: 500; font-size: 15px; white-space: nowrap; box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.14), var(--elev-1); transition: background-color 150ms var(--ease-soft), transform 120ms var(--ease-soft); flex: none; }
   .eshop:hover { color: #fff; background: linear-gradient(180deg, #1467c1 0%, var(--color-blue-700) 100%); }
@@ -238,18 +247,41 @@ const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, 
   .eshop :global(svg) { width: 16px; height: 16px; opacity: .8; }
 
   .hl-btn { display: none; flex: none; align-items: center; justify-content: center; width: 42px; height: 42px; border: 0; border-radius: 999px; background: #f1f5fa; box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.08); color: var(--color-ink); cursor: pointer; }
-  .menu-btn { display: none; margin-left: auto; height: 42px; padding: 0 16px; border: 0; border-radius: 999px; background: #f1f5fa; box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.08); color: var(--color-ink); font: 500 15px/1 var(--font-text); cursor: pointer; align-items: center; gap: 8px; }
+  .menu-btn { display: inline-flex; visibility: hidden; opacity: 0; flex: none; height: 42px; padding: 0 16px; border: 0; border-radius: 999px; background: #f1f5fa; box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.08); color: var(--color-ink); font: 500 15px/1 var(--font-text); cursor: pointer; align-items: center; gap: 8px; transition: opacity 200ms var(--ease-soft), visibility 200ms, background-color 150ms var(--ease-soft); }
   .menu-btn[aria-expanded="true"] { background: var(--color-blue-900); color: #fff; }
   .menu-btn :global(.i-x), .menu-btn[aria-expanded="true"] :global(.i-menu) { display: none; }
   .menu-btn[aria-expanded="true"] :global(.i-x) { display: inline-block; }
 
   .vizualne-skryte { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
+  /* Druhý riadok: menu so žltou značkou, ktorá sa posúva pod položku, a partnerstvo vpravo. Panel Potrubia sa
+     otvára pod ním. Je nad obsahom stránky, ale pod lepkavou hlavičkou, pod ktorú pri rolovaní zájde. */
+  .hdr-pas { position: relative; z-index: 19; background: #f4f7fb; box-shadow: 0 1px 0 rgb(10 42 94 / 0.08); }
+  .hdr-pas-in { display: flex; align-items: stretch; justify-content: space-between; gap: 24px; min-height: 48px; }
+  .nav { position: relative; display: flex; align-items: center; gap: 2px; margin-left: -12px; flex: none; }
+  .nav-link { position: relative; display: inline-flex; align-items: center; gap: 4px; height: 40px; padding: 0 12px; border: 0; border-radius: var(--radius-m); background: transparent; color: var(--color-ink); font: 500 15px/1 var(--font-text); white-space: nowrap; cursor: pointer; transition: color 150ms var(--ease-soft), background-color 150ms var(--ease-soft); }
+  .nav-link:hover { color: var(--color-blue-700); background: rgb(0 93 185 / 0.06); }
+  .nav-link[aria-current] { color: var(--color-blue-700); }
+  .nav-mega :global(svg) { transition: transform 250ms var(--ease-soft); opacity: .7; }
+  .nav-mega[aria-expanded="true"] { color: var(--color-blue-700); background: rgb(0 93 185 / 0.08); }
+  .nav-mega[aria-expanded="true"] :global(svg) { transform: rotate(180deg); }
+  .nav-ind { position: absolute; left: 0; bottom: 0; height: 3px; width: var(--w, 0); border-radius: 2px 2px 0 0; background: var(--color-yellow-500); transform: translateX(var(--x, 0)); opacity: var(--o, 0); transition: transform 320ms var(--ease-soft), width 320ms var(--ease-soft), opacity 200ms var(--ease-soft); pointer-events: none; }
+  .partner { display: inline-flex; align-items: center; gap: 12px; margin: 0; color: var(--color-ink-soft); font-size: 13px; font-weight: 500; white-space: nowrap; }
+  .partner-kratke { display: none; }
+  .search-p { display: none; }
+
   /* Panel Potrubia */
   .mega { position: absolute; left: 0; right: 0; top: 100%; background: #fff; box-shadow: 0 1px 0 rgb(10 42 94 / 0.08) inset, var(--elev-3); }
   .mega:not([hidden]) { animation: mega 260ms var(--ease-soft) both; }
   @keyframes mega { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
   .mega-in { padding-block: 28px 24px; }
+  /* Ostatné odkazy menu len vtedy, keď panel otvorí tlačidlo Menu (druhý riadok je odrolovaný). */
+  .mega-odkazy { display: none; }
+  .mega.z-menu .mega-odkazy { display: flex; flex-wrap: wrap; gap: 4px; margin: -8px 0 20px; padding-bottom: 16px; border-bottom: var(--line); }
+  .mega-odkazy li:first-child { margin-left: -12px; }
+  .mega-odkazy a { display: inline-flex; align-items: center; height: 40px; padding: 0 12px; border-radius: var(--radius-m); color: var(--color-ink); font: 500 15px/1 var(--font-text); white-space: nowrap; }
+  .mega-odkazy a:hover { color: var(--color-blue-700); background: rgb(0 93 185 / 0.06); }
+  .mega-odkazy a[aria-current] { color: var(--color-blue-700); }
   .mega-kat { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
   .mega-k { display: flex; flex-direction: column; gap: 4px; height: 100%; padding: 16px 16px 16px; border-radius: var(--radius-xl); color: var(--color-ink); background: linear-gradient(180deg, #f5f8fc 0%, #edf2f9 100%); transition: background-color 200ms var(--ease-soft), box-shadow 200ms var(--ease-soft); }
   @media (hover: hover) and (pointer: fine) { .mega-k:hover { color: var(--color-ink); background: linear-gradient(180deg, #eef4fc 0%, #e2ecf8 100%); box-shadow: inset 0 0 0 1px rgb(0 93 185 / 0.18); } }
@@ -270,10 +302,8 @@ const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, 
   .mnav { border-top: 1px solid rgb(10 42 94 / 0.08); background: #fff; max-height: calc(100dvh - 62px); overflow-y: auto; }
   .mnav:not([hidden]) { animation: mega 240ms var(--ease-soft) both; }
   .mnav-in { padding-block: 16px 24px; display: flex; flex-direction: column; gap: 16px; }
-  .search-m { margin-left: 0; width: 100%; }
-  .search-m input { width: 100%; max-width: none; padding-right: 16px; }
-  .search-m input:focus { width: 100%; }
-  .search-m .nas { left: 0; right: 0; width: auto; top: calc(100% + 8px); max-height: 60vh; }
+  .search-m, .search-p { width: 100%; }
+  .search-m .nas, .search-p .nas { top: calc(100% + 8px); min-width: 0; max-height: 60vh; }
   .mnav-nadpis { font-size: 13px; font-weight: 600; color: var(--color-ink-soft); margin-bottom: -8px; }
   .mnav-kat { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
   .mnav-kat a { display: flex; align-items: center; gap: 8px; padding: 8px 12px 8px 8px; border-radius: var(--radius-l); background: linear-gradient(180deg, #f5f8fc 0%, #edf2f9 100%); color: var(--color-ink); font-weight: 500; font-size: 15px; line-height: 1.25; min-height: 64px; }
@@ -286,47 +316,68 @@ const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, 
   .mnav-langs a { color: var(--color-ink-soft); font-weight: 500; }
   .mnav-langs a[aria-current] { color: var(--color-blue-700); }
 
-  /* Šesť položiek menu: pod 1 500 px skratka Ctrl K ustúpi, aby sa pole zmestilo celé. */
-  @media (max-width: 1500px) { .search input { padding-right: 16px; } .search-kbd { display: none; } .nav-link { padding: 0 8px; } .hdr-in { gap: 24px; } }
-  @media (max-width: 1240px) { .search input { width: 232px; } .search input:focus { width: 256px; } .hdr-in { gap: 16px; } .nav-link { padding: 0 8px; font-size: 15px; } }
-  /* Pod 1 100 px navigácia do menu; hľadanie a e-shop ostávajú, kým je miesto. */
-  @media (max-width: 1100px) {
-    .nav, .mega { display: none; }
-    .menu-btn { display: inline-flex; margin-left: 0; }
-    .search { margin-left: auto; }
+  /* Prvý riadok nadväzuje na druhý bez čiary (čiara je pod druhým riadkom); po odrolovaní má čiaru a tieň. */
+  .hdr:not(.is-scrolled):not(.is-open) { box-shadow: none; }
+  /* Počítač: po odrolovaní druhého riadku Menu na mieste doplnku značky. */
+  @media (min-width: 901px) {
+    .hdr.is-scrolled .menu-btn { visibility: visible; opacity: 1; }
+    .hdr.is-scrolled .brand-sub { visibility: hidden; opacity: 0; }
   }
-  @media (max-width: 760px) {
-    .hdr-in { gap: 12px; min-height: 64px; }
-    .hdr.is-scrolled { margin-bottom: 2px; }
-    .hdr-in > .search, .hdr-in > .eshop { display: none; }
-    .hl-btn { display: inline-flex; margin-left: auto; }
-    .menu-btn { margin-left: 0; }
-    .brand { gap: 8px; }
-    .brand, .hdr.is-scrolled .brand { --logo-h: 17px; }
-    .brand-sub { font-size: 13px; padding-left: 8px; }
+  @media (max-width: 1240px) {
+    .hdr-in { gap: 16px; }
+    .hdr-in > .search { margin-left: 16px; }
+    .brand-miesto { margin-left: -4px; }
+  }
+  /* Užšie: telefón len ikonou (číslo ostáva v aria-label, ťuk či klik volá), doplnok značky a partnerstvo krátko. */
+  @media (max-width: 1180px) {
+    .hdr-tel { width: 42px; height: 42px; justify-content: center; border-radius: 999px; background: #f1f5fa; box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.08); }
+    .hdr-tel-cislo { display: none; }
     .brand-sub-plne { display: none; }
     .brand-sub-kratke { display: inline; }
     .partner-plne { display: none; }
     .partner-kratke { display: inline; }
-    /* Na telefóne ostáva v páse len číslo; stránka Kontakt je v menu. */
-    .topbar-kontakt a:not(.topbar-tel) { display: none; }
-    .topbar-kontakt + .langs { padding-left: 16px; }
   }
-  /* Celá veta o partnerstve sa vedľa telefónu, kontaktu a jazykov zmestí od 1024 px; užšie krátka verzia. */
-  @media (max-width: 1023px) { .partner-plne { display: none; } .partner-kratke { display: inline; } }
-  /* Telefón: v hornom páse partnerstvo a ikona telefónu (číslo je v aria-label, ťuk stále volá). */
-  @media (max-width: 520px) { .topbar-tel-cislo { display: none; } }
-  /* Úzky telefón (360 px): menšie písmo a medzery, aby sa pás nezalomil ani nepretiekol. */
-  @media (max-width: 400px) {
-    .topbar { font-size: 12px; }
-    .topbar-in { gap: 8px; }
-    .partner { gap: 8px; }
-    .topbar-kontakt + .langs { padding-left: 12px; }
+  @media (max-width: 1100px) {
+    .nav-link { padding: 0 8px; }
+    .nav { margin-left: -8px; }
   }
-  /* Úzky telefón: logo, lupa a menu sa zmestia len s tlačidlom menu bez textu (text ostáva pre čítačky). */
+  /* Pod 960 px by pole so skratkou Ctrl K nezmestilo celý text a partnerstvo by vytlačilo menu. */
+  @media (max-width: 960px) {
+    .search-kbd { display: none; }
+    .hdr-in > .search { margin-left: 8px; }
+    .hdr-in > .search input { padding-right: 16px; }
+    .partner { display: none; }
+  }
+  /* Tablet a telefón: logo, telefón, (e-shop), Menu vpravo; hľadanie na celú šírku v druhom riadku, po jeho
+     odrolovaní lupa vedľa Menu. Menu sa do druhého riadku nezmestí, je v mobilnom menu, jazyk tiež. */
+  @media (max-width: 900px) {
+    .hdr-in { gap: 8px; }
+    .hdr-in > .search, .langs { display: none; }
+    .brand-miesto { display: contents; }
+    .brand-sub { margin-left: 4px; }
+    .menu-btn { visibility: visible; opacity: 1; order: 10; }
+    .hdr-tel { margin-left: auto; }
+    .hdr.is-scrolled .hl-btn { display: inline-flex; }
+    .hdr-pas { background: #fff; }
+    .hdr-pas-in { min-height: 0; padding-block: 4px 12px; }
+    .hdr-pas .nav { display: none; }
+    .search-p { display: flex; }
+  }
+  @media (max-width: 760px) {
+    .hdr-in { min-height: 64px; }
+    .hdr.is-scrolled { margin-bottom: 2px; }
+    .hdr-in > .eshop { display: none; }
+    .brand, .hdr.is-scrolled .brand { --logo-h: 17px; }
+    .brand-sub { margin-left: 0; font-size: 13px; padding-left: 8px; }
+  }
+  /* Úzky telefón: logo, telefón, lupa a menu sa zmestia len s tlačidlom menu bez textu (text ostáva pre čítačky). */
   @media (max-width: 420px) {
     .menu-btn { width: 42px; padding: 0; justify-content: center; position: relative; }
     .menu-btn span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  }
+  /* 360 px: s lupou sa doplnok značky nezmestí. */
+  @media (max-width: 380px) {
+    .hdr.is-scrolled .brand-sub { display: none; }
   }
 </style>
 
@@ -335,7 +386,8 @@ const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, 
 
   function initHlavicka() {
     const hdr = document.getElementById('hdr');
-    if (!hdr) return;
+    const pas = document.getElementById('hdr-pas');
+    if (!hdr || !pas) return;
     // Pri prechode stránok (ClientRouter) sa hlavička vymení; staré poslucháče na dokumente zrušíme.
     const w = window as unknown as { __hlavicka?: AbortController };
     w.__hlavicka?.abort();
@@ -343,80 +395,121 @@ const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, 
     w.__hlavicka = ac;
     const signal = ac.signal;
 
-    // Hysteréza: zmenšiť až po 72 px, vrátiť až pod 12 px. Zmena výšky tak nikdy neprekročí vlastnú hranicu.
-    let scrolled = false;
-    const onScroll = () => {
-      const y = window.scrollY;
-      if (!scrolled && y > 72) { scrolled = true; hdr.classList.add('is-scrolled'); }
-      else if (scrolled && y < 12) { scrolled = false; hdr.classList.remove('is-scrolled'); }
-    };
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true, signal });
+    const megaBtn = document.getElementById('mega-btn');
+    const mega = document.getElementById('mega');
+    const menuBtn = document.getElementById('menu-btn');
+    const mnav = document.getElementById('mobile-nav');
+    // Od 901 px je menu v druhom riadku a tlačidlo Menu (po odrolovaní) otvára panel Potrubia; užšie mobilné menu.
+    const siroka = window.matchMedia('(min-width: 901px)');
 
     // Žltá značka pod položkou: ide za myšou alebo fokusom, inak sa vráti k aktuálnej stránke.
     const nav = document.getElementById('nav');
     const ind = nav?.querySelector<HTMLElement>('.nav-ind');
     const odkazy = nav ? Array.from(nav.querySelectorAll<HTMLElement>('.nav-link')) : [];
     const aktualna = () => odkazy.find((a) => a.hasAttribute('aria-current') || a.getAttribute('aria-expanded') === 'true');
-    const znacka = (el?: HTMLElement) => {
+    const znacka = (el?: HTMLElement | null) => {
       if (!ind) return;
       if (!el) { ind.style.setProperty('--o', '0'); return; }
-      ind.style.setProperty('--x', `${el.offsetLeft + 12}px`);
-      ind.style.setProperty('--w', `${el.offsetWidth - 24}px`);
+      const okraj = el.offsetWidth > 48 ? 12 : 8;
+      ind.style.setProperty('--x', `${el.offsetLeft + okraj}px`);
+      ind.style.setProperty('--w', `${el.offsetWidth - 2 * okraj}px`);
       ind.style.setProperty('--o', '1');
     };
     odkazy.forEach((a) => { a.addEventListener('pointerenter', () => znacka(a)); a.addEventListener('focus', () => znacka(a)); });
     nav?.addEventListener('pointerleave', () => znacka(aktualna()));
-    znacka(aktualna());
 
-    // Panel Potrubia: myšou sa otvorí pri prejdení, klikom a klávesnicou prepína, Esc zatvorí.
-    const btn = document.getElementById('mega-btn');
-    const mega = document.getElementById('mega');
-    let casovac = 0;
-    const nastav = (otvor: boolean) => {
-      if (!btn || !mega) return;
-      if (otvor === !mega.hidden) return;
-      mega.hidden = !otvor;
-      btn.setAttribute('aria-expanded', String(otvor));
-      hdr.classList.toggle('is-open', otvor);
-      znacka(otvor ? btn : aktualna());
+    // Tlačidlo Menu: text a stav podľa toho, či je jeho panel otvorený.
+    const popis = menuBtn?.querySelector<HTMLElement>('span[data-open]');
+    const menuStav = (otvor: boolean) => {
+      menuBtn?.setAttribute('aria-expanded', String(otvor));
+      if (popis) popis.textContent = otvor ? (popis.dataset.close ?? '') : (popis.dataset.open ?? '');
     };
-    if (btn && mega) {
-      const mys = window.matchMedia('(pointer: fine)').matches;
-      btn.addEventListener('click', () => nastav(mega.hidden));
-      if (mys) {
-        const otvorNeskor = () => { clearTimeout(casovac); casovac = window.setTimeout(() => nastav(true), 90); };
-        const zatvorNeskor = () => { clearTimeout(casovac); casovac = window.setTimeout(() => nastav(false), 200); };
-        btn.addEventListener('pointerenter', otvorNeskor);
-        btn.addEventListener('pointerleave', zatvorNeskor);
+    const nastavCiel = () => menuBtn?.setAttribute('aria-controls', siroka.matches ? 'mega' : 'mobile-nav');
+
+    // Panel Potrubia: z menu v druhom riadku sa otvorí pod ním, z tlačidla Menu v zmenšenej hlavičke pod hlavičkou
+    // (vtedy ho presunieme do nej a ukáže aj ostatné odkazy menu).
+    let zdroj: 'nav' | 'menu' = 'nav';
+    let casovac = 0;
+    const megaOtvoreny = () => !!mega && !mega.hidden;
+    const nastavMega = (otvor: boolean, z: 'nav' | 'menu' = zdroj) => {
+      if (!mega || !megaBtn) return;
+      if (otvor === megaOtvoreny() && (!otvor || z === zdroj)) return;
+      clearTimeout(casovac);
+      if (otvor) {
+        zdroj = z;
+        const rodic = z === 'menu' ? hdr : pas;
+        if (mega.parentElement !== rodic) rodic.append(mega);
+        mega.classList.toggle('z-menu', z === 'menu');
+      }
+      mega.hidden = !otvor;
+      megaBtn.setAttribute('aria-expanded', String(otvor && zdroj === 'nav'));
+      hdr.classList.toggle('is-open', otvor && zdroj === 'menu');
+      menuStav(otvor && zdroj === 'menu');
+      znacka(otvor && zdroj === 'nav' ? megaBtn : aktualna());
+    };
+    // Mobilné menu (do 900 px).
+    const nastavMnav = (otvor: boolean) => {
+      if (!mnav || otvor === !mnav.hidden) return;
+      mnav.hidden = !otvor;
+      hdr.classList.toggle('is-open', otvor);
+      menuStav(otvor);
+    };
+
+    if (megaBtn && mega) {
+      // Myšou sa otvorí pri prejdení, klikom a klávesnicou prepína, Esc zatvorí.
+      megaBtn.addEventListener('click', () => nastavMega(!(megaOtvoreny() && zdroj === 'nav'), 'nav'));
+      if (window.matchMedia('(pointer: fine)').matches) {
+        const otvorNeskor = () => { clearTimeout(casovac); casovac = window.setTimeout(() => nastavMega(true, 'nav'), 90); };
+        const zatvorNeskor = () => { if (zdroj !== 'nav') return; clearTimeout(casovac); casovac = window.setTimeout(() => { if (zdroj === 'nav') nastavMega(false); }, 200); };
+        megaBtn.addEventListener('pointerenter', otvorNeskor);
+        megaBtn.addEventListener('pointerleave', zatvorNeskor);
         mega.addEventListener('pointerenter', () => clearTimeout(casovac));
         mega.addEventListener('pointerleave', zatvorNeskor);
       }
-      document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !mega.hidden) { nastav(false); btn.focus(); } }, { signal });
-      document.addEventListener('pointerdown', (e) => { if (!mega.hidden && !hdr.contains(e.target as Node)) nastav(false); }, { signal });
+      document.addEventListener('pointerdown', (e) => {
+        const t = e.target as Node;
+        if (megaOtvoreny() && !hdr.contains(t) && !pas.contains(t)) nastavMega(false);
+      }, { signal });
     }
+    menuBtn?.addEventListener('click', () => {
+      if (siroka.matches) nastavMega(!(megaOtvoreny() && zdroj === 'menu'), 'menu');
+      else nastavMnav(!!mnav?.hidden);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      if (megaOtvoreny()) { const z = zdroj; nastavMega(false); (z === 'menu' ? menuBtn : megaBtn)?.focus(); }
+      else if (mnav && !mnav.hidden) { nastavMnav(false); menuBtn?.focus(); }
+    }, { signal });
+    // Prechod cez 900 px (otočenie tabletu, zmena okna): panely zavrieť, tlačidlo Menu ovláda iný panel.
+    siroka.addEventListener('change', () => { nastavMega(false); nastavMnav(false); nastavCiel(); }, { signal });
+    nastavCiel();
 
-    // Mobilné menu
-    const menuBtn = document.getElementById('menu-btn');
-    const mnav = document.getElementById('mobile-nav');
-    if (menuBtn && mnav) {
-      const popis = menuBtn.querySelector<HTMLElement>('span[data-open]');
-      menuBtn.addEventListener('click', () => {
-        const otvor = mnav.hidden;
-        mnav.hidden = !otvor;
-        menuBtn.setAttribute('aria-expanded', String(otvor));
-        hdr.classList.toggle('is-open', otvor);
-        if (popis) popis.textContent = otvor ? (popis.dataset.close ?? '') : (popis.dataset.open ?? '');
-      });
-    }
+    // Hysteréza: zmenšiť až po 72 px, vrátiť až pod 12 px. Zmena výšky tak nikdy neprekročí vlastnú hranicu.
+    // Panel otvorený z druhého riadku sa pri zmenšení zavrie (riadok odroluje), panel z tlačidla Menu pri návrate hore.
+    let scrolled = false;
+    const onScroll = () => {
+      const y = window.scrollY;
+      if (!scrolled && y > 72) {
+        scrolled = true;
+        hdr.classList.add('is-scrolled');
+        if (megaOtvoreny() && zdroj === 'nav') nastavMega(false);
+      } else if (scrolled && y < 12) {
+        scrolled = false;
+        hdr.classList.remove('is-scrolled');
+        if (megaOtvoreny() && zdroj === 'menu') nastavMega(false);
+      }
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true, signal });
+    znacka(aktualna());
 
-    // Našepkávač v hlavičke aj v mobilnom menu.
-    hdr.querySelectorAll<HTMLFormElement>('form[data-index]').forEach(pripojNaseptavac);
+    // Našepkávač v hlavičke, v druhom riadku (telefón) aj v mobilnom menu.
+    document.querySelectorAll<HTMLFormElement>('#hdr form[data-index], #hdr-pas form[data-index]').forEach(pripojNaseptavac);
 
-    // Lupa na mobile: otvorí menu a dá fokus do poľa hľadania.
+    // Lupa na telefóne (po odrolovaní poľa hľadania): otvorí menu a dá fokus do poľa hľadania v ňom.
     const mInput = mnav?.querySelector<HTMLInputElement>('input[name="q"]');
     document.getElementById('hl-btn')?.addEventListener('click', () => {
-      if (mnav?.hidden) menuBtn?.click();
+      nastavMnav(true);
       mInput?.focus();
     });
 
@@ -427,8 +520,8 @@ const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, 
     document.addEventListener('keydown', (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
         const viditelne = q && q.offsetParent !== null;
-        if (!viditelne && menuBtn && mnav && mnav.hidden) menuBtn.click();
-        const ciel = viditelne ? q : mnav?.querySelector<HTMLInputElement>('input');
+        if (!viditelne) nastavMnav(true);
+        const ciel = viditelne ? q : mInput;
         if (ciel) { e.preventDefault(); ciel.focus(); }
       }
     }, { signal });

@@ -546,6 +546,17 @@ stránka, sa posúva žltá značka; hľadanie je pole s ikonou a skratkou Ctrl 
 tlačidlo, lebo je cieľom webu. Pod 1 100 px je všetko v menu (predtým na tablete navigácia zmizla
 bez náhrady), mobilné menu má hľadanie a systémy s malými rendermi.
 
+Hlavička A (6. 11. 2026, Juraj vybral z troch návrhov, „ako e-shop“; predtým malo pole hľadania nad 1 500 px
+len 141 px): **prvý riadok** je lepkavý (76 px, pri rolovaní 62 px, ako doteraz, takže 3D ukážky a plávajúce
+časti pod ním sa nemenia): logo s doplnkom, široké pole hľadania „Hľadajte obj. číslo, rad alebo rozmer“
+s Ctrl K a našepkávačom na šírku poľa, telefón, SK | CS, E-shop. **Druhý riadok** (#f4f7fb, nie je lepkavý,
+odroluje): Potrubia s panelom a ďalšie položky menu vrátane Kontaktu, vpravo logo Watts a „Jediný oficiálny
+partner pre Česko a Slovensko“. Po odrolovaní sa namiesto doplnku loga ukáže tlačidlo **Menu** v tej istej
+bunke (nič iné sa nepohne) a otvorí panel Potrubia aj s ostatnými odkazmi menu. Pod 1 180 px telefón len
+ikonou a doplnky krátko, pod 960 px bez Ctrl K a bez partnerstva. **Tablet a telefón do 900 px:** v prvom
+riadku logo, telefón, (E-shop), Menu; hľadanie na celú šírku v druhom riadku, po jeho odrolovaní lupa vedľa
+Menu. Tmavý horný pás je v `archiv/2026-11-06-horny-pas/`.
+
 Sadzba: texty domova prechádzajú funkciou `sadzba()` (`web/src/lib/sadzba.ts`), ktorá dá
 nezlomiteľnú medzeru za jednopísmenové predložky a spojky, medzi číslo a jednotku (95 °C, 16 bar,
 60 t) a do označení noriem (EN ISO 15875). Text sa inak nemení.
@@ -675,7 +686,7 @@ kontajnera. Slúži pre všeobecné výrazy („ako položiť predizolované pot
 ## 10. Vyhľadávanie a výber
 
 **Vyhľadávanie**
-- Pole v hero a v hlavičke; na mobile ikona otvorí celoobrazovkové pole.
+- Pole v hlavičke (na tablete a telefóne v druhom riadku pod ňou, po odrolovaní lupa otvorí menu s poľom).
 - Hľadá v názvoch radov, obj. číslach (`M7525C`, aj `m7525`, aj `7525`), dimenziách
   (`75/25`, `25x2,3`, `25×2,3`), kategóriách a článkoch.
 - Bez ohľadu na diakritiku a veľkosť písmen: „predizolovane“ nájde „predizolované“.
@@ -898,7 +909,7 @@ a zoznam zmien sú v `docs/AUDIT-PREMIUM.md`. Záväzné pravidlá pre celý web
    sú na obraze menej ako dve kóty.
 2. **Žiadne verzálkové nadpisky ani bodky medzi údajmi.** Tichý riadok nad nadpisom je veta
    v normálnej sadzbe (napr. „Vykurovanie, dve rúry“), údaje oddeľuje čiarka.
-3. **Prechody medzi stránkami:** hlavička a horný pás stoja, obsah vystúpi, render s menom
+3. **Prechody medzi stránkami:** oba riadky hlavičky stoja, obsah vystúpi, render s menom
    `rad-<id>` alebo `kat-<id>` preletí z karty do hlavy. Meno musí byť na stránke jedinečné.
 4. **Domov, podzemie:** sekcia Projekty (najväčšie stavby s kótami, hadovito) a projektová
    podpora. Na domove je jediné miesto pre **konfigurátor trasy** (karta „Pripravujeme“, vedie na

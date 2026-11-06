@@ -1,0 +1,79 @@
+---
+/**
+ * Horný pás (od 4. 11. do 6. 11. 2026 nad hlavičkou): tmavomodrý pás s partnerstvom Watts, telefónom, odkazom
+ * Kontakt a jazykmi. Nie je prilepený, odroluje, hlavička pod ním ostáva. Označenie a štýly presne
+ * z web/src/components/Hlavicka.astro (commit f3327ba), len vybraté do samostatného komponentu.
+ * Obnovenie: archiv/2026-11-06-horny-pas/README.md.
+ */
+import Ikona from './Ikona.astro';
+import WattsLogo from './WattsLogo.astro';
+import { FIRMA } from '../content/firma';
+import { type Lang, type Alternates, t, route, LANGS } from '../i18n/ui';
+
+interface Props { lang: Lang; alternates: Alternates; aktivna?: string }
+const { lang, alternates, aktivna } = Astro.props;
+const ui = t(lang);
+---
+<!-- Horný pás nie je prilepený: odroluje prirodzene, hlavička pod ním ostáva. -->
+<div class="topbar" role="region" aria-label={ui.partner.pas} transition:name="horny-pas" transition:animate="none">
+  <div class="wrap topbar-in">
+    {/* Juraj 4. 11. 2026: jediný partner pre Česko a Slovensko, na telefóne krátko (celá veta ostáva pre čítačky). */}
+    <a class="partner" href={route(lang, 'kontakt')} aria-label={ui.partner.veta}>
+      <span class="partner-plne">{ui.partner.veta}</span>
+      <span class="partner-kratke" aria-hidden="true">{ui.partner.kratke}</span>
+      <WattsLogo height={14} farba="biela" />
+    </a>
+    {/* Kontakt je vždy na očiach: telefón na jeden ťuk a stránka kontaktu (audit prvého dojmu, č. 5). */}
+    <div class="topbar-kontakt">
+      <a class="topbar-tel" href={FIRMA.telefonHref} aria-label={FIRMA.telefon}><Ikona nazov="phone" velkost={14} /><span class="topbar-tel-cislo">{FIRMA.telefon}</span></a>
+      <a href={route(lang, 'kontakt')} aria-current={aktivna === 'kontakt' ? 'page' : undefined}>{ui.nav.kontakt}</a>
+    </div>
+    <nav class="langs" aria-label={ui.jazyk.prepnut}>
+      {LANGS.map((l, i) => (
+        <>
+          {i > 0 && <span class="sep" aria-hidden="true"></span>}
+          <a href={alternates[l]} hreflang={l} lang={l} aria-current={l === lang ? 'page' : undefined} title={ui.jazyk[l]}>{l.toUpperCase()}</a>
+        </>
+      ))}
+    </nav>
+  </div>
+</div>
+
+<style>
+  .topbar { background: linear-gradient(90deg, #0b2f6b 0%, var(--color-blue-900) 60%, #0e3676 100%); color: #fff; font-size: 13px; }
+  .topbar-in { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 36px; }
+  .partner { display: inline-flex; align-items: center; gap: 12px; color: #fff; white-space: nowrap; }
+  .partner:hover { color: var(--color-yellow-500); }
+  .partner :global(svg) { display: block; }
+  .partner-kratke { display: none; }
+  .topbar-kontakt { margin-left: auto; display: inline-flex; align-items: center; gap: 20px; }
+  .topbar-kontakt a { color: var(--color-on-dark-muted); font-weight: 500; white-space: nowrap; }
+  .topbar-kontakt a:hover, .topbar-kontakt a[aria-current] { color: #fff; }
+  .topbar-tel { display: inline-flex; align-items: center; gap: 8px; color: #fff !important; font-variant-numeric: tabular-nums; }
+  .topbar-tel :global(svg) { opacity: .75; }
+  .topbar-kontakt + .langs { padding-left: 20px; border-left: 1px solid rgb(255 255 255 / 0.22); }
+  .langs { display: inline-flex; align-items: center; gap: 8px; }
+  .langs a { color: var(--color-on-dark-muted); font-weight: 500; letter-spacing: .04em; padding: 2px 0; border-bottom: 1px solid transparent; }
+  .langs a:hover { color: #fff; }
+  .langs a[aria-current] { color: #fff; border-bottom-color: var(--color-yellow-500); }
+  .langs .sep { width: 1px; height: 12px; background: rgb(255 255 255 / 0.3); }
+
+  @media (max-width: 760px) {
+    .partner-plne { display: none; }
+    .partner-kratke { display: inline; }
+    /* Na telefóne ostáva v páse len číslo; stránka Kontakt je v menu. */
+    .topbar-kontakt a:not(.topbar-tel) { display: none; }
+    .topbar-kontakt + .langs { padding-left: 16px; }
+  }
+  /* Celá veta o partnerstve sa vedľa telefónu, kontaktu a jazykov zmestí od 1024 px; užšie krátka verzia. */
+  @media (max-width: 1023px) { .partner-plne { display: none; } .partner-kratke { display: inline; } }
+  /* Telefón: v hornom páse partnerstvo a ikona telefónu (číslo je v aria-label, ťuk stále volá). */
+  @media (max-width: 520px) { .topbar-tel-cislo { display: none; } }
+  /* Úzky telefón (360 px): menšie písmo a medzery, aby sa pás nezalomil ani nepretiekol. */
+  @media (max-width: 400px) {
+    .topbar { font-size: 12px; }
+    .topbar-in { gap: 8px; }
+    .partner { gap: 8px; }
+    .topbar-kontakt + .langs { padding-left: 12px; }
+  }
+</style>

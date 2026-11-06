@@ -166,6 +166,7 @@ mikrofónu, polohy, platieb a USB. Typy súborov: AVIF, WebP, WOFF2, SVG, JSON a
 | --- | --- | --- | --- |
 | 4. 11. 2026 | 1611de7 | názov Microflex Česko a Slovensko, jediný partner CZ a SK, pás Do zeme | 163 súborov, `overit` 33/33 |
 | 4. 11. 2026 | 8dccf9c | rozmery: pri rúre vonkajší priemer × stena aj DN z katalógu | 241 súborov, 33 MB za 47 s, `overit` 33/33, 144 z 144 stránok |
+| 6. 11. 2026 | 616bfe4 | katalóg na domove ako dlaždice podľa použitia (G2), odkaz na sprievodcu výberom | 96 súborov, 1,6 MB za 35 s, 2 staré skripty zmazané, `overit` 33/33, 144 z 144 stránok |
 
 ## Overené 4. 11. 2026
 

@@ -371,15 +371,15 @@ Domov v4 (23. 9. 2026, zadanie Juraja „najpútavejší dizajn, kľudne asymetr
 |                                   |   ● 25 až 125 mm, nosné rúry na 6,     |
 |                                   |     10 alebo 16 bar                    |
 +----------------------------------------------------------------------------+
-|   mäkké svetlo štúdia (vybieha za ľavý okraj) | VÝBER PODĽA POUŽITIA        |
-|   [render UNO]        [render DUO]            | Každý projekt má            |
-|   ─────────── spoločná podlaha ───────────    | svoje potrubie.             |
-|   Microflex UNO       Microflex DUO           | ▌Vykurovanie       4 rady   |
-|   Jedna rúra v plášti Dve rúry v plášti       |  Teplá a studená   3 rady   |
-|   16 dimenzií, plášť  8 dimenzií, plášť       |  …                          |
-|   Microflex UNO PRIMO Microflex PRIMO DUO     | popis kategórie             |
-|   Užší plášť …        Užší plášť …            | Celý katalóg potrubí ↗      |
-| Spojky a príslušenstvo: skupiny dielov ako odkazy                          |
+| Vyberte potrubie podľa použitia.        | Všetkých 12 radov … sprievodca výberom |
+|                                         | Celý katalóg potrubí →                 |
+| ┌ Vykurovanie (7) ──────────────────┐ ┌ Teplá a studená voda (5) ────────┐ |
+| │ ◉ 4 rady · 6 bar   [render DUO]   │ │ ◉ 3 rady · 10 bar                │ |
+| │ veta   UNO › DUO › UNO PRIMO › …  │ │ UNO › DUO › PRIMO DUO › [render] │ |
+| └───────────────────────────────────┘ └──────────────────────────────────┘ |
+| ┌ QUADRO (4) ──┐ ┌ COOL (4) ────┐ ┌ HP (4) ──────┐                          |
+| │ render, rady │ │ render, rady │ │ render, rady │                          |
+| ┌ Spojky, 4 fotky (5) ┐ ┌ Príslušenstvo, 4 fotky (5) ┐ ┌ Sprievodca (2) ┐   |
 +--------------------------+-------------------------------------------------+
 | Päť systémov, jedna rodina.       |   render rodiny cez švík pásu, za      |
 | ┃ Plášť z HDPE        (modrá)     |   pravý okraj obrazovky                |
@@ -440,21 +440,25 @@ Navigácia po stránke s číslami kapitol (obsah v hero, čísla nad nadpismi, 
 23. 9. skúsená a zrušená: Juraj nemyslel skutočnú navigáciu, ale aby stránka oko viedla nadol
 vizuálne. Pri nejasnom zadaní sa pýtať.
 
-Katalóg na domove (Juraj 22. 9. 2026, podľa jeho vlastného návrhu, v4 prekomponované): záložky =
-kategórie, v paneli veľké rendery radov. V4 z nich robí **register** (ako palcový register na okraji
-tlačeného katalógu: názov a počet radov, vybraná kategória má žltú značku, farbu jadra rúry) a
-**štúdio**: rendery stoja na spoločnej podlahe s tieňom, popisy sú zarovnané doľava a začínajú na
-jednej linke (podmriežka). Od 23. 9. (hadovito) je štúdio vľavo na mriežke 7 / 5 a nadpis, register
-a popis vybranej kategórie vpravo, ako výber pri výrobku v e-shope. Za ľavý okraj obrazovky vybieha
-len svetlo štúdia; telá rúr boli orezané už v renderoch výrobcu, preto ich za okraj nepúšťame (od 26. 10.
-sú v štúdiu rendery vlastného modelu s celým telom, kap. 7). Pri
-jednom rade je render väčší (72 % štúdia) a popis pod ním ako pri ostatných. Záložky sú prepínače bez skriptu a obsah všetkých panelov je v HTML
-kvôli vyhľadávačom.
+Katalóg na domove (Juraj 5. 11. 2026, verzia G2 „bento podľa použitia“, `Katalog.astro`): sekcia sortiment
+**predstaví, nevyberá**. Výber krok za krokom robí sprievodca /vyber/ (médium, rad, dimenzia podľa výkonu
+v kW, obj. čísla, zoznam materiálu na trasu); sprievodca na domove by ho zdvojoval (Juraj: „načo to bude
+takéto detailné sem, ak máme výber potrubia“). Na sprievodcu odkazuje veta v úvode aj tmavá dlaždica.
+Dlaždice sú na mriežke 12 stĺpcov: prvé použitie veľké (7), druhé stredné (5), ostatné malé (po 4), potom
+Spojky a Príslušenstvo (po 5, so štyrmi fotkami typických výrobkov a počtom výrobkov z dát) a Sprievodca (2).
+Dlaždica použitia má čelo rúry (výrez prierezu z `data/cela_rur.py`, farba nosných rúr ukáže médium:
+žltá vykurovanie, biela pitná voda, čierna s pásikom COOL), názov ako odkaz na kategóriu, „N rady · tlak“,
+prvú vetu popisu kategórie, render systému (ten istý rad ako na stránke Potrubia a v hlave kategórie, preto
+aj rovnaký prechod `kat-<id>`) a **všetky svoje rady** ako viditeľné odkazy s počtom dimenzií. Na tablete
+je veľká dlaždica cez celú šírku a ostatné po dvoch, na telefóne idú pod sebou (text vľavo, render vpravo,
+rady pod nimi, veta o použití odpadne). Žiadne záložky ani skrytý obsah, žiadny skript.
 
-Počet radov v registri musí sedieť s tým, čo je vidieť (Juraj 23. 9.: „sú 4 rady, ukázané sú len 2“).
-Rady, ktoré zdieľajú render so súrodencom (PRIMO), preto majú vlastný riadok s názvom, odkazom
-a odlišnosťou pod renderom základného radu: „Užší plášť pri tej istej rúre“ (katalóg s. 8 proti 9
-a 10 proti 11; vlastný obrázok PRIMO nemá ani výrobca, fotka PRIMO DUO je tá istá ako DUO).
+Počet radov musí sedieť s tým, čo je vidieť (Juraj 23. 9.: „sú 4 rady, ukázané sú len 2“): v dlaždici je
+každý rad použitia vrátane PRIMO ako vlastný odkaz.
+
+Predtým (22. 9. až 5. 11. 2026) tu bol Jurajov návrh so záložkami: **register** použití vpravo (žltá značka
+pri vybranom) a **štúdio** s rendermi radov vybraného použitia vľavo. Bez kliknutia bolo vidieť 4 z 12 radov
+a register nevyzeral ako niečo, na čo sa dá kliknúť; návrhy a snímky sú v `snimky-stranok/navrh-katalog/`.
 
 Rodina (od 26. 10. render vlastného modelu so šiestimi rúrami): na počítači sa zmestí celá do pravého
 okraja obrazovky, lebo text menuje aj COOL a HP; na tablete a mobile ide nad text cez celú šírku.
@@ -496,18 +500,18 @@ náhľadov (náhľady boli z 300 px zdrojov a prvý bol rez rúry, nie stavba). 
 farbu ako začiatok pätičky.
 
 Zásada domova (Juraj 21. 9. 2026): každá sekcia má inú úlohu aj inú formu. V4: produkt ako monument
-(hero), register a štúdio (katalóg), render a typografický rez (rodina), postup s číslami (pokládka),
+(hero), dlaždice podľa použitia (katalóg), render a typografický rez (rodina), postup s číslami (pokládka),
 fotka cez hranu (referencie), tmavý zoznam podkladov (Pre firmy).
 
 **Hadovito** (Juraj 23. 9. 2026, výber z dvoch možností): hlavný obrázok sekcie sa strieda vpravo
 a vľavo a oko ide cikcak nadol, ako potrubie položené hadovito vo výkope (katalóg Watts s. 37):
-render rezu vpravo → rendery radov vľavo → rodina vpravo → kotúč vľavo → výkop vpravo. Text je vždy
-na opačnej strane. Každý obrázok prekračuje okraj obrazovky alebo hranu sekcie a vedie do ďalšej:
+render rezu vpravo → dlaždice katalógu cez celú šírku (od 5. 11. 2026, predtým rendery radov vľavo) →
+rodina vpravo → kotúč vľavo → výkop vpravo. Text je vždy na opačnej strane. Každý obrázok prekračuje okraj obrazovky alebo hranu sekcie a vedie do ďalšej:
 render hero pretína šikmú hranu pásu katalógu, rodina stúpa do pásu katalógu, výkop pretína šikmú
 hranu podzemia. Vedenie nadol je vizuálne, nie navigáciou s číslami (tá bola skúsená a zrušená).
 Pravidlo „text vľavo, obrázok vpravo v celej stránke rovnako“ z auditu 21. 9. už neplatí, robilo
-stránku jednotvárnou. Ten istý motív sa neopakuje v tej istej forme; rez rúry je v hero, v štúdiu
-a v rodine, ale zakaždým v inej úlohe (výrobok, voľba radu, porovnanie vrstiev). Pravidlá, podľa
+stránku jednotvárnou. Ten istý motív sa neopakuje v tej istej forme; rez rúry je v hero, v dlaždiciach
+katalógu a v rodine, ale zakaždým v inej úlohe (výrobok, prehľad sortimentu, porovnanie vrstiev). Pravidlá, podľa
 ktorých hodnotíme: Vignelli (disciplína, jedno ohnisko), Müller-Brockmann (mriežka 12 stĺpcov),
 Tufte (dátový atrament), Refactoring UI (popis k nadpisu, nekvalitná fotka len ako náhľad).
 

@@ -95,12 +95,17 @@ const sk = {
     },
     skratky: { label: 'Rýchle odkazy na domovskej stránke', potrubia: 'Potrubia', konstrukcia: 'Konštrukcia', pokladka: 'Pokládka', projekty: 'Referencie' },
     katalogH2: 'Vyberte potrubie podľa použitia.',
-    zobrazitRad: (nazov: string) => `Zobraziť ${nazov}`,
+    // Katalóg na domove len predstaví sortiment (Juraj 5. 11. 2026, verzia G2), výber krok za krokom robí sprievodca.
+    katalogLead: (r: number, p: number) => `${r >= 5 ? `Všetkých ${r} radov` : r >= 2 ? `Všetky ${r} rady` : 'Jeden rad'} pre ${p >= 5 ? `${p} použití` : p >= 2 ? `${p} použitia` : '1 použitie'} a všetko, čo k nim patrí.`,
+    katalogNeviete: 'Ak si nie ste istí, ktoré potrubie potrebujete, ',
+    katalogSprievodca: 'prevedie vás sprievodca výberom',
+    sprievodcaH: 'Neviete, ktoré potrubie?',
+    sprievodcaP: 'Sprievodca výberom vás prevedie od média po obj. číslo.',
+    sprievodcaCta: 'Sprievodca výberom',
     rury: (n: number) => (n === 1 ? 'Jedna rúra v plášti' : n === 2 ? 'Dve rúry v plášti' : n === 4 ? 'Štyri rúry v plášti' : `${n} rúry v plášti`),
     plast: 'plášť',
     primo: 'Užší plášť pri tej istej rúre',
     celyKatalog: 'Celý katalóg potrubí',
-    dielyH3: 'Spojky a príslušenstvo',
     // Na obraze je šesť rúr (DUO na vykurovanie aj sanitu), preto nadpis bez počtu.
     rodinaH2: 'Jedna rodina pre každé médium.',
     // COOL má nosnú rúru PE 100, nie PE-Xa (katalóg s. 16 až 18). Spoločná je stavba, nie materiál rúry.
@@ -211,6 +216,7 @@ const sk = {
     variantov: (n: number) => (n === 1 ? '1 variant' : n >= 2 && n <= 4 ? `${n} varianty` : `${n} variantov`),
     dimenzii: (n: number) => (n === 1 ? '1 dimenzia' : n >= 2 && n <= 4 ? `${n} dimenzie` : `${n} dimenzií`),
     radov: (n: number) => (n === 1 ? '1 rad' : n >= 2 && n <= 4 ? `${n} rady` : `${n} radov`),
+    vyrobkov: (n: number) => (n === 1 ? '1 výrobok' : n >= 2 && n <= 4 ? `${n} výrobky` : `${n} výrobkov`),
   },
   // Novinky z 3D modelu (Juraj 28. 10. 2026): ohyb, teplo v reze, dimenzie v mierke, rodina na ťuknutie, kotúč.
   novinky: {
@@ -327,12 +333,16 @@ const cs: typeof sk = {
     },
     skratky: { label: 'Rychlé odkazy na domovské stránce', potrubia: 'Potrubí', konstrukcia: 'Konstrukce', pokladka: 'Pokládka', projekty: 'Reference' },
     katalogH2: 'Vyberte potrubí podle použití.',
-    zobrazitRad: (nazov: string) => `Zobrazit ${nazov}`,
+    katalogLead: (r: number, p: number) => `${r >= 5 ? `Všech ${r} řad` : r >= 2 ? `Všechny ${r} řady` : 'Jedna řada'} pro ${p} použití a vše, co k nim patří.`,
+    katalogNeviete: 'Pokud si nejste jistí, které potrubí potřebujete, ',
+    katalogSprievodca: 'provede vás průvodce výběrem',
+    sprievodcaH: 'Nevíte, které potrubí?',
+    sprievodcaP: 'Průvodce výběrem vás provede od média po obj. číslo.',
+    sprievodcaCta: 'Průvodce výběrem',
     rury: (n: number) => (n === 1 ? 'Jedna trubka v plášti' : n === 2 ? 'Dvě trubky v plášti' : n === 4 ? 'Čtyři trubky v plášti' : `${n} trubky v plášti`),
     plast: 'plášť',
     primo: 'Užší plášť při stejné trubce',
     celyKatalog: 'Celý katalog potrubí',
-    dielyH3: 'Spojky a příslušenství',
     rodinaH2: 'Jedna rodina pro každé médium.',
     rodinaP: 'UNO a DUO pro vytápění a pitnou vodu, QUADRO pro všechno v jednom plášti, COOL pro chlad, HP pro tepelná čerpadla. Všechny mají stejnou stavbu ze tří vrstev.',
     rodinaAlt: 'Rodina potrubí Microflex vedle sebe: UNO, DUO pro vytápění i sanitu, QUADRO, COOL a HP',
@@ -432,6 +442,7 @@ const cs: typeof sk = {
     variantov: (n: number) => (n === 1 ? '1 varianta' : n >= 2 && n <= 4 ? `${n} varianty` : `${n} variant`),
     dimenzii: (n: number) => (n === 1 ? '1 dimenze' : n >= 2 && n <= 4 ? `${n} dimenze` : `${n} dimenzí`),
     radov: (n: number) => (n === 1 ? '1 řada' : n >= 2 && n <= 4 ? `${n} řady` : `${n} řad`),
+    vyrobkov: (n: number) => (n === 1 ? '1 výrobek' : n >= 2 && n <= 4 ? `${n} výrobky` : `${n} výrobků`),
   },
   novinky: {
     ohyb: {

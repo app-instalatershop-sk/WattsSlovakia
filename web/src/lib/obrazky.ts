@@ -38,7 +38,7 @@ export const fotkaProduktu = (id: string) => najdi(produkty, `${id}.webp`) ?? na
  * Body pre kóty a pomer strán sú v data/rendery.json. Bez 3D renderu sa použije pôvodný piktogram Watts.
  */
 const rendery3d = import.meta.glob<{ default: ImageMetadata }>('/src/assets/3d/*/*.webp', { eager: true });
-export type Druh3d = 'rady' | 'hlavy' | 'varianty' | 'hero' | 'rodina' | 'makra' | 'teplo-hlavy' | 'teplo-varianty' | 'mierka' | 'kotuc';
+export type Druh3d = 'rady' | 'hlavy' | 'varianty' | 'hero' | 'rodina' | 'makra' | 'teplo-hlavy' | 'teplo-varianty' | 'mierka' | 'kotuc' | 'cela';
 export const render3d = (druh: Druh3d, id: string | null | undefined) => (id ? najdi(rendery3d, `${druh}/${id}.webp`) : undefined);
 /** Rad, ktorého render zastupuje piktogram Watts (kategória a systém poznajú len piktogram). */
 export const radPiktogramu = (subor: string | null | undefined) => (subor ? (rendery.piktogramy as Record<string, string>)[subor] : undefined);

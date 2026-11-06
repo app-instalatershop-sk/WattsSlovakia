@@ -39,8 +39,22 @@ aby spodná ľavá časť pravej časti začínala na výške, kde končí ľav�
 | K3-A Ako to chápem | [počítač](obrazky/3-kolo-K3-A-ako-to-chapem-pc.jpg) · [telefón](obrazky/3-kolo-K3-A-ako-to-chapem-mobil.jpg) | rúra celá vpravo od predelu, spodok čela na výške, kde končí pás | **áno, postavený** („Použi A.“) |
 | K3-B Rovný spodok | [počítač](obrazky/3-kolo-K3-B-rovny-spodok-pc.jpg) · [telefón](obrazky/3-kolo-K3-B-rovny-spodok-mobil.jpg) | obe strany končia na jednej rovnej čiare, pás katalógu bez šikmej hrany, rúra v strede | nie |
 
+## 4. kolo: úvod K3-A na telefóne
+
+Juraj 6. 11. 2026 po stavbe: „Na telefóne to nevyzerá moc pekne, ten vrch silno modrý, nedá sa tam fotka upraviť,
+aby bola vidno lepšie?“ Na telefóne bol pás bez fotky (len tmavý prechod). Skúšky fotky plášťa v páse pri 390 px:
+
+| Variant | Snímka | Myšlienka | Rozhodnutie |
+|---|---|---|---|
+| Stav po stavbe | [telefón](obrazky/4-kolo-telefon-dnes.jpg) | tmavomodrý pás bez fotky | nie |
+| M1 Fotka hore | [telefón](obrazky/4-kolo-telefon-M1.jpg) | fotka hore, prechod do tmavej; výrez na rozmazané vrchy rebier | nie (zlý výrez) |
+| M1b Prierezy rebier | [telefón](obrazky/4-kolo-telefon-M1b.jpg) | fotka hore, výrez na rad prierezov rebier v tvare U, plné rozlíšenie | **áno, postavený** |
+| M1c Širší pohľad | [telefón](obrazky/4-kolo-telefon-M1c.jpg) | to isté, viac a menších rebier | nie |
+| M2 Fotka za celým pásom | [telefón](obrazky/4-kolo-telefon-M2.jpg) | fotka presvitá cez polopriesvitnú modrú | nie (stále „silno modrý“) |
+| M3 Fotka vpravo dole | [telefón](obrazky/4-kolo-telefon-M3.jpg) | odkrýva sa smerom k spodku ako pri predele na počítači | nie (svetelné pruhy pôsobia náhodne) |
+
 **Skripty** (`skripty/`): `navrhy.mjs` (1. kolo; vkladá zmeny do stavby pred `cf27343`, s tmavým horným pásom),
-`uvod2.mjs` (2. kolo), `uvod3.mjs` (3. kolo; render umiestni výpočtom z `duo-profil.json` a krivky predelu),
+`uvod2.mjs` (2. kolo), `uvod3.mjs` (3. kolo; render umiestni výpočtom z `duo-profil.json` a krivky predelu), `uvod-mobil.mjs` (4. kolo),
 `predel_rura.py` (obrys rúry z alfa kanála renderu a najmenšia vzdialenosť od predelu: 7,18 u, v Domov.astro
 7,2 u + 28 px). Spustenie: `node archiv/navrhy-hlavicky-a-uvodu-2026-11-06/skripty/<súbor> [mená]`; potrebujú
 zostavený web (`npm run build` vo `web`), Playwright z `audit/scripts` a server `snimky-stranok/_skripty/server.mjs`.

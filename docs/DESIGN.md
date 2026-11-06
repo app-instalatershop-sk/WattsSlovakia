@@ -449,7 +449,10 @@ pri spodku, rúra je 7,2 u + 28 px za pätou (najužšie miesto je stred čela, 
 text 59 až 233 px pred predelom, Lighthouse ako predtým (telefón 89/100/100/100, počítač 100, CLS 0).
 Štítok rúr visí pod čelo doprava (pod spodok úvodu, katalóg má preto na počítači o 32 px väčší horný okraj),
 štítok ohybu do 1 699 px doľava. Do 900 px (ako hlavička) je úvod pod sebou: tmavý pás za textom cez celú
-šírku so zahnutým spodkom, bez obrázka plášťa (render ostáva najväčším prvkom, LCP), rúra pod pásom.
+šírku so zahnutým spodkom, rúra pod pásom. Pás začína ostrou fotkou prierezov rebier plášťa (rad tvarov U
+z makra, 1 200 px, načítaná vopred, lebo pás je tam najväčší prvok prvej obrazovky) a pod ňou prechádza do
+tmavej, na ktorej je text (Juraj 6. 11.: „vrch silno modrý, nedá sa tam fotka upraviť, aby bola vidno
+lepšie?“; skúšky v archíve návrhov, 4. kolo). Lighthouse telefón ostal 89/100/100/100, LCP 3,2 s.
 
 Prechod hero → katalóg: pás katalógu sa podsunie pod spodok hero (`--presah-hero`) a má šikmú hornú
 hranu ako tmavá časť dole; render sedí na spodku hero a jeho dolná časť hranu pretína. Hero orezáva

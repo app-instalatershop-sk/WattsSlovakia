@@ -95,12 +95,16 @@ const popisy = heroVariant && heroRad ? [
   { id: 'ohyb', hodnota: `${cislo(heroVariant.polomer_ohybu_m ?? 0, 2)} m`, text: h.popisy.polomer },
 ] : [];
 // Úvod K3-A (Juraj 6. 11. 2026): ľavá strana je tmavý pás z plášťa HDPE, textúra je skutočné rebrovanie
-// z makra vlastného 3D modelu. Len počítač, na telefóne je pás bez obrázka (render tam ostáva najväčším prvkom).
+// z makra vlastného 3D modelu. Na počítači pod tmavým prekrytím (1 000 px), na telefóne a tablete ostro hore
+// v páse (Juraj: „vrch silno modrý, nedá sa tam fotka upraviť, aby bola vidno lepšie?“), preto v plnom
+// rozlíšení zdroja a načítaná vopred: pás je tam najväčší prvok prvej obrazovky (LCP).
 const plastMakro = render3d('makra', 'plast');
 const plastPas = plastMakro ? (await getImage({ src: plastMakro, width: 1000, format: 'webp', quality: 55 })).src : undefined;
+const plastMobil = plastMakro ? (await getImage({ src: plastMakro, width: 1200, format: 'webp', quality: 70 })).src : undefined;
 ---
 <Base lang={lang} alternates={staticAlternates('domov')} title={ui.domov.title} description={ui.domov.description}>
-  <section class="hero" aria-labelledby="h-hero" data-mys>
+  <section class="hero" aria-labelledby="h-hero" data-mys style={plastMobil ? `--plast-m: url("${plastMobil}")` : undefined}>
+    {plastMobil && <link rel="preload" as="image" href={plastMobil} media="(max-width: 900px)" fetchpriority="high" />}
     <div class="wrap hero-in">
       {/* Úvod K3-A (Juraj 6. 11. 2026, z troch návrhov a dvoch výkladov, archiv/navrhy-hlavicky-a-uvodu-2026-11-06):
           vľavo tmavý pás z plášťa s ohnutým predelom, vpravo rúra, ktorá predel nikdy neprekročí; spodok jej čela
@@ -618,14 +622,19 @@ const plastPas = plastMakro ? (await getImage({ src: plastMakro, width: 1000, fo
   /* Pod 900 px vedľa kotúča nie je miesto: kotúč ide nad text ako pás, vľavo závity, vpravo jeho vnútro. */
   @media (max-width: 900px) {
     /* Úvod pod sebou (ako hlavička do 900 px): tmavý pás za textom cez celú šírku, spodok sa ohne ako šikmé
-       hrany webu, rúra je pod ním a do pásu nezasahuje. Pás je bez obrázka plášťa, render tak ostáva
-       najväčším prvkom prvej obrazovky (LCP). */
+       hrany webu, rúra je pod ním a do pásu nezasahuje. */
     .hero { min-height: 0; padding-bottom: 16px; }
     .hero-in { grid-template-columns: minmax(0, 1fr); grid-template-areas: "text" "obraz"; row-gap: 0; }
     .hero-pas { display: none; }
-    .hero-text { padding-block: 32px 8px; max-width: none; }
+    /* Pás začína ostrou fotkou prierezov rebier plášťa (rad tvarov U z makra), pod ňou prechádza do tmavej,
+       na ktorej je text (Juraj 6. 11.: „vrch silno modrý, nedá sa tam fotka upraviť, aby bola vidno lepšie?“).
+       Fotka má šírku 1,5 okna (najviac 900 px), výrez je vždy na rovnakom mieste fotky. */
+    .hero-text { --foto: min(150vw, 900px); padding-block: 176px 8px; max-width: none; }
     .hero-text::before { content: ""; position: absolute; z-index: -1; inset: 0 calc(-1 * var(--gutter)) -56px;
-      background: linear-gradient(180deg, rgb(5 20 48 / 0.97) 0%, rgb(8 30 72 / 0.93) 60%, rgb(10 42 94 / 0.88) 100%), #0a2a5e;
+      background:
+        linear-gradient(180deg, rgb(5 20 48 / 0.05) 0px, rgb(5 20 48 / 0.1) 90px, rgb(6 22 52 / 0.72) 150px, rgb(6 22 52 / 0.94) 205px, rgb(8 30 72 / 0.95) 100%),
+        var(--plast-m, none) 50% calc(var(--foto) * -0.35) / var(--foto) auto no-repeat,
+        #0a2a5e;
       -webkit-mask: linear-gradient(#000 0 0) top / 100% calc(100% - 56px) no-repeat, var(--spodok) bottom / 100% 56px no-repeat;
       mask: linear-gradient(#000 0 0) top / 100% calc(100% - 56px) no-repeat, var(--spodok) bottom / 100% 56px no-repeat; }
     /* Rúra (aj štítok plášťa nad ňou) začína pod najnižším miestom zahnutého spodku pásu. */

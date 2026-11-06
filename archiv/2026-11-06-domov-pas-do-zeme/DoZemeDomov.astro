@@ -1,0 +1,68 @@
+---
+/**
+ * ARCHÍV (6. 11. 2026): pás „Do zeme. Bez lisu a zvárania.“ z domova, vybratý z web/src/templates/Domov.astro po
+ * audite domova (docs/AUDIT-DOMOV-2026-11-06.md). Juraj ho 4. 11. 2026 vybral (variant B) hneď pod úvod, aby bolo
+ * jasné, kam potrubie patrí a ako jednoducho sa spája. Po audite jeho správa prešla do vety v úvode a fotka výkopu
+ * s kótami do sekcie Pokládka, kam obsahom patrí (pás pred katalógom odkazoval na pokládku o šesť obrazoviek nižšie).
+ *
+ * Obnovenie: skopírovať do web/src/components/DoZemeDomov.astro, v Domov.astro vložiť <DoZemeDomov lang={lang} />
+ * hneď pod hero (pred <Katalog />) a vrátiť texty home.doZeme.kicker a odkaz do ui.ts (SK aj CS, sú v README).
+ * Pás preberá od katalógu šikmú hranu pod úvodom; katalóg za ním potom ide rovno (pravidlo .dozeme + .katalog nižšie).
+ */
+import Scena from './Scena.astro';
+import Ikona from './Ikona.astro';
+import { fotka } from '../lib/obrazky';
+import { sadzba } from '../lib/sadzba';
+import { type Lang, t } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const h = t(lang).home;
+const dz = h.doZeme as typeof h.doZeme & { kicker: string; odkaz: string };
+// Skutočná fotka výkopu so svornými spojkami; body kót v percentách fotky (fotka sa neorezáva).
+const vykop = fotka('vykop-spojky.jpg')!;
+const kotyDoZeme = dz.koty.map(([hodnota, text], i) => ({ hodnota, text, ...[
+  // spojka na T-kuse (na telefóne štítok dole vľavo, inak by vyšiel z fotky), ohyb rúry, spodná rúra v piesku
+  { x: 66, y: 44, l: 11, smer: 'hore-vpravo' as const, smerM: 'dole-vlavo' as const, lM: 4 },
+  { x: 49, y: 31, l: 7, smer: 'hore-vlavo' as const, lM: 6 },
+  { x: 14, y: 92, l: 6, smer: 'hore-vpravo' as const, lM: 4 },
+][i] }));
+---
+<section class="dozeme" aria-labelledby="h-dozeme">
+  <div class="wrap dozeme-in">
+    <Scena class="dozeme-scena" obraz={vykop} alt={dz.alt} koty={kotyDoZeme} label={dz.kotyLabel} widths={[640, 960, 1280, 1600]} sizes="(max-width: 900px) 100vw, 58vw" priorita="low" />
+    <div class="dozeme-text">
+      <p class="dozeme-kicker">{dz.kicker}</p>
+      <h2 id="h-dozeme">{dz.h2a} <span>{dz.h2b}</span></h2>
+      <p class="dozeme-p">{dz.p1.map((kus, i) => (i % 2 ? <strong>{sadzba(kus)}</strong> : sadzba(kus)))}</p>
+      <p class="dozeme-p">{sadzba(dz.p2)}</p>
+      <a class="odkaz dozeme-odkaz" href="#pokladka">{dz.odkaz} <Ikona nazov="arrow-down" velkost={16} /></a>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Do zeme (Juraj 4. 11. 2026): pás preberá od katalógu vlnitú hranu pod úvodom (render úvodu ňou prechádza),
+     katalóg za ním pokračuje rovno. Fotka výkopu vľavo cez okraj obrazovky, text vpravo; kóty z Koty.astro. */
+  .dozeme { position: relative; isolation: isolate; margin-top: calc(-1 * var(--presah-hero)); padding-top: calc(var(--presah-hero) + 72px); padding-bottom: 72px; overflow-x: clip; scroll-margin-top: calc(72px - var(--presah-hero)); }
+  .dozeme::before { content: ""; position: absolute; inset: 0 0 -1px; z-index: -1; background: var(--zem-1);
+    -webkit-mask: var(--hrana-ohyb) left top / 100% var(--presah-hero) no-repeat, linear-gradient(#000 0 0) left var(--presah-hero) / 100% 100% no-repeat;
+    mask: var(--hrana-ohyb) left top / 100% var(--presah-hero) no-repeat, linear-gradient(#000 0 0) left var(--presah-hero) / 100% 100% no-repeat; }
+  .dozeme + :global(.katalog) { margin-top: 0; padding-top: 64px; scroll-margin-top: 72px; }
+  .dozeme + :global(.katalog)::before { -webkit-mask: none; mask: none; }
+  .dozeme-in { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 40px 64px; align-items: center; }
+  .dozeme :global(.dozeme-scena) { margin-left: calc(-1 * var(--bleed)); }
+  .dozeme :global(.dozeme-scena .scena-img) { border-radius: 0 var(--radius-xl) var(--radius-xl) 0; box-shadow: var(--elev-4); }
+  .dozeme-kicker { font-size: 15px; font-weight: 600; color: var(--color-blue-700); }
+  .dozeme h2 { margin-top: 12px; font-size: clamp(30px, 2vw + 16px, 46px); line-height: 1.06; letter-spacing: -0.025em; }
+  .dozeme h2 span { display: block; color: var(--color-blue-700); }
+  .dozeme-p { margin-top: 20px; font-size: 17px; line-height: 1.6; color: var(--color-ink-soft); max-width: 30em; }
+  .dozeme-p strong { color: var(--color-ink); font-weight: 600; }
+  .dozeme-odkaz { margin-top: 24px; }
+  @media (max-width: 900px) {
+    .dozeme { padding-top: calc(var(--presah-hero) + 32px); padding-bottom: 40px; }
+    .dozeme-in { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+    .dozeme :global(.dozeme-scena) { margin-inline: calc(-1 * var(--gutter)); }
+    .dozeme :global(.dozeme-scena .scena-img) { border-radius: 0; }
+  }
+</style>

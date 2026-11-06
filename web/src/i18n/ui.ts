@@ -69,19 +69,19 @@ const sk = {
   home: {
     heroKicker: 'Predizolované potrubia Microflex®',
     h1a: 'Flexibilné potrubie.', h1b: 'Precízne riešenie.',
-    lead: 'Pre vykurovanie, pitnú vodu, chladenie a tepelné čerpadlá.',
+    // Druhá veta je správa niekdajšieho pásu „Do zeme“ (audit domova 6. 11. 2026): hneď v úvode je jasné, kam potrubie patrí.
+    lead: 'Pre vykurovanie, pitnú vodu, chladenie a tepelné čerpadlá. Ukladá sa priamo do zeme a spája sa bez lisu a zvárania.',
     // Hlavná akcia vedie do sprievodcu (rovnako ako položka menu), druhá k dopytu na projekt.
     cta: 'Vybrať potrubie', cta2: 'Dopyt na projekt',
     // Dodávateľ viditeľne pri úvode (Juraj 28. 10.: Microflex je hlavná značka, predáva Inštalatérshop).
     dodavatel: 'Predaj a sklad:', dodavatelOdkaz: 'Inštalatérshop, Raková',
-    // Pás pod úvodom (Juraj 4. 11. 2026, variant B): potrubie ide do zeme a spája sa bez lisu a zvárania.
-    // Zdroj: katalóg výrobcu s. 5 (bez špeciálneho náradia a zvárača, prekážky bez spojok), s. 22 (svorná spojka,
-    // objímka so skrutkou z nehrdzavejúcej ocele), s. 37 (hĺbka 0,5 až 6 m).
+    // Do zeme, bez lisu a zvárania (Juraj 4. 11. 2026, variant B; od auditu 6. 11. 2026 blok v sekcii Pokládka,
+    // pás pod úvodom je v archiv/2026-11-06-domov-pas-do-zeme). Zdroj: katalóg výrobcu s. 5 (bez špeciálneho náradia
+    // a zvárača, prekážky bez spojok), s. 22 (svorná spojka, objímka so skrutkou z nehrdzavejúcej ocele), s. 37 (hĺbka 0,5 až 6 m).
     doZeme: {
-      kicker: 'Pokládka a montáž', h2a: 'Do zeme.', h2b: 'Bez lisu a zvárania.',
+      h2a: 'Do zeme.', h2b: 'Bez lisu a zvárania.',
       p1: ['Potrubie Microflex sa ukladá do pieskového lôžka ', '0,5 až 6 m pod zemou', '. Okolo prekážok sa ohne bez kolien a spojí sa svornými spojkami: ', 'nosnú rúrku zasuniete, objímku dotiahnete skrutkami.'] as string[],
       p2: 'Lisovacie kliešte netreba: podľa katalógu výrobcu montáž nevyžaduje žiadne špeciálne náradie ani zvárača.',
-      odkaz: 'Ako prebieha pokládka',
       alt: 'Potrubie Microflex vo výkope v pieskovom lôžku, ohnuté okolo odbočky so svornými spojkami',
       kotyLabel: 'Čo je na fotke výkopu',
       koty: [['svorná spojka', 'zasunúť a dotiahnuť skrutky'], ['bez kolena', 'rúra sa ohne okolo odbočky'], ['0,5 až 6 m', 'pod zemou, v pieskovom lôžku']] as [string, string][],
@@ -106,11 +106,9 @@ const sk = {
     plast: 'plášť',
     primo: 'Užší plášť pri tej istej rúre',
     celyKatalog: 'Celý katalóg potrubí',
-    // Na obraze je šesť rúr (DUO na vykurovanie aj sanitu), preto nadpis bez počtu.
-    rodinaH2: 'Jedna rodina pre každé médium.',
-    // COOL má nosnú rúru PE 100, nie PE-Xa (katalóg s. 16 až 18). Spoločná je stavba, nie materiál rúry.
-    rodinaP: 'UNO a DUO pre vykurovanie a pitnú vodu, QUADRO pre všetko v jednom plášti, COOL pre chlad, HP pre tepelné čerpadlá. Všetky majú rovnakú stavbu z troch vrstiev.',
-    rodinaAlt: 'Rodina potrubí Microflex vedľa seba: UNO, DUO na vykurovanie aj sanitu, QUADRO, COOL a HP',
+    // Úvod rozloženého rezu na domove preberá myšlienku niekdajšej rodiny (archiv/2026-11-06-domov-rodina).
+    // COOL má nosnú rúru PE 100, nie PE-Xa (katalóg s. 16 až 18): spoločná je stavba, nie materiál rúry.
+    stavbaDomov: 'Všetky systémy Microflex majú rovnakú stavbu z troch vrstiev, každá s vlastnou úlohou. Údaje sú z katalógu výrobcu.',
     // Rez pod lupou: od jadra po plášť. Zdroj: katalóg Watts s. 8 až 18 a 38, brožúra Watts 2026 s. 2.
     lupyLabel: 'Z čoho je potrubie, od nosnej rúry po plášť',
     lupy: [
@@ -120,7 +118,8 @@ const sk = {
     ],
     // Časy a postup: katalóg Watts Microflex, s. 36 (doba inštalácie) a s. 37 (zemné práce).
     pokladkaH2: 'Sto metrov za štyridsať minút.',
-    pokladkaP: 'Za toľko podľa katalógu výrobcu položia traja montážnici stometrový kotúč Microflex UNO alebo DUO v menších dimenziách. Bez zvárania, bez predizolovaných kolien a bez špeciálneho náradia.',
+    // „Bez zvárania“ je v bloku Do zeme pod kotúčom, tu by sa opakovalo (audit domova 6. 11. 2026).
+    pokladkaP: 'Za toľko podľa katalógu výrobcu položia traja montážnici stometrový kotúč Microflex UNO alebo DUO v menších dimenziách.',
     pokladkaAlt: 'Kotúč potrubia Microflex so zvlneným modrým plášťom a sťahovacími páskami',
     krokyLabel: 'Postup pokládky',
     kroky: [
@@ -222,7 +221,7 @@ const sk = {
   novinky: {
     ohyb: {
       h2: 'Ohne sa okolo prekážky.',
-      domov: 'Microflex sa ohýba priamo vo výkope, bez kolien a bez zvárania. DUO s rúrami 2 × 32 mm (DN 25) v plášti 160 mm zvládne oblúk s polomerom 0,60 m, menšie plášte ešte tesnejší: UNO v plášti 75 mm od 0,20 m.',
+      domov: 'Microflex sa ohýba priamo vo výkope, bez kolien. DUO s rúrami 2 × 32 mm (DN 25) v plášti 160 mm zvládne oblúk s polomerom 0,60 m, menšie plášte ešte tesnejší: UNO v plášti 75 mm od 0,20 m.',
       pozn: 'Polomer platí pre os potrubia. Najmenší polomer každej dimenzie je v tabuľke variantov.',
       kota: 'najmenší polomer ohybu',
       alt: (model: string, polomer: string) => `Potrubie ${model} ohnuté do oblúka s polomerom ${polomer} m`,
@@ -312,14 +311,13 @@ const cs: typeof sk = {
   home: {
     heroKicker: 'Předizolované potrubí Microflex®',
     h1a: 'Flexibilní potrubí.', h1b: 'Precizní řešení.',
-    lead: 'Pro vytápění, pitnou vodu, chlazení a tepelná čerpadla.',
+    lead: 'Pro vytápění, pitnou vodu, chlazení a tepelná čerpadla. Ukládá se přímo do země a spojuje se bez lisu a svařování.',
     cta: 'Vybrat potrubí', cta2: 'Poptávka na projekt',
     dodavatel: 'Prodej a sklad:', dodavatelOdkaz: 'Inštalatérshop, Raková',
     doZeme: {
-      kicker: 'Pokládka a montáž', h2a: 'Do země.', h2b: 'Bez lisu a svařování.',
+      h2a: 'Do země.', h2b: 'Bez lisu a svařování.',
       p1: ['Potrubí Microflex se ukládá do pískového lože ', '0,5 až 6 m pod zemí', '. Kolem překážek se ohne bez kolen a spojí se svěrnými spojkami: ', 'nosnou trubku zasunete, objímku dotáhnete šrouby.'] as string[],
       p2: 'Lisovací kleště nejsou potřeba: podle katalogu výrobce montáž nevyžaduje žádné speciální nářadí ani svářeče.',
-      odkaz: 'Jak probíhá pokládka',
       alt: 'Potrubí Microflex ve výkopu v pískovém loži, ohnuté kolem odbočky se svěrnými spojkami',
       kotyLabel: 'Co je na fotce výkopu',
       koty: [['svěrná spojka', 'zasunout a dotáhnout šrouby'], ['bez kolena', 'trubka se ohne kolem odbočky'], ['0,5 až 6 m', 'pod zemí, v pískovém loži']] as [string, string][],
@@ -343,9 +341,7 @@ const cs: typeof sk = {
     plast: 'plášť',
     primo: 'Užší plášť při stejné trubce',
     celyKatalog: 'Celý katalog potrubí',
-    rodinaH2: 'Jedna rodina pro každé médium.',
-    rodinaP: 'UNO a DUO pro vytápění a pitnou vodu, QUADRO pro všechno v jednom plášti, COOL pro chlad, HP pro tepelná čerpadla. Všechny mají stejnou stavbu ze tří vrstev.',
-    rodinaAlt: 'Rodina potrubí Microflex vedle sebe: UNO, DUO pro vytápění i sanitu, QUADRO, COOL a HP',
+    stavbaDomov: 'Všechny systémy Microflex mají stejnou stavbu ze tří vrstev, každá s vlastním úkolem. Údaje jsou z katalogu výrobce.',
     lupyLabel: 'Z čeho je potrubí, od nosné trubky po plášť',
     lupy: [
       { id: 'rura', nazov: 'Nosná trubka', kluc: 'PE-Xa do 95 °C', text: 'Vede topnou, pitnou i chlazenou vodu. PE-Xa podle EN ISO 15875, u vytápění s kyslíkovou bariérou; pro chlad PE 100.' },
@@ -353,7 +349,7 @@ const cs: typeof sk = {
       { id: 'plast', nazov: 'Plášť z HDPE', kluc: 'dvojitá stěna', text: 'Chrání izolaci před vodou, tlakem zeminy i nárazy. Zvlnění s dvojitou stěnou dává potrubí ohebnost.' },
     ],
     pokladkaH2: 'Sto metrů za čtyřicet minut.',
-    pokladkaP: 'Za tuto dobu podle katalogu výrobce položí tři montážníci stometrový kotouč Microflex UNO nebo DUO v menších dimenzích. Bez svařování, bez předizolovaných kolen a bez speciálního nářadí.',
+    pokladkaP: 'Za tuto dobu podle katalogu výrobce položí tři montážníci stometrový kotouč Microflex UNO nebo DUO v menších dimenzích.',
     pokladkaAlt: 'Kotouč potrubí Microflex se zvlněným modrým pláštěm a stahovacími páskami',
     krokyLabel: 'Postup pokládky',
     kroky: [
@@ -447,7 +443,7 @@ const cs: typeof sk = {
   novinky: {
     ohyb: {
       h2: 'Ohne se kolem překážky.',
-      domov: 'Microflex se ohýbá přímo ve výkopu, bez kolen a bez svařování. DUO s trubkami 2 × 32 mm (DN 25) v plášti 160 mm zvládne oblouk o poloměru 0,60 m, menší pláště ještě těsnější: UNO v plášti 75 mm od 0,20 m.',
+      domov: 'Microflex se ohýbá přímo ve výkopu, bez kolen. DUO s trubkami 2 × 32 mm (DN 25) v plášti 160 mm zvládne oblouk o poloměru 0,60 m, menší pláště ještě těsnější: UNO v plášti 75 mm od 0,20 m.',
       pozn: 'Poloměr platí pro osu potrubí. Nejmenší poloměr každé dimenze je v tabulce variant.',
       kota: 'nejmenší poloměr ohybu',
       alt: (model: string, polomer: string) => `Potrubí ${model} ohnuté do oblouku o poloměru ${polomer} m`,

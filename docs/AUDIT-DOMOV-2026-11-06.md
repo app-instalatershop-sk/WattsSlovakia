@@ -3,6 +3,15 @@
 Zadanie (Juraj): „Zamysli sa nad tým, ako sú postupne tie sekcie v domove, nemali by byť inak? Mne to úplne
 nedáva taký zmysluplný flow, prípadne čo odstránim alebo pridáme.“
 
+**Stav:** Juraj 6. 11. odsúhlasil všetky štyri body z kap. 5 a doplnil: „Veci, ktoré by si zmazal, radšej
+archivuj.“ Zavedené v ten istý deň. Rodina a pás Do zeme sú ako samostatné komponenty so snímkami v `archiv/`.
+Výsledok merania po zmene: domov má 11,9 obrazovky na počítači (predtým 13,1) a 15,3 na telefóne (predtým 16).
+Katalóg začína na obrazovke 0,7 (predtým 1,6). Druhé tlačidlo „Vybrať potrubie“ je na obrazovke 9,0 na počítači
+a 10,6 na telefóne (predtým žiadne medzi 0,5 a 12,2). Presah je 0 pri 360 až 1 440 px v SK aj CS, stráž štýlov
+0 nálezov, Lighthouse na telefóne 89, 100, 100 a 100 (rovnako ako predtým). Pri skracovaní dráh sa ukázalo,
+že výška rezu na domove (220 vh od 30. 10.) sa nikdy neprejavila, lebo ju prebíjalo pravidlo komponentu
+(280 vh). Selektor je opravený, rez má teraz 220 vh, ohyb 150 vh a kotúč 145 vh (na telefóne 200, 140 a 135 vh).
+
 Audit hodnotí poradie a úlohu sekcií, nie vzhľad jednotlivých sekcií. Merané na webe zhodnom s nasadeným
 (commit 616bfe4) v Chrome pri 1 440 × 900 a 390 × 844 px. Dĺžky sú v obrazovkách (výška okna), vrátane dráh
 ukážok pri rolovaní. Pri každom zistení je oddelený fakt (zmerané alebo prečítané v kóde) a prečo to vadí.

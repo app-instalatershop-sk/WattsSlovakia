@@ -112,11 +112,12 @@ const pocetVyrobkov = (k: Kategoria) => produkty.filter((p) => p.kategoria === k
 
 <style>
   /* Pás sa podsunie pod spodok hero a má šikmú hornú hranu ako podzemie: vľavo začína pod textom hero,
-     vpravo vyššie, takže ju spodok renderu pretína. Dole ostáva miesto pre render rodiny, ktorý
-     zhora prechádza cez švík do sekcie pod ním. */
-  .katalog { position: relative; isolation: isolate; margin-top: calc(-1 * var(--presah-hero)); padding-top: calc(var(--presah-hero) + 84px); padding-bottom: 200px; scroll-margin-top: calc(72px - var(--presah-hero)); overflow-x: clip; }
-  /* Pás siaha o 1 px pod sekciu: pri zlomkovej výške by medzi ním a rodinou ostala svetlá vlasová škára. */
-  .katalog::before { content: ""; position: absolute; inset: 0 0 -1px; z-index: -1; background: linear-gradient(180deg, var(--zem-1) 0%, var(--zem-2) 100%);
+     vpravo vyššie, takže ju spodok renderu pretína. Od auditu 6. 11. 2026 je pod ním rovno rozložený rez
+     (rodina, ktorej render prechádzal 200 px spodným okrajom, je v archiv/2026-11-06-domov-rodina). */
+  .katalog { position: relative; isolation: isolate; margin-top: calc(-1 * var(--presah-hero)); padding-top: calc(var(--presah-hero) + 84px); padding-bottom: 112px; scroll-margin-top: calc(72px - var(--presah-hero)); overflow-x: clip; }
+  /* Pás siaha o 1 px pod sekciu: pri zlomkovej výške by medzi ním a rezom ostala svetlá vlasová škára. Tón
+     dobehne do --zem-3, ktorým začína rez (predtým tento prechod robila rodina). */
+  .katalog::before { content: ""; position: absolute; inset: 0 0 -1px; z-index: -1; background: linear-gradient(180deg, var(--zem-1) 0%, var(--zem-2) 60%, var(--zem-3) 100%);
     -webkit-mask: var(--hrana-ohyb) left top / 100% var(--presah-hero) no-repeat, linear-gradient(#000 0 0) left var(--presah-hero) / 100% 100% no-repeat;
     mask: var(--hrana-ohyb) left top / 100% var(--presah-hero) no-repeat, linear-gradient(#000 0 0) left var(--presah-hero) / 100% 100% no-repeat; }
   .katalog h2 { margin: 0; font-size: clamp(28px, 2.2vw + 14px, 42px); text-wrap: balance; }
@@ -198,7 +199,7 @@ const pocetVyrobkov = (k: Kategoria) => produkty.filter((p) => p.kategoria === k
 
   /* Tablet: veľká dlaždica cez celú šírku, ostatné po dvoch, sprievodca ako pás. */
   @media (max-width: 1100px) {
-    .katalog { padding-bottom: 140px; }
+    .katalog { padding-bottom: 96px; }
     .kat-hlava { grid-template-columns: minmax(0, 1fr); row-gap: 12px; }
     .dl-vel { grid-column: 1 / -1; }
     .dl-str, .dl-mal, .dl-diel { grid-column: span 6; }
@@ -212,7 +213,7 @@ const pocetVyrobkov = (k: Kategoria) => produkty.filter((p) => p.kategoria === k
   }
   /* Telefón: dlaždice pod sebou, text vľavo a výrobok vpravo, rady pod nimi; veta o použití odpadne. */
   @media (max-width: 760px) {
-    .katalog { padding-top: calc(var(--presah-hero) + 52px); padding-bottom: 100px; }
+    .katalog { padding-top: calc(var(--presah-hero) + 52px); padding-bottom: 72px; }
     .bento { margin-top: 24px; grid-template-columns: minmax(0, 1fr); gap: 12px; }
     .dl-vel, .dl-str, .dl-mal, .dl-diel, .dl-sprievodca { grid-column: 1; }
     .dl-vel, .dl-str, .dl-mal { grid-template-columns: minmax(0, 1fr) 40%; grid-template-rows: auto auto; }

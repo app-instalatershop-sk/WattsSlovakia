@@ -1,0 +1,78 @@
+---
+/**
+ * ARCHÍV (6. 11. 2026): sekcia „Jedna rodina pre každé médium.“ z domova, vybratá z web/src/templates/Domov.astro
+ * po audite domova (docs/AUDIT-DOMOV-2026-11-06.md). Na domove bola od 21. 9. 2026 pod katalógom: render rodiny
+ * zo 6 rúr a pri ňom veta o systémoch; od 28. 10. sa dalo kliknúť na potrubie (RodinaVyber) a otvoril sa jeho rad.
+ * Preč išla, lebo katalóg G2 (5. 11.) ukazuje všetky systémy sám a rodina to hneď pod ním opakovala.
+ *
+ * Obnovenie: skopírovať do web/src/components/RodinaDomov.astro, v Domov.astro vložiť <RodinaDomov lang={lang} />
+ * hneď za <Katalog />, vrátiť texty home.rodinaH2, rodinaP a rodinaAlt do ui.ts (SK aj CS, sú v README) a v
+ * Katalog.astro vrátiť spodný okraj pásu 200 px (render rodiny ním prechádzal, text aj obraz sú vytiahnuté hore).
+ * Komponent RodinaVyber, funkcia rodinaNaTuknutie a texty novinky.rodina ostali na webe (používa ich stránka Potrubia).
+ */
+import Obraz from './Obraz.astro';
+import RodinaVyber from './RodinaVyber.astro';
+import { getCollection } from 'astro:content';
+import { fotka, render3d } from '../lib/obrazky';
+import { rodinaNaTuknutie } from '../lib/novinky';
+import { sadzba } from '../lib/sadzba';
+import { type Lang, t } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const ui = t(lang);
+const h = ui.home as typeof ui.home & { rodinaH2: string; rodinaP: string; rodinaAlt: string };
+const nv = ui.novinky;
+const rady = (await getCollection('rady')).map((r) => r.data);
+const rodina3d = render3d('rodina', 'rodina');
+const rodina = rodina3d ?? fotka('rodina-potrubi.png')!;
+const rodinaTuk = rodina3d ? await rodinaNaTuknutie(rady, rodina3d, lang) : null;
+---
+<section class="section rodina" aria-labelledby="h-rodina">
+  <div class="wrap rodina-grid">
+    <div class="rodina-text">
+      <h2 id="h-rodina">{h.rodinaH2}</h2>
+      <p class="lead">{sadzba(h.rodinaP)}</p>
+      {rodinaTuk && <p class="rodina-hint"><span class="len-mys">{nv.rodina.hint.mys}</span><span class="len-dotyk">{nv.rodina.hint.dotyk}</span></p>}
+    </div>
+    <div class:list={['rodina-obraz', { je3d: rodina3d }]}>
+      <div class="rodina-wrap">
+        <Obraz src={rodina} alt={h.rodinaAlt} widths={[800, 1200, 1633]} sizes="(max-width: 1100px) 100vw, 64vw" class="rodina-img" />
+        {rodinaTuk && <RodinaVyber data={rodinaTuk.data} obraz={rodinaTuk.svetlo} systemy={rodinaTuk.systemy} label={nv.rodina.systemy} pozriet={nv.rodina.pozriet} />}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ---------- Rodina: render prechádza cez švík z modrého pásu do bielej ---------- */
+  /* Pod rodinou hneď pokračoval rozložený rez, preto len malý spodný okraj. */
+  .rodina { background: linear-gradient(180deg, var(--zem-2) 0%, var(--zem-3) 100%); padding-top: 0; padding-bottom: 24px; overflow-x: clip; overflow-y: visible; }
+  .rodina-grid { position: relative; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px; align-items: start; }
+  /* Text rodiny začína vyššie, v páse, cez ktorý prechádza render (pás katalógu mal dole 200 px pre jeho
+     presah); vľavo by inak ostala prázdna plocha (DOLADENIE kap. 2.4, bod 4). */
+  .rodina-text { position: relative; z-index: 3; margin-top: -96px; }
+  .rodina-text h2 { margin-bottom: 16px; }
+  .rodina-text .lead { max-width: 30em; }
+  /* Render je veľký a vždy dobehne za pravý okraj obrazovky, aj na širokom monitore. */
+  .rodina-obraz { width: max(146%, calc(104% + var(--bleed) + 24px)); max-width: none; margin: -196px 0 0 -4%; position: relative; z-index: 2; }
+  .rodina-wrap { position: relative; filter: drop-shadow(0 28px 36px rgb(11 27 51 / 0.2)); }
+  .rodina-hint { margin-top: 12px; font-size: 14px; color: var(--color-ink-soft); }
+  .rodina-wrap :global(.rodina-img) { width: 100%; height: auto; display: block; -webkit-mask-image: linear-gradient(to top right, #000 66%, transparent 97%); mask-image: linear-gradient(to top right, #000 66%, transparent 97%); }
+  /* Rodina z 3D modelu: celé telá a vlastný kontaktný tieň, bez doznenia a bez tieňa z CSS. Na počítači
+     sa zmestí celá (text menuje aj COOL a HP, tie by za okrajom chýbali), vpravo do okraja obrazovky. */
+  .rodina-obraz.je3d .rodina-wrap { filter: none; }
+  .rodina-obraz.je3d :global(.rodina-img) { -webkit-mask-image: none; mask-image: none; }
+  @media (min-width: 1101px) { .rodina-obraz.je3d { width: calc(100% + var(--bleed) - 16px); margin: -180px 0 0 -1%; } }
+  @media (max-width: 1100px) {
+    .rodina-grid { grid-template-columns: 1fr; }
+    /* Render rodiny dobehne za pravý okraj obrazovky ako na počítači: rúry sú v renderi zrezané
+       vpravo a na okraji mriežky by bolo rez vidno. */
+    .rodina-obraz { width: calc(100% + var(--gutter)); margin: -120px calc(-1 * var(--gutter)) 0 0; grid-row: 1; }
+    .rodina-text { padding-top: 24px; margin-top: 0; }
+  }
+  @media (max-width: 760px) {
+    .rodina { padding-bottom: 16px; }
+    .rodina-obraz { margin-top: -72px; }
+  }
+</style>

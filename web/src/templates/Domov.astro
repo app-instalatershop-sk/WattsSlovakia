@@ -12,10 +12,9 @@ import { kategorie, cislo, dnVariantu } from '../lib/katalog';
 import { fotka, fotkaReferencie, render3d, maska3d, rozkladRadu, makroRury, ohybRadu, kotuc as kotucData } from '../lib/obrazky';
 import Rozklad from '../components/Rozklad.astro';
 import Ohyb from '../components/Ohyb.astro';
-import RodinaVyber from '../components/RodinaVyber.astro';
 import KotucSekvencia from '../components/KotucSekvencia.astro';
-import { rodinaNaTuknutie } from '../lib/novinky';
 import { stranky } from '../content/stranky';
+import { faq } from '../content/faq';
 import { clanky } from '../content/clanky';
 import rendery from '../data/rendery.json';
 import { sadzba } from '../lib/sadzba';
@@ -46,16 +45,15 @@ const hero3d = render3d('hero', 'duo');
 const heroRez = hero3d ?? fotka('hero-rez-duo.png')!;
 const heroBody = hero3d ? (rendery.hero as Record<string, { plast?: number[]; rura?: number[]; ohyb?: number[]; stred?: number[] }>).duo : undefined;
 const heroMaska = hero3d ? maska3d(hero3d) : undefined;
-const rodina3d = render3d('rodina', 'rodina');
-const rodina = rodina3d ?? fotka('rodina-potrubi.png')!;
-// Novinky z 3D modelu (Juraj 28. 10. 2026): rodina na ťuknutie a ohyb DUO na najmenší polomer.
+// Novinky z 3D modelu (Juraj 28. 10. 2026): ohyb DUO na najmenší polomer a kotúč. Rodina na ťuknutie bola na domove
+// do 6. 11. 2026 (archiv/2026-11-06-domov-rodina), ostáva na stránke Potrubia.
 const nv = ui.novinky;
-const rodinaTuk = rodina3d ? await rodinaNaTuknutie(rady, rodina3d, lang) : null;
 const ohybDomov = ohybRadu('microflex-duo-6-bar');
 const odvalenie = kotucData()?.odvalenie;
 const clanokPokladka = clanky(lang).find((c) => c.slug.startsWith('pokladka'));
 const kotuc = fotka('kotuc.jpg')!;
-// Pás „Do zeme“: skutočná fotka výkopu so svornými spojkami; body kót v percentách fotky (fotka sa neorezáva).
+// Do zeme: skutočná fotka výkopu so svornými spojkami v sekcii Pokládka (do 6. 11. 2026 samostatný pás pod úvodom,
+// archiv/2026-11-06-domov-pas-do-zeme). Body kót v percentách fotky (fotka sa neorezáva).
 const vykop = fotka('vykop-spojky.jpg')!;
 const kotyDoZeme = h.doZeme.koty.map(([hodnota, text], i) => ({ hodnota, text, ...[
   // spojka na T-kuse (na telefóne štítok dole vľavo, inak by vyšiel z fotky), ohyb rúry, spodná rúra v piesku
@@ -80,6 +78,10 @@ const kotyStavenisko = sPovazska.koty;
 // v poradí, v akom sa pri rolovaní oddelia), makrá materiálov z 3D modelu, keď sú.
 const rozklad = rozkladRadu('microflex-duo-6-bar');
 const tx = stranky(lang).rad;
+// Otázky pred výberom (audit domova 6. 11. 2026): päť z otázok pri kategóriách (content/faq.ts), od montáže
+// po výber. Štruktúrované dáta FAQPage ostávajú len na stránkach kategórií, Google chce označiť jeden výskyt.
+const OTAZKY_DOMOV: [string, number][] = [['vykurovanie', 2], ['vykurovanie', 0], ['vykurovanie', 1], ['tepelne-cerpadla', 0], ['studena-a-chladena-voda', 0]];
+const otazkyDomov = OTAZKY_DOMOV.map(([kat, i]) => faq(kat, lang)[i]).filter(Boolean);
 const vrstvyRozkladu = (['plast', 'pena', 'rura'] as const).map((id) => ({ ...h.lupy.find((l) => l.id === id)!, img: id === 'rura' ? makroRury('vykurovanie') : render3d('makra', id) }));
 // Odlesk po plášti: maska je samotný render, svetlo tak prejde len po výrobku, nie po pozadí.
 // Ten istý súbor ako 760 px AVIF v srcset obrázka (Obraz.astro), na mobile sa teda nesťahuje druhýkrát.
@@ -144,42 +146,13 @@ const skratky = [
     </div>
   </section>
 
-  {/* Do zeme, bez lisu a zvárania (Juraj 4. 11. 2026): hneď pod úvodom, aby bolo jasné, kam potrubie patrí
-      a ako jednoducho sa spája. Fotka vľavo cez okraj obrazovky ako na stránke Pre firmy, text vpravo. */}
-  <section class="dozeme" aria-labelledby="h-dozeme">
-    <div class="wrap dozeme-in">
-      <Scena class="dozeme-scena" obraz={vykop} alt={h.doZeme.alt} koty={kotyDoZeme} label={h.doZeme.kotyLabel} widths={[640, 960, 1280, 1600]} sizes="(max-width: 900px) 100vw, 58vw" priorita="low" />
-      <div class="dozeme-text">
-        <p class="dozeme-kicker">{h.doZeme.kicker}</p>
-        <h2 id="h-dozeme">{h.doZeme.h2a} <span>{h.doZeme.h2b}</span></h2>
-        <p class="dozeme-p">{h.doZeme.p1.map((kus, i) => (i % 2 ? <strong>{sadzba(kus)}</strong> : sadzba(kus)))}</p>
-        <p class="dozeme-p">{sadzba(h.doZeme.p2)}</p>
-        <a class="odkaz dozeme-odkaz" href="#pokladka">{h.doZeme.odkaz} <Ikona nazov="arrow-down" velkost={16} /></a>
-      </div>
-    </div>
-  </section>
-
+  {/* Poradie po audite 6. 11. 2026 (docs/AUDIT-DOMOV-2026-11-06.md): čo to je → čo máme → z čoho je → čo vie →
+      ako sa kladie → otázky a ďalší krok → kde už leží → pre firmy. Pás „Do zeme“ a rodina sú v archiv/. */}
   <Katalog lang={lang} />
 
-  <section class="section rodina" aria-labelledby="h-rodina">
-    <div class="wrap rodina-grid">
-      <div class="rodina-text">
-        <h2 id="h-rodina">{h.rodinaH2}</h2>
-        <p class="lead">{sadzba(h.rodinaP)}</p>
-        {rodinaTuk && <p class="rodina-hint"><span class="len-mys">{nv.rodina.hint.mys}</span><span class="len-dotyk">{nv.rodina.hint.dotyk}</span></p>}
-      </div>
-      <div class:list={['rodina-obraz', { je3d: rodina3d }]}>
-        <div class="rodina-wrap">
-          <Obraz src={rodina} alt={h.rodinaAlt} widths={[800, 1200, 1633]} sizes="(max-width: 1100px) 100vw, 64vw" class="rodina-img" />
-          {rodinaTuk && <RodinaVyber data={rodinaTuk.data} obraz={rodinaTuk.svetlo} systemy={rodinaTuk.systemy} label={nv.rodina.systemy} pozriet={nv.rodina.pozriet} />}
-        </div>
-      </div>
-    </div>
-  </section>
-
   {/* Rozložený rez (Juraj 26. 10. 2026 namiesto „rezu pod lupou“): vlastný 3D model DUO sa pri rolovaní
-      rozloží na plášť, penu a nosné rúry, pri každej vrstve kóta. Kým nie sú snímky, ostáva len rodina. */}
-  {rozklad && <Rozklad id="konstrukcia" class="rozklad-domov" data={rozklad} nadpis={tx.stavbaH2} popis={tx.stavbaP} vrstvy={vrstvyRozkladu} alt={tx.rozkladAlt('Microflex DUO')} label={h.lupyLabel} />}
+      rozloží na plášť, penu a nosné rúry, pri každej vrstve kóta. Úvod preberá myšlienku niekdajšej rodiny. */}
+  {rozklad && <Rozklad id="konstrukcia" class="rozklad-domov" data={rozklad} nadpis={tx.stavbaH2} popis={h.stavbaDomov} vrstvy={vrstvyRozkladu} alt={tx.rozkladAlt('Microflex DUO')} label={h.lupyLabel} />}
 
   {/* Ohyb (Juraj 28. 10. 2026): dôkaz hlavnej vety, že potrubie sa ohne okolo prekážky; medzi stavbou
       potrubia a pokládkou: z čoho je, ako sa ohne, ako sa kladie. */}
@@ -197,13 +170,6 @@ const skratky = [
           <p class="pk-pozn">{h.pokladkaZdroj}</p>
         </div>
         <KotucSekvencia data={odvalenie} texty={{ priemer: nv.kotuc.priemer, ostava: nv.kotuc.ostava, label: nv.kotuc.label }} celo={['2 × Ø 25 mm', 'DUO DN 20 v plášti 125 mm']} alt={nv.kotuc.alt} kroky={h.kroky} krokyLabel={h.krokyLabel} />
-        <div class="wrap">
-          <div class="pokladka-pata">
-            <p class="zataz"><strong>{h.zataz[0]}</strong><span>{sadzba(h.zataz[1])}</span></p>
-            {/* Podrobný postup je v článku Poradne, na domove len prehľad (Juraj 28. 10.). */}
-            <p class="zdroj">{clanokPokladka && <a class="zdroj-clanok" href={`${route(lang, 'poradna')}${clanokPokladka.slug}/`}>{h.pokladkaClanok} <Ikona nazov="arrow-right" velkost={14} /></a>}<a href={`${KATALOG_PDF}#page=36`} target="_blank" rel="noopener">{h.pokladkaOdkaz} <Ikona nazov="arrow-up-right" velkost={14} /></a></p>
-          </div>
-        </div>
       </>
     ) : (
       <>
@@ -224,15 +190,45 @@ const skratky = [
                 ))}
               </ol>
             </div>
-            <div class="pokladka-pata">
-              <p class="zataz"><strong>{h.zataz[0]}</strong><span>{sadzba(h.zataz[1])}</span></p>
-              <p class="zdroj"><a href={`${KATALOG_PDF}#page=37`} target="_blank" rel="noopener">{h.pokladkaOdkaz} <Ikona nazov="arrow-up-right" velkost={14} /></a></p>
-            </div>
           </div>
         </div>
       </>
     )}
+    {/* Do zeme, bez lisu a zvárania (Juraj 4. 11. 2026; po audite 6. 11. tu, kam patrí obsahom): fotka výkopu
+        so svornými spojkami je dôkaz kroku Spojky a skúška, pri nej hĺbka uloženia a zaťaženie z katalógu s. 37.
+        Fotka vľavo cez okraj obrazovky, text vpravo. */}
+    <div class="wrap pk-zem">
+      <Scena class="pk-zem-scena" obraz={vykop} alt={h.doZeme.alt} koty={kotyDoZeme} label={h.doZeme.kotyLabel} widths={[640, 960, 1280, 1600]} sizes="(max-width: 900px) 100vw, 58vw" priorita="low" />
+      <div class="pk-zem-text">
+        <h3>{h.doZeme.h2a} <span>{h.doZeme.h2b}</span></h3>
+        <p>{h.doZeme.p1.map((kus, i) => (i % 2 ? <strong>{sadzba(kus)}</strong> : sadzba(kus)))}</p>
+        <p>{sadzba(h.doZeme.p2)}</p>
+        <p class="zataz"><strong>{h.zataz[0]}</strong><span>{sadzba(h.zataz[1])}</span></p>
+        {/* Podrobný postup je v článku Poradne, na domove len prehľad (Juraj 28. 10.). */}
+        <p class="zdroj">{clanokPokladka && <a class="zdroj-clanok" href={`${route(lang, 'poradna')}${clanokPokladka.slug}/`}>{h.pokladkaClanok} <Ikona nazov="arrow-right" velkost={14} /></a>}<a href={`${KATALOG_PDF}#page=36`} target="_blank" rel="noopener">{h.pokladkaOdkaz} <Ikona nazov="arrow-up-right" velkost={14} /></a></p>
+      </div>
+    </div>
   </section>
+
+  {/* Otázky pred výberom a ďalší krok (audit 6. 11. 2026): po ukážkach a pokládke čitateľ dostane odpovede
+      a akciu; predtým bolo ďalšie tlačidlo za úvodom až v sekcii Pre firmy. Otázky sú z content/faq.ts. */}
+  {otazkyDomov.length > 0 && (
+    <section id="otazky" class="otazky" aria-labelledby="h-otazky">
+      <div class="wrap otazky-grid">
+        <div class="otazky-hlava">
+          <h2 id="h-otazky">{ui.kategoria.faqH2}</h2>
+          <p class="lead">{ui.kategoria.faqP} <a href={route(lang, 'kontakt')}>{ui.kategoria.faqNapisat}</a>.</p>
+        </div>
+        <div class="otazky-zoznam harok">
+          {otazkyDomov.map((o) => <details><summary>{o.q}</summary><p>{sadzba(o.a)}</p></details>)}
+        </div>
+        <div class="otazky-akcie">
+          <a class="btn btn-yellow btn-lg" href={route(lang, 'vyber')}>{h.cta} <Ikona nazov="arrow-right" velkost={18} /></a>
+          <a class="otazky-odkaz" href={`${route(lang, 'firmy')}#dopyt`}>{h.cta2}</a>
+        </div>
+      </div>
+    </section>
+  )}
 
   {/* Podzemie: posledný úsek stránky je tmavý ako zem, do ktorej potrubie ide. Fotka prvého
       projektu prekračuje šikmú hranu, takže svetlá a tmavá časť nie sú dva bloky, ale jeden prechod. */}
@@ -340,29 +336,6 @@ const skratky = [
   .hero-skratky a:hover { color: var(--color-blue-700); border-top-color: currentColor; }
   .hero-skratky :global(svg) { flex: none; width: 16px; height: 16px; color: var(--color-blue-700); }
 
-  /* Do zeme (Juraj 4. 11. 2026): pás preberá od katalógu vlnitú hranu pod úvodom (render úvodu ňou prechádza),
-     katalóg za ním pokračuje rovno. Fotka výkopu vľavo cez okraj obrazovky, text vpravo; kóty z Koty.astro. */
-  .dozeme { position: relative; isolation: isolate; margin-top: calc(-1 * var(--presah-hero)); padding-top: calc(var(--presah-hero) + 72px); padding-bottom: 72px; overflow-x: clip; scroll-margin-top: calc(72px - var(--presah-hero)); }
-  .dozeme::before { content: ""; position: absolute; inset: 0 0 -1px; z-index: -1; background: var(--zem-1);
-    -webkit-mask: var(--hrana-ohyb) left top / 100% var(--presah-hero) no-repeat, linear-gradient(#000 0 0) left var(--presah-hero) / 100% 100% no-repeat;
-    mask: var(--hrana-ohyb) left top / 100% var(--presah-hero) no-repeat, linear-gradient(#000 0 0) left var(--presah-hero) / 100% 100% no-repeat; }
-  .dozeme + :global(.katalog) { margin-top: 0; padding-top: 64px; scroll-margin-top: 72px; }
-  .dozeme + :global(.katalog)::before { -webkit-mask: none; mask: none; }
-  .dozeme-in { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 40px 64px; align-items: center; }
-  .dozeme :global(.dozeme-scena) { margin-left: calc(-1 * var(--bleed)); }
-  .dozeme :global(.dozeme-scena .scena-img) { border-radius: 0 var(--radius-xl) var(--radius-xl) 0; box-shadow: var(--elev-4); }
-  .dozeme-kicker { font-size: 15px; font-weight: 600; color: var(--color-blue-700); }
-  .dozeme h2 { margin-top: 12px; font-size: clamp(30px, 2vw + 16px, 46px); line-height: 1.06; letter-spacing: -0.025em; }
-  .dozeme h2 span { display: block; color: var(--color-blue-700); }
-  .dozeme-p { margin-top: 20px; font-size: 17px; line-height: 1.6; color: var(--color-ink-soft); max-width: 30em; }
-  .dozeme-p strong { color: var(--color-ink); font-weight: 600; }
-  .dozeme-odkaz { margin-top: 24px; }
-  @media (max-width: 900px) {
-    .dozeme { padding-top: calc(var(--presah-hero) + 32px); padding-bottom: 40px; }
-    .dozeme-in { grid-template-columns: minmax(0, 1fr); gap: 32px; }
-    .dozeme :global(.dozeme-scena) { margin-inline: calc(-1 * var(--gutter)); }
-    .dozeme :global(.dozeme-scena .scena-img) { border-radius: 0; }
-  }
   /* Rúra prekračuje pravý okraj obsahovej mriežky až za okraj obrazovky. */
   /* Render sedí na spodku hero, takže jeho dolná časť pretne šikmú hranu pásu katalógu. */
   .hero-product { grid-area: obraz; position: relative; z-index: 2; align-self: end; margin-left: -9%;
@@ -448,16 +421,16 @@ const skratky = [
   @keyframes ciaraY { from { transform: scaleY(0); } to { transform: scaleY(1); } }
   @keyframes pulz { 0% { opacity: 0.9; transform: scale(0.6); } 100% { opacity: 0; transform: scale(2.4); } }
 
-  /* ---------- Rodina: render prechádza cez švík z modrého pásu do bielej ---------- */
-  /* Pod rodinou hneď pokračuje rozložený rez (lupy sú preč), preto len malý spodný okraj. */
-  .rodina { background: linear-gradient(180deg, var(--zem-2) 0%, var(--zem-3) 100%); padding-top: 0; padding-bottom: 24px; overflow-x: clip; overflow-y: visible; }
-  /* Rozložený rez pokračuje zostupom pod zem: rovnaký tón ako koniec rodiny a začiatok pokládky. */
+  /* ---------- Ukážky pri rolovaní: rozložený rez, ohyb, kotúč ---------- */
+  /* Rozložený rez pokračuje zostupom pod zem: rovnaký tón ako koniec pásu katalógu a začiatok pokládky. */
   :global(.rozklad.rozklad-domov) { background: var(--zem-3); --rz-neaktivna-opacity: 1; }
-  /* Kratšia cesta na domove; detailné stránky si ponechávajú vlastné tempo ukážok. */
+  /* Kratšia cesta na domove (audit 6. 11. 2026: ohyb 180 → 150 vh, kotúč 175 → 145 vh); detailné stránky si
+     ponechávajú vlastné tempo ukážok. Rez potrebuje selektor s prvkom: Rozklad.astro má výšku 280 vh v pravidle
+     s rovnakou silou, ktoré sa načíta neskôr, takže 220 vh z 30. 10. sa doteraz neprejavilo (meranie 6. 11.). */
   @media (prefers-reduced-motion: no-preference) {
-    :global(.rozklad.rozklad-domov) { height: 220vh; }
-    :global(.ohyb.ohyb-domov) { height: 180vh; }
-    .pokladka.ma-kotuc :global(.ks) { height: 175vh; }
+    :global(section.rozklad.rozklad-domov) { height: 220vh; }
+    :global(.ohyb.ohyb-domov) { height: 150vh; }
+    .pokladka.ma-kotuc :global(.ks) { height: 145vh; }
   }
   /* Text ostáva čitateľný aj pred zvýraznením vrstvy alebo kroku. */
   .pokladka { --ks-neaktivny-opacity: 1; }
@@ -474,26 +447,10 @@ const skratky = [
     -webkit-mask: var(--hrana-ohyb) center / 100% 100% no-repeat; mask: var(--hrana-ohyb) center / 100% 100% no-repeat; }
   /* Pri obmedzenom pohybe sekcia nelepí a obsah má len 64 px okraj; hrana býva až 96 px. */
   @media (prefers-reduced-motion: reduce) { :global(.ohyb.ohyb-domov .oh-sticky) { padding-block: calc(var(--sikmina-zaver) + 40px); } }
-  .rodina-grid { position: relative; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px; align-items: start; }
-  /* Text rodiny začína vyššie, v páse, cez ktorý prechádza render (pás katalógu má dole 200 px pre jeho
-     presah); vľavo by inak ostala prázdna plocha (DOLADENIE kap. 2.4, bod 4). */
-  .rodina-text { position: relative; z-index: 3; margin-top: -96px; }
-  .rodina-text h2 { margin-bottom: 16px; }
-  .rodina-text .lead { max-width: 30em; }
-  /* Render je veľký a vždy dobehne za pravý okraj obrazovky, aj na širokom monitore. */
-  .rodina-obraz { width: max(146%, calc(104% + var(--bleed) + 24px)); max-width: none; margin: -196px 0 0 -4%; position: relative; z-index: 2; }
-  .rodina-wrap { position: relative; filter: drop-shadow(0 28px 36px rgb(11 27 51 / 0.2)); }
-  .rodina-hint { margin-top: 12px; font-size: 14px; color: var(--color-ink-soft); }
-  .rodina-wrap :global(.rodina-img) { width: 100%; height: auto; display: block; -webkit-mask-image: linear-gradient(to top right, #000 66%, transparent 97%); mask-image: linear-gradient(to top right, #000 66%, transparent 97%); }
-  /* Rodina z 3D modelu: celé telá a vlastný kontaktný tieň, bez doznenia a bez tieňa z CSS. Na počítači
-     sa zmestí celá (text menuje aj COOL a HP, tie by za okrajom chýbali), vpravo do okraja obrazovky. */
-  .rodina-obraz.je3d .rodina-wrap { filter: none; }
-  .rodina-obraz.je3d :global(.rodina-img) { -webkit-mask-image: none; mask-image: none; }
-  @media (min-width: 1101px) { .rodina-obraz.je3d { width: calc(100% + var(--bleed) - 16px); margin: -180px 0 0 -1%; } }
 
 
   /* ---------- Pokládka: kotúč vľavo cez okraj obrazovky, text v jeho vnútri ---------- */
-  .pokladka { position: relative; overflow: hidden; padding-top: 112px; padding-bottom: 232px; isolation: isolate; background: linear-gradient(180deg, var(--zem-3) 0%, var(--zem-4) 100%); }
+  .pokladka { position: relative; overflow: hidden; padding-top: 112px; padding-bottom: 96px; isolation: isolate; background: linear-gradient(180deg, var(--zem-3) 0%, var(--zem-4) 100%); }
   /* Obal je celá plocha sekcie: maska na ňom rozpustí kotúč hore aj dole v páse, nech je obrázok
      akokoľvek vysoký. Násobenie je tiež na obale, lebo obrázok v samostatnej vrstve by sa miešal
      len s prázdnom a biela by ostala biela. */
@@ -521,7 +478,6 @@ const skratky = [
   /* Ohyb a kotúč sú jedna kapitola o pokládke (Juraj 28. 10.): kotúč nadväzuje na ohyb bez veľkej medzery.
      Medzera je len taká, aby nadpis vľavo neprilipol k tmavému ohybu (hrana tam siaha až po spodok sekcie). */
   .pokladka.ma-kotuc { padding-top: clamp(40px, 2.5vw + 32px, 72px); overflow: clip; }
-  .pokladka.ma-kotuc .pokladka-pata { margin-top: 8px; }
   .pokladka-text { grid-column: 7 / 13; }
   .pokladka h2 { font-size: clamp(32px, 3vw + 12px, 58px); line-height: 1.04; letter-spacing: -0.03em; max-width: 11em; }
   .pokladka .lead { margin-top: 24px; max-width: 32em; }
@@ -540,7 +496,16 @@ const skratky = [
   .kroky-obal.is-ready li { transition: opacity 300ms var(--ease-soft); }
   .kroky-obal.is-ready li:not(.is-on) { opacity: 0.6; }
 
-  .pokladka-pata { margin-top: 36px; padding-top: 24px; border-top: 1px solid rgb(10 42 94 / 0.14); display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 28px; }
+  /* Do zeme: fotka výkopu vľavo cez okraj obrazovky (ako na stránke Pre firmy), text vpravo; kóty z Koty.astro. */
+  .pk-zem { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 40px 64px; align-items: center; margin-top: 64px; }
+  .pk-zem :global(.pk-zem-scena) { margin-left: calc(-1 * var(--bleed)); }
+  .pk-zem :global(.pk-zem-scena .scena-img) { border-radius: 0 var(--radius-xl) var(--radius-xl) 0; box-shadow: var(--elev-4); }
+  .pk-zem h3 { font-size: clamp(28px, 1.6vw + 16px, 40px); line-height: 1.08; letter-spacing: -0.025em; }
+  .pk-zem h3 span { display: block; color: var(--color-blue-700); }
+  .pk-zem-text > p:not(.zataz):not(.zdroj) { margin-top: 16px; font-size: 17px; line-height: 1.6; color: var(--color-ink-soft); max-width: 30em; }
+  .pk-zem-text strong { color: var(--color-ink); font-weight: 600; }
+  .pk-zem .zataz { margin-top: 24px; }
+  .pk-zem .zdroj { margin-top: 16px; }
   .zataz { display: flex; align-items: baseline; gap: 12px; }
   .zataz strong { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 28px; letter-spacing: -0.02em; color: var(--color-blue-900); white-space: nowrap; }
   .zataz span { font-size: 15px; color: var(--color-ink-soft); }
@@ -548,6 +513,26 @@ const skratky = [
   .zdroj a { display: inline-flex; align-items: center; gap: 4px; font-weight: 500; }
   .zdroj .zdroj-clanok { font-size: 15px; font-weight: 600; }
   .zdroj :global(svg) { width: 14px; height: 14px; }
+
+  /* ---------- Otázky pred výberom a ďalší krok (audit 6. 11. 2026) ---------- */
+  /* Pokračuje tón konca pokládky. Dole ostáva miesto pre šikmú hranu podzemia a fotku projektu, ktorá ju
+     prekračuje (predtým bolo pod pokládkou). Rozbaľovanie má rovnaký vzhľad ako otázky na stránkach kategórií. */
+  .otazky { position: relative; padding-top: 32px; padding-bottom: 232px; background: var(--zem-4); }
+  .otazky-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); grid-template-areas: "hlava zoznam" "akcie zoznam"; gap: 24px 64px; align-items: start; }
+  .otazky-hlava { grid-area: hlava; }
+  .otazky-hlava h2 { font-size: clamp(28px, 2.2vw + 14px, 42px); }
+  .otazky-hlava .lead { margin-top: 16px; max-width: 26em; }
+  .otazky-hlava .lead a { font-weight: 600; }
+  .otazky-zoznam { grid-area: zoznam; padding: 4px 24px; }
+  .otazky-zoznam details + details { border-top: 1px solid rgb(10 42 94 / 0.1); }
+  .otazky-zoznam summary { cursor: pointer; display: flex; justify-content: space-between; gap: 16px; padding: 16px 0; font-weight: 600; font-size: 17px; list-style: none; }
+  .otazky-zoznam summary::-webkit-details-marker { display: none; }
+  .otazky-zoznam summary::after { content: "+"; flex: none; color: var(--color-blue-700); font-weight: 400; font-size: 22px; line-height: 1; transition: transform 200ms var(--ease-soft); }
+  .otazky-zoznam details[open] summary::after { transform: rotate(45deg); }
+  .otazky-zoznam details p { padding-bottom: 16px; font-size: 16px; line-height: 1.6; color: var(--color-ink-soft); max-width: 40em; }
+  .otazky-akcie { grid-area: akcie; display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; }
+  .otazky-odkaz { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; text-decoration: underline; text-underline-offset: 5px; }
+  @media (prefers-reduced-motion: reduce) { .otazky-zoznam summary::after { transition: none; } }
 
   /* ---------- Podzemie: referencie a pre firmy na tmavom, šikmá horná hrana ---------- */
   .podzemie { --sikmina: clamp(28px, 5vw, 96px); position: relative; overflow-x: clip; margin-top: calc(-1 * var(--sikmina)); padding-top: calc(var(--sikmina) + 8px); margin-bottom: -96px; padding-bottom: 112px; color: #fff; }
@@ -611,11 +596,7 @@ const skratky = [
   @media (max-width: 1100px) {
     .hero-in { grid-template-columns: minmax(0, 46fr) minmax(0, 54fr); }
     .hero h1 { font-size: clamp(34px, 3.4vw + 10px, 50px); }
-    .rodina-grid { grid-template-columns: 1fr; }
-    /* Render rodiny dobehne za pravý okraj obrazovky ako na počítači: rúry sú v renderi zrezané
-       vpravo a na okraji mriežky by bolo rez vidno. */
-    .rodina-obraz { width: calc(100% + var(--gutter)); margin: -120px calc(-1 * var(--gutter)) 0 0; grid-row: 1; }
-    .rodina-text { padding-top: 24px; margin-top: 0; }
+    .otazky-grid { grid-template-columns: minmax(0, 1fr); grid-template-areas: "hlava" "zoznam" "akcie"; }
     .proj-hlava { grid-template-columns: minmax(0, 1fr); }
     .proj-nasa :global(.proj-foto) { grid-column: 1 / 8; }
     .proj-nasa .proj-text { grid-column: 8 / 13; }
@@ -633,6 +614,9 @@ const skratky = [
       mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 60%, transparent 100%); }
     .kotuc-obal :global(.kotuc) { --w: max(620px, 104vw); left: calc(-0.18 * var(--w)); top: calc(-0.1 * var(--w)); }
     .pokladka-text { grid-column: 1 / -1; max-width: 640px; }
+    .pk-zem { grid-template-columns: minmax(0, 1fr); gap: 32px; margin-top: 48px; }
+    .pk-zem :global(.pk-zem-scena) { margin-inline: calc(-1 * var(--gutter)); }
+    .pk-zem :global(.pk-zem-scena .scena-img) { border-radius: 0; }
   }
 
   /* ---------- Telefón ---------- */
@@ -655,11 +639,12 @@ const skratky = [
     .hero-skratky ul { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 20px; }
     .hero-skratky a { min-height: 48px; font-size: 14px; }
     :global(#konstrukcia), #pokladka, #projekty { scroll-margin-top: 88px; }
-    /* Popisy na telefóne: kratšie čiary a menšie písmo, aby sa zmestili okolo renderu. */
-    .rodina { padding-bottom: 16px; }
-    .rodina-obraz { margin-top: -72px; }
     /* Kotúč ide nad text ako pás, jeho vnútro je pod ním. */
-    .pokladka { padding-bottom: 168px; }
+    .pokladka { padding-bottom: 72px; }
+    .otazky { padding-top: 16px; padding-bottom: 168px; }
+    .otazky-zoznam { padding: 4px 16px; }
+    .otazky-zoznam summary { font-size: 16px; }
+    .otazky-akcie .btn-lg { height: 52px; padding-inline: 20px; font-size: 16px; }
     .kroky-obal { margin-top: 32px; }
     .podzemie { padding-bottom: 88px; }
     /* Telefón: projekt pod sebou, najprv fotka cez celú šírku, hneď pod ňou jej text. */
@@ -672,8 +657,8 @@ const skratky = [
     .podpora-sluzby { grid-template-columns: minmax(0, 1fr); gap: 28px; }
   }
   @media (max-width: 900px) and (prefers-reduced-motion: no-preference) {
-    :global(.rozklad.rozklad-domov) { height: 200vh; }
-    :global(.ohyb.ohyb-domov) { height: 165vh; }
-    .pokladka.ma-kotuc :global(.ks) { height: 160vh; }
+    :global(section.rozklad.rozklad-domov) { height: 200vh; }
+    :global(.ohyb.ohyb-domov) { height: 140vh; }
+    .pokladka.ma-kotuc :global(.ks) { height: 135vh; }
   }
 </style>

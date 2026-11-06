@@ -361,12 +361,19 @@ Domov v4 (23. 9. 2026, zadanie Juraja „najpútavejší dizajn, kľudne asymetr
 12 stĺpcov, každá je ukotvená inak a obrázky prekračujú hrany sekcií. Tón ide zhora nadol od bielej
 (povrch) cez svetlomodrú k tmavomodrej (podzemie), kam potrubie naozaj ide.
 
+**Poradie od 6. 11. 2026** (audit `docs/AUDIT-DOMOV-2026-11-06.md`, Juraj odsúhlasil všetky body): príbeh ide
+s výrobkom od katalógu až do zeme, každú vec povie raz. Úvod → katalóg → z čoho je potrubie → ohyb → pokládka
+s blokom „Do zeme“ → otázky pred výberom s akciou → projekty → pre firmy → pätička. Rodina a samostatný pás
+„Do zeme“ sú v `archiv/`. Domov má 11,9 obrazovky na počítači a 15,3 na telefóne (predtým 13,1 a 16).
+Čo z webu odstránime, ide do `archiv/` s popisom a snímkou (Juraj 6. 11. 2026), nemaže sa.
+
 ```
 +----------------------------------------------------------------------------+
 | PREDIZOLOVANÉ POTRUBIA MICROFLEX® |   Ø 75 až 200 mm        od 0,20 m      |
 | Flexibilné potrubie.  (os šírky)  |   plášť z HDPE          polomer ohybu  |
 | Precízne riešenie.                |        ●──── render rezu ────●         |
-| Pre vykurovanie, pitnú vodu, …    |   (kružnice za rezom, odlesk, myš)     |
+| Pre vykurovanie, … Ukladá sa do   |   (kružnice za rezom, odlesk, myš)     |
+| zeme a spája bez lisu a zvárania. |                                        |
 | [Vybrať potrubie ↓]  Stiahnuť katalóg PDF, 19 MB ↓                         |
 |                                   |   ● 25 až 125 mm, nosné rúry na 6,     |
 |                                   |     10 alebo 16 bar                    |
@@ -381,16 +388,17 @@ Domov v4 (23. 9. 2026, zadanie Juraja „najpútavejší dizajn, kľudne asymetr
 | │ render, rady │ │ render, rady │ │ render, rady │                          |
 | ┌ Spojky, 4 fotky (5) ┐ ┌ Príslušenstvo, 4 fotky (5) ┐ ┌ Sprievodca (2) ┐   |
 +--------------------------+-------------------------------------------------+
-| Päť systémov, jedna rodina.       |   render rodiny cez švík pásu, za      |
-| ┃ Plášť z HDPE        (modrá)     |   pravý okraj obrazovky                |
-| ┃ ┃ Izolácia z PE-X   (sivá)      |                                        |
-| ┃ ┃ ┃ Nosná rúra      (žltá)      |                                        |
-+-----------------------------------+----------------------------------------+
-| ⟵ kotúč cez ľavý okraj            |  Sto metrov za štyridsať minút.        |
-|   (biela fotky splynie s pásom,   |  1 Kotúč k výkopu   ┃ rúra sa rozvinie  |
-|   pri rolovaní sa pootočí)        |  2 Rozvinúť do piesku  s rolovaním     |
-|                                   |  3 Spojky a skúška                     |
-|                                   |  4 Páska a zásyp      až 60 t, zdroj   |
+| Z čoho je potrubie (rozložený rez pri rolovaní, 220 vh)                    |
+| Všetky systémy majú rovnakú stavbu…  |   plášť, pena, nosné rúry s kótami  |
++------------------------------------------------------------------------------+
+| Ohne sa okolo prekážky. (tmavá scéna, ohyb pri rolovaní, 150 vh)           |
++------------------------------------------------------------------------------+
+| Sto metrov za štyridsať minút.   kotúč sa odvalí cez šírku (145 vh)       |
+| 1 Kotúč k výkopu  2 Rozvinúť do piesku  3 Spojky a skúška  4 Páska a zásyp |
+| ⟵ fotka výkopu so spojkami a kótami   |  Do zeme. Bez lisu a zvárania.     |
+|   cez ľavý okraj                      |  0,5 až 6 m, až 60 t, zdroje       |
++------------------------------------------------------------------------------+
+| Otázky pred výberom   [Vybrať potrubie]  |  5 otázok na rozbalenie (hárok)   |
 +==== šikmá hrana, fotka z výkopu ju prekračuje =============================+
 | Kde už Microflex leží (biely text) |  fotka z výkopu, cez pravý okraj      |
 | 3 referencie ako zoznam            |                                       |
@@ -458,14 +466,16 @@ každý rad použitia vrátane PRIMO ako vlastný odkaz.
 
 Predtým (22. 9. až 5. 11. 2026) tu bol Jurajov návrh so záložkami: **register** použití vpravo (žltá značka
 pri vybranom) a **štúdio** s rendermi radov vybraného použitia vľavo. Bez kliknutia bolo vidieť 4 z 12 radov
-a register nevyzeral ako niečo, na čo sa dá kliknúť; návrhy a snímky sú v `snimky-stranok/navrh-katalog/`.
+a register nevyzeral ako niečo, na čo sa dá kliknúť. Starý katalóg aj všetky návrhy sú v `archiv/`.
+Pod katalógom je od 6. 11. rovno rozložený rez, pás preto dobehne do `--zem-3` a má dole len 112 px.
 
-Rodina (od 26. 10. render vlastného modelu so šiestimi rúrami): na počítači sa zmestí celá do pravého
-okraja obrazovky, lebo text menuje aj COOL a HP; na tablete a mobile ide nad text cez celú šírku.
-Pôvodne render Watts prechádzal cez švík z pásu katalógu a za pravý okraj obrazovky.
+Rodina (21. 9. až 6. 11. 2026, `archiv/2026-11-06-domov-rodina`): render šiestich rúr pod katalógom s vetou
+o systémoch a s kliknutím na rad. Opakovala katalóg G2, jej myšlienka „rovnaká stavba z troch vrstiev“ je
+teraz v úvode rozloženého rezu. Render rodiny s kliknutím ostáva na stránke Potrubia.
 
 **Z čoho je potrubie** (od 26. 10. 2026, `components/Rozklad.astro`, Juraj: domov aj stránky radov):
-rozložený rez z 3D modelu. Sekcia je vysoká (280 % výšky okna) a jej obsah stojí; pri rolovaní sa
+rozložený rez z 3D modelu. Sekcia je vysoká (280 % výšky okna, na domove 220 %; pravidlo domova
+potrebuje selektor `section.rozklad.rozklad-domov`, inak ho prebije pravidlo komponentu) a jej obsah stojí; pri rolovaní sa
 rúra rozloží na plášť, penu a nosné rúry (72 snímok na plátne), pri každej vrstve sa objaví kóta
 a vľavo jej popis s malou lupou makra. Na telefóne a tablete (do 900 px) je na obraze len bod práve
 odkrytej vrstvy vo farbe jej prstenca lupy a pod obrazom jej popis; štítok tam nie je, lebo vedľa rezu
@@ -494,24 +504,38 @@ skutočné kroky a zaťaženie až 60 t pri uložení v hĺbke 0,5 až 6 m. Odka
 Pod 900 px je kotúč pás nad textom. Fotka kotúča je tónovaná na farbu renderov (len modré plochy,
 biela ostala biela), originál je v podkladoch.
 
+Pod kotúčom je od 6. 11. 2026 blok **Do zeme. Bez lisu a zvárania.** (predtým samostatný pás pod úvodom,
+`archiv/2026-11-06-domov-pas-do-zeme`): fotka výkopu so svornými spojkami a kótami vľavo cez okraj obrazovky,
+vpravo text o pieskovom lôžku 0,5 až 6 m a svorných spojkách, zaťaženie až 60 t a zdroje (článok Poradne,
+katalóg s. 36 a 37). Je to dôkaz kroku „Spojky a skúška“. Úvod domova nesie tú istú správu jednou vetou,
+„bez zvárania“ sa inde neopakuje.
+
+**Otázky pred výberom** (od 6. 11. 2026): päť otázok z `content/faq.ts` (montáž, UNO alebo DUO, dimenzia,
+HP, COOL) ako rozbaľovacie riadky v hárku, rovnaký vzhľad ako na stránkach kategórií. Vľavo nadpis, veta
+s odkazom „napíšte nám“ a akcia **Vybrať potrubie** a Dopyt na projekt, lebo po ukážkach a pokládke je
+čitateľ najpresvedčenejší (predtým bolo ďalšie tlačidlo až v sekcii Pre firmy). Štruktúrované dáta FAQPage
+sú len na stránkach kategórií. Sekcia má tón `--zem-4` a dole miesto pre šikmú hranu podzemia.
+
 Podzemie: referencie, Pre firmy a pätička sú jeden tmavý úsek so šikmou hornou hranou (motív Watts).
 Fotka z výkopu hranu prekračuje, takže svetlá a tmavá časť sú jeden prechod. Referencie sú zoznam bez
 náhľadov (náhľady boli z 300 px zdrojov a prvý bol rez rúry, nie stavba). Spodok podzemia má tú istú
 farbu ako začiatok pätičky.
 
 Zásada domova (Juraj 21. 9. 2026): každá sekcia má inú úlohu aj inú formu. V4: produkt ako monument
-(hero), dlaždice podľa použitia (katalóg), render a typografický rez (rodina), postup s číslami (pokládka),
-fotka cez hranu (referencie), tmavý zoznam podkladov (Pre firmy).
+(hero), dlaždice podľa použitia (katalóg), rozložený rez (stavba), tmavá scéna (ohyb), postup s číslami
+a fotka výkopu (pokládka), otázky v hárku s akciou, fotka cez hranu (referencie), tmavý zoznam podkladov
+(Pre firmy).
 
 **Hadovito** (Juraj 23. 9. 2026, výber z dvoch možností): hlavný obrázok sekcie sa strieda vpravo
 a vľavo a oko ide cikcak nadol, ako potrubie položené hadovito vo výkope (katalóg Watts s. 37):
 render rezu vpravo → dlaždice katalógu cez celú šírku (od 5. 11. 2026, predtým rendery radov vľavo) →
-rodina vpravo → kotúč vľavo → výkop vpravo. Text je vždy na opačnej strane. Každý obrázok prekračuje okraj obrazovky alebo hranu sekcie a vedie do ďalšej:
-render hero pretína šikmú hranu pásu katalógu, rodina stúpa do pásu katalógu, výkop pretína šikmú
-hranu podzemia. Vedenie nadol je vizuálne, nie navigáciou s číslami (tá bola skúsená a zrušená).
+rozložený rez vpravo → ohyb vpravo → kotúč cez šírku a fotka výkopu vľavo → výkop projektu vpravo (rodina
+vpravo bola do 6. 11.). Text je vždy na opačnej strane. Každý obrázok prekračuje okraj obrazovky alebo hranu sekcie a vedie do ďalšej:
+render hero pretína šikmú hranu pásu katalógu, fotka výkopu v pokládke ide cez ľavý okraj, výkop projektu
+pretína šikmú hranu podzemia. Vedenie nadol je vizuálne, nie navigáciou s číslami (tá bola skúsená a zrušená).
 Pravidlo „text vľavo, obrázok vpravo v celej stránke rovnako“ z auditu 21. 9. už neplatí, robilo
 stránku jednotvárnou. Ten istý motív sa neopakuje v tej istej forme; rez rúry je v hero, v dlaždiciach
-katalógu a v rodine, ale zakaždým v inej úlohe (výrobok, prehľad sortimentu, porovnanie vrstiev). Pravidlá, podľa
+katalógu a v rozloženom reze, ale zakaždým v inej úlohe (výrobok, prehľad sortimentu, stavba z vrstiev). Pravidlá, podľa
 ktorých hodnotíme: Vignelli (disciplína, jedno ohnisko), Müller-Brockmann (mriežka 12 stĺpcov),
 Tufte (dátový atrament), Refactoring UI (popis k nadpisu, nekvalitná fotka len ako náhľad).
 

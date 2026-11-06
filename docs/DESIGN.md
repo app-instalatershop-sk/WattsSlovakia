@@ -306,7 +306,11 @@ Každá novinka niečo dokazuje alebo vysvetľuje číslom z katalógu, nie je t
   Na stránkach radov nie je (Juraj 28. 10.: najmenší polomer platí pre jeden variant, nie pre celý rad).
   Polomer je na osi potrubia; kóta ide ako na výkrese od osi k stredu oblúka (stred býva mimo záberu).
 - **Teplo v reze** (`TeploRezim.astro` a `TeploVrstva.astro` v hlave radu): prepínač Pohľad a Teplota,
-  ten istý záber ako obraz termokamery na tmavej obrazovke. Teploty sú vždy „príklad prevádzky“
+  ten istý záber ako obraz termokamery, bez tmavej obrazovky za výrobkom (Juraj 6. 11. 2026: „teplotná mapa
+  nemá mať pozadie“): termosnímka má priehľadné pozadie a obrys renderu, ktorý prekryje, kontaktný tieň renderu
+  ostane. Štítky teplôt stoja v prázdnom mieste okolo výrobku ako kóty rozmerov: spodná rúra pod čelom, horná nad
+  čelom, plášť pri jednej rúre nad čelom, pri dvoch pod telom vľavo (`kotyTepla` v `Rad.astro`; na telefóne sa strata
+  zalomí do druhého riadku a horná rúra pri pravom okraji čela má štítok doľava). Teploty sú vždy „príklad prevádzky“
   s podmienkami pod prepínačom (vykurovanie 70/50 °C, sanita 60/55 °C, HP 45/40 °C, COOL 7 °C pri
   pôde 15 °C). Strata na meter len tam, kde je v grafe katalógu (s. 38: UNO, DUO, PRIMO), nikdy
   vlastný výpočet. COOL s vyhrievacím káblom teplo nemá: bez výkonu kábla by obraz klamal.
@@ -596,8 +600,9 @@ Každá vnútorná stránka má rovnakú kostru, aby web pôsobil ako celok:
   Kľúčové čísla (tlak, rúra, plášť) sú v hlave pri obraze, nie v samostatnom páse.
 - **Telo** (`.telo`): zostup „pod zem“ (zem-1 až zem-3), obsah na bielych hárkoch (`.harok`)
   s mäkkým tieňom. Nadpis sekcie `.s-hlava`, odkaz vpravo.
-- **Plávajúca navigácia častí** (`components/CastiStranky.astro`) na dlhých stránkach (rad,
-  spojky, príslušenstvo): pás pod hlavičkou, aktívna časť tmavomodrá.
+- **Plávajúca navigácia častí** (`components/CastiStranky.astro`) na dlhých stránkach skupín (spojky,
+  príslušenstvo): pás pod hlavičkou, aktívna časť tmavomodrá. Stránka radu má namiesto nej lištu produktu
+  (nižšie, Lišta produktu).
 - **Záver** (`components/Zaver.astro`): tmavý pás so šikmou hranou, e-shop, dopyt a kontakt,
   splýva s pätičkou.
 - Jedno žlté tlačidlo na obrazovku (hlavná akcia), ostatné odkazy `.odkaz`. Hlavné tlačidlo v hlave stránky
@@ -613,20 +618,34 @@ Každá vnútorná stránka má rovnakú kostru, aby web pôsobil ako celok:
 - Referencie na stránke radu: nadpis „Kde tento rad leží“ len keď každá ukázaná stavba uvádza práve tento rad,
   inak „Kde už Microflex leží“. Fotka s potrubím (`scenaPotrubie`), ak ju stavba má, a štítok roly ako na
   domove: „Naša dodávka“ žltý, „Referencia výrobcu“ obrysom.
+- **Produktová karta** (stránky radov a dielov, od 6. 11. 2026; Juraj: „nové rozloženie a design stránky produktov,
+  nech to má hlavu a pätu“, z návrhov A až C vybral A, archív `archiv/navrhy-stranky-produktu-2026-11-06/`).
+  Stránka sa číta jedným smerom ako v e-shope: vidím, vyberiem, kúpim. Hlava (`Hlava.astro`, `rozlozenie="karta"`):
+  obraz vľavo (7 stĺpcov), vpravo názov, popis a biela karta (`.hk-karta`, kontajner pre `@container`) s výberom,
+  výsledkom a kúpou; pod kartou predajňa a telefón. Jediné žlté tlačidlo je „Kúpiť v e-shope“ cez celú šírku karty
+  (po výbere ide na variant), pod ním odkazy na tabuľku rozmerov a dopyt. Render 3D modelu stojí v štúdiu s kótami,
+  pohľad a teplota (`TeploRezim.astro`, ikona oka a teplomera, oba stavy tmavomodré, legenda vedľa alebo pod) sú pod
+  ním, nie pri texte; fotka dielu stojí na podlahe štúdia ako v `KartaProduktu`. Na telefóne a tablete nadpis, obraz
+  (cez okraje displeja, na tablete najviac 640 px), karta pod sebou. Na 1 600 × 900 je kúpa na prvej obrazovke aj
+  pri DUO s izoláciou.
 - **Živé kóty** (stránka radu, od 26. 10. 2026, `components/VolbaDimenzie.astro`; Juraj: „chcel by som
-  to živé a čo najlepšie“): pod nadpisom (na počítači vľavo vedľa renderu, na telefóne pod renderom)
-  je prepínač priemeru nosnej rúry; keď je render dimenzie z 3D modelu, obraz sa prelínaním vymení na
-  presný rez a kóty sa presunú na nové body.
-  Výber prepíše kóty na renderi krátkym pretočením číslic, bod kóty pulzne, po plášti prejde pás svetla;
-  pri rúre s dvoma plášťami sa objaví druhá úroveň (štandardná a zosilnená izolácia), pod ňou obj. číslo
-  s kopírovaním, výkon a hmotnosť. Hlavné tlačidlo vedie na riadok vybraného variantu v tabuľke, filter
-  tabuľky sa nastaví oboma smermi a variant je v adrese (`?obj=MD16032C`). Pri „obmedziť pohyb“ sa čísla
-  len vymenia. Hodnoty formátuje server rovnako ako tabuľku.
-- **Hlava radu s renderom 3D modelu** (od 26. 10. 2026): čelný záber je vyšší ako široký, preto od
-  1 101 px dva stĺpce: výber dimenzie vľavo pod nadpisom, render vpravo od vrchu štúdia (najviac
-  660 px). Na 1 440 × 900 sú nadpis, výber aj celý rez s kótami na prvej obrazovke a klik v lište mení
-  obraz hneď vedľa. Lišta sa v úzkom stĺpci zalomí do dvoch riadkov (jazdec ide aj na druhý riadok),
-  na telefóne je posúvateľný riadok. Systémy a Potrubia (bez výberu) majú render v strede pod textom.
+  to živé a čo najlepšie“): v karte je priemer nosnej rúry ako mriežka dlaždíc (číslo, pod ním DN; 56 px), všetky
+  viditeľné bez posúvania. Stĺpce ráta server z najdlhšieho popisu (najviac 5, riadky čo najrovnomernejšie, zvlášť
+  pre širokú a úzku kartu; QUADRO s popisom „2× 25 + 25 + 20“ má dva, v úzkej karte jeden). Tlačidlo „Všetky“
+  v mriežke nie je: späť na celý rad vedie odkaz „Všetky rozmery“, viditeľný len po výbere. Izolácia (štandardná
+  a zosilnená) je vlastný riadok, pod ním výsledok: obj. číslo s kopírovaním a údaje, ktoré na renderi nie sú (výkon,
+  hmotnosť). Keď je render dimenzie z 3D modelu, obraz sa prelínaním vymení na presný rez a kóty sa presunú;
+  výber prepíše kóty krátkym pretočením číslic, bod kóty pulzne, po plášti prejde pás svetla. Filter tabuľky sa
+  nastaví oboma smermi a variant je v adrese (`?obj=MD16032C`). Pri „obmedziť pohyb“ sa čísla len vymenia. Meno
+  tlačidla je jeho viditeľný text („25 DN 20“, WCAG 2.5.3). V úzkej karte tlačidlo kúpy nemá obj. číslo (je nad ním).
+- **Lišta produktu** (stránka radu, `components/ListaProduktu.astro`): na počítači pás pod hlavičkou, keď hlava
+  odíde: render, názov, vybraný rozmer, časti stránky (aktívna podčiarknutá) a žlté Kúpiť; na telefóne a tablete
+  spodný pruh na dosah palca (model, rozmer, Kúpiť), ukáže sa až pod kartou v hlave a schová pri závere, takže žlté
+  tlačidlo nie je na obrazovke dvakrát. Rozmer berie z udalosti `mfx:variant`.
+- **Poradie častí radu** (hlava a päta): rozmery a obj. čísla → diely k potrubiu (`KartaProduktu` na podlahe
+  štúdia, hneď pod rozmermi, lebo patria k nákupu) → z čoho je potrubie (rez, pod ním odsek a parametre s montážou
+  v dvoch stĺpcoch, označenie výrobcu ako posledný riadok parametrov) → referencie → na stiahnutie → záver.
+  Systémy a Potrubia (bez výberu) majú render v strede pod textom (`rozlozenie="studio"`).
 - **Živý výrobok v štúdiu** (hlava radu, systému a Potrubí): render jemne dozneje na strane so zrezaným
   telom, pri pohybe myši sa nepatrne posunie aj s kótami a po načítaní po ňom raz prejde pás svetla
   (rovnako ako v hero domova).
@@ -655,25 +674,30 @@ Každá vnútorná stránka má rovnakú kostru, aby web pôsobil ako celok:
 
 ### Produktový rad (napr. Microflex UNO, vykurovanie 6 bar)
 
+Od 6. 11. 2026 produktová karta (návrh A, kap. 9 Vnútorné stránky); pôvodný drôtený model z 21. 9. nahradila.
+
 ```
-| Domov > Potrubia pre vykurovanie > Microflex UNO                            |
-+-------------------------------+--------------------------------------------+
-| Galéria: hlavná fotka         | H1 Microflex UNO – vykurovanie 6 bar       |
-|  + 4 náhľady (6 stĺpcov)      | Jeden odsek po slovensky                   |
-|                               | Pás parametrov (blue-100):                 |
-|                               |  Médium | Max. teplota | Tlak | Rúra |     |
-|                               |  Plášť | Polomer ohybu                     |
-|                               | [Vybrať dimenziu]  [Kúpiť v e-shope]       |
-+-------------------------------+--------------------------------------------+
-| Lepkavá podnavigácia: Varianty  Technické údaje  Na stiahnutie  Referencie  |
-|                       Súvisiace                                             |
-| Varianty: tabuľka  Obj. číslo | Plášť Ø mm | Rúra Ø × s mm | Hmotnosť kg/m  |
-|           | Izolácia | Polomer ohybu m | Kotúč Ø / šírka m | [do e-shopu]   |
-|           filter dimenzie nad tabuľkou, lepkavá hlavička, zdroj + dátum     |
-| Technické údaje: definičný zoznam (materiály, normy, teploty)               |
-| Na stiahnutie: zoznam súborov s typom, jazykom, veľkosťou                   |
-| Referencie: 2 fotky asymetricky (7 / 5)                                     |
-| Súvisiace: spojky, tesnenie prestupu, koncovky (4 karty)                    |
+| Domov > Potrubia > Teplá a studená voda > Microflex UNO                      |
++------------------------------------------+---------------------------------+
+| Render 3D modelu s kótami (plášť, rúra,  | Teplá a studená voda, jedna rúra|
+|  ohyb) v štúdiu, bez rámu                | H1 Microflex UNO, sanita 10 bar |
+|                                          | Jedna veta                      |
+|                                          | +-----------------------------+ |
+|                                          | | Priemer nosnej rúry  Všetky | |
+|                                          | | [25][32][40][50] (pod DN)   | |
+|                                          | | [63][75][90][110]           | |
+|                                          | | Izolácia [Ø 125][Ø 160]     | |
+|                                          | | Obj. číslo M9032S, 1,12 kg/m| |
+|                                          | | [Kúpiť M9032S v e-shope]    | |
+| [Pohľad | Teplota]  legenda teploty      | | Detail v tabuľke  Dopyt     | |
+|                                          | +-----------------------------+ |
+|                                          | Predaj a sklad, Poradíme        |
++------------------------------------------+---------------------------------+
+| Lišta produktu: render, názov, rozmer | Rozmery Diely Stavba Ref. Podklady | Kúpiť |
+| Rozmery a obj. čísla: mierka, tabuľka (filter, kopírovanie, do e-shopu)       |
+| Čo budete potrebovať k potrubiu: diely na podlahe štúdia                      |
+| Z čoho je potrubie: rozložený rez, odsek, Parametre | Pri montáži             |
+| Kde už Microflex leží, Na stiahnutie, Záver (e-shop, dopyt, kontakt)          |
 ```
 
 ### Výber potrubia (sprievodca)

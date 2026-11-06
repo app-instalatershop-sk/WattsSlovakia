@@ -12,7 +12,12 @@
  *
  *  rozlozenie="vedla"   text vľavo, obraz vpravo (fotky, diely, stránky bez renderu)
  *  rozlozenie="studio"  nadpis hore, popis a akcie vpravo od neho, render pod nimi takmer cez celú
- *                       šírku ako vo fotoštúdiu (rady, systémy, Potrubia; Juraj 22. 10. 2026, návrh B)
+ *                       šírku ako vo fotoštúdiu (systémy, Potrubia; Juraj 22. 10. 2026, návrh B)
+ *  rozlozenie="karta"   produktová karta (stránky radov a dielov; Juraj 6. 11. 2026, návrh A): obraz vľavo,
+ *                       vpravo nadpis a biela karta s výberom a kúpou (slot "karta"), pod ňou predajňa a telefón;
+ *                       ovládanie obrazu (pohľad, teplota) je pod renderom (slot "pod-obrazom"). Render 3D modelu
+ *                       stojí v štúdiu s kótami, fotka dielu na podlahe štúdia ako v kartách dielov. Na telefóne
+ *                       nadpis, obraz, karta pod sebou.
  */
 import Obraz from './Obraz.astro';
 import { getImage } from 'astro:assets';
@@ -21,6 +26,9 @@ import Koty from './Koty.astro';
 import { sadzba } from '../lib/sadzba';
 import type { Kota } from '../lib/koty';
 import { je3d, maska3d } from '../lib/obrazky';
+import Ikona from './Ikona.astro';
+import { FIRMA } from '../content/firma';
+import { stranky } from '../content/stranky';
 import { type Lang, t, route } from '../i18n/ui';
 
 interface Drobcek { text: string; href?: string }
@@ -30,7 +38,7 @@ interface Props {
   /** Meno pre prechod medzi stránkami (rad-<id>, kat-<id>): render prilieta z karty na predošlej stránke. */
   prechod?: string;
   koty?: Kota[]; kotyLabel?: string;
-  rozlozenie?: 'vedla' | 'studio';
+  rozlozenie?: 'vedla' | 'studio' | 'karta';
   /** Štúdio: na ktorej strane má render zrezané telá rúr (rendery Watts vľavo, rodina potrubí vpravo);
       tam render jemne dozneje, aby nebolo vidno rovnú hranu. */
   dozvenie?: 'vlavo' | 'vpravo';
@@ -38,6 +46,10 @@ interface Props {
 const { lang, nadpis, drobceky = [], pred, lead, obraz, obrazAlt = '', druh = 'render', obrazMax = 760, prechod, koty = [], kotyLabel, rozlozenie = 'vedla', dozvenie = 'vlavo' } = Astro.props;
 const ui = t(lang);
 const maBok = Astro.slots.has('bok');
+// Nadpis: „PE-X“ a „PE-Xa“ sa nezlomia za spojovníkom (na telefóne bolo „Priama spojka PE-“ / „X × PE-X“). Písma webu
+// nemajú nezlomiteľný spojovník (podmnožiny v pisma.css), preto úsek bez zlomu v značke, nie iný znak v texte.
+const escHtml = (x: string) => x.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const nadpisHtml = escHtml(sadzba(nadpis)).replace(/\bPE-X[a-z]?\b/g, (m) => `<span class="nezlom">${m}</span>`);
 // Odlesk po plášti v štúdiu ako v hero domova: maska je samotný render (AVIF 1000 px, ten istý súbor, ktorý
 // si prehliadač väčšinou vyberie aj na zobrazenie), svetlo tak prejde len po výrobku.
 // Render 3D modelu má celé telo a vlastný kontaktný tieň: bez doznenia, bez tieňa z CSS a s maskou odlesku
@@ -46,10 +58,52 @@ const z3d = je3d(obraz);
 // Čelný záber 3D modelu (rez spredu, vyšší ako široký): v štúdiu menší, aby bol celý rez s kótami na prvej obrazovke.
 const celny = z3d && !!obraz && obraz.width / obraz.height < 1.4;
 const zdrojMasky = z3d ? maska3d(obraz) : obraz;
-const leskMaska = rozlozenie === 'studio' && zdrojMasky && zdrojMasky.format !== 'jpg' && zdrojMasky.format !== 'jpeg'
+const leskMaska = (rozlozenie === 'studio' || (rozlozenie === 'karta' && z3d)) && zdrojMasky && zdrojMasky.format !== 'jpg' && zdrojMasky.format !== 'jpeg'
   ? (await getImage({ src: zdrojMasky, width: 1000, format: z3d ? 'webp' : 'avif', quality: 50 })).src : null;
 ---
-{rozlozenie === 'studio' && obraz ? (
+{rozlozenie === 'karta' ? (
+<section class="hlava hlava-studio hlava-karta" data-mys>
+  <div class="wrap hk">
+    <ol class="crumbs hk-crumbs" aria-label={ui.crumbs.label}>
+      <li><a href={route(lang, 'domov')}>{ui.nav.domov}</a></li>
+      {drobceky.map((d) => (d.href ? <li><a href={d.href}>{d.text}</a></li> : <li aria-current="page">{d.text}</li>))}
+    </ol>
+    <div class="hk-titul">
+      {pred && <p class="hlava-pred">{pred}</p>}
+      <h1 set:html={nadpisHtml} />
+      {lead && <p class="lead">{sadzba(lead)}</p>}
+      <slot />
+    </div>
+    <div class="hk-obraz">
+      {obraz && z3d ? (
+      <div class="hs-stage hk-stage">
+        <div class:list={['hs-obraz', 'je3d', { 'ma-prechod': prechod }]} style={prechod ? `view-transition-name: ${prechod}` : undefined}>
+          <div class="hs-mys">
+            <div class="hs-tien"><Obraz src={obraz} alt={obrazAlt} widths={[700, 1000, 1300]} sizes="(max-width: 900px) min(100vw, 640px), 700px" loading="eager" fetchpriority="high" /></div>
+            {leskMaska && <span class="hs-lesk" aria-hidden="true" style={`--maska: url("${leskMaska}")`} data-lesk></span>}
+            <Koty koty={koty} label={kotyLabel} />
+            <slot name="na-obraze" />
+          </div>
+        </div>
+      </div>
+      ) : obraz && (
+      <div class:list={['hk-diel', `hk-diel-${druh}`]}>
+        {/* Fotka dielu (spojka, príslušenstvo) na podlahe štúdia ako v KartaProduktu: vyrezaná stojí na podlahe
+            s tieňom dopadu, fotka s bielym pozadím sa so štúdiom násobí. Komentár nie pred koreňom vetvy (Astro 7). */}
+        <Obraz src={obraz} alt={obrazAlt} widths={[480, 720, 960]} sizes="(max-width: 900px) calc(100vw - 32px), 640px" loading="eager" fetchpriority="high" />
+      </div>
+      )}
+      {Astro.slots.has('pod-obrazom') && <div class="hk-nastroje"><slot name="pod-obrazom" /></div>}
+    </div>
+    <div class="hk-karta"><slot name="karta" /></div>
+    {/* Pod kartou: kto predáva a kde poradia (dôvera pri rozhodnutí kúpiť). */}
+    <ul class="hk-dovera">
+      <li><Ikona nazov="map-pin" velkost={18} /><span>{ui.home.dodavatel} <a href={route(lang, 'kontakt')}>{ui.home.dodavatelOdkaz}</a></span></li>
+      <li><Ikona nazov="phone" velkost={18} /><span>{stranky(lang).rad.poradime} <a href={FIRMA.telefonHref}>{FIRMA.telefon}</a></span></li>
+    </ul>
+  </div>
+</section>
+) : rozlozenie === 'studio' && obraz ? (
 <section class="hlava hlava-studio" data-mys>
   <div class="wrap hs-hore">
     <div class="hs-text">
@@ -58,7 +112,7 @@ const leskMaska = rozlozenie === 'studio' && zdrojMasky && zdrojMasky.format !==
         {drobceky.map((d) => (d.href ? <li><a href={d.href}>{d.text}</a></li> : <li aria-current="page">{d.text}</li>))}
       </ol>
       {pred && <p class="hlava-pred">{pred}</p>}
-      <h1>{sadzba(nadpis)}</h1>
+      <h1 set:html={nadpisHtml} />
     </div>
     <div class="hs-bok">
       {lead && <p class="lead">{sadzba(lead)}</p>}
@@ -92,7 +146,7 @@ const leskMaska = rozlozenie === 'studio' && zdrojMasky && zdrojMasky.format !==
         {drobceky.map((d) => (d.href ? <li><a href={d.href}>{d.text}</a></li> : <li aria-current="page">{d.text}</li>))}
       </ol>
       {pred && <p class="hlava-pred">{pred}</p>}
-      <h1>{sadzba(nadpis)}</h1>
+      <h1 set:html={nadpisHtml} />
       {lead && <p class="lead">{sadzba(lead)}</p>}
       <slot />
     </div>
@@ -127,6 +181,7 @@ const leskMaska = rozlozenie === 'studio' && zdrojMasky && zdrojMasky.format !==
   .crumbs { padding-block: 0 28px; }
   .hlava-pred { font-size: 16px; font-weight: 500; color: var(--color-blue-700); margin-bottom: 12px; }
   .hlava h1 { font-size: clamp(32px, 2.4vw + 16px, 54px); line-height: 1.05; letter-spacing: -0.025em; max-width: 15em; }
+  .hlava h1 :global(.nezlom) { white-space: nowrap; }
   .hlava .lead { margin-top: 20px; max-width: 34em; }
   .hlava-text > :global(.hlava-akcie) { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; margin-top: 32px; }
 
@@ -191,6 +246,59 @@ const leskMaska = rozlozenie === 'studio' && zdrojMasky && zdrojMasky.format !==
     .hs-vedla-volby .hs-volba { padding-inline: 0; margin-inline: 0; }
     .hs-vedla-volby .hs-stage { width: auto; margin: 0 0 -52px; padding-left: 0; }
     .hs-vedla-volby :global(.volba-riadok) { flex-direction: column; align-items: flex-start; gap: 8px; }
+  }
+
+  /* ---------- Karta: produktová karta stránky radu (Juraj 6. 11. 2026, návrh A) ---------- */
+  /* Obraz vľavo, vpravo nadpis a karta s výberom a kúpou: oko ide jedným smerom (vidím, vyberiem, kúpim) ako
+     v e-shope. Pohľad a teplota patria k obrazu, preto sú pod ním; spodok záberu je prázdna podlaha pod kótami,
+     ovládanie ju preto prekrýva (záporný okraj), nie je pod ňou. */
+  .hlava-karta { padding: 16px 0 calc(var(--presah-hero) * 0.7); }
+  .hk { position: relative; z-index: 3; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    grid-template-areas: "crumbs crumbs" "obraz titul" "obraz karta" "obraz pod" "obraz ."; grid-template-rows: auto auto auto auto 1fr;
+    column-gap: clamp(32px, 4.5vw, 72px); }
+  .hk-crumbs { grid-area: crumbs; padding: 0 0 12px; }
+  .hk-titul { grid-area: titul; padding-top: 8px; }
+  .hlava-karta .hlava-pred { margin-bottom: 8px; font-size: 15px; font-weight: 600; }
+  .hlava-karta h1 { font-size: clamp(32px, 1.3vw + 21px, 42px); line-height: 1.04; letter-spacing: -0.028em; max-width: 12em; }
+  .hlava-karta .lead { margin-top: 12px; max-width: 31em; font-size: 17px; line-height: 1.55; }
+  .hk-obraz { grid-area: obraz; position: relative; min-width: 0; }
+  .hlava-karta .hk-stage { width: 100%; max-width: 700px; margin: 0 0 -48px; padding: 0; }
+  .hk-nastroje { position: relative; z-index: 4; min-height: 48px; }
+  /* Karta je kontajner: výber v nej sa prispôsobí jej šírke (izolácia pod popisom, keď je karta úzka). */
+  .hk-karta { grid-area: karta; container-type: inline-size; margin-top: 24px; padding: 20px; border-radius: var(--radius-xl); background: #fff;
+    box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.07), var(--elev-3); }
+  .hk-dovera { grid-area: pod; display: grid; gap: 8px; margin: 20px 4px 0; font-size: 14px; color: var(--color-ink-soft); }
+  .hk-dovera li { display: flex; align-items: center; gap: 12px; }
+  .hk-dovera :global(.icon) { flex: none; color: var(--color-blue-700); }
+  .hk-dovera a { font-weight: 600; color: var(--color-ink); }
+  /* Akcie v karte (stránky radov aj dielov): jediné žlté tlačidlo je kúpa cez celú šírku, pod ním odkazy. */
+  .hk-karta :global(.hlava-akcie) { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; margin-top: 20px; }
+  .hk-karta :global(.hlava-akcie .btn) { flex: 1 1 100%; justify-content: center; }
+  .hk-karta :global(.hlava-akcie .odkaz) { font-size: 15px; }
+  /* Úzka karta (stôl 1 024, telefón): tlačidlo bez obj. čísla, to je hneď nad ním vo výsledku výberu. */
+  @container (max-width: 420px) { .hk-karta :global(.hlava-akcie .kod) { display: none; } }
+  /* Fotka dielu na podlahe štúdia: svetlo zhora, plocha tmavne k spodnej hrane, pod dielom mäkký tieň. */
+  .hk-diel { position: relative; aspect-ratio: 4 / 3; max-width: 640px; border-radius: var(--radius-xl); overflow: hidden;
+    background: radial-gradient(70% 60% at 50% 35%, #ffffff 0%, #f2f5f9 55%, #e6ecf3 100%); box-shadow: inset 0 -24px 40px -30px rgb(10 42 94 / 0.25); }
+  .hk-diel::after { content: ""; position: absolute; left: 24%; right: 24%; bottom: 15%; height: 6%; border-radius: 50%; background: radial-gradient(closest-side, rgb(10 42 94 / 0.26), rgb(10 42 94 / 0)); }
+  .hk-diel :global(img) { position: absolute; z-index: 1; left: 14%; top: 10%; width: 72%; height: 74%; object-fit: contain; object-position: 50% 100%; }
+  .hk-diel-biely :global(img) { mix-blend-mode: multiply; object-position: 50% 50%; }
+  .hk-obraz:has(.hk-diel) { padding-top: 8px; }
+
+  @media (max-width: 900px) {
+    /* Tablet a telefón: nadpis, obraz, karta pod sebou. Štítok plášťa visí nad záberom, preto odstup od textu;
+       obraz ide cez okraje obrazovky ako v ostatných hlavách, na tablete najviac 640 px v strede. */
+    .hk { grid-template-columns: minmax(0, 1fr); grid-template-areas: "crumbs" "titul" "obraz" "karta" "pod"; grid-template-rows: none; }
+    .hk-obraz { margin: 28px calc(-1 * var(--gutter)) 0; }
+    .hlava-karta .hk-stage { max-width: 640px; margin: 0 auto 8px; }
+    .hk-nastroje { padding-inline: var(--gutter); }
+    .hk-karta { margin-top: 16px; padding: 16px; }
+    /* Tablet: karta a riadky pod ňou v šírke obrazu, v strede. */
+    .hk-karta, .hk-dovera { width: 100%; max-width: 640px; justify-self: center; }
+    /* Fotka dielu ostane v okrajoch stránky (zaoblená podlaha), nie cez celý displej ako render s kótami. */
+    .hk-obraz:has(.hk-diel) { margin: 20px 0 0; padding-top: 0; }
+    .hk-diel { margin-inline: auto; }
+    .hlava-karta h1 { font-size: clamp(30px, 4vw + 16px, 40px); }
   }
 
   @media (max-width: 900px) {

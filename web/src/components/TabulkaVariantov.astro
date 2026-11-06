@@ -46,7 +46,7 @@ const idDetailu = (v: Variant) => `pr-${v.obj_cislo.replace(/[^A-Za-z0-9]/g, '')
           <div class="chips">
             <button type="button" class:list={['chip', { 'chip-dn': filterDn }]} aria-pressed="true" data-rura="">{tx.vsetky}</button>
             {rury.map((d) => dnFiltra.get(d)
-              ? <button type="button" class="chip chip-cislo chip-dn" aria-pressed="false" data-rura={d} aria-label={`${d} mm, DN ${dnFiltra.get(d)}`}><span>{d}</span><small>DN {dnFiltra.get(d)}</small></button>
+              ? <button type="button" class="chip chip-cislo chip-dn" aria-pressed="false" data-rura={d}><span>{d}</span> <small>DN {dnFiltra.get(d)}</small></button>
               : <button type="button" class:list={['chip chip-cislo', { 'chip-dn': filterDn }]} aria-pressed="false" data-rura={d}>{d}</button>)}
           </div>
         </div>

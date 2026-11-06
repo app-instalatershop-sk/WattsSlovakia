@@ -1,28 +1,25 @@
 ---
 /**
  * Teplo v reze (Juraj 28. 10. 2026), vrstva nad renderom v hlave radu (slot „na-obraze“ v Hlava.astro):
- * ten istý záber ako obraz termokamery (data/blender/teplo.py, pohľad studio --termo; data/novinky_web.py teplo)
- * na tmavej obrazovke, kóty s teplotami médií a plášťa a stratou z katalógu. Zapína ju prepínač TeploRezim
- * (trieda je-termo na sekcii hlavy, udalosť mfx:teplo); obraz sa stiahne až pri prvom zapnutí. Pri výbere
- * dimenzie (udalosť mfx:variant z VolbaDimenzie) sa vymení za záber presnej dimenzie a kóty sa presunú.
+ * ten istý záber ako obraz termokamery (data/blender/teplo.py, pohľad studio --termo; data/novinky_web.py teplo),
+ * kóty s teplotami médií a plášťa a stratou z katalógu. Zapína ju prepínač TeploRezim (trieda je-termo na sekcii
+ * hlavy, udalosť mfx:teplo); obraz sa stiahne až pri prvom zapnutí. Pri výbere dimenzie (udalosť mfx:variant
+ * z VolbaDimenzie) sa vymení za záber presnej dimenzie a kóty sa presunú.
+ * Bez tmavej obrazovky za výrobkom (Juraj 6. 11. 2026: „teplotná mapa nemá mať pozadie“): záber termokamery má
+ * priehľadné pozadie a ten istý obrys ako render, ktorý prekryje; kontaktný tieň renderu pod ním ostáva. Kóty preto
+ * stoja v prázdnom mieste okolo výrobku ako kóty rozmerov (smer a dĺžky počíta Rad.astro, kotyTepla).
  */
 import Koty from './Koty.astro';
 import type { Kota } from '../lib/koty';
 
-type KotaT = { kod: string; x: number; y: number; hodnota: string; text: string };
-export interface ZaberTepla { avif: string; webp: string; src: string; koty: KotaT[] }
+export type KotaTepla = Pick<Kota, 'smer' | 'smerM' | 'l' | 'lM'> & { kod: string; x: number; y: number; hodnota: string; text: string };
+export interface ZaberTepla { avif: string; webp: string; src: string; koty: KotaTepla[] }
 interface Props { zabery: Record<string, ZaberTepla>; alt: string; label: string }
 const { zabery, alt, label } = Astro.props;
 const hlava = zabery[''];
-const SMER: Record<string, Pick<Kota, 'smer' | 'smerM' | 'l'>> = {
-  t0: { smer: 'hore-vpravo', smerM: 'hore-vlavo', l: 10 },
-  t1: { smer: 'dole-vpravo', smerM: 'dole-vlavo', l: 9 },
-  tp: { smer: 'hore-vlavo', smerM: 'hore-vpravo', l: 6 },
-};
-const koty: Kota[] = hlava.koty.map((k) => ({ x: k.x, y: k.y, ...SMER[k.kod], hodnota: k.hodnota, text: k.text, kod: k.kod }));
+const koty: Kota[] = hlava.koty.map((k) => ({ x: k.x, y: k.y, smer: k.smer, smerM: k.smerM, l: k.l, lM: k.lM, hodnota: k.hodnota, text: k.text, kod: k.kod }));
 ---
 <div class="tv" data-teplo-vrstva>
-  <span class="tv-panel" aria-hidden="true"></span>
   <picture class="tv-obr">
     <source type="image/avif" data-srcset={hlava.avif} sizes="(max-width: 760px) 100vw, 860px" />
     <img data-srcset={hlava.webp} data-src={hlava.src} sizes="(max-width: 760px) 100vw, 860px" alt={alt} width="1400" height="1224" decoding="async" />
@@ -33,27 +30,26 @@ const koty: Kota[] = hlava.koty.map((k) => ({ x: k.x, y: k.y, ...SMER[k.kod], ho
 
 <style>
   .tv { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
-  /* Obrazovka termokamery za výrobkom: tmavá, zaoblená, o kúsok väčšia ako záber. */
-  /* začína až pri výrobku (horná časť záberu je prázdna), aby nezakryla text hlavy nad obrazom */
-  .tv-panel { position: absolute; inset: 7% -3% -2% -4%; border-radius: var(--radius-xl); background: radial-gradient(110% 90% at 62% 42%, #24124a 0%, #120e33 48%, #0b1530 100%);
-    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.06), var(--elev-4); opacity: 0; transition: opacity 380ms var(--ease-soft); }
   .tv-obr :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; }
-  /* Teplota prejde cez obraz zľava doprava ako snímanie termokamerou. <picture> potrebuje vlastný box: globálne
-     má display: contents a orezanie by naň nepôsobilo (obraz tepla by ostal viditeľný aj v pohľade). */
+  /* Teplota prejde cez výrobok zľava doprava ako snímanie termokamerou; pred čelom snímania je ešte render.
+     <picture> potrebuje vlastný box: globálne má display: contents a orezanie by naň nepôsobilo (obraz tepla
+     by ostal viditeľný aj v pohľade). */
   .tv-obr { display: block; position: absolute; inset: 0; clip-path: inset(0 100% 0 0); transition: clip-path 760ms cubic-bezier(0.65, 0, 0.35, 1); }
   .tv :global([data-koty]) { opacity: 0; transition: opacity 260ms var(--ease-soft); }
-  :global(.je-termo) .tv-panel { opacity: 1; }
   :global(.je-termo) .tv-obr { clip-path: inset(0 0 0 0); }
   :global(.je-termo) .tv :global([data-koty]) { opacity: 1; transition-delay: 520ms; }
   /* V teplote kóty rozmerov a pás svetla po plášti zmiznú (patria k obrazu výrobku). */
   :global(.je-termo .hs-mys > [data-koty]), :global(.je-termo .hs-lesk) { opacity: 0; transition: opacity 200ms var(--ease-soft); }
+  /* Telefón: štítok plášťa so stratou („plášť, strata 17,5 W/m“) visí pod telom vľavo, kde je len úzky kus obrazu;
+     popis sa zalomí v mieste zlomu z dát („plášť,“ a pod ním strata), aby štítok nevyšiel za okraj displeja. */
+  @media (max-width: 760px) { .tv :global(.k-tp .stitok > span) { white-space: pre; } }
   @media (prefers-reduced-motion: reduce) {
-    .tv-panel, .tv-obr, .tv :global([data-koty]) { transition: none; }
+    .tv-obr, .tv :global([data-koty]) { transition: none; }
   }
 </style>
 
 <script>
-  type KotaT = { kod: string; x: number; y: number; hodnota: string; text: string };
+  type KotaT = { kod: string; x: number; y: number; hodnota: string; text: string; l: number; lM?: number };
   type Zaber = { avif: string; webp: string; src: string; koty: KotaT[] };
 
   function initTeploVrstva() {
@@ -77,6 +73,9 @@ const koty: Kota[] = hlava.koty.map((k) => ({ x: k.x, y: k.y, ...SMER[k.kod], ho
           if (!li) continue;
           li.style.setProperty('--x', `${k.x}%`);
           li.style.setProperty('--y', `${k.y}%`);
+          // Dĺžka čiary podľa polohy rúry v reze danej dimenzie: štítok ostane nad čelom alebo pod ním.
+          li.style.setProperty('--l', String(k.l));
+          if (k.lM !== undefined) li.style.setProperty('--lm', String(k.lM));
           li.querySelector('strong')!.textContent = k.hodnota;
           li.querySelector('.stitok > span')!.textContent = k.text;
         }

@@ -9,7 +9,9 @@ const sk = {
     telefon: 'Telefón', email: 'E-mail', predajna: 'Predajňa a sklad',
   },
   rad: {
-    vybrat: 'Vybrať dimenziu', kupit: 'Kúpiť v e-shope', kupitVariant: (kod: string) => `Kúpiť ${kod} v e-shope`, oznacenie: 'Označenie výrobcu',
+    kupit: 'Kúpiť v e-shope', kupitVariant: (kod: string) => `Kúpiť ${kod} v e-shope`, kupitKratko: (kod: string) => `Kúpiť ${kod}`, oznacenie: 'Označenie výrobcu',
+    // Produktová karta v hlave radu (Juraj 6. 11. 2026, návrh A): odkazy pod tlačidlom kúpy a riadky pod kartou.
+    rozmeryTabulka: 'Všetky rozmery v tabuľke', dopyt: 'Poslať dopyt', poradime: 'Poradíme s výberom:',
     filterRura: 'Nosná rúra', filterRuraVonk: 'Nosná rúra, vonkajší Ø', filterIzolacia: 'Izolácia', vsetky: 'Všetky', standard: 'Štandardná', zosilnena: 'Zosilnená',
     zobrazene: (n: number, z: number) => `Zobrazené ${n} z ${z}`,
     kopirovat: 'Kopírovať obj. číslo', skopirovane: (k: string) => `Skopírované: ${k}`,
@@ -22,7 +24,7 @@ const sk = {
     pocetDim: (n: number) => (n === 1 ? '1 dimenzia' : n >= 2 && n <= 4 ? `${n} dimenzie` : `${n} dimenzií`),
     // Viac variantov ako priemerov (štandardná a zosilnená izolácia): priemer sám ešte neurčuje obj. číslo.
     pocetVariantov: (n: number, p: number) => `${n} ${n >= 2 && n <= 4 ? 'varianty' : 'variantov'} v ${p} ${p === 1 ? 'priemere' : 'priemeroch'} nosnej rúry`,
-    navVarianty: 'Varianty', navStavba: 'Stavba a montáž', navDl: 'Na stiahnutie', navRef: 'Referencie', navRel: 'Spojky a príslušenstvo', navLabel: 'Časti stránky',
+    navVarianty: 'Rozmery', navStavba: 'Stavba a montáž', navDl: 'Na stiahnutie', navRef: 'Referencie', navRel: 'Diely', navLabel: 'Časti stránky',
     variantyP: 'Obj. číslo skopírujete jedným klikom, odkaz Do e-shopu ho vyhľadá na instalatershop.sk.',
     zosilnenych: (n: number) => `, z toho ${n} so zosilnenou izoláciou`,
     bezPlasta: 'Plášť, hmotnosť a polomer ohybu k týmto obj. číslam Vám potvrdíme pri dopyte.',
@@ -41,7 +43,8 @@ const sk = {
     druhy: { MK: 'Zmršťovacia krytka', MS: 'Protiprachová krytka', MG: 'Gumová krytka EPDM', MFP: 'Pevný bod', MPP: 'Plastová spojka MPP' } as Record<string, string>,
     stranaDielu: 'Stránka dielu', ks2: 'potrebné 2 ks', prislPozn: 'Príslušenstvo k obj. číslu je podľa katalógu výrobcu, s. 8 až 18.',
     // Živé kóty v hlave radu (components/VolbaDimenzie.astro).
-    volbaHint: 'Vyberte priemer, kóty na reze sa prepočítajú.', volbaPlast: 'Plášť a izolácia', volbaDetail: 'Detail v tabuľke',
+    volbaPriemer: 'Priemer nosnej rúry', volbaPriemerDn: 'Ø v mm, pod ním DN', volbaPriemerMm: 'Ø v mm', volbaVsetky: 'Všetky rozmery',
+    volbaHint: 'Vyberte priemer: ukážeme obj. číslo a rez v presnom rozmere.', volbaHintKratko: 'Vyberte priemer, ukážeme obj. číslo.', volbaDetail: 'Detail v tabuľke',
     volbaVykon: (kw: string) => `výkon asi ${kw} kW`, volbaZosilnena: 'zosilnená izolácia',
     rozkladAlt: (model: string) => `${model} rozložené na plášť z HDPE, izoláciu z PE-X peny a nosné rúry`,
   },
@@ -109,7 +112,8 @@ const cs: typeof sk = {
     telefon: 'Telefon', email: 'E-mail', predajna: 'Prodejna a sklad',
   },
   rad: {
-    vybrat: 'Vybrat dimenzi', kupit: 'Koupit v e-shopu', kupitVariant: (kod: string) => `Koupit ${kod} v e-shopu`, oznacenie: 'Označení výrobce',
+    kupit: 'Koupit v e-shopu', kupitVariant: (kod: string) => `Koupit ${kod} v e-shopu`, kupitKratko: (kod: string) => `Koupit ${kod}`, oznacenie: 'Označení výrobce',
+    rozmeryTabulka: 'Všechny rozměry v tabulce', dopyt: 'Poslat poptávku', poradime: 'Poradíme s výběrem:',
     filterRura: 'Nosná trubka', filterRuraVonk: 'Nosná trubka, vnější Ø', filterIzolacia: 'Izolace', vsetky: 'Všechny', standard: 'Standardní', zosilnena: 'Zesílená',
     zobrazene: (n: number, z: number) => `Zobrazeno ${n} z ${z}`,
     kopirovat: 'Kopírovat obj. číslo', skopirovane: (k: string) => `Zkopírováno: ${k}`,
@@ -121,7 +125,7 @@ const cs: typeof sk = {
     relP: 'Spojky a příslušenství, které výrobce doporučuje k této řadě.',
     pocetDim: (n: number) => (n === 1 ? '1 dimenze' : n >= 2 && n <= 4 ? `${n} dimenze` : `${n} dimenzí`),
     pocetVariantov: (n: number, p: number) => `${n} ${n >= 2 && n <= 4 ? 'varianty' : 'variant'} v ${p} ${p === 1 ? 'průměru' : 'průměrech'} nosné trubky`,
-    navVarianty: 'Varianty', navStavba: 'Stavba a montáž', navDl: 'Ke stažení', navRef: 'Reference', navRel: 'Spojky a příslušenství', navLabel: 'Části stránky',
+    navVarianty: 'Rozměry', navStavba: 'Stavba a montáž', navDl: 'Ke stažení', navRef: 'Reference', navRel: 'Díly', navLabel: 'Části stránky',
     variantyP: 'Obj. číslo zkopírujete jedním klikem, odkaz Do e-shopu ho vyhledá na instalatershop.sk.',
     zosilnenych: (n: number) => `, z toho ${n} se zesílenou izolací`,
     bezPlasta: 'Plášť, hmotnost a poloměr ohybu k těmto obj. číslům Vám potvrdíme při poptávce.',
@@ -138,7 +142,8 @@ const cs: typeof sk = {
     prislusenstvo: 'Příslušenství', dielov: (n: number) => (n === 1 ? '1 díl' : n >= 2 && n <= 4 ? `${n} díly` : `${n} dílů`),
     druhy: { MK: 'Smršťovací krytka', MS: 'Protiprachová krytka', MG: 'Pryžová krytka EPDM', MFP: 'Pevný bod', MPP: 'Plastová spojka MPP' },
     stranaDielu: 'Stránka dílu', ks2: 'potřeba 2 ks', prislPozn: 'Příslušenství k obj. číslu je podle katalogu výrobce, s. 8 až 18.',
-    volbaHint: 'Vyberte průměr, kóty na řezu se přepočítají.', volbaPlast: 'Plášť a izolace', volbaDetail: 'Detail v tabulce',
+    volbaPriemer: 'Průměr nosné trubky', volbaPriemerDn: 'Ø v mm, pod ním DN', volbaPriemerMm: 'Ø v mm', volbaVsetky: 'Všechny rozměry',
+    volbaHint: 'Vyberte průměr: ukážeme obj. číslo a řez v přesném rozměru.', volbaHintKratko: 'Vyberte průměr, ukážeme obj. číslo.', volbaDetail: 'Detail v tabulce',
     volbaVykon: (kw: string) => `výkon asi ${kw} kW`, volbaZosilnena: 'zesílená izolace',
     rozkladAlt: (model: string) => `${model} rozložené na plášť z HDPE, izolaci z pěny PE-X a nosné trubky`,
   },

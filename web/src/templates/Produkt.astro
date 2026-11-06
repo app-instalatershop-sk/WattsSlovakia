@@ -1,8 +1,9 @@
 ---
 /**
- * Stránka spojky alebo dielu príslušenstva: hlava s fotkou výrobcu a kľúčovými údajmi, tabuľka
- * obj. čísel s kopírovaním a odkazom do e-shopu, rady potrubia, ku ktorým diel patrí, a ďalšie
- * diely zo skupiny. Na konci záver s kúpou a kontaktom.
+ * Stránka spojky alebo dielu príslušenstva s rovnakou kostrou ako stránka radu (Juraj 6. 11. 2026, návrh A
+ * „Produktová karta“): hlava s fotkou dielu na podlahe štúdia vľavo a kartou s kľúčovými údajmi a kúpou vpravo,
+ * tabuľka obj. čísel s kopírovaním a odkazom do e-shopu, rady potrubia, ku ktorým diel patrí, a ďalšie diely
+ * zo skupiny. Na konci záver s kúpou a kontaktom.
  */
 import { getImage } from 'astro:assets';
 import Obraz from '../components/Obraz.astro';
@@ -18,12 +19,13 @@ import { kategorie, cestaKategorie, cestaRadu, cestaProduktu, alternatyProduktu,
 import { faktyProduktu, kodyProduktu, radyProduktu, prvaVeta, kratkyNazovSkupiny } from '../lib/produkty';
 import { fotkaProduktu, obrazRadu } from '../lib/obrazky';
 import { stranky } from '../content/stranky';
-import { type Lang, t, ESHOP_SEARCH, KATALOG_PDF } from '../i18n/ui';
+import { type Lang, t, route, ESHOP_SEARCH, KATALOG_PDF } from '../i18n/ui';
 
 interface Props { lang: Lang; k: Kategoria; p: Produkt }
 const { lang, k, p } = Astro.props;
 const ui = t(lang);
 const tx = stranky(lang).produkt;
+const txr = stranky(lang).rad;
 const nazov = pNazov(p, lang);
 const popis = pPopis(p, lang);
 const skupina = (await getCollection('rady')).map((r) => r.data).find((r) => r.id === p.skupina)!;
@@ -56,14 +58,18 @@ const ld = [{
 }];
 ---
 <Base lang={lang} alternates={alternatyProduktu(p, k)} title={nazov} description={meta} aktivna="potrubia" drobceky={drobceky} vizualneDrobceky={false} jsonLd={ld}>
-  <Hlava lang={lang} nadpis={nazov} drobceky={drobceky} pred={rNazov(skupina, lang)} lead={popis ?? undefined} obraz={img} obrazAlt={nazov} druh={img?.format === 'webp' ? 'render' : 'biely'} obrazMax={560}>
-    {fakty.length > 0 && <dl class="hlava-fakty">{fakty.map(([dt, dd]) => <div><dt>{dt}</dt><dd>{dd}</dd></div>)}</dl>}
-    <div class="hlava-akcie">
-      {kody.length > 0
-        ? <a class="btn btn-yellow btn-lg" href="#tabulka">{tx.tabulka} <Ikona nazov="arrow-down" velkost={18} /></a>
-        : <a class="btn btn-yellow btn-lg" href={KATALOG_PDF} target="_blank" rel="noopener">{tx.otvoritKatalog} <Ikona nazov="download" velkost={18} /></a>}
-      <a class="odkaz" href={eshop} target="_blank" rel="noopener">{tx.hladat} <Ikona nazov="external-link" velkost={16} /></a>
-    </div>
+  <Hlava lang={lang} nadpis={nazov} drobceky={drobceky} pred={rNazov(skupina, lang)} lead={popis ?? undefined} obraz={img} obrazAlt={nazov} druh={img?.format === 'webp' ? 'render' : 'biely'} rozlozenie="karta">
+    {/* Karta: kľúčové údaje dielu a kúpa (jediné žlté tlačidlo), pod ňou obj. čísla a dopyt ako odkazy. */}
+    <Fragment slot="karta">
+      {fakty.length > 0 && <dl class="hlava-fakty">{fakty.map(([dt, dd]) => <div><dt>{dt}</dt><dd>{dd}</dd></div>)}</dl>}
+      <div class="hlava-akcie">
+        <a class="btn btn-yellow btn-lg" href={eshop} target="_blank" rel="noopener">{txr.kupit} <Ikona nazov="external-link" velkost={18} /></a>
+        {kody.length > 0
+          ? <a class="odkaz" href="#tabulka">{tx.tabulka} <Ikona nazov="arrow-down" velkost={16} /></a>
+          : <a class="odkaz" href={KATALOG_PDF} target="_blank" rel="noopener">{tx.otvoritKatalog} <Ikona nazov="download" velkost={16} /></a>}
+        <a class="odkaz" href={`${route(lang, 'firmy')}#dopyt`}>{txr.dopyt} <Ikona nazov="send" velkost={16} /></a>
+      </div>
+    </Fragment>
   </Hlava>
 
   <div class="telo">
@@ -112,7 +118,7 @@ const ld = [{
 </Base>
 
 <style>
-  .hlava-fakty { display: flex; flex-wrap: wrap; gap: 16px 32px; margin: 24px 0 0; }
+  .hlava-fakty { display: flex; flex-wrap: wrap; gap: 16px 32px; margin: 0; }
   .hlava-fakty dt { font-size: 13px; color: var(--color-ink-soft); }
   .hlava-fakty dd { margin: 2px 0 0; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: clamp(17px, 0.6vw + 13px, 22px); letter-spacing: -0.01em; color: var(--color-blue-900); white-space: nowrap; font-variant-numeric: tabular-nums; }
   .tab + .tab { margin-top: 20px; }

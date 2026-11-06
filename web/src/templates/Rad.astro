@@ -1,8 +1,12 @@
 ---
 /**
- * Stránka radu: hlava s renderom a kľúčovými číslami, plávajúca navigácia po častiach, tabuľka
- * variantov, stavba potrubia pod lupou s parametrami a montážou z katalógu, podklady na stiahnutie,
- * referencie a spojky s príslušenstvom k radu. Na konci záver s kúpou a kontaktom.
+ * Stránka radu ako produktová stránka s hlavou a pätou (Juraj 6. 11. 2026, návrh A „Produktová karta“):
+ *  hlava    render s kótami vľavo, vpravo názov a karta: priemer, izolácia, obj. číslo, kúpa v e-shope;
+ *           pod renderom pohľad a teplota, pod kartou predajňa a telefón (Hlava rozlozenie="karta")
+ *  lišta    produkt, vybraný rozmer, časti stránky a kúpa idú s človekom ďalej (ListaProduktu)
+ *  telo     v poradí nákupu: rozmery a obj. čísla → diely k potrubiu → z čoho je potrubie (parametre
+ *           a montáž) → referencie → podklady na stiahnutie
+ *  päta     záver s kúpou, dopytom a kontaktom
  */
 import { getImage } from 'astro:assets';
 import Obraz from '../components/Obraz.astro';
@@ -14,15 +18,16 @@ import Ikona from '../components/Ikona.astro';
 import TabulkaVariantov from '../components/TabulkaVariantov.astro';
 import Subory from '../components/Subory.astro';
 import Scena from '../components/Scena.astro';
-import CastiStranky from '../components/CastiStranky.astro';
+import ListaProduktu from '../components/ListaProduktu.astro';
+import KartaProduktu from '../components/KartaProduktu.astro';
 import Kopirovanie from '../components/Kopirovanie.astro';
 import VolbaDimenzie, { type ObrazVariantu } from '../components/VolbaDimenzie.astro';
 import rendery from '../data/rendery.json';
 import { kategorie, radyKategorie, variantyRadu, cestaKategorie, cestaRadu, cestaProduktu, alternatyRadu, kKratky, rNazov, rKratky, rMedium, rOznacenie, pNazov, cislo, rozsah, rozsahRur, rozsahDn, ruraSDn, tlakText, kotvaKodu, type Kategoria, type Rad } from '../lib/katalog';
-import { piktogram, render3d, fotkaRadu, detail, fotkaReferencie, rozkladRadu, makroRury } from '../lib/obrazky';
+import { piktogram, render3d, detail, fotkaReferencie, rozkladRadu, makroRury } from '../lib/obrazky';
 import Rozklad from '../components/Rozklad.astro';
 import Mierka from '../components/Mierka.astro';
-import TeploVrstva, { type ZaberTepla } from '../components/TeploVrstva.astro';
+import TeploVrstva, { type ZaberTepla, type KotaTepla } from '../components/TeploVrstva.astro';
 import TeploRezim from '../components/TeploRezim.astro';
 import { mierkaRadu, teplo as teploData, type TeploZaber } from '../lib/obrazky';
 import { kotyRenderu, kotyRenderu3d } from '../lib/koty';
@@ -79,7 +84,7 @@ const faktyHlavy = kotyHlavy.length >= 2 ? [] : fakty;
 
 // Živé kóty s obrazom: ku každej dimenzii render vlastného 3D modelu v tom istom rámci ako čelný záber
 // hlavy (data/rendery_web.py, spoločný rámec), výber dimenzie ho prelínaním ukáže a kóty presunie.
-type Body3d = { plast?: number[]; rura?: number[]; ohyb?: number[]; lr?: number };
+type Body3d = { plast?: number[]; rura?: number[]; ohyb?: number[]; lr?: number; stred?: number[] };
 const klucObj = (s: string) => s.replace(/[^A-Za-z0-9]/g, '');
 const bodyVariantov = rendery.varianty as Record<string, Body3d>;
 const obrazyVariantov: Record<string, ObrazVariantu> = hlava3d ? Object.fromEntries((await Promise.all(varianty.map(async (v) => {
@@ -103,25 +108,49 @@ const ruryKratko = (v: (typeof varianty)[number]) => {
 };
 const td = teploData();
 const role = td?.role[r.id];
-const kotyTepla = (z: TeploZaber) => {
+// Kóty tepla stoja v prázdnom mieste okolo výrobku ako kóty rozmerov, nikdy na plášti (Juraj 23. 9.). Teplota je
+// od 6. 11. 2026 bez tmavej obrazovky za výrobkom, štítky preto nemôžu ležať na tele. Čelo plášťa je v spoločnom
+// rámci záberov kruh: stred z rendery.json, polomer po vrch čela (plast.bod), y v percentách výšky → cqw delením
+// pomerom. Spodná rúra: štítok pod čelom (miesto kóty rúry), horná: nad čelom. Plášť pri jednej rúre nad čelom
+// (miesto kóty plášťa), pri dvoch pod telom vľavo (miesto kóty ohybu, polomer v teplote nie je).
+const r2 = (n: number) => Math.round(n * 100) / 100;
+const zlomPredCislom = (s: string) => s.replace(/ (?=\d)/, '\n');
+const kotyTepla = (z: TeploZaber, b: Body3d | undefined): KotaTepla[] => {
   const idx = role!.length === 4 ? [0, 2] : role!.map((_, i) => i).slice(0, 2);
-  const k = idx.map((i, j) => ({ kod: `t${j}`, x: z.rury[i].bod[0], y: z.rury[i].bod[1], hodnota: `${Math.round(z.rury[i].t)} °C`, text: nv.teplo.role[role![i]] }));
-  const pl = z.plast.vlavo ?? z.plast.bod;   // ľavý okraj čela: štítok na tmavej obrazovke, nie na jej hrane
-  k.push({ kod: 'tp', x: pl[0], y: pl[1], hodnota: `${Math.round(z.plast.t)} °C`, text: z.q ? `${nv.teplo.plast}, ${nv.teplo.strata(cislo(z.q, 1))}` : nv.teplo.plast });
+  const stred = b?.stred ?? bodyHlavy?.stred ?? [59.65, 48.37];
+  const cy = stred[1] / z.pomer, R = (stred[1] - z.plast.bod[1]) / z.pomer;
+  const polvyska = (x: number) => Math.sqrt(Math.max(0, R * R - (x - stred[0]) ** 2));
+  const dolna = Math.max(...idx.map((i) => z.rury[i].bod[1]));
+  const k = idx.map((i, j): KotaTepla => {
+    const [x, y] = z.rury[i].bod;
+    const dole = y === dolna;
+    // dole: vrch štítka na spodku čela; hore: spodok štítka 2,5 cqw nad vrchom čela (na telefóne rovnaká dĺžka).
+    const l = dole ? r2(cy + polvyska(x) - y / z.pomer) : r2(y / z.pomer - (cy - polvyska(x)) + 2.5);
+    // Telefón: horná rúra pri pravom okraji čela (HP, QUADRO) by mala štítok za okrajom displeja, ide preto doľava;
+    // nad čelom musí byť v celej šírke štítka (asi 19 % obrazu), teda nad najvyšším miestom čela pod ním.
+    const vlavoM = !dole && x > 77;
+    const lM = vlavoM ? r2((y / z.pomer - (cy - polvyska(Math.max(stred[0], x - 19))) + 1.5) / 0.75) : r2(l / 0.75);
+    return { kod: `t${j}`, x, y, hodnota: `${Math.round(z.rury[i].t)} °C`, text: nv.teplo.role[role![i]], smer: dole ? 'dole-vlavo' : 'hore-vpravo', smerM: vlavoM ? 'hore-vlavo' : undefined, l, lM };
+  });
+  const jedna = idx.length === 1;
+  const pl = jedna ? b?.plast ?? [48.88, 18] : b?.ohyb ?? [29.98, 64.48];
+  // Zlom riadku pred číslom straty využije len telefón (white-space: pre v TeploVrstva), inde je to medzera.
+  k.push({ kod: 'tp', x: pl[0], y: pl[1], hodnota: `${Math.round(z.plast.t)} °C`, text: z.q ? zlomPredCislom(`${nv.teplo.plast}, ${nv.teplo.strata(cislo(z.q, 1))}`) : nv.teplo.plast,
+    smer: jedna ? 'hore-vpravo' : 'dole-vlavo', l: jedna ? 8 : 5, lM: jedna ? undefined : 3 });
   return k;
 };
-const zaberTepla = async (img: ImageMetadata, z: TeploZaber, sirky: [number, number]): Promise<ZaberTepla> => {
+const zaberTepla = async (img: ImageMetadata, z: TeploZaber, b: Body3d | undefined, sirky: [number, number]): Promise<ZaberTepla> => {
   const [a1, a2, w1, w2] = await Promise.all(([[sirky[0], 'avif'], [sirky[1], 'avif'], [sirky[0], 'webp'], [sirky[1], 'webp']] as const)
     .map(([width, format]) => getImage({ src: img, width, format, quality: format === 'avif' ? 55 : 82 })));
-  return { avif: `${a1.src} ${sirky[0]}w, ${a2.src} ${sirky[1]}w`, webp: `${w1.src} ${sirky[0]}w, ${w2.src} ${sirky[1]}w`, src: w2.src, koty: kotyTepla(z) };
+  return { avif: `${a1.src} ${sirky[0]}w, ${a2.src} ${sirky[1]}w`, webp: `${w1.src} ${sirky[0]}w, ${w2.src} ${sirky[1]}w`, src: w2.src, koty: kotyTepla(z, b) };
 };
 const teploHlava = role && td?.hlavy[r.id] ? render3d('teplo-hlavy', r.id) : undefined;
 const zaberyTepla: Record<string, ZaberTepla> | null = teploHlava ? Object.fromEntries([
-  ['', await zaberTepla(teploHlava, td!.hlavy[r.id], [900, 1800])],
+  ['', await zaberTepla(teploHlava, td!.hlavy[r.id], bodyHlavy, [900, 1800])],
   ...(await Promise.all(varianty.map(async (v) => {
     const img = render3d('teplo-varianty', klucObj(v.obj_cislo));
     const z = td!.varianty[klucObj(v.obj_cislo)];
-    return img && z ? [v.obj_cislo, await zaberTepla(img, z, [800, 1400])] as const : null;
+    return img && z ? [v.obj_cislo, await zaberTepla(img, z, bodyVariantov[klucObj(v.obj_cislo)] ?? bodyHlavy, [800, 1400])] as const : null;
   }))).filter((x): x is NonNullable<typeof x> => x !== null),
 ]) : null;
 const hlavaTepla = td?.hlavy[r.id];
@@ -184,13 +213,17 @@ const refs = referencie(lang).filter((x) => x.rad === r.slug || (x.rad === null 
 // pri Považskej Bystrici nevie, ktorý rad tam leží).
 const refyRadu = refs.length > 0 && refs.every((x) => x.rad === r.slug);
 
+// Časti v poradí nákupu: rozmer → diely k nemu → ako je potrubie postavené → kde leží → podklady.
 const casti = [
   { id: 'varianty', text: tx.navVarianty },
-  ...(obsah ? [{ id: 'stavba', text: tx.navStavba }] : []),
-  ...(r.subory.length ? [{ id: 'stiahnut', text: tx.navDl }] : []),
-  ...(refs.length ? [{ id: 'referencie', text: tx.navRef }] : []),
   ...(skupinyRel.length ? [{ id: 'suvisiace', text: tx.navRel }] : []),
+  ...(obsah ? [{ id: 'stavba', text: tx.navStavba }] : []),
+  ...(refs.length ? [{ id: 'referencie', text: tx.navRef }] : []),
+  ...(r.subory.length ? [{ id: 'stiahnut', text: tx.navDl }] : []),
 ];
+// Lišta produktu bez výberu: počet dimenzií a rozsah nosnej rúry („8 dimenzií, nosná rúra Ø 25 až 110 mm“).
+const zakladListy = [varianty.length ? tx.pocetDim(varianty.length) : '', ruraRozsah ? `${ui.rad.rura.toLowerCase()} ${ruraPred}Ø ${ruraRozsah}` : ''].filter(Boolean).join(', ');
+const volba = kotyHlavy.length >= 2 && varianty.length > 1;
 
 const eshop = ESHOP_SEARCH + encodeURIComponent(model);
 // Popis pre vyhľadávače: čo rad je, jeho čísla a počet dimenzií (Base ho zarovná na 120 až 160 znakov).
@@ -209,23 +242,27 @@ const productLd = [{
 }];
 ---
 <Base lang={lang} alternates={alternatyRadu(k, r)} title={nazov} description={meta} aktivna="potrubia" drobceky={drobceky} vizualneDrobceky={false} jsonLd={productLd}>
-  <Hlava lang={lang} nadpis={nazov} drobceky={drobceky} pred={[kKratky(k, lang), ruryText].filter(Boolean).join(', ')} lead={kratky ?? undefined} obraz={pikto} obrazAlt={ui.rad.fotoAlt(nazov)} obrazMax={860} prechod={`rad-${r.id}`} koty={kotyHlavy} kotyLabel={ui.home.popisy.label} rozlozenie="studio">
-    {faktyHlavy.length > 0 && <dl class="hlava-fakty">{faktyHlavy.map(([dt, dd]) => <div><dt>{dt}</dt><dd>{dd}</dd></div>)}</dl>}
-    {/* Živé kóty: výber dimenzie nad renderom prepíše kóty na ňom (len keď sú na obraze aspoň dve). */}
-    {kotyHlavy.length >= 2 && varianty.length > 1 && <VolbaDimenzie slot="nad-obrazom" lang={lang} varianty={varianty} pocetRur={r.pocet_rur} model={model} obrazy={obrazyVariantov} bodyHlavy={bodyHlavy} tlak={tlakText(r)} />}
-    {zaberyTepla && td && <TeploRezim slot="nad-obrazom" texty={nv.teplo} podmienky={podmienkyTepla} rozsah={hlavaTepla!.rozsah} paleta={td.paleta} />}
-    {zaberyTepla && <TeploVrstva slot="na-obraze" zabery={zaberyTepla} alt={nv.teplo.alt(model)} label={nv.teplo.stupnica} />}
-    <div class="hlava-akcie">
-      <a class="btn btn-yellow btn-lg" href="#varianty" data-cta><span data-cta-text>{tx.vybrat}</span> <Ikona nazov="arrow-down" velkost={18} /></a>
-      <a class="odkaz" href={eshop} target="_blank" rel="noopener" data-eshop><span data-eshop-text>{tx.kupit}</span> <Ikona nazov="external-link" velkost={16} /></a>
-    </div>
+  <Hlava lang={lang} nadpis={nazov} drobceky={drobceky} pred={[kKratky(k, lang), ruryText].filter(Boolean).join(', ')} lead={kratky ?? undefined} obraz={pikto} obrazAlt={ui.rad.fotoAlt(nazov)} prechod={`rad-${r.id}`} koty={kotyHlavy} kotyLabel={ui.home.popisy.label} rozlozenie="karta">
     {sestry.length > 0 && (
       <p class="hlava-sestry">{tx.ajVo} {sestry.map((x, i) => <>{i > 0 && ', '}<a href={cestaRadu(k, x, lang)}>{rNazov(x, lang).split(',')[0].trim()}</a></>)}</p>
     )}
+    {zaberyTepla && <TeploVrstva slot="na-obraze" zabery={zaberyTepla} alt={nv.teplo.alt(model)} label={nv.teplo.stupnica} />}
+    {zaberyTepla && td && <TeploRezim slot="pod-obrazom" texty={nv.teplo} podmienky={podmienkyTepla} rozsah={hlavaTepla!.rozsah} paleta={td.paleta} />}
+    {/* Karta: výber dimenzie prepíše kóty na renderi a ukáže obj. číslo (len keď sú na obraze aspoň dve kóty),
+        inak kľúčové čísla radu. Jediné žlté tlačidlo je kúpa, kvôli ktorej web je; tabuľka a dopyt sú odkazy. */}
+    <Fragment slot="karta">
+      {volba ? <VolbaDimenzie lang={lang} varianty={varianty} pocetRur={r.pocet_rur} model={model} obrazy={obrazyVariantov} bodyHlavy={bodyHlavy} tlak={tlakText(r)} />
+        : faktyHlavy.length > 0 && <dl class="hlava-fakty">{faktyHlavy.map(([dt, dd]) => <div><dt>{dt}</dt><dd>{dd}</dd></div>)}</dl>}
+      <div class="hlava-akcie">
+        <a class="btn btn-yellow btn-lg" href={eshop} target="_blank" rel="noopener" data-eshop><span data-eshop-text>{tx.kupit}</span> <Ikona nazov="external-link" velkost={18} /></a>
+        {varianty.length > 0 && <a class="odkaz" href="#varianty" data-cta><span data-cta-text>{tx.rozmeryTabulka}</span> <Ikona nazov="arrow-down" velkost={16} /></a>}
+        <a class="odkaz" href={`${route(lang, 'firmy')}#dopyt`}>{tx.dopyt} <Ikona nazov="send" velkost={16} /></a>
+      </div>
+    </Fragment>
   </Hlava>
 
   <div class="telo">
-    {casti.length > 2 && <CastiStranky casti={casti} label={tx.navLabel} />}
+    <ListaProduktu nazov={nazov} model={model} obraz={pikto} zaklad={zakladListy} casti={casti} eshop={eshop} kupit={tx.kupit} kupitKratko={tx.kupitKratko} label={tx.navLabel} />
 
     <section class="wrap cast" id="varianty" aria-labelledby="h-var">
       <div class="s-hlava">
@@ -243,6 +280,17 @@ const productLd = [{
       )}
     </section>
 
+    {skupinyRel.length > 0 && (
+      <section class="wrap cast" id="suvisiace" aria-labelledby="h-rel">
+        <div class="s-hlava"><h2 id="h-rel">{tx.relH2}</h2><p>{tx.relP}</p><a href={route(lang, 'spojky')}>{tx.vsetkyDiely} <Ikona nazov="arrow-right" velkost={16} /></a></div>
+        {/* Diely ako výrobky na podlahe štúdia, rovnako ako v katalógu spojok a príslušenstva.
+            Hneď pod rozmermi, lebo patria k nákupu (Juraj 6. 11. 2026, návrh A); v poradí skupín (spojky, krytky, prestupy). */}
+        <ul class="diely">{skupinyRel.flatMap(({ ps }) => ps.map((p) => (
+          <li><KartaProduktu p={p} href={cestaProduktu(p, katProduktu(p.kategoria), lang)} lang={lang} /></li>
+        )))}</ul>
+      </section>
+    )}
+
     {obsah && (
       rozklad ? (
       <div class="cast" id="stavba">
@@ -255,7 +303,7 @@ const productLd = [{
           </div>
           <div class="stavba-zoznamy">
             <h3>{tx.parametreH3}</h3>
-            <dl class="parametre">{obsah.parametre.map(([dt, dd]) => <div><dt>{dt}</dt><dd>{sadzba(dd)}</dd></div>)}</dl>
+            <dl class="parametre">{obsah.parametre.map(([dt, dd]) => <div><dt>{dt}</dt><dd>{sadzba(dd)}</dd></div>)}<div><dt>{tx.oznacenie}</dt><dd>{rOznacenie(r, lang)}</dd></div></dl>
             <h3>{tx.montazH3}</h3>
             <ul class="montaz">{obsah.montaz.map((m) => <li><Ikona nazov="check" velkost={18} /><span>{sadzba(m)}</span></li>)}</ul>
             {obsah.strana && <p class="stavba-zdroj"><a href={KATALOG_PDF} target="_blank" rel="noopener">{tx.stranaKat(obsah.strana)}</a></p>}
@@ -273,7 +321,7 @@ const productLd = [{
           </div>
           <div class="stavba-zoznamy">
             <h3>{tx.parametreH3}</h3>
-            <dl class="parametre">{obsah.parametre.map(([dt, dd]) => <div><dt>{dt}</dt><dd>{sadzba(dd)}</dd></div>)}</dl>
+            <dl class="parametre">{obsah.parametre.map(([dt, dd]) => <div><dt>{dt}</dt><dd>{sadzba(dd)}</dd></div>)}<div><dt>{tx.oznacenie}</dt><dd>{rOznacenie(r, lang)}</dd></div></dl>
             <h3>{tx.montazH3}</h3>
             <ul class="montaz">{obsah.montaz.map((m) => <li><Ikona nazov="check" velkost={18} /><span>{sadzba(m)}</span></li>)}</ul>
             {obsah.strana && <p class="stavba-zdroj"><a href={KATALOG_PDF} target="_blank" rel="noopener">{tx.stranaKat(obsah.strana)}</a></p>}
@@ -291,13 +339,6 @@ const productLd = [{
         </ol>
       </section>
       )
-    )}
-
-    {r.subory.length > 0 && (
-      <section class="wrap cast" id="stiahnut" aria-labelledby="h-dl">
-        <div class="s-hlava"><h2 id="h-dl">{ui.rad.dlH2}</h2><p>{tx.dlP}</p><a href={route(lang, 'stiahnut')}>{ui.nav.stiahnut} <Ikona nazov="arrow-right" velkost={16} /></a></div>
-        <Subory subory={r.subory} lang={lang} />
-      </section>
     )}
 
     {refs.length > 0 && (
@@ -320,42 +361,41 @@ const productLd = [{
       </section>
     )}
 
-    {skupinyRel.length > 0 && (
-      <section class="wrap cast" id="suvisiace" aria-labelledby="h-rel">
-        <div class="s-hlava"><h2 id="h-rel">{tx.relH2}</h2><p>{tx.relP}</p><a href={route(lang, 'spojky')}>{tx.vsetkyDiely} <Ikona nazov="arrow-right" velkost={16} /></a></div>
-        <div class="rel">
-          {skupinyRel.map(({ s, ps }) => { const img = fotkaRadu(s.fotka); return (
-            <div class="harok rel-skupina">
-              <div class="rel-hlava">
-                {img && <span class="rel-ikona"><Obraz src={img} alt="" width={64} height={64} densities={[1, 2]} /></span>}
-                <h3>{rNazov(s, lang)}</h3>
-              </div>
-              <ul>{ps.map((p) => <li><a href={cestaProduktu(p, katProduktu(p.kategoria), lang)}><span>{pNazov(p, lang)}</span><Ikona nazov="chevron-right" velkost={16} /></a></li>)}</ul>
-            </div>
-          ); })}
-        </div>
+    {r.subory.length > 0 && (
+      <section class="wrap cast" id="stiahnut" aria-labelledby="h-dl">
+        <div class="s-hlava"><h2 id="h-dl">{ui.rad.dlH2}</h2><p>{tx.dlP}</p><a href={route(lang, 'stiahnut')}>{ui.nav.stiahnut} <Ikona nazov="arrow-right" velkost={16} /></a></div>
+        <Subory subory={r.subory} lang={lang} />
       </section>
     )}
 
-    <p class="wrap oznacenie"><span>{tx.oznacenie}:</span> {rOznacenie(r, lang)}</p>
+    {!obsah && <p class="wrap oznacenie"><span>{tx.oznacenie}:</span> {rOznacenie(r, lang)}</p>}
   </div>
   <Zaver lang={lang} />
   <Kopirovanie lang={lang} />
 </Base>
 
 <style>
-  .hlava-fakty { display: flex; flex-wrap: wrap; gap: 16px 32px; margin: 24px 0 0; }
+  /* Karta v hlave (Hlava rozlozenie="karta"): kľúčové čísla, keď rad nemá výber dimenzie; akcie má Hlava. */
+  .hlava-fakty { display: flex; flex-wrap: wrap; gap: 16px 32px; margin: 0; }
   .hlava-fakty dt { font-size: 13px; color: var(--color-ink-soft); }
   .hlava-fakty dd { margin: 2px 0 0; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: clamp(17px, 0.6vw + 13px, 22px); letter-spacing: -0.01em; color: var(--color-blue-900); white-space: nowrap; font-variant-numeric: tabular-nums; }
-  .hlava-sestry { margin-top: 20px; font-size: 15px; color: var(--color-ink-soft); }
+  .hlava-sestry { margin-top: 12px; font-size: 14px; color: var(--color-ink-soft); }
   .hlava-sestry a { font-weight: 600; }
 
 
   .prazdne { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; padding: 28px; }
 
   .stavba { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: 32px 72px; align-items: start; }
-  /* Pod rozloženým rezom: ďalší odsek popisu a zoznamy parametrov a montáže. */
-  .stavba-pod { margin-top: 24px; }
+  /* Pod rozloženým rezom: odsek popisu ako úvod, pod ním parametre a montáž ako dva rovnocenné stĺpce
+     (predtým odsek osamote vľavo a oba zoznamy pod sebou vpravo). */
+  .stavba-pod { display: block; margin-top: 24px; }
+  .stavba-pod .stavba-popis { margin-top: 0; max-width: 44em; }
+  .stavba-pod .stavba-zoznamy { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-auto-flow: dense; column-gap: 56px; align-items: start; margin-top: 28px; }
+  .stavba-pod .stavba-zoznamy > :nth-child(-n + 2) { grid-column: 1; }
+  .stavba-pod .stavba-zoznamy > :nth-child(n + 3) { grid-column: 2; }
+  .stavba-pod .stavba-zoznamy > :nth-child(3) { margin-top: 0; }
+  /* Zdroj platí pre oba stĺpce: pod nimi cez celú šírku. */
+  .stavba-pod .stavba-zoznamy > .stavba-zdroj { grid-column: 1 / -1; }
   .stavba h2 { font-size: clamp(26px, 1.4vw + 17px, 36px); letter-spacing: -0.02em; }
   .stavba-popis { margin-top: 16px; font-size: 17px; line-height: 1.6; max-width: 36em; }
   .stavba-zoznamy h3 { font-size: 17px; font-weight: 600; color: var(--color-ink); }
@@ -402,17 +442,8 @@ const productLd = [{
   .ref-fakty dt { color: var(--color-ink-soft); font-size: 15px; }
   .ref-fakty dd { margin: 0; font-weight: 600; }
 
-  .rel { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; align-items: start; }
-  .rel-skupina { padding: 24px 24px 16px; }
-  .rel-hlava { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
-  /* Diel stojí na podlahe ako v kartách dielov, nie v štvorčeku ako ikona (znak šablóny, DOLADENIE 2.5).
-     Fotky Watts majú biele pozadie, násobenie ho na bielom hárku skryje; tieň dopadu je elipsa pod dielom. */
-  .rel-ikona { position: relative; flex: none; width: 68px; height: 68px; display: grid; place-items: center; mix-blend-mode: multiply; }
-  .rel-ikona::before { content: ""; position: absolute; left: 12%; right: 12%; bottom: 3px; height: 9px; border-radius: 50%; background: radial-gradient(closest-side, rgb(10 42 94 / 0.22), rgb(10 42 94 / 0)); }
-  .rel-ikona :global(img) { position: relative; width: 64px; height: 64px; object-fit: contain; }
-  .rel-skupina h3 { font-size: 18px; }
-  .rel-skupina li a { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 8px 0; border-top: 1px solid rgb(10 42 94 / 0.08); font-size: 15px; font-weight: 500; }
-  .rel-skupina :global(.icon) { color: var(--color-blue-700); flex: none; }
+  /* Diely k potrubiu: výrobky na podlahe štúdia (KartaProduktu), mriežka ako v katalógu spojok. */
+  .diely { display: grid; grid-template-columns: repeat(auto-fill, minmax(184px, 1fr)); gap: 32px 24px; }
 
   .oznacenie { margin-top: 56px !important; font-size: 13px; color: var(--color-ink-soft); }
   .oznacenie span { color: var(--color-ink); font-weight: 500; }
@@ -421,7 +452,7 @@ const productLd = [{
      práve vyfiltrovaná; bez hlavičky, renderu, tlačidiel a ďalších častí. Hlavička tabuľky sa opakuje
      na každej strane, riadok sa nerozdelí. */
   @media print {
-    :global(.hdr), :global(.hdr-pas), :global(.ftr), :global(.zaver), :global(.casti), :global(.hs-studio), :global(.hlava-akcie),
+    :global(.hdr), :global(.hdr-pas), :global(.ftr), :global(.zaver), :global(.lp), :global(.hk-obraz), :global(.hk-karta), :global(.hk-dovera),
     :global(.hlava-sestry), :global(.kopia-toast), :global(.tv-filter), :global(.tv-pr-td), :global(.tv-pr-th), :global(.tv-shop), :global(.tv-shop-th), :global(.kopia),
     #stavba, #stiahnut, #referencie, #suvisiace, .oznacenie { display: none !important; }
     @page { margin: 14mm 12mm; }
@@ -437,6 +468,6 @@ const productLd = [{
     :global(.tv-tab tbody tr) { break-inside: avoid; }
   }
 
-  @media (max-width: 900px) { .stavba, .ref, .ref-vpravo { grid-template-columns: minmax(0, 1fr); } .lupy { grid-template-columns: minmax(0, 1fr); gap: 24px; } .ref :global(.ref-scena), .ref-vpravo :global(.ref-scena) { order: 0; margin-inline: calc(-1 * var(--gutter)); } .ref :global(.ref-scena .scena-img), .ref-vpravo :global(.ref-scena .scena-img) { border-radius: 0; } }
-  @media (max-width: 760px) { .lupa { display: grid; grid-template-columns: 92px minmax(0, 1fr); column-gap: 16px; } .lupa-okno { grid-row: 1 / span 3; width: 92px; height: 92px; margin: 4px 0 0; } }
+  @media (max-width: 900px) { .stavba, .ref, .ref-vpravo, .stavba-pod .stavba-zoznamy { grid-template-columns: minmax(0, 1fr); } .stavba-pod .stavba-zoznamy > * { grid-column: 1; } .stavba-pod .stavba-zoznamy > :nth-child(3) { margin-top: 28px; } .lupy { grid-template-columns: minmax(0, 1fr); gap: 24px; } .ref :global(.ref-scena), .ref-vpravo :global(.ref-scena) { order: 0; margin-inline: calc(-1 * var(--gutter)); } .ref :global(.ref-scena .scena-img), .ref-vpravo :global(.ref-scena .scena-img) { border-radius: 0; } }
+  @media (max-width: 760px) { .diely { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 16px; } .diely :global(.kp-nazov) { font-size: 15px; } .lupa { display: grid; grid-template-columns: 92px minmax(0, 1fr); column-gap: 16px; } .lupa-okno { grid-row: 1 / span 3; width: 92px; height: 92px; margin: 4px 0 0; } }
 </style>

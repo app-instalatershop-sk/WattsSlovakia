@@ -1,0 +1,119 @@
+---
+/**
+ * Lišta produktu na stránke radu (Juraj 6. 11. 2026, návrh A „Produktová karta“): nahrádza plávajúci pás častí.
+ * Hlava stránky ide s človekom ďalej: názov, vybraný rozmer a kúpa sú stále na dosah.
+ *
+ *  počítač  pás pod hlavičkou, prilepí sa, keď hlava odíde: render, názov a vybraný rozmer, časti stránky
+ *           (aktívna podčiarknutá ako v podnavigácii, DESIGN kap. 6) a žlté Kúpiť.
+ *  telefón  spodný pruh na dosah palca: model, vybraný rozmer a Kúpiť. Ukáže sa až pod kartou v hlave (kúpa
+ *           tam už je) a schová sa pri závere (kúpa je tam znova), takže žlté tlačidlo nie je na obrazovke dvakrát.
+ *
+ * Vybraný rozmer a adresu do e-shopu berie z udalosti mfx:variant (VolbaDimenzie), bez výberu ukáže rozsah radu.
+ */
+import Obraz from './Obraz.astro';
+import Ikona from './Ikona.astro';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  nazov: string; model: string; obraz?: ImageMetadata; zaklad: string; casti: { id: string; text: string }[];
+  eshop: string; kupit: string; kupitKratko: string; label: string;
+}
+const { nazov, model, obraz, zaklad, casti, eshop, kupit, kupitKratko, label } = Astro.props;
+---
+<div class="lp" data-lista>
+  <div class="wrap lp-in">
+    {obraz && <Obraz class="lp-obr" src={obraz} alt="" widths={[120]} sizes="56px" />}
+    <p class="lp-nazov">
+      <strong><span class="lp-dlhy">{nazov}</span><span class="lp-kratky">{model}</span></strong>
+      <span class="lp-vyber" data-lp-vyber data-zaklad={zaklad}>{zaklad}</span>
+    </p>
+    {casti.length > 1 && <nav class="lp-nav" aria-label={label}><ul>{casti.map((c) => <li><a href={`#${c.id}`}>{c.text}</a></li>)}</ul></nav>}
+    <a class="btn btn-yellow lp-btn" href={eshop} target="_blank" rel="noopener" data-lp-eshop data-kupit={kupit} data-kupit-variant={kupitKratko('{k}')}>
+      <span class="lp-dlhy" data-lp-kupit>{kupit}</span><span class="lp-kratky">{kupitKratko('').trim()}</span><Ikona nazov="external-link" velkost={16} />
+    </a>
+  </div>
+</div>
+
+<style>
+  .lp { position: sticky; top: 62px; z-index: 12; margin: -8px 0 48px; background: var(--sklo-3);
+    -webkit-backdrop-filter: saturate(1.5) blur(14px); backdrop-filter: saturate(1.5) blur(14px); box-shadow: 0 1px 0 rgb(10 42 94 / 0.08), var(--elev-2); }
+  .lp-in { display: flex; align-items: center; gap: 16px; min-height: 64px; }
+  .lp :global(.lp-obr) { flex: none; width: 56px; height: 48px; object-fit: contain; }
+  .lp-nazov { display: grid; flex: 1 1 auto; min-width: 0; margin: 0; line-height: 1.3; }
+  .lp-nazov strong { overflow: hidden; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 16px; color: var(--color-ink); white-space: nowrap; text-overflow: ellipsis; }
+  .lp-vyber { overflow: hidden; font-size: 13px; color: var(--color-ink-soft); white-space: nowrap; text-overflow: ellipsis; font-variant-numeric: tabular-nums; }
+  .lp-kratky { display: none; }
+  .lp-nav { flex: none; align-self: stretch; }
+  .lp-nav ul { display: flex; height: 100%; }
+  .lp-nav a { position: relative; display: flex; align-items: center; height: 100%; padding: 0 12px; font-size: 15px; font-weight: 500; color: var(--color-ink-soft); white-space: nowrap;
+    transition: color 150ms var(--ease-soft); }
+  .lp-nav a:hover, .lp-nav a.on { color: var(--color-ink); }
+  .lp-nav a.on::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: 0; height: 2px; background: var(--color-blue-700); }
+  .lp-btn { flex: none; gap: 8px; height: 44px; padding: 0 20px; font-size: 15px; }
+  @media (max-width: 1200px) { .lp :global(.lp-obr) { display: none; } .lp-nav a { padding: 0 8px; } .lp-nav a.on::after { left: 8px; right: 8px; } }
+
+  /* Telefón a tablet: spodný pruh, ukáže sa pod kartou v hlave a schová pri závere (skript, trieda je-vidno). */
+  @media (max-width: 900px) {
+    .lp { position: fixed; top: auto; left: 0; right: 0; bottom: 0; z-index: 40; margin: 0; padding-bottom: env(safe-area-inset-bottom);
+      box-shadow: 0 -1px 0 rgb(10 42 94 / 0.08), 0 -8px 24px -12px rgb(10 42 94 / 0.3); transform: translateY(110%); visibility: hidden;
+      transition: transform 280ms var(--ease-soft), visibility 0s linear 280ms; }
+    .lp.je-vidno { transform: none; visibility: visible; transition: transform 280ms var(--ease-soft), visibility 0s; }
+    .lp-nav { display: none; }
+    .lp-in { gap: 12px; min-height: 64px; }
+    .lp-dlhy { display: none; }
+    .lp-kratky { display: inline; }
+    .lp-btn { padding: 0 16px; }
+    /* Oznam o skopírovaní obj. čísla nad pruhom, nie pod ním. */
+    :global(body:has(.lp.je-vidno) .kopia-toast) { bottom: calc(88px + env(safe-area-inset-bottom)); }
+  }
+  @media (prefers-reduced-motion: reduce) { .lp, .lp.je-vidno { transition: none; } }
+  @media print { .lp { display: none; } }
+</style>
+
+<script>
+  function initLista() {
+    const lista = document.querySelector<HTMLElement>('[data-lista]');
+    if (!lista || lista.dataset.init) return;
+    lista.dataset.init = '1';
+    const vyber = lista.querySelector<HTMLElement>('[data-lp-vyber]')!;
+    const btn = lista.querySelector<HTMLAnchorElement>('[data-lp-eshop]')!;
+    const btnText = lista.querySelector<HTMLElement>('[data-lp-kupit]')!;
+    const zakladHref = btn.getAttribute('href') ?? '';
+
+    // Vybraný rozmer z výberu v hlave: „2 × Ø 32 × 2,9 mm, MD12532C“; bez výberu rozsah radu.
+    document.addEventListener('mfx:variant', (e) => {
+      const d = (e as CustomEvent<{ obj: string | null; rura: string | null; eshop?: string }>).detail;
+      vyber.textContent = d.obj ? [d.rura, d.obj].filter(Boolean).join(', ') : vyber.dataset.zaklad ?? '';
+      btn.setAttribute('href', d.obj && d.eshop ? d.eshop : zakladHref);
+      btnText.textContent = d.obj ? (btn.dataset.kupitVariant ?? '').replace('{k}', d.obj) : btn.dataset.kupit ?? '';
+    });
+
+    // Aktívna časť stránky podľa posúvania (ako v páse častí).
+    const odkazy = [...lista.querySelectorAll<HTMLAnchorElement>('.lp-nav a')];
+    const casti = odkazy.map((a) => document.querySelector<HTMLElement>(a.getAttribute('href')!)).filter((x): x is HTMLElement => Boolean(x));
+    let predtym: HTMLElement | undefined;
+    const aktivuj = () => {
+      const y = window.scrollY + window.innerHeight * 0.3;
+      let akt: HTMLElement | undefined;
+      for (const c of casti) if (c.getBoundingClientRect().top + window.scrollY <= y) akt = c;
+      if (akt === predtym) return;
+      predtym = akt;
+      odkazy.forEach((a) => {
+        const on = Boolean(akt) && a.getAttribute('href') === `#${akt!.id}`;
+        a.classList.toggle('on', on);
+        if (on) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+      });
+    };
+    if (odkazy.length) { window.addEventListener('scroll', aktivuj, { passive: true }); aktivuj(); }
+
+    // Telefón: pruh len medzi kartou v hlave a záverom (v oboch je žlté tlačidlo kúpy).
+    const karta = document.querySelector<HTMLElement>('.hk-karta');
+    const zaver = document.querySelector<HTMLElement>('.zaver');
+    let pod = false, priZavere = false;
+    const ukaz = () => lista.classList.toggle('je-vidno', pod && !priZavere);
+    if (karta) new IntersectionObserver(([e]) => { pod = !e.isIntersecting && e.boundingClientRect.top < 0; ukaz(); }).observe(karta);
+    if (zaver) new IntersectionObserver(([e]) => { priZavere = e.isIntersecting; ukaz(); }).observe(zaver);
+  }
+  initLista();
+  document.addEventListener('astro:page-load', initLista);
+</script>

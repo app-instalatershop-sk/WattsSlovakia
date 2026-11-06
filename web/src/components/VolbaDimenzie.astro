@@ -12,6 +12,11 @@
  * (štandardná a zosilnená izolácia).
  * Číslo na tlačidle je vonkajší priemer rúry, pod ním DN (Juraj 4. 11. 2026: DN 25 nie je rúra 25, ale 32 × 2,9);
  * po výbere ukáže DN aj kóta rúry na renderi.
+ *
+ * Od 6. 11. 2026 v produktovej karte hlavy radu (Hlava rozlozenie="karta", návrh A): priemery v mriežke bez
+ * osamelého posledného (najviac 5 v riadku, riadky čo najrovnomernejšie), bez tlačidla „Všetky“ v mriežke
+ * (späť na celý rad vedie odkaz Všetky rozmery, viditeľný len po výbere), izolácia vo vlastnom riadku, pod tým
+ * výsledok: obj. číslo s kopírovaním a údaje, ktoré nie sú na renderi (výkon, hmotnosť).
  */
 import Ikona from './Ikona.astro';
 import { cislo, kotvaKodu, dnVariantu, type Variant } from '../lib/katalog';
@@ -80,27 +85,43 @@ const data = skupiny.map((g) => ({
 // DN pod číslom na tlačidle: pri rade s jednou rúrou (pri QUADRO a zmiešaných rúrach je DN v kóte po výbere).
 const dnSkupiny = skupiny.map((g) => (jednoduche ? dnVariantu(g.vs[0]) : ''));
 const maDn = dnSkupiny.some(Boolean);
-const payload = { model, detail: tx.volbaDetail, vybrat: tx.vybrat, kupit: tx.kupit, kupitVariant: tx.kupitVariant('{k}'), objText: ui.tabulka.obj, bodyHlavy: bodyHlavy ?? null };
+// Stĺpce mriežky: koľko tlačidiel sa zmestí vedľa seba podľa najdlhšieho popisu (číslo v 18 px asi 9,5 px na znak,
+// DN pod ním v 12 px asi 6,5 px, okraje 16 px), najviac 5, a riadky čo najrovnomernejšie (8 = 4 + 4, 9 = 5 + 4,
+// 13 = 5 + 5 + 3). Zvlášť pre širokú kartu (obsah 454 px pri 1 440) a úzku (296 px, telefón 360 a stôl 1 024);
+// QUADRO s popisom „2× 25 + 25 + 20“ má tak dva stĺpce, v úzkej karte jeden.
+const sirkaTlacidla = Math.max(...skupiny.map((g, i) => Math.max(g.k.length * 9.5, dnSkupiny[i] ? `DN ${dnSkupiny[i]}`.length * 6.5 : 0))) + 16;
+const stlpceDo = (sirka: number) => {
+  const max = Math.max(1, Math.min(5, Math.floor((sirka + 8) / (sirkaTlacidla + 8))));
+  return Math.ceil(skupiny.length / Math.ceil(skupiny.length / max));
+};
+const stlpce = stlpceDo(454);
+const stlpceUzke = stlpceDo(296);
+// Pokyn sľúbi rez v presnom rozmere len vtedy, keď ho rad má (render každej dimenzie z 3D modelu).
+const hint = Object.keys(obrazy).length ? tx.volbaHint : tx.volbaHintKratko;
+const payload = { model, detail: tx.volbaDetail, tabulka: tx.rozmeryTabulka, kupit: tx.kupit, kupitVariant: tx.kupitVariant('{k}'), objText: ui.tabulka.obj, bodyHlavy: bodyHlavy ?? null };
 // Varianty s rovnakým plášťom aj izoláciou (COOL s káblom a bez neho) rozlíši až obj. číslo.
 for (const g of data) if (new Set(g.vs.map((x) => x.l2)).size < g.vs.length) g.vs.forEach((x) => { x.l2 = x.obj; });
 ---
 {skupiny.length > 1 && (
 <div class="volba" data-volba>
-  <div class="volba-riadok">
-    <span class="volba-meno" id="volba-l1">{tx.filterRuraVonk}</span>
-    <div class:list={['volba-seg', { 'ma-dn': maDn }]} role="group" aria-labelledby="volba-l1" data-seg>
-      <span class="volba-jazdec" aria-hidden="true"></span>
-      <button type="button" aria-pressed="true" data-k="">{tx.vsetky}</button>
-      {skupiny.map((g, i) => (dnSkupiny[i]
-        ? <button type="button" aria-pressed="false" data-k={i} aria-label={`${g.k} mm, DN ${dnSkupiny[i]}`}><span>{g.k}</span><small>DN {dnSkupiny[i]}</small></button>
-        : <button type="button" aria-pressed="false" data-k={i}>{g.k}</button>))}
-    </div>
+  <div class="volba-hlava">
+    <span class="volba-meno" id="volba-l1">{tx.volbaPriemer} <small>{maDn ? tx.volbaPriemerDn : tx.volbaPriemerMm}</small></span>
+    <button type="button" class="volba-spat" data-spat hidden>{tx.volbaVsetky}</button>
+  </div>
+  <div class:list={['volba-seg', { 'ma-dn': maDn }]} role="group" aria-labelledby="volba-l1" data-seg style={`--stlpce: ${stlpce}; --stlpce-uzke: ${stlpceUzke}`}>
+    <span class="volba-jazdec" aria-hidden="true"></span>
+    {skupiny.map((g, i) => (dnSkupiny[i]
+      ? <button type="button" aria-pressed="false" data-k={i}><span>{g.k}</span> <small>DN {dnSkupiny[i]}</small></button>
+      : <button type="button" aria-pressed="false" data-k={i}>{g.k}</button>))}
+  </div>
+  <div class="volba-izolacia" data-iz hidden>
+    <span class="volba-meno" id="volba-l2">{tx.filterIzolacia}</span>
+    <div class="volba-seg volba-seg-2" role="group" aria-labelledby="volba-l2" data-seg2><span class="volba-jazdec" aria-hidden="true"></span></div>
   </div>
   <div class="volba-vysledok" data-vysledok>
-    <p class="volba-hint" data-hint>{tx.volbaHint}</p>
+    <p class="volba-hint" data-hint>{hint}</p>
     <div class="volba-detail" data-detail hidden>
-      <div class="volba-seg volba-seg-2" role="group" aria-label={tx.volbaPlast} data-seg2 hidden><span class="volba-jazdec" aria-hidden="true"></span></div>
-      <span class="volba-obj">{ui.tabulka.obj} <strong data-obj></strong><button type="button" class="kopia" data-kopia="" aria-label={tx.kopirovat} title={tx.kopirovat}><Ikona nazov="copy" velkost={15} /></button></span>
+      <span class="volba-obj"><span class="volba-obj-popis">{ui.tabulka.obj}</span> <strong data-obj></strong><button type="button" class="kopia" data-kopia="" aria-label={tx.kopirovat} title={tx.kopirovat}><Ikona nazov="copy" velkost={16} /></button></span>
       <span class="volba-fakty" data-fakty></span>
     </div>
     <p class="sr" aria-live="polite" data-sr></p>
@@ -110,44 +131,55 @@ for (const g of data) if (new Set(g.vs.map((x) => x.l2)).size < g.vs.length) g.v
 )}
 
 <style>
-  .volba-riadok { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
-  .volba-meno { font-size: 14px; color: var(--color-ink-soft); }
-  /* Segmentový prepínač: biela koľajnica, tmavomodrý jazdec sa pružne presúva pod vybranú hodnotu.
-     Tlačidlá druhej úrovne pridáva skript, preto štýly tlačidiel cez :global (bez značky komponentu). */
-  .volba-seg { position: relative; display: flex; gap: 2px; max-width: 100%; padding: 4px; border-radius: var(--radius-l); overflow-x: auto; scrollbar-width: none;
-    background: var(--sklo-2); box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.1), var(--elev-1); }
-  .volba-seg::-webkit-scrollbar { display: none; }
-  /* Na počítači sa lišta v úzkom stĺpci (hlava s renderom 3D modelu) zalomí, nie posúva: posúvanie bez
-     posuvníka by myš neobjavila. Jazdec ide aj na druhý riadok. Telefón ostáva posúvateľný riadok. */
-  @media (min-width: 761px) { .volba-seg { flex-wrap: wrap; overflow: visible; } }
-  .volba-seg :global(button) { position: relative; z-index: 1; flex: none; min-width: 44px; height: 40px; padding: 0 12px; border: 0; border-radius: var(--radius-m); background: transparent;
-    font: 600 15px/1 var(--font-display); font-stretch: 112.5%; font-variant-numeric: tabular-nums; color: var(--color-ink); cursor: pointer; white-space: nowrap;
-    transition: color 200ms var(--ease-soft); }
-  .volba-seg :global(button[data-k=""]) { font: 500 15px/1 var(--font-text); }
-  .volba-seg :global(button[aria-pressed="true"]) { color: #fff; }
+  /* Hlava výberu: čo sa vyberá a v akých jednotkách; vpravo odkaz späť na celý rad (len po výbere). */
+  .volba-hlava { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+  .volba-meno { font-size: 15px; font-weight: 600; color: var(--color-ink); }
+  .volba-meno small { display: block; margin-top: 2px; font-size: 13px; font-weight: 400; color: var(--color-ink-soft); }
+  .volba-spat { flex: none; padding: 4px 0; border: 0; border-bottom: 1px solid currentColor; background: none; font: 500 14px/1.2 var(--font-text); color: var(--color-blue-700); cursor: pointer; }
+  .volba-spat[hidden] { display: none; }
+  @media (hover: hover) and (pointer: fine) { .volba-spat:hover { color: var(--color-blue-800); } }
+  /* Priemery ako dlaždice v mriežke: všetky viditeľné bez posúvania (na telefóne sa predtým väčšie priemery
+     schovali za okraj), dotyková plocha 56 px. Tmavomodrý jazdec sa pružne presunie pod vybranú hodnotu, aj do
+     druhého riadku. Tlačidlá druhej úrovne pridáva skript, preto štýly tlačidiel cez :global. */
+  .volba-seg { position: relative; display: grid; grid-template-columns: repeat(var(--stlpce, 4), minmax(0, 1fr)); gap: 8px; }
+  .volba-seg :global(button) { position: relative; z-index: 1; min-width: 0; height: 56px; padding: 0 8px; border: 0; border-radius: var(--radius-m);
+    background: var(--color-blue-50); box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.08);
+    font: 600 18px/1 var(--font-display); font-stretch: 112.5%; font-variant-numeric: tabular-nums; color: var(--color-ink); cursor: pointer; white-space: nowrap;
+    transition: color 200ms var(--ease-soft), background-color 200ms var(--ease-soft), box-shadow 200ms var(--ease-soft); }
+  .volba-seg :global(button[aria-pressed="true"]) { background: transparent; box-shadow: none; color: #fff; }
+  .volba-seg :global(button:focus-visible) { outline: 3px solid var(--color-yellow-500); outline-offset: 2px; }
   /* Vonkajší priemer a pod ním DN rúry. */
-  .volba-seg.ma-dn :global(button) { height: 48px; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
-  .volba-seg.ma-dn .volba-jazdec { height: 48px; }
+  .volba-seg.ma-dn :global(button) { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
   .volba-seg :global(button small) { font: 500 12px/1 var(--font-text); font-stretch: 100%; color: var(--color-ink-soft); transition: color 200ms var(--ease-soft); }
   .volba-seg :global(button[aria-pressed="true"] small) { color: rgb(255 255 255 / 0.8); }
-  .volba-jazdec { position: absolute; z-index: 0; top: 0; left: 0; height: 40px; width: 0; border-radius: var(--radius-m); background: linear-gradient(180deg, #123a7a 0%, var(--color-blue-900) 100%);
-    box-shadow: var(--elev-1); transition: transform 460ms var(--ease-pruzina), width 460ms var(--ease-pruzina); }
+  .volba-jazdec { position: absolute; z-index: 0; top: 0; left: 0; height: 56px; width: 0; border-radius: var(--radius-m); background: linear-gradient(180deg, #123a7a 0%, var(--color-blue-900) 100%);
+    box-shadow: var(--elev-1); opacity: 0; transition: transform 460ms var(--ease-pruzina), width 460ms var(--ease-pruzina), opacity 200ms var(--ease-soft); }
+  .volba-jazdec.je-vybrany { opacity: 1; }
   .volba-jazdec.bez-pohybu { transition: none; }
   @media (hover: hover) and (pointer: fine) {
-    .volba-seg :global(button[aria-pressed="false"]:hover) { color: var(--color-blue-700); }
+    .volba-seg :global(button[aria-pressed="false"]:hover) { color: var(--color-blue-700); box-shadow: inset 0 0 0 1px rgb(0 93 185 / 0.4); }
   }
 
-  /* Riadok pod výberom má stálu výšku, aby sa render pod ním pri výbere neposunul. */
-  .volba-vysledok { display: flex; align-items: center; min-height: 52px; margin-top: 8px; }
-  .volba-hint { font-size: 14px; color: var(--color-ink-soft); }
-  .volba-detail { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; }
-  .volba-seg-2 { padding: 4px; border-radius: var(--radius-l); }
-  .volba-seg-2 :global(button) { height: 34px; padding: 0 12px; border-radius: var(--radius-m); font: 500 14px/1 var(--font-text); }
-  .volba-seg-2 .volba-jazdec { height: 34px; border-radius: var(--radius-m); }
-  .volba-obj { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: var(--color-ink-soft); }
-  .volba-obj strong { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 16px; letter-spacing: 0.01em; color: var(--color-blue-900); }
+  /* Izolácia: druhý rozmer pri rúre s dvoma plášťami (štandardná a zosilnená), vo vlastnom riadku. */
+  .volba-izolacia { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 16px; margin-top: 16px; }
+  .volba-izolacia[hidden] { display: none; }
+  .volba-seg-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .volba-seg-2 :global(button) { height: 44px; font: 600 15px/1 var(--font-text); }
+  .volba-seg-2 .volba-jazdec { height: 44px; }
+
+  /* Výsledok: pokyn, alebo obj. číslo s kopírovaním a údaje, ktoré na renderi nie sú (výkon, hmotnosť).
+     Stála výška: karta pri výbere neposkočí. */
+  .volba-vysledok { display: flex; align-items: center; min-height: 80px; margin-top: 16px; padding: 12px 16px; border-radius: var(--radius-l);
+    background: var(--color-blue-50); box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.06); }
+  .volba-hint { font-size: 14px; line-height: 1.45; color: var(--color-ink-soft); }
+  .volba-detail { display: flex; flex-direction: column; gap: 4px; }
+  .volba-detail[hidden] { display: none; }
+  .volba-obj { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; }
+  .volba-obj-popis { font-size: 13px; color: var(--color-ink-soft); }
+  .volba-obj strong { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 24px; line-height: 1.1; letter-spacing: 0.01em; color: var(--color-blue-900); }
   .volba-obj :global(.kopia) { opacity: 1; }
   .volba-fakty { font-size: 14px; color: var(--color-ink-soft); }
+  .volba-fakty:empty { display: none; }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
   /* Pretočenie čísla v štítku kóty: nové znaky vyjdú zdola, starý text odíde hore. */
@@ -161,12 +193,10 @@ for (const g of data) if (new Set(g.vs.map((x) => x.l2)).size < g.vs.length) g.v
   @media (prefers-reduced-motion: reduce) { :global(.hlava [data-koty] .kota) { transition: none; } }
   :global(.zk-kruh) { position: absolute; left: -7px; top: -7px; width: 14px; height: 14px; border-radius: 50%; box-shadow: 0 0 0 2px var(--color-blue-700); pointer-events: none; }
 
-  /* Telefón: výber je pod renderom, pod ním už len prepínač Pohľad/Teplota, nie obraz. Stála výška riadku výsledku
-     by tu len nechala prázdne miesto okolo pokynu (posúdenie 29. 10.); detail sa po výbere rozbalí pod lištou. */
-  @media (max-width: 760px) {
-    .volba-riadok { flex-direction: column; align-items: flex-start; gap: 8px; }
-    .volba-vysledok { min-height: 0; }
-    .volba-fakty { display: none; }
+  /* Úzka karta (stôl 1 024, telefón): menej stĺpcov pri dlhých popisoch, izolácia pod popisom cez celú šírku. */
+  @container (max-width: 420px) {
+    .volba-seg[data-seg] { grid-template-columns: repeat(var(--stlpce-uzke, var(--stlpce, 4)), minmax(0, 1fr)); }
+    .volba-izolacia { grid-template-columns: minmax(0, 1fr); gap: 8px; }
   }
 </style>
 
@@ -174,7 +204,7 @@ for (const g of data) if (new Set(g.vs.map((x) => x.l2)).size < g.vs.length) g.v
   type Body = { plast?: number[]; rura?: number[]; ohyb?: number[]; lr?: number };
   type Obr = { avif: string; webp: string; src: string; body: Body };
   type V = { obj: string; kotva: string; l2: string; kp: string | null; kpt: string | null; kr: string; krt: string; ko: string | null; fakty: string; tr: string; ti: string; obr: Obr | null };
-  type Data = { model: string; detail: string; vybrat: string; kupit: string; kupitVariant: string; objText: string; bodyHlavy: Body | null; skupiny: { k: string; vs: V[] }[] };
+  type Data = { model: string; detail: string; tabulka: string; kupit: string; kupitVariant: string; objText: string; bodyHlavy: Body | null; skupiny: { k: string; vs: V[] }[] };
 
   let ac: AbortController | undefined;
 
@@ -192,6 +222,8 @@ for (const g of data) if (new Set(g.vs.map((x) => x.l2)).size < g.vs.length) g.v
 
     const seg = koren.querySelector<HTMLElement>('[data-seg]')!;
     const seg2 = koren.querySelector<HTMLElement>('[data-seg2]')!;
+    const iz = koren.querySelector<HTMLElement>('[data-iz]')!;
+    const spat = koren.querySelector<HTMLButtonElement>('[data-spat]')!;
     const hint = koren.querySelector<HTMLElement>('[data-hint]')!;
     const detail = koren.querySelector<HTMLElement>('[data-detail]')!;
     const objEl = koren.querySelector<HTMLElement>('[data-obj]')!;
@@ -263,13 +295,15 @@ for (const g of data) if (new Set(g.vs.map((x) => x.l2)).size < g.vs.length) g.v
     const posunJazdec = (s: HTMLElement, hned = false) => {
       const j = s.querySelector<HTMLElement>('.volba-jazdec');
       const b = s.querySelector<HTMLElement>('button[aria-pressed="true"]');
-      if (!j || !b) return;
-      j.classList.toggle('bez-pohybu', hned || reduce);
+      if (!j) return;
+      // Bez vybranej hodnoty (celý rad) jazdec zmizne na mieste, kde bol.
+      j.classList.toggle('je-vybrany', Boolean(b));
+      if (!b) return;
+      const prvy = !j.style.width;
+      j.classList.toggle('bez-pohybu', hned || reduce || prvy);
       j.style.width = `${b.offsetWidth}px`;
       j.style.transform = `translate(${b.offsetLeft}px, ${b.offsetTop}px)`;
-      if (hned) requestAnimationFrame(() => j.classList.remove('bez-pohybu'));
-      const vpravo = b.offsetLeft + b.offsetWidth - s.clientWidth;
-      if (vpravo > s.scrollLeft || b.offsetLeft < s.scrollLeft) s.scrollTo({ left: Math.max(0, b.offsetLeft - 24), behavior: reduce || hned ? 'auto' : 'smooth' });
+      if (hned || prvy) requestAnimationFrame(() => j.classList.remove('bez-pohybu'));
     };
 
     // Pretočenie textu: starý text odíde hore, nové znaky prídu zdola s pružným dojazdom a štítok
@@ -315,15 +349,16 @@ for (const g of data) if (new Set(g.vs.map((x) => x.l2)).size < g.vs.length) g.v
       sk = noveSk; vi = noveVi;
       const g = sk >= 0 ? data.skupiny[sk] : undefined;
       const v = g?.vs[vi];
-      seg.querySelectorAll<HTMLButtonElement>('button').forEach((b) => b.setAttribute('aria-pressed', String((b.dataset.k === '' ? -1 : Number(b.dataset.k)) === sk)));
+      seg.querySelectorAll<HTMLButtonElement>('button').forEach((b) => b.setAttribute('aria-pressed', String(Number(b.dataset.k) === sk)));
       posunJazdec(seg, !opts.animuj);
+      spat.hidden = sk < 0;
       hint.hidden = Boolean(v);
       detail.hidden = !v;
 
       // Druhá úroveň (plášť) len pri rúre s viacerými variantmi; pri inej rúre sa postaví nanovo.
       if (ineSk || !opts.animuj) {
         seg2.querySelectorAll('button').forEach((b) => b.remove());
-        seg2.hidden = !g || g.vs.length < 2;
+        iz.hidden = !g || g.vs.length < 2;
         g?.vs.forEach((x, i) => {
           if (g.vs.length < 2) return;
           const b = document.createElement('button');
@@ -334,7 +369,7 @@ for (const g of data) if (new Set(g.vs.map((x) => x.l2)).size < g.vs.length) g.v
         });
       }
       seg2.querySelectorAll<HTMLButtonElement>('button').forEach((b, i) => b.setAttribute('aria-pressed', String(i === vi)));
-      if (!seg2.hidden) posunJazdec(seg2, ineSk || !opts.animuj);
+      if (!iz.hidden) posunJazdec(seg2, ineSk || !opts.animuj);
 
       // Pás svetla prejde po plášti ako potvrdenie, že sa výrobok „prepočítal“.
       const lesk = hlava.querySelector<HTMLElement>('[data-lesk]');
@@ -354,16 +389,26 @@ for (const g of data) if (new Set(g.vs.map((x) => x.l2)).size < g.vs.length) g.v
       } else srEl.textContent = '';
       if (cta) {
         cta.setAttribute('href', v ? `#${v.kotva}` : ctaHref);
-        if (ctaText) ctaText.textContent = v ? data.detail : data.vybrat;
+        if (ctaText) ctaText.textContent = v ? data.detail : data.tabulka;
       }
+      const vRiadku = v ? document.getElementById(v.kotva)?.querySelector<HTMLAnchorElement>('.tv-shop a')?.getAttribute('href') : null;
       if (eshop) {
-        const vRiadku = v ? document.getElementById(v.kotva)?.querySelector<HTMLAnchorElement>('.tv-shop a')?.getAttribute('href') : null;
         eshop.setAttribute('href', vRiadku ?? eshopHref);
-        if (eshopText) eshopText.textContent = vRiadku ? data.kupitVariant.replace('{k}', v!.obj) : data.kupit;
+        // Obj. číslo v texte tlačidla je v značke .kod: v úzkej karte sa skryje (číslo je hneď nad tlačidlom).
+        if (eshopText) {
+          if (vRiadku) {
+            const [pred, za] = data.kupitVariant.split('{k}');
+            const kod = document.createElement('span');
+            kod.className = 'kod';
+            kod.textContent = v!.obj;
+            eshopText.replaceChildren(pred, kod, za ?? '');
+          } else eshopText.textContent = data.kupit;
+        }
       }
       // Teplo v reze (TeploVrstva) a ďalšie vrstvy nad obrazom počúvajú zvolený variant.
       koren.dataset.aktivny = v?.obj ?? '';
-      document.dispatchEvent(new CustomEvent('mfx:variant', { detail: { obj: v?.obj ?? null, animuj: opts.animuj } }));
+      // Lišta produktu (ListaProduktu) z nej berie popis rozmeru a adresu do e-shopu.
+      document.dispatchEvent(new CustomEvent('mfx:variant', { detail: { obj: v?.obj ?? null, animuj: opts.animuj, rura: v?.kr ?? null, eshop: vRiadku ?? eshopHref } }));
       // Adresa so zvoleným variantom (bez nového záznamu v histórii, stav prechodov ostane).
       const url = new URL(location.href);
       if (v) url.searchParams.set('obj', v.obj); else url.searchParams.delete('obj');
@@ -375,9 +420,14 @@ for (const g of data) if (new Set(g.vs.map((x) => x.l2)).size < g.vs.length) g.v
     };
 
     seg.querySelectorAll<HTMLButtonElement>('button').forEach((b) => b.addEventListener('click', () => {
-      const n = b.dataset.k === '' ? -1 : Number(b.dataset.k);
+      const n = Number(b.dataset.k);
       if (n !== sk) vyber(n, 0, { animuj: true, zdroj: 'rura' });
     }, { signal }));
+    // Všetky rozmery: späť na celý rad (kóty s rozsahmi, obraz hlavy, tabuľka bez filtra); fokus na prvý priemer.
+    spat.addEventListener('click', () => {
+      vyber(-1, 0, { animuj: true, zdroj: 'rura' });
+      seg.querySelector<HTMLButtonElement>('button')?.focus();
+    }, { signal });
 
     // Filter v tabuľke nastaví aj výber v hlave (pri rade s jednou rúrou, kde sa priemery zhodujú).
     document.addEventListener('mfx:dimenzia', (e) => {
@@ -390,7 +440,7 @@ for (const g of data) if (new Set(g.vs.map((x) => x.l2)).size < g.vs.length) g.v
       if (n !== sk || m !== vi) vyber(n, m, { animuj: true, zdroj: 'tabulka' });
     }, { signal });
 
-    window.addEventListener('resize', () => { posunJazdec(seg, true); if (!seg2.hidden) posunJazdec(seg2, true); }, { signal });
+    window.addEventListener('resize', () => { posunJazdec(seg, true); if (!iz.hidden) posunJazdec(seg2, true); }, { signal });
 
     // Variant z adresy (?obj=… alebo #obj. číslo z hľadania) sa vyberie hneď, bez pohybu.
     const zAdresy = new URL(location.href).searchParams.get('obj') ?? decodeURIComponent(location.hash.slice(1));

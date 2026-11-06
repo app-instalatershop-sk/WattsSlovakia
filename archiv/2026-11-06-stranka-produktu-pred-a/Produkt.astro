@@ -1,0 +1,131 @@
+---
+/**
+ * Stránka spojky alebo dielu príslušenstva: hlava s fotkou výrobcu a kľúčovými údajmi, tabuľka
+ * obj. čísel s kopírovaním a odkazom do e-shopu, rady potrubia, ku ktorým diel patrí, a ďalšie
+ * diely zo skupiny. Na konci záver s kúpou a kontaktom.
+ */
+import { getImage } from 'astro:assets';
+import Obraz from '../components/Obraz.astro';
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Hlava from '../components/Hlava.astro';
+import Zaver from '../components/Zaver.astro';
+import Ikona from '../components/Ikona.astro';
+import TabulkaProduktu from '../components/TabulkaProduktu.astro';
+import KartaProduktu from '../components/KartaProduktu.astro';
+import Kopirovanie from '../components/Kopirovanie.astro';
+import { kategorie, cestaKategorie, cestaRadu, cestaProduktu, alternatyProduktu, kKratky, rNazov, pNazov, pPopis, datum, tlakText, kotvaKodu, type Kategoria, type Produkt } from '../lib/katalog';
+import { faktyProduktu, kodyProduktu, radyProduktu, prvaVeta, kratkyNazovSkupiny } from '../lib/produkty';
+import { fotkaProduktu, obrazRadu } from '../lib/obrazky';
+import { stranky } from '../content/stranky';
+import { type Lang, t, ESHOP_SEARCH, KATALOG_PDF } from '../i18n/ui';
+
+interface Props { lang: Lang; k: Kategoria; p: Produkt }
+const { lang, k, p } = Astro.props;
+const ui = t(lang);
+const tx = stranky(lang).produkt;
+const nazov = pNazov(p, lang);
+const popis = pPopis(p, lang);
+const skupina = (await getCollection('rady')).map((r) => r.data).find((r) => r.id === p.skupina)!;
+const img = fotkaProduktu(p.id);
+const fakty = faktyProduktu(p, lang);
+const kody = kodyProduktu(p);
+const vsetkyKat = await kategorie();
+const rady = (await radyProduktu(p)).map((r) => ({ r, k: vsetkyKat.find((x) => x.id === r.kategoria)! }));
+// Obj. číslo potrubia → tabuľka jeho radu (stĺpec „Pre potrubie“ pri krytkách a pevnom bode).
+const radyVsetky = (await getCollection('rady')).map((x) => x.data).filter((x) => !x.je_skupina);
+const potrubiaUrl: Record<string, string> = {};
+if (p.pouzitie) for (const v of (await getCollection('varianty')).map((x) => x.data)) {
+  const rv = radyVsetky.find((x) => x.id === v.rad);
+  if (rv && !potrubiaUrl[v.obj_cislo]) potrubiaUrl[v.obj_cislo] = `${cestaRadu(vsetkyKat.find((x) => x.id === rv.kategoria)!, rv, lang)}#${kotvaKodu(v.obj_cislo)}`;
+}
+const surodenci = (await getCollection('produkty')).map((x) => x.data).filter((x) => x.skupina === p.skupina && x.id !== p.id).sort((a, b) => a.poradie - b.poradie);
+
+// Hľadanie v e-shope: spoločný začiatok obj. čísel (MJ13025/23 … MJ130125/114 → MJ130), inak názov.
+const spolocny = kody.length > 1 ? kody.reduce((a, b) => { let i = 0; while (i < a.length && a[i] === b[i]) i++; return a.slice(0, i); }) : kody[0] ?? '';
+const eshop = ESHOP_SEARCH + encodeURIComponent(spolocny.replace(/[^A-Z0-9]+$/i, '').length >= 3 ? spolocny.replace(/[^A-Z0-9]+$/i, '') : nazov);
+const drobceky = [{ text: kKratky(k, lang), href: cestaKategorie(k, lang) }, { text: kratkyNazovSkupiny(rNazov(skupina, lang)), href: `${cestaKategorie(k, lang)}#${skupina.id}` }, { text: nazov }];
+const meta = popis ?? nazov;
+const ldObraz = img ? (await getImage({ src: img, width: 800, format: 'webp' })).src : undefined;
+const ld = [{
+  '@context': 'https://schema.org', '@type': kody.length > 1 ? 'ProductGroup' : 'Product', name: nazov, description: meta,
+  brand: { '@type': 'Brand', name: 'Microflex' }, manufacturer: { '@type': 'Organization', name: 'Watts' },
+  url: new URL(cestaProduktu(p, k, lang), Astro.site).href,
+  ...(ldObraz ? { image: new URL(ldObraz, Astro.site).href } : {}),
+  ...(kody.length > 1 ? { productGroupID: p.slug, hasVariant: kody.map((c) => ({ '@type': 'Product', sku: c, mpn: c, name: `${nazov} ${c}` })) } : kody.length ? { sku: kody[0], mpn: kody[0] } : {}),
+}];
+---
+<Base lang={lang} alternates={alternatyProduktu(p, k)} title={nazov} description={meta} aktivna="potrubia" drobceky={drobceky} vizualneDrobceky={false} jsonLd={ld}>
+  <Hlava lang={lang} nadpis={nazov} drobceky={drobceky} pred={rNazov(skupina, lang)} lead={popis ?? undefined} obraz={img} obrazAlt={nazov} druh={img?.format === 'webp' ? 'render' : 'biely'} obrazMax={560}>
+    {fakty.length > 0 && <dl class="hlava-fakty">{fakty.map(([dt, dd]) => <div><dt>{dt}</dt><dd>{dd}</dd></div>)}</dl>}
+    <div class="hlava-akcie">
+      {kody.length > 0
+        ? <a class="btn btn-yellow btn-lg" href="#tabulka">{tx.tabulka} <Ikona nazov="arrow-down" velkost={18} /></a>
+        : <a class="btn btn-yellow btn-lg" href={KATALOG_PDF} target="_blank" rel="noopener">{tx.otvoritKatalog} <Ikona nazov="download" velkost={18} /></a>}
+      <a class="odkaz" href={eshop} target="_blank" rel="noopener">{tx.hladat} <Ikona nazov="external-link" velkost={16} /></a>
+    </div>
+  </Hlava>
+
+  <div class="telo">
+    <section class="wrap cast" id="tabulka" aria-labelledby="h-tab">
+      <div class="s-hlava"><h2 id="h-tab">{tx.tabulkaH2}</h2><p>{kody.length ? tx.tabulkaP : tx.bezTabulky}</p></div>
+      {p.tabulky.length > 0 ? p.tabulky.map((tab) => (
+        <div class="harok tab"><TabulkaProduktu tabulka={tab} lang={lang} pouzitie={p.pouzitie} potrubia={potrubiaUrl} /></div>
+      )) : (
+        <div class="harok prazdne">
+          <a class="btn btn-yellow" href={KATALOG_PDF} target="_blank" rel="noopener">{tx.otvoritKatalog} <Ikona nazov="download" velkost={18} /></a>
+          <a class="odkaz" href={eshop} target="_blank" rel="noopener">{tx.hladat} <Ikona nazov="external-link" velkost={16} /></a>
+        </div>
+      )}
+      <p class="source">{ui.common.zdroj} {datum(p.stiahnute, lang)}. {tx.zdroj} <a href={lang === 'cs' ? p.zdroj_url.replace('/sk/', '/cz/') : p.zdroj_url} target="_blank" rel="noopener">{tx.strankaVyrobcu}</a>.</p>
+    </section>
+
+    {rady.length > 0 && (
+      <section class="wrap" aria-labelledby="h-rady">
+        <div class="s-hlava"><h2 id="h-rady">{tx.radyH2}</h2><p>{tx.radyP}</p></div>
+        <ul class="rady">
+          {rady.map(({ r, k: kr }) => { const pk = obrazRadu(r); return (
+            <li>
+              <a class="harok rad" href={cestaRadu(kr, r, lang)}>
+                {pk && <span class="rad-obraz" style={`view-transition-name: rad-${r.id}`}><Obraz src={pk} alt="" widths={[200, 320]} sizes="150px" /></span>}
+                <span class="rad-text">
+                  <span class="rad-nazov">{rNazov(r, lang).split(',')[0].trim()}</span>
+                  <span class="rad-pod">{[kKratky(kr, lang), tlakText(r)].filter(Boolean).join(', ')}</span>
+                </span>
+                <Ikona nazov="chevron-right" velkost={18} />
+              </a>
+            </li>
+          ); })}
+        </ul>
+      </section>
+    )}
+
+    {surodenci.length > 0 && (
+      <section class="wrap" aria-labelledby="h-dalsie">
+        <div class="s-hlava"><h2 id="h-dalsie">{tx.dalsieH2(rNazov(skupina, lang))}</h2><p>{prvaVeta(lang === 'cs' ? skupina.kratky_popis_cs : skupina.kratky_popis)}</p><a href={`${cestaKategorie(k, lang)}#${skupina.id}`}>{kKratky(k, lang)} <Ikona nazov="arrow-right" velkost={16} /></a></div>
+        <div class="dalsie">{surodenci.map((x) => <KartaProduktu p={x} href={cestaProduktu(x, k, lang)} lang={lang} maly />)}</div>
+      </section>
+    )}
+  </div>
+  <Zaver lang={lang} />
+  <Kopirovanie lang={lang} />
+</Base>
+
+<style>
+  .hlava-fakty { display: flex; flex-wrap: wrap; gap: 16px 32px; margin: 24px 0 0; }
+  .hlava-fakty dt { font-size: 13px; color: var(--color-ink-soft); }
+  .hlava-fakty dd { margin: 2px 0 0; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: clamp(17px, 0.6vw + 13px, 22px); letter-spacing: -0.01em; color: var(--color-blue-900); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .tab + .tab { margin-top: 20px; }
+  .prazdne { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; padding: 28px; }
+
+  .rady { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+  .rad { display: grid; grid-template-columns: 120px minmax(0, 1fr) auto; gap: 16px; align-items: center; padding: 12px 20px 12px 12px; color: var(--color-ink); transition: transform 250ms var(--ease-soft); }
+  @media (hover: hover) and (pointer: fine) { .rad:hover { color: var(--color-ink); transform: translateY(-2px); } }
+  .rad-obraz :global(img) { display: block; width: 120px; height: 90px; object-fit: contain; }
+  .rad-nazov { display: block; font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: 17px; color: var(--color-blue-900); }
+  .rad-pod { display: block; font-size: 14px; color: var(--color-ink-soft); margin-top: 2px; }
+  .rad :global(.icon) { color: var(--color-blue-700); }
+
+  .dalsie { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+  @media (max-width: 760px) { .rad { grid-template-columns: 88px minmax(0, 1fr) auto; } .rad-obraz :global(img) { width: 88px; height: 66px; } .dalsie { grid-template-columns: minmax(0, 1fr); } }
+</style>

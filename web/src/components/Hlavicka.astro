@@ -6,8 +6,8 @@
  * riadok odroluje, namiesto podtitulu značky sa ukáže tlačidlo Menu a otvorí panel Potrubia aj s ostatnými
  * odkazmi. Pod položkou menu, na ktorej je myš alebo aktuálna stránka, sa posúva žltá značka. Hľadanie má skratku
  * Ctrl K (⌘ K na Macu) a našepkávač (lib/naseptavac.ts). Telefón a tablet do 900 px: hľadanie v druhom riadku,
- * po odrolovaní lupa vedľa Menu, ktorá otvorí menu s poľom hľadania. Tmavý horný pás s partnerstvom je
- * v archiv/2026-11-06-horny-pas/.
+ * po odrolovaní lupa vedľa Menu, ktorá otvorí menu s poľom hľadania; nad poľom partnerstvo Watts. Tmavý horný
+ * pás s partnerstvom je v archiv/2026-11-06-horny-pas/.
  */
 import Obraz from './Obraz.astro';
 import { getCollection } from 'astro:content';
@@ -114,7 +114,7 @@ const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, 
   </div>
 </header>
 
-{/* Druhý riadok: na počítači menu a partnerstvo, na telefóne pole hľadania. */}
+{/* Druhý riadok: na počítači menu a partnerstvo, na telefóne a tablete partnerstvo a pod ním pole hľadania. */}
 <div class="hdr-pas" id="hdr-pas" transition:name="hlavicka-menu" transition:animate="none">
   <div class="wrap hdr-pas-in">
     <nav class="nav" id="nav" aria-label={ui.nav.hlavna}>
@@ -131,6 +131,7 @@ const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, 
       <span class="vizualne-skryte">{ui.partner.veta}</span>
       <span class="partner-plne" aria-hidden="true">{ui.partner.riadok}</span>
       <span class="partner-kratke" aria-hidden="true">{ui.partner.kratke}</span>
+      <span class="partner-mobil" aria-hidden="true">{ui.partner.mobil}</span>
     </p>
 
     <form class="search search-p" role="search" action={route(lang, 'hladat')} method="get" data-index={nasIndex} data-texty={nasTexty}>
@@ -267,7 +268,7 @@ const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, 
   .nav-mega[aria-expanded="true"] :global(svg) { transform: rotate(180deg); }
   .nav-ind { position: absolute; left: 0; bottom: 0; height: 3px; width: var(--w, 0); border-radius: 2px 2px 0 0; background: var(--color-yellow-500); transform: translateX(var(--x, 0)); opacity: var(--o, 0); transition: transform 320ms var(--ease-soft), width 320ms var(--ease-soft), opacity 200ms var(--ease-soft); pointer-events: none; }
   .partner { display: inline-flex; align-items: center; gap: 12px; margin: 0; color: var(--color-ink-soft); font-size: 13px; font-weight: 500; white-space: nowrap; }
-  .partner-kratke { display: none; }
+  .partner-kratke, .partner-mobil { display: none; }
   .search-p { display: none; }
 
   /* Panel Potrubia */
@@ -359,9 +360,15 @@ const nasTexty = JSON.stringify({ vsetky: ui.search.vsetky, nic: ui.search.nic, 
     .hdr-tel { margin-left: auto; }
     .hdr.is-scrolled .hl-btn { display: inline-flex; }
     .hdr-pas { background: #fff; }
-    .hdr-pas-in { min-height: 0; padding-block: 4px 12px; }
+    .hdr-pas-in { flex-direction: column; gap: 8px; min-height: 0; padding-block: 0 12px; }
     .hdr-pas .nav { display: none; }
     .search-p { display: flex; }
+    /* Partnerstvo aj na telefóne (Juraj 6. 11. 2026: „bolo by dobré, aby bolo vidno, že sme oficiálny partner,
+       z mobilu pôjde 60 až 70 % zákazníkov“): hneď pod logom, nad poľom hľadania, na každej stránke. Krátko,
+       ale s „oficiálny“; celá veta je pre čítačky. */
+    .hdr-pas .partner { display: inline-flex; gap: 8px; min-height: 24px; }
+    .hdr-pas .partner-plne, .hdr-pas .partner-kratke { display: none; }
+    .hdr-pas .partner-mobil { display: inline; }
   }
   @media (max-width: 760px) {
     .hdr-in { min-height: 64px; }

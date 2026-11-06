@@ -576,7 +576,9 @@ partner pre Česko a Slovensko“. Po odrolovaní sa namiesto doplnku loga uká�
 bunke (nič iné sa nepohne) a otvorí panel Potrubia aj s ostatnými odkazmi menu. Pod 1 180 px telefón len
 ikonou a doplnky krátko, pod 960 px bez Ctrl K a bez partnerstva. **Tablet a telefón do 900 px:** v prvom
 riadku logo, telefón, (E-shop), Menu; hľadanie na celú šírku v druhom riadku, po jeho odrolovaní lupa vedľa
-Menu. Tmavý horný pás je v `archiv/2026-11-06-horny-pas/`.
+Menu. Nad poľom hľadania je logo Watts a „Jediný oficiálny partner pre CZ a SK“ (Juraj 6. 11.: „aby bolo vidno,
+že sme oficiálny partner, z mobilu pôjde 60 až 70 % zákazníkov“), na každej stránke. Tmavý horný pás je
+v `archiv/2026-11-06-horny-pas/`.
 
 Sadzba: texty domova prechádzajú funkciou `sadzba()` (`web/src/lib/sadzba.ts`), ktorá dá
 nezlomiteľnú medzeru za jednopísmenové predložky a spojky, medzi číslo a jednotku (95 °C, 16 bar,

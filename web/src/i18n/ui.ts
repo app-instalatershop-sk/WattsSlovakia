@@ -14,7 +14,7 @@ const sk = {
   nav: { potrubia: 'Potrubia', vyber: 'Výber potrubia', stiahnut: 'Na stiahnutie', firmy: 'Pre firmy', poradna: 'Poradňa', referencie: 'Referencie', kontakt: 'Kontakt', podklady: 'Podklady', eshop: 'E-shop', menu: 'Menu', zavriet: 'Zavrieť', hlavna: 'Hlavná navigácia', domov: 'Domov', celyKatalog: 'Celý katalóg potrubí', katalogPdf: 'Katalóg PDF, 19 MB' },
   search: { placeholder: 'Hľadajte obj. číslo, rad alebo rozmer', label: 'Hľadať v katalógu', button: 'Hľadať', vsetky: 'Všetky výsledky', nic: 'Nič sme nenašli. Skúste obj. číslo, rad alebo sprievodcu výberom.', ciastocne: 'Presnú zhodu sme nenašli. Najbližšie:', sprievodca: 'Sprievodca výberom potrubia', skupiny: { rad: 'Rad', kod: 'Obj. číslo', diel: 'Diel', stranka: 'Stránka' } },
   // Juraj 4. 11. 2026: sme jediní partneri Watts pre Microflex v Česku aj na Slovensku (znenie potvrdí manažér, otázka č. 21).
-  partner: { kratke: 'Jediný partner pre CZ a SK', riadok: 'Jediný oficiálny partner pre Česko a Slovensko', veta: 'Jediný oficiálny partner Watts pre Microflex v Česku a na Slovensku', vyrobca: 'Výrobca' },
+  partner: { kratke: 'Jediný partner pre CZ a SK', mobil: 'Jediný oficiálny partner pre CZ a SK', riadok: 'Jediný oficiálny partner pre Česko a Slovensko', veta: 'Jediný oficiálny partner Watts pre Microflex v Česku a na Slovensku', vyrobca: 'Výrobca' },
   jazyk: { prepnut: 'Jazyk', sk: 'Slovensky', cs: 'Česky' },
   crumbs: { label: 'Kde ste' },
   common: {
@@ -256,7 +256,7 @@ const cs: typeof sk = {
   site: { name: 'Microflex Česko a Slovensko', sub: 'Česko a Slovensko', subKratke: 'CZ · SK', tagline: 'Předizolované ohebné potrubí Microflex pro Česko a Slovensko' },
   nav: { potrubia: 'Potrubí', vyber: 'Výběr potrubí', stiahnut: 'Ke stažení', firmy: 'Pro firmy', poradna: 'Poradna', referencie: 'Reference', kontakt: 'Kontakt', podklady: 'Podklady', eshop: 'E-shop', menu: 'Menu', zavriet: 'Zavřít', hlavna: 'Hlavní navigace', domov: 'Domů', celyKatalog: 'Celý katalog potrubí', katalogPdf: 'Katalog PDF, 19 MB, slovensky' },
   search: { placeholder: 'Hledejte obj. číslo, řadu nebo rozměr', label: 'Hledat v katalogu', button: 'Hledat', vsetky: 'Všechny výsledky', nic: 'Nic jsme nenašli. Zkuste obj. číslo, řadu nebo průvodce výběrem.', ciastocne: 'Přesnou shodu jsme nenašli. Nejbližší:', sprievodca: 'Průvodce výběrem potrubí', skupiny: { rad: 'Řada', kod: 'Obj. číslo', diel: 'Díl', stranka: 'Stránka' } },
-  partner: { kratke: 'Jediný partner pro CZ a SK', riadok: 'Jediný oficiální partner pro Česko a Slovensko', veta: 'Jediný oficiální partner Watts pro Microflex v Česku a na Slovensku', vyrobca: 'Výrobce' },
+  partner: { kratke: 'Jediný partner pro CZ a SK', mobil: 'Jediný oficiální partner pro CZ a SK', riadok: 'Jediný oficiální partner pro Česko a Slovensko', veta: 'Jediný oficiální partner Watts pro Microflex v Česku a na Slovensku', vyrobca: 'Výrobce' },
   jazyk: { prepnut: 'Jazyk', sk: 'Slovensky', cs: 'Česky' },
   crumbs: { label: 'Kde jste' },
   common: {

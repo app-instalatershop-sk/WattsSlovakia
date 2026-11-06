@@ -168,6 +168,7 @@ mikrofónu, polohy, platieb a USB. Typy súborov: AVIF, WebP, WOFF2, SVG, JSON a
 | 4. 11. 2026 | 8dccf9c | rozmery: pri rúre vonkajší priemer × stena aj DN z katalógu | 241 súborov, 33 MB za 47 s, `overit` 33/33, 144 z 144 stránok |
 | 6. 11. 2026 | 616bfe4 | katalóg na domove ako dlaždice podľa použitia (G2), odkaz na sprievodcu výberom | 96 súborov, 1,6 MB za 35 s, 2 staré skripty zmazané, `overit` 33/33, 144 z 144 stránok |
 | 6. 11. 2026 | 2c98be7 | domov podľa auditu: nové poradie, otázky pred výberom, blok Do zeme v pokládke, kratšie ukážky; rodina a pás Do zeme v `archiv/` | 4 súbory (domov a Potrubia SK aj CS), 0,8 MB za 39 s, `overit` 33/33, 144 z 144 stránok |
+| 6. 11. 2026 | 92101ad | hlavička A (široké hľadanie v strede, menu v druhom riadku, tmavý pás hore v `archiv/`), úvod K3-A (tmavý pás z plášťa, rúra za predelom; na telefóne fotka prierezov rebier), pôvodný úvod a návrhy v `archiv/` | 150 súborov (všetky stránky pre hlavičku), 27,7 MB za 42 s, 57 starých súborov odložených na zmazanie, `overit` 33/33, 144 z 144 stránok |
 
 ## Overené 4. 11. 2026
 

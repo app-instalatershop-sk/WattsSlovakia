@@ -94,22 +94,21 @@ const popisy = heroVariant && heroRad ? [
   { id: 'rura', hodnota: `${heroRad.pocet_rur && heroRad.pocet_rur > 1 ? `${heroRad.pocet_rur} × ` : ''}Ø ${cislo(heroVariant.rura?.d ?? 0)} mm`, text: h.popisy.rury(heroRad.tlak_bar ?? 0, dnVariantu(heroVariant) ? `DN ${dnVariantu(heroVariant)}` : '') },
   { id: 'ohyb', hodnota: `${cislo(heroVariant.polomer_ohybu_m ?? 0, 2)} m`, text: h.popisy.polomer },
 ] : [];
-// Úvod K3-A (Juraj 6. 11. 2026): ľavá strana je tmavý pás z plášťa HDPE, textúra je skutočné rebrovanie
-// z makra vlastného 3D modelu. Na počítači pod tmavým prekrytím (1 000 px), na telefóne a tablete ostro hore
-// v páse (Juraj: „vrch silno modrý, nedá sa tam fotka upraviť, aby bola vidno lepšie?“), preto v plnom
-// rozlíšení zdroja a načítaná vopred: pás je tam najväčší prvok prvej obrazovky (LCP).
+// Úvod K3-A (Juraj 6. 11. 2026): ľavá strana je tmavý pás z plášťa HDPE, fotka je skutočné rebrovanie z makra
+// vlastného 3D modelu. Na počítači cez celý pás ako jeden obrázok (Juraj: „ten obrázok má predeľ, jedna časť
+// obrázok, druhá modrá, treba to urobiť ako jeden obrázok na celú stranu“), na telefóne a tablete ostro hore
+// v páse. Jeden súbor v plnom rozlíšení zdroja pre oba, načítaný vopred: pás je veľký prvok prvej obrazovky (LCP).
 const plastMakro = render3d('makra', 'plast');
-const plastPas = plastMakro ? (await getImage({ src: plastMakro, width: 1000, format: 'webp', quality: 55 })).src : undefined;
-const plastMobil = plastMakro ? (await getImage({ src: plastMakro, width: 1200, format: 'webp', quality: 70 })).src : undefined;
+const plastFoto = plastMakro ? (await getImage({ src: plastMakro, width: 1200, format: 'webp', quality: 70 })).src : undefined;
 ---
 <Base lang={lang} alternates={staticAlternates('domov')} title={ui.domov.title} description={ui.domov.description}>
-  <section class="hero" aria-labelledby="h-hero" data-mys style={plastMobil ? `--plast-m: url("${plastMobil}")` : undefined}>
-    {plastMobil && <link rel="preload" as="image" href={plastMobil} media="(max-width: 900px)" fetchpriority="high" />}
+  <section class="hero" aria-labelledby="h-hero" data-mys style={plastFoto ? `--plast: url("${plastFoto}")` : undefined}>
+    {plastFoto && <link rel="preload" as="image" href={plastFoto} fetchpriority="high" />}
     <div class="wrap hero-in">
       {/* Úvod K3-A (Juraj 6. 11. 2026, z troch návrhov a dvoch výkladov, archiv/navrhy-hlavicky-a-uvodu-2026-11-06):
           vľavo tmavý pás z plášťa s ohnutým predelom, vpravo rúra, ktorá predel nikdy neprekročí; spodok jej čela
           leží na výške, kde pás končí. Pôvodný úvod je v archiv/2026-11-06-uvod-pred-k3. */}
-      <div class="hero-pas" aria-hidden="true" style={plastPas ? `--plast: url("${plastPas}")` : undefined}></div>
+      <div class="hero-pas" aria-hidden="true"></div>
       <div class="hero-text">
         {/* Kľúčové slovo ostáva v nadpise, len v tichom riadku nad sloganom. */}
         <h1 id="h-hero">
@@ -311,12 +310,13 @@ const plastMobil = plastMakro ? (await getImage({ src: plastMakro, width: 1200, 
   .hero-in { --rw: min(clamp(620px, 50.4vw + 186px, 1180px), calc(1.883 * (clamp(540px, 66vh, 680px) - 12px))); --u: calc(var(--rw) / 100); --xf: calc((100cqw - 24px) * 0.46 - 10px);
     position: relative; width: 100%; display: grid; grid-template-columns: minmax(0, 46fr) minmax(0, 54fr); grid-template-areas: "text obraz"; align-items: center; gap: 20px 24px; container-type: inline-size; }
   /* Pás siaha od ľavého okraja okna (o 24 px ďalej, hero to oreže) po predeľ. Prvá vrstva masky je plná plocha
-     po pätu, druhá krivka predelu ukotvená pri spodku. Textúra plášťa je najsvetlejšia pri predele. */
+     po pätu, druhá krivka predelu ukotvená pri spodku. Fotka plášťa pokrýva celý pás ako jeden obrázok (predtým
+     len pravú časť a vľavo bol zlom do plnej modrej); vľavo pod textom je stmavená viac, pri predele najmenej. */
   .hero-pas { position: absolute; z-index: 0; top: 0; bottom: 0; left: calc(var(--gutter) - var(--bleed) - 24px); width: calc(var(--bleed) + 24px + var(--xf) + var(--u) * 24); pointer-events: none;
     background:
-      linear-gradient(90deg, rgb(5 20 48 / 0.96) 0%, rgb(8 30 72 / 0.9) 46%, rgb(10 42 94 / 0.5) 76%, rgb(10 42 94 / 0.12) 100%),
-      linear-gradient(180deg, rgb(5 20 48 / 0.55) 0%, rgb(5 20 48 / 0) 40%),
-      var(--plast, none) right -40px top 22% / auto 125% no-repeat,
+      linear-gradient(90deg, rgb(5 20 48 / 0.88) 0%, rgb(8 30 72 / 0.8) 42%, rgb(10 42 94 / 0.48) 74%, rgb(10 42 94 / 0.14) 100%),
+      linear-gradient(180deg, rgb(5 20 48 / 0.5) 0%, rgb(5 20 48 / 0) 35%),
+      var(--plast, none) 50% 55% / cover no-repeat,
       #0a2a5e;
     -webkit-mask: linear-gradient(#000 0 0) 0 0 / calc(var(--bleed) + 24px + var(--xf)) 100% no-repeat, var(--predel) calc(var(--bleed) + 24px + var(--xf)) 100% / calc(var(--u) * 24) calc(var(--u) * 120) no-repeat;
     mask: linear-gradient(#000 0 0) 0 0 / calc(var(--bleed) + 24px + var(--xf)) 100% no-repeat, var(--predel) calc(var(--bleed) + 24px + var(--xf)) 100% / calc(var(--u) * 24) calc(var(--u) * 120) no-repeat; }
@@ -633,7 +633,7 @@ const plastMobil = plastMakro ? (await getImage({ src: plastMakro, width: 1200, 
     .hero-text::before { content: ""; position: absolute; z-index: -1; inset: 0 calc(-1 * var(--gutter)) -56px;
       background:
         linear-gradient(180deg, rgb(5 20 48 / 0.05) 0px, rgb(5 20 48 / 0.1) 90px, rgb(6 22 52 / 0.72) 150px, rgb(6 22 52 / 0.94) 205px, rgb(8 30 72 / 0.95) 100%),
-        var(--plast-m, none) 50% calc(var(--foto) * -0.35) / var(--foto) auto no-repeat,
+        var(--plast, none) 50% calc(var(--foto) * -0.35) / var(--foto) auto no-repeat,
         #0a2a5e;
       -webkit-mask: linear-gradient(#000 0 0) top / 100% calc(100% - 56px) no-repeat, var(--spodok) bottom / 100% 56px no-repeat;
       mask: linear-gradient(#000 0 0) top / 100% calc(100% - 56px) no-repeat, var(--spodok) bottom / 100% 56px no-repeat; }

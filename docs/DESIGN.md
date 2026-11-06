@@ -435,9 +435,11 @@ Overené meraním: žiadny štítok sa nedotkne renderu pri 390, 1 280, 1 536 an
 
 **Úvod K3-A (6. 11. 2026, platí namiesto „svetlého poľa“ vľavo).** Juraj: ľavá strana „slabá, chaotická,
 veľa informácií, rôzne písma“, „zmeň aj grafiku a dizajn“; z troch kôl návrhov vybral K3 Materiál vo výklade A
-(`archiv/navrhy-hlavicky-a-uvodu-2026-11-06/`). **Vľavo tmavý pás z plášťa HDPE**: textúra je skutočné rebrovanie
-z makra vlastného 3D modelu (`3d/makra/plast.webp`, WebP 1 000 px), pravý okraj je ohnutý predeľ (tvar ako
-šikmé hrany webu). Na páse len tichý riadok, nadpis (druhý riadok #8fc1ff), veta, žlté tlačidlo, odkaz na
+(`archiv/navrhy-hlavicky-a-uvodu-2026-11-06/`). **Vľavo tmavý pás z plášťa HDPE**: fotka je skutočné rebrovanie
+z makra vlastného 3D modelu (`3d/makra/plast.webp`) a pokrýva celý pás ako jeden obrázok (`cover`; Juraj 6. 11.:
+„ten obrázok má predeľ, jedna časť obrázok, druhá modrá, treba to urobiť ako jeden obrázok na celú stranu“),
+vľavo pod textom stmavená viac, pri predele najmenej. Jeden súbor 1 200 px (WebP, 25 kB) pre počítač aj telefón,
+načítaný vopred. Pravý okraj je ohnutý predeľ (tvar ako šikmé hrany webu). Na páse len tichý riadok, nadpis (druhý riadok #8fc1ff), veta, žlté tlačidlo, odkaz na
 dopyt a jeden riadok o predaji s ikonou miesta; partner Watts je v druhom riadku hlavičky, skratky vypadli
 (pôvodný úvod: `archiv/2026-11-06-uvod-pred-k3/`). **Rúra predeľ nikdy neprekročí a spodok jej čela leží na
 výške, kde pás končí** (Juraj: „pravú stranu daj tak, aby nepresahovala ľavú, … aby spodná ľavá časť pravej

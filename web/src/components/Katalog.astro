@@ -120,6 +120,8 @@ const pocetVyrobkov = (k: Kategoria) => produkty.filter((p) => p.kategoria === k
   .katalog::before { content: ""; position: absolute; inset: 0 0 -1px; z-index: -1; background: linear-gradient(180deg, var(--zem-1) 0%, var(--zem-2) 60%, var(--zem-3) 100%);
     -webkit-mask: var(--hrana-ohyb) left top / 100% var(--presah-hero) no-repeat, linear-gradient(#000 0 0) left var(--presah-hero) / 100% 100% no-repeat;
     mask: var(--hrana-ohyb) left top / 100% var(--presah-hero) no-repeat, linear-gradient(#000 0 0) left var(--presah-hero) / 100% 100% no-repeat; }
+  /* Počítač: štítok rúr v úvode visí pod čelo rúry, teda pod spodok úvodu (úvod K3-A, 6. 11. 2026). */
+  @media (min-width: 901px) { .katalog { padding-top: calc(var(--presah-hero) + 116px); } }
   .katalog h2 { margin: 0; font-size: clamp(28px, 2.2vw + 14px, 42px); text-wrap: balance; }
 
   /* Úvod: nadpis vľavo, vpravo veta s odkazom na sprievodcu a celý katalóg. */

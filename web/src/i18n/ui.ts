@@ -93,7 +93,6 @@ const sk = {
       polomer: 'polomer ohybu',
       rury: (tlak: number, dn = '') => `nosné rúry${dn ? ` ${dn}` : ''}, ${tlak} bar`,
     },
-    skratky: { label: 'Rýchle odkazy na domovskej stránke', potrubia: 'Potrubia', konstrukcia: 'Konštrukcia', pokladka: 'Pokládka', projekty: 'Referencie' },
     katalogH2: 'Vyberte potrubie podľa použitia.',
     // Katalóg na domove len predstaví sortiment (Juraj 5. 11. 2026, verzia G2), výber krok za krokom robí sprievodca.
     katalogLead: (r: number, p: number) => `${r >= 5 ? `Všetkých ${r} radov` : r >= 2 ? `Všetky ${r} rady` : 'Jeden rad'} pre ${p >= 5 ? `${p} použití` : p >= 2 ? `${p} použitia` : '1 použitie'} a všetko, čo k nim patrí.`,
@@ -329,7 +328,6 @@ const cs: typeof sk = {
       polomer: 'poloměr ohybu',
       rury: (tlak: number, dn = '') => `nosné trubky${dn ? ` ${dn}` : ''}, ${tlak} bar`,
     },
-    skratky: { label: 'Rychlé odkazy na domovské stránce', potrubia: 'Potrubí', konstrukcia: 'Konstrukce', pokladka: 'Pokládka', projekty: 'Reference' },
     katalogH2: 'Vyberte potrubí podle použití.',
     katalogLead: (r: number, p: number) => `${r >= 5 ? `Všech ${r} řad` : r >= 2 ? `Všechny ${r} řady` : 'Jedna řada'} pro ${p} použití a vše, co k nim patří.`,
     katalogNeviete: 'Pokud si nejste jistí, které potrubí potřebujete, ',

@@ -433,6 +433,24 @@ každom podklade. Celá vrstva kót rastie s obrázkom: štúdio je kontajner (`
 inline-size`) a dĺžky čiar aj veľkosť písma sú v `cqw`, takže pri 1 280 aj 1 920 px sedia rovnako.
 Overené meraním: žiadny štítok sa nedotkne renderu pri 390, 1 280, 1 536 ani 1 920 px.
 
+**Úvod K3-A (6. 11. 2026, platí namiesto „svetlého poľa“ vľavo).** Juraj: ľavá strana „slabá, chaotická,
+veľa informácií, rôzne písma“, „zmeň aj grafiku a dizajn“; z troch kôl návrhov vybral K3 Materiál vo výklade A
+(`archiv/navrhy-hlavicky-a-uvodu-2026-11-06/`). **Vľavo tmavý pás z plášťa HDPE**: textúra je skutočné rebrovanie
+z makra vlastného 3D modelu (`3d/makra/plast.webp`, WebP 1 000 px), pravý okraj je ohnutý predeľ (tvar ako
+šikmé hrany webu). Na páse len tichý riadok, nadpis (druhý riadok #8fc1ff), veta, žlté tlačidlo, odkaz na
+dopyt a jeden riadok o predaji s ikonou miesta; partner Watts je v druhom riadku hlavičky, skratky vypadli
+(pôvodný úvod: `archiv/2026-11-06-uvod-pred-k3/`). **Rúra predeľ nikdy neprekročí a spodok jej čela leží na
+výške, kde pás končí** (Juraj: „pravú stranu daj tak, aby nepresahovala ľavú, … aby spodná ľavá časť pravej
+časti začínala na výške, kde končí ľavá“). Bez skriptu: šírka renderu `--rw` (rastie so šírkou okna, strop
+podľa výšky úvodu, aby štítok plášťa ostal v úvode), jednotka `--u` = 1 % renderu, päta predelu `--xf`
+(10 px pred okrajom stĺpca textu, `100cqw` je šírka obsahu `.hero-in`); krivka predelu je maska v u ukotvená
+pri spodku, rúra je 7,2 u + 28 px za pätou (najužšie miesto je stred čela, obrys z alfa kanála renderu,
+`predel_rura.py` v archíve návrhov). Overené 360 až 2 560 px SK aj CS: medzera 28 px pri 901 až 1 920 px,
+text 59 až 233 px pred predelom, Lighthouse ako predtým (telefón 89/100/100/100, počítač 100, CLS 0).
+Štítok rúr visí pod čelo doprava (pod spodok úvodu, katalóg má preto na počítači o 32 px väčší horný okraj),
+štítok ohybu do 1 699 px doľava. Do 900 px (ako hlavička) je úvod pod sebou: tmavý pás za textom cez celú
+šírku so zahnutým spodkom, bez obrázka plášťa (render ostáva najväčším prvkom, LCP), rúra pod pásom.
+
 Prechod hero → katalóg: pás katalógu sa podsunie pod spodok hero (`--presah-hero`) a má šikmú hornú
 hranu ako tmavá časť dole; render sedí na spodku hero a jeho dolná časť hranu pretína. Hero orezáva
 len vodorovne (`overflow-x: clip`), zvislo nie, takže tieň rúry mäkko dopadne na pás a nikde nevznikne

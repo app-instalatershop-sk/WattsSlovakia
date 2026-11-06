@@ -1,0 +1,260 @@
+---
+/**
+ * Pôvodný úvod domova (22. 9. až 6. 11. 2026), archivovaný pri úvode K3-A. Označenie, dáta a štýly presne
+ * z web/src/templates/Domov.astro (commit cf27343), len vybraté do samostatného komponentu.
+ * Obnovenie: archiv/2026-11-06-uvod-pred-k3/README.md.
+ */
+import { getImage } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import Obraz from './Obraz.astro';
+import Ikona from './Ikona.astro';
+import WattsLogo from './WattsLogo.astro';
+import { kategorie, cislo, dnVariantu } from '../lib/katalog';
+import { fotka, render3d, maska3d, rozkladRadu } from '../lib/obrazky';
+import rendery from '../data/rendery.json';
+import { sadzba } from '../lib/sadzba';
+import { type Lang, t, route } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const ui = t(lang);
+const h = ui.home;
+
+const kats = await kategorie();
+const rady = (await getCollection('rady')).map((r) => r.data);
+const varianty = (await getCollection('varianty')).map((v) => v.data);
+const potrubia = kats.filter((k) => k.typ === 'potrubie');
+const radyPotrubi = rady.filter((r) => potrubia.some((k) => k.id === r.kategoria));
+const variantyPotrubi = varianty.filter((v) => radyPotrubi.some((r) => r.id === v.rad));
+
+// Čísla pri renderi v hero sú z dát zobrazeného variantu (DUO 2 × 32 v plášti 160): kóta na obraze patrí tomu,
+// čo ukazuje, nie celému sortimentu (Juraj 28. 10.; rozsahy radov sú v katalógu nižšie).
+const heroObj = (rendery.hero as Record<string, { obj_cislo?: string }>).duo?.obj_cislo;
+const heroVariant = variantyPotrubi.find((v) => v.obj_cislo === heroObj);
+const heroRad = rady.find((r) => r.id === heroVariant?.rad);
+
+// Hero: render vlastného 3D modelu (data/blender, kompozícia ako pôvodný render Watts: rez vľavo, telo
+// za pravý okraj). Kým nie je, ostáva render Watts. Body kót a stred rezu sú v data/rendery.json.
+const hero3d = render3d('hero', 'duo');
+const heroRez = hero3d ?? fotka('hero-rez-duo.png')!;
+const heroBody = hero3d ? (rendery.hero as Record<string, { plast?: number[]; rura?: number[]; ohyb?: number[]; stred?: number[] }>).duo : undefined;
+const heroMaska = hero3d ? maska3d(hero3d) : undefined;
+const rozklad = rozkladRadu('microflex-duo-6-bar');
+// Odlesk po plášti: maska je samotný render, svetlo tak prejde len po výrobku, nie po pozadí.
+// Ten istý súbor ako 760 px AVIF v srcset obrázka (Obraz.astro), na mobile sa teda nesťahuje druhýkrát.
+// Prehliadač bez AVIF masku nenačíta a odlesk len vynechá.
+const leskMaska = (await getImage({ src: heroMaska ?? heroRez, width: 760, format: heroMaska ? 'webp' : 'avif', quality: 50 })).src;
+/* Popisy na renderi: bod leží na tom, čo číslo opisuje (okraj plášťa, spodná žltá rúra, zvlnené telo),
+   štítok v prázdnom mieste okolo výrobku. Polohy a dĺžky čiar sú v CSS podľa id, zmerané na siluete
+   hero-rez-duo.png; dĺžky sú v cqw (percentá šírky štúdia), takže celá vrstva rastie s obrázkom. */
+const popisy = heroVariant && heroRad ? [
+  { id: 'plast', hodnota: `Ø ${cislo(heroVariant.plast_mm ?? 0)} mm`, text: h.popisy.plast },
+  { id: 'rura', hodnota: `${heroRad.pocet_rur && heroRad.pocet_rur > 1 ? `${heroRad.pocet_rur} × ` : ''}Ø ${cislo(heroVariant.rura?.d ?? 0)} mm`, text: h.popisy.rury(heroRad.tlak_bar ?? 0, dnVariantu(heroVariant) ? `DN ${dnVariantu(heroVariant)}` : '') },
+  { id: 'ohyb', hodnota: `${cislo(heroVariant.polomer_ohybu_m ?? 0, 2)} m`, text: h.popisy.polomer },
+] : [];
+const skratky = [
+  { href: '#vyber', text: h.skratky.potrubia },
+  ...(rozklad ? [{ href: '#konstrukcia', text: h.skratky.konstrukcia }] : []),
+  { href: '#pokladka', text: h.skratky.pokladka },
+  { href: '#projekty', text: h.skratky.projekty },
+];
+---
+  <section class="hero" aria-labelledby="h-hero" data-mys>
+    <div class="wrap hero-in">
+      <div class="hero-text">
+        {/* Kľúčové slovo ostáva v nadpise, len v tichom riadku nad sloganom. */}
+        <h1 id="h-hero">
+          <span class="h1-kicker">{h.heroKicker}</span>
+          <span class="h1-a">{h.h1a}</span>
+          <span class="h1-b">{h.h1b}</span>
+        </h1>
+        <p class="lead">{sadzba(h.lead)}</p>
+        <div class="hero-actions">
+          <a class="btn btn-yellow btn-lg" href={route(lang, 'vyber')}>{h.cta} <Ikona nazov="arrow-right" velkost={18} /></a>
+          <a class="hero-odkaz" href={`${route(lang, 'firmy')}#dopyt`}>{h.cta2}</a>
+        </div>
+        {/* Partnerstvo viditeľne v úvode (Juraj 4. 11. 2026): jediný partner Watts pre Česko a Slovensko, pod ním predaj. */}
+        <div class="hero-partner">
+          <WattsLogo height={20} farba="original" class="hero-partner-logo" />
+          <p><strong>{sadzba(ui.partner.veta)}</strong><span>{h.dodavatel} <a href={route(lang, 'kontakt')}>{h.dodavatelOdkaz}</a></span></p>
+        </div>
+      </div>
+      <div class:list={['hero-product', { je3d: hero3d }]}>
+        <div class:list={['hero-stage', { je3d: hero3d }]} style={heroBody?.stred ? `--kx: ${((heroBody.stred[0] + 50) / 190 * 100).toFixed(1)}%; --ky: ${((heroBody.stred[1] + 15) / 115 * 100).toFixed(1)}%` : undefined}>
+          <Obraz src={heroRez} alt={h.heroAlt} widths={[760, 1140, 1517]} sizes="(max-width: 760px) 100vw, 62vw" loading="eager" fetchpriority="high" class="hero-img" />
+          <span class="lesk" aria-hidden="true" style={`--maska: url("${leskMaska}")`}></span>
+          <ul class="popisy" aria-label={h.popisy.label}>
+            {popisy.map((p, i) => (
+              <li class={`popis popis-${p.id}`} style={`--i: ${i}${heroBody?.[p.id as 'plast'] ? `; --x: ${heroBody[p.id as 'plast']![0]}%; --y: ${heroBody[p.id as 'plast']![1]}%` : ''}`}>
+                <span class="bod" aria-hidden="true"></span>
+                <span class="ciara" aria-hidden="true"></span>
+                <span class="stitok"><strong>{p.hodnota}</strong><span>{sadzba(p.text)}</span></span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      <nav class="hero-skratky" aria-label={h.skratky.label}>
+        <ul>
+          {skratky.map((s) => <li><a href={s.href}>{s.text}<Ikona nazov="arrow-down" velkost={16} /></a></li>)}
+        </ul>
+      </nav>
+    </div>
+  </section>
+
+<style>
+  /* ---------- Hero: svetlé pole, farbu nesie výrobok ---------- */
+  /* Spodných --presah pixelov hero je bez pozadia: je pod nimi šikmá horná hrana pásu katalógu,
+     ktorú spodok renderu pretína, rovnako ako fotka z výkopu pretína hranu podzemia. */
+  .hero { --presah: var(--presah-hero); position: relative; display: flex; align-items: center; min-height: clamp(540px, 66vh, 680px); overflow-x: clip; z-index: 1; color: var(--color-ink);
+    background:
+      linear-gradient(to bottom, rgb(255 255 255 / 0) 62%, #ffffff 100%),
+      radial-gradient(52% 62% at 76% 52%, rgb(0 93 185 / 0.08) 0%, rgb(0 93 185 / 0) 72%),
+      linear-gradient(158deg, #ffffff 0%, #fafbfd 46%, #eef2f7 100%);
+    background-size: 100% calc(100% - var(--presah)); background-repeat: no-repeat; }
+  .hero-in { position: relative; width: 100%; display: grid; grid-template-columns: minmax(0, 44fr) minmax(0, 56fr); grid-template-areas: "text obraz" "skratky skratky"; gap: 20px 24px; }
+  .hero-text { grid-area: text; align-self: center; max-width: 620px; padding-block: 56px; display: flex; flex-direction: column; align-items: flex-start; position: relative; z-index: 3; }
+  .hero-text > * { animation: rise 680ms var(--ease-soft) both; }
+  .hero-text > :nth-child(2) { animation-delay: 220ms; }
+  .hero-text > :nth-child(3) { animation-delay: 320ms; }
+  .hero-text > :nth-child(4) { animation-delay: 400ms; }
+  .hero h1 { display: flex; flex-direction: column; font-size: clamp(34px, 2.9vw + 12px, 58px); line-height: 1.03; letter-spacing: -0.03em; text-wrap: nowrap; }
+  /* Tichý riadok nad sloganom je súčasť H1 kvôli vyhľadávačom; sadzba ako veta, nie verzálky. */
+  .h1-kicker { font-family: var(--font-text); font-stretch: 100%; font-size: 16px; font-weight: 500; line-height: 1.4; letter-spacing: 0; color: var(--color-ink-soft); margin-bottom: 16px; }
+  /* Jediný orchestrovaný moment: prvý riadok sa pri načítaní roztiahne po osi šírky písma,
+     tak ako sa rozvinie ohybné potrubie. Cieľ je šírka nadpisu, preto animácia nemá koncový stav. */
+  .h1-a { color: var(--color-ink); animation: flex 1150ms 60ms var(--ease-soft) both; }
+  .h1-b { color: var(--color-blue-700); }
+  @keyframes flex { from { font-stretch: 72%; opacity: 0; } 35% { opacity: 1; } }
+  .hero .lead { font-size: 18px; max-width: 30em; margin-top: 24px; }
+  .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 32px; margin-top: 32px; }
+  .hero-actions .btn :global(svg) { transition: transform 200ms var(--ease-soft); }
+  @media (hover: hover) and (pointer: fine) { .hero-actions .btn:hover :global(svg) { transform: translateX(3px); } }
+  /* Druhá akcia nie je tlačidlo: nemá súperiť so žltým, len ponúknuť cestu k dopytu na projekt. */
+  .hero-odkaz { display: inline-flex; align-items: center; gap: 8px; font-weight: 500; color: var(--color-blue-700); border-bottom: 1px solid currentColor; padding-bottom: 4px; }
+  /* Kto predáva: tichý riadok pod akciami, odkaz na predajňu (Microflex ostáva hlavná značka). */
+  /* Logo nad textom na každej šírke: blok je úzky a nesiaha pod kóty renderu (1024 px). */
+  .hero-partner { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin-top: 28px; }
+  .hero-partner :global(.hero-partner-logo) { flex: none; }
+  .hero-partner :global(.hero-partner-logo svg) { display: block; }
+  .hero-partner p { display: flex; flex-direction: column; gap: 4px; max-width: 22em; font-size: 15px; line-height: 1.45; color: var(--color-ink-soft); }
+  .hero-partner strong { color: var(--color-ink); font-weight: 600; }
+  .hero-partner a { font-weight: 600; color: var(--color-ink); text-decoration: underline; text-decoration-color: rgb(10 42 94 / 0.3); text-underline-offset: 3px; }
+  @media (hover: hover) and (pointer: fine) { .hero-partner a:hover { color: var(--color-blue-700); text-decoration-color: currentColor; } }
+  /* Priamy vstup do obsahu aj pre návštevníka, ktorý nechce prejsť všetky 3D ukážky. */
+  .hero-skratky { grid-area: skratky; position: relative; z-index: 3; padding-bottom: 12px; }
+  .hero-skratky ul { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
+  .hero-skratky a { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 52px; padding-block: 12px; border-top: 1px solid rgb(10 42 94 / 0.18); color: var(--color-ink-soft); font-size: 15px; font-weight: 500; }
+  .hero-skratky a:hover { color: var(--color-blue-700); border-top-color: currentColor; }
+  .hero-skratky :global(svg) { flex: none; width: 16px; height: 16px; color: var(--color-blue-700); }
+
+  /* Rúra prekračuje pravý okraj obsahovej mriežky až za okraj obrazovky. */
+  /* Render sedí na spodku hero, takže jeho dolná časť pretne šikmú hranu pásu katalógu. */
+  .hero-product { grid-area: obraz; position: relative; z-index: 2; align-self: end; margin-left: -9%;
+    margin-right: calc(min(calc(-1 * var(--gutter)), calc((var(--container-site) - 100vw) / 2)) - 64px);
+    pointer-events: none; animation: settle 1300ms 120ms var(--ease-soft) both; }
+  .hero-product :global(.hero-img) { width: 100%; height: auto; display: block; filter: drop-shadow(0 30px 36px rgb(11 27 51 / 0.17)); }
+  /* Render 3D modelu má vlastný kontaktný tieň. */
+  .hero-stage.je3d :global(.hero-img) { filter: none; }
+  /* Render 3D modelu má rez tesne pri ľavom okraji: bez presahu do stĺpca textu, inak by sa pri 1 536 až
+     1 920 px rez dotkol nadpisu (meranie po riadkoch: medzera aspoň 32 px pri 1 024 až 2 560 px). */
+  @media (min-width: 761px) { .hero-product.je3d { margin-left: 0; } }
+  /* Štúdio má presne rozmer obrázka: body popisov sú v percentách obrázka a sedia pri každej šírke.
+     Pri pohybe myši sa výrobok jemne posunie a pootočí, text stojí. */
+  .hero-stage { position: relative; max-width: 1180px; margin-inline: auto; container-type: inline-size; transform: translate3d(calc(var(--mx, 0) * 12px), calc(var(--my, 0) * 8px), 0); transition: transform 900ms var(--ease-soft); }
+  /* Za rezom sústredné kružnice ako na výkrese prierezu, stredom v reze rúry (27 % a 60 % štúdia).
+     Zdola doznejú ešte nad šikmou hranou pásu katalógu, aby cez ňu neprechádzali. */
+  .hero-stage::before { content: ""; position: absolute; inset: -15% -40% 0 -50%; z-index: -1; pointer-events: none;
+    background: repeating-radial-gradient(circle at var(--kx, 40.5%) var(--ky, 65%), rgb(10 42 94 / 0.075) 0 1px, rgb(10 42 94 / 0) 1.5px 46px);
+    -webkit-mask-image: radial-gradient(circle at var(--kx, 40.5%) var(--ky, 65%), #000 12%, transparent 50%), linear-gradient(to bottom, #000 40%, transparent calc(100% - var(--presah-hero) - 32px));
+    -webkit-mask-composite: source-in;
+    mask-image: radial-gradient(circle at var(--kx, 40.5%) var(--ky, 65%), #000 12%, transparent 50%), linear-gradient(to bottom, #000 40%, transparent calc(100% - var(--presah-hero) - 32px));
+    mask-composite: intersect;
+    animation: kruhy 1600ms 300ms var(--ease-soft) both; }
+  @keyframes kruhy { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: none; } }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  /* Bez priehľadnosti: render je najväčší prvok obrazovky (LCP) a prehliadač ho započíta, až keď
+     je viditeľný. Na mobile tak čakal aj na písma a obrázky pod ním. Pohyb ostáva. */
+  @keyframes settle { from { transform: translate(40px, 0) rotate(-1.5deg) scale(1.02); } to { transform: none; } }
+
+  /* Odlesk: pás svetla raz prejde po plášti. Maska je render, takže svetlo nejde po pozadí. Pás sa posúva cez
+     transform (grafická karta), nie cez background-position, ktoré by sa prekresľovalo pri každom snímku. */
+  .lesk { position: absolute; inset: 0; overflow: hidden; pointer-events: none; mix-blend-mode: screen; opacity: 0.9;
+    -webkit-mask: var(--maska) center / 100% 100% no-repeat; mask: var(--maska) center / 100% 100% no-repeat; }
+  .lesk::before { content: ""; position: absolute; top: 0; bottom: 0; left: 0; width: 260%; will-change: transform;
+    background: linear-gradient(105deg, rgb(255 255 255 / 0) 40%, rgb(190 215 255 / 0.42) 50%, rgb(255 255 255 / 0) 60%);
+    animation: lesk 2200ms 1100ms cubic-bezier(0.45, 0, 0.25, 1) both; }
+  /* rovnaká dráha ako predtým background-position 135 % → −35 % pri šírke pásu 260 % */
+  @keyframes lesk { from { transform: translateX(-83.08%); } to { transform: translateX(21.54%); } }
+
+  /* Technické popisy (kóty): bod leží na tom, čo číslo opisuje, čiara vedie k štítku. Štítok má
+     jemne mliečne pozadie, aby bol čitateľný aj tam, kde sa dotkne výrobku. Prídu po nadpise. */
+  .popisy { position: absolute; inset: 0; margin: 0; padding: 0; pointer-events: none; }
+  .popis { position: absolute; left: var(--x); top: var(--y); width: 0; height: 0; }
+  .bod { position: absolute; z-index: 2; left: -7px; top: -7px; width: 14px; height: 14px; border-radius: 50%; background: #fff; box-shadow: inset 0 0 0 3px var(--color-blue-900), 0 0 0 4px rgb(255 255 255 / 0.55), 0 3px 10px rgb(11 27 51 / 0.35); animation: bod 420ms var(--ease-soft) both; animation-delay: calc(1250ms + var(--i) * 170ms); }
+  .bod::after { content: ""; position: absolute; inset: -7px; border-radius: 50%; border: 1.5px solid rgb(255 255 255 / 0.95); opacity: 0; animation: pulz 1500ms ease-out 1 both; animation-delay: calc(1650ms + var(--i) * 170ms); }
+  .ciara { position: absolute; left: -0.75px; width: 1.5px; height: var(--l); border-radius: 1px; background: var(--color-blue-900); box-shadow: 0 0 0 1.5px rgb(255 255 255 / 0.55); animation: ciaraY 520ms var(--ease-soft) both; animation-delay: calc(1330ms + var(--i) * 170ms); }
+  .stitok { position: absolute; display: flex; flex-direction: column; gap: clamp(2px, 0.3cqw, 4px); white-space: nowrap;
+    padding: clamp(5px, 0.72cqw, 10px) clamp(8px, 1.05cqw, 14px); border-radius: clamp(8px, 0.9cqw, 12px);
+    background: var(--sklo-2); -webkit-backdrop-filter: blur(10px) saturate(1.4); backdrop-filter: blur(10px) saturate(1.4);
+    box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.08), var(--elev-2);
+    animation: rise 560ms var(--ease-soft) both; animation-delay: calc(1520ms + var(--i) * 170ms); }
+  .stitok strong { font-family: var(--font-display); font-stretch: 112.5%; font-weight: 600; font-size: clamp(15px, 2.5cqw, 28px); line-height: 1.05; letter-spacing: -0.02em; color: var(--color-blue-900); font-variant-numeric: tabular-nums; }
+  .stitok span { font-size: clamp(12px, 1.45cqw, 15px); line-height: 1.3; font-weight: 500; color: var(--color-ink-soft); }
+  /* Kam ide čiara a štítok. Počítač: plášť nad rezom, rúra pod ňou doľava, ohyb pod telom doprava. */
+  @media (min-width: 761px) {
+    .popis-plast { --x: 27%; --y: 31%; --l: 10.6cqw; }
+    .popis-rura { --x: 24%; --y: 79.5%; --l: 7.2cqw; }
+    .popis-ohyb { --x: 74%; --y: 56%; --l: 9.2cqw; }
+    .popis-plast .ciara { bottom: 0; transform-origin: bottom; }
+    .popis-plast .stitok { left: -0.75px; bottom: var(--l); border-bottom-left-radius: 2px; }
+    .popis-rura .ciara, .popis-ohyb .ciara { top: 0; transform-origin: top; }
+    .popis-rura .stitok { right: -0.75px; top: var(--l); border-top-right-radius: 2px; align-items: flex-end; text-align: right; }
+    .popis-ohyb .stitok { left: -0.75px; top: var(--l); border-top-left-radius: 2px; }
+  }
+  /* 901 až 1023 px: štítok rúr s DN (Juraj 4. 11. 2026) je širší, dlhšia čiara ho dá pod blok partnera Watts. */
+  @media (min-width: 901px) and (max-width: 1023px) { .popis-rura { --l: 9.2cqw; } }
+  /* Telefón: plášť a ohyb nad výrobkom, rúra pod ním; štítky sa neprekrývajú ani nevyjdú z displeja. */
+  @media (max-width: 760px) {
+    .popis-plast { --x: 27%; --y: 31%; --l: 14.4cqw; }
+    .popis-rura { --x: 24%; --y: 79.5%; --l: 10.6cqw; }
+    .popis-ohyb { --x: 67%; --y: 25%; --l: 13.7cqw; }
+    .popis-plast .ciara, .popis-ohyb .ciara { bottom: 0; transform-origin: bottom; }
+    .popis-plast .stitok, .popis-ohyb .stitok { left: -0.75px; bottom: var(--l); border-bottom-left-radius: 2px; }
+    .popis-rura .ciara { top: 0; transform-origin: top; }
+    .popis-rura .stitok { left: -0.75px; top: var(--l); border-top-left-radius: 2px; }
+    /* Render 3D modelu: bod ohybu je na spodnej hrane tela, štítok visí pod ňou v prázdnom mieste,
+       nie nad bodom na plášti (Juraj 23. 9.: štítok nikdy na plášti). */
+    .je3d .popis-ohyb { --l: 8cqw; }
+    .je3d .popis-ohyb .ciara { top: 0; bottom: auto; transform-origin: top; }
+    .je3d .popis-ohyb .stitok { top: var(--l); bottom: auto; border-radius: clamp(8px, 0.9cqw, 12px); border-top-left-radius: 2px; }
+  }
+  @keyframes bod { from { opacity: 0; transform: scale(0.3); } to { opacity: 1; transform: none; } }
+  @keyframes ciaraY { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+  @keyframes pulz { 0% { opacity: 0.9; transform: scale(0.6); } 100% { opacity: 0; transform: scale(2.4); } }
+
+  /* ---------- Tablet a telefón (len riadky úvodu) ---------- */
+  @media (max-width: 1100px) {
+    .hero-in { grid-template-columns: minmax(0, 46fr) minmax(0, 54fr); }
+    .hero h1 { font-size: clamp(34px, 3.4vw + 10px, 50px); }
+  }
+  @media (max-width: 760px) {
+    .hero { min-height: 0; }
+    .hero-in { grid-template-columns: 1fr; grid-template-areas: "text" "obraz" "skratky"; row-gap: 16px; }
+    .hero-text { padding-block: 32px 0; max-width: none; }
+    /* Na telefóne sa nadpis môže zalomiť, inak by na úzkom displeji pretiekol. */
+    .hero h1 { font-size: clamp(30px, 8.2vw, 44px); text-wrap: wrap; }
+    .hero .lead { margin-top: 16px; font-size: 17px; }
+    .hero-actions { width: 100%; margin-top: 24px; gap: 8px 16px; }
+    .hero-actions .btn-lg { height: 52px; padding-inline: 20px; font-size: 16px; }
+    .hero-odkaz { min-height: 44px; font-size: 15px; border: 0; text-decoration: underline; text-underline-offset: 5px; }
+    .hero-partner { margin-top: 20px; }
+    .hero-partner :global(.hero-partner-logo svg) { height: 18px; width: auto; }
+    .hero-partner p { font-size: 14px; }
+    .hero-product { margin: 32px 0 0; margin-right: calc(-1 * var(--gutter)); margin-left: calc(-1 * var(--gutter)); justify-self: stretch; }
+    .hero { padding-bottom: 16px; }
+    .hero-skratky { padding-top: 12px; padding-bottom: 0; }
+    .hero-skratky ul { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 20px; }
+    .hero-skratky a { min-height: 48px; font-size: 14px; }
+  }
+</style>

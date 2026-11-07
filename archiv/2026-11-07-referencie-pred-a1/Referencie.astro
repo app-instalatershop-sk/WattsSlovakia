@@ -1,0 +1,154 @@
+---
+/**
+ * Referencie: hlava s fotkou zo stavby, potom každá referencia ako samostatný blok, galéria
+ * a text sa striedajú vľavo a vpravo (hadovito ako domov). Najväčšie stavby idú prvé. Hlavná
+ * fotka nesie kótu priamo na rúre (content/referencie.ts → scena); miniatúry prepínajú fotku
+ * a pri inej fotke sa kóty skryjú, lebo patria len k hlavnej.
+ * Obsah je v content/referencie.ts, len fakty zo stránok referencií na watts.eu.
+ */
+import { getImage } from 'astro:assets';
+import Obraz from '../components/Obraz.astro';
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Hlava from '../components/Hlava.astro';
+import Zaver from '../components/Zaver.astro';
+import Ikona from '../components/Ikona.astro';
+import Scena from '../components/Scena.astro';
+import { referencie } from '../content/referencie';
+import { fotkaReferencie } from '../lib/obrazky';
+import { cestaRadu, rNazov } from '../lib/katalog';
+import { sadzba } from '../lib/sadzba';
+import { type Lang, t, staticAlternates } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const ui = t(lang);
+const tx = {
+  sk: {
+    title: 'Referencie', titulok: 'Stavby s potrubím Microflex', desc: 'Stavby s predizolovaným potrubím Microflex: rozvod tepla pre obytný súbor v Považskej Bystrici, vojenská základňa vo Francúzsku, základná škola v Lehote pri Nitre a rodinný dom vo Fačkove.',
+    lead: 'Rozvody tepla medzi budovami areálov a obytných súborov, výmena starých oceľových rozvodov aj prípojky domov.',
+    fotoAlt: 'Dve potrubia Microflex UNO vo výkope na vojenskej základni v Orange', zdroj: 'Referencia na watts.eu', rad: 'Použitý rad', fotka: (n: number) => `Fotka ${n}`,
+  },
+  cs: {
+    title: 'Reference', titulok: 'Reference: stavby s potrubím Microflex', desc: 'Stavby s předizolovaným potrubím Microflex: rozvod tepla pro obytný soubor v Považské Bystrici, vojenská základna ve Francii, základní škola v Lehotě pri Nitre a rodinný dům ve Fačkově.',
+    lead: 'Rozvody tepla mezi budovami areálů a obytných souborů, výměna starých ocelových rozvodů i přípojky domů.',
+    fotoAlt: 'Dvě potrubí Microflex UNO ve výkopu na vojenské základně v Orange', zdroj: 'Reference na watts.eu', rad: 'Použitá řada', fotka: (n: number) => `Fotka ${n}`,
+  },
+}[lang];
+// Najväčšie stavby prvé: sieť pre 31 budov, 800 m na vojenskej základni, škola, rodinný dom.
+const PORADIE = ['povazska-bystrica', 'orange', 'skola-lehota', 'fackov'];
+const refs = [...referencie(lang)].sort((a, b) => PORADIE.indexOf(a.id) - PORADIE.indexOf(b.id));
+const rady = (await getCollection('rady')).map((r) => r.data);
+const kat = (await getCollection('kategorie')).map((k) => k.data);
+const hero = fotkaReferencie('orange-4.jpg');
+// Hlavná fotka (scéna s kótami) ide prvá; jej pôvodný súbor sa v galérii neopakuje (orange-5-scena = výrez orange-5).
+const bloky = await Promise.all(refs.map(async (r) => {
+  const hlavna = r.scena?.fotka ?? r.fotky[0];
+  const zaklad = hlavna.replace('-scena', '');
+  const subory = [hlavna, ...r.fotky.filter((f) => f !== hlavna && f !== zaklad)];
+  const fotky = await Promise.all(subory.map(async (f) => {
+    const src = fotkaReferencie(f)!;
+    const velka = await getImage({ src, width: Math.min(1100, src.width), format: 'webp' });
+    return { src, velka: velka.src };
+  }));
+  const rad = r.rad ? rady.find((x) => x.slug === r.rad) : undefined;
+  const k = rad ? kat.find((x) => x.id === rad.kategoria) : undefined;
+  return { r, fotky, rad, k };
+}));
+---
+<Base lang={lang} alternates={staticAlternates('referencie')} title={tx.titulok} description={tx.desc} aktivna="referencie" drobceky={[{ text: tx.title }]} vizualneDrobceky={false}>
+  <Hlava lang={lang} nadpis={tx.title} drobceky={[{ text: tx.title }]} lead={tx.lead} obraz={hero} obrazAlt={tx.fotoAlt} druh="foto" />
+
+  <div class="telo">
+    {bloky.map(({ r, fotky, rad, k }, i) => (
+      <section class:list={['wrap ref', { vpravo: i % 2 === 1 }]} id={r.id} aria-labelledby={`h-${r.id}`}>
+        <div class="galeria" data-galeria style={`--pomer: ${fotky[0].src.width} / ${fotky[0].src.height}`}>
+          <Scena class="hlavna" obraz={fotky[0].src} alt={r.nazov} koty={r.scena?.koty ?? []} label={ui.home.projektyKoty} widths={[640, 900, 1100]} sizes="(max-width: 900px) 100vw, 56vw" priorita="low" />
+          {fotky.length > 1 && (
+            <ul class="nahlady">
+              {fotky.map((f, j) => (
+                <li><button type="button" aria-pressed={j === 0 ? 'true' : 'false'} data-velka={f.velka} aria-label={tx.fotka(j + 1)}><Obraz src={f.src} alt="" width={120} height={90} densities={[1, 2]} fetchpriority="low" /></button></li>
+              ))}
+            </ul>
+          )}
+        </div>
+        <div class="text">
+          <p class="kde">{r.miesto}, {r.kedy}</p>
+          <h2 id={`h-${r.id}`}>{sadzba(r.nazov)}</h2>
+          <p class="perex">{sadzba(r.perex)}</p>
+          <dl class="fakty">{r.fakty.map(([dt, dd]) => <div><dt>{dt}</dt><dd>{sadzba(dd)}</dd></div>)}</dl>
+          <p class="realizacia">{r.realizacia}</p>
+          <div class="odkazy">
+            {rad && k && <a class="odkaz" href={cestaRadu(k, rad, lang)}>{tx.rad}: {rNazov(rad, lang).split(',')[0]} <Ikona nazov="arrow-right" velkost={16} /></a>}
+            <a class="odkaz odkaz-tichy" href={lang === 'cs' ? r.zdroj.replace('/sk/', '/cz/') : r.zdroj} target="_blank" rel="noopener">{tx.zdroj} <Ikona nazov="external-link" velkost={15} /></a>
+          </div>
+        </div>
+      </section>
+    ))}
+  </div>
+  <Zaver lang={lang} />
+</Base>
+
+<style>
+  .ref { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 32px 56px; align-items: start; scroll-margin-top: 110px; }
+  .telo > .ref + .ref { margin-top: 128px; }
+  .ref.vpravo { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+  .ref.vpravo .galeria { order: 2; }
+  /* Hlavná fotka má pomer scény (kóty sedia na nej); iná fotka z galérie sa do toho istého poľa oreže. */
+  .galeria :global(.hlavna .scena-img) { aspect-ratio: var(--pomer); object-fit: cover; border-radius: var(--radius-xl); box-shadow: var(--elev-4); background: var(--zem-3); transition: opacity 250ms var(--ease-soft); }
+  .galeria :global(.hlavna .scena-img.mizne) { opacity: 0.25; }
+  .galeria.ina :global(.koty) { display: none; }
+  .nahlady { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .nahlady button { display: block; padding: 0; border: 0; border-radius: var(--radius-m); overflow: hidden; cursor: pointer; background: none; box-shadow: 0 0 0 2px transparent; opacity: 0.72; transition: opacity 150ms var(--ease-soft), box-shadow 150ms var(--ease-soft); }
+  .nahlady button:hover { opacity: 1; }
+  .nahlady button[aria-pressed="true"] { opacity: 1; box-shadow: 0 0 0 3px var(--color-blue-700); }
+  .nahlady :global(img) { display: block; width: 84px; height: 63px; object-fit: cover; }
+
+  .text { padding-top: 8px; }
+  .kde { font-size: 15px; font-weight: 500; color: var(--color-blue-700); }
+  .text h2 { margin-top: 8px; font-size: clamp(26px, 1.4vw + 17px, 38px); line-height: 1.12; letter-spacing: -0.02em; }
+  .perex { margin-top: 16px; font-size: 17px; line-height: 1.6; }
+  /* Fakty stavby: číslo nesie typografia, riadky oddeľuje plocha, nie čiara. */
+  .fakty { margin: 24px 0 0; display: grid; gap: 8px; }
+  .fakty > div { display: grid; grid-template-columns: 9.5em minmax(0, 1fr); gap: 16px; padding: 12px 16px; border-radius: var(--radius-l); background: var(--sklo-1); }
+  .fakty dt { color: var(--color-ink-soft); font-size: 15px; }
+  .fakty dd { margin: 0; font-weight: 600; }
+  .realizacia { margin-top: 16px; font-size: 15px; color: var(--color-ink-soft); }
+  .odkazy { display: flex; flex-wrap: wrap; gap: 16px 24px; margin-top: 24px; }
+  .odkaz-tichy { color: var(--color-ink-soft); }
+  @media (max-width: 900px) { .ref, .ref.vpravo { grid-template-columns: minmax(0, 1fr); } .ref.vpravo .galeria { order: 0; } .telo > .ref + .ref { margin-top: 88px; } }
+  @media (max-width: 760px) { .fakty > div { grid-template-columns: minmax(0, 1fr); gap: 2px; } .nahlady :global(img) { width: 64px; height: 48px; } .galeria :global(.hlavna .scena-img) { border-radius: var(--radius-l); } }
+</style>
+
+<script>
+  /* Miniatúry prepínajú hlavnú fotku. Prvá je scéna s kótami: pri inej fotke sa kóty skryjú a pri
+     návrate sa vráti pôvodný obrázok aj s responzívnymi veľkosťami. */
+  function initGalerie() {
+    document.querySelectorAll<HTMLElement>('[data-galeria]').forEach((g) => {
+      if (g.dataset.init) return;
+      g.dataset.init = '1';
+      const hlavna = g.querySelector<HTMLImageElement>('.hlavna img');
+      if (!hlavna) return;
+      const povodne = { src: hlavna.currentSrc || hlavna.src, srcset: hlavna.getAttribute('srcset') ?? '' };
+      // Scéna je <picture> so zdrojom AVIF, ten by mal prednosť pred zmenou src: pri inej fotke sa vypne.
+      const zdroje = [...(hlavna.closest('picture')?.querySelectorAll('source') ?? [])].map((s) => ({ s, srcset: s.getAttribute('srcset') ?? '' }));
+      const tlacidla = [...g.querySelectorAll<HTMLButtonElement>('[data-velka]')];
+      tlacidla.forEach((b, i) => b.addEventListener('click', () => {
+        if (b.getAttribute('aria-pressed') === 'true') return;
+        tlacidla.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+        hlavna.classList.add('mizne');
+        const nova = new window.Image();
+        nova.onload = () => {
+          zdroje.forEach(({ s, srcset }) => (i === 0 ? s.setAttribute('srcset', srcset) : s.removeAttribute('srcset')));
+          if (i === 0 && povodne.srcset) hlavna.setAttribute('srcset', povodne.srcset); else hlavna.removeAttribute('srcset');
+          hlavna.src = nova.src;
+          hlavna.classList.remove('mizne');
+          g.classList.toggle('ina', i !== 0);
+        };
+        nova.src = i === 0 ? povodne.src : b.dataset.velka!;
+      }));
+    });
+  }
+  initGalerie();
+  document.addEventListener('astro:page-load', initGalerie);
+</script>

@@ -1,24 +1,28 @@
 ---
 /**
- * Referencie: hlava s fotkou zo stavby, potom každá referencia ako samostatný blok, galéria
- * a text sa striedajú vľavo a vpravo (hadovito ako domov). Najväčšie stavby idú prvé. Hlavná
- * fotka nesie kótu priamo na rúre (content/referencie.ts → scena); miniatúry prepínajú fotku
- * a pri inej fotke sa kóty skryjú, lebo patria len k hlavnej.
- * Obsah je v content/referencie.ts, len fakty zo stránok referencií na watts.eu.
+ * Referencie, verzia A1 „Hlavná stavba“ (Juraj 7. 11. 2026 z návrhov A až C a verzií A1 až A3; archív
+ * archiv/navrhy-referencii-2026-11-06/, predošlá stránka archiv/2026-11-07-referencie-pred-a1/):
+ *  1. Tmavý pás s fotkou staveniska našej dodávky cez celú šírku, kóta na rúre (Scena s výrezom), nadpis,
+ *     štítok Naša dodávka. Žltý je len štítok, tlačidlo je biele (žltá raz na obrazovku).
+ *  2. Biely pás so všetkými stavbami cez ohnutú hranu: fotka, rozsah a typ, takže aj menšie stavby sú na prvej
+ *     obrazovke; odkaz skočí na stavbu.
+ *  3. Príbeh hlavnej stavby: kotolňa s kótou výkonu, údaje, fotky s popisom, čo patrilo k dodávke.
+ *  4. Ďalšie stavby (referencie výrobcu) ako karty: fotky, kóta dĺžky, riadok s radom potrubia, zdroj.
+ * Obsah je v content/referencie.ts, len fakty zo stránok referencií na watts.eu. Fotku kotúčov (povazska-2)
+ * má záver každej vnútornej stránky, preto v príbehu nie je.
  */
-import { getImage } from 'astro:assets';
-import Obraz from '../components/Obraz.astro';
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import Hlava from '../components/Hlava.astro';
 import Zaver from '../components/Zaver.astro';
 import Ikona from '../components/Ikona.astro';
+import Obraz from '../components/Obraz.astro';
 import Scena from '../components/Scena.astro';
-import { referencie } from '../content/referencie';
-import { fotkaReferencie } from '../lib/obrazky';
-import { cestaRadu, rNazov } from '../lib/katalog';
+import { referencie, type Referencia } from '../content/referencie';
+import type { Kota } from '../lib/koty';
+import { fotkaReferencie, fotkaProduktu, render3d } from '../lib/obrazky';
+import { cestaRadu } from '../lib/katalog';
 import { sadzba } from '../lib/sadzba';
-import { type Lang, t, staticAlternates } from '../i18n/ui';
+import { type Lang, t, staticAlternates, route } from '../i18n/ui';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -26,129 +30,316 @@ const ui = t(lang);
 const tx = {
   sk: {
     title: 'Referencie', titulok: 'Stavby s potrubím Microflex', desc: 'Stavby s predizolovaným potrubím Microflex: rozvod tepla pre obytný súbor v Považskej Bystrici, vojenská základňa vo Francúzsku, základná škola v Lehote pri Nitre a rodinný dom vo Fačkove.',
-    lead: 'Rozvody tepla medzi budovami areálov a obytných súborov, výmena starých oceľových rozvodov aj prípojky domov.',
-    fotoAlt: 'Dve potrubia Microflex UNO vo výkope na vojenskej základni v Orange', zdroj: 'Referencia na watts.eu', rad: 'Použitý rad', fotka: (n: number) => `Fotka ${n}`,
+    lead: 'Stavby, na ktorých už potrubie Microflex vedie teplo: od rodinného domu s garážou po obytný súbor s 31 budovami.',
+    hlavnaVeta: 'Rozvod tepla pre 30 domov a bytový dom z jednej kotolne', pozriet: 'Pozrieť stavbu', stavby: 'Stavby na tejto stránke',
+    dopytPodobny: 'Dopyt na podobný projekt', zdroj: 'Referencia na watts.eu',
+    dielyH: 'Čo patrilo k dodávke', dielyP: 'Okrem potrubia aj pevné body, tesnenia a systémové príslušenstvo.', dielyOdkaz: 'Príslušenstvo k potrubiu',
+    dielPotrubie: 'Potrubie Microflex', dielPotrubiePod: 'na kotúčoch', dielBody: 'Pevné body', dielTesnenia: 'Tesnenia prestupov stenou',
+    dielPrislusenstvo: 'Systémové príslušenstvo', dielPrislusenstvoPod: 'krytky, izolačné sady, pásky',
+    dalsieH: 'Ďalšie stavby s potrubím Microflex', dalsieP: 'Referencie výrobcu Watts s inými dodávateľmi, na Slovensku aj vo Francúzsku.',
   },
   cs: {
     title: 'Reference', titulok: 'Reference: stavby s potrubím Microflex', desc: 'Stavby s předizolovaným potrubím Microflex: rozvod tepla pro obytný soubor v Považské Bystrici, vojenská základna ve Francii, základní škola v Lehotě pri Nitre a rodinný dům ve Fačkově.',
-    lead: 'Rozvody tepla mezi budovami areálů a obytných souborů, výměna starých ocelových rozvodů i přípojky domů.',
-    fotoAlt: 'Dvě potrubí Microflex UNO ve výkopu na vojenské základně v Orange', zdroj: 'Reference na watts.eu', rad: 'Použitá řada', fotka: (n: number) => `Fotka ${n}`,
+    lead: 'Stavby, na kterých už potrubí Microflex vede teplo: od rodinného domu s garáží po obytný soubor s 31 budovami.',
+    hlavnaVeta: 'Rozvod tepla pro 30 domů a bytový dům z jedné kotelny', pozriet: 'Prohlédnout stavbu', stavby: 'Stavby na této stránce',
+    dopytPodobny: 'Poptávka na podobný projekt', zdroj: 'Reference na watts.eu',
+    dielyH: 'Co patřilo k dodávce', dielyP: 'Kromě potrubí také pevné body, těsnění a systémové příslušenství.', dielyOdkaz: 'Příslušenství k potrubí',
+    dielPotrubie: 'Potrubí Microflex', dielPotrubiePod: 'na kotoučích', dielBody: 'Pevné body', dielTesnenia: 'Těsnění prostupů stěnou',
+    dielPrislusenstvo: 'Systémové příslušenství', dielPrislusenstvoPod: 'krytky, izolační sady, pásky',
+    dalsieH: 'Další stavby s potrubím Microflex', dalsieP: 'Reference výrobce Watts s jinými dodavateli, na Slovensku i ve Francii.',
   },
 }[lang];
+
 // Najväčšie stavby prvé: sieť pre 31 budov, 800 m na vojenskej základni, škola, rodinný dom.
 const PORADIE = ['povazska-bystrica', 'orange', 'skola-lehota', 'fackov'];
 const refs = [...referencie(lang)].sort((a, b) => PORADIE.indexOf(a.id) - PORADIE.indexOf(b.id));
+const hlavna = refs.find((r) => r.nasa) ?? refs[0];
+const dalsie = refs.filter((r) => r !== hlavna);
 const rady = (await getCollection('rady')).map((r) => r.data);
 const kat = (await getCollection('kategorie')).map((k) => k.data);
-const hero = fotkaReferencie('orange-4.jpg');
-// Hlavná fotka (scéna s kótami) ide prvá; jej pôvodný súbor sa v galérii neopakuje (orange-5-scena = výrez orange-5).
-const bloky = await Promise.all(refs.map(async (r) => {
-  const hlavna = r.scena?.fotka ?? r.fotky[0];
-  const zaklad = hlavna.replace('-scena', '');
-  const subory = [hlavna, ...r.fotky.filter((f) => f !== hlavna && f !== zaklad)];
-  const fotky = await Promise.all(subory.map(async (f) => {
-    const src = fotkaReferencie(f)!;
-    const velka = await getImage({ src, width: Math.min(1100, src.width), format: 'webp' });
-    return { src, velka: velka.src };
-  }));
+const produkty = (await getCollection('produkty')).map((p) => p.data);
+const ZAVER_FOTKA = 'povazska-2.jpg';
+// Úvod: fotka s potrubím (stavenisko), v príbehu kotolňa; pás fotiek dostane ostatné okrem fotky záveru.
+const hero = (hlavna.scenaPotrubie ?? hlavna.scena)!;
+const kotolna = hlavna.scena && hlavna.scena.fotka !== hero.fotka ? hlavna.scena : undefined;
+const pas = hlavna.fotky.filter((f) => f !== hero.fotka && f !== kotolna?.fotka && f !== ZAVER_FOTKA).slice(0, 3);
+const nahlad = (r: Referencia) => (r === hlavna ? hero.fotka : r.scena?.fotka ?? r.fotky[0]);
+const radRef = (r: Referencia) => {
   const rad = r.rad ? rady.find((x) => x.slug === r.rad) : undefined;
   const k = rad ? kat.find((x) => x.id === rad.kategoria) : undefined;
-  return { r, fotky, rad, k };
-}));
+  return rad && k ? cestaRadu(k, rad, lang) : undefined;
+};
+const zdroj = (r: Referencia) => (lang === 'cs' ? r.zdroj.replace('/sk/', '/cz/') : r.zdroj);
+const dopyt = `${route(lang, 'firmy')}#dopyt`;
+// Diely z dodávky podľa faktu referencie (potrubie, pevné body, tesnenia, systémové príslušenstvo): kategórie
+// s výrobkom z našej ponuky na fotke, odkaz vedie na diel alebo jeho skupinu.
+const bod = produkty.find((p) => p.id === 'fixny-bod');
+const DIELY = [
+  { obr: render3d('kotuc', 'kotuc'), kotuc: true, nazov: tx.dielPotrubie, pod: tx.dielPotrubiePod, href: route(lang, 'potrubia') },
+  { obr: fotkaProduktu('fixny-bod'), kotuc: false, nazov: tx.dielBody, pod: bod ? (lang === 'cs' ? bod.nazov_cs : bod.nazov) ?? '' : '', href: bod ? `${route(lang, 'spojky')}${lang === 'cs' ? bod.slug_cs : bod.slug}/` : route(lang, 'spojky') },
+  { obr: fotkaProduktu('tesnenie-na-prienik-na-stenu-micro-press'), kotuc: false, nazov: tx.dielTesnenia, pod: 'MICRO PRESS, MICRO SEAL', href: `${route(lang, 'prislusenstvo')}#prestupy-stenou` },
+  { obr: fotkaProduktu('teplom-zmrstitelne-hlavice-pre-rurku-duo'), kotuc: false, nazov: tx.dielPrislusenstvo, pod: tx.dielPrislusenstvoPod, href: route(lang, 'prislusenstvo') },
+].filter((d) => d.obr);
+// Kóta na karte stavby: len rozsah (dĺžka potrubia) bez popisu, štítok na stranu, kde je na fotke miesto.
+const kotyKarty = (r: Referencia): Kota[] => (r.scena?.koty ?? []).filter((k) => k.hodnota === r.rozsah).map((k) => {
+  const smer = k.x > 55 ? ('hore-vlavo' as const) : ('hore-vpravo' as const);
+  return { ...k, text: '', l: 12, smer, smerM: smer };
+});
 ---
 <Base lang={lang} alternates={staticAlternates('referencie')} title={tx.titulok} description={tx.desc} aktivna="referencie" drobceky={[{ text: tx.title }]} vizualneDrobceky={false}>
-  <Hlava lang={lang} nadpis={tx.title} drobceky={[{ text: tx.title }]} lead={tx.lead} obraz={hero} obrazAlt={tx.fotoAlt} druh="foto" />
+  <section class="rf-hero" aria-labelledby="h1-ref">
+    <div class="wrap rf-hero-text">
+      <ol class="crumbs" aria-label={ui.crumbs.label}>
+        <li><a href={route(lang, 'domov')}>{ui.nav.domov}</a></li>
+        <li aria-current="page">{tx.title}</li>
+      </ol>
+      <h1 id="h1-ref">{tx.title}</h1>
+      <p class="rf-lead">{sadzba(tx.lead)}</p>
+    </div>
+    <Scena class="rf-hero-foto" obraz={fotkaReferencie(hero.fotka)!} alt={hlavna.popisy[hero.fotka] ?? hlavna.nazov} koty={hero.koty} label={ui.home.projektyKoty} orez={{ x: 0.3, y: 0.62 }} widths={[800, 1200, 1600]} sizes="(max-width: 900px) 100vw, 80vw" priorita="high" />
+    <div class="wrap rf-feat">
+      <p class="rf-feat-meta"><span class="rf-rola rf-rola-nasa">{ui.home.rolaNasa}</span><span>{hlavna.mesto}, {hlavna.rok}</span></p>
+      <p class="rf-feat-h">{sadzba(tx.hlavnaVeta)}</p>
+      <div class="rf-akcie">
+        <a class="btn btn-inverse btn-lg" href={`#${hlavna.id}`}>{tx.pozriet} <Ikona nazov="arrow-down" velkost={18} /></a>
+        <a class="rf-odkaz-tma" href={dopyt}>{ui.domov.b2bDopyt} <Ikona nazov="arrow-right" velkost={16} /></a>
+      </div>
+    </div>
+  </section>
 
-  <div class="telo">
-    {bloky.map(({ r, fotky, rad, k }, i) => (
-      <section class:list={['wrap ref', { vpravo: i % 2 === 1 }]} id={r.id} aria-labelledby={`h-${r.id}`}>
-        <div class="galeria" data-galeria style={`--pomer: ${fotky[0].src.width} / ${fotky[0].src.height}`}>
-          <Scena class="hlavna" obraz={fotky[0].src} alt={r.nazov} koty={r.scena?.koty ?? []} label={ui.home.projektyKoty} widths={[640, 900, 1100]} sizes="(max-width: 900px) 100vw, 56vw" priorita="low" />
-          {fotky.length > 1 && (
-            <ul class="nahlady">
-              {fotky.map((f, j) => (
-                <li><button type="button" aria-pressed={j === 0 ? 'true' : 'false'} data-velka={f.velka} aria-label={tx.fotka(j + 1)}><Obraz src={f.src} alt="" width={120} height={90} densities={[1, 2]} fetchpriority="low" /></button></li>
-              ))}
-            </ul>
-          )}
+  <div class="telo rf-telo">
+    <div class="wrap rf-prehlad-obal">
+      <nav class="harok rf-prehlad" aria-label={tx.stavby}>
+        {refs.map((r) => (
+          <a class:list={['rf-polozka', { 'je-hlavna': r === hlavna }]} href={`#${r.id}`}>
+            <Obraz src={fotkaReferencie(nahlad(r))!} alt="" width={80} densities={[1, 2]} class="rf-polozka-img" />
+            <span class="rf-polozka-text"><strong>{sadzba(r.rozsah)}</strong><b>{r.typ}</b><span>{r.mesto}</span></span>
+          </a>
+        ))}
+      </nav>
+    </div>
+
+    <section class="wrap rf-pripad" id={hlavna.id} aria-labelledby={`h-${hlavna.id}`}>
+      <header class="rf-pripad-hlava">
+        <div>
+          <p class="rf-kde">{hlavna.miesto}, {hlavna.kedy}</p>
+          <h2 id={`h-${hlavna.id}`}>{sadzba(hlavna.nazov)}</h2>
         </div>
-        <div class="text">
-          <p class="kde">{r.miesto}, {r.kedy}</p>
-          <h2 id={`h-${r.id}`}>{sadzba(r.nazov)}</h2>
-          <p class="perex">{sadzba(r.perex)}</p>
-          <dl class="fakty">{r.fakty.map(([dt, dd]) => <div><dt>{dt}</dt><dd>{sadzba(dd)}</dd></div>)}</dl>
-          <p class="realizacia">{r.realizacia}</p>
-          <div class="odkazy">
-            {rad && k && <a class="odkaz" href={cestaRadu(k, rad, lang)}>{tx.rad}: {rNazov(rad, lang).split(',')[0]} <Ikona nazov="arrow-right" velkost={16} /></a>}
-            <a class="odkaz odkaz-tichy" href={lang === 'cs' ? r.zdroj.replace('/sk/', '/cz/') : r.zdroj} target="_blank" rel="noopener">{tx.zdroj} <Ikona nazov="external-link" velkost={15} /></a>
+        <p class="rf-dodal">{sadzba(hlavna.realizacia)}</p>
+      </header>
+      <div class="rf-pripad-grid">
+        {kotolna && <Scena class="rf-kotolna" obraz={fotkaReferencie(kotolna.fotka)!} alt={hlavna.popisy[kotolna.fotka] ?? hlavna.nazov} koty={kotolna.koty} label={ui.home.projektyKoty} orez={{}} widths={[640, 960, 1200]} sizes="(max-width: 900px) 100vw, 62vw" priorita="low" />}
+        <div class="rf-udaje">
+          <p class="rf-perex">{sadzba(hlavna.perex)}</p>
+          <dl class="rf-spec">{hlavna.fakty.filter(([a]) => a !== 'Dodávka').map(([dt, dd]) => <div><dt>{dt}</dt><dd>{sadzba(dd)}</dd></div>)}</dl>
+          <div class="rf-odkazy">
+            <a class="odkaz" href={dopyt}>{tx.dopytPodobny} <Ikona nazov="arrow-right" velkost={16} /></a>
+            <a class="odkaz rf-tichy" href={zdroj(hlavna)} target="_blank" rel="noopener">{tx.zdroj} <Ikona nazov="external-link" velkost={15} /></a>
           </div>
         </div>
-      </section>
-    ))}
+      </div>
+      {pas.length > 0 && (
+        <div class="rf-pas">
+          {pas.map((f) => (
+            <figure class="rf-foto">
+              <Obraz src={fotkaReferencie(f)!} alt="" widths={[480, 720]} sizes="(max-width: 760px) 100vw, 400px" class="rf-foto-img" fetchpriority="low" />
+              <figcaption class="rf-popis">{hlavna.popisy[f]}</figcaption>
+            </figure>
+          ))}
+        </div>
+      )}
+      <div class="harok rf-diely">
+        <div class="rf-diely-text">
+          <h3>{tx.dielyH}</h3>
+          <p>{sadzba(tx.dielyP)}</p>
+          <a class="odkaz" href={route(lang, 'prislusenstvo')}>{tx.dielyOdkaz} <Ikona nazov="arrow-right" velkost={16} /></a>
+        </div>
+        <ul class="rf-diely-mriezka">
+          {DIELY.map((d) => (
+            <li><a class="rf-diel" href={d.href}>
+              <span class:list={['rf-diel-foto', { kotuc: d.kotuc }]}><Obraz src={d.obr!} alt="" widths={[240, 360]} sizes="180px" class="rf-diel-img" /></span>
+              <strong>{d.nazov}</strong><span>{d.pod}</span>
+            </a></li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section class="wrap rf-dalsie" aria-labelledby="h-dalsie">
+      <div class="s-hlava"><h2 id="h-dalsie">{tx.dalsieH}</h2><p>{sadzba(tx.dalsieP)}</p></div>
+      <div class="rf-karty">
+        {dalsie.map((r) => {
+          const hl = r.scena?.fotka ?? r.fotky[0];
+          const male = r.fotky.filter((f) => f !== hl && f !== hl.replace('-scena', '')).slice(0, 2);
+          const href = radRef(r);
+          return (
+            <article class="rf-karta" id={r.id} aria-labelledby={`h-${r.id}`}>
+              <div class="rf-karta-fotky" data-n={1 + male.length}>
+                <Scena class="rf-karta-hl" obraz={fotkaReferencie(hl)!} alt={r.popisy[hl] ?? r.nazov} koty={kotyKarty(r)} label={ui.home.projektyKoty} orez={{}} widths={[480, 720]} sizes="(max-width: 1100px) 50vw, 280px" priorita="low" />
+                {male.map((f) => <Obraz src={fotkaReferencie(f)!} alt={r.popisy[f] ?? ''} widths={[240, 360]} sizes="(max-width: 1100px) 25vw, 140px" class="rf-karta-mala" fetchpriority="low" />)}
+              </div>
+              <div class="rf-karta-text">
+                <span class:list={['rf-rola', { 'rf-rola-nasa': r.nasa }]}>{r.nasa ? ui.home.rolaNasa : ui.home.rolaVyrobca}</span>
+                <h3 id={`h-${r.id}`}>{sadzba(r.nazov)}</h3>
+                <p class="rf-kde">{r.miesto}, {r.kedy}</p>
+                <p class="rf-karta-perex">{sadzba(r.perex)}</p>
+                {href && r.potrubie && (
+                  <a class="rf-riadok" href={href}><span class="rf-riadok-t">{sadzba(r.potrubie)}</span><span class="rf-riadok-pocet">{sadzba(r.rozsah)}</span><Ikona nazov="chevron-right" velkost={18} /></a>
+                )}
+                <a class="odkaz rf-tichy rf-zdroj" href={zdroj(r)} target="_blank" rel="noopener">{tx.zdroj} <Ikona nazov="external-link" velkost={15} /></a>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </section>
   </div>
   <Zaver lang={lang} />
 </Base>
 
 <style>
-  .ref { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 32px 56px; align-items: start; scroll-margin-top: 110px; }
-  .telo > .ref + .ref { margin-top: 128px; }
-  .ref.vpravo { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
-  .ref.vpravo .galeria { order: 2; }
-  /* Hlavná fotka má pomer scény (kóty sedia na nej); iná fotka z galérie sa do toho istého poľa oreže. */
-  .galeria :global(.hlavna .scena-img) { aspect-ratio: var(--pomer); object-fit: cover; border-radius: var(--radius-xl); box-shadow: var(--elev-4); background: var(--zem-3); transition: opacity 250ms var(--ease-soft); }
-  .galeria :global(.hlavna .scena-img.mizne) { opacity: 0.25; }
-  .galeria.ina :global(.koty) { display: none; }
-  .nahlady { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
-  .nahlady button { display: block; padding: 0; border: 0; border-radius: var(--radius-m); overflow: hidden; cursor: pointer; background: none; box-shadow: 0 0 0 2px transparent; opacity: 0.72; transition: opacity 150ms var(--ease-soft), box-shadow 150ms var(--ease-soft); }
-  .nahlady button:hover { opacity: 1; }
-  .nahlady button[aria-pressed="true"] { opacity: 1; box-shadow: 0 0 0 3px var(--color-blue-700); }
-  .nahlady :global(img) { display: block; width: 84px; height: 63px; object-fit: cover; }
+  /* 1. Tmavý pás: fotka staveniska vypĺňa pravé dve tretiny a doľava sa stráca do tmavomodrej kvôli
+     čitateľnosti nadpisu (DESIGN kap. 4: tmavý presah cez fotku v hlave). Pod tlačidlami je miesto pre pás stavieb. */
+  .rf-hero { position: relative; isolation: isolate; overflow: clip; display: flex; flex-direction: column; justify-content: space-between;
+    height: clamp(620px, calc(100svh - 164px), 740px); background: var(--color-blue-900); color: #fff; }
+  .rf-hero > .wrap { position: relative; z-index: 3; width: 100%; }
+  .rf-hero-text > *, .rf-feat > * { max-width: 560px; }
+  .rf-hero :global(.rf-hero-foto) { position: absolute; inset: 0 0 0 34%; z-index: 1; background: #0e3676; }
+  .rf-hero :global(.rf-hero-foto::after) { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(90deg, var(--color-blue-900) 0%, rgb(10 42 94 / 0.82) 12%, rgb(10 42 94 / 0.25) 34%, rgb(10 42 94 / 0) 50%),
+      linear-gradient(0deg, rgb(10 42 94 / 0.28) 0%, rgb(10 42 94 / 0) 22%); }
+  .rf-hero .crumbs, .rf-hero .crumbs a { color: var(--color-on-dark-muted); }
+  .rf-hero .crumbs a:hover { color: #fff; }
+  .rf-hero .crumbs li::before { color: rgb(255 255 255 / 0.4); }
+  .rf-hero :focus-visible { outline-color: #fff; }
+  .rf-hero h1 { margin-top: 28px; color: #fff; font-size: clamp(39px, 3vw + 12px, 61px); letter-spacing: -0.025em; }
+  .rf-lead { margin-top: 16px; font-size: 18px; line-height: 1.55; color: var(--color-on-dark-muted); }
+  .rf-hero-text .rf-lead { max-width: 27em; }
+  .rf-feat { padding-bottom: 144px; }
+  .rf-feat-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; font-size: 15px; font-weight: 500; color: var(--color-on-dark-muted); }
+  .rf-feat .rf-feat-h { margin-top: 16px; max-width: 15em; font: 600 clamp(25px, 1.1vw + 14px, 31px)/1.14 var(--font-display); font-stretch: 112.5%;
+    letter-spacing: -0.018em; color: #fff; text-wrap: balance; }
+  .rf-akcie { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; margin-top: 28px; }
+  .rf-odkaz-tma { display: inline-flex; align-items: center; gap: 8px; padding-bottom: 4px; border-bottom: 1px solid rgb(255 255 255 / 0.55); font-weight: 600; color: #fff; }
+  .rf-odkaz-tma:hover { color: #fff; border-bottom-color: #fff; }
+  /* Rola stavby: Naša dodávka žltá, referencia výrobcu obrysom (ako na domove a stránkach radov). */
+  .rf-rola { display: inline-flex; align-items: center; flex: none; height: 28px; padding: 0 12px; border-radius: 999px; font-size: 14px; font-weight: 600; white-space: nowrap;
+    color: var(--color-ink-soft); box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.24); }
+  .rf-rola.rf-rola-nasa { background: var(--color-yellow-500); color: var(--color-ink); box-shadow: none; }
 
-  .text { padding-top: 8px; }
-  .kde { font-size: 15px; font-weight: 500; color: var(--color-blue-700); }
-  .text h2 { margin-top: 8px; font-size: clamp(26px, 1.4vw + 17px, 38px); line-height: 1.12; letter-spacing: -0.02em; }
-  .perex { margin-top: 16px; font-size: 17px; line-height: 1.6; }
-  /* Fakty stavby: číslo nesie typografia, riadky oddeľuje plocha, nie čiara. */
-  .fakty { margin: 24px 0 0; display: grid; gap: 8px; }
-  .fakty > div { display: grid; grid-template-columns: 9.5em minmax(0, 1fr); gap: 16px; padding: 12px 16px; border-radius: var(--radius-l); background: var(--sklo-1); }
-  .fakty dt { color: var(--color-ink-soft); font-size: 15px; }
-  .fakty dd { margin: 0; font-weight: 600; }
-  .realizacia { margin-top: 16px; font-size: 15px; color: var(--color-ink-soft); }
-  .odkazy { display: flex; flex-wrap: wrap; gap: 16px 24px; margin-top: 24px; }
-  .odkaz-tichy { color: var(--color-ink-soft); }
-  @media (max-width: 900px) { .ref, .ref.vpravo { grid-template-columns: minmax(0, 1fr); } .ref.vpravo .galeria { order: 0; } .telo > .ref + .ref { margin-top: 88px; } }
-  @media (max-width: 760px) { .fakty > div { grid-template-columns: minmax(0, 1fr); gap: 2px; } .nahlady :global(img) { width: 64px; height: 48px; } .galeria :global(.hlavna .scena-img) { border-radius: var(--radius-l); } }
-</style>
+  /* 2. Telo začína ohnutou hranou cez spodok fotky (tvar --hrana-ohyb ako na domove); pás stavieb leží cez ňu. */
+  .rf-telo::before { content: ""; position: absolute; left: 0; right: 0; top: calc(1px - var(--presah-hero)); height: var(--presah-hero); z-index: 4; pointer-events: none;
+    background: var(--zem-1); -webkit-mask: var(--hrana-ohyb) no-repeat 0 0 / 100% 100%; mask: var(--hrana-ohyb) no-repeat 0 0 / 100% 100%; }
+  .rf-prehlad-obal { position: relative; z-index: 5; margin-top: -144px; }
+  .rf-prehlad { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; padding: 8px; }
+  .rf-polozka { display: flex; align-items: center; gap: 16px; min-width: 0; padding: 8px 12px 8px 8px; border-radius: var(--radius-l); color: var(--color-ink); transition: background 150ms var(--ease-soft); }
+  .rf-polozka:hover, .rf-polozka.je-hlavna { background: var(--color-blue-50); color: var(--color-ink); }
+  .rf-polozka :global(.rf-polozka-img) { flex: none; width: 80px; height: 80px; object-fit: cover; border-radius: var(--radius-m); }
+  .rf-polozka-text { display: grid; gap: 2px; min-width: 0; }
+  .rf-polozka-text strong { font: 600 24px/1.05 var(--font-display); font-stretch: 118%; letter-spacing: -0.02em; color: var(--color-blue-900); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .rf-polozka-text b { margin-top: 4px; font-size: 15px; font-weight: 600; line-height: 1.25; }
+  .rf-polozka-text span { font-size: 13px; line-height: 1.35; color: var(--color-ink-soft); }
 
-<script>
-  /* Miniatúry prepínajú hlavnú fotku. Prvá je scéna s kótami: pri inej fotke sa kóty skryjú a pri
-     návrate sa vráti pôvodný obrázok aj s responzívnymi veľkosťami. */
-  function initGalerie() {
-    document.querySelectorAll<HTMLElement>('[data-galeria]').forEach((g) => {
-      if (g.dataset.init) return;
-      g.dataset.init = '1';
-      const hlavna = g.querySelector<HTMLImageElement>('.hlavna img');
-      if (!hlavna) return;
-      const povodne = { src: hlavna.currentSrc || hlavna.src, srcset: hlavna.getAttribute('srcset') ?? '' };
-      // Scéna je <picture> so zdrojom AVIF, ten by mal prednosť pred zmenou src: pri inej fotke sa vypne.
-      const zdroje = [...(hlavna.closest('picture')?.querySelectorAll('source') ?? [])].map((s) => ({ s, srcset: s.getAttribute('srcset') ?? '' }));
-      const tlacidla = [...g.querySelectorAll<HTMLButtonElement>('[data-velka]')];
-      tlacidla.forEach((b, i) => b.addEventListener('click', () => {
-        if (b.getAttribute('aria-pressed') === 'true') return;
-        tlacidla.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
-        hlavna.classList.add('mizne');
-        const nova = new window.Image();
-        nova.onload = () => {
-          zdroje.forEach(({ s, srcset }) => (i === 0 ? s.setAttribute('srcset', srcset) : s.removeAttribute('srcset')));
-          if (i === 0 && povodne.srcset) hlavna.setAttribute('srcset', povodne.srcset); else hlavna.removeAttribute('srcset');
-          hlavna.src = nova.src;
-          hlavna.classList.remove('mizne');
-          g.classList.toggle('ina', i !== 0);
-        };
-        nova.src = i === 0 ? povodne.src : b.dataset.velka!;
-      }));
-    });
+  /* 3. Príbeh hlavnej stavby. */
+  .rf-pripad { scroll-margin-top: 110px; }
+  .rf-pripad-hlava { display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: 16px 48px; align-items: end; margin-bottom: 32px; }
+  .rf-kde { font-size: 15px; font-weight: 500; color: var(--color-blue-700); }
+  .rf-pripad-hlava h2 { margin-top: 8px; max-width: 17em; font-size: clamp(31px, 1.7vw + 15px, 49px); letter-spacing: -0.022em; }
+  .rf-dodal { position: relative; padding: 16px 20px 16px 24px; border-radius: var(--radius-l); background: #fff; box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.06), var(--elev-2);
+    font-size: 15px; line-height: 1.5; }
+  .rf-dodal::before { content: ""; position: absolute; left: 0; top: 16px; bottom: 16px; width: 4px; border-radius: 0 var(--radius-s) var(--radius-s) 0; background: var(--color-blue-700); }
+  .rf-pripad-grid { display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: 32px 48px; align-items: start; }
+  .rf-pripad-grid :global(.rf-kotolna) { aspect-ratio: 16 / 10; border-radius: var(--radius-xl); box-shadow: var(--elev-4); }
+  .rf-perex { font-size: 17px; line-height: 1.6; }
+  /* Údaje: číslo nesie typografia, riadky oddeľuje plocha, nie čiara. */
+  .rf-spec { display: grid; gap: 8px; margin: 24px 0 0; }
+  .rf-spec > div { display: grid; gap: 2px; padding: 12px 16px; border-radius: var(--radius-l); background: var(--sklo-1); }
+  .rf-spec dt { font-size: 14px; line-height: 1.45; color: var(--color-ink-soft); }
+  .rf-spec dd { margin: 0; font-size: 15px; line-height: 1.45; font-weight: 600; }
+  .rf-odkazy { display: flex; flex-wrap: wrap; gap: 16px 24px; margin-top: 24px; }
+  .rf-tichy { color: var(--color-ink-soft); }
+  .rf-pas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 16px; }
+  .rf-foto { position: relative; margin: 0; aspect-ratio: 4 / 3; overflow: hidden; border-radius: var(--radius-xl); background: var(--zem-3); box-shadow: var(--elev-3); }
+  .rf-foto :global(.rf-foto-img) { width: 100%; height: 100%; object-fit: cover; }
+  /* Popis fotky: mliečny štítok v rohu, nie text pod fotkou. */
+  .rf-popis { position: absolute; left: 12px; bottom: 12px; max-width: calc(100% - 24px); padding: 4px 8px; border-radius: var(--radius-m); background: var(--sklo-2);
+    -webkit-backdrop-filter: blur(8px) saturate(1.3); backdrop-filter: blur(8px) saturate(1.3); box-shadow: var(--elev-1); font-size: 13px; line-height: 1.35; font-weight: 500; color: var(--color-ink); }
+  .rf-diely { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 24px 48px; align-items: center; margin-top: 48px; padding: 32px; }
+  .rf-diely-text h3 { font-size: 24px; }
+  .rf-diely-text p { margin: 12px 0 20px; font-size: 16px; line-height: 1.55; color: var(--color-ink-soft); }
+  .rf-diely-mriezka { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+  /* Diel na podlahe štúdia ako v kartách dielov (KartaProduktu). */
+  .rf-diel { display: grid; align-content: start; gap: 2px; height: 100%; padding: 8px 8px 16px; border-radius: var(--radius-l); background: #fff;
+    box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.06), var(--elev-1); color: var(--color-ink); }
+  .rf-diel:hover { color: var(--color-ink); box-shadow: inset 0 0 0 1px var(--color-blue-700), var(--elev-1); }
+  .rf-diel-foto { position: relative; display: block; aspect-ratio: 4 / 3; margin-bottom: 8px; overflow: hidden; border-radius: var(--radius-m);
+    background: radial-gradient(70% 60% at 50% 42%, #ffffff 0%, #f3f6fa 70%, #eaf0f7 100%); }
+  .rf-diel-foto::after { content: ""; position: absolute; left: 22%; right: 22%; bottom: 9%; height: 10%; border-radius: 50%; background: radial-gradient(closest-side, rgb(10 42 94 / 0.2), rgb(10 42 94 / 0)); }
+  .rf-diel-foto :global(.rf-diel-img) { position: absolute; z-index: 1; left: 13%; top: 8%; width: 74%; height: 78%; object-fit: contain; }
+  .rf-diel-foto.kotuc::after { display: none; }
+  .rf-diel-foto.kotuc :global(.rf-diel-img) { left: 18%; top: 4%; width: 64%; height: 92%; }
+  .rf-diel strong { padding-inline: 4px; font-size: 15px; line-height: 1.3; }
+  .rf-diel > span:last-child { padding-inline: 4px; font-size: 13px; line-height: 1.35; color: var(--color-ink-soft); }
+
+  /* 4. Ďalšie stavby ako karty. */
+  .rf-dalsie .s-hlava { margin-bottom: 32px; }
+  .rf-karty { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+  .rf-karta { display: flex; flex-direction: column; padding: 12px; border-radius: var(--radius-xl); background: #fff; box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.06), var(--elev-3); scroll-margin-top: 110px; }
+  .rf-karta-fotky { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; aspect-ratio: 3 / 2; }
+  .rf-karta-fotky :global(.rf-karta-hl) { grid-row: 1 / 3; border-radius: var(--radius-l) var(--radius-m) var(--radius-m) var(--radius-l); }
+  .rf-karta-fotky :global(.rf-karta-mala) { width: 100%; height: 100%; min-height: 0; object-fit: cover; border-radius: var(--radius-m); }
+  .rf-karta-fotky[data-n="2"] :global(.rf-karta-mala) { grid-row: 1 / 3; }
+  .rf-karta-fotky[data-n="1"] :global(.rf-karta-hl) { grid-column: 1 / 3; }
+  .rf-karta-text { display: flex; flex-direction: column; align-items: flex-start; flex: 1; padding: 20px 8px 4px; }
+  .rf-karta h3 { margin-top: 12px; font-size: 22px; line-height: 1.2; letter-spacing: -0.01em; }
+  .rf-karta .rf-kde { margin-top: 4px; font-size: 14px; }
+  .rf-karta-perex { margin: 12px 0 20px; font-size: 15px; line-height: 1.55; color: var(--color-ink-soft); }
+  /* Riadok ako v dlaždiciach katalógu na domove: potrubie, rozsah a šípka, vedie na rad. */
+  .rf-riadok { display: flex; align-items: center; gap: 12px; align-self: stretch; min-height: 48px; margin-top: auto; padding: 0 12px 0 16px; border-radius: var(--radius-m);
+    background: #fff; box-shadow: inset 0 0 0 1px rgb(10 42 94 / 0.12), var(--elev-1); color: var(--color-ink); font-size: 15px; font-weight: 600; line-height: 1.25; }
+  .rf-riadok:hover { color: var(--color-ink); box-shadow: inset 0 0 0 1px var(--color-blue-700), var(--elev-1); }
+  .rf-riadok-t { min-width: 0; padding-block: 12px; }
+  .rf-riadok-pocet { margin-left: auto; flex: none; font-size: 14px; font-weight: 400; color: var(--color-ink-soft); }
+  .rf-riadok :global(.icon) { color: var(--color-blue-700); }
+  .rf-zdroj { margin-top: 16px; font-size: 14px; }
+
+  @media (max-width: 1100px) {
+    .rf-prehlad { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .rf-diely { grid-template-columns: minmax(0, 1fr); }
+    .rf-karty { grid-template-columns: minmax(0, 1fr); }
+    .rf-karta { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 16px; align-items: start; }
+    .rf-karta-text { padding: 8px 8px 8px 0; }
   }
-  initGalerie();
-  document.addEventListener('astro:page-load', initGalerie);
-</script>
+  @media (max-width: 900px) {
+    .rf-hero { height: auto; justify-content: flex-start; }
+    .rf-hero :global(.rf-hero-foto) { position: relative; inset: auto; aspect-ratio: 4 / 3; margin-top: 24px; }
+    .rf-hero :global(.rf-hero-foto::after) { background: linear-gradient(180deg, var(--color-blue-900) 0%, rgb(10 42 94 / 0) 22%, rgb(10 42 94 / 0) 72%, var(--color-blue-900) 100%); }
+    .rf-feat { margin-top: -24px; padding-bottom: 96px; }
+    .rf-prehlad-obal { margin-top: -96px; }
+    .rf-pripad-hlava, .rf-pripad-grid { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 760px) {
+    .rf-hero h1 { margin-top: 8px; }
+    .rf-lead { font-size: 16px; }
+    .rf-feat { padding-bottom: 80px; }
+    .rf-feat .rf-feat-h { font-size: 24px; }
+    .rf-akcie .btn-lg { width: 100%; justify-content: center; }
+    .rf-prehlad-obal { margin-top: -80px; }
+    .rf-prehlad { gap: 4px; }
+    .rf-polozka { gap: 12px; padding: 4px; }
+    .rf-polozka :global(.rf-polozka-img) { width: 56px; height: 56px; }
+    .rf-polozka-text strong { font-size: 18px; white-space: normal; }
+    .rf-polozka-text b { font-size: 13px; }
+    .rf-polozka-text span { display: none; }
+    .rf-pripad-hlava h2 { font-size: 28px; }
+    .rf-pripad-grid :global(.rf-kotolna) { aspect-ratio: 4 / 3; margin-inline: calc(-1 * var(--gutter)); border-radius: 0; }
+    .rf-pas { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; }
+    .rf-pas .rf-foto:first-child { grid-column: 1 / -1; }
+    .rf-foto { border-radius: var(--radius-l); }
+    .rf-pas .rf-foto:not(:first-child) .rf-popis { left: 8px; bottom: 8px; max-width: calc(100% - 16px); font-size: 12px; }
+    .rf-diely { padding: 20px; }
+    .rf-diely-mriezka { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .rf-karta { display: flex; }
+    .rf-karta-text { padding: 20px 8px 4px; }
+  }
+</style>

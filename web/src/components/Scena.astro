@@ -3,6 +3,11 @@
  * Fotka zo stavby s kótami: číslo stojí priamo pri tom, čo opisuje (rúra vo výkope, kotolňa),
  * rovnako ako kóty na renderi v hero domova. Súradnice bodu sú v percentách obrázka, preto sa
  * obrázok neorezáva (výrez je pripravený v súbore) a kóty sedia pri každej šírke. Kóty: Koty.astro.
+ *
+ * orez: fotka vyplní pole, ktorého veľkosť určí rodič (pomer strán, výška, poloha), ako object-fit: cover.
+ * Obrázok aj kóty ležia v ráme s pomerom fotky, ktorý pole pokryje a posunie sa podľa x a y (ako
+ * object-position, 0 vľavo či hore, 1 vpravo či dole); pole ho oreže. Bod kóty tak ostane na tom istom
+ * mieste fotky pri každej šírke (Referencie, fotka cez celý tmavý pás; 7. 11. 2026).
  */
 import Obraz from './Obraz.astro';
 import type { ImageMetadata } from 'astro';
@@ -12,17 +17,40 @@ import type { Kota } from '../lib/koty';
 interface Props {
   obraz: ImageMetadata; alt: string; koty?: Kota[];
   widths?: number[]; sizes?: string; class?: string; label?: string;
-  /** 'low' pre fotky pod hlavou stránky: nesmú brať pásmo fotke v hlave (prvok LCP), polish 1. 11. */
-  priorita?: 'low';
+  /** 'low' pre fotky pod hlavou stránky: nesmú brať pásmo fotke v hlave (prvok LCP), polish 1. 11.;
+      'high' pre fotku v hlave stránky (prvok LCP): načíta sa hneď a prednostne. */
+  priorita?: 'low' | 'high';
+  orez?: { x?: number; y?: number };
 }
-const { obraz, alt, koty = [], widths = [640, 960, 1200], sizes = '(max-width: 900px) 100vw, 66vw', class: trieda, label, priorita } = Astro.props;
+const { obraz, alt, koty = [], widths = [640, 960, 1200], sizes = '(max-width: 900px) 100vw, 66vw', class: trieda, label, priorita, orez } = Astro.props;
+const sirky = widths.filter((w) => w <= obraz.width);
+const nacitanie = priorita === 'high' ? { loading: 'eager' as const } : {};
 ---
-<figure class:list={['scena', trieda]}>
-  <Obraz src={obraz} alt={alt} widths={widths.filter((w) => w <= obraz.width)} sizes={sizes} class="scena-img" fetchpriority={priorita} />
-  <Koty koty={koty} label={label} />
-</figure>
+{orez ? (
+  <figure class:list={['scena', 'scena-orez', trieda]} style={`--pomer: ${(obraz.width / obraz.height).toFixed(4)}; --ox: ${orez.x ?? 0.5}; --oy: ${orez.y ?? 0.5}`}>
+    <div class="scena-ramec">
+      <Obraz src={obraz} alt={alt} widths={sirky} sizes={sizes} class="scena-img" fetchpriority={priorita} {...nacitanie} />
+      <Koty koty={koty} label={label} />
+    </div>
+  </figure>
+) : (
+  <figure class:list={['scena', trieda]}>
+    <Obraz src={obraz} alt={alt} widths={sirky} sizes={sizes} class="scena-img" fetchpriority={priorita} {...nacitanie} />
+    <Koty koty={koty} label={label} />
+  </figure>
+)}
 
 <style>
   .scena { position: relative; margin: 0; container-type: inline-size; isolation: isolate; }
   .scena :global(.scena-img) { display: block; width: 100%; height: auto; }
+  /* Výrez: pole je kontajner s oboma rozmermi (jeho veľkosť určí rodič); rám s pomerom fotky ho pokryje
+     ako object-fit: cover a posunie sa podľa --ox a --oy. Dĺžky čiar kót (cqw) sa rátajú zo šírky poľa. */
+  .scena-orez { container-type: size; overflow: hidden; }
+  .scena-ramec {
+    --sirka: max(100cqw, 100cqh * var(--pomer));
+    --vyska: max(100cqh, 100cqw / var(--pomer));
+    position: absolute; left: calc((100cqw - var(--sirka)) * var(--ox)); top: calc((100cqh - var(--vyska)) * var(--oy));
+    width: var(--sirka); height: var(--vyska);
+  }
+  .scena-orez :global(.scena-img) { height: 100%; }
 </style>

@@ -25,7 +25,7 @@ const { koty, label } = Astro.props;
       <li class={`kota s-${k.smer} sm-${k.smerM ?? k.smer}${k.kod ? ` k-${k.kod}` : ''}`} style={`--x: ${k.x}%; --y: ${k.y}%; --l: ${k.l};${k.lM ? ` --lm: ${k.lM};` : ''} --i: ${i}`}>
         <span class="bod" aria-hidden="true"></span>
         <span class="ciara" aria-hidden="true"></span>
-        <span class="stitok"><strong>{k.hodnota}</strong><span>{sadzba(k.text)}</span></span>
+        <span class="stitok"><strong>{k.hodnota}</strong>{k.text && <span>{sadzba(k.text)}</span>}</span>
       </li>
     ))}
   </ul>

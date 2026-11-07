@@ -618,6 +618,17 @@ Každá vnútorná stránka má rovnakú kostru, aby web pôsobil ako celok:
 - Referencie na stránke radu: nadpis „Kde tento rad leží“ len keď každá ukázaná stavba uvádza práve tento rad,
   inak „Kde už Microflex leží“. Fotka s potrubím (`scenaPotrubie`), ak ju stavba má, a štítok roly ako na
   domove: „Naša dodávka“ žltý, „Referencia výrobcu“ obrysom.
+- **Stránka Referencie** (od 7. 11. 2026, verzia A1 „Hlavná stavba“; Juraj vybral smer A z návrhov A až C a z neho
+  verziu A1, archív `archiv/navrhy-referencii-2026-11-06/`, predošlá stránka `archiv/2026-11-07-referencie-pred-a1/`).
+  Namiesto Hlavy tmavý pás s fotkou staveniska našej dodávky (Považská Bystrica) cez celú šírku: fotka sa doľava
+  stráca do tmavomodrej kvôli čitateľnosti, kóta „31 budov“ stojí na rúre, štítok Naša dodávka je žltý a tlačidlá
+  v páse biele (žltá raz na obrazovku). Cez ohnutú hranu leží biely pás so všetkými stavbami (fotka, rozsah, typ
+  stavby), takže aj menšie stavby sú na prvej obrazovke. Pod ním príbeh hlavnej stavby: kotolňa s kótou výkonu,
+  údaje, fotky s popisom v mliečnom štítku a „Čo patrilo k dodávke“ (diely na podlahe štúdia ako v kartách dielov).
+  Ďalšie stavby sú karty: fotky, kóta dĺžky, riadok s radom potrubia a rozsahom ako v katalógu na domove, zdroj
+  watts.eu. Fotka kotúčov je v Závere každej vnútornej stránky, v príbehu sa preto nepoužíva. Fotka s kótami, ktorú
+  pole oreže, je `Scena` s vlastnosťou `orez`: rám s pomerom fotky pokryje pole ako object-fit: cover a kóty ostanú
+  na tom istom mieste fotky pri každej šírke. Texty a popisy fotiek sú v `content/referencie.ts` (SK aj CS).
 - **Produktová karta** (stránky radov a dielov, od 6. 11. 2026; Juraj: „nové rozloženie a design stránky produktov,
   nech to má hlavu a pätu“, z návrhov A až C vybral A, archív `archiv/navrhy-stranky-produktu-2026-11-06/`).
   Stránka sa číta jedným smerom ako v e-shope: vidím, vyberiem, kúpim. Hlava (`Hlava.astro`, `rozlozenie="karta"`):
